@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="es-ES">
     <head>
-        <meta name="description" content="Apartamentos de lujo en Sierra Nievada a pie de pista , sin remontes ni autobuses">
+      <?php
+      $oContents = new App\Contents();
+      $meta_descripcion = $oContents->getContentByKey('meta_descripcion');
+      ?>
+        <meta name="description" content="{{$meta_descripcion['text']}}">
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="keywords" content="Alquiler apartamento Sierra Nevada;edificio miramarski; a pie de pista; apartamentos capacidad 6 / 8 personas; estudios capacidad 4 /5 personas; zona baja;piscina climatizada;gimansio;parking cubierto; a 5 minutos  de la plaza de Andalucia">
@@ -20,7 +24,7 @@
         <link rel="icon" type="image/png" sizes="32x32" href="{{ assetV('/img/miramarski/favicon/favicon-32x32.png') }}">
         <link rel="icon" type="image/png" sizes="96x96" href="{{ assetV('/img/miramarski/favicon/favicon-96x96.png') }}">
         <link rel="icon" type="image/png" sizes="16x16" href="{{ assetV('/img/miramarski/favicon/favicon-16x16.png') }}">
-        <link rel="manifest" href="/manifest.json">
+        <!--<link rel="manifest" href="/manifest.json">-->
         <meta name="msapplication-TileColor" content="#ffffff">
         <meta name="msapplication-TileImage" content="{{ assetV('/img/miramarski/favicon/ms-icon-144x144.png' ) }}">
         <meta name="theme-color" content="#ffffff">

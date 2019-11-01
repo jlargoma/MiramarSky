@@ -50,6 +50,7 @@ class ContentsControllers extends Controller
             switch ($f[1]){
               case 'ckeditor':
               case 'string':
+              case 'textarea':
                 $this->saveText($k,$key,$request);
               break;
               case 'file':

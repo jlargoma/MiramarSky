@@ -32,7 +32,7 @@
             <div class="col-md-4">
               <div class="row" >
                 <div class="col-xs-12">
-                  <h3 class="text-center white">FORMULARIO DE RESERVA</h3>
+                  <h3 class="text-center white">CALCULA TU PRECIO</h3>
                 </div>
                 <div id="form-content">
                   @include('frontend._formBook')
@@ -73,7 +73,7 @@
           <div class="col-md-4 col-xs-12">
             <div class="row" >
               <div class="col-xs-12">
-                <h3 class="text-center white">FORMULARIO DE RESERVA</h3>
+                <h3 class="text-center white">CALCULA TU PRECIO</h3>
               </div>
               <div id="form-content">
                 @include('frontend._formBook')

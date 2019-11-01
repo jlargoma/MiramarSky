@@ -6,7 +6,7 @@ setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES"); ?>
 @extends('layouts.admin-master')
 
-@section('title') Configuración TXT emails @endsection
+@section('title') CONTENIDOS - FRONT @endsection
 
 @section('externalScripts')
 <script src="{{ asset('/vendors/ckeditor/ckeditor.js') }}"></script>
@@ -22,9 +22,10 @@ setlocale(LC_TIME, "es_ES"); ?>
   .list-options li a{
     padding: 7px;
     border: solid 1px #949494;
-    width: 16em;
+    width: 13em;
     box-shadow: 1px 1px 1px #000;
     margin-bottom: 7px;
+    display: block;
   }
   </style>
 @endsection
@@ -39,6 +40,10 @@ setlocale(LC_TIME, "es_ES"); ?>
   </div>
   <div class="row">
     <div class="col-md-4">
+      <button class="btn btn-md btn-primary {{ Request::path() == 'admin/galleries' ? 'active' : '' }}">
+          <a href="{{ url('admin/galleries') }}" class="text-white">Galerías</a>
+      </button>
+      
       <h3>Listado de contenidos:</h3>
       <ul class="list-options">
       @foreach($lst as $k=>$v)
@@ -73,6 +78,11 @@ setlocale(LC_TIME, "es_ES"); ?>
           case 'string':
             ?>
             <input type="text" name="{{$k}}" id="{{$k}}" value="{{$v[2]}}" class="form-control">
+            <?php
+            break;
+          case 'textarea':
+            ?>
+            <textarea type="text" name="{{$k}}" id="{{$k}}" rows="10" class="form-control">{{$v[2]}}</textarea>
             <?php
             break;
          endswitch; 

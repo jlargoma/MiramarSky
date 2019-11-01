@@ -65,9 +65,7 @@
     <li class="{{ Request::path() == 'admin/settings_msgs' ? 'active' : '' }}">
         <a href="{{ url('admin/settings_msgs') }}" class="detailed">Txt Email</a>
     </li>
-    <li class="{{ Request::path() == 'admin/galleries' ? 'active' : '' }}">
-          <a href="{{ url('admin/galleries') }}" class="detailed">Galerías</a>
-      </li>
+    
     <li class="{{ Request::path() == 'admin/orders-payland' ? 'active' : '' }}">
           <a href="{{ url('admin/orders-payland') }}" class="detailed">PAYLAND</a>
     </li>
@@ -92,7 +90,7 @@
 <?php endif ?>
     <?php if (Auth::user()->role == "admin"): ?>
     <li class="{{  (preg_match('/\/contents-home/i',Request::path()))  ? 'active' : '' }}">
-      <a href="{{ url('/admin/contents-home') }}" class="detailed">Contenidos Home</a>
+      <a href="{{ url('/admin/contents-home') }}" class="detailed">Contenidos Front</a>
     </li>
     <?php endif ?>
 
