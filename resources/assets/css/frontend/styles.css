@@ -25,6 +25,7 @@ body.not-dark{
     background-repeat: no-repeat;
     padding: 0 !important;
     clear: both;
+    background-size: cover;
 }
 .footer-area .capa-blanca{
    padding: 90px 0px 30px 0px;

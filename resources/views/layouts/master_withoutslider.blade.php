@@ -24,17 +24,8 @@
 	<!-- Stylesheets
 	============================================= -->
 	<link href="http://fonts.googleapis.com/css?family=Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700|Crete+Round:400italic" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet" href="{{ assetV ('/css/app.css')}}" type="text/css" />
-
-        <link rel="stylesheet" href="{{ assetV('/frontend/css/responsive.css')}}" type="text/css" />
+	<link rel="stylesheet" href="{{ assetV ('/css/frontend.css')}}" type="text/css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1" />
-
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link href="https://cdn.rawgit.com/michalsnik/aos/2.1.1/dist/aos.css" rel="stylesheet">
-	<link rel="stylesheet" href="{{ assetV('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
-		<link rel="stylesheet" type="text/css" href="{{ assetV ('/frontend/css/font-icons.css')}}">
-	<link rel="stylesheet" type="text/css" href="{{ assetV('/frontend/css/styles.css')}}" />  
-	
 	<!-- Document Title
 	============================================= -->
 	<title>@yield('title')</title>
@@ -58,6 +49,10 @@
 		    /* Internet Explorer 10 y superior */
 		    color: rgba(255,255,255,0.85) !important;
 		}
+          section {
+              padding: 1em;
+              text-align: center;
+          }
 	</style>
 	@yield('css')
 		<script type="text/javascript" src="{{ assetV('/frontend/js/jquery.js') }}"></script>
@@ -89,6 +84,8 @@
 			<img height="1" width="1" style="border-style:none;" alt="" src="//www.googleadservices.com/pagead/conversion/834109020/?label=DHhZCN3wy3UQ3PzdjQM&amp;guid=ON&amp;script=0"/>
 		</div>
 	</noscript>
+            <link rel="stylesheet" href="{{ assetV('/frontend/css/responsive.css')}}" type="text/css"/>
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body class="stretched no-transition">
@@ -114,7 +111,6 @@
 	
 	<script type="text/javascript" src="{{assetV('/frontend/js/components/moment.js')}}"></script>
 	<script type="text/javascript" src="{{assetV('/frontend/js/components/daterangepicker.js')}}"></script>
-<link rel="stylesheet" href="{{ asset('/frontend/colors.php?color=3F51B5')}}" type="text/css"/>
 	<?php /* view para todos los scripts generales de la pagina*/ ?>
 	@yield('scripts')
 	@include('layouts._generalScriptsFront')	

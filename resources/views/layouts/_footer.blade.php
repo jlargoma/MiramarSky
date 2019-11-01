@@ -4,9 +4,11 @@ $footerContent = $oContents->getContentByKey('footer');
 ?>
 
 <style>
+@media only screen and (min-width: 769px){
   .footer-area{
-        background-image: url('{{$footerContent["imagen"]}}') !important;
+    background-image: url('{{$footerContent["imagen"]}}') !important;
   }
+}
 </style>
 <footer id="footer" >	
   <!-- Copyrights
