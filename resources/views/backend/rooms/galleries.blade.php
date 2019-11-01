@@ -62,6 +62,9 @@ $mobile = new Mobile();
     <button type="button" class="btn btn-success btn-sm uploadHeaderEdificio" data-toggle="modal" data-target="#modalHeaders" data-id="-1" title="Subir cabecera aptos">
       <i class="fa fa-upload" aria-hidden="true"></i> Cabeceras de <b>El edificio</b>
     </button> 
+    <button type="button" class="btn btn-success btn-sm uploadHeaderDefault" data-toggle="modal" data-target="#modalHeaders" data-id="-1" title="Subir cabecera aptos">
+      <i class="fa fa-upload" aria-hidden="true"></i> Cabeceras <b>Default</b>
+    </button> 
     <div class="col-xs-12 content-table-rooms">
       <table class="table table-condensed table-striped">
         <thead>
@@ -235,6 +238,11 @@ $(document).ready(function () {
   });
   $('.uploadHeaderEdificio').click(function(event) {
     $.get('/admin/apartamentos/headers/edificio/edificio', function(data) {
+      $('#modalHeaders').find('.upload-body').empty().append(data);
+    });
+  });
+  $('.uploadHeaderDefault').click(function(event) {
+    $.get('/admin/apartamentos/headers/default/default', function(data) {
       $('#modalHeaders').find('.upload-body').empty().append(data);
     });
   });

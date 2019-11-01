@@ -64,6 +64,9 @@ class HomeController extends AppController
       
       $mobile = new Mobile();
       $oPhotoHeader = \App\RoomsHeaders::where('room_id', $room->id)->first();
+      if (!$oPhotoHeader){
+        $oPhotoHeader = \App\RoomsHeaders::where('url', 'default')->first();
+      }
       $photoHeader = asset('/frontend/images/home/aptos-tit.png');
       if ($oPhotoHeader){
         if ($mobile->isMobile()){
@@ -122,6 +125,9 @@ class HomeController extends AppController
             }
             $mobile = new Mobile();
             $oPhotoHeader = \App\RoomsHeaders::where('room_type_id', $room->id)->first();
+            if (!$oPhotoHeader){
+              $oPhotoHeader = \App\RoomsHeaders::where('url', 'default')->first();
+            }
             $photoHeader = asset('/frontend/images/home/apart-bg.jpg');
 
             if ($oPhotoHeader){
