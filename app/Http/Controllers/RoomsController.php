@@ -299,6 +299,8 @@ class RoomsController extends AppController {
     
     if ($type == 'edificio') 
       $photo = \App\RoomsHeaders::where('url', 'edificio')->first();
+    if ($type == 'default') 
+      $photo = \App\RoomsHeaders::where('url', 'default')->first();
 //    dd($photo);
     return view('backend/rooms/header-img', [
     'photo' => $photo,
@@ -709,14 +711,14 @@ class RoomsController extends AppController {
       $obj = \App\RoomsHeaders::where('room_type_id', $id)->first();
     if ($type == 'room')
       $obj = \App\RoomsHeaders::where('room_id', $id)->first();
-    if ($type == 'edificio')
+    if ($type == 'edificio' || $type == 'default')
       $obj = \App\RoomsHeaders::where('url', $id)->first();
     
     if (!$obj){
       $obj = new \App\RoomsHeaders();
       if ($type == 'room_type') $obj->room_type_id = $id;
       if ($type == 'room') $obj->room_id = $id;
-      if ($type == 'edificio') $obj->url = $id;
+      if ($type == 'edificio'  || $type == 'default') $obj->url = $id;
     }
     
 //    $key = ($type == 'room_type') ? '-category-' : '-room-';

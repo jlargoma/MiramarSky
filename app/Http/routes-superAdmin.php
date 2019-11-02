@@ -205,9 +205,10 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
 //  Route::get('/reservas/ff_status_popup/{id}', 'BookController@getBookFFData');
 
 //  Route::get('/reservas/ff_change_status_popup/{id}/{status}', 'BookController@updateBookFFStatus');
-  Route::get('/book-logs/{id}', 'BookController@printBookLogs');
+  Route::get('/book-logs/see-more/{id}', 'BookController@getBookLog');
+  Route::get('/book-logs/see-more-mail/{id}', 'BookController@getMailLog');
+  Route::get('/book-logs/{id}/{month?}', 'BookController@printBookLogs');
   Route::post('/response-email', 'BookController@sendEmailResponse');
-  Route::get('/book-logs/get/{id}', 'BookController@getBookLog');
   
   Route::post('/reservas/stripe/save/fianza', 'StripeController@fianza');
   Route::post('/reservas/stripe/pay/fianza', 'StripeController@payFianza');

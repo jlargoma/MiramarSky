@@ -832,8 +832,10 @@ $mobile = new Mobile();
         <div class="col-xs-12 bg-black push-0">
           <h4 class="text-center white">HISTORICO EMAILS CON EL CLIENTE <span id="loadchatbox">desplegar</span></h4>
         </div>
-        <div id="chatbox">
+      <div id="chatbox" class="chat-lst">
         </div>
+  <button class="btn btn-success btn-cons m-b-10" type="button"
+          data-toggle="modal" data-target="#modalResponseEmail">Enviar Nueva Respuesta</button>
       </div>
     </div>
 <?php else: ?>
@@ -1369,8 +1371,11 @@ $mobile = new Mobile();
       <div class="col-xs-12 bg-black push-0">
         <h4 class="text-center white">HISTORICO EMAILS CON EL CLIENTE <span id="loadchatbox" class="mobile">desplegar</span></h4>
       </div>
-      <div id="chatbox">
-      </div>
+      <div id="chatbox" class="chat-lst">
+        </div>
+  <button class="btn btn-success btn-cons m-b-10" type="button"
+          data-toggle="modal" data-target="#modalResponseEmail">Enviar Nueva Respuesta</button>
+      
 <?php endif ?>
   </div>
   <button style="display: none;" id="btnEmailing" class="btn btn-success btn-cons m-b-10" type="button"
@@ -1410,6 +1415,63 @@ $mobile = new Mobile();
             <form method="post" id="formFF" action="" target="_blank">
               <input type="hidden" name="admin_ff" id="admin_ff">
             </form>
+  
+  
+
+  <div class="modal fade slide-up in" id="modalResponseEmail" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xd">
+      <div class="modal-content-classic">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+    <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
+</button>
+        <form method="POST" action="/admin/response-email">
+          <input type="hidden" id="booking" name="booking" value="{{$book->id}}">
+          <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+          <div class="form-group text-left">
+            <label for="subject">Asunto</label>
+            <input type="text" class="form-control" id="subject" name="subject" value="Repuesta desde {{env('APP_NAME')}}" />
+          </div>
+          <div class="form-group text-left">
+            <label for="content">Contenido</label>
+            <textarea class="form-control" id="content" name="content" rows="5"></textarea>
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-primary" >Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade slide-up in" id="modal_seeLog" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xd text-left">
+      <div class="modal-content-classic">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+    <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
+</button>
+        <div class="msl-data">
+          <label>Asunto</label>
+          <div id="msl_subj"></div>
+        </div>
+        <div class="msl-data">
+          <label>Fecha</label>
+          <div id="msl_date"></div>
+        </div>
+        <div class="msl-data">
+          <label>Usuario</label>
+          <div id="msl_user"></div>
+        </div>
+        <div class="msl-data">
+          <label>Apto</label>
+          <div id="msl_room"></div>
+        </div>
+        <div class="msl-data">
+          <label>Mensaje</label>
+          <div id="msl_content"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   @endsection
 
   @section('scripts')
@@ -1442,6 +1504,21 @@ $mobile = new Mobile();
       function getScrollButton() {
         $('#chatbox').find("#chats").animate({scrollTop: $('#chats').prop("scrollHeight")}, 1000);
       }
+      
+            
+      $('#chatbox').on('click','#loadchatboxMore',function (event) {
+        var date = $(this).data('date');
+        var _that = $(this);
+        event.preventDefault();
+        $.ajax({
+          url: '/admin/book-logs/{{$book->id}}/'+date,
+          cache: false
+        }).done(function (data) {
+          $('#chatbox').prepend(data);
+          _that.remove();
+        });
+      });
+      
       $('#loadchatbox').click(function () {
         $('#chatbox').load('/admin/book-logs/{{$book->id}}', getScrollButton);
       });
@@ -1452,25 +1529,36 @@ $mobile = new Mobile();
         event.preventDefault();
 
         $.ajax({
-          url: '/admin/book-logs/get/' + $(this).data('id'),
+          url: '/admin/book-logs/see-more/' + $(this).data('id'),
           cache: false
         })
                 .done(function (data) {
-                  var obj = $('#chatbox').find('#modal_seeLog');
-                  console.log(obj);
+                  var obj = $('#modal_seeLog');
                   obj.find('#msl_subj').text(data.subj);
                   obj.find('#msl_room').text(data.room);
                   obj.find('#msl_user').text(data.user);
                   obj.find('#msl_content').html(data.content);
                   obj.find('#msl_date').text(data.date);
                   obj.modal('show');
-
-                  console.log(data);
                 });
 
-//                  $.get(),{}, function(data){
-//                    
-//                  }
+      });
+            $('#chatbox').on('click', '.see_more_mail', function (event) {
+        event.preventDefault();
+
+        $.ajax({
+          url: '/admin/book-logs/see-more-mail/' + $(this).data('id'),
+          cache: false
+        })
+                .done(function (data) {
+                  var obj = $('#modal_seeLog');
+                  obj.find('#msl_subj').text(data.subj);
+                  obj.find('#msl_room').text(data.room);
+                  obj.find('#msl_user').text(data.user);
+                  obj.find('#msl_content').html(data.content);
+                  obj.find('#msl_date').text(data.date);
+                  obj.modal('show');
+                });
 
       });
       $('.openFF').on('click', function (event) {

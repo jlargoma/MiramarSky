@@ -13,12 +13,7 @@ class ChatEmailsController extends Controller
     public function index() {
     
   $oObtieneMails= new POP3Service();
-  $inbox =  $oObtieneMails->pop3_login(
-          'mail.riadpuertasdelalbaicin.com',
-          110,
-          'reservas@riadpuertasdelalbaicin.com',
-          'exitO@007'
-          );
+
 
   $emails = $oObtieneMails->getMails($inbox,"reservas@riadpuertasdelalbaicin.com",'from');
  
