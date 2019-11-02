@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         Commands\RoomsPhotosMigrate::class,
         Commands\SendSecondPay::class,
         Commands\SendParteeAdmin::class,
+        Commands\ChatEmails::class,
     ];
 
     /**

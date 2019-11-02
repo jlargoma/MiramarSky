@@ -1543,6 +1543,24 @@ $mobile = new Mobile();
                 });
 
       });
+            $('#chatbox').on('click', '.see_more_mail', function (event) {
+        event.preventDefault();
+
+        $.ajax({
+          url: '/admin/book-logs/see-more-mail/' + $(this).data('id'),
+          cache: false
+        })
+                .done(function (data) {
+                  var obj = $('#modal_seeLog');
+                  obj.find('#msl_subj').text(data.subj);
+                  obj.find('#msl_room').text(data.room);
+                  obj.find('#msl_user').text(data.user);
+                  obj.find('#msl_content').html(data.content);
+                  obj.find('#msl_date').text(data.date);
+                  obj.modal('show');
+                });
+
+      });
       $('.openFF').on('click', function (event) {
         event.preventDefault();
         var id = $(this).data('booking');

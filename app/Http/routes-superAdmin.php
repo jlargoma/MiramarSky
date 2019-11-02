@@ -206,6 +206,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
 
 //  Route::get('/reservas/ff_change_status_popup/{id}/{status}', 'BookController@updateBookFFStatus');
   Route::get('/book-logs/see-more/{id}', 'BookController@getBookLog');
+  Route::get('/book-logs/see-more-mail/{id}', 'BookController@getMailLog');
   Route::get('/book-logs/{id}/{month?}', 'BookController@printBookLogs');
   Route::post('/response-email', 'BookController@sendEmailResponse');
   

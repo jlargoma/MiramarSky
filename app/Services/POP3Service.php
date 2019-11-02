@@ -27,7 +27,7 @@ class POP3Service{
           $emails=imap_search($inbox,'CC "'.$filter.'"');
           break;
         case 'body':
-          $emails=imap_search($inbox,'BODY "'.$filter.'" SINCE "20-JUL-2019"');
+          $emails=imap_search($inbox,'BODY "'.$filter.'" SINCE "20-OCT-2019"');
           break;
         case 'since':
           $emails=imap_search($inbox,'SINCE "'.$filter.'"');
@@ -70,6 +70,8 @@ class POP3Service{
            ];
         }
         
+        imap_close($inbox); 
+      return $result;
       }
       
       imap_close($inbox); 
