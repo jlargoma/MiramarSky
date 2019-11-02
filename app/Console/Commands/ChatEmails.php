@@ -90,7 +90,7 @@ class ChatEmails extends Command {
     } else {
       echo json_encode(array("status" => "error", "message" => "Not connect."), JSON_PRETTY_PRINT);
     }
-    imap_close($connect);
+    $email->close();
   }
 
 }
