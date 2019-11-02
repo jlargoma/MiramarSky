@@ -556,37 +556,7 @@ $mobile = new Mobile();
         }
       });
 
-      function getScrollButton() {
-        $('#chatbox').find("#chats").animate({scrollTop: $('#chats').prop("scrollHeight")}, 1000);
-      }
-      $('#loadchatbox').click(function () {
-        $('#chatbox').load('/admin/book-logs/{{$book->id}}', getScrollButton);
-      });
-      $('#chatbox').on('click', '.see_more', function (event) {
-        event.preventDefault();
 
-        $.ajax({
-          url: '/admin/book-logs/get/' + $(this).data('id'),
-          cache: false
-        })
-                .done(function (data) {
-                  var obj = $('#chatbox').find('#modal_seeLog');
-                  console.log(obj);
-                  obj.find('#msl_subj').text(data.subj);
-                  obj.find('#msl_room').text(data.room);
-                  obj.find('#msl_user').text(data.user);
-                  obj.find('#msl_content').html(data.content);
-                  obj.find('#msl_date').text(data.date);
-                  obj.modal('show');
-
-                  console.log(data);
-                });
-
-//                  $.get(),{}, function(data){
-//                    
-//                  }
-
-      });
       $('.openFF').on('click', function (event) {
         event.preventDefault();
         var id = $(this).data('booking');
