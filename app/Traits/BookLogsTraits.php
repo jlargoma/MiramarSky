@@ -8,24 +8,49 @@ use App\User;
 
 trait BookLogsTraits {
 
-  public function printBookLogs($bookID) {
+  public function printBookLogs($bookID,$date=null) {
 
     $userLst = [];
     $roomLst = [];
     $allLogs = null;
+    
+    if(!$date){
+      $month = date('m');
+      $year = date('Y');
+    } else {
+      $aux = explode('-', $date);
+      $month = isset($aux[0]) ? $aux[0] : date('m');
+      $year = isset($aux[1]) ? $aux[1] : date('Y');
+    }
+    
+
 
     $book = \App\Book::find($bookID);
     if ($book && $book->customer->email) {
 
-      $allLogs = BookLogs::where('cli_email', $book->customer->email)->orderBy('id')->get();
+      $dueDateTime = Carbon::createFromFormat('d-m-Y',"01-$month-$year"); 
+      if ($book->created_at > $dueDateTime){
+        return '<h5>Reserva Creada</h5>';
+      }
+      $allLogs = BookLogs::where('cli_email', $book->customer->email)
+              ->whereMonth('created_at','=',$month)
+              ->whereYear('created_at','=',$year)
+              ->orderBy('id')->get();
       $user_ids = [];
       $room_ids = [];
       if ($allLogs) {
+        $auxLst = [];
         foreach ($allLogs as $item) {
+          if ($item->book_id && $item->book_id != $bookID){
+            continue;
+          }
           $user_ids[] = $item->user_id;
           $room_ids[] = $item->room_id;
           $item->content = str_limit(strip_tags($item->content), 50, $end = '...');
+          $auxLst[] = $item;
         }
+        
+        $allLogs = $auxLst;
       }
 
       $user_ids = array_unique($user_ids);
@@ -45,12 +70,14 @@ trait BookLogsTraits {
         }
       }
     }
-
-
+                      
     return view('backend/planning/listados/bookLogs', [
         'allLogs' => $allLogs,
         'userLst' => $userLst,
+        'month'   => intval($month),
+        'year'    => $year,
         'roomLst' => $roomLst,
+        'date' => date('m-Y', strtotime("-1 month", strtotime("01-$month-$year"))),
         'bookID' => $bookID,
     ]);
   }
