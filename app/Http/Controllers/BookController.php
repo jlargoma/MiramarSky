@@ -347,11 +347,7 @@ class BookController extends AppController
 
                 if ($book->save())
                 {
-                    /* Notificacion via email */
-                    if ($customer->email)
-                    {
-                        //MailController::sendEmailBookSuccess($book, 1);
-                    }
+                   
                     if ($request->input('fast_payment') == 1)
                     {
                       $amount = ($book->total_price / 2);
@@ -392,7 +388,12 @@ class BookController extends AppController
                         return view('frontend.bookStatus.bookPaylandPay', ['urlPayland' => $urlPayland]);
                     } else
                     {
-                        return view('frontend.bookStatus.bookOk');
+                      /* Notificacion via email */
+                      if ($customer->email)
+                      {
+                         MailController::sendEmailBookSuccess($book, 1);
+                      }
+                      return view('frontend.bookStatus.bookOk');
                     }
                 } else
                 {

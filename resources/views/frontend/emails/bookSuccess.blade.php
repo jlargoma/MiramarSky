@@ -52,7 +52,7 @@
                 <h1 style="font-weight: bold;color: #fff;margin: 5px 0;font-family: sans-serif;">Solicitud de reserva</h1>
               </td>
             </tr>
-            @if ($admin !== 0):
+            @if ($admin !== 0)
             <tr>
               <td class="innerpadding borderbottom admin_info">
                 Detalles de la reserva:<br><br>
@@ -64,7 +64,7 @@
                 {!! $mailContent !!}
               </td>
             </tr>
-            @if ($admin !== 0):
+            @if ($admin !== 0)
             <tr>
               <td class="innerpadding borderbottom admin_info">
                 Asigna y gestiona esta reserva desde la zona de administración haciendo clic en el siguiente enlace<br><br>
