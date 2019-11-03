@@ -29,7 +29,7 @@ trait BookLogsTraits {
     $book = \App\Book::find($bookID);
     if ($book && $book->customer->email) {
 
-      $dueDateTime = Carbon::createFromFormat('d-m-Y',"01-$month-$year"); 
+      $dueDateTime = Carbon::createFromFormat('d-m-Y',"01-$month-$year")->addMonth(); 
       if ($book->created_at > $dueDateTime){
         return '<h5>Reserva Creada</h5>';
       }

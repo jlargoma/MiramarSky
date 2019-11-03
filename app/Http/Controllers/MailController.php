@@ -14,7 +14,7 @@ class MailController extends AppController
     public static function sendEmailBookSuccess( $data ,$admin = 0)
     {
 
-      $country = $book->customer->country;
+      $country = $data->customer->country;
 
       $mailClientContent = Settings::getContent('new_request_rva',$country);
       $dataContent = array(

@@ -168,8 +168,11 @@
         </li>
 
         <li >
-          <!-- <a href="#"><div>Reservar</div></a> -->
-          <a class="menu-booking" href="#" data-href="#wrapper"><div>Reservar</div></a>
+          @if(Request::path() == 'contacto')
+           <a href="/"><div>Reservar</div></a> 
+          @else
+          <a class="menu-booking showFormBook" href="#" data-href="#wrapper"><div>Reservar</div></a>
+          @endif
         </li>
         <li>
           <a href="{{ url('/contacto') }}"><div>Contacto</div></a></li>
