@@ -323,7 +323,7 @@ trait BookEmailsStatus
             $message->replyTo(env('MAIL_FROM_FORFAITS'));
         });
         
-        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'second_payment_reminder',$subject,$mailClientContent);
+        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'send_payment_Forfait',$subject,$mailClientContent);
 
         return $sended;
     }
@@ -387,7 +387,7 @@ trait BookEmailsStatus
             $message->replyTo(env('MAIL_FROM_FORFAITS'));
         });
         
-        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'second_payment_reminder',$subject,$mailClientContent);
+        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'send_forfait_payment_reminder',$subject,$mailClientContent);
 
         return $sended;
     }

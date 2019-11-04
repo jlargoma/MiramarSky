@@ -40,5 +40,6 @@ class Kernel extends ConsoleKernel
          $schedule->command('monthLimpieza:create')->monthlyOn(1, '5:00')->timezone('Europe/Madrid');
          $schedule->command('ical:import')->everyFiveMinutes();
          $schedule->command('mails:read')->everyThirtyMinutes();
+         $schedule->command('forfait:sendReminder')->dailyAt('8:00')->timezone('Europe/Madrid');
     }
 }
