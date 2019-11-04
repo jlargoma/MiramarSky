@@ -88,24 +88,54 @@
     <div class="bfh-text">
       <div class="box">
         <h2 style="font-size: 22px;">{{$edificio['title']}}</h2>
-    <figure class="mobil"><img src="{{$edificio['imagen_1']}}" alt="Edificio Miramar Ski a pie de pista, zona baja"></figure>
+        
+        
+    <figure class="mobil">
+      @if($edificio['video_1'])
+        <video width="100%" autoplay>
+          <source src="{{$edificio['video_1']}}" type="video/mp4">
+        </video>
+      @else
+      <img src="{{$edificio['imagen_1']}}" alt="Edificio Miramar Ski a pie de pista, zona baja">
+      @endif
+    </figure>
       <div class="text">
         {!! $edificio['content_1'] !!}
       </div>
       </div>
     </div>
     <div class="bfh-img">
+      @if($edificio['video_1'])
+        <video width="470px" autoplay>
+          <source src="{{$edificio['video_1']}}" type="video/mp4">
+        </video>
+      @else
       <figure><img src="{{$edificio['imagen_1']}}" alt="Edificio Miramar Ski a pie de pista, zona baja"></figure>
+      @endif
     </div>
   </div>
   <div class="box-feature-home  hidden-mobile">
     <div class="bfh-img">
-      <figure><img src="{{$edificio['imagen_2']}}" alt=""></figure>
+      @if($edificio['video_1'])
+        <video width="470px" autoplay>
+          <source src="{{$edificio['video_2']}}" type="video/mp4">
+        </video>
+      @else
+        <figure><img src="{{$edificio['imagen_2']}}" alt=""></figure>
+      @endif
     </div>
     <div class="bfh-text">
       <div class="box right">
       <h3>{{$edificio['title_2']}}</h3>
-    <figure class="mobil"><img src="{{$edificio['imagen_2']}}" alt="Edificio Miramar Ski"></figure>
+    <figure class="mobil">
+      @if($edificio['video_1'])
+        <video width="100%" autoplay>
+          <source src="{{$edificio['video_2']}}" type="video/mp4">
+        </video>
+      @else
+        <img src="{{$edificio['imagen_2']}}" alt="Edificio Miramar Ski">
+      @endif
+      </figure>
       <div class="text">
        {!! $edificio['content_2'] !!}
       </div>

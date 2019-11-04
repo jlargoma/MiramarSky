@@ -29,9 +29,11 @@ class Contents extends Model
           'title'=>['Título','string',null],  
           'content_1'=>['Primer texto','ckeditor',null],  
           'imagen_1'=>['Primer Imagen','file',null],  
+          'video_1'=>['Primer Video','video',null],  
           'title_2'=>['Segundo Título','string',null],  
           'content_2'=>['Segundo texto','ckeditor',null],  
           'imagen_2'=>['Segunda Imagen','file',null],  
+          'video_2'=>['Segundo Video','video',null],  
         ];
         break;
       case 'services':

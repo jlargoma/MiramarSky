@@ -85,6 +85,19 @@ setlocale(LC_TIME, "es_ES"); ?>
             <textarea type="text" name="{{$k}}" id="{{$k}}" rows="10" class="form-control">{{$v[2]}}</textarea>
             <?php
             break;
+          case 'video':
+            ?>
+            @if($v[2])
+            <p>
+              <a href="{{ $v[2] }}" target="_black" title="Ver video">{{ $v[2] }}</a>
+            </p>
+            <p>
+              <input type="checkbox" id="{{$k}}_remove" name="{{$k}}_remove"/> Eliminar
+            </p>
+            @endif
+            <input name="{{$k}}" id="{{$k}}" type="file" class="custom-file-input" />
+            <?php
+            break;
          endswitch; 
          ?>
          </div>
