@@ -34,7 +34,8 @@
       }
       table.forfait, tr {
         border: 1px solid black;
-        border-collapse: collapse
+        border-collapse: collapse;
+        width: 100%;
       }
       table.forfait td,table.forfait th {
           padding: 8px;
