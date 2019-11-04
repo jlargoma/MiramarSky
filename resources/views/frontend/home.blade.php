@@ -116,7 +116,7 @@
   </div>
   <div class="box-feature-home  hidden-mobile">
     <div class="bfh-img">
-      @if($edificio['video_1'])
+      @if($edificio['video_2'])
         <video width="470px" autoplay>
           <source src="{{$edificio['video_2']}}" type="video/mp4">
         </video>
@@ -128,7 +128,7 @@
       <div class="box right">
       <h3>{{$edificio['title_2']}}</h3>
     <figure class="mobil">
-      @if($edificio['video_1'])
+      @if($edificio['video_2'])
         <video width="100%" autoplay>
           <source src="{{$edificio['video_2']}}" type="video/mp4">
         </video>
