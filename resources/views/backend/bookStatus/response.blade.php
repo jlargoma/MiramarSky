@@ -36,7 +36,11 @@
 	<div class="line" style="margin-bottom: 10px;"></div>
 	<div class="row push-10">
 		<div class="col-xs-12">
+                   <?php if (Auth::user()->role != "agente"): ?>
 			<form method="post" action="{{url('/admin/reservas/create')}}" id="confirm-book">
+                    <?php else: ?>
+			<form method="post" action="">
+                    <?php endif ?>
                           @if(false)
 			    <div class="row text-center push-10">
                     <div class="col-xs-12">
@@ -105,9 +109,11 @@
                 @endif
                <div class="row">
                     <div class="col-xs-6 col-xs-offset-3">
+                      <?php if (Auth::user()->role != "agente"): ?>
                         <div class="col-md-6">
                             <button type="submit" class="btn btn-success text-white btn-lg btn-cons center hvr-grow-shadow ">RESERVAR</button>
                         </div>
+                      <?php endif; ?>
                         <div class="col-md-6">
                             <button class="btn btn-danger btn-lg btn-cons  text-white center hvr-grow-shadow btn-back-calculate">VOLVER</button>
                         </div>
