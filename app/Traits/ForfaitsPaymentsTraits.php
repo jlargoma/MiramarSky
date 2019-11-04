@@ -405,7 +405,7 @@ trait ForfaitsPaymentsTraits {
      * @param type $book
      * @param type $subject
      */
-    public function renderOrder($orderID = 4)
+    public function renderOrder($orderID = -1)
     {
       $order = ForfaitsOrders::find($orderID);
       $orderItems = $this->getCart($order);
@@ -471,7 +471,7 @@ trait ForfaitsPaymentsTraits {
         }
         $resume = '<tr>
                     <td colspan="2"><b>SubTotal Forfaits</b></td>
-                    <td >'.number_format($orderItems['totalForf'], 2).'€</td>
+                    <td class="tright">'.number_format($orderItems['totalForf'], 2).'€</td>
                   </tr><tr>
                     <td colspan="2"><b>SubTotal Materiales</b></td>
                     <td class="tright">'.number_format($orderItems['totalMat'], 2).'€</td>

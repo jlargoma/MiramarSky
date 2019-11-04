@@ -72,7 +72,7 @@ trait BookEmailsStatus
         \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,$keyMail,$subject,$mailClientContent);
     }
 
-        /**
+    /**
      *
      * @param type $book
      * @param type $subject
@@ -323,7 +323,7 @@ trait BookEmailsStatus
             $message->replyTo(env('MAIL_FROM_FORFAITS'));
         });
         
-        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'second_payment_reminder',$subject,$mailClientContent);
+        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'send_payment_Forfait',$subject,$mailClientContent);
 
         return $sended;
     }
@@ -351,6 +351,44 @@ trait BookEmailsStatus
             $message->subject($subject);
         });
         
+        return $sended;
+    }
+    
+     /**
+     *
+     * @param type $book
+     * @param type $subject
+     */
+    public function sendEmail_RemindForfaitPayment($book, $orderID,$link)
+    {
+      if (!$book->customer->email || trim($book->customer->email) == '') return;
+        $mailClientContent = $this->getMailData($book, 'Forfait_email_payment_request');
+        setlocale(LC_TIME, "ES");
+        setlocale(LC_TIME, "es_ES");
+
+        $subject = translateSubject('Recordatorio de pago de Forfait',$book->customer->country);
+        
+        
+        $cachedRepository       = new CachedRepository();
+        $ForfaitsItemController = new \App\Http\Controllers\ForfaitsItemController($cachedRepository);
+        
+        $orderText = $ForfaitsItemController->renderOrder($orderID);
+        
+        $mailClientContent = str_replace('{forfait_order}', $orderText, $mailClientContent);
+        $mailClientContent = str_replace('{link_forfait}', $link, $mailClientContent);
+        $mailClientContent = $this->clearVars($mailClientContent);
+        $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $mailClientContent,
+            'title'       => $subject
+        ], function ($message) use ($book, $subject) {
+            $message->from(env('MAIL_FROM_FORFAITS'));
+            $message->to($book->customer->email);
+            $message->subject($subject);
+            $message->replyTo(env('MAIL_FROM_FORFAITS'));
+        });
+        
+        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'send_forfait_payment_reminder',$subject,$mailClientContent);
+
         return $sended;
     }
 }
