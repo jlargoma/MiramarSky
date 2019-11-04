@@ -1,13 +1,18 @@
 <div class="col-padding">
-	<div class="heading-block center nobottomborder nobottommargin" style="margin: 15% 0;">
-		<div class="center white">
-			<i class="fa fa-exclamation-triangle fa-5x white"></i>
-		</div>
-		<h2 class="white">Uppss! Lo sentimos</h2>
-		<span class="white">No tenemos servicio para las fechas especificadas</span><br>
-		<span class="white">Por favor intentelo de nuevo con otras fechas.</span>
-	</div>
+  <div class="heading-block center nobottomborder nobottommargin" style="margin: 15px;">
+    <h2 ><i class="fa fa-exclamation-triangle"></i>&nbsp; Uppss! Lo sentimos</h2>
+    <span >No tenemos servicio para las fechas especificadas</span><br>
+    <span >Por favor intentelo de nuevo con otras fechas.</span>
+  </div>
+
+  <button class="btn btn-danger btn-lg btn-cons  text-white center hvr-grow-shadow btn-back-calculate">VOLVER</button>
 </div>
-<div class="col-xs-12">
-	<button onclick="unflip()" class="button button-rounded button-reveal button-large button-red tright  center hvr-grow-shadow "><i class="icon-angle-right"></i><span>volver</span></button>
-</div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		 $('.btn-back-calculate').click(function(event) {
+            $('#content-book-response .back').empty();
+            $("#content-book-response .back").hide();
+            $("#content-book-response .front").show();
+        });
+	});
+</script>

@@ -2459,7 +2459,11 @@ class BookController extends AppController
             $limp     = (int) \App\Extras::find(3)->price;
         }
 
-        $size = \App\SizeRooms::find($sizeRoom);
+        if (isset($sizeRoom))
+          $size = \App\SizeRooms::find($sizeRoom);
+        else {
+          return view('backend.bookStatus.bookError');
+        }
 
         $roomAssigned = $this->calculateRoomToFastPayment($size, $start, $finish, $request->input('luxury'));
 

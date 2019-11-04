@@ -127,55 +127,10 @@
         </div>
     </div>
 </div>
-<script type="text/javascript" src="{{ asset('/frontend/js/jquery.js')}}"></script>
 <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/frontend/js/form_booking.js')}}"></script>
 <script type="text/javascript">
-    /* Calendario */
-    $(function() {
-        $(".daterange1").daterangepicker({
-            "buttonClasses": "button button-rounded button-mini nomargin",
-            "applyClass": "button-color",
-            "cancelClass": "button-light",
-            "startDate": moment().format("DD MMM, YY"),
-//            "startDate": '01 Dec, YY',
-            locale: {
-              format: 'DD MMM, YY',
-              "applyLabel": "Aplicar",
-                "cancelLabel": "Cancelar",
-                "fromLabel": "From",
-                "toLabel": "To",
-                "customRangeLabel": "Custom",
-                "daysOfWeek": [
-                    "Do",
-                    "Lu",
-                    "Mar",
-                    "Mi",
-                    "Ju",
-                    "Vi",
-                    "Sa"
-                ],
-                "monthNames": [
-                    "Enero",
-                    "Febrero",
-                    "Marzo",
-                    "Abril",
-                    "Mayo",
-                    "Junio",
-                    "Julio",
-                    "Agosto",
-                    "Septiembre",
-                    "Octubre",
-                    "Noviembre",
-                    "Diciembre"
-                ],
-                "firstDay": 1,
-            },
-            
-        });
-    });
-
-
     $(document).ready(function() {
 
         $(".only-numbers").keydown(function (e) {
@@ -227,52 +182,6 @@
 
         });
         
-
-        $('.daterange1').change(function(event) {
-            var date = $(this).val();
-
-            var arrayDates = date.split('-');
-
-            var date1 = new Date(arrayDates[0]);
-            var date2 = new Date(arrayDates[1]);
-            var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-            var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-            console.log(diffDays);
-            if (diffDays < 2) {
-                $('.min-days').show();
-            }else{
-                $('.min-days').hide();
-            }
-
-        });
-
-        $('#quantity').change(function(event) {
-          var pax = $(this).val();
-
-          if (pax <= 4) {
-            $("#apto-estudio").prop("disabled", false);
-
-            $("#apto-estudio").trigger('click');
-            $("#apto-estudio").show();
-
-          }
-          if (pax == 8) {
-            $(".apto-2dorm").trigger('click');
-            $("#apto-estudio").prop("disabled", true);
-            $("#apto-estudio").hide();
-
-          } else if (pax > 8) {
-            $(".apto-3dorm").trigger('click');
-
-            $("#apto-2dorm").prop("disabled", true);
-            $("#apto-2dorm").hide();
-
-            $("#apto-estudio").prop("disabled", true);
-            $("#apto-estudio").hide();
-          }
-        });
-
-
     });
 
 </script>   
