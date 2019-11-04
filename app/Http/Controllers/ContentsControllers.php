@@ -47,6 +47,16 @@ class ContentsControllers extends Controller
         if ($fields){
           foreach ($fields as $k=>$f){
             $i++;
+            
+            //remove objectss
+            if ($request->has($k.'_remove')){
+              $obj = Contents::where('key',$key)->where('field',$k)->first();
+              if ($obj) {
+                $obj->content = '';
+                $obj->save();
+              }
+            }
+            
             switch ($f[1]){
               case 'ckeditor':
               case 'string':
@@ -55,6 +65,9 @@ class ContentsControllers extends Controller
               break;
               case 'file':
                 $this->saveImg($k,$key,$request,$i);
+              break;
+              case 'video':
+                $this->saveVideo($k,$key,$request,$i);
               break;
             }            
           }
@@ -102,5 +115,26 @@ class ContentsControllers extends Controller
 
       }
       
-  }
+    }
+    private function saveVideo($field,$key,Request $request,$i) {
+    
+      $rute = "/img/miramarski/contents";
+      $directory = public_path() . $rute;
+      if (!file_exists($directory)) {
+        mkdir($directory, 0777, true);
+      }
+      /** Upload FILES */
+      if($request->hasfile($field)){
+        $obj = Contents::firstOrCreate(array('key' => $key,'field'=>$field));
+        
+        $file = $request->file($field);
+        $filename = $file->getClientOriginalName();
+        $saved = $file->move($directory, $filename);
+        //Save video item
+        $obj->content = $rute.'/'.$filename;
+        $obj->save();
+
+      }
+      
+    }
 }
