@@ -56,6 +56,11 @@ function encriptID($data){
     return ($newVal).$length;
 }
 
+function getKeyControl($id){
+  $aux = md5($id);
+  return strtoupper(preg_replace('/[0-9]/','', $aux)).intval(preg_replace('/[a-z]/','', $aux));
+}
+
 function assetV($uri){
   $uri_asset = asset($uri);
   $v = env('VERSION','v1.0.1');

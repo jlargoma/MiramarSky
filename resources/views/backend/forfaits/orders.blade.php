@@ -160,12 +160,14 @@ $mobile = new Mobile();
             $book = $order['book'];
           ?>
           <tr>
+            <?php if ($book): ?>
             <td>
-            <?php if ($book->agency != 0): ?>
+            <?php if ( $book->agency != 0): ?>
             <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
             <?php endif ?>
             </td>
             <td class="text-center" style="padding: 10px !important">
+              
                                 <?php if (isset($payment[$book->id])): ?>
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
                                 <?php else: ?>
@@ -189,12 +191,12 @@ $mobile = new Mobile();
                                     </div>
                             <?php endif ?>
                                 <?php endif ?>
+            
+                           
                             </td>
                             <td class="text-center">
                                 <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
                                     <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
-                                <?php else: ?>
-                                    <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>"/>
                                 <?php endif ?>
                             </td>
                             <td class ="text-center" >
@@ -222,6 +224,16 @@ $mobile = new Mobile();
                             <span> - </span>
                             <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
                             <b><?php echo $finish->formatLocalized('%d %b'); ?></b>
+            <?php else: ?>
+                            <td></td>
+                            <td class="text-center"><?php echo $order['name'].'<br>'.$order['email']; ?></td>
+                            <td class="text-center"><?php echo $order['name']; ?></td>
+                            <td class="text-center"> - </td>
+                            <td class="text-center"> - </td>
+                            <td class="text-center"> - </td>
+                            <td class="text-center"> - </td>
+                            <td class="text-center"> - </td>
+            <?php endif ?>
                             </td>
             <td class="text-center"><?php echo number_format($order['totalPrice'], 0, ',', '.') ?> €</td>
             <td class="text-center"><?php echo number_format($order['forfaits'], 0, ',', '.') ?> €</td>
@@ -230,11 +242,15 @@ $mobile = new Mobile();
             <td class="text-center"><?php echo number_format($order['totalPayment'], 0, ',', '.') ?> €</td>
             <td class="text-center text-danger"><?php echo number_format($order['totalToPay'], 0, ',', '.') ?> €</td>
             <td class="text-center">
-             <a data-booking="<?php echo $book->id; ?>" class="openFF" title="Ir a Forfaits" >
+             <a data-booking="<?php echo $order['id']; ?>" class="openFF" title="Ir a Forfaits" >
               <?php
-              $ff_status = $book->get_ff_status();
-              if ($ff_status['icon']) {
-                echo '<img src="' . $ff_status['icon'] . '" style="max-width:30px;" alt="' . $ff_status['name'] . '"/>';
+              if ($book){
+                $ff_status = $book->get_ff_status();
+                if ($ff_status['icon']) {
+                  echo '<img src="' . $ff_status['icon'] . '" style="max-width:30px;" alt="' . $ff_status['name'] . '"/>';
+                }
+              } else {
+                 echo '<img src="/img/miramarski/ski_icon_status_transparent.png" style="max-width:30px;" alt="Externo"/>';
               }
               ?>
               </a>
@@ -249,9 +265,9 @@ $mobile = new Mobile();
         </tbody>
       </table>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3" >
        <canvas id="barChartMounth" style="width: 100%; height: 250px;"></canvas>
-       <div class="box-errors">
+       <div class="box-errors" style="display:none;">
          <h3 class="text-danger">Errores Forfaits</h3>
         <?php 
         if($errors):
@@ -288,7 +304,7 @@ $mobile = new Mobile();
       $('.openFF').on('click', function (event) {
         event.preventDefault();
         var id = $(this).data('booking');
-        $.post('/admin/forfaits/open', { _token: "{{ csrf_token() }}",id:id }, function(data) {
+        $.post('/admin/forfaits/open', { _token: "{{ csrf_token() }}",order_id:id }, function(data) {
           var formFF = $('#formFF');
           formFF.attr('action', data.link);
           formFF.find('#admin_ff').val(data.admin);

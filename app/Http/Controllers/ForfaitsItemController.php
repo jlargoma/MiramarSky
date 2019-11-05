@@ -257,11 +257,10 @@ class ForfaitsItemController extends AppController {
     return ['monToFr' => $monToFr, 'satOrSun' => $satOrSun];
   }
 
-  public function getCurrentCart($bookingID, $clientID) {
-    $bookingID = desencriptID($bookingID);
-    $clientID = desencriptID($clientID);
-    if (is_numeric($bookingID) && is_numeric($clientID)) {
-      $order = ForfaitsOrders::getByBook($bookingID);
+  public function getCurrentCart($ordenID, $control) {
+    $ordenID = desencriptID($ordenID);
+    if (is_numeric($ordenID) &&  $control == getKeyControl($ordenID)){
+      $order = ForfaitsOrders::find($ordenID);
       return $this->getCart($order);
     }
     return response()->json(['status' => 'error']);
@@ -468,6 +467,9 @@ class ForfaitsItemController extends AppController {
             "familyFormula" => $familyFormula,
         ];
         if ($usr['insurance']){
+          if(!( trim($usr['insurance']) != '' && trim($usr['dni']) != ''&& trim($usr['name']) != '')){
+            return 'Por favor, complete los datos del seguro';
+          }
           $usr_Insur[] = [
               'insuranceId' => $usr['insurance'],
               'clientDni' => $usr['dni'],
@@ -524,7 +526,8 @@ class ForfaitsItemController extends AppController {
             $item->save();
           }
         } else {
-          $error = implode(', ',$forfaitsObj->data->errors->forfaits);
+          $error = 'Forfait Error';
+//          $error = implode(', ',$forfaitsObj->data->errors->forfaits);
         }
       } else {
         $error = "Forfaits no encontrado";
@@ -617,7 +620,7 @@ class ForfaitsItemController extends AppController {
     return $result;
   }
 
-  public function bookingData($bookingID, $clientID, $returnJson = true) {
+  public function bookingData($ordenID, $control, $returnJson = true) {
     $userData = [
         'user_name' => '',
         'user_email' => '',
@@ -627,27 +630,48 @@ class ForfaitsItemController extends AppController {
         'apto' => '',
         'start' => '',
         'finish' => '',
-        'key' => [$bookingID, $clientID]
+        'key' => [$ordenID, $control]
     ];
 
-    $bookingID = desencriptID($bookingID);
-    $clientID = desencriptID($clientID);
-    if (is_numeric($bookingID)) {
-      $book = Book::find($bookingID);
-      /** @todo: control de que ya no tenga un Forfaits + administrador datos */
-      if ($book) {
-        if ($book->customer_id == $clientID) {
-          $client = $book->customer()->first();
-          if ($client) {
-            $userData['user_name'] = $client->name;
-            $userData['user_email'] = $client->email;
-            $userData['user_phone'] = $client->phone;
+    $ordenID = desencriptID($ordenID);
+    $bookingNumbers = [];
+    if (is_numeric($ordenID)) {
+      
+      if ($control == getKeyControl($ordenID)){
+        $order = ForfaitsOrders::find($ordenID);
+        if ($order){
+          $book = Book::find($order->book_id);
+          if ($book) {
+            $client = $book->customer()->first();
+            if ($client) {
+              $userData['user_name'] = $client->name;
+              $userData['user_email'] = $client->email;
+              $userData['user_phone'] = $client->phone;
+            }
+            $room = $book->room()->first();
+            $userData['apto'] = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
+            $userData['start'] = $book->start;
+            $userData['finish'] = $book->finish;
+            $userData['ff_status'] = $book->ff_status;
+          } else {
+            $userData['user_name'] = $order->name;
+            $userData['user_email'] = $order->email;
+            $userData['user_phone'] = $order->phone;
+            $userData['ff_status'] = 0;
           }
-          $room = $book->room()->first();
-          $userData['apto'] = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
-          $userData['start'] = $book->start;
-          $userData['finish'] = $book->finish;
-          $userData['ff_status'] = $book->ff_status;
+          
+        
+          // get info to FFExpress cancels
+          $ffCanceled = ForfaitsOrderItem::where('order_id',$order->id)
+                  ->where('type','forfaits')
+                  ->where('cancel',1)->whereNotNull('ffexpr_status')->get();
+          $bookingNumbers = [];
+          if ($ffCanceled){
+            foreach ($ffCanceled as $ff){
+              $bookingNumbers[] = $ff->ffexpr_bookingNumber;
+            }
+          }
+    
         }
       }
     }
@@ -657,6 +681,7 @@ class ForfaitsItemController extends AppController {
       'classes' => ForfaitsItem::getClasses(),
       'categories' => ForfaitsItem::getCategories(),
       'seasons' => $this->getForfaitSeasons(),
+      'ff_canceled' =>implode(', ', $bookingNumbers)
     ];
     
     
@@ -730,7 +755,7 @@ class ForfaitsItemController extends AppController {
     
     $error = [
         'order_id' => $order->id,
-        'book_id' => $order->book_id,
+        'book_id' => ($order->book_id) ? $order->book_id : -1,
         'detail' => '',
         'item_id' => '',
         'created_at' => date('Y-m-d H:i:s'),
@@ -893,16 +918,20 @@ class ForfaitsItemController extends AppController {
       $data = $req->input('data', null);
       if ($key) {
         $aKey = explode('-', $key);
-        $bookingKey = isset($aKey[0]) ? ($aKey[0]) : null;
-        $clientKey = isset($aKey[1]) ? ($aKey[1]) : null;
-        $bookingID = desencriptID($bookingKey);
-        $clientID = desencriptID($clientKey);
-        $book = Book::find($bookingID);
-
-        if ($book && $book->customer_id == $clientID) {
-          $book->ff_status = intval($data);
-          $book->save();
-          return response()->json(['status' => 'ok']);
+        $orderID = isset($aKey[0]) ? ($aKey[0]) : null;
+        $control = isset($aKey[1]) ? ($aKey[1]) : null;
+        $orderID = desencriptID($orderID);
+        if (is_numeric($orderID) &&  $control == getKeyControl($orderID)){
+            $order = ForfaitsOrders::find($orderID);
+            if ($order){
+              $bookingID = $order->book_id;
+              $book = Book::find($bookingID);
+              if ($book) {
+                $book->ff_status = intval($data);
+                $book->save();
+                return response()->json(['status' => 'ok']);
+              }
+            }
         }
       }
     
@@ -952,11 +981,25 @@ class ForfaitsItemController extends AppController {
         'link' => env('FF_PAGE'),
         'admin' => null
     ];
-    $bookID = $req->input('id');
-    $book = Book::find($bookID);
-    if ($book) {
-      $customer = $book->customer_id;
-      $return['link'] .= encriptID($bookID) . '-' . encriptID($customer);
+    
+    //get by BookId
+    $bookID = $req->input('id',null);
+    if ($bookID) {
+      $book = Book::find($bookID);
+      if ($book) {
+        $order = ForfaitsOrders::getByBook($bookID);
+      }
+    }
+    
+    //get by Order ID
+    $orderID = $req->input('order_id',null);
+    if ($orderID) {
+      $order = ForfaitsOrders::find($orderID);
+    }
+    
+    
+    if ($order){
+      $return['link'] .= encriptID($order->id).'-'. getKeyControl($order->id);
       // create the Admin token
       $ip = explode('.', getUserIpAddr());
       $aux = 1;
@@ -976,6 +1019,29 @@ class ForfaitsItemController extends AppController {
       $return['admin'] = encriptID($token);
     }
     return $return;
+  }
+  
+  function createNewOrder(Request $req) {
+    $c_name = $req->input('c_name',null);
+    $c_email = $req->input('c_email',null);
+    $c_phone = $req->input('c_phone',null);
+    
+    $return = array(
+        'status' => 'ok',
+        'link'   => null
+    );
+    
+    $order = new ForfaitsOrders();
+    $order->name  = $c_name;
+    $order->email = $c_email;
+    $order->phone = $c_phone;
+    $order->save();
+    
+    
+    $return['link'] = env('FF_PAGE').encriptID($order->id).'-'. getKeyControl($order->id);     
+
+    return $return;
+            
   }
 
 }

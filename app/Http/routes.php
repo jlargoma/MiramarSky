@@ -175,6 +175,7 @@
     Route::get('/api/forfaits/sedOrder/{bID}/{uID}', 'ForfaitsItemController@sendClientEmail');
     Route::post('/api/forfaits/sendConsult', 'ForfaitsItemController@sendEmail');
     Route::get('/api/forfaits/getSeasons', 'ForfaitsItemController@getForfaitSeasons');
+    Route::post('/api/forfaits/createNewOrder', 'ForfaitsItemController@createNewOrder');
 
 
     include_once 'routes-admin.php';
