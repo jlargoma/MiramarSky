@@ -32,31 +32,36 @@ trait ForfaitsPaymentsTraits {
     
     $token = $req->input('token', null);
     $key = $req->input('key', null);
-   
 
-      if ($key) {
-        $aKey = explode('-', $key);
-        $bookingKey = isset($aKey[0]) ? ($aKey[0]) : null;
-        $clientKey = isset($aKey[1]) ? ($aKey[1]) : null;
-        $bookingID = desencriptID($bookingKey);
-        $clientID = desencriptID($clientKey);
-        $book = Book::find($bookingID);
-        if ($book && $book->customer_id == $clientID) {
-          $order = ForfaitsOrders::getByKey($key);
-          if (!$order) {
-            return die('404');
-          }
-          
-          if (!$amount){
-            $amount = $order->total;
-          }
-    
-          $orderID = $order->id;
-          $description = 'Pago por orden de Forfaits';
-          $last_item_id = ForfaitsOrderItem::getLastItem($orderID);
-          $urlPayland = $this->generateOrderPaymentForfaits($bookingID, $orderID, $book->customer->email, $description, $amount,$last_item_id);
-          return response()->json(['status' => 'ok', 'url' => $urlPayland]);
+    if ($key) {
+        $order = ForfaitsOrders::getByKey($key);
+        if (!$order) {
+          return die('404');
         }
+        $book = Book::find($order->book_id);
+        if ($book){
+          $cli_email = $book->customer->email;
+        } else {
+          $cli_email = $order->email;
+        }
+        
+        if (!$amount){
+          $totalPayment =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->sum('amount');
+          if ($totalPayment>0){
+            $totalPayment = $totalPayment/100;
+          }
+          $amount = $order->total - $totalPayment;
+          if ($amount<0){
+            $amount = 0;
+          }
+        }
+
+        $orderID = $order->id;
+        $description = 'Pago por orden de Forfaits';
+        $last_item_id = ForfaitsOrderItem::getLastItem($orderID);
+        $urlPayland = $this->generateOrderPaymentForfaits($order->book_id, $orderID, $cli_email, $description, $amount,$last_item_id);
+        
+        return response()->json(['status' => 'ok', 'url' => $urlPayland]);
       }
    
 
@@ -73,36 +78,37 @@ trait ForfaitsPaymentsTraits {
     $amount = $req->input('data', null);
 
     if ($key) {
-        $aKey = explode('-', $key);
-        $bookingKey = isset($aKey[0]) ? ($aKey[0]) : null;
-        $clientKey = isset($aKey[1]) ? ($aKey[1]) : null;
-        $bookingID = desencriptID($bookingKey);
-        $clientID = desencriptID($clientKey);
-        $book = Book::find($bookingID);
-        if ($book && $book->customer_id == $clientID) {
-          $order = ForfaitsOrders::getByKey($key);
-          if (!$order) {
-            return die('404');
-          }
-          $orderID = $order->id;
-          $description = 'Pago por orden de Forfaits';
-          $token = md5('linktopay'.$bookingID.'-'.time().'-'.$orderID);
-          $last_item_id = ForfaitsOrderItem::getLastItem($orderID);
-          $BookOrders = new ForfaitsOrderPaymentLinks();
-
-          $BookOrders->book_id = $bookingID;
-          $BookOrders->order_id = $orderID;
-          $BookOrders->cli_email = $book->customer->email;
-          $BookOrders->subject = $description;
-          $BookOrders->amount = $amount;
-          $BookOrders->status = 'new';
-          $BookOrders->token = $token;
-          $BookOrders->last_item_id = $last_item_id;
-          $BookOrders->save();
-//          $urlPay = 'https://miramarski.com/payments-forms-forfaits?t='.$token;
-          $urlPay = route('front.payments.forfaits',$token);
-          return response()->json(['status' => 'ok', 'content' => $this->getPaymentText($urlPay,$amount)]);
+        $order = ForfaitsOrders::getByKey($key);
+        
+        if (!$order) {
+          return die('404');
         }
+        $bookingID = $order->book_id;
+        $book = Book::find($order->book_id);
+        if ($book){
+          $cli_email = $book->customer->email;
+        } else {
+          $cli_email = $order->email;
+        }
+        
+        $orderID = $order->id;
+        $description = 'Pago por orden de Forfaits';
+        $token = md5('linktopay'.$bookingID.'-'.time().'-'.$orderID);
+        $last_item_id = ForfaitsOrderItem::getLastItem($orderID);
+        $PaymentOrders = new ForfaitsOrderPaymentLinks();
+
+        $PaymentOrders->book_id = $bookingID;
+        $PaymentOrders->order_id = $orderID;
+        $PaymentOrders->cli_email = $cli_email;
+        $PaymentOrders->subject = $description;
+        $PaymentOrders->amount = $amount;
+        $PaymentOrders->status = 'new';
+        $PaymentOrders->token = $token;
+        $PaymentOrders->last_item_id = $last_item_id;
+        $PaymentOrders->save();
+//          $urlPay = 'https://miramarski.com/payments-forms-forfaits?t='.$token;
+        $urlPay = route('front.payments.forfaits',$token);
+        return response()->json(['status' => 'ok', 'content' => $this->getPaymentText($urlPay,$amount)]);
       }
       
     return die('404');
@@ -132,29 +138,45 @@ trait ForfaitsPaymentsTraits {
 
   public function thansYouPayment($key_token) {
 
-    $bookOrder = ForfaitsOrderPayments::where('key_token', $key_token)->whereNull('paid')->first();
-    if ($bookOrder) {
-      $bookOrder->paid = true;
-      $bookOrder->save();
-      $amount = ($bookOrder->amount / 100) . ' €';
-      \App\BookLogs::saveLogStatus($bookOrder->book_id, null, $bookOrder->cli_email, "Pago de Forfaits de $amount ($key_token)");
-      $order = ForfaitsOrders::find($bookOrder->order_id);
+    $PaymentOrder = ForfaitsOrderPayments::where('key_token', $key_token)->whereNull('paid')->first();
+    if ($PaymentOrder) {
+      $PaymentOrder->paid = true;
+      $PaymentOrder->save();
+      $amount = ($PaymentOrder->amount / 100) . ' €';
+      
+      $bookID = $PaymentOrder->book_id;
+      if (!$bookID) $bookID = -1;
+      
+      \App\BookLogs::saveLogStatus($bookID, null, $PaymentOrder->cli_email, "Pago de Forfaits de $amount ($key_token)");
+      $order = ForfaitsOrders::find($PaymentOrder->order_id);
       if ($order){
-        $this->sendBookingOrder($order,$bookOrder->last_item_id);
+        $this->sendBookingOrder($order,$PaymentOrder->last_item_id);
         //send email
-        $book = Book::find($bookOrder->book_id);
-        $orderText = $this->renderOrder($bookOrder->order_id);
-        $this->sendEmail_confirmForfaitPayment($book,$orderText,$amount);
+        $book = Book::find($PaymentOrder->book_id);
+        if ($book){
+          $cli_email = $book->customer->email;
+          $cli_name = $book->customer->name;
+          $subject = translateSubject('Confirmación de Pago',$book->customer->country);
+        } else {
+          $cli_name = $order->name;
+          $cli_email = $order->email;
+          $subject = 'Confirmación de Pago';
+        }
+        
+        $orderText = $this->renderOrder($PaymentOrder->order_id);
+        $this->sendEmail_confirmForfaitPayment($cli_email,$cli_name,$subject,$orderText,$amount,$book);
       }
     }
     return redirect()->route('thanks-you-forfait');
   }
 
   public function errorPayment($key_token) {
-    $bookOrder = ForfaitsOrderPayments::where('key_token', $key_token)->first();
-    if ($bookOrder) {
-      $amount = ($bookOrder->amount / 100) . ' €';
-      \App\BookLogs::saveLogStatus($bookOrder->book_id, null, $bookOrder->cli_email, "Error en Pago de Forfaits de $amount ($key_token)");
+    $PaymentOrder = ForfaitsOrderPayments::where('key_token', $key_token)->first();
+    if ($PaymentOrder) {
+      $amount = ($PaymentOrder->amount / 100) . ' €';
+      $bookID = $PaymentOrder->book_id;
+      if (!$bookID) $bookID = -1;
+      \App\BookLogs::saveLogStatus($bookID, null, $PaymentOrder->cli_email, "Error en Pago de Forfaits de $amount ($key_token)");
     }
     return redirect()->route('paymeny-error');
   }
@@ -197,36 +219,27 @@ trait ForfaitsPaymentsTraits {
     if (!$this->checkUserAdmin($token,$client)) return die('404');
     
     $key = $req->input('key', null);
-
     if ($key) {
-        $aKey = explode('-', $key);
-        $bookingKey = isset($aKey[0]) ? ($aKey[0]) : null;
-        $clientKey = isset($aKey[1]) ? ($aKey[1]) : null;
-        $bookingID = desencriptID($bookingKey);
-        $clientID = desencriptID($clientKey);
-        $book = Book::find($bookingID);
-        if ($book && $book->customer_id == $clientID) {
-          $order = ForfaitsOrders::getByKey($key);
-          if (!$order) {
-            return die('404');
-          }
-          $orderID = $order->id;
-          
-          
-          $payments =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->get();
-          $paymentsLst = [];
-          if ($payments){
-            foreach ($payments as $p){
-              $paymentsLst[] = [
-                  'date' => $p->updated_at->format('d M, y'),
-                  'amount' => $p->amount/100,
-              ];
-            }
-          }
-         
-          return response()->json(['status' => 'ok', 'content' => $paymentsLst]);
+        $order = ForfaitsOrders::getByKey($key);
+        if (!$order) {
+          return die('404');
         }
-      }
+        $orderID = $order->id;
+
+
+        $payments =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->get();
+        $paymentsLst = [];
+        if ($payments){
+          foreach ($payments as $p){
+            $paymentsLst[] = [
+                'date' => $p->updated_at->format('d M, y'),
+                'amount' => $p->amount/100,
+            ];
+          }
+        }
+
+        return response()->json(['status' => 'ok', 'content' => $paymentsLst]);
+    }
     
     return die('404');
   }
@@ -237,7 +250,8 @@ trait ForfaitsPaymentsTraits {
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
     
-    $allOrders = ForfaitsOrders::where('book_id','>',0)->get();
+    $allOrders = ForfaitsOrders::whereNotNull('total')->get();
+//    $allOrders = ForfaitsOrders::where('book_id','>',0)->get();
     $lstOrders = [];
    
     $totals = [
@@ -251,10 +265,8 @@ trait ForfaitsPaymentsTraits {
             
     if ($allOrders){
       foreach ($allOrders as $order){
-        if ($order->book_id>0){
           
           $book = Book::find($order->book_id);
-          if ($book){
             $totalPrice = $order->total;
             $forfaits = ForfaitsOrderItem::where('order_id', $order->id)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
             $class = ForfaitsOrderItem::where('order_id', $order->id)->where('type', 'class')->WhereNull('cancel')->sum('total');
@@ -276,6 +288,10 @@ trait ForfaitsPaymentsTraits {
                     ->where('type', 'forfaits')
                     ->WhereNull('cancel')->count();
             $lstOrders[] = [
+                'id'       => $order->id,
+                'name'       => $order->name,
+                'email'       => $order->email,
+                'phon'       => $order->phone,
                 'book'       => $book,
                 'totalPrice' =>$totalPrice,
                 'forfaits'   => $forfaits,
@@ -294,8 +310,6 @@ trait ForfaitsPaymentsTraits {
             $totals['material'] = $totals['material']+$material;
             $totals['totalPayment'] = $totals['totalPayment']+$totalPayment;
             $totals['totalToPay'] = $totals['totalToPay']+$totalToPay;
-          }
-        }
       }
       $rooms = \App\Rooms::all();
       
@@ -307,7 +321,8 @@ trait ForfaitsPaymentsTraits {
         $ff_mount = $balance->data->total;
       }
       
-      $errors = DB::table('forfaits_errors')->whereNull('watched')->get();
+      $errors = [];
+//      $errors = DB::table('forfaits_errors')->whereNull('watched')->get();
          
       return view('backend.forfaits.orders', [
           'orders' => $lstOrders,
@@ -469,10 +484,22 @@ trait ForfaitsPaymentsTraits {
                 $text .= '</td><td class="tcenter">'.$c->nro.'</td><td class="tright">'.number_format($c->total, 2).'€</td></tr>';
           }
         }
-        $resume = '<tr>
+        
+        if ($orderItems['totalForfOrig'] != $orderItems['totalForf']){
+            $resume = '<tr>
+                    <td ><b>SubTotal Forfaits</b></td>
+                    <td class="center" style="text-decoration:line-through;">'.number_format($orderItems['totalForfOrig'], 2).'€</td>
+                    <td class="tright">'.number_format($orderItems['totalForf'], 2).'€</td>
+                  </tr>';
+        } else {
+            $resume = '<tr>
                     <td colspan="2"><b>SubTotal Forfaits</b></td>
                     <td class="tright">'.number_format($orderItems['totalForf'], 2).'€</td>
-                  </tr><tr>
+                  </tr>';
+        }
+        
+        
+         $resume .= '<tr>
                     <td colspan="2"><b>SubTotal Materiales</b></td>
                     <td class="tright">'.number_format($orderItems['totalMat'], 2).'€</td>
                   </tr><tr>
@@ -494,18 +521,29 @@ trait ForfaitsPaymentsTraits {
      
     }
    
-    public function sendClientEmail($bookingKey, $clientKey) {
-      $bookingID = desencriptID($bookingKey);
-      $clientID = desencriptID($clientKey);
-      if (is_numeric($bookingID) && is_numeric($clientID)) {
+    public function sendClientEmail($orderKey, $control) {
+      $orderID = desencriptID($orderKey);
+      if (is_numeric($orderID) &&  $control == getKeyControl($orderID)){
         //send email
-        $order = ForfaitsOrders::getByBook($bookingID);
+        $order = ForfaitsOrders::find($orderID);
         if ($order){
           $book = Book::find($order->book_id);
           $orderText = $this->renderOrder($order->id);
           
-          $link = env('FF_PAGE').$bookingKey.'-'.$clientKey;
-          $this->sendEmail_linkForfaitPayment($book,$orderText,$link);
+          
+          $book = Book::find($order->book_id);
+          if ($book){
+            $cli_email = $book->customer->email;
+            $cli_name = $book->customer->name;
+            $subject = translateSubject('Solicitud Forfait',$book->customer->country);
+          } else {
+            $cli_name = $order->name;
+            $cli_email = $order->email;
+            $subject = 'Solicitud Forfait';
+          }
+                  
+          $link = env('FF_PAGE').$orderKey.'-'.$control;
+          $this->sendEmail_linkForfaitPayment($cli_email,$cli_name,$subject,$orderText,$link,$book);
           return response()->json(['status' => 'ok']);
         }
       }
@@ -557,9 +595,8 @@ trait ForfaitsPaymentsTraits {
                   </th>'.$text.'</table>';
         
         if ($order){
-          $book = Book::find($order->book_id);
-          $link = env('FF_PAGE').encriptID($order->book_id).'-'.encriptID($book->customer->id);
-          $this->sendEmail_CancelForfaitItem($book,$orderText,$link);
+          $link = env('FF_PAGE').encriptID($order->id).'-'.getKeyControl($order->id);
+          $this->sendEmail_CancelForfaitItem($orderText,$link);
           return response()->json(['status' => 'ok']);
         }
       }

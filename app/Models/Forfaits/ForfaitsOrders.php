@@ -24,12 +24,12 @@ class ForfaitsOrders extends Model
     $order = null;
      if ($key){
       $aKey = explode('-',$key);
-      $bookingKey = isset($aKey[0]) ? ($aKey[0]) : null;
-      $clientKey = isset($aKey[1]) ? ($aKey[1]) : null;
-      $bookingID = desencriptID($bookingKey);
-      $clientID = desencriptID($clientKey);
-      if ($bookingID>0 && $clientID>0){
-        $order = ForfaitsOrders::getByBook($bookingID);
+      $orderID = isset($aKey[0]) ? ($aKey[0]) : null;
+      $control = isset($aKey[1]) ? ($aKey[1]) : null;
+      $orderID = desencriptID($orderID);
+      
+      if ($orderID>0 && $control == getKeyControl($orderID)){
+        $order = ForfaitsOrders::find($orderID);
       }
      }
      return $order;
@@ -38,7 +38,11 @@ class ForfaitsOrders extends Model
   public function recalculate() {
     $TotalItems = ForfaitsOrderItem::where('order_id',$this->id)
             ->WhereNull('cancel')->sum('total');
-    $this->total = $TotalItems;
+    
+    if ($TotalItems)
+      $this->total = $TotalItems;
+    else $this->total = 0;
+    
     $this->save();
   }
   public function getInsurName($id) {
