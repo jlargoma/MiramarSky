@@ -164,7 +164,8 @@ class ParteeService
         {
           
           $data = [
-            "email"=> empty($email) ? null : $email,
+            "email"=> null,
+//            "email"=> empty($email) ? null : $email,
             'fecha_entrada'=> date("Y-m-d\TH:i:s", $dateTime), //"2018-03-19T16:11:37.567Z",
 //            'fecha_entrada'=> date("Y-m-d\TH:i:s", $dateTime),
             'fecha_entrada_str'=> date("Y m d", $dateTime), //"2018 03 19",
