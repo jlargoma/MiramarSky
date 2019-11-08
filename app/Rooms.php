@@ -233,7 +233,7 @@ class Rooms extends Model
         return $arrayMonth;
       }
       
-      $qry = \App\Book::type_book_sales()
+      $qry = \App\Book::where_type_book_sales()
             ->where('start', '>=', $startYear)
             ->where('start', '<=', $endYear);
       

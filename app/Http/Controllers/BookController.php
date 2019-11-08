@@ -1563,12 +1563,14 @@ class BookController extends AppController
 
                 if (Auth::user()->role != "agente")
                 {
-                    $books = \App\Book::where('start', '>=', $startYear)->where('finish', '<=', $endYear)
+                  //->where('finish', '<=', $endYear)
+                    $books = \App\Book::where_book_times($startYear,$endYear)
                                       ->whereIn('type_book', $types)->whereIn('room_id', $roomsAgents)
                                       ->orderBy('created_at', 'DESC')->get();
+//                    dd($books);
                 } else
                 {
-                    $books = \App\Book::where('start', '>=', $startYear)->where('finish', '<=', $endYear)
+                    $books = \App\Book::where_book_times($startYear,$endYear)
                                       ->whereIn('type_book', $types)->where('user_id', Auth::user()->id)
                                       ->whereIn('room_id', $roomsAgents)
                                       ->orWhere(function ($query) use ($roomsAgents, $types) {
@@ -1578,7 +1580,8 @@ class BookController extends AppController
                 }
                 break;
             case 'especiales':
-                $books = \App\Book::where('start', '>=', $startYear)->where('finish', '<=', $endYear)
+              //->where('finish', '<=', $endYear)
+                $books = \App\Book::where_book_times($startYear,$endYear)
                                   ->whereIn('type_book', [
                                       7,
                                       8
@@ -1588,12 +1591,12 @@ class BookController extends AppController
 
                 if (Auth::user()->role != "agente")
                 {
-                    $books = \App\Book::where('start', '>=', $startYear)->where('finish', '<=', $endYear)
+                    $books = \App\Book::where_book_times($startYear,$endYear)
                                       ->whereIn('type_book', [2])->whereIn('room_id', $roomsAgents)
                                       ->orderBy('created_at', 'DESC')->get();
                 } else
                 {
-                    $books = \App\Book::where('start', '>=', $startYear)->where('finish', '<=', $endYear)
+                    $books = \App\Book::where_book_times($startYear,$endYear)
                                       ->whereIn('type_book', [2])->whereIn('room_id', $roomsAgents)
                                       ->where('user_id', Auth::user()->id)
                                       ->orWhere(function ($query) use ($roomsAgents) {
@@ -1624,7 +1627,7 @@ class BookController extends AppController
                                   ->where('type_book', 2)->orderBy('finish', 'ASC')->get();
                 break;
             case 'eliminadas':
-                $books = \App\Book::where('start', '>=', $startYear)->where('finish', '<=', $endYear)
+                $books = \App\Book::where_book_times($startYear,$endYear)
                                   ->where('type_book', 0)->orderBy('updated_at', 'DESC')->get();
                 break;
             case 'blocked-ical':
@@ -1876,7 +1879,7 @@ class BookController extends AppController
         $startYear     = new Carbon($year->start_date);
         $endYear       = new Carbon($year->end_date);
 
-        $books = \App\Book::whereIn('type_book', [
+        $books = \App\Book::where_book_times($startYear,$endYear)->whereIn('type_book', [
             1,
             2,
             4,
@@ -1884,8 +1887,7 @@ class BookController extends AppController
             7,
             8,
             9
-        ])->where('start', '>=', $startYear->format('Y-m-d'))->where('finish', '<=', $endYear->format('Y-m-d'))
-                          ->orderBy('start', 'ASC')->get();
+        ])->orderBy('start', 'ASC')->get();
 
         foreach ($books as $book)
         {

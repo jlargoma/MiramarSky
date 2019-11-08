@@ -476,7 +476,7 @@ class PaylandsController extends AppController
           }
           
           foreach ($months_obj as $k=>$months){
-            $tPVP = \App\Book::type_book_sales()
+            $tPVP = \App\Book::where_type_book_sales()
                     ->whereYear('start', '=', $months['dateYear'])
                     ->whereMonth('start', '=', $months['month'])
                     ->sum('total_price');
