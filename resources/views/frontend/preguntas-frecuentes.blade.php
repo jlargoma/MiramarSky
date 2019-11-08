@@ -85,156 +85,115 @@
 				<h1 class="center psuh-20">Preguntas Frecuentes</h2>
 			</div>
 			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center" >
-				<h2>¿Es seguro pagar con tarjeta en <a href="www.apartamentosierranevada.net">apartamentosierranevada</a>?</h2>
-				
-				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
-					
 
-					El sistema de pago online con tarjeta de crédito que ofrecemos el más seguro que existe actualmente en Internet, utilizamos esta plataforma <a href="https://stripe.com/about">https://stripe.com/about</a> <br><br>
-					
-					En apartamentosierranevada.net utilizamos un certificado SSL (Secure Sockets Layer ), que es un protocolo de seguridad en Internet, empleado por los servidores para transmitir información sensible con toda seguridad. <br><br>
-					
-					<b>(el usuario puedo comprobar esto mirando todas nuestras url´s, ya que en lugar de http, visualizará https.)</b><br><br>
+<h2><span style="font-size:13pt"><span style=""><span style="font-family:Calibri Light,serif"><span style="color:#2e74b5"><span style="color:#444444"><span style="font-family:Arial,serif"><span style="font-size:xx-large">&iquest;Es seguro pagar con tarjeta en&nbsp; </span></span></span><span style="color:#0000ff"><u><a href="https://www.apartamentosierranevada.net/www.apartamentosierranevada.net" style="color:#0000ff" target="_blank"><span style="color:#3f51b5"><span style="font-family:Arial,serif"><span style="font-size:xx-large">apartamentosierranevada</span></span></span></a></u></span><span style="color:#444444"><span style="font-family:Arial,serif"><span style="font-size:xx-large">?</span></span></span></span></span></span></span></h2>
 
-					Cuando realizas un pago mediante tarjeta de crédito, lo haces a través de una "pasarela de pago" completamente segura,  Stripe es la mejor forma de aceptar pagos a través de páginas web y aplicaciones móviles. Operan con miles de millones de euros cada año dando soporte a los modelos de negocio más innovadores en todo el mundo.<br><br>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">El sistema de pago online con tarjeta de cr&eacute;dito que ofrecemos el m&aacute;s seguro que existe actualmente en Internet, utilizamos esta plataforma&nbsp;</span></span><span style="color:#0000ff"><u><a href="https://stripe.com/about" style="color:#0000ff" target="_blank"><span style="color:#3f51b5"><span style="font-family:Arial,serif">https://stripe.com/about</span></span></a></u></span><span style="color:#000000"><span style="font-family:Arial,serif"> y tambi&eacute;n</span></span> <span style="color:#0000ff"><u><a href="https://paynopain.com/" style="color:#0000ff" target="_blank"><span style="color:#3f51b5"><span style="font-family:Arial,serif">https://paynopain.com/</span></span></a></u></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif">En </span></span><span style="color:#0000ff"><u><a href="http://www.apartamentosierranevada.net/" style="color:#0000ff" target="_blank"><span style="font-family:Arial,serif">www.apartamentosierranevada.net</span></a></u></span> <span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;utilizamos un certificado SSL (Secure Sockets Layer ), que es un protocolo de seguridad en Internet, empleado por los servidores para transmitir informaci&oacute;n sensible con toda seguridad.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>(el usuario puedo comprobar esto mirando todas nuestras url&acute;s, ya que en lugar de http, visualizar&aacute; https.)</strong></span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif">Cuando realizas un pago mediante tarjeta de cr&eacute;dito, lo haces a trav&eacute;s de una &quot;pasarela de pago&quot; completamente segura, Stripe es la mejor forma de aceptar pagos a trav&eacute;s de p&aacute;ginas web y aplicaciones m&oacute;viles. Operan con miles de millones de euros cada a&ntilde;o dando soporte a los modelos de negocio m&aacute;s innovadores en todo el mundo.<br />
+<br />
+De esta manera los datos de tu tarjeta de cr&eacute;dito s&oacute;lo son conocidos y disponibles Stripe Ni nosotros ni nadie m&aacute;s tiene acceso a dichos datos.</span></span></span></span></span></p>
 
-					De esta manera los datos de tu tarjeta de crédito sólo son conocidos y disponibles Stripe Ni nosotros ni nadie más tiene acceso a dichos datos. 
+<h2 ><span style="font-size:13pt"><span style=""><span style="font-family:Calibri Light,serif"><span style="color:#2e74b5"><span style="color:#444444"><span style="font-family:Arial,serif"><span style="font-size:xx-large">&iquest;C&oacute;mo reservar?</span></span></span></span></span></span></span></h2>
 
-				</p>
-					
-				<h2>¿Cómo reservar?</h2>
-				
-				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
-				
-					Para alquilar un apartamento en Sierra Nevada con <a href="{{ url('/') }}">www.apartamentosierranevada.net</a> debes seguir 3 sencillos pasos. <br><br>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">Para alquilar un apartamento en Sierra Nevada con&nbsp;</span></span><span style="color:#0000ff"><u><a href="{{ url('/') }}" style="color:#0000ff" target="_blank"><span style="color:#3f51b5"><span style="font-family:Arial,serif">www.apartamentosierranevada.net</span></span></a></u></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;debes seguir 3 sencillos pasos.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>1&ordm;)Selecciona el apartamento o estudio que se ajuste a tus necesidades.</strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;Puedes elegir entre:</span></span></span></span></span></p>
 
-				
-					<b>1º)Selecciona el apartamento o estudio que se ajuste a tus necesidades.</b> Puedes elegir entre:<br>
-				
-				</p>
-				
-				<ul style="text-align: justify;color:black;font-size:16px;padding:0px 45px">
-					<li>Estudios para 4 personas.</li>
-					<li>Apartamentos con dos dormitorios (ocupación máxima 8 personas).</li>
-					<li>Apartamentos de 3 dormitorios.</li>
-				</ul>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">Estudios para 4 &oacute; 5 personas.</span></span></span></span></span></p>
 
-				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
-					Además podrás elegir entre la <u>opción estándar</u> o <u>de Lujo</u>, la superficie útil es la misma pero estos últimos están recién reformados. <br><br>
-				
-					<b>2º) Rellena tus datos de contacto y en el botón "reservar apartamento".</b> Te aparecerá en pantalla un resumen con el importe de tu reserva, y una de las dos opciones disponibles:<br>
-				
-				</p>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">Apartamentos con dos dormitorios (ocupaci&oacute;n m&aacute;xima 7/8 personas bajo petici&oacute;n).</span></span></span></span></span></p>
 
-					<ol type="a" style="text-align: justify;color:black;font-size:16px;padding:0px 45px">
-						<li><b>Confirmación inmediata:</b> confirmamos muchas de nuestras reservas en el acto, te ofrecemos la posibilidad de pago inmediato mediante tarjeta de crédito.</li>
-						<li>Solicitud de disponibilidad: para algunas fechas más demandadas nos llegará tu petición por correo  y la contestaremos en unos pocos minutos.</li>
-					</ol>	
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">Apartamentos de 3/4 dormitorios. (ocupaci&oacute;n m&aacute;xima 12/14 personas).</span></span></span></span></span></p>
 
-				</p>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">Adem&aacute;s podr&aacute;s elegir entre la&nbsp;</span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u>opci&oacute;n est&aacute;ndar</u></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;o&nbsp;</span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u>de Lujo</u></span></span><span style="color:#000000"><span style="font-family:Arial,serif">, la superficie &uacute;til es la misma pero estos &uacute;ltimos est&aacute;n reci&eacute;n reformados.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>2&ordm;) Rellena tus datos de contacto y en el bot&oacute;n &quot;reservar apartamento&quot;.</strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;Te aparecer&aacute; en pantalla un resumen con el importe de tu reserva, y una de las dos opciones disponibles:</span></span></span></span></span></p>
 
-				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
-					
-					<b>3º) Tu alquiler de apartamento en Sierra nevada quedará confirmado definitivamente en el momento en que realizas el  depósito de reserva requerido.</b><br><br>
-					
-					Una vez hecho el <u>pago del 25% de la reserva</u>, te llegará un correo electrónico en el que tendrás toda la información necesaria y el localizador de tu reserva. <br><br>
-					15 días antes de la fecha de llegada se abonará el <u>otro 25% del total.</u> <br><br>
-					El <u>50% restante</u> se realizará en momento de la entrega de llaves Check in)<br><br>
-					<b>La fianza se abonará en el momento de la recepción siempre con tarjeta de crédito.</b><br><br>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif"><strong>Confirmaci&oacute;n inmediata:</strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;confirmamos muchas de nuestras reservas en el acto, te ofrecemos la posibilidad de pago inmediato mediante tarjeta de cr&eacute;dito.</span></span></span></span></span></p>
 
-				</p>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">Solicitud de disponibilidad: para algunas fechas m&aacute;s demandadas nos llegar&aacute; tu petici&oacute;n por correo y la contestaremos en unos pocos minutos.</span></span></span></span></span></p>
 
-				<h2>¿Cuáles son las horas de llegada y salida a mi apartamento?</h2>
-				
-				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
-					
-					La recepción se podrá realizar a partir de la hora indicada en tu confirmación de reserva.( 17 – 19 horas) .<br><br>
-					Si vas con niños o deseas llegar antes de dicha hora, ponte en contacto con nosotros y haremos lo posible para adelantar tu entrada.<br><br>
-					Para dejar tu  apartamento el día de salida la hora del check out, será antes de las 12:00 am. <br><br>
-					Si vas a llegar más tarde tienes que avisarnos y podrías tener un cargo adicional por las horas de espera. <br><br>
-					Consultar condiciones en este enlace late check in. El suplemento por llegada fuera de horario se cobrará en el momento de la entrega de las llaves.
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif"><strong>3&ordm;) Tu alquiler de apartamento en Sierra nevada quedar&aacute; confirmado definitivamente en el momento en que realizas el pago del dep&oacute;sito de reserva requerido.</strong></span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif">Una vez hecho el&nbsp;</span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u>pago del 50% de la reserva</u></span></span><span style="color:#000000"><span style="font-family:Arial,serif">, te llegar&aacute; un correo electr&oacute;nico en el que tendr&aacute;s toda la informaci&oacute;n necesaria y el localizador de tu reserva.<br />
+<br />
+15 d&iacute;as antes de la fecha de llegada se abonar&aacute; el&nbsp;</span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u>otro 50% del total.</u></span></span><br />
+<br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>La fianza se abonar&aacute; en el momento de la recepci&oacute;n siempre con tarjeta de cr&eacute;dito ( </strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif">no capturamos saldo, tan solo sacamos &nbsp;&ldquo;una foto &ldquo;que desaparece al hacer check out</span></span><span style="color:#000000"><span style="font-family:Arial,serif"><strong> )</strong></span></span></span></span></span></p>
 
-				</p>
+<h2><span style="font-size:13pt"><span style=""><span style="font-family:Calibri Light,serif"><span style="color:#2e74b5"><span style="color:#444444"><span style="font-family:Arial,serif"><span style="font-size:xx-large">&iquest;Cu&aacute;les son las horas de llegada y salida a mi apartamento?</span></span></span></span></span></span></span></h2>
 
-				<h2>¿Cómo me entregáis las llaves del apartamento?</h2>
-				
-				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
-					
-					Nosotros te llamaremos unos días antes de tu entrada para confirmar la hora a la que llegas y confirmar todos los detalles contigo, pero si no te hemos podido localizar, por favor el día anterior a tu viaje asegúrate de reconfirmar telefónicamente o email la hora estimada de llegada.<br>
-					<b>Cuando llegues a Sierra Nevada, te estará esperando una persona de nuestra organización dentro del edificio Miramarski.</b>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">La recepci&oacute;n se podr&aacute; realizar a partir de la hora indicada en tu confirmaci&oacute;n de reserva.( 17.30 &ndash; 19.30 horas) .<br />
+<br />
+Si vas con ni&ntilde;os o deseas llegar antes de dicha hora, ponte en contacto con nosotros y haremos lo posible para adelantar tu entrada.</span></span></span></span></span></p>
 
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">Igualmente si llegas fuera de ese horario te dejaremos las lleves en una caja de seguridad<br />
+<br />
+Para dejar tu apartamento el d&iacute;a de salida la hora del check out, ser&aacute; antes de las 12:00 am.</span></span></span></span></span><br />
+<br />
+&nbsp;</p>
 
-				</p>
+<h2>
+  &iquest;C&oacute;mo me entreg&aacute;is las llaves del apartamento?</h2>
 
-				<h2>¿Y si necesito ayuda?</h2>
-				
-				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
-					
-					No te preocupes estamos allí, te daremos un teléfono de contacto pero lo más importante es que te cruzaras con nosotros dentro del edificio, te ayudaremos en el acto.<br>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">Nosotros te llamaremos unos d&iacute;as antes de tu entrada para confirmar la hora a la que llegas y confirmar todos los detalles contigo, pero si no te hemos podido localizar, </span></span><span style="color:#000000"><span style="font-family:Arial,serif"><strong>por favor el d&iacute;a anterior a tu viaje aseg&uacute;rate de reconfirmar telef&oacute;nicamente o email la hora estimada de tu llegada.</strong></span></span></span></span></span></p>
 
-				</p>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif"><strong>Cuando llegues a Sierra Nevada, te estar&aacute; esperando una persona de nuestra organizaci&oacute;n dentro del edificio Miramar ski.</strong></span></span></span></span></span></p>
 
-				<h2>¿Qué tengo que llevar, tiene de todo el apartamento?</h2>
-				
-				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
-					
-					El apartamento o estudio, se entrega con el equipamiento básico en lo que respecta a la cocina y por supuesto con los edredones y mantas que necesitas para hacer agradable tu estancia.<br><br>
+<h2><span style="font-size:13pt"><span style=""><span style="font-family:Calibri Light,serif"><span style="color:#2e74b5"><span style="color:#444444"><span style="font-family:Arial,serif"><span style="font-size:xx-large">&iquest;Y si necesito ayuda?</span></span></span></span></span></span></span></h2>
 
-					Como ya sabes, nuestros apartamentos son en modalidad self-catering, lo que significa que eres tú mismo quien se debe hacer cargo del uso y mantenimiento de la casa durante tu estancia.<br><br>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">No te preocupes estamos all&iacute;, te daremos un tel&eacute;fono de contacto pero lo m&aacute;s importante es que te cruzaras con nosotros dentro del edificio, te ayudaremos en el acto.</span></span></span></span></span></p>
 
-					<b>Todos nuestros apartamentos se entregan con la ropa de cama montada y toallas.</b> <br><br>
+<h2><span style="font-size:13pt"><span style=""><span style="font-family:Calibri Light,serif"><span style="color:#2e74b5"><span style="color:#444444"><span style="font-family:Arial,serif"><span style="font-size:xx-large">&iquest;Qu&eacute; tengo que llevar, tiene de todo el apartamento?</span></span></span></span></span></span></span></h2>
 
-					También <b>te entregamos un pequeño pack de cortesía,</b> con los artículos básicos de bienvenida para la llegada tales como jabón de cocina o pastillas para el lavavajillas, y siempre un rollo de papel higiénico en los baños a la llegada.<br><br>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">El apartamento o estudio, se entrega con el equipamiento completo b&aacute;sico en lo que respecta a la cocina y por supuesto con los edredones y mantas que necesitas para hacer agradable tu estancia.<br />
+<br />
+Como ya sabes, nuestros apartamentos son en modalidad self-catering, lo que significa que eres t&uacute; mismo quien se debe hacer cargo del uso y mantenimiento de la casa durante tu estancia.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>Todos nuestros apartamentos se entregan con la ropa de cama montada y toallas.</strong></span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif">Tambi&eacute;n&nbsp;</span></span><span style="color:#000000"><span style="font-family:Arial,serif"><strong>te entregamos un peque&ntilde;o pack de cortes&iacute;a,</strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;con los art&iacute;culos b&aacute;sicos de bienvenida para la llegada tales como jab&oacute;n de cocina o pastillas para el lavavajillas, y siempre &nbsp;papel higi&eacute;nico en los ba&ntilde;os a la llegada.<br />
+<br />
+Como no est&aacute; permitido dejar alimentos en el apartamento, recuerda llevar los productos b&aacute;sicos de uso diario, tales como sal, aceite, az&uacute;car, etc,&nbsp;</span></span></span></span></span></p>
 
-					Como no está permitido dejar alimentos en el apartamento, recuerda llevar los productos básicos de uso diario, tales como sal, aceite, azúcar, etc, <b>si lo prefieres te ponemos en contacto con un supermercado para que te lleven la compra a tu apartamento el día de tu entrada.</b><br><br>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">Al contar con distintos apartamentos cada alojamiento puede disponer de diferente equipamiento, si necesitas saber algo concreto por favor preg&uacute;ntanos.</span></span></span></span></span></p>
 
-					Al contar con distintos apartamentos cada alojamiento puede disponer de diferente equipamiento, si necesitas saber algo concreto por favor pregúntanos.
+<h2><span style="font-size:13pt"><span style=""><span style="font-family:Calibri Light,serif"><span style="color:#2e74b5"><span style="color:#444444"><span style="font-family:Arial,serif"><span style="font-size:xx-large">&iquest;Computan los ni&ntilde;os?</span></span></span></span></span></span></span></h2>
 
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">Los ni&ntilde;os cuentan en todos los casos para realizar el c&aacute;lculo de la ocupaci&oacute;n del alojamiento, independientemente de la edad que tengan, La capacidad m&aacute;xima del apartamento alquilado nunca se puede exceder sumando adultos y ni&ntilde;os.<br />
+<br />
+La capacidad m&aacute;xima del apartamento alquilado ser&aacute; igual al n&uacute;mero de camas. La ocupaci&oacute;n m&aacute;xima nunca podr&aacute; sobrepasar el m&aacute;ximo de personas indicado para cada apartamento o casa.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>En el caso de los bebes , te ofrecemos un&nbsp;</strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u><strong>servicio gratuito de cuna</strong></u></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;bajo petici&oacute;n y disponibilidad.<br />
+<br />
+Para cualquier consulta relativa a cunas ponte en contacto con la nuestra oficina por tel&eacute;fono o por email&nbsp;</span></span><span style="color:#0000ff"><u><a href="mailto:reservas@apartamentosierranevada.net" style="color:#0000ff" target="_blank"><span style="color:#3f51b5"><span style="font-family:Arial,serif">reservas@apartamentosierranevada.net</span></span></a></u></span></span></span></span></p>
 
-				</p>
-				
-				<h2>¿Computan los niños?</h2>
-				
-				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
+<h2><span style="font-size:13pt"><span style=""><span style="font-family:Calibri Light,serif"><span style="color:#2e74b5"><span style="color:#444444"><span style="font-family:Arial,serif"><span style="font-size:xx-large">&iquest;C&oacute;mo se paga la reserva?</span></span></span></span></span></span></span></h2>
 
-					Los niños cuentan en todos los casos para realizar el cálculo de la ocupación del alojamiento, independientemente de la edad que tengan, 
-					
-					La capacidad máxima del apartamento alquilado nunca se puede exceder sumando adultos y niños. <br><br>
-					
-					La capacidad máxima del apartamento alquilado será igual al  número de camas. La ocupación máxima nunca podrá sobrepasar el máximo de personas indicado para cada apartamento o casa. <br><br>
-					
-					<b>En el caso de los bebes , te ofrecemos un <u>servicio gratuito de cuna</u></b> bajo petición y disponibilidad. <br><br>
-					
-					Para cualquier consulta relativa a cunas ponte en contacto con la nuestra oficina por teléfono o por email <a href="mailto:reservas@apartamentosierranevada.net">reservas@apartamentosierranevada.net</a>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">Para que te confirmemos una reserva deber&aacute;s abonar un 50% del importe total.<br />
+<br />
+Te enviaremos un email 15 d&iacute;as antes de la fecha de entrada con la informaci&oacute;n necesaria para realizar un segundo pago por el 50% del importe total.<br />
+<br />
+La Fianza tambi&eacute;n se entrega en el momento de la recepci&oacute;n de llaves.</span></span></span></span></span></p>
 
-				</p>
+<h2><span style="font-size:13pt"><span style=""><span style="font-family:Calibri Light,serif"><span style="color:#2e74b5"><span style="color:#444444"><span style="font-family:Arial,serif"><span style="font-size:xx-large">&iquest;Es necesario pagar fianza para alquilar el apartamento?</span></span></span></span></span></span></span></h2>
 
-				<h2>¿Cómo se paga la reserva?</h2>
-				
-				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
-					
-					Para que te confirmemos una reserva deberás abonar un 25% del importe total. <br><br>
+<p style="text-align:left"><span style=""><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">Para alquilar cualquiera de nuestros apartamentos se exige una fianza de 300&euro;.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>En el momento de realizar el Check in se le pedir&aacute; una tarjeta para garantizar 300&euro; por dicho concepto en caso de desperfectos.</strong></span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif">La fianza es obligatoria </span></span><span style="color:#000000"><span style="font-family:Arial,serif"><strong>(</strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif"> pero</span></span><span style="color:#000000"><span style="font-family:Arial,serif"><strong> </strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif">no capturamos saldo, tan solo sacamos &nbsp;&ldquo;una foto &ldquo;que desaparece al hacer check out</span></span><span style="color:#000000"><span style="font-family:Arial,serif"><strong> )</strong></span></span></span></span></span></p>
 
-					Te enviaremos un email 15 días antes de la fecha de entrada con la información necesaria para realizar un segundo pago por el 25% dl importe total. <br><br>
+<p style="text-align:left"><br />
+&nbsp;</p>
 
-					A la entrega de llaves se liquidará el restante 50%. <br><br>
-
-					La Fianza también se entrega en el momento de la recepción de llaves. <br><br>
-
-
-				</p>
-
-				<h2>¿Es necesario pagar fianza para alquilar el apartamento?</h2>
-				
-				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
-					
-					Para alquilar cualquiera de nuestros apartamentos se exige una fianza de 300€. <br><br>
-
-					<b>En el momento de realizar el Check in  se le pedirá que abone 300€ por dicho concepto. </b> <br><br>
-
-					El pago de la fianza es obligatorio y debe ser abonado mediante tarjeta de crédito. <br><br>
-
-				</p>
+<p>&nbsp;</p>
 
 			</div>
 	</section>

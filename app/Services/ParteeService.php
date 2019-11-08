@@ -116,7 +116,6 @@ class ParteeService
       
       $result = curl_exec($ch);
       $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
-      curl_exec($ch);
       curl_close($ch);
       $this->response = null;
       $this->responseCode = $httpCode;
@@ -164,6 +163,7 @@ class ParteeService
         {
           
           $data = [
+//            "email"=> null,
             "email"=> empty($email) ? null : $email,
             'fecha_entrada'=> date("Y-m-d\TH:i:s", $dateTime), //"2018-03-19T16:11:37.567Z",
 //            'fecha_entrada'=> date("Y-m-d\TH:i:s", $dateTime),

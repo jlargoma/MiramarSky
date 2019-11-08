@@ -317,12 +317,12 @@ class PaymentsProController extends AppController {
     $endDate = $request->input('end',null);
 
     if ($idRoom == "all") {
-      $books = \App\Book::type_book_sales()->where('start', '>=', $startDate)
+      $books = \App\Book::where_type_book_sales()->where('start', '>=', $startDate)
               ->where('start', '<=', $endDate)
               ->orderBy('start', 'ASC')
               ->get();
     } else {
-      $books = \App\Book::type_book_sales()->where('start', '>=', $startDate)
+      $books = \App\Book::where_type_book_sales()->where('start', '>=', $startDate)
               ->where('start', '<=', $endDate)
               ->where('room_id', $idRoom)
               ->orderBy('start', 'ASC')
@@ -436,14 +436,14 @@ class PaymentsProController extends AppController {
 
     if ($request->idRoom != 'all') {
       $room = \App\Rooms::find($request->idRoom);
-      $books = \App\Book::type_book_sales()->where('room_id', $room->id)
+      $books = \App\Book::where_type_book_sales()->where('room_id', $room->id)
               ->where('start', '>=', $start)
               ->where('finish', '<=', $finish)
               ->orderBy('start', 'ASC')
               ->get();
     } else {
       $room = "all";
-      $books = \App\Book::type_book_sales()->where('start', '>=', $start)
+      $books = \App\Book::where_type_book_sales()->where('start', '>=', $start)
               ->where('finish', '<=', $finish)
               ->orderBy('start', 'ASC')
               ->get();

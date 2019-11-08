@@ -822,9 +822,27 @@ class Book extends Model {
    * 
    * @return Object Query
    */
-  static function type_book_sales() {
+  static function where_type_book_sales() {
     return self::whereIn('type_book', [2, 7, 8]);
   }
+  
+  /**
+   * Get object Book that has status 2,7,8
+   * 
+   * @return Object Query
+   */
+  static function where_book_times($startYear,$endYear) {
+    
+     return self::where(function ($query) use ($startYear,$endYear) {
+       $query->where(function ($query2) use ($startYear,$endYear) {
+          $query2->where('start', '>=', $startYear)->Where('start', '<=', $endYear);
+        })->orWhere(function ($query2) use ($startYear,$endYear) {
+          $query2->where('finish', '>=', $startYear)->Where('finish', '<=', $endYear);
+        });
+      });
+  }
+  
+
 
   /**
    * Send the Booking to Partee

@@ -4,6 +4,7 @@ use \Carbon\Carbon;
 
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
+$uRole = Auth::user()->role;
 ?>
 <div class="col-md-12 col-xs-12">
   <div class="panel panel-mobile">
@@ -29,6 +30,7 @@ setlocale(LC_TIME, "es_ES");
               <thead>
                 <tr>
                   <td  style="width: 1%!important"></td>
+                  <td style='display: block;width: 20px;'>&nbsp;</td>
 <?php foreach ($arrayMonths as $key => $daysMonth): ?>
   <?php 
 //  $monthX = Carbon::createFromFormat('m', str_pad($key, 2, "0", STR_PAD_LEFT))->formatLocalized('%B');
@@ -48,6 +50,7 @@ setlocale(LC_TIME, "es_ES");
                   <?php endforeach ?>
                 </tr>
                 <tr>
+                  <td style='display: block;width: 20px;'>&nbsp;</td>
                   <td rowspan="2" style="width: 1%!important"></td>
                   <?php foreach ($arrayMonths as $key => $daysMonth): ?>
                     <?php for ($i = 1; $i <= $daysMonth; $i++): ?>
@@ -58,6 +61,7 @@ setlocale(LC_TIME, "es_ES");
                   <?php endforeach ?>
                 </tr>
                 <tr>
+                  <td style='display: block;width: 20px;'>&nbsp;</td>
                   <?php foreach ($arrayMonths as $key => $daysMonth): ?>
                     <?php for ($i = 1; $i <= $daysMonth; $i++): ?>
                       <td style='border:1px solid black;width: 24px; height: 20px;font-size: 10px;padding: 5px!important' class="text-center <?php echo $days[$key][$i] ?> min-w25">
@@ -93,205 +97,27 @@ setlocale(LC_TIME, "es_ES");
                       </b>
 
                     </td>
+                    <td style='width: 20px;'>&nbsp;</td>
                     <?php foreach ($arrayMonths as $key => $daysMonth): ?>
                       <?php for ($i = 01; $i <= $daysMonth; $i++): ?>
                         <!-- Si existe la reserva para ese dia -->
                           <?php if (isset($arrayReservas[$room->id][$inicio->copy()->format('Y')][$key][$i])): ?>
 
                             <?php $calendars = $arrayReservas[$room->id][$inicio->copy()->format('Y')][$key][$i] ?>
-                          <!-- Si hay una reserva que sale y una que entra  -->
-                            <?php if (count($calendars) > 1): ?>
+                                                   <!-- Si hay una reserva que sale y una que entra  -->
+                          <?php if (count($calendars) > 1): ?>
                             <td style='border:1px solid grey;width: 24px; height: 20px;'>
-                              <?php for ($x = 0; $x < count($calendars); $x++): ?>
-
-                                  <?php if ($calendars[$x]->finish == $inicio->copy()->format('Y-m-d') && $calendars[$x]->type_book != 5): ?>
-                                  <a
-                                    <?php if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza")
-                                      :
-                                      ?>
-                                      href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>"
-                                    <?php endif ?>
-
-                                    <?php
-                                    //getAgency
-                                    $agency = ($calendars[$x]->agency != 0) ? "Agencia: " . $calendars[$x]->getAgency($calendars[$x]->agency) : "";
-                                    if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza") {
-                                      $titulo = $calendars[$x]->customer['name'] . '&#10' .
-                                              'Pax-real ' . $calendars[$x]->real_pax . '&#10;' . Carbon::createFromFormat('Y-m-d', $calendars[$x]->start)->formatLocalized('%d %b') . ' - ' . Carbon::createFromFormat('Y-m-d', $calendars[$x]->finish)->formatLocalized('%d %b') . '&#10;';
-                                    } else {
-                                      $titulo = $calendars[$x]->customer['name'] . '&#10' .
-                                              'Pax-real ' . $calendars[$x]->real_pax . '&#10;' . Carbon::createFromFormat('Y-m-d', $calendars[$x]->start)->formatLocalized('%d %b') . ' - ' . Carbon::createFromFormat('Y-m-d', $calendars[$x]->finish)->formatLocalized('%d %b') . '&#10;' . $agency;
-                                    }
-                                    ?>
-                                    title="<?php echo $titulo ?>"
-                                    >
-                                      <?php $class = $calendars[$x]->getStatus($calendars[$x]->type_book) ?>
-                                      <?php if ($class == "Contestado(EMAIL)"): ?>
-                <?php $class = "contestado-email" ?>
-              <?php endif ?>
-
-                                    <div class="<?php echo $class; ?> end" style="width: 45%;float: left;">
-                                      &nbsp;
-                                    </div>
-                                  </a>
-                                  <?php elseif ($calendars[$x]->start == $inicio->copy()->format('Y-m-d') && $calendars[$x]->type_book != 5): ?>
-                                  <a
-                                    <?php if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza"): ?>href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>"  <?php endif ?>
-
-                                    <?php
-                                    $agency = ($calendars[$x]->agency != 0) ? "Agencia: " . $calendars[$x]->getAgency($calendars[$x]->agency) : "";
-                                    if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza") {
-                                      $titulo = $calendars[$x]->customer['name'] . '&#10' .
-                                              'Pax-real ' . $calendars[$x]->real_pax . '&#10;' . Carbon::createFromFormat('Y-m-d', $calendars[$x]->start)->formatLocalized('%d %b') . ' - ' . Carbon::createFromFormat('Y-m-d', $calendars[$x]->finish)->formatLocalized('%d %b') . '&#10;';
-                                    } else {
-                                      $titulo = $calendars[$x]->customer['name'] . '&#10' .
-                                              'Pax-real ' . $calendars[$x]->real_pax . '&#10;' . Carbon::createFromFormat('Y-m-d', $calendars[$x]->start)->formatLocalized('%d %b') . ' - ' . Carbon::createFromFormat('Y-m-d', $calendars[$x]->finish)->formatLocalized('%d %b') . '&#10;' . $agency;
-                                    }
-                                    ?>
-                                    title="<?php echo $titulo ?>"
-                                    >
-              <?php if ($calendars[$x]->getStatus($calendars[$x]->type_book) != "Booking"): ?>
-                                        <?php $class = $calendars[$x]->getStatus($calendars[$x]->type_book) ?>
-                                        <?php if ($class == "Contestado(EMAIL)"): ?>
-                                          <?php $class = "contestado-email" ?>
-                                        <?php endif ?>
-
-                                      <div class="<?php echo $class; ?> start" style="width: 45%;float: right;">
-                                        &nbsp;
-                                      </div>
-              <?php endif ?>
-
-                                  </a>
-            <?php else: ?>
-                                  <?php if ($calendars[$x]->type_book != 9 && $calendars[$x]->type_book != 5): ?>
-                                    <a <?php if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza"):
-                                      ?> href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[$x]->id ?>" <?php endif ?>
-                                      <?php
-                                      $agency = ($calendars[$x]->agency != 0) ? "Agencia: " . $calendars[$x]->getAgency($calendars[$x]->agency) : "";
-                                      if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza") {
-                                        $titulo = $calendars[$x]->customer['name'] . '&#10' .
-                                                'Pax-real ' . $calendars[$x]->real_pax . '&#10;' . Carbon::createFromFormat('Y-m-d', $calendars[$x]->start)->formatLocalized('%d %b') . ' - ' . Carbon::createFromFormat('Y-m-d', $calendars[$x]->finish)->formatLocalized('%d %b') . '&#10;';
-                                      } else {
-                                        $titulo = $calendars[$x]->customer['name'] . '&#10' .
-                                                'Pax-real ' . $calendars[$x]->real_pax . '&#10;' . Carbon::createFromFormat('Y-m-d', $calendars[$x]->start)->formatLocalized('%d %b') . ' - ' . Carbon::createFromFormat('Y-m-d', $calendars[$x]->finish)->formatLocalized('%d %b') . '&#10;' . $agency;
-                                      }
-                                      ?> title="<?php echo $titulo ?>"
-                                      >
-                                      <?php $class = $calendars[$x]->getStatus($calendars[$x]->type_book) ?>
-                                      <?php if ($class == "Contestado(EMAIL)"): ?>
-                                        <?php $class = "contestado-email" ?>
-                                      <?php endif ?>
-
-                                      <div class="<?php echo $class; ?>" style="width: 100%;float: left;">
-                                        &nbsp;
-                                      </div>
-                                    </a>
-                                      <?php endif ?>
-            <?php endif ?>
-          <?php endfor ?>
+                              @include('backend.blocks._calendarEventDouble', ['calendars' => $calendars,'inicio'=>$inicio ])
                             </td>
-        <?php else: ?>
-                            <!-- Si no hay dos reservas el mismo dia  -->
-                              <?php $calendars[0] = ($calendars[0]) ? $calendars[0] : $calendars ?>
-
-                              <?php if ($calendars[0]->start == $inicio->copy()->format('Y-m-d')): ?>
-                              <td
-                              <?php
-                              $agency = ($calendars[0]->agency != 0) ? "Agencia: " . $calendars[0]->getAgency($calendars[0]->agency) : "";
-
-                              if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza") {
-                                $titulo = $calendars[0]->customer['name'] . '&#10' .
-                                        'Pax-real ' . $calendars[0]->real_pax . '&#10;' .
-                                        '' . Carbon::createFromFormat('Y-m-d', $calendars[0]->start)->formatLocalized('%d %b') . ' - ' . Carbon::createFromFormat('Y-m-d', $calendars[0]->finish)->formatLocalized('%d %b') . '&#10;';
-                              } else {
-                                $titulo = $calendars[0]->customer['name'] . '&#10' .
-                                        'Pax-real ' . $calendars[0]->real_pax . '&#10;' .
-                                        '' . Carbon::createFromFormat('Y-m-d', $calendars[0]->start)->formatLocalized('%d %b') . ' - ' . Carbon::createFromFormat('Y-m-d', $calendars[0]->finish)->formatLocalized('%d %b') . '&#10;' . $agency;
-                              }
-                              ?> title="<?php echo $titulo ?>" style='border:1px solid grey;width: 24px; height: 20px;'>
-
-                              <?php $class = $calendars[0]->getStatus($calendars[0]->type_book) ?>
-                              <?php if ($class == "Contestado(EMAIL)"): ?>
-                                <?php $class = "contestado-email" ?>
-                              <?php endif ?>
-
-                                <div class="<?php echo $class; ?> start" style="width: 45%;float: right;">
-                                  &nbsp;
-                                </div>
-
-                              </td>
-                              <?php elseif ($calendars[0]->finish == $inicio->copy()->format('Y-m-d')): ?>
-                              <td
-                                <?php
-                                $agency = ($calendars[0]->agency != 0) ? "Agencia: " . $calendars[0]->getAgency($calendars[0]->agency) : "";
-
-                                if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza") {
-                                  $titulo = $calendars[0]->customer['name'] . '&#10' .
-                                          'Pax-real ' . $calendars[0]->real_pax . '&#10;' .
-                                          '' . Carbon::createFromFormat('Y-m-d', $calendars[0]->start)->formatLocalized('%d %b') . ' - ' . Carbon::createFromFormat('Y-m-d', $calendars[0]->finish)->formatLocalized('%d %b') . '&#10;';
-                                } else {
-                                  $titulo = $calendars[0]->customer['name'] . '&#10' .
-                                          'Pax-real ' . $calendars[0]->real_pax . '&#10;' .
-                                          '' . Carbon::createFromFormat('Y-m-d', $calendars[0]->start)->formatLocalized('%d %b') . ' - ' . Carbon::createFromFormat('Y-m-d', $calendars[0]->finish)->formatLocalized('%d %b') . '&#10;' . $agency;
-                                }
-                                ?> title="<?php echo $titulo ?>" style='border:1px solid grey;width: 24px; height: 20px;'>
-
-                              <?php $class = $calendars[0]->getStatus($calendars[0]->type_book) ?>
-                              <?php if ($class == "Contestado(EMAIL)"): ?>
-                                <?php $class = "contestado-email" ?>
-                              <?php endif ?>
-
-                                <div class="<?php echo $class; ?> end" style="width: 45%;float: left;">
-                                  &nbsp;
-                                </div>
-
-
-                              </td>
-                              <?php else: ?>
-                              <td style='border:1px solid grey;width: 24px; height: 20px;'
-                                <?php
-                                $agency = ($calendars[0]->agency != 0) ? "Agencia: " . $calendars[0]->getAgency($calendars[0]->agency) : "";
-                                if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza") {
-                                  $titulo = $calendars[0]->customer['name'] . '&#10' .
-                                          'Pax-real ' . $calendars[0]->real_pax . '&#10;' .
-                                          '' . Carbon::createFromFormat('Y-m-d', $calendars[0]->start)->formatLocalized('%d %b') . ' - ' . Carbon::createFromFormat('Y-m-d', $calendars[0]->finish)->formatLocalized('%d %b') . '&#10;';
-                                } else {
-                                  $titulo = $calendars[0]->customer['name'] . '&#10' .
-                                          'Pax-real ' . $calendars[0]->real_pax . '&#10;' .
-                                          '' . Carbon::createFromFormat('Y-m-d', $calendars[0]->start)->formatLocalized('%d %b') . ' - ' . Carbon::createFromFormat('Y-m-d', $calendars[0]->finish)->formatLocalized('%d %b') . '&#10;' . $agency;
-                                }
-                                ?>  title="<?php echo $titulo ?> "
-                              <?php $class = $calendars[0]->getStatus($calendars[0]->type_book) ?>
-                              <?php if ($class == "Contestado(EMAIL)"): ?>
-                                <?php $class = "contestado-email" ?>
-                              <?php endif ?>
-
-                                  class="<?php echo $class; ?>"
-                                  >
-                              <?php if ($calendars[0]->type_book == 9): ?>
-                                  <div style="width: 100%;height: 100%">
-                                    &nbsp;
-                                  </div>
-                              <?php else: ?>
-                                  <a <?php if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza"): ?>href="{{url ('/admin/reservas/update')}}/<?php echo $calendars[0]->id ?>"<?php endif ?>>
-                                    <div style="width: 100%;height: 100%">
-                                      &nbsp;
-                                    </div>
-                                  </a>
-                                  <?php endif ?>
-
-
-                              </td>
-                                  <?php endif ?>
-                                <?php endif ?>
+                          <?php else: ?>
+                              @include('backend.blocks._calendarEvent', ['calendars' => $calendars,'inicio'=>$inicio ])
+                          <?php endif ?>
+                          <?php else: ?>
                           <!-- Si no existe nada para ese dia -->
-      <?php else: ?>
-
-                          <td class="asdas<?php echo $days[$key][$i] ?>" style='border:1px solid grey;width: 24px; height: 20px;'>
-
+                          <td class="<?php echo $days[$key][$i] ?>" style='border:1px solid grey;width: 24px; height: 20px;'>
                           </td>
 
-      <?php endif; ?>
+                        <?php endif; ?>
                           <?php $inicio = $inicio->addDay(); ?>
 
     <?php endfor; ?>

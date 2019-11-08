@@ -270,7 +270,7 @@ class LiquidacionController extends AppController {
     $diff = $startYear->diffInMonths($endYear) + 1;
     $lstMonths = lstMonths($startYear,$endYear);
     $rooms = \App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get();
-    $books = \App\Book::type_book_sales()->with('payments')
+    $books = \App\Book::where_where_type_book_sales()->with('payments')
             ->where('start', '>=', $startYear)
             ->where('start', '<=', $endYear)->get();
     
@@ -514,7 +514,7 @@ class LiquidacionController extends AppController {
     $t_year = 0;
     
     
-    $books = \App\Book::type_book_sales()
+    $books = \App\Book::where_type_book_sales()
             ->where('start', '>=', $startYear)
             ->where('start', '<=', $endYear)
             ->get();
@@ -763,7 +763,7 @@ class LiquidacionController extends AppController {
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
     $diff = $startYear->diffInMonths($endYear) + 1;
-    $books = \App\Book::type_book_sales()->where('start', '>', $startYear)->where('start', '<=', $endYear)->get();
+    $books = \App\Book::where_type_book_sales()->where('start', '>', $startYear)->where('start', '<=', $endYear)->get();
     /* INGRESOS */
     $arrayTotales = [
         'totales' => 0,
@@ -932,7 +932,7 @@ class LiquidacionController extends AppController {
       $endYear = $end->copy()->format('Y-m-d');
     }
 
-    $books = \App\Book::type_book_sales()->with('payments')->where('start', '>=', $startYear)
+    $books = \App\Book::where_type_book_sales()->with('payments')->where('start', '>=', $startYear)
                     ->where('start', '<=', $endYear)
                     ->orderBy('start', 'ASC')->get();
 
@@ -2434,7 +2434,7 @@ class LiquidacionController extends AppController {
     $diff = $startYear->diffInMonths($endYear) + 1;
     $thisMonth = date('m');
     //get the books to these date range
-    $lstBooks = \App\Book::type_book_sales()
+    $lstBooks = \App\Book::where_type_book_sales()
             ->where('start', '>=', $startYear)
             ->where('start', '<=', $endYear)
             ->get();
@@ -2528,7 +2528,7 @@ class LiquidacionController extends AppController {
     }
 
 
-    $lstBooks = \App\Book::type_book_sales()->where('start', '>=', $startYear)
+    $lstBooks = \App\Book::where_type_book_sales()->where('start', '>=', $startYear)
                     ->where('start', '<=', $endYear)
                     ->orderBy('start', 'ASC')->get();
 
@@ -2696,7 +2696,7 @@ class LiquidacionController extends AppController {
             ];
       
       $totals = ['total' => 0,'reservations' => 0,'commissions' => 0];
-      $books = \App\Book::type_book_sales()->with('payments')
+      $books = \App\Book::where_type_book_sales()->with('payments')
             ->where('start', '>=', $start)
             ->where('start', '<=', $end)->get();
       if ($books){

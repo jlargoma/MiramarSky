@@ -49,7 +49,7 @@ class forfaitPaymentReminder extends Command {
    
     $daysToCheck = Carbon::now()->addDays(7);
     
-    $books = Book::type_book_sales()
+    $books = Book::where_type_book_sales()
              ->where('start', $daysToCheck->toDateString())
             ->orderBy('created_at', 'DESC')->get();
      

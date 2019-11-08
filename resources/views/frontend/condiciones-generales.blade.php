@@ -81,87 +81,64 @@
 			<div class="row">
 				<h1 class="center psuh-20">Condiciones generales del Alquiler</h1>
 			</div>
-			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center" >
-				<p class="texto-aparamento " style="text-align: justify;color:black;font-size:16px;padding:0px 30px" >
+			<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 center texto-aparamento" >
+                                <p style="text-align:left"><span ><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif"><strong>1.</strong></span></span><span style="color:#000000"><span style="font-size:x-small"><strong>&nbsp;&nbsp;&nbsp; </strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u><strong>Hora de Entrada:</strong></u></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><strong> La entrega de llaves la realizamos en el propio edifico entre las 17:30 a 19:30 Horas</strong></span></span></span></span></span></p>
 
-					<b>1. Hora de Entrada: La entrega de llaves la realizamos en el propio edifico entre las 17:00 a 19:30 Horas</b>
-                    <br><br>
-					La entrega de llaves fuera de horario puede llevar gastos por el tiempo de espera.
-                    <br><br>
-					10€ Si llegas entre 20:00 h de las 22.00
-                    <br><br>
-					20€ Si llegas más tarde de de las 22 h
-                    <br><br>
-					No se entregan llaves a partir de las 00.00 sin previo aviso (el dia anterior a la entrada)
-                    <br><br>
-					El cargo se le abonan directamente en metálico a la persona que te entrega las llaves.
-                    <br><br>
-					Nos sabe muy mal tener que cobrarte este recargo, Esperamos que entiendas que es solo para compensar el tiempo de espera de esta persona.<br><br>
+<p style="text-align:left"><span ><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">Si llegas </span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u><strong>fuera de este horario te dejaremos las llaves en una caja de seguridad</strong></u></span></span><span style="color:#000000"><span style="font-family:Arial,serif"> y te mandaremos las instrucciones unos d&iacute;as antes&nbsp;</span></span></span></span></span></p>
 
-                    <b>2. Hora de Salida: La vivienda deberá ser desocupada antes de las 11,59h A.M.</b> (de lo contrario se podrá cobrará una noche más de alquiler apartamento según tarifa apartamento y ocupación.<br><br>
+<p style="text-align:left"><br />
+<span ><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif"><strong>2. </strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u><strong>Hora de Salida</strong></u></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><strong>: La vivienda deber&aacute; ser desocupada antes de las 11,59h A.M.</strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;(de lo contrario se podr&aacute; cobrar&aacute; una noche m&aacute;s de alquiler apartamento seg&uacute;n tarifa apartamento y ocupaci&oacute;n.<br />
+<br />
+La plaza de garaje debe quedar libre a esta hora o bien pagar la estancia de un nuevo d&iacute;a. (seg&uacute;n tarifa 20&euro; / d&iacute;a.)</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>3. </strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u><strong>Fianza:</strong></u></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;Adem&aacute;s del precio del alquiler el d&iacute;a de llegada se pedir&aacute; una fianza por el importe de 300&euro; a la entrega de llaves para garantizar el buen uso de la vivienda.<br />
+<br />
+La fianza se devolver&aacute; a la entregada de llaves, una vez revisada la vivienda y descontados los gastos correspondientes a los desperfectos (en el caso de que se produzcan).</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>4. </strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u><strong>Se&ntilde;al de la reserva:</strong></u></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><strong> Para realizar una reserva debe de abonar el 50% del importe total de la reserva.</strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;</span></span></span></span></span></p>
 
-					La plaza de garaje debe quedar libre a esta hora o bien pagar la estancia de un nuevo día. (según tarifa 20€ / día.)<br><br>
+<p style="text-align:left"><span ><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">En caso de cancelaci&oacute;n la empresa tiene el derecho a no devolver la se&ntilde;al sea la cancelaci&oacute;n por el motivo que sea, aunque por supuesto &nbsp;intentaremos colocar tu estancia a otro hu&eacute;sped y si es as&iacute; te devolveremos tu se&ntilde;al integramente.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>El segundo pago se har&aacute; 15 d&iacute;as antes de la entrada</strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif">, si este &uacute;ltimo pago no se realizase la reserva quedar&iacute;a anulada.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>5. </strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u><strong>Periodo del alquiler</strong></u></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><strong>:</strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;Por el motivo que sea si la persona que alquila decide marcharse antes del periodo contratado no tiene derecho a devoluci&oacute;n del importe de los d&iacute;as no disfrutados.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>6. </strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u><strong>Meteorolog&iacute;a y estado de pistas:</strong></u></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;Las condiciones del alquiler de la vivienda son completamente ajenas a las condiciones meteorol&oacute;gicas, al estado de las carreteras, al estado de las pistas de esqu&iacute;, falta de nieve o incluso al cierre de la estaci&oacute;n por lo que tampoco se podr&aacute; reclamar devoluci&oacute;n por estos motivos.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>7</strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u><strong>. N&ordm; de personas</strong></u></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><strong>:</strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;El apartamento no podr&aacute; ser habitado por m&aacute;s personas de las camas que dispone.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>8.</strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u><strong> No se admiten animales.</strong></u></span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>9. Sabanas y Toallas est&aacute;n incluidas en todas las reservas.</strong></span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>10.</strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;A partir de las 23 horas se ruega guardar silencio en los apartamentos y en las zonas comunes, por respeto al sue&ntilde;o y a la tranquilidad de los dem&aacute;s inquilinos y propietarios del edificio Miramarski.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>11. </strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u><strong>Condiciones del apartamento en el Checkout:</strong></u></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;El alojamiento se deber&aacute; entregar antes de las 12:00am con un estado de limpieza aceptable, Vajilla limpia y recogida, Muebles de cama en la misma posici&oacute;n que se entregaron, Sin basuras en el apartamento, Nevera vac&iacute;a (sin comida sobrante), Edredones doblados en los armarios.<br />
+<br />
+Si algunos de estos requisitos no se cumplen podr&iacute;a conllevar la perdida de la fianza, total o parcialmente.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>12. </strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u><strong>Cancelaciones y modificaciones</strong></u></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><strong>:</strong></span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif">Para la cancelaci&oacute;n de una reserva debe ponerse en contacto por email con nosotros&nbsp;</span></span><span style="color:#0000ff"><u><a href="mailto:reservas@apartamentosierranevada.net" style="color:#0000ff" target="_blank"><span style="color:#3f51b5"><span style="font-family:Arial,serif">reservas@apartamentosierranevada.net</span></span></a></u></span><span style="color:#000000"><span style="font-family:Arial,serif">. La pol&iacute;tica de cancelaciones es la siguiente:<br />
+<br />
+- Para cancelaciones antes de 60 d&iacute;as de la fecha de llegada, 0% de penalizaci&oacute;n sobre el importe total de la estancia.</span></span></span></span></span></p>
 
+<p style="text-align:left"><span ><span style="font-family:Times New Roman,serif"><span style="font-size:medium"><span style="color:#000000"><span style="font-family:Arial,serif">- En las cancelaciones de menos de 60 d&iacute;as, el apartamento se volver&aacute; a poner a la venta, en el caso de que se vuelva alquilar se le devolver&aacute; el dinero pagado y en el caso de que no, el hu&eacute;sped perder&aacute; la se&ntilde;al entregada.<br />
+<br />
+Cuanto m&aacute;s tiempo tengamos para recolocarlo, m&aacute;s garant&iacute;a tendr&aacute;s de recuperar tu se&ntilde;al<br />
+<br />
+En el caso de salida anticipada a la fecha prevista, el cliente queda obligado al pago de toda la estancia.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>13. </strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u><strong>Causas de Fuerza mayor:</strong></u></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><strong> </strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif">&nbsp;IN-GEST SIERRA NEVADA S.L. no ser&aacute; responsable de ning&uacute;n retraso u error en el funcionamiento o interrupci&oacute;n del servicio como resultado directo o indirecto de cualquier causa o circunstancia m&aacute;s all&aacute; de nuestro control.<br />
+<br />
+Esto incluye el fallo del equipo electr&oacute;nico o mec&aacute;nico, l&iacute;neas de comunicaci&oacute;n, tel&eacute;fono, u otros problemas de conexi&oacute;n, virus inform&aacute;ticos, accesos no autorizados, robo, causas climatol&oacute;gicas, desastres naturales, huelgas u otro tipo de problemas laborales, guerras o restricciones gubernamentales.</span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif"><strong>14. </strong></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><u><strong>Leyes aplicables</strong></u></span></span><span style="color:#000000"><span style="font-family:Arial,serif"><strong>.</strong></span></span><br />
+<br />
+<span style="color:#000000"><span style="font-family:Arial,serif">Este contrato est&aacute; realizado en Espa&ntilde;a, por lo que las leyes espa&ntilde;olas son de aplicaci&oacute;n. Las partes contractuales se someten a la jurisdicci&oacute;n y competencia de Granada, con la exclusi&oacute;n de las cortes de cualquier otro pa&iacute;s.</span></span></span></span></span></p>
 
-                    <b>3. Fianza:</b> Además del precio del alquiler el día de llegada se pedirá una fianza por el importe de 300€ a la entrega de llaves para garantizar el buen uso de la vivienda.<br><br>
+<p>&nbsp;</p>
 
-					La fianza se devolverá a la entregada de llaves, una vez revisada la vivienda y descontados los gastos correspondientes a los desperfectos (en el caso de que se produzcan).<br><br>
-
-                    <b>4. Señal de la reserva: Para realizar una reserva debe de abonar el 50% del importe total de la reserva.</b> En caso de cancelación la empresa tiene el derecho a no devolver la señal sea la cancelación por el motivo que sea, aunque intentaremos colocar tu estancia a otro huésped y por supuesto te devolveremos tu señal si lo conseguimos.<br><br>
-
-                    <b>El segundo pago se hará 15 días antes de la entrada</b>, si este último pago no se realizase la reserva quedaría anulada.<br><br>
-
-
-                    <b>5. Periodo del alquiler:</b> Por el motivo que sea si la persona que alquila decide marcharse antes del periodo contratado no tiene derecho a devolución del importe de los días no disfrutados.<br><br>
-
-
-                    <b>6. Meteorología y estado de pistas:</b> Las condiciones del alquiler de la vivienda son
-					completamente ajenas a las condiciones meteorológicas, al estado de las carreteras, al estado de las pistas de esquí, falta de nieve o incluso al cierre de la estación por lo que tampoco se podrá reclamar devolución por estos motivos.<br><br>
-
-
-                    <b>7. Nº de personas:</b> El apartamento no podrá ser habitado por más personas de las camas que
-					dispone.<br><br>
-
-
-                    <b>8. No se admiten animales.</b><br><br>
-
-
-                    <b>9. Sabanas y Toallas están incluidas en todas las reservas.</b><br><br>
-
-
-                    <b>10.</b> A partir de las 23 horas se ruega guardar silencio en los apartamentos y en las zonas
-					comunes, por respeto al sueño y a la tranquilidad de los demás inquilinos y propietarios del edificio Miramarski.<br><br>
-
-
-                    <b>11. Condiciones del apartamento en el Checkout:</b> El alojamiento se deberá entregar antes de las 12:00am con un estado de limpieza aceptable, Vajilla limpia y recogida, Muebles de cama en la misma posición que se entregaron, Sin basuras en el apartamento, Nevera vacía (sin comida sobrante), Edredones doblados en los armarios.<br><br>
-
-					Si algunos de estos requisitos no se cumplen podría conllevar la perdida de la fianza, total o parcialmente.<br><br>
-
-
-                    <b>12. Cancelaciones y modificaciones:</b><br><br>
-
-                    Para la cancelación de una reserva debe ponerse en contacto por email con nosotros <a
-                    href="mailto:reservas@apartamentosierranevada.net">reservas@apartamentosierranevada.net</a>.
-
-					La política de cancelaciones es la siguiente:<br><br>
-
-					- Para cancelaciones antes de 60 días de la fecha de llegada, 0% de penalización sobre el importe total de la estancia.<br>
-
-					- En las cancelaciones de menos de 60 días, el apartamento se volverá a poner a la venta, en el caso de que se vuelva alquilar se le devolverá el dinero pagado y en el caso de que no, el huésped perderá la señal entregada.<br><br>
-
-					Cuanto más tiempo tengamos para recolocarlo, más garantía tendrás de recuperar tu señal<br><br>
-
-					En el caso de salida anticipada a la fecha prevista, el cliente queda obligado al pago de toda la estancia.<br><br>
-
-
-                    <b>13. Fuerza mayor</b>
-					ISDE, S.L. no será responsable de ningún retraso u error en el funcionamiento o interrupción del servicio como resultado directo o indirecto de cualquier causa o circunstancia más allá de nuestro control.<br><br>
-
-					Esto incluye el fallo del equipo electrónico o mecánico, líneas de comunicación, teléfono, u otros problemas de conexión, virus informáticos, accesos no autorizados, robo, causas climatológicas, desastres naturales, huelgas u otro tipo de problemas laborales, guerras o restricciones gubernamentales.<br><br>
-
-                    <b>14. Leyes aplicables.</b><br><br>
-					Este contrato está realizado en España, por lo que las leyes españolas son de aplicación. Las partes contractuales se someten a la jurisdicción y competencia de Granada, con la exclusión de las cortes de cualquier otro país.
-				</p>
 			</div>
 	</section>
 	
