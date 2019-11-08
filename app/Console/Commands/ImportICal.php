@@ -102,7 +102,7 @@ class ImportICal extends Command
             if (true){
               foreach ($events as $event) {
 
-                if (strpos(strtoupper($event->summary),'NOT AVAILABLE') !== false){
+                if ($agency == 4 && strpos(strtoupper($event->summary),'NOT AVAILABLE') !== false){
                   continue;
                 }
                 $checEvent = $this->isEventValidForAdd($event, $agency, $room_id);
