@@ -142,4 +142,26 @@ class ContentsControllers extends Controller
       }
       
     }
+    
+    public function re_saveImg() {
+    return null;
+      $rute = "/img/miramarski/contents";
+      $directory = public_path();
+      
+      
+      $lst = Contents::getKeyLst();
+      foreach ($lst as $k=>$v){
+        $fields = Contents::getKeyContent($k);
+        foreach ($fields as $kf=>$f){
+          if ($f[1] == 'file'){
+            $oContent = Contents::where('key',$k)->where('field',$kf)->first();
+            if ($oContent){
+              $fileName = $oContent->content;
+              $img = Image::make($directory.$fileName)->interlace();
+              $img->save($directory.$fileName,80);
+            }
+          }
+        }
+      }
+    }
 }

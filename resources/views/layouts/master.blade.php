@@ -32,6 +32,16 @@
         <script type="text/javascript" src="{{ assetV('/frontend/js/jquery-2.1.4.js')}}"></script><script src="{{assetV('/frontend/js/modernizr.custom.js')}}"></script>
         <title>@yield('title')</title>
 <link rel="stylesheet" href="{{ assetV ('/css/frontend.css')}}" type="text/css"/>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-66225892-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-66225892-1');
+</script>
+
 </head>
 
 <body class="stretched not-dark" data-loader="5">

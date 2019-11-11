@@ -14,6 +14,7 @@ Route::group(['middleware' => 'authAdmin'], function () {
       dd($partee);
   });
     
+  Route::get('admin/re_saveImg', 'ContentsControllers@re_saveImg');
   Route::get('admin/cambiarCostes', 'BookController@changeCostes');
   // Usuarios
   Route::get('admin/usuarios', 'UsersController@index');
