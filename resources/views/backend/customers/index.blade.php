@@ -12,6 +12,7 @@
 @section('content')
 
 <div class="container-fluid padding-25 sm-padding-10 bg-white">
+  @include('backend.years.selector', ['minimal' => false])
     <div class="container clearfix">
         <div class="col-md-6 col-xs-12 text-left push-30">
             <h2 class="font-w300" style="margin: 0">LISTADO DE <span class="font-w800">CLIENTES</span></h2>
