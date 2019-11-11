@@ -88,7 +88,6 @@ $uRole = Auth::user()->role;
                   ?>
                   <tr class="<?php echo $line ?>">
 
-                    <td style='display: block;width: 20px;'>&nbsp;</td>
                     <td class="text-center fixed-td">
                       <button class="font-w800 btn btn-xs getImages" type="button" data-toggle="modal" data-target="#modalRoomImages" style="z-index: 99; border: none; background-color: white; color:black;padding: 0;" data-id="<?php echo $room->id; ?>">
                         <i class="fa fa-eye"></i>

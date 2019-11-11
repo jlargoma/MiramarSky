@@ -95,6 +95,9 @@ class ContentsControllers extends Controller
       if (!file_exists($directory)) {
         mkdir($directory, 0777, true);
       }
+      if (!file_exists($directory.'/a')) {
+        mkdir($directory.'/a', 0777, true);
+      }
       /** Upload FILES */
       if($request->hasfile($field)){
         $obj = Contents::firstOrCreate(array('key' => $key,'field'=>$field));
@@ -102,13 +105,15 @@ class ContentsControllers extends Controller
         $img_file = $request->file($field);
         $extension = explode('.', $img_file->getClientOriginalName());
         $imagename_desktop =  $i.'-'.time().'.'.$extension[count($extension)-1];
-        $img = Image::make($img_file->getRealPath());
+//        $img = Image::make($img_file->getRealPath());
+        $img = Image::make($img_file->getRealPath())->interlace();
         $width = $img->width();
         if ($width>1024){
           $img->widen(1024);
         }
 
-        $img->save($directory.'/'.$imagename_desktop);
+        $img->save($directory.'/'.$imagename_desktop,80);
+        $img->fit(800, 600)->save($directory.'/a/'.$imagename_desktop,8);
         //Save photo item
         $obj->content = $rute.'/'.$imagename_desktop;
         $obj->save();

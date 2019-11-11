@@ -194,7 +194,7 @@ width: 0px;
    <?php for($i=1; $i<4; $i++): ?>
    @if($sliderHome['imagen_'.$i])
     <div data-src="{{$sliderHome['imagen_'.$i]}}">
-      <img src="{{$sliderHome['imagen_'.$i]}}" class="img-responsive">
+      <img class="img-responsive">
       <div class="sliderContent">
         <div class="slider-text-1">
           <h2 class="cp-title2">{{$sliderHome['title_'.$i]}}</h2>
