@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Http\Requests;
 use Excel;
+use \Carbon\Carbon;
 
 class CustomersController extends AppController
 {
@@ -16,31 +17,7 @@ class CustomersController extends AppController
      */
     public function index()
     {
-
-        $arraycorreos = array();
-        $correosUsuarios = \App\User::all();
-
-        foreach ($correosUsuarios as $correos) {
-            $arraycorreos[] = $correos->email;
-        }
-
-        $arraycorreos[] = "iankurosaki17@gmail.com";
-        $arraycorreos[] = "jlargoma@gmail.com";
-        $arraycorreos[] = "victorgerocuba@gmail.com";
-
-        $emails = \App\Customers::select('email')
-	                            ->distinct()
-						        ->where('email', '!=', " ")
-						        ->where('email', '!=', "-")
-                                ->get();
-
-		$customers = \App\Customers::whereNotIn('email',$arraycorreos)
-									->whereIn('email', $emails->toArray())
-									->orderBy('created_at', 'DESC')
-									->groupBy('email')
-									->get();
-
-        return view('backend/customers/index',['customers' => $customers]);
+      return view('backend/customers/index',['customers' => $this->getCustomersList()]);
     }
 
     /**
@@ -151,22 +128,8 @@ class CustomersController extends AppController
     {
         \Excel::create('Clientes', function($excel) {
             
-            $arraycorreos = array();
-            $correosUsuarios = \App\User::all();
 
-            foreach ($correosUsuarios as $correos) {
-                $arraycorreos[] = $correos->email;
-
-            }
-
-
-            $arraycorreos[] = "iankurosaki@gmail.com";
-            $arraycorreos[] = "jlargoma@gmail.com";
-            $arraycorreos[] = "victorgerocuba@gmail.com";
-
-
-
-            $clientes = \App\Customers::whereNotIn('email',$arraycorreos)->where('email', '!=', ' ')->distinct('email')->get();
+            $clientes = $this->getCustomersList();
             
             $excel->sheet('Clientes', function($sheet) use($clientes) {
          
@@ -177,14 +140,83 @@ class CustomersController extends AppController
                 'Número', 'Nombre', 'Email', 'Telefono'
             ]);
 
-            foreach($clientes as $index => $user) {
+            $index = 0;
+            foreach($clientes as $user) {
+              
                 $sheet->row($index+2, [
                     $user->id, $user->name, $user->email, $user->phone
                 ]); 
+                $index++;
             }
 
         });
          
         })->export('xlsx');
+    }
+    
+    /**
+     * Get CustomersID by airbnb or booking
+     * 
+     * @param type $startYear
+     * @param type $endYear
+     * @return type
+     */
+    private function getNotClients($startYear,$endYear) {
+      
+      //airbnb/" => 4,
+      //booking/" => 1
+
+      $lst = array();
+      $booksCollection = \App\Book::select('customer_id')->where('start', '>=', $startYear)
+              ->where('start', '<=', $endYear)
+              ->whereIn('agency', [1,4])->get();
+       
+      if ($booksCollection){
+        foreach ($booksCollection as $b)
+          $lst[] = $b->customer_id;
+      }
+        
+      return $lst;
+    }
+    
+    private function getCustomersList() {
+       $arraycorreos = array();
+        $correosUsuarios = \App\User::all();
+
+        foreach ($correosUsuarios as $correos) {
+            $arraycorreos[] = $correos->email;
+        }
+
+        $arraycorreos[] = "iankurosaki17@gmail.com";
+        $arraycorreos[] = "jlargoma@gmail.com";
+        $arraycorreos[] = "victorgerocuba@gmail.com";
+        
+        $year      = $this->getActiveYear();
+        $startYear = new Carbon($year->start_date);
+        $endYear   = new Carbon($year->end_date);
+
+        $emails = \App\Customers::select('email')
+                ->distinct()
+                ->where('email', '!=', " ")
+                ->where('email', '!=', "-")->get();
+
+      $customers = \App\Customers::whereNotIn('email',$arraycorreos)
+                ->whereIn('email', $emails->toArray())
+                ->whereNotIn('id', $this->getNotClients($startYear,$endYear))
+                ->where('created_at', '>=', $startYear)->where('created_at', '<=', $endYear)
+                ->orderBy('created_at', 'DESC')
+                ->get();
+       
+      $lst = [];
+      if($customers){
+        foreach ($customers as $c){
+          $lst[$c->email] = $c;
+        }
+      }
+      
+      ksort($lst);
+      
+      return $lst;
+      
     }
 }

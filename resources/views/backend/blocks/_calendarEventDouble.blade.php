@@ -10,7 +10,7 @@ else:
   foreach ($calendars as $calendar):
     $class = $calendar->getStatus($calendar->type_book);
     if ($class == "Contestado(EMAIL)"){ $class = "contestado-email";}
-    $class .= ' td-calendar ';
+//    $class .= ' td-calendar ';
     $agency = ($calendar->agency != 0) ? "Agencia: ".$calendar->getAgency($calendar->agency) : "";
     $titulo = $calendar->customer['name'].'&#10'.
             'Pax-real '.$calendar->real_pax.'&#10;'.
