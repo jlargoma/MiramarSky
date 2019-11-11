@@ -29,9 +29,9 @@ elixir(function (mix) {
       '/frontend/aos.css',
       '/frontend/daterangepicker.css',
       '/frontend/radio-checkbox.css',
-      '/frontend/styles.css',
       '/frontend/camera.css',
       '/frontend/lightslider.css',
+      '/frontend/styles.css',
     ], 'public/css/frontend.css');
 });
 

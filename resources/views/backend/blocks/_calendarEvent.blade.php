@@ -10,6 +10,7 @@ $calendar = ($calendars[0]) ? $calendars[0] : $calendars;
 $class = $calendar->getStatus($calendar->type_book);
 if ($class == "Contestado(EMAIL)"){ $class = "contestado-email";}
 $class .= ' td-calendar ';
+$classTd = ' class="td-calendar" ';
 $agency = ($calendar->agency != 0) ? "Agencia: ".$calendar->getAgency($calendar->agency) : "";
 $titulo = $calendar->customer['name'].'&#10'.
         'Pax-real '.$calendar->real_pax.'&#10;'.
@@ -29,7 +30,7 @@ $titulo .= $agency;
   if ($calendar->start == $inicio):
     $agency = ($calendar->agency != 0)? "Agencia: " . $calendar->getAgency($calendar->agency) : "";
   ?> 
-    <td title="<?php echo $titulo ?>"  >
+<td title="<?php echo $titulo ?>"  <?php echo $classTd; ?>>
       <a <?php echo $href; ?> title="<?php echo $titulo ?>" >
        <div class="<?php echo $class ;?> start" style="width: 45%;float: right; cursor: pointer;">&nbsp;</div>
        </a>
@@ -37,7 +38,7 @@ $titulo .= $agency;
   <?php 
   elseif($calendar->finish == $inicio): 
     ?>  
-    <td title="<?php echo $titulo ?>" >
+    <td title="<?php echo $titulo ?>" <?php echo $classTd; ?>>
       <a <?php echo $href; ?> title="<?php echo $titulo ?>" >
       <div class="<?php echo $class ;?> end" style="width: 45%;float: left;cursor: pointer;">
           &nbsp;
