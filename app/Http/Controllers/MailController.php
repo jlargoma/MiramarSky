@@ -17,12 +17,14 @@ class MailController extends AppController
       $country = $data->customer->country;
 
       $mailClientContent = Settings::getContent('new_request_rva',$country);
+      
+      $roomType = \App\RoomsType::getRoomType($data->room->sizeApto);
       $dataContent = array(
             'customer_name' =>  $data->customer->name,
             'customer_email' =>  $data->customer->email,
             'customer_phone' =>  $data->customer->phone,
             'room' =>  ($data->type_luxury == 1)? "Lujo" : "Estandar",
-            'room_type' =>  ($data->type_luxury == 1)? "Lujo" : "Estandar",
+            'room_type' =>  $roomType,
             'date_start' =>  date('d-m-Y', strtotime($data->start)),
             'date_end' =>  date('d-m-Y', strtotime($data->finish)),
             'nigths' =>  $data->nigths,

@@ -31,4 +31,34 @@ class RoomsType extends Model
         }
     
   }
+  
+  static function getRoomType($sizeRoom) {
+    
+    $typeApto = '';
+    
+    switch ($sizeRoom){
+      case 2:
+      case 6:
+         $typeApto = "2 DORM";
+         break;
+      case 5:
+      case 1:
+         $typeApto = "Estudio";
+         break;
+      case 3:
+      case 4:
+      case 7:
+      case 8:
+         $typeApto = "3 DORM";
+         break;
+      case 9:
+         $typeApto = "CHALET";
+         break;
+       
+      
+    }
+    
+    return $typeApto;
+    
+  }
 }
