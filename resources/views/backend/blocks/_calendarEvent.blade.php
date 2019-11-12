@@ -46,13 +46,13 @@ $titulo .= $agency;
         </a>
     </td>
     <?php else: ?>
-      <td   title="<?php echo $titulo ?> " class="<?php echo $class ;?> td-calendar" >
+      <td   title="<?php echo $titulo ?> "  <?php echo $classTd; ?> >
         <?php if ($calendar->type_book == 9): ?>
-        <div style="width: 100%;height: 100%; cursor: pointer;">
+        <div class="<?php echo $class ;?>" style="width: 100%;height: 100%; cursor: pointer;">
            &nbsp;
         </div>
         <?php else: ?>
-         <a <?php echo $href; ?> title="<?php echo $titulo ?>" >
+        <a <?php echo $href; ?> title="<?php echo $titulo ?>" class="<?php echo $class ;?>" style="display:block;">
            <div style="width: 100%;height: 100%; cursor: pointer;">
                &nbsp;
            </div>
