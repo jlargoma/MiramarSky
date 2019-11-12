@@ -84,11 +84,7 @@ $(document).ready(function () {
   $("#luxury-yes").prop("disabled", false).show();
   
   if (id == 'apto-3dorm' || id == 'apto-chlt'){
-    if (id == 'apto-3dorm'){
-      $("#luxury-yes").trigger('click');
-      $("#luxury-no").prop("disabled", true).hide();
-    }
-    if (id == 'apto-chlt'){
+    if (id == 'apto-chlt' || id == 'apto-3dorm'){
       $("#luxury-no").trigger('click');
       $("#luxury-yes").prop("disabled", true).hide();
     }
@@ -104,6 +100,7 @@ $(document).ready(function () {
 
       if (pax >= 1 && pax <= 4) {
         $("#apto-estudio").prop("disabled", false);
+         $("#apto-2dorm").prop("disabled", false);
         $("#apto-estudio").trigger('click');
         $("#apto-estudio").show();
       }
