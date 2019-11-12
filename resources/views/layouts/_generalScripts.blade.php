@@ -257,59 +257,6 @@
         }
 
       });
-    $(".apto-3dorm").click(function (event) {
-
-      $("#luxury-yes").trigger('click');
-
-
-      $("#luxury-no").prop("disabled", true);
-      $("#luxury-no").hide();
-
-
-    });
-    $(".apto-chlt").click(function (event) {
-
-      $("#luxury-no").trigger('click');
-
-
-      $("#luxury-yes").prop("disabled", true);
-      $("#luxury-yes").hide();
-
-
-    });
-
-    $('#quantity').change(function (event) {
-      var pax = $(this).val();
-
-      if (pax >= 1 && pax <= 4) {
-        $("#apto-estudio").prop("disabled", false);
-        $("#apto-2dorm").prop("disabled", true).hide();
-        $("#apto-3dorm").prop("disabled", true).hide();
-        $("#apto-chlt").prop("disabled", true).hide();
-
-        $("#apto-estudio").trigger('click');
-        $("#apto-estudio").show();
-
-      }
-      if (pax >= 5 && pax <= 8) {
-        $("#apto-2dorm").prop("disabled", false);
-        $("#apto-2dorm").trigger('click');
-
-
-        $("#apto-estudio").prop("disabled", true).hide();
-        $("#apto-3dorm").prop("disabled", true).hide();
-        $("#apto-chlt").prop("disabled", true).hide();
-
-      } else if (pax >= 9) {
-        $("#apto-3dorm").prop("disabled", false);
-        $(".apto-3dorm").trigger('click');
-
-        $("#apto-estudio").prop("disabled", true).hide();
-        $("#apto-2dorm").prop("disabled", true).hide();
-        $("#apto-chlt").prop("disabled", true).hide();
-      }
-
-    });
 
   });
 

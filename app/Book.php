@@ -208,13 +208,8 @@ class Book extends Model {
   //Para comprobar el dia de la reserva en el calendario
   static function existDate($start, $finish, $room) {
 
-    $books = \App\Book::where('room_id', $room)->whereIn('type_book', [
-                1,
-                2,
-                4,
-                7,
-                8
-            ])->get();
+    $books = \App\Book::where_type_book_reserved()
+            ->where('room_id', $room)->get();
     $existStart = false;
     $existFinish = false;
     $requestStart = Carbon::createFromFormat('d/m/Y', $start);
@@ -256,8 +251,7 @@ class Book extends Model {
         $requestStart = Carbon::createFromFormat('d/m/Y', $start);
         $requestFinish = Carbon::createFromFormat('d/m/Y', $finish);
 
-        $books = \App\Book::where('room_id', $room)
-                ->whereIn('type_book', [1, 2, 4, 7, 8 ])
+        $books = \App\Book::where_type_book_reserved()->where('room_id', $room)
                 ->where('id', '!=', $id_excluded)
                 ->orderBy('start', 'DESC')
                 ->get();
@@ -319,8 +313,8 @@ class Book extends Model {
         $roomStart = $dateStart->format('U');
         $roomFinish = $dateFinish->format('U');
 
-        $isRooms = \App\Book::where('room_id', $this->room_id)
-                ->whereIn('type_book', [1, 2, 4, 7, 8])
+        $isRooms = \App\Book::where_type_book_reserved()
+                ->where('room_id', $this->room_id)
                 ->where('id', '!=', $this->id)
                 ->orderBy('start', 'DESC')
                 ->get();
@@ -466,8 +460,7 @@ class Book extends Model {
         $roomFinish = $dateFinish->format('U');
 
 
-        $isRooms = \App\Book::where('room_id', $room)
-                ->whereIn('type_book', [1, 2, 4,7, 8 ])
+        $isRooms = \App\Book::where_type_book_reserved()->where('room_id', $room)
                 ->where('id', '!=', $this->id)
                 ->orderBy('start', 'DESC')
                 ->get();
@@ -824,6 +817,14 @@ class Book extends Model {
    */
   static function where_type_book_sales() {
     return self::whereIn('type_book', [2, 7, 8]);
+  }
+  /**
+   * Get object Book that has status 2,7,8
+   * 
+   * @return Object Query
+   */
+  static function where_type_book_reserved() {
+    return self::whereIn('type_book', [1,2,4,7,8,9,11]);
   }
   
   /**

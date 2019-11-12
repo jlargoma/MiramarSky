@@ -1879,15 +1879,13 @@ class BookController extends AppController
         $startYear     = new Carbon($year->start_date);
         $endYear       = new Carbon($year->end_date);
 
-        $books = \App\Book::where_book_times($startYear,$endYear)->whereIn('type_book', [
-            1,
-            2,
-            4,
-            5,
-            7,
-            8,
-            9
-        ])->orderBy('start', 'ASC')->get();
+        $type_book_not = [0,3,6,12,99];
+        $uRole = Auth::user()->role;
+//        if ($uRole == "agente" || $uRole == "limpieza"){
+//            $type_book_not[] = 8;
+//        }
+        $books = \App\Book::where_book_times($startYear,$endYear)
+                ->whereNotIn('type_book', $type_book_not)->orderBy('start', 'ASC')->get();
 
         foreach ($books as $book)
         {
