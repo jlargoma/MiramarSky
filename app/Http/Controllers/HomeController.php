@@ -28,7 +28,12 @@ class HomeController extends AppController
       }
         /* Detectamos el tipo de dispositivo*/
       
-        $mobile = new Mobile();
+      global $mobile,$is_mobile;
+      
+      if (!$mobile)  $mobile = new Mobile();
+      $is_mobile = $mobile->isMobile();
+      
+      
         $val = $request->cookie('showPopup');
         if (!empty($val))
         {
@@ -44,7 +49,7 @@ class HomeController extends AppController
             'cookie'         => $cookie,
             'mobile'         => $mobile,
             'slidesEdificio' => null,
-            'edificio' => $oContents->getContentByKey('edificio')
+            'edificio' => $oContents->getContentByKey('edificio',true)
         ]);
     }
 

@@ -798,6 +798,7 @@ class RoomsController extends AppController {
     $rute = "/img/miramarski/apartamentos/" . $folder;
     $directory = public_path() . $rute;
     $directoryThumbnail = public_path() . "/img/miramarski/apartamentos/" . $folder . "/thumbnails";
+    $directoryMobile = public_path() . "/img/miramarski/apartamentos/" . $folder . "/mobile";
 
     if (!file_exists($directory)) {
       mkdir($directory, 0777, true);
@@ -805,6 +806,9 @@ class RoomsController extends AppController {
 
     if (!file_exists($directoryThumbnail)) {
       mkdir($directoryThumbnail, 0777, true);
+    }
+    if (!file_exists($directoryMobile)) {
+      mkdir($directoryMobile, 0777, true);
     }
     
     /** Upload FILES */
@@ -821,7 +825,7 @@ class RoomsController extends AppController {
           $imagename = preg_replace("/[^a-zA-Z0-9]+/", "-",$newName);
           $imagename .= '.'.$extension[count($extension)-1];
           $destinationPath = $directory;
-          $img = Image::make($image->getRealPath());
+          $img = Image::make($image->getRealPath())->interlace();
           $width = $img->width();
           if ($width>1024){
             $img->widen(1024);
@@ -845,8 +849,15 @@ class RoomsController extends AppController {
 
           //thumbnail
           $destinationPath = $directoryThumbnail;
-          $img = Image::make($image->getRealPath());
+          $img = Image::make($image->getRealPath())->interlace();
           $img->resize(250, 250, function ($constraint) {
+                      $constraint->aspectRatio();
+                  })->save($destinationPath.'/'.$imagename);
+                  
+          //mobile
+          $destinationPath = $directoryMobile;
+          $img = Image::make($image->getRealPath())->interlace();
+          $img->resize(480, 480, function ($constraint) {
                       $constraint->aspectRatio();
                   })->save($destinationPath.'/'.$imagename);
 
