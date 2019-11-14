@@ -13,7 +13,7 @@
     <div class=" row animatable" data-aos="zoom-in">
       <a href="{{route('web.apto',$item->name)}}" title="{{$item->title}}">
         <div class="section parallax noborder center"
-             style="background-image: url({{$photo->file_rute}}/{{$photo->file_name}}); padding: 70px 0; margin: 20px 0;"
+             style="background-image: url({{$photo->file_rute}}/mobile/{{$photo->file_name}}); padding: 70px 0; margin: 20px 0;"
              data-stellar-background-ratio="0.4">
           <h3 class="h2 text-center white text-white font-w800 wst"
               style="text-shadow: 2px 1px #000;">{{$item->title}}</h3>

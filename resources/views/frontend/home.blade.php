@@ -4,6 +4,13 @@
 
 @section('moreScripts')
 <script type="text/javascript" src="{{ assetV('/js/scripts-home.js')}}"></script>
+<style>
+  @media (max-width: 768px){
+    section.feature-home {
+      background: url(/frontend/images/home/feature-mobile.png);
+    }
+  }
+</style>
   @endsection 
 @section('content')
 <section id="content" style="padding: 0;    clear: both;">

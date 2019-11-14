@@ -1,6 +1,6 @@
 <?php
 if (!isset($oContents)) $oContents = new App\Contents();
-$sliderHome = $oContents->getContentByKey('slider_home');
+$sliderHome = $oContents->getContentByKey('slider_home',true);
 ?>
 
   <style>
