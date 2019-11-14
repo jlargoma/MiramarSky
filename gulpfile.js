@@ -48,15 +48,25 @@ elixir(function (mix) {
   
 elixir(function(mix) {
     mix.combine([
-    'resources/assets/js/camera/modernizr-3.5.0.min.js',
+      'resources/assets/js/footer/plugins.js',
+      'resources/assets/js/footer/functions.js',
+      'resources/assets/js/footer/progressbar.min.js',
+      'resources/assets/js/footer/scripts.js',
+      'resources/assets/js/footer/flip.min.js',
+      'resources/assets/js/footer/plugins.js',
+      'resources/assets/js/footer/moment.min.js',
+      'resources/assets/js/footer/daterangepicker.min.js',
+      'resources/assets/js/footer/aos.js',
+      'resources/assets/js/footer/jquery.flip.min.js',
+      'resources/assets/js/form_booking.js',
     'resources/assets/js/camera/easing.min.js',
     'resources/assets/js/camera/camera.min.js',
     'resources/assets/js/camera/bootstrap.min.js',
     'resources/assets/js/camera/plugins.js',
     'resources/assets/js/lightslider/lightslider.js',
-    'resources/assets/js/form_booking.js',
     ],  'public/js/scripts-home.js');
 });
+
 
 
   
@@ -71,7 +81,8 @@ elixir(function(mix) {
       'resources/assets/js/footer/moment.min.js',
       'resources/assets/js/footer/daterangepicker.min.js',
       'resources/assets/js/footer/aos.js',
-      'resources/assets/js/footer/jquery.flip.min.js'
+      'resources/assets/js/footer/jquery.flip.min.js',
+      'resources/assets/js/form_booking.js'
     ],  'public/js/scripts-footer.js');
 });
 //elixir(function(mix) {

@@ -29,7 +29,7 @@
         <meta name="msapplication-TileImage" content="{{ assetV('/img/miramarski/favicon/ms-icon-144x144.png' ) }}">
         <meta name="theme-color" content="#ffffff">
 
-        <script type="text/javascript" src="{{ assetV('/frontend/js/jquery-2.1.4.js')}}"></script><script src="{{assetV('/frontend/js/modernizr.custom.js')}}"></script>
+        <script type="text/javascript" src="{{ assetV('/frontend/js/jquery-2.1.4.js')}}" async></script>
         <title>@yield('title')</title>
 <link rel="stylesheet" href="{{ assetV ('/css/frontend.css')}}" type="text/css"/>
 <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -62,14 +62,16 @@
     <link href="//fonts.googleapis.com/css?family=Open+Sans%3A800|Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700,800,900|Crete+Round:400italic" rel="stylesheet" type="text/css"/>
         
         
-        <?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
-            <link rel="stylesheet" href="{{ assetV('/frontend/css/responsive-mobile.css')}}" type="text/css"/>
-        <?php else: ?>
-            <link rel="stylesheet" href="{{ assetV('/frontend/css/responsive.css')}}" type="text/css"/>
-        <?php endif; ?>
+    <?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
+        <link rel="stylesheet" href="{{ assetV('/frontend/css/responsive-mobile.css')}}" type="text/css"/>
+    <?php else: ?>
+        <link rel="stylesheet" href="{{ assetV('/frontend/css/responsive.css')}}" type="text/css"/>
+    <?php endif; ?>
+        
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        <script type="text/javascript" src="{{ assetV('/js/scripts-home.js')}}" defer=""></script>
     @include('layouts._generalScriptsFront')
-     @yield('moreScripts')
+
 
      <style>
 
