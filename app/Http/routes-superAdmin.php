@@ -55,9 +55,10 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::post('admin/temporadas/create-type', 'SeasonsController@createType');
   Route::get('admin/temporadas/delete/{id}', 'SeasonsController@delete');
   // Pagos
-  Route::get('admin/pagos', 'PaymentsController@index');
   Route::get('admin/pagos/create', 'PaymentsController@create');
   Route::get('admin/pagos/update', 'PaymentsController@update');
+  Route::post('admin/pagos/cobrar', 'PaymentsController@cobrarFianza');
+  Route::get('admin/pagos', 'PaymentsController@index');
 
   //Liquidacion
   Route::get('admin/perdidas-ganancias/{year?}','LiquidacionController@perdidasGanancias');

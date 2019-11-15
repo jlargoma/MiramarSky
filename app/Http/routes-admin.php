@@ -10,6 +10,7 @@ Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin']], function
   Route::post('admin/limpiezas/pdf','LiquidacionController@export_pdf_limpiezas');
 
   
+  Route::get('admin/createFianza/{id}', 'BookController@createFianza');
   //PARTEE
   Route::get('admin/sendPartee/{id}', 'BookController@sendPartee');
   Route::get('ajax/partee-checkHuespedes/{id}', 'BookController@seeParteeHuespedes')->name('partee.checkHuespedes');
@@ -18,8 +19,11 @@ Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin']], function
   Route::get('/get-partee-msg', 'BookController@getParteeMsg');
   Route::post('/ajax/send-partee-finish', 'BookController@finishParteeCheckIn');
   Route::post('/ajax/send-partee-sms', 'BookController@finishParteeSMS');
+  Route::post('/ajax/send-fianza-sms', 'BookController@sendFianzaSMS');
   Route::post('/ajax/send-partee-mail', 'BookController@finishParteeMail');
+  Route::post('/ajax/send-fianza-mail', 'BookController@sendFianzaMail');
   Route::get('/ajax/showSendRemember/{bookID}', 'BookController@showSendRemember');
+  Route::get('/ajax/showFianza/{bookID}', 'BookController@showFianza');
   
 });
 Route::group(['middleware' => ['auth','role:admin|propietario'], 'prefix' => 'admin',], function () {

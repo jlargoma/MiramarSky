@@ -240,6 +240,7 @@
                                 if ($partee):
                                   echo $partee->print_status($book->id,$book->start,$book->pax);
                                  endif;
+                                 echo $book->getFianza();
                                 ?>
                             </td>
                             <?php endif ?>
@@ -434,6 +435,7 @@
                                 if ($partee):
                                   echo $partee->print_status($book->id,$book->start,$book->pax);
                                  endif;
+                                 echo $book->getFianza();
                                 ?>
                         <?php if ($book->send == 1): ?>
                             <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-default sendSecondPay" type="button" data-toggle="   tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="1">

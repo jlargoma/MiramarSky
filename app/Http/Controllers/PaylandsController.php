@@ -14,6 +14,7 @@ class PaylandsController extends AppController
     public function payment(Request $request){
           $booking = $request->input('booking', null);
           $amount = $request->input('amount', null);
+          $is_deferred = $request->input('is_deferred', null); //fianza
           if ($booking && $amount){
             $aux = explode('-', $booking);
             if (is_array($aux) && count($aux) == 2){
@@ -30,12 +31,14 @@ class PaylandsController extends AppController
                     $client_email = $client->email;
                   }
           
+                 
                   $urlToRedirect = $this->generateOrderPaymentBooking(
                           $bookingID,
                           $clientID,
                           $client_email,
                           $description,
-                          $amount
+                          $amount,
+                          $is_deferred
                           );
                   return view('backend.bookStatus.bookPaylandPay', [ 'url' => $urlToRedirect]);
                 } 
@@ -101,15 +104,10 @@ class PaylandsController extends AppController
       return 'error';
     }
     
-    public function generateOrder($amount,$subject,$bookingID) {
+    public function generateOrder($amount,$subject,$bookingID,$is_deferred=false) {
       $book = \App\Book::find($bookingID);
       $token = str_random(32).time();
-      
-      if (env('APP_APPLICATION') == "riad"){
-        $urlPay = route('front.payments',$token);
-      } else {
-        $urlPay = 'https://miramarski.com/payments-forms?t='.$token;
-      }
+      $urlPay = getUrlToPay($token);
 
       if ($amount){
         if ($book){
@@ -128,6 +126,7 @@ class PaylandsController extends AppController
           $PaymentOrders->status = 0;
           $PaymentOrders->token = $token;
           $PaymentOrders->description = $description;
+          $PaymentOrders->is_deferred = $is_deferred;
           $PaymentOrders->save();
           return $urlPay;
         } else {
@@ -139,6 +138,7 @@ class PaylandsController extends AppController
           $PaymentOrders->status = 0;
           $PaymentOrders->token = $token;
           $PaymentOrders->description = $subject;
+          $PaymentOrders->is_deferred = $is_deferred;
           $PaymentOrders->save();
           
           return $urlPay;
@@ -147,18 +147,25 @@ class PaylandsController extends AppController
       return null;
     }
     
-    private function getPaymentText($urlPay) {
+    private function getPaymentText($urlPay,$is_deferred) {
+      
+      if ($is_deferred){
+        $texto = 'En este link podrás realizar el pago de la Fianza.<br> En el momento en que efectúes el pago, te legará un email';
+      } else {
+        $texto = 'En este link podrás realizar el pago de la señal.<br> En el momento en que efectúes el pago, te legará un email';
+      }
+      
       $response = '<div class="col-md-2 col-xs-12">
               <h2 class="text-center" style="font-size: 18px; line-height: 18px; margin: 0;">
 
-                  <a href="whatsapp://send?text=En este link podrás realizar el pago de la señal.&#10; En el momento en que efectúes el pago, te llegará un email - ' . $urlPay . '" data-action="share/whatsapp/share">
+                  <a href="whatsapp://send?text='. str_replace('<br>', '&#10;',$texto).' - ' . $urlPay . '" data-action="share/whatsapp/share">
                       <i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>
                   </a>
               </h2>
           </div>
           <div class="col-md-10 col-xs-12">
               <h2 class="text-center" style="font-size: 24px; line-height: 15px">
-                  <span style="font-size: 18px;">En este link podrás realizar el pago de la señal.<br> En el momento en que efectúes el pago, te legará un email</span><br>
+                  <span style="font-size: 18px;">'.$texto.'</span><br>
                   <a target="_blank" href="' . $urlPay . '">
                       ' . substr($urlPay, 0, 45) . '...     
                   </a>
@@ -222,13 +229,13 @@ class PaylandsController extends AppController
     }
     public function processPayment(Request $request, $id)
     {
-//      file_put_contents(storage_path()."/test-payland".time(), $id."\n". json_encode($request->all()));
+      $dir = storage_path().'/payland';
+      if (!file_exists($dir)) {
+          mkdir($dir, 0775, true);
+      }
+      file_put_contents($dir."/$id-".time(), $id."\n". json_encode($request->all()));
       die('ok');
-//      var_dump($request->all());
-//      dd($id, $payment);
-//        $book = \App\Book::find($id);
-//        $this->payBook($id, $payment);
-//        return redirect()->route('thanks-you');
+
     }
     
     public function getOrders(Request $request, $isAjax = true) {
@@ -505,7 +512,8 @@ class PaylandsController extends AppController
                     $payment->cli_id,
                     $payment->cli_email,
                     $payment->description,
-                    $payment->amount
+                    $payment->amount,
+                    $payment->is_deferred
                     );
             
             if (env('APP_APPLICATION') == "riad"){
@@ -535,9 +543,10 @@ class PaylandsController extends AppController
           if (is_array($aux) && count($aux) == 2){
             $bookingID = desencriptID($aux[1]);
             $clientID = desencriptID($aux[0]);
-            $urlPay = $this->generateOrder($amount,$subject,$bookingID);
+            $is_deferred = $request->input('is_deferred', null); //fianza
+            $urlPay = $this->generateOrder($amount,$subject,$bookingID,$is_deferred);
             if ($urlPay){
-              return $this->getPaymentText($urlPay);
+              return $this->getPaymentText($urlPay,$is_deferred);
             }
             
           }
@@ -547,4 +556,37 @@ class PaylandsController extends AppController
       return 'error';
     }
            
+    public function thansYouPaymentDeferred($key_token)
+    {
+      $bookOrder = \App\BookDeferred::where('key_token',$key_token)->whereNull('paid')->first();
+      if ($bookOrder){
+        $bookOrder->paid = true;
+        $bookOrder->save();
+        $totalPayment = ($bookOrder->amount/100);
+        $amount = $totalPayment.' €';
+        \App\BookLogs::saveLogStatus($bookOrder->book_id,null,$bookOrder->cli_email,"Confirmación de Fianza de $amount ($key_token)");
+
+        $book = \App\Book::find($bookOrder->book_id);
+        if ($book){
+          $subject = translateSubject('Confirmación de Fianza',$book->customer->country);
+
+          $subject .= ' en '.env('APP_NAME');
+          $this->sendEmail_confirmDeferrend($book,$subject,$totalPayment);
+        }
+      }
+              ?>
+          <div style="text-align: center;margin-top: 2em; color: #fff;">
+            <h2 style="line-height: 1;">
+              ¡Muchas gracias por confiar en nosotros!
+            </h2>
+            <br>
+            <p style="line-height: 1;">
+              Te enviaremos un email con la confirmación de tu fianza.<br><br>
+              Un saludo
+            </p>
+          </div>
+          <?php
+          return '';
+        
+    }
 }

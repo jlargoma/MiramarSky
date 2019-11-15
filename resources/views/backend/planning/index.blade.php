@@ -7,6 +7,7 @@ setlocale(LC_TIME, "es_ES");
 @section('title') Administrador de reservas MiramarSKI @endsection
 
 @section('externalScripts')
+
     <link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
     <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
@@ -687,6 +688,134 @@ setlocale(LC_TIME, "es_ES");
       });
 
       });
+      
+      
+      //Fianzas
+      $('body').on('click','.sendFianza', function (event) {
+        var bID = $(this).data('id');
+        $.ajax({
+          url: '/ajax/showFianza/'+bID,
+          type: 'GET',
+          success: function (response) {
+            $('#modalSendPartee_content').html(response);
+            $('#modalSendPartee_title').html('Fianza');
+            $('#modalSendPartee').modal('show');
+          },
+          error: function (response) {
+            alert('No se ha podido obtener los detalles de la consulta.');
+          }
+        });
+      });
+      $('body').on('click','.copyMsgFianza', function (event) {
+        var data = $(this).data('msg');
+        var dummy = document.createElement("textarea");
+        $('#copyMsgFianza').append(dummy);
+        //Be careful if you use texarea. setAttribute('value', value), which works with "input" does not work with "textarea". – Eduard
+        dummy.value = data;
+        dummy.select();
+        document.execCommand("copy");
+        $('#copyMsgFianza').html('');
+
+        alert('Mensaje Fianza Copiado');
+      });
+      $('body').on('click','.sendFianzaMail',function(event) {
+        var id = $(this).data('id');
+        var that = $(this);
+        if (that.hasClass('disabled-error')) {
+          alert('Fianza error.');
+          return ;
+        }
+        if (that.hasClass('disabled')) {
+          return ;
+        }
+        $('#loadigPage').show('slow');
+        that.addClass('disabled')
+        $.post('/ajax/send-fianza-mail', { _token: "{{ csrf_token() }}",id:id }, function(data) {
+              if (data.status == 'danger') {
+                window.show_notif('Fianza Error:',data.status,data.response);
+              } else {
+                window.show_notif('Fianza:',data.status,data.response);
+                that.prop('disabled', true);
+              }
+              $('#loadigPage').hide('slow');
+          });
+        });
+        $('body').on('click','.showParteeLink',function(event) {
+          $('#linkPartee').show(700);
+        });
+        
+      $('body').on('click','.sendFianzaSMS',function(event) {
+        var id = $(this).data('id');
+        var that = $(this);
+        if (that.hasClass('disabled-error')) {
+          alert('Fianza error.');
+          return ;
+        }
+        if (that.hasClass('disabled')) {
+//          alert('No se puede enviar el SMS.');
+          return ;
+        }
+        $('#loadigPage').show('slow');
+        that.addClass('disabled')
+        $.post('/ajax/send-fianza-sms', { _token: "{{ csrf_token() }}",id:id }, function(data) {
+              if (data.status == 'danger') {
+                window.show_notif('Fianza Error:',data.status,data.response);
+              } else {
+                window.show_notif('Fianza:',data.status,data.response);
+                that.prop('disabled', true);
+              }
+              $('#loadigPage').hide('slow');
+          });
+        });
+        
+      $('body').on('click','.sendPayment',function(event) {
+        var id = $(this).data('id');
+        var amount = $('#amount_fianza').val();
+        var that = $(this);
+        if (that.hasClass('disabled-error')) {
+          alert('Fianza error.');
+          return ;
+        }
+        if (that.hasClass('disabled')) {
+//          alert('No se puede enviar el SMS.');
+          return ;
+        }
+        $('#loadigPage').show('slow');
+        
+        $.post('/admin/pagos/cobrar', { _token: "{{ csrf_token() }}",id:id,amount:amount }, function(data) {
+              if (data.status == 'danger') {
+                window.show_notif('Fianza Error:',data.status,data.response);
+              } else {
+                window.show_notif('Fianza:',data.status,data.response);
+                that.addClass('disabled')
+                that.prop('disabled', true);
+              }
+              $('#loadigPage').hide('slow');
+          });
+      });
+      
+      $('body').on('click','.createFianza',function(event) {
+        var id = $(this).data('id');
+        var that = $(this);
+        if (that.hasClass('disabled-error')) {
+          alert('Fianza error.');
+          return ;
+        }
+        $('#loadigPage').show('slow');
+        that.addClass('disabled')
+        $.get('/admin/createFianza/'+id, { _token: "{{ csrf_token() }}"}, function(data) {
+              if (data.status == 'danger') {
+                window.show_notif('Fianza Error:',data.status,data.response);
+              } else {
+                window.show_notif('Fianza:',data.status,data.response);
+                that.prop('disabled', true);
+              }
+              $('#loadigPage').hide('slow');
+          });
+      });
+      
+
+
 
     </script>
 

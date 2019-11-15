@@ -18,7 +18,7 @@ use App\Book;
 use App\Seasons;
 use App\Prices;
 use App\Traits\BookEmailsStatus;
-use App\Traits\BookParteeActions;
+use App\Traits\BookCentroMensajeria;
 use App\Traits\BookLogsTraits;
 use App\BookPartee;
 
@@ -27,7 +27,7 @@ setlocale(LC_TIME, "es_ES");
 
 class BookController extends AppController
 {
-    use BookEmailsStatus, BookParteeActions,BookLogsTraits;
+    use BookEmailsStatus, BookCentroMensajeria,BookLogsTraits;
 
 
     /**

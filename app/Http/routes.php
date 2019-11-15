@@ -11,6 +11,8 @@
     */
 //    use App\Http\Controllers\ForfaitsController;
 
+
+    
     Route::auth();
     Route::get('/', 'HomeController@index');
    
@@ -143,6 +145,7 @@
 //    Route::post('/proccess/payment/book/customer/{id}/{payment?}', 'PaylandsController@processPaymentBook')
 //         ->name('payland.proccess.payment.book.customer');
     Route::get('payment/thansk-you/{key_token}', 'PaylandsController@thansYouPayment')->name('payland.thanks.payment');
+    Route::get('payment/thansk-you-deferred/{key_token}', 'PaylandsController@thansYouPaymentDeferred')->name('payland.thanks.deferred');
    
     Route::get('payment/error/{key_token}', 'PaylandsController@errorPayment')->name('payland.error.payment');
     Route::get('payment/process/{key_token}', 'PaylandsController@processPayment')->name('payland.process.payment');

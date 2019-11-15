@@ -45,6 +45,8 @@ setlocale(LC_TIME, "es_ES"); ?>
               || $k == 'SMS_Partee_upload_dni'
               || $k == 'SMS_Partee_upload_dni_en'
               || $k == 'SMS_Partee_msg_en'
+              || $k == 'SMS_fianza'
+              || $k == 'SMS_fianza_end'
             )
             $ckeditor = false;
         ?>
@@ -84,7 +86,9 @@ setlocale(LC_TIME, "es_ES"); ?>
       
       % restante de tu reserva (Recordatorio 2º pago):<b>{pend_percent}</b><br>
       Valor restante de tu reserva (Recordatorio 2º pago):<b>{pend_payment}</b><br>
-      Url pago restante de tu reserva (Recordatorio 2º pago):<b>{urlPaymeny_rest}</b><br>
+      Url pago restante de tu reserva (Recordatorio 2º pago):<b>{urlPayment_rest}</b><br>
+      Url pago :<b>{urlPayment}</b><br>
+      Monto pago :<b>{payment_amount}</b><br>
       Cobrado (Recordatorio 2º pago):<b>{total_payment}</b><br>
       Partee link:<b>{partee}</b> <br>
       Orden Forfait:<b>{forfait_order}</b> <br>
