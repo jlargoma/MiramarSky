@@ -1109,15 +1109,23 @@ class Book extends Model {
     if ($this->agency == 4){
       return '';
     }
+    
+    
     $hasFianza = BookDeferred::where('book_id',$this->id)->where('paid',1)->first();
+    $textToltip = 'Fianza no confirmada';
     $class = 'text-danger';
     if ($hasFianza){
+      $textToltip = 'Fianza confirmada';
       $class = 'text-success';
+      if ($hasFianza->was_confirm){
+        $textToltip = "Fianza ya cobrada.";
+      }
+            
     }
 
-    return '<div class="tooltip-2 sendFianza cursor" data-id="'.$this->id.'" >'
-      . '<i class="fa fa-money fa-2x '.$class.'"></i>'
-      . '<div class="tooltiptext">Fianza</div>'
+    return '<div class="tooltip-2 sendFianza cursor '.$class.'" data-id="'.$this->id.'" >'
+      . '<i class="fa fa-dollar-sign"></i>'
+      . '<div class="tooltiptext">'.$textToltip.'</div>'
       . '</div>';
     
   }

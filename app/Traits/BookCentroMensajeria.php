@@ -691,6 +691,11 @@ trait BookCentroMensajeria {
           <button class="sendPayment btn btn-success" title="Cobrar Fianza" data-id="<?php echo $book->id; ?>">
             <i class="fa fa-euro"></i> Generar Cobro
           </button>
+          <p>
+            <small>
+              <strong>Importante:</strong> Sólo puedes efectuar un cobro a la Fianza (sin importart el monto).
+            </small>
+          </p>
           <?php 
           endif;
           ?>
