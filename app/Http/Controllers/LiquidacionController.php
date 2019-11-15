@@ -270,7 +270,7 @@ class LiquidacionController extends AppController {
     $diff = $startYear->diffInMonths($endYear) + 1;
     $lstMonths = lstMonths($startYear,$endYear);
     $rooms = \App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get();
-    $books = \App\Book::where_where_type_book_sales()->with('payments')
+    $books = \App\Book::where_type_book_sales()->with('payments')
             ->where('start', '>=', $startYear)
             ->where('start', '<=', $endYear)->get();
     
