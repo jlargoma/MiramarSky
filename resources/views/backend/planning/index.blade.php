@@ -18,6 +18,13 @@ setlocale(LC_TIME, "es_ES");
         .table-data .form-control{
             width: 100%;
         }
+        .sendFianza {
+          border: 3px solid;
+          border-radius: 50%;
+          padding: 3px;
+          width: 29px;
+          font-size: 18px;
+        }
     </style>
 @endsection
 
