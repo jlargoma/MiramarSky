@@ -217,13 +217,18 @@ trait BookEmailsStatus
             'book_comments'             => $data->book_comments,
             'total_price'               => number_format($data->total_price, 0, '', '.'),
             'url-condiciones-generales' => url('/condiciones-generales'),
-            'url-forfait'               => url('/forfait'),
+            'url-forfait'               => '',
         );
         
         if (env('APP_APPLICATION') == 'riad'){
           $dataContent['room'] = $data->room->nameRoom;
         }
         
+        
+        $orderFF = \App\Models\Forfaits\ForfaitsOrders::getByBook($data->id);
+        if ($orderFF){
+          $dataContent['url-forfait'] = env('FF_PAGE').encriptID($orderFF->id).'-'. getKeyControl($orderFF->id);
+        }
         /** process the mail content */
         foreach ($dataContent as $k => $v)
         {
