@@ -95,6 +95,7 @@
 	<script type="text/javascript" src="{{assetV('/frontend/js/components/moment.js')}}"></script>
 	<script type="text/javascript" src="{{assetV('/frontend/js/components/daterangepicker.js')}}"></script>
 	<?php /* view para todos los scripts generales de la pagina*/ ?>
+        <script type="text/javascript" src="{{ assetV('/js/scripts-footer.js')}}" defer=""></script>
 	@yield('scripts')
 	@include('layouts._generalScriptsFront')	
 </body>

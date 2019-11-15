@@ -48,6 +48,9 @@ class Settings extends Model
           'second_payment_confirm'            =>'Confirmación del 2º pago',
           'Forfait_email_payment_request'     =>'Solicitud de pago Forfaits',
           'Forfait_email_confirmation_payment'=>'Confirmación pago Forfait',
+          'fianza_request_deferred'           =>'Envío Fianza',
+          'fianza_confirm_deferred'           =>'Confirmación de Fianza',
+          'SMS_fianza'                        =>'SMS Fianza',
           'SMS_Partee_msg'                    =>'Mensaje Partee (enviar por plataforma de terceros)',
           'SMS_Partee_upload_dni'             =>'SMS Partee (subir dni para el control diario de huéspedes)'
       ];

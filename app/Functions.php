@@ -147,3 +147,13 @@ function translateSubject($text,$lng='es'){
   
   return $text;
 }
+
+function getUrlToPay($token){
+  if (env('APP_APPLICATION') == "riad"){
+    $urlPay = route('front.payments',$token);
+  } else {
+    $urlPay = 'https://miramarski.com/payments-forms?t='.$token;
+  }
+  
+  return $urlPay;
+}

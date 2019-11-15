@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
         Commands\SendParteeAdmin::class,
         Commands\ChatEmails::class,
         Commands\forfaitPaymentReminder::class,
+        Commands\CreatePaymentFianza::class,
     ];
 
     /**

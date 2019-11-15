@@ -1,8 +1,8 @@
 <!-- before general -->
 
 
-<script type="text/javascript" src="{{ assetV('/js/scripts-footer.js')}}"></script>
-<script src='https://www.google.com/recaptcha/api.js?render=6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV'></script>
+
+<script src='https://www.google.com/recaptcha/api.js?render=6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV' defer=""></script>
 
 <?php /* view para todos los scripts generales de la pagina */ ?>
 
@@ -24,7 +24,11 @@
 
 </script>
 <script>
-  AOS.init();
+  $(document).ready(function () {
+  
+  setTimeout(function(){AOS.init();},1200);
+  });
+  
 </script>
 
 </body>

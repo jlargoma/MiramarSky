@@ -53,12 +53,7 @@ text-shadow: 1px 1px 0px #36495b;
 section.feature-home {
   clear: both;
   text-align: center;
-  background: url(/frontend/images/home/feature-bg.jpg);
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
   padding-bottom: 3em;
-
 }
 .box-feature-home{
   width: 90%;
@@ -400,6 +395,13 @@ div#content-response {
     margin-right: 0;
     margin-left: 5px;
   }
+  section.feature-home {
+   background-image: url(/frontend/images/home/feature-bg.jpg);
+    background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+ 
+  }
 }
 @media only screen and (max-width: 768px){
   .moreRooms{
@@ -446,6 +448,14 @@ padding-top: 32px;
 .footer-area .capa-blanca h4{
   color:#fff;
 }
+section.feature-home {
+  background-color: #a2c0d8;
+/*   background-image: url(/frontend/images/home/feature-mobile.png);
+    background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;*/
+ 
+  }
 }
 @media only screen and (max-width: 540px){
   .home-service{

@@ -1099,4 +1099,26 @@ class Book extends Model {
           'cost_limp'=>0
           ];
   }
+  
+  /**
+   * show Fianza Icon
+   * @return string
+   */
+  public function getFianza() {
+    //ignore Airbnb
+    if ($this->agency == 4){
+      return '';
+    }
+    $hasFianza = BookDeferred::where('book_id',$this->id)->where('paid',1)->first();
+    $class = 'text-danger';
+    if ($hasFianza){
+      $class = 'text-success';
+    }
+
+    return '<div class="tooltip-2 sendFianza cursor" data-id="'.$this->id.'" >'
+      . '<i class="fa fa-money fa-2x '.$class.'"></i>'
+      . '<div class="tooltiptext">Fianza</div>'
+      . '</div>';
+    
+  }
 }

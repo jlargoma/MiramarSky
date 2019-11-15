@@ -182,6 +182,11 @@ trait ForfaitsPaymentsTraits {
   }
 
   public function processPayment(Request $request, $id) {
+    $dir = storage_path().'/payland';
+    if (!file_exists($dir)) {
+        mkdir($dir, 0775, true);
+    }
+    file_put_contents($dir."/$id-".time(), $id."\n". json_encode($request->all()));
     die('ok');
   }
 

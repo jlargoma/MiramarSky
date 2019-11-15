@@ -98,12 +98,12 @@ trait BookEmailsStatus
         $pendiente         = ($book->total_price - $totalPayment);
         $cachedRepository  = new CachedRepository();
         $PaylandsController= new \App\Http\Controllers\PaylandsController($cachedRepository);
-        $urlPaymeny        = $PaylandsController->generateOrder($pendiente,'',$book->id);
-//        $urlPaymeny        = 'https://miramarski.com/reservas/stripe/pagos/' . base64_encode($book->id) . '/' . base64_encode(round($pendiente));
+        $urlPayment        = $PaylandsController->generateOrder($pendiente,'',$book->id);
+//        $urlPayment        = 'https://miramarski.com/reservas/stripe/pagos/' . base64_encode($book->id) . '/' . base64_encode(round($pendiente));
         $mailClientContent = str_replace('{pend_percent}', $percent, $mailClientContent);
         $mailClientContent = str_replace('{total_payment}', number_format($totalPayment, 2, ',', '.'), $mailClientContent);
         $mailClientContent = str_replace('{pend_payment}', number_format($pendiente, 2, ',', '.'), $mailClientContent);
-        $mailClientContent = str_replace('{urlPaymeny_rest}', $urlPaymeny, $mailClientContent);
+        $mailClientContent = str_replace('{urlPayment_rest}', $urlPayment, $mailClientContent);
 
         $mailClientContent = $this->clearVars($mailClientContent);
 
@@ -383,6 +383,68 @@ trait BookEmailsStatus
         });
         
         \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'send_forfait_payment_reminder',$subject,$mailClientContent);
+
+        return $sended;
+    }
+    
+     /**
+     *
+     * @param type $book
+     * @param type $subject
+     */
+    public function sendEmail_FianzaPayment($book,$total_price, $link)
+    {
+      if (!$book->customer->email || trim($book->customer->email) == '') return;
+        $mailClientContent = $this->getMailData($book, 'fianza_request_deferred');
+        setlocale(LC_TIME, "ES");
+        setlocale(LC_TIME, "es_ES");
+
+        $subject = translateSubject('Generar Fianza',$book->customer->country);
+        
+        $mailClientContent = str_replace('{payment_amount}', $total_price, $mailClientContent);
+        $mailClientContent = str_replace('{urlPayment}', $link, $mailClientContent);
+        $mailClientContent = $this->clearVars($mailClientContent);
+        $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $mailClientContent,
+            'title'       => $subject
+        ], function ($message) use ($book, $subject) {
+            $message->from(env('MAIL_FROM'));
+            $message->to($book->customer->email);
+            $message->subject($subject);
+            $message->replyTo(env('MAIL_FROM'));
+        });
+        
+        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'fianza_request_deferred',$subject,$mailClientContent);
+
+        return $sended;
+    }
+    
+        /**
+     *
+     * @param type $book
+     * @param type $subject
+     */
+    public function sendEmail_confirmDeferrend($book, $subject,$totalPayment)
+    {
+      if (!$book->customer->email || trim($book->customer->email) == '') return;
+        $mailClientContent = $this->getMailData($book, 'fianza_confirm_deferred');
+        setlocale(LC_TIME, "ES");
+        setlocale(LC_TIME, "es_ES");
+        
+        $mailClientContent = str_replace('{payment_amount}', number_format($totalPayment, 2, ',', '.'), $mailClientContent);
+        $mailClientContent = $this->clearVars($mailClientContent);
+
+        $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $mailClientContent,
+            'title'       => $subject
+        ], function ($message) use ($book, $subject) {
+            $message->from(env('MAIL_FROM'));
+            $message->to($book->customer->email);
+            $message->subject($subject);
+            $message->replyTo(env('MAIL_FROM'));
+        });
+        
+        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'fianza_confirm_deferred',$subject,$mailClientContent);
 
         return $sended;
     }

@@ -74,7 +74,7 @@ class PaylandService
             return $response;
         } catch (\Exception $e)
         {
-          dd($e->getMessage());
+//          dd($e->getMessage());
             throw new \Exception($e->getMessage());
         }
     }
@@ -123,5 +123,24 @@ class PaylandService
       
       return '$';
       
+    }
+    
+    public function confirmationPayment($params)
+    {
+        try
+        {
+            $response = $this->call(self::METHOD_POST,'/payment/confirmation', $params);
+            return $response;
+        } catch (\Exception $e)
+        {
+          $response = $e->getMessage();
+          
+          $aux = explode('"details":', $response);
+          if (is_array($aux) && isset($aux[1])){
+            return str_replace('}', '', $aux[1]);
+          }
+           
+          return $response;
+        }
     }
 }

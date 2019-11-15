@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Book;
 use App\BookPartee;
+use App\PaymentOrders;
 
 
-trait BookParteeActions {
+trait BookCentroMensajeria {
   
   
         /**
@@ -498,4 +499,209 @@ trait BookParteeActions {
     return redirect('/admin/reservas');
   
   }
+  
+  
+  public function createFianza($bookID) {
+    $book = Book::find($bookID);
+    if ($book){
+      $hasFianza = PaymentOrders::where('book_id',$book->id)->where('is_deferred',1)->first();
+      if (!$hasFianza){
+        $urlPayment = $this->createPaymentFianza($book);
+        if ($urlPayment){
+         $this->sendEmail_FianzaPayment($book,300,$urlPayment);
+          return [
+            'status'   => 'success',
+            'response' => "Fianza creada y Mail enviado",
+          ];
+        }
+        return [
+          'status'   => 'success',
+          'response' => "Fianza creada",
+        ];
+      }
+    }
+    return [
+          'status'   => 'danger',
+          'response' => "Fianza ya creada",
+        ];
+  }
+
+
+  public function showFianza($bookID) {
+    
+    
+   
+    $book = Book::find($bookID);
+    $disableEmail = 'disabled';
+    $disablePhone = 'disabled';
+    if ($book){
+      if ($book->customer->email) $disableEmail = '';
+      if ($book->customer->phone) $disablePhone = '';
+    }
+    
+    if ($this->showPaymentFianzaForm($book)) return;
+    
+    $Order = PaymentOrders::where('book_id',$book->id)->where('is_deferred',1)->first();
+    $showInfo = [];
+    if ($Order){
+      
+      $urlPay = getUrlToPay($Order->token);
+      $link = '<a href="'.$urlPay.'" title="Ir a Partee">'.$urlPay.'</a>';
+      $totalPayment = $Order->amount/100;
+      $subject = translateSubject('Fianza de reserva',$book->customer->country);
+      $message = $this->getMailData($book, 'SMS_fianza');
+      $message = str_replace('{payment_amount}', number_format($totalPayment, 2, ',', '.'), $message);
+      $message = str_replace('{urlPayment}', $urlPay, $message);
+      $message = $this->clearVars($message);
+    } else {
+      ?>
+      <p class="alert alert-warning">Fianza no encontrada</p>
+      <p class="text-center">
+        <button type="button" class="createFianza btn btn-success" data-id="<?php echo $book->id; ?>">Crear Fianza</button>
+      </p>
+      <?php
+      return;
+    }
+
+    ?>
+  <div class="col-md-6 minH-4">
+    <button class="sendFianzaSMS btn btn-default <?php echo $disablePhone;?>" title="Enviar Texto Fianza por SMS" data-id="<?php echo $bookID;?>">
+      <i class="sendSMSIcon"></i>Enviar SMS
+    </button>
+  </div>
+  <div class="col-md-6 minH-4">
+    <button class="sendFianzaMail btn btn-default <?php echo $disableEmail;?>" title="Enviar Texto Fianza por Correo" data-id="<?php echo $bookID;?>">
+      <i class="fa fa-inbox"></i> Enviar Email
+    </button>
+  </div>
+  <div class="col-md-6 minH-4">
+    <a href="whatsapp://send?text=<?php echo $message; ?>"
+           data-action="share/whatsapp/share"
+           data-original-title="Enviar Partee link"
+           data-toggle="tooltip"
+           class="btn btn-default <?php echo $disablePhone;?>">
+      <i class="fa  fa-whatsapp" aria-hidden="true" style="color: #000; margin-right: 7px;"></i>Enviar Whatsapp
+        </a>
+  </div>
+  <div class="col-md-6 minH-4">
+    <button class="showParteeLink btn btn-default" title="Mostrar link Fianza">
+      <i class="fa fa-link"></i> Mostart Link
+    </button>
+  </div>  
+  <div class="col-md-6 minH-4"> 
+    <button class="btn btn-default copyMsgFianza" title="Copiar mensaje Fianza" data-msg="<?php echo strip_tags($message); ?>">
+      <i class="far fa-copy"></i>  Copiar mensaje Fianza
+    </button>
+    <div id="copyMsgFianza"></div>
+  </div>
+  <div id="linkPartee" class="col-xs-12" style="display:none;max-width: 320px;overflow: auto;"><?php echo $link; ?></div>
+    <?php
+
+      
+  }
+  
+  function sendFianzaMail(request $request){
+    $bookID = $request->input('id',null);
+          
+    $book = Book::find($bookID);
+    if ($book){
+      $Order = PaymentOrders::where('book_id',$book->id)->where('is_deferred',1)->first();
+      $showInfo = [];
+      if ($Order){
+        $urlPayment = getUrlToPay($Order->token);
+        $totalPayment = $Order->amount;
+        $this->sendEmail_FianzaPayment($book,$totalPayment,$urlPayment);
+        return [
+          'status'   => 'success',
+          'response' => "Mail de Fianza enviado",
+        ];
+      }
+    }
+    
+    return [
+      'status'   => 'danger',
+      'response' => "Registro de Fianza no encontrado."
+    ];
+              
+  }
+  
+      /**
+     * Send Fianza by SMS
+     * @param Request $request
+     * @return type
+     */
+    public function sendFianzaSMS(Request $request) {
+      $bookID = $request->input('id',null);
+          
+    $book = Book::find($bookID);
+    if ($book){
+      $Order = PaymentOrders::where('book_id',$book->id)->where('is_deferred',1)->first();
+      $showInfo = [];
+      if ($Order){
+        $urlPayment = getUrlToPay($Order->token);
+        $totalPayment = $Order->amount;
+        //Send SMS
+        $SMSService = new \App\Services\SMSService();
+        if ($SMSService->conect()){
+
+          $message = $this->getMailData($book,'SMS_fianza');
+          $message = str_replace('{urlPayment}', $urlPayment, $message);
+          $message = str_replace('{payment_amount}', $totalPayment, $message);
+          $phone = $book->customer['phone'];
+          $message = $this->clearVars($message);
+          $message = strip_tags($message);
+
+          if ($SMSService->sendSMS($message,$phone)){
+            return [
+              'status'   => 'success',
+              'response' => "Mail de Fianza enviado",
+            ];
+          }
+        }
+      }
+    }
+    
+    return [
+      'status'   => 'danger',
+      'response' => "Registro de Fianza no encontrado."
+    ];
+
+    }
+    
+    public function showPaymentFianzaForm($book) {
+      
+      $Order = \App\BookDeferred::where('book_id',$book->id)
+              ->where('is_deferred',1)->where('paid',1)->first();
+      
+      if ($Order){
+        ?>
+  
+        <div class="col-md-12 minH-4">
+          
+          <?php 
+          
+          if ($Order->was_confirm && $Order->payment>0):
+            echo '<p>Pago efectuado: <b>'. ($Order->payment/100).'€.</b></p>';
+          else:
+          ?>
+          <div style="margin-bottom: 1em;">
+              <label for="name">Cobrar de la fianza, la suma de:</label>
+              <input class="form-control" type="number" id="amount_fianza" value="300">
+          </div>
+          <button class="sendPayment btn btn-success" title="Cobrar Fianza" data-id="<?php echo $book->id; ?>">
+            <i class="fa fa-euro"></i> Generar Cobro
+          </button>
+          <?php 
+          endif;
+          ?>
+          
+          <p>
+            <strong>ID de Orden De Payland:</strong> <?php echo $Order->order_uuid; ?>
+          </p>
+        </div> 
+        <?php
+        return true;
+      }
+      return false;
+    }
 }

@@ -144,6 +144,30 @@ class ContentsControllers extends Controller
     }
     
     public function re_saveImg() {
+       return null;
+      $obj = \App\RoomsPhotos::where('gallery_key','>=',1)->get();
+      foreach ($obj as $i){
+        $folder = $i->gallery_key;
+        if (!is_numeric($folder)){
+          continue;
+        }
+        $imagename = $i->file_name;
+        $directory = public_path() . $i->file_rute.'/';
+        $directoryMobile = $directory. "/mobile";
+        if (!is_file($directory.$imagename)){
+          continue;
+        }
+        if (!file_exists($directoryMobile)) {
+          mkdir($directoryMobile, 0777, true);
+        }
+         $destinationPath = $directoryMobile;
+//         var_dump($directory.$imagename); die;
+          $img = Image::make($directory.$imagename)->interlace();
+          $img->resize(430, 430, function ($constraint) {
+                      $constraint->aspectRatio();
+                  })->save($destinationPath.'/'.$imagename);
+                
+      }
     return null;
       $rute = "/img/miramarski/contents";
       $directory = public_path();

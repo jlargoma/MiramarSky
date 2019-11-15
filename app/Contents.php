@@ -117,7 +117,7 @@ class Contents extends Model
       
       if ($mobile && $is_mobile){
         foreach ($result as $k=>$v){
-          if(strpos($k,'mobile')>0){
+          if(trim($v) !='' && strpos($k,'mobile')>0){
             $aux = str_replace('_mobile', '', $k);
             $result[$aux] = $v;
           }
