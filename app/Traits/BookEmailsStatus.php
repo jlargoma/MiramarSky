@@ -41,6 +41,9 @@ trait BookEmailsStatus
                 $urlToPayment       = $PaylandsController->generateOrder($amount,'',$book->id);
                 $mailClientContent = str_replace('{urlToPayment}', $urlToPayment, $mailClientContent);
                 $mailClientContent = str_replace('{mount_percent}', $mount_percent, $mailClientContent);
+                if ($percent<1){
+                  $percent = $percent*100;
+                }
                 $mailClientContent = str_replace('{percent}', $percent, $mailClientContent);
                 break;
 
