@@ -60,7 +60,7 @@ $mobile = new Mobile();
           <tr>
             <td class="" style="padding: 5px 8px!important; background-color: #d3e8f7!important;"><b>VENTAS TEMPORADA</b></td>
             <td class=" text-center" style="padding: 5px 8px!important; background-color: #d3e8f7!important;">
-              <b><?php echo number_format(round($totals['totalPrice']), 0, ',', '.') ?> €</b>
+              <b><?php echo number_format(round($totals['totalSale']), 0, ',', '.') ?> €</b>
             </td>
           </tr>
           <tr style="background-color: #38C8A7;">
@@ -91,7 +91,7 @@ $mobile = new Mobile();
         </div>
         <div class="col-md-6 bordered text-center">
           <h4 class="hint-text">Vendido Temporada</h4>
-            <h3 ><?php echo number_format(round($totals['totalPrice']), 0, ',', '.') ?> €</h3>
+            <h3 ><?php echo number_format(round($totals['totalSale']), 0, ',', '.') ?> €</h3>
         </div>
         <div class="col-md-6 bordered text-center">
           <h4 class="hint-text">Total de Ordenes</h4>
@@ -147,8 +147,6 @@ $mobile = new Mobile();
               CLASS<br/><?php echo number_format($totals['class'], 0, ',', '.') ?> €</th>
             <th class="th-bookings th-6">
               COBRADO<br/><?php echo number_format($totals['totalPayment'], 0, ',', '.') ?> €</th>
-            <th class="th-bookings th-6">
-              PENDIENTE<br/><?php echo number_format($totals['totalToPay'], 0, ',', '.') ?> €</th>
             <th class="th-bookings th-2">FF</th>
             <th class="th-bookings th-2" title="Reservas hechas en Forfait Express">FFExpress</th>
           </tr>
@@ -239,19 +237,42 @@ $mobile = new Mobile();
             <td class="text-center"><?php echo number_format($order['forfaits'], 0, ',', '.') ?> €</td>
             <td class="text-center"><?php echo number_format($order['material'], 0, ',', '.') ?> €</td>
             <td class="text-center"><?php echo number_format($order['class'], 0, ',', '.') ?> €</td>
-            <td class="text-center"><?php echo number_format($order['totalPayment'], 0, ',', '.') ?> €</td>
-            <td class="text-center text-danger"><?php echo number_format($order['totalToPay'], 0, ',', '.') ?> €</td>
+            <td class="text-center">
+              <div class="col-md-6">
+                <?php echo number_format($order['totalPayment'], 0, ',', '.') ?> €
+                 <?php 
+                  $porcent = 0;
+                  $color = 'style="color: red;"';
+                  if ($order['totalPrice']>0){
+                    if ($order['totalPayment']>0){
+                      $porcent = ceil(($order['totalPayment']/$order['totalPrice'])*100);
+                      if ($porcent>=100){
+                        $color = 'style="color: #008000;"';
+                        $porcent = 100;
+                      }
+                    }
+                  } else {
+                    $color = 'style="color: #008000;"';
+                    $porcent = 100;
+                  }
+              
+//               text-danger
+              ?>
+                <p <?php echo $color; ?>><?php echo number_format($order['totalToPay'], 0, ',', '.');  ?>€</p>
+              </div>
+             
+              <div class="col-md-6"><span <?php echo $color; ?>><?php echo $porcent; ?>%</span></div>
+              
+            </td>
             <td class="text-center">
              <a data-booking="<?php echo $order['id']; ?>" class="openFF" title="Ir a Forfaits" >
               <?php
-              if ($book){
-                $ff_status = $book->get_ff_status();
+                $ff_status = $order['status'];
                 if ($ff_status['icon']) {
                   echo '<img src="' . $ff_status['icon'] . '" style="max-width:30px;" alt="' . $ff_status['name'] . '"/>';
+                } else {
+                   echo '<img src="/img/miramarski/ski_icon_status_transparent.png" style="max-width:30px;" alt="Externo"/>';
                 }
-              } else {
-                 echo '<img src="/img/miramarski/ski_icon_status_transparent.png" style="max-width:30px;" alt="Externo"/>';
-              }
               ?>
               </a>
             </td>  

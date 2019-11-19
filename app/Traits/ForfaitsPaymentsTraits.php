@@ -151,6 +151,14 @@ trait ForfaitsPaymentsTraits {
       $order = ForfaitsOrders::find($PaymentOrder->order_id);
       if ($order){
         $this->sendBookingOrder($order,$PaymentOrder->last_item_id);
+        
+        $totalPrice = $order->total;
+        $totalPayment =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->sum('amount');
+        if ($totalPayment>0) $totalPayment = $totalPayment/100;
+        if ($totalPrice<=$totalPayment){
+           $order->status = 3; //cobrada
+           $order->save();
+        }
         //send email
         $book = Book::find($PaymentOrder->book_id);
         if ($book){
@@ -256,10 +264,11 @@ trait ForfaitsPaymentsTraits {
     $endYear = new Carbon($year->end_date);
     
     $allOrders = ForfaitsOrders::whereNotNull('total')->get();
-//    $allOrders = ForfaitsOrders::where('book_id','>',0)->get();
+//    $allOrders = ForfaitsOrders::where('id',3)->get();
     $lstOrders = [];
    
     $totals = [
+        'totalSale' =>0,
         'totalPrice' =>0,
         'forfaits'   => 0,
         'class'      => 0,
@@ -283,7 +292,7 @@ trait ForfaitsPaymentsTraits {
             }
             $totalToPay = $totalPrice - $totalPayment;
     
-            
+//            var_dump($totalPayment,$totalPrice,$totalToPay); die;
             
             $ff_sent = ForfaitsOrderItem::where('order_id', $order->id)
                     ->where('type', 'forfaits')
@@ -305,16 +314,19 @@ trait ForfaitsPaymentsTraits {
                 'totalPayment'=> $totalPayment,
                 'totalToPay'  =>$totalToPay,
                 'ff_sent'     => $ff_sent,
+                'status'     => $order->get_ff_status(),
                 'ff_item_total'=> $ff_item_total,
             ];
             
-            
-            $totals['totalPrice'] = $totals['totalPrice']+$totalPrice;
-            $totals['forfaits'] = $totals['forfaits']+$forfaits;
-            $totals['class'] = $totals['class']+$class;
-            $totals['material'] = $totals['material']+$material;
-            $totals['totalPayment'] = $totals['totalPayment']+$totalPayment;
-            $totals['totalToPay'] = $totals['totalToPay']+$totalToPay;
+            if ($order->status == 2 || $order->status == 3){
+              $totals['totalSale'] = $totals['totalSale']+$totalPrice;
+              $totals['totalPrice'] = $totals['totalPrice']+$totalPrice;
+              $totals['forfaits'] = $totals['forfaits']+$forfaits;
+              $totals['class'] = $totals['class']+$class;
+              $totals['material'] = $totals['material']+$material;
+              $totals['totalPayment'] = $totals['totalPayment']+$totalPayment;
+              $totals['totalToPay'] = $totals['totalToPay']+$totalToPay;
+            }
       }
       $rooms = \App\Rooms::all();
       

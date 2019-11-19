@@ -615,6 +615,7 @@ class ForfaitsItemController extends AppController {
         'totalPayment' => $totalPayment,
         'totalToPay' => $totalToPay,
         'extraForfait' => $extraForfait,
+        'ff_status' => ($order->status) ? $order->status : 0
     ];
 
     return $result;
@@ -639,6 +640,7 @@ class ForfaitsItemController extends AppController {
       
       if ($control == getKeyControl($ordenID)){
         $order = ForfaitsOrders::find($ordenID);
+        $status = ($order->status) ? $order->status : 0;
         if ($order){
           $book = Book::find($order->book_id);
           if ($book) {
@@ -652,12 +654,12 @@ class ForfaitsItemController extends AppController {
             $userData['apto'] = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
             $userData['start'] = $book->start;
             $userData['finish'] = $book->finish;
-            $userData['ff_status'] = $book->ff_status;
+            $userData['ff_status'] = $status;
           } else {
             $userData['user_name'] = $order->name;
             $userData['user_email'] = $order->email;
             $userData['user_phone'] = $order->phone;
-            $userData['ff_status'] = 0;
+            $userData['ff_status'] = $status;
           }
           
         
@@ -834,21 +836,25 @@ class ForfaitsItemController extends AppController {
         "comments" => "",
     ];
 
-    foreach ($forfait_data as $ff_data) {
-      $data['forfaits'][] = [
-          "age" => $ff_data->age,
-          "dateFrom" => $ff_data->dateFrom,
-          "dateTo" => $ff_data->dateTo
-      ];
+    if ($forfait_data){
+      foreach ($forfait_data as $ff_data) {
+        $data['forfaits'][] = [
+            "age" => $ff_data->age,
+            "dateFrom" => $ff_data->dateFrom,
+            "dateTo" => $ff_data->dateTo
+        ];
+      }
     }
-    foreach ($forfait_insurances as $ff_data) {
-      $data['insurances'][] = [
-          "insuranceId" => $ff_data->insuranceId,
-          "clientName" => $ff_data->clientName,
-          "clientDni" => $ff_data->clientDni,
-          "dateFrom" => $ff_data->dateFrom,
-          "dateTo" => $ff_data->dateTo
-      ];
+    if ($forfait_insurances){
+      foreach ($forfait_insurances as $ff_data) {
+        $data['insurances'][] = [
+            "insuranceId" => $ff_data->insuranceId,
+            "clientName" => $ff_data->clientName,
+            "clientDni" => $ff_data->clientDni,
+            "dateFrom" => $ff_data->dateFrom,
+            "dateTo" => $ff_data->dateTo
+        ];
+      }
     }
     
     $json = json_encode($data);
@@ -924,13 +930,16 @@ class ForfaitsItemController extends AppController {
         if (is_numeric($orderID) &&  $control == getKeyControl($orderID)){
             $order = ForfaitsOrders::find($orderID);
             if ($order){
-              $bookingID = $order->book_id;
-              $book = Book::find($bookingID);
-              if ($book) {
-                $book->ff_status = intval($data);
-                $book->save();
-                return response()->json(['status' => 'ok']);
-              }
+//              $bookingID = $order->book_id;
+//              $book = Book::find($bookingID);
+//              if ($book) {
+//                $book->ff_status = intval($data);
+//                $book->save();
+//              }
+              
+              $order->status = intval($data);
+              $order->save();
+              return response()->json(['status' => 'ok']);
             }
         }
       }

@@ -39,9 +39,15 @@ class ForfaitsOrders extends Model
     $TotalItems = ForfaitsOrderItem::where('order_id',$this->id)
             ->WhereNull('cancel')->sum('total');
     
-    if ($TotalItems)
+    if ($TotalItems){
+      if ($this->total < $TotalItems){
+        $this->status = 2;
+      }
       $this->total = $TotalItems;
-    else $this->total = 0;
+    }
+    else {
+      $this->total = 0;
+    }
     
     $this->save();
   }
@@ -52,5 +58,48 @@ class ForfaitsOrders extends Model
         );
     
     return isset($insur[$id]) ? $insur[$id] : '';
+  }
+  
+  public function get_ff_status($showAll = true) {
+    $result = [
+        'name' => '',
+        'icon' => null
+    ];
+
+    switch ($this->status) {
+      case 0:
+        if ($showAll) {
+          $result = [
+              'name' => 'No Gestionada',
+              'icon' => asset('/img/miramarski/ski_icon_status_transparent.png')
+          ];
+        }
+        break;
+      case 1:
+        $result = [
+            'name' => 'Cancelada',
+            'icon' => asset('/img/miramarski/ski_icon_status_grey.png')
+        ];
+        break;
+      case 2:
+        $result = [
+            'name' => 'Pendiente',
+            'icon' => asset('/img/miramarski/ski_icon_status_red.png')
+        ];
+        break;
+      case 3:
+        $result = [
+            'name' => 'Cobrada',
+            'icon' => asset('/img/miramarski/ski_icon_status_green.png')
+        ];
+        break;
+      case 4:
+        $result = [
+            'name' => 'Comprometida',
+            'icon' => asset('/img/miramarski/ski_icon_status_orange.png')
+        ];
+        break;
+    }
+    return $result;
   }
 }
