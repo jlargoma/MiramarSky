@@ -151,19 +151,25 @@ trait ForfaitsPaymentsTraits {
       $order = ForfaitsOrders::find($PaymentOrder->order_id);
       if ($order){
         $this->sendBookingOrder($order,$PaymentOrder->last_item_id);
-        
+        $orderStatus = null;
         $totalPrice = $order->total;
         $totalPayment =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->sum('amount');
         if ($totalPayment>0) $totalPayment = $totalPayment/100;
         if ($totalPrice<=$totalPayment){
            $order->status = 3; //cobrada
+           $orderStatus = 3;
            $order->save();
+           
         }
         //send email
         $book = Book::find($PaymentOrder->book_id);
         if ($book){
           $cli_email = $book->customer->email;
           $cli_name = $book->customer->name;
+          if ($orderStatus){
+            $book->ff_status = $orderStatus;
+            $book->save();
+          }
           $subject = translateSubject('Confirmación de Pago',$book->customer->country);
         } else {
           $cli_name = $order->name;
@@ -268,6 +274,7 @@ trait ForfaitsPaymentsTraits {
     $lstOrders = [];
    
     $totals = [
+        'orders' =>0,
         'totalSale' =>0,
         'totalPrice' =>0,
         'forfaits'   => 0,
@@ -319,6 +326,7 @@ trait ForfaitsPaymentsTraits {
             ];
             
             if ($order->status == 2 || $order->status == 3){
+              $totals['orders']++;
               $totals['totalSale'] = $totals['totalSale']+$totalPrice;
               $totals['totalPrice'] = $totals['totalPrice']+$totalPrice;
               $totals['forfaits'] = $totals['forfaits']+$forfaits;

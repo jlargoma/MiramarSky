@@ -930,12 +930,12 @@ class ForfaitsItemController extends AppController {
         if (is_numeric($orderID) &&  $control == getKeyControl($orderID)){
             $order = ForfaitsOrders::find($orderID);
             if ($order){
-//              $bookingID = $order->book_id;
-//              $book = Book::find($bookingID);
-//              if ($book) {
-//                $book->ff_status = intval($data);
-//                $book->save();
-//              }
+              $bookingID = $order->book_id;
+              $book = Book::find($bookingID);
+              if ($book) {
+                $book->ff_status = intval($data);
+                $book->save();
+              }
               
               $order->status = intval($data);
               $order->save();

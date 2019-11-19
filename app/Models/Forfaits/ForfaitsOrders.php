@@ -42,6 +42,9 @@ class ForfaitsOrders extends Model
     if ($TotalItems){
       if ($this->total < $TotalItems){
         $this->status = 2;
+        if ($this->book_id){
+          \App\Book::where('id', $this->book_id)->update(['ff_status' => 2]);
+        }
       }
       $this->total = $TotalItems;
     }
