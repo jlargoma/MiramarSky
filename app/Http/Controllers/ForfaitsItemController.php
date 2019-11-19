@@ -997,6 +997,8 @@ class ForfaitsItemController extends AppController {
       $book = Book::find($bookID);
       if ($book) {
         $order = ForfaitsOrders::getByBook($bookID);
+        $order->status = $book->ff_status;
+        $order->save();
       }
     }
     
