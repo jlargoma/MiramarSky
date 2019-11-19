@@ -96,7 +96,7 @@ $mobile = new Mobile();
         <div class="col-md-6 bordered text-center">
           <h4 class="hint-text">Total de Ordenes</h4>
           <div class="p-l-20">
-            <h3 ><?php echo count($orders); ?></h3>
+            <h3 ><?php echo $totals['orders']; ?></h3>
           </div>
         </div>
         <div class="col-md-6 bordered text-center">
@@ -104,8 +104,8 @@ $mobile = new Mobile();
             <h3 >
               <?php 
               $promedio = 0;
-              if ($orders){
-                $promedio = round($totals['totalPrice'])/count($orders);
+              if ($totals['orders']>0){
+                $promedio = round($totals['totalPrice'])/$totals['orders'];
               }
               echo number_format(round($promedio), 0, ',', '.')
               ?>
