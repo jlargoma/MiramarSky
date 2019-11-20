@@ -129,7 +129,7 @@ class CustomersController extends AppController
         \Excel::create('Clientes', function($excel) {
             
 
-            $clientes = $this->getCustomersList();
+            $clientes = $this->getCustomersList(true);
             
             $excel->sheet('Clientes', function($sheet) use($clientes) {
          
@@ -137,14 +137,14 @@ class CustomersController extends AppController
             $sheet->freezeFirstColumn();
 
             $sheet->row(1, [
-                'Número', 'Nombre', 'Email', 'Telefono'
+                'Número', 'Nombre', 'Email', 'Telefono','temporada'
             ]);
 
             $index = 0;
             foreach($clientes as $user) {
               
                 $sheet->row($index+2, [
-                    $user->id, $user->name, $user->email, $user->phone
+                    $user->id, $user->name, $user->email, $user->phone,$user->seasson
                 ]); 
                 $index++;
             }
@@ -179,7 +179,7 @@ class CustomersController extends AppController
       return $lst;
     }
     
-    private function getCustomersList() {
+    private function getCustomersList($all = false) {
        $arraycorreos = array();
         $correosUsuarios = \App\User::all();
 
@@ -191,32 +191,60 @@ class CustomersController extends AppController
         $arraycorreos[] = "jlargoma@gmail.com";
         $arraycorreos[] = "victorgerocuba@gmail.com";
         
-        $year      = $this->getActiveYear();
-        $startYear = new Carbon($year->start_date);
-        $endYear   = new Carbon($year->end_date);
-
+      
+      $seasons = array();
+      $seasonslst = \App\Years::all();
+      foreach ($seasonslst as $s){
+        $seasons[$s->year] = [strtotime($s->start_date),strtotime($s->end_date)];
+      }
+//      dd($seasons);
+      
         $emails = \App\Customers::select('email')
                 ->distinct()
                 ->where('email', '!=', " ")
                 ->where('email', '!=', "-")->get();
-
-      $customers = \App\Customers::whereNotIn('email',$arraycorreos)
-                ->whereIn('email', $emails->toArray())
-                ->whereNotIn('id', $this->getNotClients($startYear,$endYear))
-                ->where('created_at', '>=', $startYear)->where('created_at', '<=', $endYear)
-                ->orderBy('created_at', 'DESC')
-                ->get();
+        
+      $qry = \App\Customers::select('customers.id','customers.created_at','email','name','phone','book.id as book_id')
+              ->whereNotIn('email',$arraycorreos)
+              ->whereIn('email', $emails->toArray())
+               ->leftJoin('book', function ($join) {
+                    $join->on('customers.id', '=', 'book.customer_id')->whereIn('agency', [1,4]);
+                });
        
+      if (!$all){
+        $year      = $this->getActiveYear();
+        $startYear = new Carbon($year->start_date);
+        $endYear   = new Carbon($year->end_date);
+//                ->whereNotIn('id', $this->getNotClients($startYear,$endYear))
+        $qry->where('customers.created_at', '>=', $startYear)->where('customers.created_at', '<=', $endYear);
+      }
+       
+       $customers = $qry->orderBy('customers.created_at', 'DESC')->get();
       $lst = [];
       if($customers){
         foreach ($customers as $c){
-          $lst[$c->email] = $c;
+          if (is_null($c->book_id)){
+            
+            if (!isset($lst[$c->email])){
+              $c->seasson = null;
+              if ($c->created_at){
+                $time = $c->created_at->timestamp;
+                foreach ($seasons as $s=>$v){
+                  if ($v[0]<=$time && $time<=$v[1]){
+                    $c->seasson = $s;
+                    break;
+                  }
+                }
+              }
+              $lst[$c->email] = $c;
+            }
+          }
+//          else dd($c);
         }
       }
       
       ksort($lst);
-      
-      return $lst;
+      return ($lst);
       
     }
 }

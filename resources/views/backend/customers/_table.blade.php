@@ -5,8 +5,7 @@
             <th class ="text-center bg-complete text-white" >       Nombre      </th>
             <th class ="text-center bg-complete text-white" >       Email       </th>
             <th class ="text-center bg-complete text-white" >       Telefono    </th>
-            <th class ="text-center bg-complete text-white" >       DNI </th>
-            <th class ="text-center bg-complete text-white" >       Dirección </th>                  
+            <th class ="text-center bg-complete text-white" >       Temporada </th>
             <th class ="text-center bg-complete text-white">Acción</th>
             
         </tr>
@@ -27,10 +26,7 @@
                     <?php  echo $customer->phone?>
                 </td>
                 <td class="text-center font-s16">
-                   <?php  echo $customer->DNI?>
-                </td>
-                <td class="text-center font-s16">
-                   <?php  echo $customer->address?>
+                   <?php  echo $customer->seasson?>
                 </td>
                 <td class="text-justify font-s16">
                     <button class="btn btn-danger btn-xs deleteCustomer" type="button" data-id="<?php echo $customer->id ?>">
