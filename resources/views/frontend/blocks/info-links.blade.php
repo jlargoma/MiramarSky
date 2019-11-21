@@ -6,7 +6,7 @@
         <div class="single-item">
           <a href="{{env('FF_PAGE')}}" title="Ir a Forfait" target="_black">
           <div class="icon-box">
-            <img src="{{ assetV('/frontend/images/home/icon-forfait-1.png')}}" style="width: 90px;min-width: auto;">
+            <img src="{{ getCloudfl('/frontend/images/home/icon-forfait-1.png')}}" style="width: 90px;min-width: auto;">
           </div>
           <div class="single-content">
             <div class="title">Compra tu forfait y <br>sáltate las colas</div>
@@ -18,7 +18,7 @@
         <div class="single-item">
           <a href="{{env('FF_PAGE')}}" title="Ir a Forfait" target="_black">
           <div class="icon-box">
-            <img src="{{ assetV('/frontend/images/home/icon-forfait-2.png')}}" style="width: 90px;min-width: auto;">
+            <img src="{{ getCloudfl('/frontend/images/home/icon-forfait-2.png')}}" style="width: 90px;min-width: auto;">
           </div>
           <div class="single-content">
             <div class="title">Vendedores de forfait <br>soficiales</div>
@@ -30,7 +30,7 @@
         <div class="single-item">
           <a href="{{env('FF_PAGE')}}" title="Ir a Forfait" target="_black">
           <div class="icon-box">
-            <img src="{{ assetV('/frontend/images/home/icon-forfait-3.png')}}" style="width: 90px;min-width: auto;">
+            <img src="{{ getCloudfl('/frontend/images/home/icon-forfait-3.png')}}" style="width: 90px;min-width: auto;">
           </div>
           <div class="single-content">
             <div class="title">Cancelación Gratuita<br>hasta 48 horas antes</div>
