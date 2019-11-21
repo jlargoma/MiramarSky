@@ -93,7 +93,7 @@
           <source src="{{$edificio['video_1']}}" type="video/mp4">
         </video>
       @else
-      <img src="{{$edificio['imagen_1']}}" alt="Edificio Miramar Ski a pie de pista, zona baja">
+      <img src="{{getCloudfl($edificio['imagen_1'])}}" alt="Edificio Miramar Ski a pie de pista, zona baja">
       @endif
     </figure>
       <div class="text">
@@ -107,7 +107,7 @@
           <source src="{{$edificio['video_1']}}" type="video/mp4">
         </video>
       @else
-      <figure><img src="{{$edificio['imagen_1']}}" alt="Edificio Miramar Ski a pie de pista, zona baja"></figure>
+      <figure><img src="{{getCloudfl($edificio['imagen_1'])}}" alt="Edificio Miramar Ski a pie de pista, zona baja"></figure>
       @endif
     </div>
   </div>
@@ -118,7 +118,7 @@
           <source src="{{$edificio['video_2']}}" type="video/mp4">
         </video>
       @else
-        <figure><img src="{{$edificio['imagen_2']}}" alt=""></figure>
+        <figure><img src="{{getCloudfl($edificio['imagen_2'])}}" alt=""></figure>
       @endif
     </div>
     <div class="bfh-text">
@@ -130,7 +130,7 @@
           <source src="{{$edificio['video_2']}}" type="video/mp4">
         </video>
       @else
-        <img src="{{$edificio['imagen_2']}}" alt="Edificio Miramar Ski">
+        <img src="{{getCloudfl($edificio['imagen_2'])}}" alt="Edificio Miramar Ski">
       @endif
       </figure>
       <div class="text">

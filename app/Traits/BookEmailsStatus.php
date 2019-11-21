@@ -220,7 +220,7 @@ trait BookEmailsStatus
             'book_comments'             => $data->book_comments,
             'total_price'               => number_format($data->total_price, 0, '', '.'),
             'url-condiciones-generales' => url('/condiciones-generales'),
-            'url-forfait'               => '',
+            'link_forfait'               => '',
         );
         
         if (env('APP_APPLICATION') == 'riad'){
@@ -230,7 +230,9 @@ trait BookEmailsStatus
         
         $orderFF = \App\Models\Forfaits\ForfaitsOrders::getByBook($data->id);
         if ($orderFF){
-          $dataContent['url-forfait'] = env('FF_PAGE').encriptID($orderFF->id).'-'. getKeyControl($orderFF->id);
+          $dataContent['link_forfait'] = env('FF_PAGE').encriptID($orderFF->id).'-'. getKeyControl($orderFF->id);
+        } else {
+          $dataContent['link_forfait'] = env('FF_PAGE');
         }
         /** process the mail content */
         foreach ($dataContent as $k => $v)

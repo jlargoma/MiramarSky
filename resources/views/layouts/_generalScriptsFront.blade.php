@@ -9,7 +9,7 @@
 @yield('scripts')
 
 <script type="text/javascript">
-
+$(document).ready(function () {
    <?php if (!$mobile->isMobile()): ?>
     $('div.bg-img img').attr('style', 'max-width:none !important;');
    <?php else: ?>
@@ -21,10 +21,6 @@
 
     $('div#blank_loader').fadeOut(500);
 
-
-</script>
-<script>
-  $(document).ready(function () {
   
   setTimeout(function(){AOS.init();},1200);
   });
