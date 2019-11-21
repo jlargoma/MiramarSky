@@ -157,3 +157,23 @@ function getUrlToPay($token){
   
   return $urlPay;
 }
+
+function getCloudfl($url){
+  
+  global $CDN_URL;
+  
+  if (!$CDN_URL){
+    $CDN_URL = env('CDN_URL');
+  }
+  if (strpos($url, 'apartamentosierranevada.net')>0){
+    $aux = parse_url($url);
+    if (is_array($aux)){
+      $return = $CDN_URL;
+      if (isset($aux['path'])) $return .= $aux['path'];
+      if (isset($aux['query'])) $return .= '?'.$aux['query'];
+      return $return;
+    }
+  }
+
+  return $CDN_URL.$url;
+}

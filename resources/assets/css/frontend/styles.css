@@ -396,7 +396,7 @@ div#content-response {
     margin-left: 5px;
   }
   section.feature-home {
-   background-image: url(/frontend/images/home/feature-bg.jpg);
+   background-image: url(//d3t5yo9tjsfkck.cloudfront.net/frontend/images/home/feature-bg.jpg);
     background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;

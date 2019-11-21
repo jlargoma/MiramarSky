@@ -25,7 +25,7 @@ $oRooms = \App\RoomsType::where('name','!=',$url)->get();
                 <div class="col-xs-12 not-padding  container-image-box">
                   <div class="col-xs-12 not-padding push-0">
                     <img class="img-responsive imga"
-                         src="{{$photo->file_rute}}/{{$photo->file_name}}"
+                         src="{{getCloudfl($photo->file_rute)}}/{{$photo->file_name}}"
                          alt="{{$item->title}}"/>
                   </div>
                   <div class="col-xs-12 not-padding text-right overlay-text">

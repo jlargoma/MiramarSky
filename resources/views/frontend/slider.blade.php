@@ -193,7 +193,7 @@ width: 0px;
  <div class="camera_wrap banner" id="home_camera">
    <?php for($i=1; $i<4; $i++): ?>
    @if($sliderHome['imagen_'.$i])
-    <div data-src="{{$sliderHome['imagen_'.$i]}}">
+    <div data-src="{{getCloudfl($sliderHome['imagen_'.$i])}}">
       <img class="img-responsive">
       <div class="sliderContent">
         <div class="slider-text-1">
