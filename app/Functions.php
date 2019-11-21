@@ -165,7 +165,7 @@ function getCloudfl($url){
   if (!$CDN_URL){
     $CDN_URL = env('CDN_URL');
   }
-  if (strpos($url, 'apartamentosierranevada.net')>0){
+  if (strpos($url, 'miramarski')>0){
     $aux = parse_url($url);
     if (is_array($aux)){
       $return = $CDN_URL;

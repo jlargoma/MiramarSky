@@ -29,9 +29,9 @@
         <meta name="msapplication-TileImage" content="{{ assetV('/img/miramarski/favicon/ms-icon-144x144.png' ) }}">
         <meta name="theme-color" content="#ffffff">
 
-        <script type="text/javascript" src="{{ assetV('/frontend/js/jquery-2.1.4.js')}}" async></script>
+        <script type="text/javascript" src="{{ getCloudfl(assetV('/frontend/js/jquery-2.1.4.js'))}}" ></script>
         <title>@yield('title')</title>
-<link rel="stylesheet" href="{{ assetV ('/css/frontend.css')}}" type="text/css"/>
+<link rel="stylesheet" href="{{ getCloudfl(assetV ('/css/frontend.css'))}}" type="text/css"/>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-66225892-1"></script>
 <script>
@@ -63,13 +63,13 @@
         
         
     <?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
-        <link rel="stylesheet" href="{{ assetV('/frontend/css/responsive-mobile.css')}}" type="text/css"/>
+        <link rel="stylesheet" href="{{ getCloudfl(assetV('/frontend/css/responsive-mobile.css'))}}" type="text/css"/>
     <?php else: ?>
-        <link rel="stylesheet" href="{{ assetV('/frontend/css/responsive.css')}}" type="text/css"/>
+        <link rel="stylesheet" href="{{ getCloudfl(assetV('/frontend/css/responsive.css'))}}" type="text/css"/>
     <?php endif; ?>
         
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
-        <script type="text/javascript" src="{{ assetV('/js/scripts-home.js')}}" defer=""></script>
+        <script type="text/javascript" src="{{ getCloudfl(assetV('/js/scripts-home.js'))}}" defer=""></script>
     @include('layouts._generalScriptsFront')
 
 
