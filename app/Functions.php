@@ -177,3 +177,15 @@ function getCloudfl($url){
 
   return $CDN_URL.$url;
 }
+
+  function convertDateToShow($date){
+    $date= trim($date);
+    if ($date){
+      
+      $aux = explode('-',$date);
+      if (is_array($aux) && count($aux)==3){
+        return $aux[2].'/'.$aux[1].'/'.($aux[0]-2000);
+      }
+    }
+    return null;
+  }
