@@ -719,7 +719,7 @@ trait ForfaitsPaymentsTraits {
         if ($userData['start']){
           $textUser .= '<tr>
           <th colspan="2">In / Out</th>
-          <td colspan="4">'.$userData['start'].' / '.$userData['finish'].'</td>
+          <td colspan="4">'.convertDateToShow($userData['start']).' / '.convertDateToShow($userData['finish']).'</td>
           </tr>';
         }
         if ($userData['apto']){
@@ -764,7 +764,7 @@ trait ForfaitsPaymentsTraits {
                   $text .=   '</td><td>'.$c->language.'</td><td>';
                   if (isset($c->level)) $text .= $c->level;
 
-                  $text .= '</td><td class="tright">'.number_format($c->total, 2).'€</td></tr>';
+                  $text .= '</td><td class="tright">'.number_format($c->total, 0,'','.').'€</td></tr>';
             }
           }
 
@@ -772,7 +772,7 @@ trait ForfaitsPaymentsTraits {
 
            $resume = '<tr>
                       <td colspan="5"><b>Total Clases</b></td>
-                      <td class="tright">'.number_format($orderItems['totalClas'], 2).'€</td>
+                      <td class="tright">'.number_format($orderItems['totalClas'], 0,'','.').'€</td>
                     </tr>';
 
         }
