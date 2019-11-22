@@ -458,4 +458,28 @@ trait BookEmailsStatus
 
         return $sended;
     }
+    
+     /**
+     *
+     * @param type $book
+     * @param type $subject
+     */
+    public function sendEmail_ForfaitClasses($orderText,$email,$subject)
+    {
+       
+        
+        $mailClientContent = 'Hola, confírmanos disponibilidad para las clases de este cliente:<br/><br/>';
+        $mailClientContent .= $orderText.'<br/><br/>';
+        $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $mailClientContent,
+            'title'       => $subject
+        ], function ($message) use ($subject,$email) {
+            $message->from(env('MAIL_FROM_FORFAITS'));
+            $message->to($email);
+            $message->subject($subject);
+        });
+        
+        return $sended;
+    }
+    
 }

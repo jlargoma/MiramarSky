@@ -46,7 +46,9 @@ setlocale(LC_TIME, "es_ES"); ?>
               || $k == 'SMS_Partee_upload_dni_en'
               || $k == 'SMS_Partee_msg_en'
               || $k == 'SMS_fianza'
-              || $k == 'SMS_fianza_end'
+              || $k == 'SMS_fianza_en'
+              || $k == 'SMS_forfait'
+              || $k == 'SMS_forfait_en'
             )
             $ckeditor = false;
         ?>
