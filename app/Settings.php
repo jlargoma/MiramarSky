@@ -50,6 +50,7 @@ class Settings extends Model
           'Forfait_email_confirmation_payment'=>'Confirmación pago Forfait',
           'fianza_request_deferred'           =>'Envío Fianza',
           'fianza_confirm_deferred'           =>'Confirmación de Fianza',
+          'SMS_forfait'                        =>'SMS Forfait',
           'SMS_fianza'                        =>'SMS Fianza',
           'SMS_Partee_msg'                    =>'Mensaje Partee (enviar por plataforma de terceros)',
           'SMS_Partee_upload_dni'             =>'SMS Partee (subir dni para el control diario de huéspedes)'

@@ -631,6 +631,7 @@ class ForfaitsItemController extends AppController {
         'apto' => '',
         'start' => '',
         'finish' => '',
+        'sent_class' => '',
         'key' => [$ordenID, $control]
     ];
 
@@ -661,7 +662,7 @@ class ForfaitsItemController extends AppController {
             $userData['user_phone'] = $order->phone;
             $userData['ff_status'] = $status;
           }
-          
+          $userData['sent_class'] = $order->sent_class;
         
           // get info to FFExpress cancels
           $ffCanceled = ForfaitsOrderItem::where('order_id',$order->id)
@@ -753,6 +754,8 @@ class ForfaitsItemController extends AppController {
     return response()->json(['error']);
   }
 
+  
+  
   public function sendBookingOrder($order,$lastItemIDPayment) {
     
     $error = [
@@ -768,9 +771,8 @@ class ForfaitsItemController extends AppController {
       $clientName = $book->customer->name;
       $clientEmail = $book->customer->email;
     } else {
-      $error['detail'] = 'Reserva no encontrada';
-      DB::table('forfaits_errors')->insert($error);
-      return ;
+      $clientName = $order->name;
+      $clientEmail = $order->email;
     }
     
     $forfaitsLst = ForfaitsOrderItem::where('order_id', $order->id)
@@ -785,6 +787,7 @@ class ForfaitsItemController extends AppController {
           $result = $this->sendBooking($f,$clientName,$clientEmail);
           if ($result != 'ok'){
             $error['item_id'] = $f->id;
+            $error['book_id'] = $order->book_id;
             $error['detail'] = $result;
             DB::table('forfaits_errors')->insert($error);
           }
@@ -833,17 +836,22 @@ class ForfaitsItemController extends AppController {
         "pickupPointId" => 4,
         "pickupPointAddress" => '',//env('FORFAIT_POINT_ADDRESS'),
         "familyFormula" => FALSE,
-        "comments" => "",
+        "comments" => "$clientName $clientEmail",
     ];
 
     if ($forfait_data){
+      $familyFormula = FALSE;
       foreach ($forfait_data as $ff_data) {
         $data['forfaits'][] = [
             "age" => $ff_data->age,
             "dateFrom" => $ff_data->dateFrom,
-            "dateTo" => $ff_data->dateTo
+            "dateTo" => $ff_data->dateTo,
+            "familyFormula" => $ff_data->familyFormula,
         ];
+        if ($ff_data->familyFormula)
+          $familyFormula = TRUE;
       }
+      if ($familyFormula)  $data['familyFormula'] = TRUE;
     }
     if ($forfait_insurances){
       foreach ($forfait_insurances as $ff_data) {

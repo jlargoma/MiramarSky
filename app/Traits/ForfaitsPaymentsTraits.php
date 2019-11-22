@@ -546,7 +546,7 @@ trait ForfaitsPaymentsTraits {
      
     }
    
-    public function sendClientEmail($orderKey, $control) {
+    public function sendClientEmail($orderKey, $control,$type='mail') {
       $orderID = desencriptID($orderKey);
       if (is_numeric($orderID) &&  $control == getKeyControl($orderID)){
         //send email
@@ -560,15 +560,51 @@ trait ForfaitsPaymentsTraits {
           if ($book){
             $cli_email = $book->customer->email;
             $cli_name = $book->customer->name;
+            $phone = $book->customer->phone;
             $subject = translateSubject('Solicitud Forfait',$book->customer->country);
           } else {
             $cli_name = $order->name;
             $cli_email = $order->email;
+            $phone = $order->phone;
             $subject = 'Solicitud Forfait';
           }
-                  
+           
           $link = env('FF_PAGE').$orderKey.'-'.$control;
-          $this->sendEmail_linkForfaitPayment($cli_email,$cli_name,$subject,$orderText,$link,$book);
+          
+          if ($type == 'sms'){
+            if (!$phone || trim($phone) == ''){
+              return response()->json(['status' => 'error','msg'=>'el usuario no posee teléfono']);
+            }
+            //Send SMS
+            $SMSService = new \App\Services\SMSService();
+            if ($SMSService->conect()){
+
+              $message = Settings::getContent('SMS_forfait');
+              $message = str_replace('{customer_name}', $cli_name, $message);
+              $message = str_replace('{link_forfait}', $link, $message);
+              $message = $this->clearVars($message);
+              $message = strip_tags($message);
+
+              if ($SMSService->sendSMS($message,$phone)){
+                return response()->json(['status' => 'ok']);
+              }
+              return response()->json(['status' => 'error','msg'=>'No se pudo enviar el SMS']);
+            } else {
+              return response()->json(['status' => 'error','msg'=>'No se pudo conectar con el servicio de mensajería']);
+            }
+        
+          }
+          if ($type == 'text'){
+            $message = Settings::getContent('SMS_forfait');
+            $message = str_replace('{customer_name}', $cli_name, $message);
+            $message = str_replace('{link_forfait}', $link, $message);
+            $message = $this->clearVars($message);
+            $message = strip_tags($message);
+            return response()->json(['status' => 'ok','msg'=>$message]);
+          }
+          if ($type == 'mail'){
+            $this->sendEmail_linkForfaitPayment($cli_email,$cli_name,$subject,$orderText,$link,$book);
+          }
           return response()->json(['status' => 'ok']);
         }
       }
@@ -627,4 +663,130 @@ trait ForfaitsPaymentsTraits {
       }
       return response()->json(['status' => 'error']);
     }
+    
+    public function sendClassToAdmin(Request $req) {
+      $emailAdmin = $req->input('email');
+      $token = $req->header('token-ff');
+      $client = $req->header('client');
+      $orderKey = $req->input('token', null);
+      $control = $req->input('key', null);
+      
+      if (!($orderKey && $control && $token && $client)){
+        return response()->json(['status' => 'error']);
+      }
+      if (!$this->checkUserAdmin($token,$client)){
+        return response()->json(['status' => 'error']);
+      }
+      
+      $orderID = desencriptID($orderKey);
+      if (is_numeric($orderID) &&  $control == getKeyControl($orderID)){
+        
+        $order = ForfaitsOrders::find($orderID);
+        $userData = [
+          'user_name' => '',
+          'user_email' => '',
+          'user_phone' => '',
+          'apto' => '',
+          'start' => '',
+          'finish' => '',
+        ];
+        $book = Book::find($order->book_id);
+        if ($book) {
+              $client = $book->customer()->first();
+              if ($client) {
+                $userData['user_name'] = $client->name;
+                $userData['user_email'] = $client->email;
+                $userData['user_phone'] = $client->phone;
+              }
+              $room = $book->room()->first();
+              $userData['apto'] = ($room->luxury) ? $room->sizeRooms->name . " - LUJO" : $room->sizeRooms->name . " - ESTANDAR";
+              $userData['start'] = $book->start;
+              $userData['finish'] = $book->finish;
+            } else {
+              $userData['user_name'] = $order->name;
+              $userData['user_email'] = $order->email;
+              $userData['user_phone'] = $order->phone;
+            }
+
+        $textUser = '<tr class="forfaitHeader">
+          <th colspan="6">DATOS CLIENTE</th>
+          </tr>';
+
+        $textUser .= '<tr>
+          <th colspan="2">Nombre del Cliente</th>
+          <td colspan="4">'.$userData['user_name'].' - '.$userData['user_email'].' - '.$userData['user_phone'].'</td>
+          </tr>';
+        if ($userData['start']){
+          $textUser .= '<tr>
+          <th colspan="2">In / Out</th>
+          <td colspan="4">'.$userData['start'].' / '.$userData['finish'].'</td>
+          </tr>';
+        }
+        if ($userData['apto']){
+          $textUser .= '<tr>
+          <th colspan="2">Apartamiento</th>
+          <td colspan="4">'.$userData['apto'].'</td>
+          </tr>';
+        }
+
+
+        $orderItems = $this->getCart($order);
+        if ($orderItems){
+          $text = '
+          <tr class="forfaitHeader">
+          <th colspan="6">CLASES</th>
+          </tr>
+          <tr class="">
+            <th>Cant</th>
+            <th>Nombre</th>
+            <th>Cursado</th>
+            <th>Idioma</th>
+            <th>Nivel</th>
+            <th>precio</th>
+          </tr>
+
+          ';
+
+          if (count($orderItems['classes'])){
+
+            foreach ($orderItems['classes'] as $c){
+                  $text .= '<tr><td>'.$c->nro.'</td>'
+                          .'<td>'.$c->item->name.' '.$c->item->type.'</td>'
+                          . '<td>'.date('d/m/Y', strtotime($c->date_start));
+
+                  if ($c->start){
+                    $text .= '<br/>Inicio '.$c->start.':00 Hrs <br/> '.$c->hours.' Horas';
+                  } else {
+                    $text .= ' al '.date('d/m/Y', strtotime($c->date_end)).''
+                            . '<br/> ('.$c->total_days.' días)';
+
+                  }
+                  $text .=   '</td><td>'.$c->language.'</td><td>';
+                  if (isset($c->level)) $text .= $c->level;
+
+                  $text .= '</td><td class="tright">'.number_format($c->total, 2).'€</td></tr>';
+            }
+          }
+
+
+
+           $resume = '<tr>
+                      <td colspan="5"><b>Total Clases</b></td>
+                      <td class="tright">'.number_format($orderItems['totalClas'], 2).'€</td>
+                    </tr>';
+
+        }
+        $orderText = '<table class="forfait">
+                    '.$textUser.$text.$resume.' 
+                    </table>';
+
+           $subject = 'SOLICUTD RVA CLASES ( '.$userData['user_name'].' )';
+           $this->sendEmail_ForfaitClasses($orderText,$emailAdmin,$subject);
+           $order->sent_class = 'Enviado a '.$emailAdmin.' - '.date('d/m/Y H:i');
+           $order->save();
+          return response()->json(['status' => 'ok','text'=> $order->sent_class]);
+        }
+
+        return response()->json(['status' => 'error']);
+      }
 }

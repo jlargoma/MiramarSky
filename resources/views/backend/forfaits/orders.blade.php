@@ -63,17 +63,17 @@ $mobile = new Mobile();
               <b><?php echo number_format(round($totals['totalSale']), 0, ',', '.') ?> €</b>
             </td>
           </tr>
-          <tr style="background-color: #38C8A7;">
-            <td class="text-white" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
+          <tr style="background-color: #ef6464;">
+            <td class="text-white" style="padding: 5px 8px!important;background-color: #ef6464!important;">
               Cobrado Temporada
             </td>
-            <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
+            <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #ef6464!important;">
               <?php echo number_format(round($totals['totalPayment']), 0, ',', '.') ?> € 
             </td>
           </tr>
-          <tr style="background-color: #8e5ea2;">
-            <td class="text-white" style="padding: 5px 8px!important;background-color: #8e5ea2!important;">Pendiente Cobro</td>
-            <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #8e5ea2!important;">
+          <tr style="background-color: #38C8A7;">
+            <td class="text-white" style="padding: 5px 8px!important;background-color: #38C8A7!important;">Pendiente Cobro</td>
+            <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
               <?php echo number_format(round($totals['totalToPay']), 0, ',', '.') ?> €
             </td>
           </tr>
@@ -90,7 +90,7 @@ $mobile = new Mobile();
           <h3 ><?php echo number_format(round($totals['totalPayment']), 0, ',', '.') ?> €</h3>
         </div>
         <div class="col-md-6 bordered text-center">
-          <h4 class="hint-text">Vendido Temporada</h4>
+          <h4 class="hint-text bold">Vendido Temporada</h4>
             <h3 ><?php echo number_format(round($totals['totalSale']), 0, ',', '.') ?> €</h3>
         </div>
         <div class="col-md-6 bordered text-center">
@@ -115,7 +115,7 @@ $mobile = new Mobile();
     </div>
     <div class="col-md-3 col-xs-5 text-center">
       <div class="bordered bg-white p-8 ">
-        <h4 class="hint-text">Wallet de Forfait Express</h4>
+        <h4 class="hint-text bold black">Wallet de Forfait Express</h4>
         <h3 class="<?php if($ff_mount<100) echo 'text-danger';?>"><?php echo number_format($ff_mount, 0, ',', '.')?>€</h3>
       </div>
     </div>
@@ -340,7 +340,7 @@ $mobile = new Mobile();
           labels: ["Cobrado", "Pendiente", ],
           datasets: [{
               label: "Population (millions)",
-              backgroundColor: ["#38C8A7", "#8e5ea2"],
+              backgroundColor: ["#ef6464", "#38C8A7"],
               data: [
                 //Comprobamos si existen cobros
               <?php echo round($totals['totalPayment']) ?>,

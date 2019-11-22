@@ -175,10 +175,11 @@
     Route::post('/api/forfaits/insurances', 'ForfaitsItemController@getInsurances');
     Route::get('/api/forfaits/bookingData/{bID}/{uID}', 'ForfaitsItemController@bookingData');
     Route::get('/api/forfaits/getCurrentCart/{bID}/{uID}', 'ForfaitsItemController@getCurrentCart');
-    Route::get('/api/forfaits/sedOrder/{bID}/{uID}', 'ForfaitsItemController@sendClientEmail');
+    Route::get('/api/forfaits/sedOrder/{bID}/{uID}/{type}', 'ForfaitsItemController@sendClientEmail');
     Route::post('/api/forfaits/sendConsult', 'ForfaitsItemController@sendEmail');
     Route::get('/api/forfaits/getSeasons', 'ForfaitsItemController@getForfaitSeasons');
     Route::post('/api/forfaits/createNewOrder', 'ForfaitsItemController@createNewOrder');
+    Route::post('/api/forfaits/sendClassToAdmin', 'ForfaitsItemController@sendClassToAdmin');
 
 
     include_once 'routes-admin.php';
