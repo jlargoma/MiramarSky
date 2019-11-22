@@ -269,7 +269,7 @@ trait ForfaitsPaymentsTraits {
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
     
-    $allOrders = ForfaitsOrders::whereNotNull('total')->status('status','!=',1)->get();
+    $allOrders = ForfaitsOrders::whereNotNull('total')->where('status','!=',1)->get();
 //    $allOrders = ForfaitsOrders::where('id',3)->get();
     $lstOrders = [];
    
