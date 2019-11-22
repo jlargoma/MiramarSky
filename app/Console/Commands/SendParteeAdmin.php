@@ -44,6 +44,7 @@ class SendParteeAdmin extends Command {
    * @return mixed
    */
   public function handle() {
+    if(env('PARTEE_DISABLE') == 1) return;
     $this->checkInStatus();
   }
 
