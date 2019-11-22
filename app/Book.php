@@ -849,6 +849,9 @@ class Book extends Model {
    * Send the Booking to Partee
    */
   public function sendToPartee() {
+    
+    if(env('PARTEE_DISABLE') == 1) return;
+    
     $BookPartee = BookPartee::where('book_id', $this->id)->first();
 
     if ($BookPartee) {
