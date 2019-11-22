@@ -287,7 +287,7 @@ trait BookEmailsStatus
         $mailClientContent = str_replace('{total_payment}', $totalPayment, $mailClientContent);
         $mailClientContent = str_replace('{forfait_order}', $orderText, $mailClientContent);
         $mailClientContent = $this->clearVars($mailClientContent);
-        $sended = Mail::send('backend.emails.base', [
+        $sended = Mail::send('backend.emails.forfait', [
             'mailContent' => $mailClientContent,
             'title'       => $subject
         ], function ($message) use ($cli_email, $subject) {
@@ -317,7 +317,7 @@ trait BookEmailsStatus
         $mailClientContent = str_replace('{forfait_order}', $orderText, $mailClientContent);
         $mailClientContent = $this->clearVars($mailClientContent);
         
-        $sended = Mail::send('backend.emails.base', [
+        $sended = Mail::send('backend.emails.forfait', [
             'mailContent' => $mailClientContent,
             'title'       => $subject
         ], function ($message) use ($cli_email, $subject) {
@@ -347,7 +347,7 @@ trait BookEmailsStatus
         $mailClientContent .= $orderText.'<br/><br/>';
         $mailClientContent .= "Url de la Orden: <a href='$link' title='Ver Orden'>$link</a>";
         $mailClientContent .= '<p><strong>Compruebe que el forfait fue cancelado correctamente en <a href="forfaitexpress.com">www.forfaitexpress.com</a></strong></p>';
-        $sended = Mail::send('backend.emails.base', [
+        $sended = Mail::send('backend.emails.forfait', [
             'mailContent' => $mailClientContent,
             'title'       => $subject
         ], function ($message) use ($subject) {
@@ -382,7 +382,7 @@ trait BookEmailsStatus
         $mailClientContent = str_replace('{forfait_order}', $orderText, $mailClientContent);
         $mailClientContent = str_replace('{link_forfait}', $link, $mailClientContent);
         $mailClientContent = $this->clearVars($mailClientContent);
-        $sended = Mail::send('backend.emails.base', [
+        $sended = Mail::send('backend.emails.forfait', [
             'mailContent' => $mailClientContent,
             'title'       => $subject
         ], function ($message) use ($book, $subject) {
@@ -470,7 +470,7 @@ trait BookEmailsStatus
         
         $mailClientContent = 'Hola, confírmanos disponibilidad para las clases de este cliente:<br/><br/>';
         $mailClientContent .= $orderText.'<br/><br/>';
-        $sended = Mail::send('backend.emails.base', [
+        $sended = Mail::send('backend.emails.forfait', [
             'mailContent' => $mailClientContent,
             'title'       => $subject
         ], function ($message) use ($subject,$email) {
