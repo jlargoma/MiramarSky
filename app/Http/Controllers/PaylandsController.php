@@ -459,11 +459,11 @@ class PaylandsController extends AppController
           $selected = null;
           for ($i=0; $i<$diff;$i++){
             $c_month = $aux+$i;
+            if ($c_month == 13){
+              $auxY++;
+            }
             if ($c_month>12){
               $c_month -= 12;
-            }
-            if ($c_month == 12){
-              $auxY++;
             }
             
             if ($thisMonth == $c_month){
