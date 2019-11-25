@@ -244,6 +244,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/gastos/delete/{id}','RouterActionsController@gastos_delete');
   Route::get('/ingresos', 'LiquidacionController@ingresos');
   Route::post('/ingresos/create', 'LiquidacionController@ingresosCreate');
+  Route::post('/ingresos/upd', 'LiquidacionController@ingresosUpd');
   Route::get('/ingresos/delete/{id}','RouterActionsController@ingresos_delete');
   Route::get('/estadisticas/{year?}','LiquidacionController@Statistics');
   Route::get('/contabilidad','LiquidacionController@contabilidad');

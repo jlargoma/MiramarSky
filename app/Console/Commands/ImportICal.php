@@ -8,7 +8,9 @@ use DateInterval;
 use ICal\ICal;
 use Log;
 use App\IcalImport;
+use Illuminate\Support\Facades\DB;
 
+///admin/ical/importFromUrl?detail=1
 class ImportICal extends Command
 {
     /**
@@ -73,7 +75,8 @@ class ImportICal extends Command
      */
     public function importICalendar()
     {              
-        $icalendars_to_import = IcalImport::all();
+        $icalendars_to_import = IcalImport::where('processed','!=',1)->get();
+        if (count($icalendars_to_import)>0){
         foreach ($icalendars_to_import as $ical_to_import) {
             $this->result = [];
             //id releated with the icalendar to import
@@ -100,6 +103,9 @@ class ImportICal extends Command
 //            $this->printEvents($events);
             $count = 0;
             if (true){
+              
+              $ical_to_import->processed = 1;
+              $ical_to_import->save();
               foreach ($events as $event) {
 
                 if ($agency == 4 && strpos(strtoupper($event->summary),'NOT AVAILABLE') !== false){
@@ -136,6 +142,9 @@ class ImportICal extends Command
             $lData->save();
             if (isset($_GET['detail']))
               $this->printResults($room_id,$ical_to_import->url);
+        }
+        } else{
+          DB::table('ical_import')->update(['processed' => 0]);
         }
         if (isset($_SERVER['REQUEST_METHOD'])){
           echo 'ok';

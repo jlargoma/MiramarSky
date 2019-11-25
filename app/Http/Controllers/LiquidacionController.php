@@ -366,7 +366,7 @@ class LiquidacionController extends AppController {
         $dateMonthLimpieza = date('d M Y', strtotime($item->updated_at));
       }
     }
-
+/** @ToDo: type_book -> panyments*/
     $books = \App\Book::whereIn('type_book', [2])->where('start', '>', $startYear)
                     ->where('start', '<=', $endYear)
                     ->orderBy('start', 'ASC')->get();
@@ -377,6 +377,7 @@ class LiquidacionController extends AppController {
 
       if (count($book->pago) > 0) {
         foreach ($book->pago as $key => $pay) {
+          /** @ToDo: pago desde Payland*/
           if ($pay->comment == 'Pago desde stripe') {
             $totalStripep += (((1.4 * $pay->import) / 100) + 0.25);
           }
@@ -591,6 +592,41 @@ class LiquidacionController extends AppController {
     ]);
   }
 
+  public function ingresosUpd(Request $request) {
+    
+    $year = $this->getActiveYear();
+    $startYear = new Carbon($year->start_date);
+    $endYear = new Carbon($year->end_date);
+    
+    
+    $type = $request->input('k',null);
+    $val  = $request->input('val',null);
+    $m    = $request->input('m',null);
+    $y    = $request->input('y',null);
+               
+    if (!is_numeric($val)) return 'error';
+    if ($y) $y += 2000;
+    if ($m<10) $m = "0$m";
+    
+    $ingreso = \App\Incomes::where('concept',$type)
+            ->whereYear('date','=',$y)
+            ->whereMonth('date','=',$m)
+            ->first();
+    if (!$ingreso){
+      $ingreso = new \App\Incomes();
+      $ingreso->concept = $type;
+      $date = $y.'-'.$m.'-05';
+      if ($startYear>$date) $date = $startYear->format('Y-m-d');
+      if ($endYear<$date) $date = $endYear->format('Y-m-d');
+      $ingreso->date = $date;
+    }
+    
+    $ingreso->import = $val;
+    if ($ingreso->save()) {
+      return 'ok';
+    }
+    return 'error';
+  }
   public function ingresosCreate(Request $request) {
     $ingreso = new \App\Incomes();
     $ingreso->concept = $request->input('concept');
@@ -921,6 +957,7 @@ class LiquidacionController extends AppController {
   static function getSalesByYear($year = "") {
     // $array = [0 =>"Metalico Jorge", 1 =>"Metalico Jaime",2 =>"Banco Jorge",3=>"Banco Jaime"];
 
+    
     if ($year == "") {
       $year = self::getActiveYear();
       $startYear = new Carbon($year->start_date);
@@ -1027,19 +1064,16 @@ class LiquidacionController extends AppController {
   }
 
   static function getSalesByYearByRoomGeneral($year = "", $room = "all") {
+    
     if (empty($year)) {
-      $date = Carbon::now();
+      $year = self::getActiveYear();
     } else {
-      $year = Carbon::createFromFormat('Y', $year);
-      $date = $year->copy();
+      $year = self::getYearData($year);
     }
-    if ($date->copy()->format('n') >= 9) {
-      $start = new Carbon('first day of September ' . $date->copy()->format('Y'));
-    } else {
-      $start = new Carbon('first day of September ' . $date->copy()->subYear()->format('Y'));
-    }
+    
+    $startYear = new Carbon($year->start_date);
+    $endYear = new Carbon($year->end_date);
 
-    $end = $start->copy()->addYear();
     $total = 0;
     $metalico = 0;
     $banco = 0;
@@ -1050,12 +1084,11 @@ class LiquidacionController extends AppController {
     $banco_jaime = 0;
     if ($room == "all") {
       $rooms = \App\Rooms::where('state', 1)->get(['id']);
-      $books = \App\Book::whereIn('type_book', [
-                          2,
-                          7,
-                          8
-                      ])->whereIn('room_id', $rooms)->where('start', '>=', $start->copy()->format('Y-m-d'))
-                      ->where('start', '<=', $end->copy()->format('Y-m-d'))->orderBy('start', 'ASC')->get();
+      $books = \App\Book::where_type_book_sales()
+              ->whereIn('room_id', $rooms)
+              ->where('start', '>=',$startYear)
+              ->where('start', '<=', $endYear)
+              ->orderBy('start', 'ASC')->get();
 
 
       foreach ($books as $key => $book) {
@@ -1084,9 +1117,10 @@ class LiquidacionController extends AppController {
         }
       }
 
-      $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
-                      ->Where('date', '<=', $start->copy()->addYear()->format('Y-m-d'))
-                      ->orderBy('date', 'DESC')->get();
+      $gastos = \App\Expenses::where('date', '>=',$startYear)
+              ->where('date', '<=', $endYear)
+              ->orderBy('date', 'DESC')->get();
+      
       foreach ($gastos as $payment) {
         if ($payment->typePayment == 0 || $payment->typePayment == 1) {
           $divisor = 0;
@@ -1132,13 +1166,12 @@ class LiquidacionController extends AppController {
       }
     } else {
 
-      $books = \App\Book::whereIn('type_book', [
-                          2,
-                          7,
-                          8
-                      ])->where('room_id', $room)->where('start', '>=', $start->copy()->format('Y-m-d'))
-                      ->where('start', '<=', $end->copy()->format('Y-m-d'))->orderBy('start', 'ASC')->get();
-
+      $books = \App\Book::where_type_book_sales()
+              ->where('room_id', $room)
+              ->where('start', '>=',$startYear)
+              ->where('start', '<=', $endYear)
+              ->orderBy('start', 'ASC')->get();
+      
       foreach ($books as $key => $book) {
         $total += ($book->cost_apto + $book->cost_park + $book->cost_lujo); //$book->total_price;
         if (count($book->pago) > 0) {
@@ -1165,9 +1198,11 @@ class LiquidacionController extends AppController {
         }
       }
 
-      $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
-                      ->Where('date', '<=', $start->copy()->addYear()->format('Y-m-d'))
-                      ->Where('PayFor', 'LIKE', '%' . $room . '%')->orderBy('date', 'DESC')->get();
+      
+      $gastos = \App\Expenses::where('date', '>=',$startYear)
+              ->where('date', '<=', $endYear)
+              ->Where('PayFor', 'LIKE', '%' . $room . '%')
+              ->orderBy('date', 'DESC')->get();
 
       foreach ($gastos as $payment) {
         if ($payment->typePayment == 0 || $payment->typePayment == 1) {
@@ -2410,13 +2445,28 @@ class LiquidacionController extends AppController {
     $year3 = $this->getYearData($year2->year - 1);
     $obj3 = $this->getMonthlyLimpieza($year3);
 
+    $startYear = new Carbon($year->start_date);
+    $endYear = new Carbon($year->end_date);
+    $totalCostBooks = \App\Book::where_type_book_sales()
+            ->where('start', '>=', $startYear)
+            ->where('start', '<=', $endYear)
+            ->sum('cost_limp');
+    $extraCostBooks = \App\Book::where_type_book_sales()
+            ->where('start', '>=', $startYear)
+            ->where('start', '<=', $endYear)
+            ->sum('extraCost');
+
+    
     return view('backend/sales/limpiezas', [
         'year' => $year,
         'selected' => $obj1['selected'],
         'months_obj' => $obj1['months_obj'],
         'months_1' => $obj1,
         'months_2' => $obj2,
-        'months_3' => $obj3]
+        'months_3' => $obj3,
+        'totalCostBooks'=>$totalCostBooks,
+        'extraCostBooks'=>$extraCostBooks,
+            ]
     );
   }
 

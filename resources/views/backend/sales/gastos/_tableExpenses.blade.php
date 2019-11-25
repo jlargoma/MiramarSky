@@ -32,7 +32,7 @@ setlocale(LC_TIME, "es_ES");
 			</td>
 
 			<td class="text-center" style="padding: 8px 5px!important">
-				BANCO JORGE
+				BANCO
 
 			</td>
 			<td class="text-center" style="padding: 8px 5px!important">
@@ -62,7 +62,7 @@ setlocale(LC_TIME, "es_ES");
 			</td>
 
 			<td class="text-center" style="padding: 8px 5px!important">
-				BANCO JORGE
+				BANCO
 
 			</td>
 			<td class="text-center" style="padding: 8px 5px!important">
@@ -92,7 +92,7 @@ setlocale(LC_TIME, "es_ES");
 			</td>
 
 			<td class="text-center" style="padding: 8px 5px!important">
-				BANCO JORGE
+				BANCO 
 
 			</td>
 			<td class="text-center" style="padding: 8px 5px!important">
@@ -187,10 +187,10 @@ setlocale(LC_TIME, "es_ES");
 					<select class="js-select2 form-control editedExpensed" id="type_payment-<?php echo $gasto->id ?>" name="type_payment" style="width: 100%;" data-placeholder="Seleccione una" required data-id="<?php echo $gasto->id ?>">
 			                <option></option>
 			                <option value="0" <?php if($gasto->typePayment == '0'){ echo "selected"; } ?>> Tarjeta visa </option>
-			                <option value="1" <?php if($gasto->typePayment == '1'){ echo "selected"; } ?>> Cash Jaime </option>
-			                <option value="2" <?php if($gasto->typePayment == '2'){ echo "selected"; } ?>> Cash Jorge </option>
-							<option value="3" <?php if($gasto->typePayment == '3'){ echo "selected"; } ?>> Banco Jorge</option>
-							<option value="4" <?php if($gasto->typePayment == '4'){ echo "selected"; } ?>> Banco Jaime</option>
+                                        <option value="1" <?php if($gasto->typePayment == '1'){ echo "selected"; } ?> disabled=""> Cash Jaime </option>
+			                <option value="2" <?php if($gasto->typePayment == '2'){ echo "selected"; } ?> > Cash </option>
+                                        <option value="3" <?php if($gasto->typePayment == '3'){ echo "selected"; } ?>> Banco</option>
+                                        <option value="4" <?php if($gasto->typePayment == '4'){ echo "selected"; } ?> disabled=""> Banco Jaime</option>
 			            </select>
 				</td>
 				<td class="text-center">
