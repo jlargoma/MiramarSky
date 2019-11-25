@@ -44,15 +44,24 @@ setlocale(LC_TIME, "es_ES");
   <div class="row">
     <div class="col-md-8 col-xs-12">
       <div class="row push-10">
-        <h2 class="text-left font-w800">
-          Resumen liquidación
-          <form action="{{ URL::to('admin/limpiezas/pdf') }}" method="POST" style="display: inline-block;">
-            <input type="hidden" id="year" name="year" value="1999">
-            <input type="hidden" id="month" name="month" value="1">
-            <input type="hidden" id="_token" name="_token" value="{{csrf_token()}}">
-            <button class="btn-pdf" title="Exportar a PDF"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
-          </form>
-        </h2>
+        <div class="col-md-6">
+          <h2 class="text-left font-w800">
+            Resumen liquidación
+            <form action="{{ URL::to('admin/limpiezas/pdf') }}" method="POST" style="display: inline-block;">
+              <input type="hidden" id="year" name="year" value="1999">
+              <input type="hidden" id="month" name="month" value="1">
+              <input type="hidden" id="_token" name="_token" value="{{csrf_token()}}">
+              <button class="btn-pdf" title="Exportar a PDF"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+            </form>
+          </h2>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <h5 class="text-center text-danger bold">Total acumulado Limpiezas: {{number_format($totalCostBooks, 0, ',', '.')}}€</h5>
+        </div>
+        <div class="col-md-3 col-sm-6">
+          <h5 class="text-center text-danger bold">Total acumulado Extras: {{number_format($extraCostBooks, 0, ',', '.')}}€</h5>
+        </div>
+        
       </div>
       <div class="col-md-12 col-xs-12" style="padding-right: 0;">
         <div class="month_select-box">

@@ -111,17 +111,28 @@ setlocale(LC_TIME, "es_ES");
               </td>
               <td>
                 <?php $percent = ($income[1] / $t_year) * 100; ?>
+                <span id="total_income_{{$k}}">
                 <?php echo number_format($percent, 2, '.', ',') ?>%
+                </span>
               </td>
               @foreach($lstMonths as $m => $month)
               <td>
                 <?php
                 if (isset($arrayIncomes[$k]) && isset($arrayIncomes[$k][$m]) && $arrayIncomes[$k][$m] > 0) {
-                  echo number_format($arrayIncomes[$k][$m], 0, ',', '.') . '€';
+                  $valAux = $arrayIncomes[$k][$m];
                 } else {
-                  echo '--';
+                  $valAux =  0;
                 }
                 ?>
+                <input 
+                  type="text" 
+                  id='icome_<?php echo $k.'_'.$m; ?>' 
+                  value="<?php echo $valAux; ?>" 
+                  class="form-control incomesVal"
+                  data-type="<?php echo $income[0]; ?>"
+                  data-m="<?php echo $month['m']; ?>"
+                  data-y="<?php echo $month['y']; ?>"
+                  >
               </td>
               @endforeach
             </tr>
@@ -145,5 +156,34 @@ setlocale(LC_TIME, "es_ES");
 
 
 @section('scripts')
+<script>
+  $(document).ready(function() {
+    $('.incomesVal').on('change',function(){
+      
+      var value = $(this).val();
+      
+      if ($.isNumeric( value )){
+        var data = {
+          val: value,
+          k:  $(this).data('type'),
+          m:  $(this).data('m'),
+          y:  $(this).data('y'),
+        };
+        $.post("/admin/ingresos/upd",data).done(function(resp){
+          if (resp == 'ok') {         
+            window.show_notif('Ingresos:','success','Monto Actualizado');
+          } else {
+            window.show_notif('Ingresos:','danger','No se pudo actualizar el valor solicitado');
+          }
+                
+        });
+        
+      } else {
+        alert('Error: El valor debe ser numérico');
+      }
+    });
+  });
 
+
+</script>
 @endsection

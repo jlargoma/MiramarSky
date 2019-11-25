@@ -36,6 +36,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/api/check_rooms_avaliables',
         '/api/forfaits/*',
         '/payment/process/*',
-        '/ajax/send-partee-finish'
+        '/ajax/send-partee-finish',
+        '/admin/ingresos/upd',
     ];
 }

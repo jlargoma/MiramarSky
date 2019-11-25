@@ -70,7 +70,7 @@
               <option></option>
               <option value="0"> Tarjeta visa </option>
               <option value="2"> Cash </option>
-              <option value="3"> Banco</option>
+              <option value="3" selected=""> Banco</option>
             </select>
 
           </div>
