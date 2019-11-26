@@ -360,32 +360,42 @@ class LiquidacionController extends AppController {
 
     $totalMonthLimpieza = 0;
     $dateMonthLimpieza = '';
-    foreach ($gastos as $key => $item) {
-      if ($item->concept == 'LIMPIEZA MENSUAL') {
-        $totalMonthLimpieza += $item->import;
-        $dateMonthLimpieza = date('d M Y', strtotime($item->updated_at));
-      }
-    }
-/** @ToDo: type_book -> panyments*/
+//    foreach ($gastos as $key => $item) {
+////      if ($item->concept == 'LIMPIEZA MENSUAL') {
+////        $totalMonthLimpieza += $item->import;
+////        $dateMonthLimpieza = date('d M Y', strtotime($item->updated_at));
+////      }
+//    }
+    
+     $totalMonthLimpieza = \App\Book::where_type_book_sales()
+            ->where('start', '>=', $startYear)
+            ->where('start', '<=', $endYear)
+            ->sum('cost_limp');
+    $extraCostBooks = \App\Book::where_type_book_sales()
+            ->where('start', '>=', $startYear)
+            ->where('start', '<=', $endYear)
+            ->sum('extraCost');
+    
+    
     $books = \App\Book::whereIn('type_book', [2])->where('start', '>', $startYear)
                     ->where('start', '<=', $endYear)
                     ->orderBy('start', 'ASC')->get();
     $totalStripep = 0;
     $comisionBooking = 0;
-    $obsequios = 0;
     foreach ($books as $key => $book) {
 
       if (count($book->pago) > 0) {
         foreach ($book->pago as $key => $pay) {
-          /** @ToDo: pago desde Payland*/
+          
           if ($pay->comment == 'Pago desde stripe') {
             $totalStripep += (((1.4 * $pay->import) / 100) + 0.25);
+          } elseif($pay->comment == 'Pago desde Payland'){
+            $totalStripep += paylandCost($pay->import);
           }
         }
       }
 
       $comisionBooking += $book->PVPAgencia;
-      $obsequios += $book->extraPrice;
     }
 
 
@@ -394,7 +404,7 @@ class LiquidacionController extends AppController {
         'gastos' => $gastos,
         'totalStripep' => $totalStripep,
         'comisionBooking' => $comisionBooking,
-        'obsequios' => $obsequios,
+        'obsequios' => $extraCostBooks,
         'totalMonthLimpieza' => $totalMonthLimpieza,
         'dateMonthLimpieza' => $dateMonthLimpieza,
     ]);
@@ -490,6 +500,8 @@ class LiquidacionController extends AppController {
         foreach ($book->pago as $key => $pay) {
           if ($pay->comment == 'Pago desde stripe') {
             $totalStripep += (((1.4 * $pay->import) / 100) + 0.25);
+          } elseif($pay->comment == 'Pago desde Payland'){
+            $totalStripep += paylandCost($pay->import);
           }
         }
       }
@@ -840,6 +852,9 @@ class LiquidacionController extends AppController {
             // $arrayExpensesPending["STRIPE"][$fecha->copy()->format('n')] += ((1.4 * $book->total_price)/100)+0.25;
             $arrayExpensesPending["STRIPE"][$fecha->copy()
                             ->format('n')] += (((1.4 * $pay->import) / 100) + 0.25);
+          } elseif($pay->comment == 'Pago desde Payland'){
+             $arrayExpensesPending["STRIPE"][$fecha->copy()
+                            ->format('n')] +=  paylandCost($pay->import);
           }
         }
       }
@@ -1078,10 +1093,6 @@ class LiquidacionController extends AppController {
     $metalico = 0;
     $banco = 0;
     $pagado = 0;
-    $metalico_jaime = 0;
-    $metalico_jorge = 0;
-    $banco_jorge = 0;
-    $banco_jaime = 0;
     if ($room == "all") {
       $rooms = \App\Rooms::where('state', 1)->get(['id']);
       $books = \App\Book::where_type_book_sales()
@@ -1093,28 +1104,6 @@ class LiquidacionController extends AppController {
 
       foreach ($books as $key => $book) {
         $total += ($book->cost_apto + $book->cost_park + $book->cost_lujo); //$book->total_price;
-        if (count($book->pago) > 0) {
-          foreach ($book->pago as $index => $pay) {
-            switch ($pay->type) {
-              case 0:
-                $metalico_jaime += $pay->import;
-                $metalico += $pay->import;
-                break;
-              case 1:
-                $metalico_jorge += $pay->import;
-                $metalico += $pay->import;
-                break;
-              case 2:
-                $banco_jorge += $pay->import;
-                $banco += $pay->import;
-                break;
-              case 3:
-                $banco_jaime += $pay->import;
-                $banco += $pay->import;
-                break;
-            }
-          }
-        }
       }
 
       $gastos = \App\Expenses::where('date', '>=',$startYear)
@@ -1122,47 +1111,12 @@ class LiquidacionController extends AppController {
               ->orderBy('date', 'DESC')->get();
       
       foreach ($gastos as $payment) {
-        if ($payment->typePayment == 0 || $payment->typePayment == 1) {
-          $divisor = 0;
-          if (preg_match('/,/', $payment->PayFor)) {
-            $aux = explode(',', $payment->PayFor);
-            for ($i = 0; $i < count($aux); $i++) {
-              if (!empty($aux[$i])) {
-                $divisor++;
-              }
-            }
-          } else {
-            $divisor = 1;
-          }
-          $metalico += ($payment->import / $divisor);
-        } else if ($payment->typePayment == 2 || $payment->typePayment == 3) {
-          $divisor = 0;
-          if (preg_match('/,/', $payment->PayFor)) {
-            $aux = explode(',', $payment->PayFor);
-            for ($i = 0; $i < count($aux); $i++) {
-              if (!empty($aux[$i])) {
-                $divisor++;
-              }
-            }
-          } else {
-            $divisor = 1;
-          }
-          $banco += ($payment->import / $divisor);
-        }
-
-        $divisor = 0;
-        if (preg_match('/,/', $payment->PayFor)) {
-          $aux = explode(',', $payment->PayFor);
-          for ($i = 0; $i < count($aux); $i++) {
-            if (!empty($aux[$i])) {
-              $divisor++;
-            }
-          }
+        if ($payment->typePayment == 2 || $payment->typePayment == 1) {
+          $metalico += $payment->import;
         } else {
-          $divisor = 1;
+          $banco += ($payment->import );
         }
-
-        $pagado += ($payment->import / $divisor);
+        $pagado += ($payment->import);
       }
     } else {
 
@@ -1174,38 +1128,15 @@ class LiquidacionController extends AppController {
       
       foreach ($books as $key => $book) {
         $total += ($book->cost_apto + $book->cost_park + $book->cost_lujo); //$book->total_price;
-        if (count($book->pago) > 0) {
-          foreach ($book->pago as $index => $pay) {
-            switch ($pay->type) {
-              case 0:
-                $metalico_jaime += $pay->import;
-                $metalico += $pay->import;
-                break;
-              case 1:
-                $metalico_jorge += $pay->import;
-                $metalico += $pay->import;
-                break;
-              case 2:
-                $banco_jorge += $pay->import;
-                $banco += $pay->import;
-                break;
-              case 3:
-                $banco_jaime += $pay->import;
-                $banco += $pay->import;
-                break;
-            }
-          }
-        }
       }
 
-      
       $gastos = \App\Expenses::where('date', '>=',$startYear)
               ->where('date', '<=', $endYear)
               ->Where('PayFor', 'LIKE', '%' . $room . '%')
               ->orderBy('date', 'DESC')->get();
 
       foreach ($gastos as $payment) {
-        if ($payment->typePayment == 0 || $payment->typePayment == 1) {
+        if ($payment->typePayment == 2 || $payment->typePayment == 1) {
           $divisor = 0;
           if (preg_match('/,/', $payment->PayFor)) {
             $aux = explode(',', $payment->PayFor);
@@ -1218,7 +1149,7 @@ class LiquidacionController extends AppController {
             $divisor = 1;
           }
           $metalico += ($payment->import / $divisor);
-        } else if ($payment->typePayment == 2 || $payment->typePayment == 3) {
+        } else {
           $divisor = 0;
           if (preg_match('/,/', $payment->PayFor)) {
             $aux = explode(',', $payment->PayFor);
@@ -1256,32 +1187,33 @@ class LiquidacionController extends AppController {
         'metalico' => $metalico,
         'pagado' => $pagado,
         'metalico_jaime' => 0,
-        'metalico_jorge' => $metalico_jorge+$metalico_jaime,
-        'banco_jorge' => $banco_jorge+$banco_jaime,
+        'metalico_jorge' => 0,
+        'banco_jorge' => 0,
         'banco_jaime' => 0,
     ];
   }
 
   public function getHojaGastosByRoom($year = "", $id) {
+   
     if (empty($year)) {
-      $date = Carbon::now();
+      $year = self::getActiveYear();
     } else {
-      $year = Carbon::createFromFormat('Y', $year);
-      $date = $year->copy();
+      $year = self::getYearData($year);
     }
-    $start = new Carbon('first day of September ' . $date->copy()->format('Y'));
-
-    // return $start;
-    $end = $start->copy()->addYear();
+    
+    $start = new Carbon($year->start_date);
+    $end = new Carbon($year->end_date);
+    
+    
     if ($id != "all") {
       $room = \App\Rooms::find($id);
-      $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
-                      ->Where('date', '<=', $end->copy()->format('Y-m-d'))
+      $gastos = \App\Expenses::where('date', '>=', $start)
+                      ->Where('date', '<=', $end)
                       ->Where('PayFor', 'LIKE', '%' . $id . '%')->orderBy('date', 'DESC')->get();
     } else {
       $room = "all";
-      $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
-                      ->Where('date', '<=', $end->copy()->format('Y-m-d'))->orderBy('date', 'DESC')->get();
+      $gastos = \App\Expenses::where('date', '>=', $start)
+                      ->Where('date', '<=', $end)->orderBy('date', 'DESC')->get();
     }
 
     return view('backend.sales.gastos._expensesByRoom', [

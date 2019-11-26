@@ -189,3 +189,10 @@ function getCloudfl($url){
     }
     return null;
   }
+  
+function paylandCost($val){
+  if ($val>0)
+    return ((1.4 * $val) / 100);
+  
+  return 0;
+}

@@ -1,6 +1,8 @@
 <?php   use \Carbon\Carbon;
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
+
+$today =   Carbon::now()->formatLocalized('%d %b %Y');
 ?>
 <script src="/assets/js/notifications.js" type="text/javascript"></script>
 <table class="table table-bordered table-striped table-header-bg no-footer">
@@ -22,7 +24,7 @@ setlocale(LC_TIME, "es_ES");
 		<tr>
 
 			<td class="text-center" style="padding: 8px 5px!important">
-				Acutalizado a <?php echo Carbon::now()->formatLocalized('%d %b %Y') ?>
+				Acutalizado a <?php echo $today ?>
 			</td>
 			<td class="text-center" style="padding: 8px 5px!important">
 				COMISION TPV
@@ -52,7 +54,7 @@ setlocale(LC_TIME, "es_ES");
 		<tr>
 
 			<td class="text-center" style="padding: 8px 5px!important">
-				Acutalizado a <?php echo Carbon::now()->formatLocalized('%d %b %Y') ?>
+				Acutalizado a <?php echo $today ?>
 			</td>
 			<td class="text-center" style="padding: 8px 5px!important">
 				COMISION AGENCIAS
@@ -82,7 +84,7 @@ setlocale(LC_TIME, "es_ES");
 		<tr>
 
 			<td class="text-center" style="padding: 8px 5px!important">
-				Acutalizado a <?php echo Carbon::now()->formatLocalized('%d %b %Y') ?>
+				Acutalizado a <?php echo $today ?>
 			</td>
 			<td class="text-center" style="padding: 8px 5px!important">
 				OBSEQUIOS DE BIENVENIDA
@@ -112,7 +114,7 @@ setlocale(LC_TIME, "es_ES");
 		<tr>
 
 			<td class="text-center" style="padding: 8px 5px!important">
-				Acutalizado a {{$dateMonthLimpieza}}
+				Acutalizado a <?php echo $today ?>
 			</td>
 			<td class="text-center" style="padding: 8px 5px!important">
 				LIMPIEZA MENSUAL
