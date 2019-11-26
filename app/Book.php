@@ -816,6 +816,9 @@ class Book extends Model {
    * @return Object Query
    */
   static function where_type_book_sales() {
+    
+    //Pagada-la-señal / Reserva Propietario / ATIPICAS
+                
     return self::whereIn('type_book', [2, 7, 8]);
   }
   /**

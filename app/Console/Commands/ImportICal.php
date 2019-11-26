@@ -89,6 +89,7 @@ class ImportICal extends Command
             try {
                 //FIXME: Use model of import ical
                 $ical = new ICal($ical_to_import->url);
+                //user_agent ?
             } catch (\Exception $e) {
                 Log::error("Error importing icalendar " . $ical_to_import->id . ". Error  message => " . $e->getMessage());
                 echo $e->getMessage();
