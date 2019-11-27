@@ -1,4 +1,4 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 <script src="{{asset('/frontend/js/modernizr.custom.js')}}"></script>
 
 <style type="text/css">
@@ -170,6 +170,5 @@
 @endsection
 
 @section('scripts')
-  <script src="{{ assetV('/frontend/vendor/lightslider-master/src/js/lightslider.js')}}"></script>
-  <script type="text/javascript" src="{{ assetV('/frontend/js/form_booking.js')}}"></script>
+<script src="{{ getCloudfl(assetV('/frontend/vendor/lightslider-master/dist/js/lightslider.min.js'))}}"  defer=""></script>
 @endsection

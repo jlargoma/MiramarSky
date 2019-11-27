@@ -1,4 +1,4 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 
 @section('title')Pagos apartamentosierranevada.net @endsection
 

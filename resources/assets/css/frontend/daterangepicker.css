@@ -387,11 +387,11 @@
    .daterangepicker td, .daterangepicker th{
       padding: 2px!important;
    }
-   .daterangepicker{
+/*   .daterangepicker{
       left: 17%!important;
       top: 0 !important;
       position: fixed;
-   }
+   }*/
    .daterangepicker.opensright:before, .daterangepicker.opensright:after{
       display: none!important
    }

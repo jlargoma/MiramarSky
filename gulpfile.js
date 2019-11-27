@@ -29,7 +29,6 @@ elixir(function (mix) {
       '/frontend/aos.css',
       '/frontend/daterangepicker.css',
       '/frontend/radio-checkbox.css',
-      '/frontend/camera.css',
       '/frontend/lightslider.css',
       '/frontend/styles.css',
     ], 'public/css/frontend.css');
@@ -46,59 +45,32 @@ elixir(function (mix) {
 //
 
   
-elixir(function(mix) {
-    mix.combine([
-      'resources/assets/js/footer/plugins.js',
-      'resources/assets/js/footer/functions.js',
-      'resources/assets/js/footer/progressbar.min.js',
-      'resources/assets/js/footer/scripts.js',
-      'resources/assets/js/footer/flip.min.js',
-      'resources/assets/js/footer/plugins.js',
-      'resources/assets/js/footer/moment.min.js',
-      'resources/assets/js/footer/daterangepicker.min.js',
-      'resources/assets/js/footer/aos.js',
-      'resources/assets/js/footer/jquery.flip.min.js',
-      'resources/assets/js/form_booking.js',
-    'resources/assets/js/camera/easing.min.js',
-    'resources/assets/js/camera/camera.min.js',
-    'resources/assets/js/camera/bootstrap.min.js',
-    'resources/assets/js/camera/plugins.js',
-    'resources/assets/js/lightslider/lightslider.js',
-    ],  'public/js/scripts-home.js');
-});
-
-
-
+//elixir(function(mix) {
+//    mix.combine([
+//      'resources/assets/js/footer/moment.min.js',
+//      'resources/assets/js/footer/daterangepicker.min.js',
+//      'resources/assets/js/footer/scripts_mobile.js',
+//      'resources/assets/js/form_booking.js'
+//    ],  'public/js/scripts-footer-mobile.js');
+//});
   
 elixir(function(mix) {
     mix.combine([
-      'resources/assets/js/footer/plugins.js',
-      'resources/assets/js/footer/functions.js',
       'resources/assets/js/footer/progressbar.min.js',
-      'resources/assets/js/footer/scripts.js',
       'resources/assets/js/footer/flip.min.js',
-      'resources/assets/js/footer/plugins.js',
       'resources/assets/js/footer/moment.min.js',
       'resources/assets/js/footer/daterangepicker.min.js',
-      'resources/assets/js/footer/aos.js',
       'resources/assets/js/footer/jquery.flip.min.js',
+    ],  'public/js/scripts-ext.js');
+});
+elixir(function(mix) {
+    mix.combine([
+      'resources/assets/js/footer/plugins.js',
+      'resources/assets/js/footer/functions.js',
+      'resources/assets/js/footer/scripts.js',
+      'resources/assets/js/footer/aos.js',
       'resources/assets/js/form_booking.js'
     ],  'public/js/scripts-footer.js');
 });
-//elixir(function(mix) {
-//    mix.combine([
-//        'resources/assets/css/include/rs-plugin/js/jquery.themepunch.tools.min.js',
-//        'resources/assets/css/include/rs-plugin/js/jquery.themepunch.revolution.min.js',
-//        'resources/assets/css/include/rs-plugin/js/addons/revolution.addon.slicey.min.js',
-//        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.actions.min.js',
-//        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.carousel.min.js',
-//        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.kenburn.min.js',
-//        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.layeranimation.min.js',
-//        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.migration.min.js',
-//        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.navigation.min.js',
-//        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.parallax.min.js',
-//        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.slideanims.min.js',
-//        'resources/assets/css/include/rs-plugin/js/extensions/revolution.extension.video.min.js',
-//    ],  'public/js/scripts-slider.js');
-//});
-        
+
+

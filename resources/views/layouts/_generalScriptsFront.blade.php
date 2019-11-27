@@ -1,8 +1,6 @@
 <!-- before general -->
 
-
-
-<script src='https://www.google.com/recaptcha/api.js?render=6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV' defer=""></script>
+<!--<script src='https://www.google.com/recaptcha/api.js?render=6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV' async="async"></script>-->
 
 <?php /* view para todos los scripts generales de la pagina */ ?>
 
@@ -21,10 +19,35 @@ $(document).ready(function () {
 
     $('div#blank_loader').fadeOut(500);
 
-  
+  @if(($mobile->isMobile() || $mobile->isTablet()))
+      setTimeout(
+          function(){
+            var my_awesome_style = document.createElement('link');
+            my_awesome_style.setAttribute('href',"{{ getCloudfl(assetV('/frontend/css/responsive-mobile.css'))}}");
+            my_awesome_style.setAttribute('type','text/css');
+            my_awesome_style.setAttribute('rel','stylesheet');
+            document.body.appendChild(my_awesome_style);
+            
+            var my_awesome_script = document.createElement('script');
+            my_awesome_script.setAttribute('src',"{{ getCloudfl(assetV('/js/scripts-ext.js'))}}");
+            document.body.appendChild(my_awesome_script);
+            
+            var recaptcha_script = document.createElement('script');
+            recaptcha_script.setAttribute('src',"https://www.google.com/recaptcha/api.js?render=6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV");
+            document.body.appendChild(recaptcha_script);
+            
+            var my_awesome_script2 = document.createElement('script');
+            my_awesome_script2.setAttribute('src',"{{ getCloudfl(assetV('/js/scripts-footer-min.js'))}}");
+            document.body.appendChild(my_awesome_script2);
+            
+          },1700);
+
+      setTimeout(function(){AOS.init();},2100);
+    
+  @else
   setTimeout(function(){AOS.init();},1200);
+  @endif
   });
-  
 </script>
 
 </body>

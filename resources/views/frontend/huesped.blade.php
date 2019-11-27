@@ -1,4 +1,4 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 
 @section('metadescription') Huesped - apartamentosierranevada.net @endsection
 @section('title')  Huesped - apartamentosierranevada.net @endsection

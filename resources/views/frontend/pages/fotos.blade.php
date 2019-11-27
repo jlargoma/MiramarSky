@@ -104,6 +104,9 @@ h2.subtit {
     .apartamento h1{
       padding: 0;
     }
+  .page-title.apartamento.fotos{
+    margin-top: 0;
+  }
   }
 </style>
 @section('metadescription') {{ $aptoHeading }} en Sierra Nevada @endsection

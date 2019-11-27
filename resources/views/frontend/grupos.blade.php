@@ -1,4 +1,4 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 
 @section('metadescription') Grupos - apartamentosierranevada.net @endsection
 @section('title')  Grupos - apartamentosierranevada.net @endsection

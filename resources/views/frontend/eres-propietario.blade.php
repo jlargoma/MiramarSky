@@ -1,4 +1,4 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 
 @section('metadescription') ¿Eres Propietario y quieres alquilar tu apartamento? - apartamentosierranevada.net @endsection
 @section('title')  ¿Eres Propietario y quieres alquilar tu apartamento? - apartamentosierranevada.net @endsection
