@@ -1,4 +1,4 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 @section('css')
 	<!-- <link rel="stylesheet" href="/frontend/css/components/radio-checkbox.css" type="text/css" /> -->
 	<style type="text/css">

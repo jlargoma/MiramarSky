@@ -29,9 +29,9 @@
         <meta name="msapplication-TileImage" content="{{ assetV('/img/miramarski/favicon/ms-icon-144x144.png' ) }}">
         <meta name="theme-color" content="#ffffff">
 
-        <script type="text/javascript" src="{{ getCloudfl(assetV('/frontend/js/jquery-2.1.4.js'))}}" ></script>
+        
         <title>@yield('title')</title>
-<link rel="stylesheet" href="{{ getCloudfl(assetV ('/css/frontend.css'))}}" type="text/css"/>
+
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-66225892-1"></script>
 <script>
@@ -49,112 +49,29 @@
     <div id="" class="clearfix">
 
         @include('layouts._header')
-
-        @include('frontend.slider')
-
         @yield('content')
-       
-
         @include('layouts._footer')
 
     <div id="gotoTop" class="fa fa-chevron-up" style="bottom:100px; right:15px;"></div>
  
-    <link href="//fonts.googleapis.com/css?family=Open+Sans%3A800|Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700,800,900|Crete+Round:400italic" rel="stylesheet" type="text/css"/>
         
-        
-    <?php if ($mobile->isMobile() || $mobile->isTablet()): ?>
-        <link rel="stylesheet" href="{{ getCloudfl(assetV('/frontend/css/responsive-mobile.css'))}}" type="text/css"/>
-    <?php else: ?>
-        <link rel="stylesheet" href="{{ getCloudfl(assetV('/frontend/css/responsive.css'))}}" type="text/css"/>
+    <script  src="https://code.jquery.com/jquery-2.1.4.min.js"
+  integrity="sha256-8WqyJLuWKRBVhxXIL1jBDD7SDxU936oZkCnxQbWwJVw="
+  crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{ getCloudfl(assetV ('/css/frontend.css'))}}" type="text/css"/>   
+    <?php 
+    if ( !($mobile->isMobile() || $mobile->isTablet())): ?>
+      <link href="//fonts.googleapis.com/css?family=Open+Sans%3A800|Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700,800,900|Crete+Round:400italic" rel="stylesheet" type="text/css"/>
+      <link rel="stylesheet" href="{{ getCloudfl(assetV('/frontend/css/responsive.css'))}}" type="text/css"/>
+      <script src="{{ getCloudfl(assetV('/frontend/vendor/lightslider-master/dist/js/lightslider.min.js'))}}"  defer=""></script>
+      <script type="text/javascript" src="{{ getCloudfl(assetV('/js/scripts-ext.js'))}}" async="async"></script>
+      <script type="text/javascript" src="{{ getCloudfl(assetV('/js/scripts-footer-min.js'))}}" async="async"></script>
     <?php endif; ?>
         
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
-        <script type="text/javascript" src="{{ getCloudfl(assetV('/js/scripts-home.js'))}}" defer=""></script>
     @include('layouts._generalScriptsFront')
-
-
-     <style>
-
-  
-.header-extras-2 {
-    float: none;
-    width: 50%;
-    /* margin: 0 auto; */
-    position: absolute;
-    /* float: right !important; */
-    /* float: none; */
-    right: 0;
-}
-.header-extras-2 li {
-    float: right;
-    margin-left: 20px;
-    height: 40px;
-    width: 40px;
-    overflow: hidden;
-    list-style: none;
-    padding-top: 3px;
-    /*display: inline;*/
-}
-#primary-menu.style-2{
-      background-color: transparent;
-}
-
-  @media (max-width: 991px) {
-    nav#primary-menu {
-      display: none;
-    }
-    .primary-menu-open nav#primary-menu {
-      display: block;
-    }
-    div#primary-menu-trigger {
-      font-size: 25px;
-      border: 1px solid;
-      left: 1em;
-      position: absolute;
-      color: #3f51b5;
-          width: auto;
-    height: auto;
-    line-height: initial;
-    padding: 10px;
-
-    }
-
-    #primary-menu > ul,
-    #primary-menu > div > ul {
-      display: none;
-      float: none;
-      -webkit-transition: none;
-      -o-transition: none;
-      transition: none;
-      margin-top: 5em !important;
-      max-width: 90%;
-    }
-    div#top-bar {
-    float: right;
-    width: 80%;
-    margin-top: 2em;
-    background-color: transparent;
-    border: none;
-}
-.header-extras-2{
-      width: 100%;
-}
-.header-extras-2 li {
-    margin-left: 0;
-}
-
-  nav#primary-menu {
-    position: absolute;
-    left: 25px;
-    top: 10;
-    width: 80%;
-  }
-  nav#primary-menu  .sf-js-enabled.show{
-    background-color: #fff;
-}
-  }
-    @media (max-width: 768px) {
-
-    }
-</style>
+        
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+        
+        
+    
 </html>

@@ -1,4 +1,4 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 
 @section('metadescription') Aviso Legal - apartamentosierranevada.net @endsection
 @section('title')  Aviso Legal - apartamentosierranevada.net @endsection

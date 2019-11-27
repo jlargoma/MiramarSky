@@ -3,9 +3,10 @@
 @section('title') Alquiler apartamento Sierra Nevada @endsection
 
 @section('content')
+@include('frontend.slider')
 <section id="content" style="padding: 0;    clear: both;">
 
-  <div class="content-wrap notoppadding" style="padding: 0;">
+  <div id="content-form-book" class="content-wrap notoppadding" style="padding: 0;">
 
     <?php if (!$mobile->isMobile()): ?>
     <!-- DESKTOP -->
@@ -44,6 +45,16 @@
     min-height: 378px!important;
     overflow: hidden!important;
   }
+  .booking_mobile{
+    display: block !important;
+  }
+  .booking_box{
+    padding: 2em !important;
+    margin: -2%;
+    width: 104% !important;
+    background-color: #3330c8;
+  }
+  
 </style>
 <!-- MOBILE -->
 <section class="page-section degradado-background1 no-padding" style="letter-spacing: 0;line-height: 1;color: #fff!important;">
@@ -55,22 +66,18 @@
            style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
         <span class="white text-white"><i class="fa fa-times fa-4x"></i></span>
       </div>
-      <div class="container clearfix" style="padding: 20px;">
-        <div class="row">
-          <div class="col-md-4 col-xs-12">
-            <div class="row" >
-              <div class="col-xs-12">
-                <h3 class="text-center white">CALCULA TU PRECIO</h3>
-              </div>
+      <div class="clearfix" style="padding: 20px;">
+        <div class="row booking_mobile">
+          <div style="padding: 20px;">
+              <h3 class="text-center white">CALCULA TU PRECIO</h3>
               <div id="form-content">
                 @include('frontend._formBook')
               </div>
-            </div>
           </div>
-          <div class="col-md-4 col-xs-12" id="content-book-response">
-            <div class="col-xs-12 back" style="background-color: #3330c8;"></div>
+          <div class="col-xs-12" id="content-book-response">
+            <div class="col-xs-12 back booking_box" ></div>
           </div>
-          <div class="col-md-4 col-xs-12" id="content-book-payland" style="padding: 0">
+          <div class="col-xs-12 booking_box" id="content-book-payland">
           </div>
         </div>
       </div>
@@ -151,4 +158,9 @@
 @endif
 @include('frontend.blocks.services')
 @include('frontend.blocks.info-links')
+@endsection
+
+@section('scripts')
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous" async="async"></script>
 @endsection

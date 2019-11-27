@@ -1,4 +1,4 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 
 @section('metadescription') Quienes Somos - apartamentosierranevada.net @endsection
 @section('title')  Quienes Somos - apartamentosierranevada.net @endsection

@@ -1,4 +1,4 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 @section('metadescription') El tiempo en Sierra Nevada @endsection
 @section('title') El tiempo en Sierra Nevada @endsection
 

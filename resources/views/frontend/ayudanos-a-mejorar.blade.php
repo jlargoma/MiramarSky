@@ -1,4 +1,4 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 
 @section('metadescription') Ayudanos a Mejorar - apartamentosierranevada.net @endsection
 @section('title')  Ayudanos a Mejorar - apartamentosierranevada.net @endsection

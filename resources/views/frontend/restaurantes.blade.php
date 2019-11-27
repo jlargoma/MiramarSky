@@ -1,4 +1,4 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 <style type="text/css">
 	#primary-menu ul li  a{
 		color: #3F51B5!important;

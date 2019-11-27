@@ -1,4 +1,4 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 @section('css')
 	<link rel="stylesheet" href="/frontend/demos/travel/css/datepicker.css" type="text/css" />
 

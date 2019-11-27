@@ -1,4 +1,4 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 
 @section('metadescription') Preguntas Frecuentes - apartamentosierranevada.net @endsection
 @section('title')  Preguntas Frecuentes - apartamentosierranevada.net @endsection

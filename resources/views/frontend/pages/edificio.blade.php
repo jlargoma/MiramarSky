@@ -1,7 +1,6 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 
-<link rel="stylesheet" type="text/css" href="{{ asset('/frontend/css/component.css')}}" />    
-<script src="{{asset('/frontend/js/modernizr.custom.js')}}"></script>
+
 
 <style type="text/css">
 
@@ -193,11 +192,8 @@
                 </div>
 </section>
 
-
-
 @endsection
 
 @section('scripts')
 <script src="{{ assetV('/frontend/vendor/lightslider-master/src/js/lightslider.js')}}"></script>
-<script type="text/javascript" src="{{ assetV('/frontend/js/form_booking.js')}}"></script>
 @endsection

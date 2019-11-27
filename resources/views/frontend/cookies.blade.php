@@ -1,4 +1,4 @@
-@extends('layouts.master_withoutslider')
+@extends('layouts.master')
 
 @section('metadescription') Politica de cookies - apartamentosierranevada.net @endsection
 @section('title')  Politica de cookies - apartamentosierranevada.net @endsection
