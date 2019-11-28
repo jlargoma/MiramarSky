@@ -147,7 +147,7 @@ class PaylandsController extends AppController
       return null;
     }
     
-    private function getPaymentText($urlPay,$is_deferred) {
+    private function getPaymentText($urlPay,$is_deferred=false) {
       
       if ($is_deferred){
         $texto = 'En este link podrás realizar el pago de la Fianza.<br> En el momento en que efectúes el pago, te legará un email';
@@ -504,8 +504,31 @@ class PaylandsController extends AppController
       public function paymentsForms($token) {
         
         if ($token){
+
+          $room = $name = $dates = null;
+          
           $payment = \App\PaymentOrders::where('token',$token)->first();
           if ($payment){
+            $book = \App\Book::find($payment->book_id);
+            $request_dni = false;
+            if ($book){
+              $payments = \App\Payments::where('book_id', $book->id)->first();
+              if(!$payments){
+                $request_dni = true;
+                $room = '';
+                if ($book->room && $book->room->sizeRooms){
+                  $room = $book->room->sizeRooms->name;
+                  $room .= ($book->type_luxury == 1) ? " Lujo" : " Estandar";
+                }
+                $name = $book->customer->name;
+
+                $start = strtotime($book->start);
+                $finish = strtotime($book->finish);
+
+                $dates = date('d',$start).' '.getMonthsSpanish(date('m',$start));
+                $dates .= ' - '.date('d',$finish).' '.getMonthsSpanish(date('m',$finish));
+              }
+            }
 
             $urlPayland = $this->generateOrderPaymentBooking(
                     $payment->book_id,
@@ -522,13 +545,46 @@ class PaylandsController extends AppController
               $background = assetV('img/miramarski/lockscreen.jpg');
             }
       
-             return view('frontend.bookStatus.paylandPay', ['urlPayland' => $urlPayland,'background'=>$background]);
+             return view('frontend.bookStatus.paylandPay', 
+                     [
+                         'urlPayland' => $urlPayland,
+                         'background'=>$background,
+                         'room' => $room,
+                         'dates' => $dates,
+                         'name' => $name,
+                         'key'=>$token,
+                         'request_dni' =>$request_dni
+                         ]);
           }
           return redirect()->route('paymeny-error');
         }
         return redirect()->route('paymeny-error');
       }
     
+   public function saveDni(Request $request,$token) {
+      $dni = $request->input('dni', null);
+     
+      if (trim($dni) == '' || strlen(trim($dni))<7){
+        echo 'Por favor, ingrese su DNI para continuar'; die;
+      }
+      if ($token){
+          $payment = \App\PaymentOrders::where('token',$token)->first();
+          if ($payment){
+            $book = \App\Book::find($payment->book_id);
+            $customer = $book->customer;
+            if ($customer){
+              $customer->dni = $dni;
+              $customer->save();
+              echo 'ok'; die;
+            }
+            echo 'Reserva no encontrada'; die;
+          } else {
+            echo 'Reserva no encontrada'; die;
+          }
+          echo 'Reserva no encontrada'; die;
+      }
+      echo 'Error: solicitud de pago no encontrada'; die;
+   }
    public function getPaymentByType(Request $request) {
       $type = $request->input('type','link');
       if ($type == 'form'){

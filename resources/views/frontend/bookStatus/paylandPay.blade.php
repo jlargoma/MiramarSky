@@ -6,15 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
       .background{
-          height: 100%;
-          width: 100%;
-          opacity: 0.75;
-          position: fixed;
-          left: 0;
-          top: 0;
-          background-image: url("{{ assetV('img/miramarski/lockscreen.jpg')}}");
-          background-repeat: no-repeat;
-          background-size: cover;
+        height: 100%;
+        width: 100%;
+        opacity: 0.75;
+        position: fixed;
+        left: 0;
+        top: 0;
+        background-image: url("{{ assetV('img/miramarski/lockscreen.jpg')}}");
+        background-repeat: no-repeat;
+        background-size: cover;
       }
       .contenedor{
         z-index: 99;
@@ -24,40 +24,249 @@
         width: 100%;
       }
       .title{
-          width: 100%;
-          text-align: center;
-          color: #fff;
-          font-size: 3em;
+        width: 100%;
+        text-align: center;
+        color: #fff;
+        font-size: 3em;
       }
       .form{
         width: 100%;
-    text-align: center;
-    color: #fff;
-    font-size: 2em;
+        text-align: center;
+        color: #828282;
+        font-size: 2em;
+        font-family: "Helvetica Neue", "Helvetica", Arial, sans-serif;
+        background: rgba(255, 255, 255, 0.6) !important;
+        color: #000;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 0px;
+        padding: 3em 0;
       }
+
       .logo{
-            width: 320px;
-    display: block;
-    margin: auto;
+        width: 320px;
+        display: block;
+        margin: auto;
+      }
+      .msg-error{
+
+      }
+      ul{
+        width: 100%;
+        text-align: center;
+        margin: 1em auto;
+        padding: 0;
+      }
+      li{
+        display: inline-block;
+      }
+      li.step {
+        background-color: #d9e0e2;
+        color: #496893;
+        text-align: center;
+        padding: 13px;
+        border-radius: 48%;
+        margin: 0;
+        width: 20px;
+      }
+      li.step.active {
+        background-color: #496893;
+        color: #fff;
+      }
+
+
+      li.line{
+        height: 4px;
+        width: 7em;
+        padding: 0;
+        border-radius: inherit;
+        padding-bottom: 4px;
+        margin: 1em 0 0 0;
+        border-bottom: 3px solid #496893;
+      }
+      input#dni {
+        padding: 6px;
+        border: none;
+        font-size: 1em;
+      }
+      .m1{
+        margin: 1em auto;
+      }
+      span.required {
+        color: red;
+      }
+      button{
+        padding: 12px;
+        color: #eff2f3;
+        background-color: #42648e;
+        font-size: 1em;
+        border: none;
+        border-radius: 7px;
+      }
+      .alert-warning{
+        display: none; 
+        width: 320px;
+        margin: 1em auto;
+        padding: 10px;
+        background-color: #e2d9aa;
+        color: #b56700;
+        font-weight: 400;
+        border: 1px solid #cac090;
+        border-radius: 7px;
+      }
+      input[type="checkbox" i] {
+        width: 22px;
+        height: 21px;
+        position: absolute;
+      }
+      span.check{
+        position: relative;
+        width: 25px;
+        display: inline-flex;
+        height: 1em;
       }
     </style>
   </head>
   <body>
     <div class="background"></div>
     <div class="contenedor">
-       <?php if (env('APP_APPLICATION') == "riad"): ?>
-                <a class="logo" href="/">
-                    <img src="{{ assetV('img/riad/logo_riad_b.png') }}" alt="Riad">
-                </a>
-            <?php else:?>
-                <a class="logo" href="/">
-                    <img src="{{ assetV('img/miramarski/logo_miramar.png') }}" alt="miramarSki">
-                </a>
-            <?php endif; ?>
-      <div class="form">
-       <iframe src="{{ $urlPayland  }}" frameborder="0" style="width: 100%; min-height: 550px;"></iframe>
-    </div>
-    </div>
+      <?php if (env('APP_APPLICATION') == "riad"): ?>
+        <a class="logo" href="/">
+          <img src="{{ assetV('img/riad/logo_riad_b.png') }}" alt="Riad">
+        </a>
+      <?php else: ?>
+        <a class="logo" href="/">
+          <img src="{{ assetV('img/miramarski/logo_miramar.png') }}" alt="miramarSki">
+        </a>
+      <?php endif; ?>
 
+      @if($request_dni)
+      <div class="form black">
+        <ul>
+          <li id="step_1" class="active step">1</li>
+          <li class="line">&nbsp;</li>
+          <li id="step_2" class="step">2</li>
+        </ul>
+        <div class="">
+          <h2>{{$dates}} {{$room}}</h2>
+          <div class="m1">
+            <label>Nombre</label>
+            {{$name}}
+          </div>
+        </div>
+        <div id="form_step_1">
+
+
+          <div class="m1">
+            <label><span class="required">*</span>DNI</label>
+            <input type="text" id="dni" class="form-control required">
+          </div>
+          <div class="m1">
+            <span class="check"><input type="checkbox" id="tyc_1" class="form-control required"></span>
+            <label><span class="required">*</span>Acepta las 
+              <a href="{{route('cond.contratacion')}}" title="Ir a políticas de contratación" target="_black">
+                políticas de contratación
+              </a>
+            </label>
+          </div>
+          <div class="m1">
+            <span class="check"><input type="checkbox" id="tyc_2"  class="form-control required"></span>
+            <label><span class="required">*</span>Acepta las 
+              <a href="{{route('cond.fianza')}}" title="Ir a condiciones de fianza" target="_black">
+                condiciones de fianza
+              </a></label>
+          </div>
+          <div class="text-center">
+            <button class="btn btn-primary" title="Ir al paso 2" id="siguiente">Siguente</button>
+          </div>
+          <p class="alert alert-warning msg-error" ></p>
+        </div>
+        <div id="form_step_2" style="display:none">
+          <iframe src="{{ $urlPayland  }}" frameborder="0" style="width: 100%; min-height: 550px;"></iframe>
+        </div>
+        <div id="recaptcha" class="g-recaptcha" data-sitekey="6Ld4Jh8TAAAAAD2tURa21kTFwMkKoyJCqaXb0uoK"></div>
+      </div>
+      @else
+      <iframe src="{{ $urlPayland  }}" frameborder="0" style="width: 100%; min-height: 550px;"></iframe>
+      @endif
+
+
+
+    </div>
+    @if($request_dni)
+    <script  src="https://code.jquery.com/jquery-2.1.4.min.js"
+             integrity="sha256-8WqyJLuWKRBVhxXIL1jBDD7SDxU936oZkCnxQbWwJVw="
+    crossorigin="anonymous"></script>
+    <script src="https://www.google.com/recaptcha/api.js?render=6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV"></script>
+    <script>
+        $(function () {
+
+        $('#siguiente').on('click', function () {
+//          var $captcha = $( '#recaptcha' ),
+//          response = grecaptcha.getResponse();
+//          if (response.length === 0) {
+//            
+//            if( !$captcha.hasClass( "error" ) ){
+//              $captcha.addClass( "error" );
+//            }
+//            showError('Error');
+//            return;
+//
+//          } else {
+//            $( '.msg-error' ).text('');
+//            $captcha.removeClass( "error" );
+//          }
+
+        if (!$('#tyc_1').is(':checked')) {
+          showError('Por favor, acepte las políticas de contratación para continuar');
+          return;
+        }
+        if (!$('#tyc_2').is(':checked')) {
+          showError('Por favor, acepte las condiciones de fianza para continuar');
+          return;
+        }
+
+        var dni = $('#dni').val();
+        if (isBlank(dni) || isEmpty(dni)) {
+          showError('Por favor, complete su CIF, NIF ó DNI para continuar');
+          return;
+        }
+        var token = '{{csrf_token()}}';
+        var data = {dni: dni, _token: token};
+
+      $.post('/payments-save-dni/{{$key}}', data, function (result) {
+        if (result == 'ok') {
+          $('#step_1').removeClass('active');
+          $('#step_2').addClass('active');
+          $('#form_step_1').hide(500, function () {
+            $('#form_step_2').show();
+          });
+
+        } else {
+          showError(result);
+          return;
+        }
+
+          }).fail(function () {
+            showError('Error de sistema');
+          });
+        });
+
+
+        var showError = function (text) {
+          $('.msg-error').text(text).fadeIn();
+          setTimeout(function () {
+            $('.msg-error').text('').fadeOut();
+          }, 3500);
+        }
+        function isBlank(str) {
+          return (!str || /^\s*$/.test(str));
+        }
+        function isEmpty(str) {
+          return (!str || 0 === str.length);
+        }
+    });
+    </script>
+    @endif
   </body>
 </html>

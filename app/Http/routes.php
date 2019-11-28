@@ -68,7 +68,8 @@
     Route::get('/aviso-legal', 'HomeController@avisoLegal');
     Route::get('/huesped', 'HomeController@huesped');
     Route::get('/el-tiempo', 'HomeController@tiempo');
-    Route::get('/condiciones-contratacion', 'HomeController@condicionesContratacion');
+    Route::get('/condiciones-contratacion', 'HomeController@condicionesContratacion')->name('cond.contratacion');
+    Route::get('/condiciones-fianza', 'HomeController@condicionesFianza')->name('cond.fianza');
     Route::get('/restaurantes', function () {
         $mobile = new \App\Classes\Mobile();
         return view('frontend.restaurantes', ['mobile' => $mobile]);
@@ -77,6 +78,7 @@
     Route::post('/solicitudForfait', 'HomeController@solicitudForfait');
     Route::get('/admin/links-stripe', 'StripeController@link');
     Route::get('/payments-forms/{token}', 'PaylandsController@paymentsForms')->name('front.payments');
+    Route::post('/payments-save-dni/{token}', 'PaylandsController@saveDni')->name('front.payments.dni');
 
     
     /* SUPERMERCADO */
