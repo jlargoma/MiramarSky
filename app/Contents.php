@@ -18,6 +18,7 @@ class Contents extends Model
       'footer' => 'Pie de página',  
       'contacto' => 'Contacta',  
       'slider_home' => 'Slider home',  
+      'fianza' => 'Condiciones de fianzas',  
     ];
   }
 
@@ -87,6 +88,11 @@ class Contents extends Model
         case 'footer':
           return [
             'imagen'=>['Imagen de fondo','file',null],  
+          ];
+        break;
+        case 'fianza':
+          return [
+            'content'=>['Texto de condiciones de fianzas','ckeditor',null],  
           ];
         break;
     }
