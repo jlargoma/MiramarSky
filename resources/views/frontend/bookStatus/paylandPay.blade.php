@@ -85,6 +85,11 @@
         margin: 1em 0 0 0;
         border-bottom: 3px solid #496893;
       }
+      li.line span{
+        background-color: #b3cfe2;
+        padding: 6px;
+        color: #496893;
+      }
       input#dni {
         padding: 6px;
         border: 1px solid #3f88b8;
@@ -173,12 +178,14 @@ label.checkbox :checked + span:after {
 
       @if($request_dni)
       <div class="form black">
+        <h3>TPV</h3>
         <ul>
           <li id="step_1" class="active step">1</li>
-          <li class="line">&nbsp;</li>
+          <li class="line"><span>Pasos</span></li>
           <li id="step_2" class="step">2</li>
         </ul>
         <div class="">
+          
           <h2>{{$dates}} {{$room}}</h2>
           <div class="m1">
             <label>Nombre</label>
@@ -269,7 +276,7 @@ label.checkbox :checked + span:after {
         var token = '{{csrf_token()}}';
         var data = {dni: dni, _token: token};
 
-      $.post('/payments-save-dni/{{$key}}', data, function (result) {
+      $.post('{{$urlSend}}', data, function (result) {
         if (result == 'ok') {
           $('#step_1').removeClass('active');
           $('#step_2').addClass('active');

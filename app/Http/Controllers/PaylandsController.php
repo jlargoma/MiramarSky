@@ -550,9 +550,9 @@ class PaylandsController extends AppController
                          'urlPayland' => $urlPayland,
                          'background'=>$background,
                          'room' => $room,
+                         'urlSend'=>route('front.payments.dni',$token),
                          'dates' => $dates,
                          'name' => $name,
-                         'key'=>$token,
                          'request_dni' =>$request_dni
                          ]);
           }
