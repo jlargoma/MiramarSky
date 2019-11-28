@@ -628,6 +628,10 @@ class HomeController extends AppController
     {
         return view('frontend.condiciones-contratacion', ['mobile' => new Mobile()]);
     }
+    public function condicionesFianza(Request $request)
+    {
+        return view('frontend.condiciones-fianza', ['mobile' => new Mobile()]);
+    }
 
     public static function getLastBookByPhone($ff_request_id, $phone)
     {
