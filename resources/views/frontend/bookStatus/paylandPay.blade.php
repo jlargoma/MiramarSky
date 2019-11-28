@@ -40,7 +40,8 @@
         font-size: 18px;
         font-weight: bold;
         margin-bottom: 0px;
-        padding: 3em 0;
+        padding: 3em 0 6em 0;
+        
       }
 
       .logo{
@@ -86,8 +87,9 @@
       }
       input#dni {
         padding: 6px;
-        border: none;
+        border: 1px solid #3f88b8;
         font-size: 1em;
+        border-radius: 4px;
       }
       .m1{
         margin: 1em auto;
@@ -118,6 +120,7 @@
         width: 22px;
         height: 21px;
         position: absolute;
+        border: 1px solid #3f88b8;
       }
       span.check{
         position: relative;
@@ -125,6 +128,34 @@
         display: inline-flex;
         height: 1em;
       }
+      
+      label.checkbox input[type="checkbox"] {display:none;}
+label.checkbox span {
+  display:inline-block;
+  border:2px solid #BBB;
+  border-radius:10px;
+  width:25px;
+  height:25px;
+  background:#FF5E5E;
+  vertical-align:middle;
+  margin:3px;
+  position: relative;
+  transition:width 0.1s, height 0.1s, margin 0.1s;
+}
+label.checkbox :checked + span {
+  background:#ACEAAC;
+  width:27px;
+  height:27px;
+  margin: 2px;
+}
+label.checkbox :checked + span:after {
+  content: '\2714';
+  font-size: 20px;
+  position: absolute;
+  top: 2px;
+  left: 5px;
+  color: #4087b7;
+}
     </style>
   </head>
   <body>
@@ -162,19 +193,23 @@
             <input type="text" id="dni" class="form-control required">
           </div>
           <div class="m1">
-            <span class="check"><input type="checkbox" id="tyc_1" class="form-control required"></span>
-            <label><span class="required">*</span>Acepta las 
-              <a href="{{route('cond.contratacion')}}" title="Ir a políticas de contratación" target="_black">
+            <label class="checkbox">
+              <input type="checkbox" id="tyc_1" >
+              <span></span>
+              Acepta las <a href="{{route('cond.contratacion')}}" title="Ir a políticas de contratación" target="_black">
                 políticas de contratación
               </a>
             </label>
           </div>
           <div class="m1">
-            <span class="check"><input type="checkbox" id="tyc_2"  class="form-control required"></span>
-            <label><span class="required">*</span>Acepta las 
+            <label class="checkbox">
+              <input type="checkbox" id="tyc_2" >
+              <span></span>
+              Acepta las 
               <a href="{{route('cond.fianza')}}" title="Ir a condiciones de fianza" target="_black">
                 condiciones de fianza
-              </a></label>
+              </a>
+            </label>
           </div>
           <div class="text-center">
             <button class="btn btn-primary" title="Ir al paso 2" id="siguiente">Siguente</button>

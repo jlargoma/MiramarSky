@@ -5,8 +5,12 @@
 
 @section('content')
 
-<meta name="description" content="Consultar Condiciones generales para el alquiler apartamento sierra nevada,condiciones de cancelación, check in y out" />
-<meta name="keywords" content="condiciones generales,alquiler apartamento sierra nevada,condiciones de cancelación">
+<?php
+if (!isset($oContents)) $oContents = new App\Contents();
+$fianza = $oContents->getContentByKey('fianza');
+?>
+<meta name="description" content="Consultar Condiciones De Fianzas para el alquiler apartamento sierra nevada,condiciones se Fianza" />
+<meta name="keywords" content="condiciones De Fianzas,alquiler apartamento sierra nevada,condiciones se Fianza">
 
 
 <section id="content" style="margin-top: 15px">
@@ -15,7 +19,9 @@
     <div class="row">
       <h1 class="center psuh-20">Condiciones De Fianzas</h1>
     </div>
-
+    <div class="text-left">
+    {!!$fianza['content']!!}
+    </div>
 </section>
 
 @endsection
