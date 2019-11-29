@@ -323,9 +323,6 @@ if (elementVisible($('#progressData1'))){
       $('#content-book-response .back').empty();
     }
     
-    
-    console.log(typeof AOS,typeof LoadImgs,typeof LoadImgsBackground);
-    
     if (typeof LoadImgs === "function") {
       LoadImgs();
     }
@@ -334,7 +331,6 @@ if (elementVisible($('#progressData1'))){
     }
     
     setTimeout(function(){
-      console.log(typeof AOS,typeof LoadImgs,typeof LoadImgsBackground);
       if (typeof AOS === "object") {
         AOS.init();
       }
