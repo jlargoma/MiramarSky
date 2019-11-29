@@ -536,7 +536,6 @@ class PaylandsController extends AppController
                 }
               }
             }
-
             $urlPayland = $this->generateOrderPaymentBooking(
                     $payment->book_id,
                     $payment->cli_id,
@@ -572,7 +571,7 @@ class PaylandsController extends AppController
       $dni = $request->input('dni', null);
      
       if (trim($dni) == '' || strlen(trim($dni))<7){
-        echo 'Por favor, ingrese su DNI para continuar'; die;
+        return response()->json('Por favor, ingrese su DNI para continuar');
       }
       if ($token){
           $payment = \App\PaymentOrders::where('token',$token)->first();
@@ -582,14 +581,18 @@ class PaylandsController extends AppController
             if ($customer){
               $customer->dni = $dni;
               $customer->save();
-              echo 'ok'; die;
+              return response()->json('ok');
             }
-            echo 'Reserva no encontrada'; die;
+            return response()->json('Reserva no encontrada');
           } else {
+            return response()->json('Reserva no encontrada');
             echo 'Reserva no encontrada'; die;
           }
+            return response()->json('Reserva no encontrada');
           echo 'Reserva no encontrada'; die;
       }
+
+      return response()->json('Error: solicitud de pago no encontrada');
       echo 'Error: solicitud de pago no encontrada'; die;
    }
    public function getPaymentByType(Request $request) {

@@ -265,8 +265,7 @@ label.checkbox :checked + span:after {
           return;
         }
         
-        
-        
+              
         grecaptcha.ready(function () {
         grecaptcha.execute(public_key, {action: 'launch_form_submit'})
             .then(function (token) {
@@ -285,23 +284,27 @@ label.checkbox :checked + span:after {
                     
                     var token = '{{csrf_token()}}';
                     var data = {dni: dni, _token: token};
+                    $.ajax({
+                          url: '{{$urlSend}}',
+                          data: data,
+                          type: 'POST',
+                          crossDomain: true,
+//                          dataType: 'jsonp'
+                        }).done( function(result) { 
+                              if (result == 'ok') {
+                                $('#step_1').removeClass('active');
+                                $('#step_2').addClass('active');
+                                $('#form_step_1').hide(500, function () {
+                                  $('#form_step_2').show();
+                                });
 
-                    $.post('{{$urlSend}}', data, function (result) {
-                      if (result == 'ok') {
-                        $('#step_1').removeClass('active');
-                        $('#step_2').addClass('active');
-                        $('#form_step_1').hide(500, function () {
-                          $('#form_step_2').show();
-                        });
-
-                      } else {
-                        showError(result);
-                        return;
-                      }
-
-                        }).fail(function () {
-                          showError('Error de sistema');
-                        });
+                              } else {
+                                showError(result);
+                                return;
+                              }
+                          }).fail(function(response) {
+                            showError('Error de sistema'); 
+                          });
                   }
                 },
                 error: function (response) {
