@@ -22,8 +22,8 @@
               <a href="{{route('web.apto',$item->name)}}" title="{{$item->title}}">
                 <div class="col-xs-12 not-padding  container-image-box">
                   <div class="col-xs-12 not-padding push-0">
-                    <img class="img-responsive imga"
-                         src="{{getCloudfl($photo->file_rute)}}/{{$photo->file_name}}"
+                    <img class="img-responsive imga loadJS"
+                         src="/img/firts-min.png" data-src="{{getCloudfl($photo->file_rute)}}/{{$photo->file_name}}"
                          alt="{{$item->title}}"/>
                   </div>
                   <div class="col-xs-12 not-padding text-right overlay-text">

@@ -5,20 +5,20 @@ namespace App\Models\Forfaits;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Forfaits\ForfaitsOrderItem;
 
-class ForfaitsOrders extends Model
+class Forfaits extends Model
 {
   
-//  static function getByBook($bookID) {
-//    $order = self::where('book_id',$bookID)->first();
-//    if ($order){
-//      return $order;
-//    } else {
-//      $order = new ForfaitsOrders();
-//      $order->book_id = $bookID;
-//      $order->save();
-//      return $order;
-//    }
-//  }
+  static function getByBook($bookID) {
+    $order = self::where('book_id',$bookID)->first();
+    if ($order){
+      return $order;
+    } else {
+      $order = new Forfaits();
+      $order->book_id = $bookID;
+      $order->save();
+      return $order;
+    }
+  }
   
   static function getByKey($key) {
     $order = null;
@@ -29,7 +29,7 @@ class ForfaitsOrders extends Model
       $orderID = desencriptID($orderID);
       
       if ($orderID>0 && $control == getKeyControl($orderID)){
-        $order = ForfaitsOrders::find($orderID);
+        $order = Forfaits::find($orderID);
       }
      }
      return $order;
@@ -40,13 +40,12 @@ class ForfaitsOrders extends Model
             ->WhereNull('cancel')->sum('total');
     
     if ($TotalItems){
-      /** @FF-ToDo */
-//      if ($this->total < $TotalItems){
-//        $this->status = 2;
-//        if ($this->book_id){
-//          \App\Book::where('id', $this->book_id)->update(['ff_status' => 2]);
-//        }
-//      }
+      if ($this->total < $TotalItems){
+        $this->status = 2;
+        if ($this->book_id){
+          \App\Book::where('id', $this->book_id)->update(['ff_status' => 2]);
+        }
+      }
       $this->total = $TotalItems;
     }
     else {

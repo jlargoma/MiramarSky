@@ -9,6 +9,7 @@ use App\Repositories\CachedRepository;
 use App\Models\Forfaits\ForfaitsOrderPayments;
 use App\Models\Forfaits\ForfaitsOrderPaymentLinks;
 use App\Models\Forfaits\ForfaitsOrders;
+use App\Models\Forfaits\Forfaits;
 use App\Models\Forfaits\ForfaitsOrderItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,53 +19,87 @@ trait ForfaitsPaymentsTraits {
 
   use BookEmailsStatus;
   
+  public function createPaylandsOrder($key) {
+    
+    $oForfait = Forfaits::getByKey($key);
+    if (!$oForfait) {
+      return 'error';
+    }
+        
+    $order = ForfaitsOrders::where('forfats_id',$oForfait->id)->where('status',0)->first();
+    if (!$order) {
+      return 'error';
+    }
+    $bookingID = $oForfait->book_id;
+    $book = Book::find($bookingID);
+    if ($book){
+      $cli_email = $book->customer->email;
+    } else {
+      $cli_email = $oForfait->email;
+    }
+        
+//          $totalPayment =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->sum('amount');
+//          if ($totalPayment>0){
+//            $totalPayment = $totalPayment/100;
+//          }
+//          $amount = $order->total - $totalPayment;
+    $amount = $order->total;
+    if ($amount<0){
+      $amount = 0;
+    }
+        
+    if ($amount<=0) return 'error';
+        
+    $description = 'Pago por orden de Forfaits';
+    $token = md5('linktopay'.$bookingID.'-'.time().'-'.$order->id);
+    
+    $PaymentOrders = new ForfaitsOrderPaymentLinks();
+    $PaymentOrders->book_id = $bookingID;
+    $PaymentOrders->order_id = $order->id;
+    $PaymentOrders->cli_email = $cli_email;
+    $PaymentOrders->subject = $description;
+    $PaymentOrders->amount = $amount;
+    $PaymentOrders->status = 'new';
+    $PaymentOrders->token = $token;
+    $PaymentOrders->last_item_id = null;
+    $PaymentOrders->save();
+    
+   
+    $order->status=1;
+    $order->save();
+        
+    return $token;
+  }
+  
+  /**
+   * 
+   * @param Request $req
+   * @return type
+   */
   public function createPayment(Request $req) {
 
     $token = $req->header('token-ff');
     $client = $req->header('client');
-    $amount = null;
-    if (!$this->checkUserAdmin($token,$client)){
-      //return die('404');
-      $amount = $req->input('data', null);
-    }
-    
-    
-    
     $token = $req->input('token', null);
     $key = $req->input('key', null);
 
     if ($key) {
-        $order = ForfaitsOrders::getByKey($key);
-        if (!$order) {
-          return die('404');
-        }
-        $book = Book::find($order->book_id);
-        if ($book){
-          $cli_email = $book->customer->email;
-        } else {
-          $cli_email = $order->email;
-        }
+        $token = $this->createPaylandsOrder($key);
+        if (!$token || $token == 'error') return die('404');
         
-        if (!$amount){
-          $totalPayment =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->sum('amount');
-          if ($totalPayment>0){
-            $totalPayment = $totalPayment/100;
-          }
-          $amount = $order->total - $totalPayment;
-          if ($amount<0){
-            $amount = 0;
-          }
+        $payment = ForfaitsOrderPaymentLinks::where('token',$token)->first();
+        if ($payment){
+          $urlPayland = $this->generateOrderPaymentForfaits(
+                  $payment->book_id,
+                  $payment->order_id,
+                  $payment->cli_email,
+                  $payment->subject,
+                  $payment->amount,
+                  $payment->last_item_id
+                  );
+          return response()->json(['status' => 'ok', 'url' => $urlPayland]);
         }
-
-        $orderID = $order->id;
-        $description = 'Pago por orden de Forfaits';
-        $last_item_id = ForfaitsOrderItem::getLastItem($orderID);
-        $urlPayland = $this->generateOrderPaymentForfaits($order->book_id, $orderID, $cli_email, $description, $amount,$last_item_id);
-        
-        return response()->json(['status' => 'ok', 'url' => $urlPayland]);
       }
-   
-
     return die('404');
   }
 
@@ -75,46 +110,31 @@ trait ForfaitsPaymentsTraits {
     if (!$this->checkUserAdmin($token,$client)) return die('404');
     
     $key = $req->input('key', null);
-    $amount = $req->input('data', null);
+    
 
     if ($key) {
-        $order = ForfaitsOrders::getByKey($key);
-        
-        if (!$order) {
-          return die('404');
-        }
-        $bookingID = $order->book_id;
-        $book = Book::find($order->book_id);
-        if ($book){
-          $cli_email = $book->customer->email;
-        } else {
-          $cli_email = $order->email;
-        }
-        
-        $orderID = $order->id;
-        $description = 'Pago por orden de Forfaits';
-        $token = md5('linktopay'.$bookingID.'-'.time().'-'.$orderID);
-        $last_item_id = ForfaitsOrderItem::getLastItem($orderID);
-        $PaymentOrders = new ForfaitsOrderPaymentLinks();
+        $token = $this->createPaylandsOrder($key);
+        if (!$token || $token == 'error') return die('404');
 
-        $PaymentOrders->book_id = $bookingID;
-        $PaymentOrders->order_id = $orderID;
-        $PaymentOrders->cli_email = $cli_email;
-        $PaymentOrders->subject = $description;
-        $PaymentOrders->amount = $amount;
-        $PaymentOrders->status = 'new';
-        $PaymentOrders->token = $token;
-        $PaymentOrders->last_item_id = $last_item_id;
-        $PaymentOrders->save();
-//          $urlPay = 'https://miramarski.com/payments-forms-forfaits?t='.$token;
-        $urlPay = route('front.payments.forfaits',$token);
-        return response()->json(['status' => 'ok', 'content' => $this->getPaymentText($urlPay,$amount)]);
+        $payment = ForfaitsOrderPaymentLinks::where('token',$token)->first();
+        if ($payment){
+        
+          if (env('APP_APPLICATION') == "riad" || env('APP_APPLICATION') == "miramarLocal"){
+            $urlPay = route('front.payments.forfaits',$token);
+          } else {
+            $urlPay = 'https://miramarski.com/payments-forms-forfaits?t='.$token;
+          }
+          
+          $amount = $payment->amount;
+          return response()->json(['status' => 'ok', 'content' => $this->getPaymentText($urlPay,$amount)]);
+        }
       }
       
     return die('404');
   }
   
-    private function getPaymentText($urlPay,$amount) {
+   
+  private function getPaymentText($urlPay,$amount) {
       $response = '<div class="col-md-2 col-xs-12">
                   <a href="whatsapp://send?text=En este link podrás realizar el pago de '.$amount.'€ correspondiente a los Forfaits - ' . $urlPay . '" data-action="share/whatsapp/share">
                       <i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>
@@ -150,17 +170,21 @@ trait ForfaitsPaymentsTraits {
       \App\BookLogs::saveLogStatus($bookID, null, $PaymentOrder->cli_email, "Pago de Forfaits de $amount ($key_token)");
       $order = ForfaitsOrders::find($PaymentOrder->order_id);
       if ($order){
-        $this->sendBookingOrder($order,$PaymentOrder->last_item_id);
+        $this->sendBookingOrder($order,null);
         $orderStatus = null;
         $totalPrice = $order->total;
-        $totalPayment =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->sum('amount');
-        if ($totalPayment>0) $totalPayment = $totalPayment/100;
-        if ($totalPrice<=$totalPayment){
-           $order->status = 3; //cobrada
-           $orderStatus = 3;
-           $order->save();
-           
-        }
+        /** @FF-ToDo */
+//        $totalPayment =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->sum('amount');
+//        if ($totalPayment>0) $totalPayment = $totalPayment/100;
+//        if ($totalPrice<=$totalPayment){
+//           $order->status = 3; //cobrada
+//           $orderStatus = 3;
+//           $order->save();
+//           
+//        }
+//        
+        $order->status = 2; //cobrada
+        $order->save();
         //send email
         $book = Book::find($PaymentOrder->book_id);
         if ($book){
@@ -546,31 +570,65 @@ trait ForfaitsPaymentsTraits {
      
     }
    
-    public function sendClientEmail($orderKey, $control,$type='mail') {
-      $orderID = desencriptID($orderKey);
-      if (is_numeric($orderID) &&  $control == getKeyControl($orderID)){
-        //send email
-        $order = ForfaitsOrders::find($orderID);
-        if ($order){
-          $book = Book::find($order->book_id);
-          $orderText = $this->renderOrder($order->id);
+    public function sendOrdenToClient(Request $req) {
+      
+      $key = $req->input('key', null);
+      $type = $req->input('type', 'mail');
+      $oID = $req->input('oID', null);
+               
+      $token = $req->header('token-ff');
+      $client = $req->header('client');
+      if (!$this->checkUserAdmin($token,$client)) return die('404');
+    
+      $oForfait = Forfaits::getByKey($key);
+      if (!$oForfait) {
+        return response()->json(['status' => 'error1']);
+      }
+      
+      if ($oForfait){
+          $order = ForfaitsOrders::where('forfats_id',$oForfait->id)->where('id',$oID)->first();
+          if (!$order) {
+            return response()->json(['status' => 'error2']);
+          }
           
-          
-          $book = Book::find($order->book_id);
+          $book = Book::find($oForfait->book_id);
           if ($book){
             $cli_email = $book->customer->email;
             $cli_name = $book->customer->name;
             $phone = $book->customer->phone;
             $subject = translateSubject('Solicitud Forfait',$book->customer->country);
           } else {
-            $cli_name = $order->name;
-            $cli_email = $order->email;
-            $phone = $order->phone;
+            $cli_name = $oForfait->name;
+            $cli_email = $oForfait->email;
+            $phone = $oForfait->phone;
             $subject = 'Solicitud Forfait';
           }
            
-          $link = env('FF_PAGE').$orderKey.'-'.$control;
+          /** @FFToDo habilitar link**/
+//          $link = env('FF_PAGE').$orderKey.'-'.$control;
+          $link = '';
+          $urlPay = '';
+          $payment = ForfaitsOrderPaymentLinks::where('order_id',$oID)->first();
+          if ($payment){
+        
+            if (env('APP_APPLICATION') == "riad" || env('APP_APPLICATION') == "miramarLocal"){
+              $urlPay = route('front.payments.forfaits',$payment->token);
+            } else {
+              $urlPay = 'https://miramarski.com/payments-forms-forfaits?t='.$payment->token;
+            }
+            $amount = $payment->amount;
+          }
           
+          
+          
+         
+          if ($order->type){
+            $orderText = $order->detail;
+          } else {
+            $orderText = $this->renderOrder($order->id);
+          }
+          
+     
           if ($type == 'sms'){
             if (!$phone || trim($phone) == ''){
               return response()->json(['status' => 'error','msg'=>'el usuario no posee teléfono']);
@@ -581,7 +639,7 @@ trait ForfaitsPaymentsTraits {
 
               $message = Settings::getContent('SMS_forfait');
               $message = str_replace('{customer_name}', $cli_name, $message);
-              $message = str_replace('{link_forfait}', $link, $message);
+              $message = str_replace('{link_forfait}', $urlPay, $message);
               $message = $this->clearVars($message);
               $message = strip_tags($message);
 
@@ -597,18 +655,62 @@ trait ForfaitsPaymentsTraits {
           if ($type == 'text'){
             $message = Settings::getContent('SMS_forfait');
             $message = str_replace('{customer_name}', $cli_name, $message);
-            $message = str_replace('{link_forfait}', $link, $message);
+            $message = str_replace('{link_forfait}', $urlPay, $message);
             $message = $this->clearVars($message);
             $message = strip_tags($message);
             return response()->json(['status' => 'ok','msg'=>$message]);
           }
           if ($type == 'mail'){
-            $this->sendEmail_linkForfaitPayment($cli_email,$cli_name,$subject,$orderText,$link,$book);
+            $this->sendEmail_linkForfaitPayment($cli_email,$cli_name,$subject,$orderText,$urlPay,$book);
           }
           return response()->json(['status' => 'ok']);
         }
+      return response()->json(['status' => 'error3']);
+    }
+    public function showOrder(Request $req) {
+      
+      $key = $req->input('key', null);
+      $type = $req->input('type', 'mail');
+      $oID = $req->input('oID', null);
+               
+      $token = $req->header('token-ff');
+      $client = $req->header('client');
+      if (!$this->checkUserAdmin($token,$client)) return die('404');
+    
+      $oForfait = Forfaits::getByKey($key);
+      if (!$oForfait) {
+        return response()->json(['status' => 'error1']);
       }
-      return response()->json(['status' => 'error']);
+      
+      if ($oForfait){
+          $order = ForfaitsOrders::where('forfats_id',$oForfait->id)->where('id',$oID)->first();
+          if (!$order) {
+            return response()->json(['status' => 'error2']);
+          }
+          
+          $payment = ForfaitsOrderPaymentLinks::where('order_id',$oID)->first();
+          if ($payment){
+        
+            if (env('APP_APPLICATION') == "riad" || env('APP_APPLICATION') == "miramarLocal"){
+              $urlPay = route('front.payments.forfaits',$payment->token);
+            } else {
+              $urlPay = 'https://miramarski.com/payments-forms-forfaits?t='.$payment->token;
+            }
+            $amount = $payment->amount;
+          }
+          if ($order->type){
+            $orderText = '<h3>Orden Rápida</h3><p><b>Tipo: </b> '.$order->type.'</p>'
+                . '<p><b>Cantidad: </b>'.$order->quantity.'</p>'
+                . '<p><b>Detalle: </b>'.$order->detail.'</p>';
+          } else {
+            $orderText = $this->renderOrder($order->id);
+          }
+          
+          $orderText .="<p>Link del pago: $urlPay</p>";
+     
+          return response()->json(['status' => 'ok','msg'=>$orderText]);
+        }
+      return response()->json(['status' => 'error3']);
     }
     
     /**
@@ -789,4 +891,89 @@ trait ForfaitsPaymentsTraits {
 
         return response()->json(['status' => 'error']);
       }
+      
+      
+      
+  function quickOrders(Request $req) {
+    
+    $key = $req->input('key', null);
+    $amount = $req->input('amount', null);
+    $quantity = $req->input('qty', null);
+    $detail = $req->input('detail', null);
+    $typePayment = $req->input('type', null);
+    $p_type = $req->input('p_type', null);
+      
+    $token = $req->header('token-ff');
+    $client = $req->header('client');
+    if (!$this->checkUserAdmin($token,$client)) return die('404');
+    
+    
+    if ($amount && $amount>0){
+      
+      $oForfait = Forfaits::getByKey($key);
+      if (!$oForfait) {
+        return 'error';
+      }
+        
+      //create the new orden
+      $order = new ForfaitsOrders();
+      $order->forfats_id = $oForfait->id;
+      $order->status = 1;
+      $order->quantity = $quantity;
+      $order->detail = $detail;
+      $order->type = $p_type;
+      $order->total = $amount;
+      $order->save();
+      $bookingID = $oForfait->book_id;
+      $book = Book::find($bookingID);
+      if ($book){
+        $cli_email = $book->customer->email;
+      } else {
+        $cli_email = $oForfait->email;
+      }
+
+        // craete the payment
+        $description = 'Pago por orden de Forfaits';
+        $token = md5('linktopay'.$bookingID.'-'.time().'-'.$order->id);
+
+        $PaymentOrders = new ForfaitsOrderPaymentLinks();
+        $PaymentOrders->book_id = $bookingID;
+        $PaymentOrders->order_id = $order->id;
+        $PaymentOrders->cli_email = $cli_email;
+        $PaymentOrders->subject = $description;
+        $PaymentOrders->amount = $amount;
+        $PaymentOrders->status = 'new';
+        $PaymentOrders->token = $token;
+        $PaymentOrders->last_item_id = null;
+        $PaymentOrders->save();
+
+
+        if ($typePayment == 'link'){
+          
+          if (env('APP_APPLICATION') == "riad" || env('APP_APPLICATION') == "miramarLocal"){
+            $urlPay = route('front.payments.forfaits',$token);
+          } else {
+            $urlPay = 'https://miramarski.com/payments-forms-forfaits?t='.$token;
+          }
+          return response()->json(['status' => 'ok', 'content' => $this->getPaymentText($urlPay,$amount)]);
+          
+        } else{
+          
+          $urlPayland = $this->generateOrderPaymentForfaits(
+                  $PaymentOrders->book_id,
+                  $PaymentOrders->order_id,
+                  $PaymentOrders->cli_email,
+                  $PaymentOrders->subject,
+                  $PaymentOrders->amount,
+                  $PaymentOrders->last_item_id
+                  );
+          return response()->json(['status' => 'ok', 'url' => $urlPayland]);
+          
+        }
+      
+    
+    }
+
+    return response()->json(['status' => 'error']);
+  }
 }
