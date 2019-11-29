@@ -59,7 +59,7 @@ $content = $oContents->getContentByKey('resto');
       </div>
     </div>
 </section>
-<section>
+<section class="comun-content">
   <?php
    $items = [
        '',
@@ -87,6 +87,14 @@ $content = $oContents->getContentByKey('resto');
   @endif
   @endfor
  
+
+  <div class=" center mb-3 ">
+      <h4 class="bp-ot-title">Listado completo de bares y restaurantes</h4>
+      <div class="text-center shadow p-3">
+        {!! $content['content_2']!!}
+      </div>
+      <div class="text-center">Para ver el listado completo de bares y restaurantes de Sierra Nevada haz <a href="https://www.apartamentosierranevada.net/actividades/sin-categoria/conoce-los-mejores-restaurantes-en-sierra-nevada.html">clic aquí</a></div>
+    </div>
 </section>
 @endsection
 
@@ -108,10 +116,15 @@ $content = $oContents->getContentByKey('resto');
       max-width: 780px;
     margin: 1em auto;
 }
-.img-resto{
+.img-resto,.shadow{
   box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
   padding: 1rem!important;
   margin-bottom: 3em;
+  background-color: #fff;
+}
+.shadow{
+  padding: 2em !important;
+  margin: 2em;
 }
 .resto-list p {
     margin: 8px;
@@ -151,6 +164,9 @@ $content = $oContents->getContentByKey('resto');
   .content-1 h2{
     color: #fff;
     text-shadow: #000 1px 1px;
+  }
+  .comun-content{
+    background-color: #f5f9ff;
   }
   .bp-rest-title {
     text-align: center;
