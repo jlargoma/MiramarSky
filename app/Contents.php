@@ -23,10 +23,10 @@ class Contents extends Model
       'resto' => 'Página Restauran',  
       'resto_1' => 'Restauran: Especialidad en carne y comida casera',  
       'resto_2' => 'Restauran: Comida granadina y andaluza',  
-      'resto_3' => 'Restauran:Cocina de estilo mediterráneo o variada',  
-      'resto_4' => 'Restauran:Pizzerias',  
-      'resto_5' => 'Restauran:Comida rápida y en pista',  
-      'resto_6' => 'Restauran:Bares',  
+      'resto_3' => 'Restauran: Cocina de estilo mediterráneo o variada',  
+      'resto_4' => 'Restauran: Pizzerias',  
+      'resto_5' => 'Restauran: Comida rápida y en pista',  
+      'resto_6' => 'Restauran: Bares',  
     ];
   }
 
@@ -113,6 +113,7 @@ class Contents extends Model
           return [
             'title'=>['Título de la página','string',null],  
             'content'=>['Texto principal','ckeditor',null],  
+            'content_2'=>['Texto en el footer','ckeditor',null],  
           ];
         break;
         case 'resto_1':
@@ -149,6 +150,12 @@ class Contents extends Model
         'content_3_img'=>['tercer imagen','file',null],  
         'content_4'=>['Cuarto contenido','ckeditor',null],  
         'content_4_img'=>['Cuarto imagen','file',null], 
+        'content_5'=>['Quinto contenido','ckeditor',null],  
+        'content_5_img'=>['Quinto imagen','file',null], 
+        'content_6'=>['Sesto contenido','ckeditor',null],  
+        'content_6_img'=>['Sesto imagen','file',null], 
+        'content_7'=>['Septimo contenido','ckeditor',null],  
+        'content_7_img'=>['Septimo imagen','file',null], 
   ];
   }
   
