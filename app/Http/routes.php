@@ -56,6 +56,7 @@
     Route::post('/contacto-propietario', 'HomeController@formPropietario');
     Route::post('/contacto-grupos', 'HomeController@formGrupos');
     //   /* Correos Frontend */getCalendarMobile
+    Route::get('/buzon', 'HomeController@buzon');
     Route::get('/terminos-condiciones', 'HomeController@terminos');
     Route::get('/politica-cookies', 'HomeController@politicaCookies');
     Route::get('/politica-privacidad', 'HomeController@politicaPrivacidad');
@@ -70,10 +71,7 @@
     Route::get('/el-tiempo', 'HomeController@tiempo');
     Route::get('/condiciones-contratacion', 'HomeController@condicionesContratacion')->name('cond.contratacion');
     Route::get('/condiciones-fianza', 'HomeController@condicionesFianza')->name('cond.fianza');
-    Route::get('/restaurantes', function () {
-        $mobile = new \App\Classes\Mobile();
-        return view('frontend.restaurantes', ['mobile' => $mobile]);
-    });
+    Route::get('/restaurantes', 'HomeController@restaurantes')->name('cond.fianza');
     Route::post('/getDiffIndays', 'HomeController@getDiffIndays');
     Route::post('/solicitudForfait', 'HomeController@solicitudForfait');
     Route::get('/admin/links-stripe', 'StripeController@link');
