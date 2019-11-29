@@ -164,6 +164,7 @@
     Route::post('/api/forfaits/getPayments', 'ForfaitsItemController@getPayments');
     Route::post('/api/forfaits/createPayment', 'ForfaitsItemController@createPayment');
     Route::post('/api/forfaits/createPaylandsUrl', 'ForfaitsItemController@createPaylandsUrl');
+    Route::post('/api/forfaits/quickOrders', 'ForfaitsItemController@quickOrders');
     Route::post('/api/forfaits/changeStatus', 'ForfaitsItemController@changeStatus');
     Route::get('/api/forfaits/class', 'ForfaitsItemController@api_getClasses');
     Route::get('/api/forfaits/categ', 'ForfaitsItemController@api_getCategories');
@@ -176,6 +177,8 @@
     Route::get('/api/forfaits/bookingData/{bID}/{uID}', 'ForfaitsItemController@bookingData');
     Route::get('/api/forfaits/getCurrentCart/{bID}/{uID}', 'ForfaitsItemController@getCurrentCart');
     Route::get('/api/forfaits/sedOrder/{bID}/{uID}/{type}', 'ForfaitsItemController@sendClientEmail');
+    Route::post('/api/forfaits/sendOrder', 'ForfaitsItemController@sendOrdenToClient');
+    Route::post('/api/forfaits/showOrder', 'ForfaitsItemController@showOrder');
     Route::post('/api/forfaits/sendConsult', 'ForfaitsItemController@sendEmail');
     Route::get('/api/forfaits/getSeasons', 'ForfaitsItemController@getForfaitSeasons');
     Route::post('/api/forfaits/createNewOrder', 'ForfaitsItemController@createNewOrder');
