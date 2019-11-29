@@ -59,19 +59,7 @@
   integrity="sha256-8WqyJLuWKRBVhxXIL1jBDD7SDxU936oZkCnxQbWwJVw="
   crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{{ getCloudfl(assetV ('/css/frontend.css'))}}" type="text/css"/>   
-    <?php 
-    if ( !($mobile->isMobile() || $mobile->isTablet())): ?>
-      <link href="//fonts.googleapis.com/css?family=Open+Sans%3A800|Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700,800,900|Crete+Round:400italic" rel="stylesheet" type="text/css"/>
-      <link rel="stylesheet" href="{{ getCloudfl(assetV('/frontend/css/responsive.css'))}}" type="text/css"/>
-      <script src="{{ getCloudfl(assetV('/frontend/vendor/lightslider-master/dist/js/lightslider.min.js'))}}"  defer=""></script>
-      <script type="text/javascript" src="{{ getCloudfl(assetV('/js/scripts-ext.js'))}}" async="async"></script>
-      <script type="text/javascript" src="{{ getCloudfl(assetV('/js/scripts-footer-min.js'))}}" async="async"></script>
-    <?php endif; ?>
-        
+   
     @include('layouts._generalScriptsFront')
-        
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
-        
-        
-    
 </html>
