@@ -268,6 +268,12 @@ class HomeController extends AppController
         return view('frontend.contacto', ['mobile' => new Mobile(),]);
     }
 
+    public function restaurantes()
+    {
+        return view('frontend.restaurantes', ['mobile' => new Mobile(),]);
+    }
+
+    
     // Correos frontend
 
     public function formContacto(Request $request)
@@ -406,6 +412,10 @@ class HomeController extends AppController
     public function condicionesGenerales()
     {
         return view('frontend.condiciones-generales', ['mobile' => new Mobile()]);
+    }
+    public function buzon()
+    {
+        return view('frontend.buzon', ['mobile' => new Mobile()]);
     }
 
     public function preguntasFrecuentes()

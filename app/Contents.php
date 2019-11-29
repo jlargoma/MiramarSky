@@ -19,6 +19,14 @@ class Contents extends Model
       'contacto' => 'Contacta',  
       'slider_home' => 'Slider home',  
       'fianza' => 'Condiciones de fianzas',  
+      'buzon' => 'Página Buzon',  
+      'resto' => 'Página Restauran',  
+      'resto_1' => 'Restauran: Especialidad en carne y comida casera',  
+      'resto_2' => 'Restauran: Comida granadina y andaluza',  
+      'resto_3' => 'Restauran:Cocina de estilo mediterráneo o variada',  
+      'resto_4' => 'Restauran:Pizzerias',  
+      'resto_5' => 'Restauran:Comida rápida y en pista',  
+      'resto_6' => 'Restauran:Bares',  
     ];
   }
 
@@ -95,8 +103,53 @@ class Contents extends Model
             'content'=>['Texto de condiciones de fianzas','ckeditor',null],  
           ];
         break;
+        case 'buzon':
+          return [
+            'title'=>['Título de la página','string',null],  
+            'content'=>['Texto principal','ckeditor',null],  
+          ];
+        break;
+        case 'resto':
+          return [
+            'title'=>['Título de la página','string',null],  
+            'content'=>['Texto principal','ckeditor',null],  
+          ];
+        break;
+        case 'resto_1':
+          return self::resto_items();
+        break;
+        case 'resto_2':
+           return self::resto_items();
+        break;
+        case 'resto_3':
+           return self::resto_items();
+        break;
+        case 'resto_4':
+           return self::resto_items();
+        break;
+        case 'resto_5':
+           return self::resto_items();
+        break;
+        case 'resto_6':
+           return self::resto_items();
+        break;
     }
     return [ ];
+  }
+  
+  static function resto_items() {
+    return [
+        'title'=>['Título de la sección','string',null],  
+        'content'=>['Texto principal','ckeditor',null],  
+        'content_1'=>['Primer contenido','ckeditor',null],  
+        'content_1_img'=>['Primer imagen','file',null],  
+        'content_2'=>['Segundo contenido','ckeditor',null],  
+        'content_2_img'=>['Segundo imagen','file',null],  
+        'content_3'=>['tercer contenido','ckeditor',null],  
+        'content_3_img'=>['tercer imagen','file',null],  
+        'content_4'=>['Cuarto contenido','ckeditor',null],  
+        'content_4_img'=>['Cuarto imagen','file',null], 
+  ];
   }
   
   public function getContentByKey($key,$mobile=false) {
