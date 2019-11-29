@@ -14,7 +14,7 @@ $services = $oContents->getContentByKey('services');
       <div class="col-md-4   <?php echo ($i<3) ? 'col-xs-6' : 'col-xs-12'; ?> home-service">
         <a href="{{ $services['link_'.$i]}}">
           <div class=" container-image-box hover-effect">
-              <img class="img-responsive imga"  src="{{getCloudfl($services['imagen_'.$i])}}"  alt="{{$services['title_'.$i]}}"/>
+              <img class="img-responsive imga loadJS" src="/img/firts-min.png" data-src="{{getCloudfl($services['imagen_'.$i])}}"  alt="{{$services['title_'.$i]}}"/>
             <div class="text-right overlay-text">
               <h2 class="font-w200 center push-10 text-center text font-s24 white">
                 <span class="font-w800 white">{{$services['title_'.$i]}}</span>

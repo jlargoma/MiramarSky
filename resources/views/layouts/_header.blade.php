@@ -1,5 +1,5 @@
 
-  <div id="top-bar" class="transparent-topbar">
+  <div id="top-bar" class="transparent-topbar" style="display: none;";>
           <ul class="header-extras-2 ">
             <li>
               <a class="facebook" href="https://www.facebook.com/alquilerlujosierranevada/?ref=bookmarks" ><i class="fa fa-facebook-official fa-2x">&nbsp;</i></a>
@@ -21,7 +21,7 @@
   </div>
 <!-- Header
 ============================================= -->	
-<header id="header" class="static-sticky transparent-header  not-dark " style="z-index: 100000 !important;">
+<header id="header" class="static-sticky transparent-header  not-dark " style="display: none;z-index: 100000 !important;">
 
   <div id="header-wrap">
     <div id="primary-menu-trigger"><i class="fa fa-bars"></i></div>

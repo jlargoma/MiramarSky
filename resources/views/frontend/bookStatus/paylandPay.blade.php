@@ -164,6 +164,21 @@ label.checkbox :checked + span:after {
 .fs-2{
   font-size: 1.3em;
 }
+.loader {
+    border: 10px solid #e0e0e0;
+    border-top: 10px solid #3498db;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin: 15px auto;
+    animation: spin 2s linear infinite;
+    display: none;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
     </style>
   </head>
   <body>
@@ -227,6 +242,7 @@ label.checkbox :checked + span:after {
             <button class="btn btn-primary" title="Ir al paso 2" id="siguiente">Siguente</button>
           </div>
           <p class="alert alert-warning msg-error" ></p>
+          <p class="loader"></p>
         </div>
         <div id="form_step_2" style="display:none">
           <iframe src="{{ $urlPayland  }}" frameborder="0" style="width: 100%; min-height: 550px;"></iframe>
@@ -265,7 +281,6 @@ label.checkbox :checked + span:after {
           return;
         }
         
-              
         grecaptcha.ready(function () {
         grecaptcha.execute(public_key, {action: 'launch_form_submit'})
             .then(function (token) {
@@ -273,6 +288,10 @@ label.checkbox :checked + span:after {
 
               var recaptchaResponse = document.getElementById('recaptchaResponse');
               recaptchaResponse.value = token;
+              $('#siguiente').hide(500, function () {
+                                $('.loader').show();
+                                });
+              
 
               $.ajax({
                 type: "POST",
@@ -292,6 +311,7 @@ label.checkbox :checked + span:after {
 //                          dataType: 'jsonp'
                         }).done( function(result) { 
                               if (result == 'ok') {
+                                $('.loader').hide();
                                 $('#step_1').removeClass('active');
                                 $('#step_2').addClass('active');
                                 $('#form_step_1').hide(500, function () {
@@ -319,6 +339,9 @@ label.checkbox :checked + span:after {
 
         var showError = function (text) {
           $('.msg-error').text(text).fadeIn();
+          $('.loader').hide(500, function () {
+                                $('#siguiente').show();
+                                });
           setTimeout(function () {
             $('.msg-error').text('').fadeOut();
           }, 3500);

@@ -61,6 +61,7 @@ elixir(function(mix) {
       'resources/assets/js/footer/moment.min.js',
       'resources/assets/js/footer/daterangepicker.min.js',
       'resources/assets/js/footer/jquery.flip.min.js',
+      'resources/assets/js/loadJS.js',
     ],  'public/js/scripts-ext.js');
 });
 elixir(function(mix) {
