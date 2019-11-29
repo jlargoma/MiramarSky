@@ -7,6 +7,18 @@
 @yield('scripts')
 
 <script type="text/javascript">
+  var LoadJs="{{ getCloudfl(assetV('/js/scripts-footer-min.js'))}}";
+  function LoadImgs(){
+    $( ".loadJS" ).each(function( index ) {
+       $( this ).attr('src',$( this ).data('src'));
+    });
+  }
+  function LoadImgsBackground(){
+    $( ".loadJSBackground" ).each(function( index ) {
+      $(this).css("background-image", "url('"+$( this ).data('src')+"')"); 
+//       $( this ).attr('src',$( this ).data('src'));
+    });
+  }
 $(document).ready(function () {
    <?php if (!$mobile->isMobile()): ?>
     $('div.bg-img img').attr('style', 'max-width:none !important;');
@@ -20,6 +32,9 @@ $(document).ready(function () {
     $('div#blank_loader').fadeOut(500);
 
   @if(($mobile->isMobile() || $mobile->isTablet()))
+    var my_awesome_script = document.createElement('script');
+            my_awesome_script.setAttribute('src',"{{ getCloudfl(assetV('/js/scripts-ext.js'))}}");
+            document.body.appendChild(my_awesome_script);
       setTimeout(
           function(){
             var my_awesome_style = document.createElement('link');
@@ -28,25 +43,14 @@ $(document).ready(function () {
             my_awesome_style.setAttribute('rel','stylesheet');
             document.body.appendChild(my_awesome_style);
             
-            var my_awesome_script = document.createElement('script');
-            my_awesome_script.setAttribute('src',"{{ getCloudfl(assetV('/js/scripts-ext.js'))}}");
-            document.body.appendChild(my_awesome_script);
-            
             var recaptcha_script = document.createElement('script');
             recaptcha_script.setAttribute('src',"https://www.google.com/recaptcha/api.js?render=6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV");
             document.body.appendChild(recaptcha_script);
-            
-            var my_awesome_script2 = document.createElement('script');
-            my_awesome_script2.setAttribute('src',"{{ getCloudfl(assetV('/js/scripts-footer-min.js'))}}");
-            document.body.appendChild(my_awesome_script2);
-            
           },1700);
-
-      setTimeout(function(){AOS.init();},2100);
-    
-  @else
-  setTimeout(function(){AOS.init();},1200);
+  
   @endif
+  
+ 
   });
 </script>
 

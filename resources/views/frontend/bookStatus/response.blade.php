@@ -135,6 +135,12 @@
                             </button>
                         </div>
                     @endif
+                    <div class="col-md-6 col-md-offset-3">
+                      <button type="button" class="button button-rounded backBooking"  style="letter-spacing: 1px;">
+                          Volver
+                        </button>
+                        </div>
+                    
 				</div>
 				<input type="hidden" name="recaptcha_response" id="recaptchaResponse">
 			</form>

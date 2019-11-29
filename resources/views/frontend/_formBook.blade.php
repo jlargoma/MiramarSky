@@ -28,7 +28,7 @@
             <div class="hidden-xs hidden-sm" style="clear: both;"></div>
 
             <div class="form-group col-sm-12 col-xs-6 col-md-3 white">
-               <label for="quantity" style="display: inherit!important;">*Personas</label>
+               <label for="quantity" >*Personas</label>
                <div class="quantity center clearfix divcenter">
                <!-- <input type="button" value="-" class="minus black" style=" color: black;">
                <input id="quantity" type="text" name="quantity" value="4" class="qty" style="background: white; color: black;"> -->
@@ -50,7 +50,7 @@
             </div>
             
             <div class="form-group col-sm-12 col-xs-6 col-md-5" style="padding: 0">
-                <label for="parking" style="display: inline!important;" class="col-md-12 text-left parking white">* Tipo Apto</label>
+                <label for="parking"  class="col-md-12 text-left parking white">* Tipo Apto</label>
 
                 <div class="col-md-3 col-xs-6">
                     <input id="apto-3dorm" class="radio-style apto-3dorm form-control" name="apto" type="radio" value="3dorm">
@@ -70,7 +70,7 @@
             </div>
             </div>
             <div class="form-group col-sm-12 col-xs-4 col-md-3">
-                <label style="display: inline!important;" class="col-md-12 luxury white">*lujo</label>
+                <label  class="col-md-12 luxury white">*lujo</label>
                 <div class="col-md-6"> 
                <input id="luxury-yes" class="radio-style" name="luxury" type="radio"  value="si">
                <label for="luxury-yes" class="radio-style-3-label">Si</label>
@@ -81,7 +81,7 @@
             </div>
             </div>
             <!-- <div class="form-group col-sm-12 col-xs-4 col-md-3">
-                <label style="display: inline!important;" class="col-md-12 parking white">*Parking</label>
+                <label  class="col-md-12 parking white">*Parking</label>
                 <div class="col-md-6">
                <input id="parking-yes" class="radio-style" name="parking" type="radio" checked="" value="si">
                <label for="parking-yes" class="radio-style-3-label">Si</label>
@@ -157,8 +157,8 @@
                     <p class="help-block white hidden-sm hidden-xs" style="line-height:1.2">Máximo 12 personas</p>
 
                 </div>
-                <div class="form-group col-sm-12 col-xs-7 col-md-5" style="padding: 0">
-                    <label for="parking" style="display: inline!important;" class="col-xs-12 col-md-12 text-left parking white">* Tipo Apto</label>
+                <div class="form-group col-sm-12 col-xs-7 col-md-5" >
+                    <label for="parking" class="col-xs-12 col-md-12 text-left parking white">* Tipo Apto</label>
                     <div style="clear: both;"></div>
 
                     <div class="col-md-3 col-xs-3">
@@ -179,7 +179,8 @@
                     </div>
                 </div>
                 <div class="form-group col-sm-12 col-xs-5 col-md-3">
-                    <label style="display: inline!important;" class="col-md-12 luxury white">*lujo</label>
+                    <label  class="col-md-12 luxury white">*lujo</label>
+                    <div style="clear: both;"></div>
                     <div class="col-md-6 col-xs-6"> 
                         <input id="luxury-yes" class="radio-style" name="luxury" type="radio"  value="si">
                         <label for="luxury-yes" class="radio-style-3-label">Si</label>

@@ -314,9 +314,32 @@ if (elementVisible($('#progressData1'))){
       }, 2000);
     });
     
+    $('body').on('click','.backBooking',function (event) {
+      unflip();
+    });
+    
     function unflip() {
       $("#content-book-response").flip(false);
       $('#content-book-response .back').empty();
     }
+    
+    
+    console.log(typeof AOS,typeof LoadImgs,typeof LoadImgsBackground);
+    
+    if (typeof LoadImgs === "function") {
+      LoadImgs();
+    }
+    if (typeof LoadImgsBackground === "function") {
+     setTimeout(function(){LoadImgsBackground();},750);
+    }
+    
+    setTimeout(function(){
+      console.log(typeof AOS,typeof LoadImgs,typeof LoadImgsBackground);
+      if (typeof AOS === "object") {
+        AOS.init();
+      }
+    },1750);
+    
+    
 
  });

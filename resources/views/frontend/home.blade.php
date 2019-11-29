@@ -39,50 +39,54 @@
   </div>
 </section>
 <?php else: ?>
+
 <style>
 
-  #content-book-payland iframe{
-    min-height: 378px!important;
-    overflow: hidden!important;
+
+  #form-content .col-md-3.col-xs-3{
+    width: 25% !important;
+    margin-top: 1em;
   }
-  .booking_mobile{
-    display: block !important;
-  }
-  .booking_box{
-    padding: 2em !important;
-    margin: -2%;
-    width: 104% !important;
-    background-color: #3330c8;
-  }
-  
+  #form-content  .col-md-6.col-xs-6 {
+    width: 50% !important;
+    margin: 1em 0;
+}
+  #form-content .radio-style-1-label:before, .radio-style-2-label:before, .radio-style-3-label:before {
+    margin-bottom: 6px;
+}
+#form-book-apto-lujo label.col-md-12.luxury.white{
+  text-align: left;
+}
+#form-content label.col-xs-12.col-md-12.text-left.parking.white,
+#form-content label.col-md-12.luxury.white{
+    margin-left: -15px;
+    margin-top: 1em;
+}
 </style>
-<!-- MOBILE -->
-<section class="page-section degradado-background1 no-padding" style="letter-spacing: 0;line-height: 1;color: #fff!important;">
+  <div id="content-book" class="col-xs-12 bg-bluesky" style="display: none;">
 
-  <div class="row degradado-background1" style="">
+    <span style="padding: 0 5px; cursor: pointer; opacity: 1" id="close-form-book" class="close pull-right white text-white sm-m-r-20 sm-m-t-10">
+                      <i class="fa fa-times"></i>
+                    </span>
 
-    <div id="content-book" class="container-mobile clearfix push-10" style="display: none; height: 125vh;">
-      <div id="close-form-book"
-           style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
-        <span class="white text-white"><i class="fa fa-times fa-4x"></i></span>
-      </div>
-      <div class="clearfix" style="padding: 20px;">
-        <div class="row booking_mobile">
-          <div style="padding: 20px;">
-              <h3 class="text-center white">CALCULA TU PRECIO</h3>
-              <div id="form-content">
-                @include('frontend._formBook')
-              </div>
-          </div>
-          <div class="col-xs-12" id="content-book-response">
-            <div class="col-xs-12 back booking_box" ></div>
-          </div>
-          <div class="col-xs-12 booking_box" id="content-book-payland">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+                    <div class="container-mobile clearfix" style="margin-top: 10px; height: 133vh;">
+                      <div class="col-md-6 col-md-offset-3">
+                        <div class="row" id="content-book-response">
+                          <div class="front" style="max-height: 520px!important;">
+                            <div class="col-xs-12">
+                              <h3 class="text-center white">CALCULA TU PRECIO</h3>
+                            </div>
+                            <div id="form-content">
+                              @include('frontend._formBook')
+                            </div>
+                          </div>
+                          <div class="back" style="background-color: #3F51B5; max-height: 520px!important;">
+
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
 
 </section>
 <?php endif; ?>
@@ -100,7 +104,7 @@
           <source src="{{$edificio['video_1']}}" type="video/mp4">
         </video>
       @else
-      <img src="{{getCloudfl($edificio['imagen_1'])}}" alt="Edificio Miramar Ski a pie de pista, zona baja">
+      <img class="loadJS" src="/img/firts-min.png" data-src="{{getCloudfl($edificio['imagen_1'])}}" alt="Edificio Miramar Ski a pie de pista, zona baja">
       @endif
     </figure>
       <div class="text">
@@ -114,7 +118,7 @@
           <source src="{{$edificio['video_1']}}" type="video/mp4">
         </video>
       @else
-      <figure><img src="{{getCloudfl($edificio['imagen_1'])}}" alt="Edificio Miramar Ski a pie de pista, zona baja"></figure>
+      <figure><img class="loadJS" src="/img/firts-min.png" data-src="{{getCloudfl($edificio['imagen_1'])}}" alt="Edificio Miramar Ski a pie de pista, zona baja"></figure>
       @endif
     </div>
   </div>
@@ -125,7 +129,7 @@
           <source src="{{$edificio['video_2']}}" type="video/mp4">
         </video>
       @else
-        <figure><img src="{{getCloudfl($edificio['imagen_2'])}}" alt=""></figure>
+        <figure><img class="loadJS" src="/img/firts-min.png" data-src="{{getCloudfl($edificio['imagen_2'])}}" alt=""></figure>
       @endif
     </div>
     <div class="bfh-text">
@@ -137,7 +141,7 @@
           <source src="{{$edificio['video_2']}}" type="video/mp4">
         </video>
       @else
-        <img src="{{getCloudfl($edificio['imagen_2'])}}" alt="Edificio Miramar Ski">
+        <img class="loadJS" src="/img/firts-min.png" data-src="{{getCloudfl($edificio['imagen_2'])}}" alt="Edificio Miramar Ski">
       @endif
       </figure>
       <div class="text">
