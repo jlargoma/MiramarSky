@@ -42,59 +42,59 @@ $content = $oContents->getContentByKey('resto');
       </div>
     </div>
   </div>
-  
+
   <div class="row mt-2 pb-2">
-      <div class="col-md-12 col-xs-12 text-center">
+    <div class="col-md-12 col-xs-12 text-center">
 
-  <a href="#carne-y-comida-casera"><button type="button" class="btn btn-info">Especialidad en carne y comida casera</button></a> 
-  <a href="#comida-granadina-y-andaluza"><button type="button" class="btn btn-info">Comida típica de Granadina o andaluza</button></a> 
-  <a href="#estilo-mediterraneo-o-variada"><button type="button" class="btn btn-info">Cocina de estilo mediterráneo o variada</button></a> 
-  <a href="#pizzerias"><button type="button" class="btn btn-info">Pizzerías</button></a> 
-  <a href="#comida-rapida-y-en-pista"><button type="button" class="btn btn-info">Comida rápida y en pista</button></a> 
-  <a href="#bares"><button type="button" class="btn btn-info">Bares</button></a> 
+      <a href="#carne-y-comida-casera"><button type="button" class="btn btn-info">Especialidad en carne y comida casera</button></a> 
+      <a href="#comida-granadina-y-andaluza"><button type="button" class="btn btn-info">Comida típica de Granadina o andaluza</button></a> 
+      <a href="#estilo-mediterraneo-o-variada"><button type="button" class="btn btn-info">Cocina de estilo mediterráneo o variada</button></a> 
+      <a href="#pizzerias"><button type="button" class="btn btn-info">Pizzerías</button></a> 
+      <a href="#comida-rapida-y-en-pista"><button type="button" class="btn btn-info">Comida rápida y en pista</button></a> 
+      <a href="#bares"><button type="button" class="btn btn-info">Bares</button></a> 
 
- 
-  
-  
-      </div>
+
+
+
     </div>
+  </div>
 </section>
 <section class="comun-content">
   <?php
-   $items = [
-       '',
+  $items = [
+      '',
       'carne-y-comida-casera',
       'comida-granadina-y-andaluza',
       'estilo-mediterraneo-o-variada',
       'pizzerias',
       'comida-rapida-y-en-pista',
       'bares'
-      ];
+  ];
   ?>
-  
-      
+
+
   @for($i=1;$i<7;$i++)
-  <?php $resto_item = $oContents->getContentByKey('resto_'.$i); ?>
+  <?php $resto_item = $oContents->getContentByKey('resto_' . $i); ?>
   @if(isset($resto_item))
   <div class="space-apartamentos" id="{{$items[$i]}}">
-          <h2 class="bp-ot-title">{{$i}} - {{$resto_item['title']}}</h2>
-          <hr style="margin: 5px auto; width: 85px; height: 4px; background-color: #3f51b5;">
-          <div class="subcontent">{!! $resto_item['content'] !!}</div>
+    <h2 class="bp-ot-title">{{$i}} - {{$resto_item['title']}}</h2>
+    <hr style="margin: 5px auto; width: 85px; height: 4px; background-color: #3f51b5;">
+    <div class="subcontent">{!! $resto_item['content'] !!}</div>
   </div>
   <div class="container resto-list">
-  @include('frontend.blocks.resto',['content'=>$resto_item]);
+    @include('frontend.blocks.resto',['content'=>$resto_item]);
   </div>
   @endif
   @endfor
- 
+
 
   <div class=" center mb-3 ">
-      <h4 class="bp-ot-title">Listado completo de bares y restaurantes</h4>
-      <div class="text-center shadow p-3">
-        {!! $content['content_2']!!}
-      </div>
-      <div class="text-center">Para ver el listado completo de bares y restaurantes de Sierra Nevada haz <a href="https://www.apartamentosierranevada.net/actividades/sin-categoria/conoce-los-mejores-restaurantes-en-sierra-nevada.html">clic aquí</a></div>
+    <h4 class="bp-ot-title">Listado completo de bares y restaurantes</h4>
+    <div class="text-center shadow p-3">
+      {!! $content['content_2']!!}
     </div>
+    <div class="text-center">Para ver el listado completo de bares y restaurantes de Sierra Nevada haz <a href="https://www.apartamentosierranevada.net/actividades/sin-categoria/conoce-los-mejores-restaurantes-en-sierra-nevada.html">clic aquí</a></div>
+  </div>
 </section>
 @endsection
 
@@ -110,25 +110,25 @@ $content = $oContents->getContentByKey('resto');
     font-weight: 700;
     padding-bottom: 0px;
     margin-bottom: -10px;
-      padding-top: 2em;
-}
-.subcontent{
-      max-width: 780px;
+    padding-top: 2em;
+  }
+  .subcontent{
+    max-width: 780px;
     margin: 1em auto;
-}
-.img-resto,.shadow{
-  box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
-  padding: 1rem!important;
-  margin-bottom: 3em;
-  background-color: #fff;
-}
-.shadow{
-  padding: 2em !important;
-  margin: 2em;
-}
-.resto-list p {
+  }
+  .img-resto,.shadow{
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    padding: 1rem!important;
+    margin-bottom: 3em;
+    background-color: #fff;
+  }
+  .shadow{
+    padding: 2em !important;
+    margin: 2em;
+  }
+  .resto-list p {
     margin: 8px;
-}
+  }
   .apartamento {
     background-image: url('/frontend/images/restaurantes.jpg') !important;
   }
@@ -179,7 +179,7 @@ $content = $oContents->getContentByKey('resto');
   .destacado {
     padding: 20px;
     background-color: #16bcd9;
-    width: 25%;
+    width: 17em;
     border-radius: 5px;
     font-size: 19px;
     font-weight: 700;
@@ -199,7 +199,7 @@ $content = $oContents->getContentByKey('resto');
     font-size: 20px;
   }
   .tit-float{
-        z-index: 9;
+    z-index: 9;
     position: absolute;
     /* text-align: center; */
     width: 100%;
@@ -213,12 +213,23 @@ $content = $oContents->getContentByKey('resto');
   @media (max-width: 768px){
     .apartamento h1{
       padding-top: 2em;
+      font-size: 3.5em;
+      margin: -15px auto 20px;
     }
     .container-mobile{
       padding: 0!important
     }
     .container-image-box img{
       height: 180px!important;
+    }
+    .destacado{
+      max-width: 90%;
+    }
+    .col-md-6.col-sm-12.bloque_blanco {
+        margin: 1em auto;
+    }
+    .btn-info{
+      margin-bottom: 1em;
     }
   }
 

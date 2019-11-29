@@ -60,7 +60,6 @@ if (($mobile->isMobile() || $mobile->isTablet())):
   <link rel="stylesheet" href="{{ getCloudfl(assetV('/frontend/css/responsive.css'))}}" type="text/css"/>
   <script src="{{ getCloudfl(assetV('/frontend/vendor/lightslider-master/dist/js/lightslider.min.js'))}}"  defer=""></script>
   <script type="text/javascript" src="{{ getCloudfl(assetV('/js/scripts-ext.js'))}}" async="async"></script>
-  <script type="text/javascript" src="{{ getCloudfl(assetV('/js/scripts-footer-min.js'))}}" async="async"></script>
 <?php endif; ?>
 
 
