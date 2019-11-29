@@ -53,6 +53,7 @@ class Kernel extends HttpKernel
         'authPropietario' => \App\Http\Middleware\RolePropietario::class,
         'authSubAdmin' => \App\Http\Middleware\RoleSubAdmin::class,
         'role' => \App\Http\Middleware\CheckRole::class,
+        'cors' => \App\Http\Middleware\Cors::class,
         \Cuatao\LaravelHtmlCaching\Http\Middleware\ResponseHtmlCachingBeforeMiddleware::class,
         \Cuatao\LaravelHtmlCaching\Http\Middleware\ResponseHtmlCachingAfterMiddleware::class,
     ];

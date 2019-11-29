@@ -3,7 +3,7 @@
   <head>
     <title>Formulario de Pago</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=100%, initial-scale=1.0">
     <style>
       .background{
         height: 100%;
@@ -161,6 +161,9 @@ label.checkbox :checked + span:after {
   left: 5px;
   color: #4087b7;
 }
+.fs-2{
+  font-size: 1.3em;
+}
     </style>
   </head>
   <body>
@@ -186,9 +189,10 @@ label.checkbox :checked + span:after {
         </ul>
         <div class="">
           
-          <h2>{{$dates}} {{$room}}</h2>
-          <div class="m1">
-            <label>Nombre</label>
+          <div class=" fs-2">{{$dates}}</div>
+          <h2>{{$room}}</h2>
+          <div class="m1 fs-2">
+            <label>Nombre:</label>
             {{$name}}
           </div>
         </div>
@@ -196,7 +200,7 @@ label.checkbox :checked + span:after {
 
 
           <div class="m1">
-            <label><span class="required">*</span>DNI</label>
+            <label><span class="required">*</span>DNI:</label>
             <input type="text" id="dni" class="form-control required">
           </div>
           <div class="m1">
@@ -219,6 +223,7 @@ label.checkbox :checked + span:after {
             </label>
           </div>
           <div class="text-center">
+            <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
             <button class="btn btn-primary" title="Ir al paso 2" id="siguiente">Siguente</button>
           </div>
           <p class="alert alert-warning msg-error" ></p>
@@ -241,24 +246,10 @@ label.checkbox :checked + span:after {
     crossorigin="anonymous"></script>
     <script src="https://www.google.com/recaptcha/api.js?render=6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV"></script>
     <script>
-        $(function () {
+    $(function () {
 
-        $('#siguiente').on('click', function () {
-//          var $captcha = $( '#recaptcha' ),
-//          response = grecaptcha.getResponse();
-//          if (response.length === 0) {
-//            
-//            if( !$captcha.hasClass( "error" ) ){
-//              $captcha.addClass( "error" );
-//            }
-//            showError('Error');
-//            return;
-//
-//          } else {
-//            $( '.msg-error' ).text('');
-//            $captcha.removeClass( "error" );
-//          }
-
+      $('#siguiente').on('click', function () {
+        var public_key = '6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV';
         if (!$('#tyc_1').is(':checked')) {
           showError('Por favor, acepte las políticas de contratación para continuar');
           return;
@@ -273,26 +264,54 @@ label.checkbox :checked + span:after {
           showError('Por favor, complete su CIF, NIF ó DNI para continuar');
           return;
         }
-        var token = '{{csrf_token()}}';
-        var data = {dni: dni, _token: token};
+        
+        
+        
+        grecaptcha.ready(function () {
+        grecaptcha.execute(public_key, {action: 'launch_form_submit'})
+            .then(function (token) {
+              // Verify the token on the server.
 
-      $.post('{{$urlSend}}', data, function (result) {
-        if (result == 'ok') {
-          $('#step_1').removeClass('active');
-          $('#step_2').addClass('active');
-          $('#form_step_1').hide(500, function () {
-            $('#form_step_2').show();
-          });
+              var recaptchaResponse = document.getElementById('recaptchaResponse');
+              recaptchaResponse.value = token;
 
-        } else {
-          showError(result);
-          return;
-        }
+              $.ajax({
+                type: "POST",
+                url: "/ajax/checkRecaptcha",
+                data: {token: token, public_key: public_key},
+                dataType: 'json',
+                success: function (response) {
+                  if (response.status == 'true') {
+                    
+                    var token = '{{csrf_token()}}';
+                    var data = {dni: dni, _token: token};
 
-          }).fail(function () {
-            showError('Error de sistema');
-          });
-        });
+                    $.post('{{$urlSend}}', data, function (result) {
+                      if (result == 'ok') {
+                        $('#step_1').removeClass('active');
+                        $('#step_2').addClass('active');
+                        $('#form_step_1').hide(500, function () {
+                          $('#form_step_2').show();
+                        });
+
+                      } else {
+                        showError(result);
+                        return;
+                      }
+
+                        }).fail(function () {
+                          showError('Error de sistema');
+                        });
+                  }
+                },
+                error: function (response) {
+                 showError('Error: por favor refresque la pantalla');
+                }
+              });
+            });
+          });  
+        });  
+
 
 
         var showError = function (text) {

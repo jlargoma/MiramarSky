@@ -38,5 +38,6 @@ class VerifyCsrfToken extends BaseVerifier
         '/payment/process/*',
         '/ajax/send-partee-finish',
         '/admin/ingresos/upd',
+        '/payments-save-dni/*'
     ];
 }
