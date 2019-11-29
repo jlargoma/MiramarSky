@@ -525,8 +525,15 @@ class PaylandsController extends AppController
                 $start = strtotime($book->start);
                 $finish = strtotime($book->finish);
 
-                $dates = date('d',$start).' '.getMonthsSpanish(date('m',$start));
-                $dates .= ' - '.date('d',$finish).' '.getMonthsSpanish(date('m',$finish));
+                $monthStart = date('n',$start);
+                $monthFinish = date('n',$finish);
+                if ($monthStart == $monthFinish){
+                  $dates = date('d',$start).'-'.date('d',$finish);
+                  $dates .= ' '.getMonthsSpanish($monthStart);
+                } else {
+                  $dates = date('d',$start).' '.getMonthsSpanish($monthStart);
+                  $dates .= ' - '.date('d',$finish).' '.getMonthsSpanish($monthFinish);
+                }
               }
             }
 

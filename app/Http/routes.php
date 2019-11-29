@@ -78,7 +78,7 @@
     Route::post('/solicitudForfait', 'HomeController@solicitudForfait');
     Route::get('/admin/links-stripe', 'StripeController@link');
     Route::get('/payments-forms/{token}', 'PaylandsController@paymentsForms')->name('front.payments');
-    Route::post('/payments-save-dni/{token}', 'PaylandsController@saveDni')->name('front.payments.dni');
+    Route::post('/payments-save-dni/{token}', 'PaylandsController@saveDni')->name('front.payments.dni')->middleware('cors');
 
     
     /* SUPERMERCADO */
