@@ -228,7 +228,7 @@ trait BookEmailsStatus
         }
         
         
-        $orderFF = \App\Models\Forfaits\ForfaitsOrders::getByBook($data->id);
+        $orderFF = \App\Models\Forfaits\Forfaits::getByBook($data->id);
         if ($orderFF){
           $dataContent['link_forfait'] = env('FF_PAGE').encriptID($orderFF->id).'-'. getKeyControl($orderFF->id);
         } else {

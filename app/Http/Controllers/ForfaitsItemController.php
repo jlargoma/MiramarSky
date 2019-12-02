@@ -334,9 +334,21 @@ class ForfaitsItemController extends AppController {
     $type = $req->input('type', null);
     $data = $req->input('data', null);
     $key = $req->input('key', null);
-    $order = ForfaitsOrders::getByKey($key);
-    if (!$order)
+    
+    $forfait = Forfaits::getByKey($key);
+    if (!$forfait) {
       return response()->json(['status' => 'error']);
+    }
+
+    $order = ForfaitsOrders::where('forfats_id',$forfait->id)->where('status',0)->first();
+    if (!$order) {
+      $order = new ForfaitsOrders();
+      $order->forfats_id = $forfait->id;
+      $order->status = 0;
+      $order->save();
+    }
+    $orderID = $order->id;
+    
 
     if ($type == 'forfait') {
       $item = ForfaitsOrderItem::find($data);
@@ -564,6 +576,10 @@ class ForfaitsItemController extends AppController {
     $totalItems = 0;
     $extraForfait = 0;
     $price_wdForf = 0;
+    $totalToPay = 0;
+    $totalPayment = 0;
+    $orders = [];
+    $ff_status = 0;
     if ($order) {
       $totalPrice = $order->total;
 
@@ -601,13 +617,25 @@ class ForfaitsItemController extends AppController {
           $totalMat += $item->total;
         }
       }
-    }
+    
 
-    $totalPayment =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->sum('amount');
-    if ($totalPayment>0){
-      $totalPayment = $totalPayment/100;
+//    $totalPayment =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->sum('amount');
+//    if ($totalPayment>0){
+//      $totalPayment = $totalPayment/100;
+//    }
+//    $totalToPay = $totalPrice - $totalPayment;
+//    
+//    $oForfaits = Forfaits::find($order->forfats_id);
+//    if ($oForfaits){
+//      $ff_status = $oForfaits->checkStatus();
+//      $orderLst = $oForfaits->orders()->get();
+//      if ($orderLst){
+//        foreach ($orderLst as $item){
+//          $orders[] = ['id'=>$item->id,'total'=>$item->total,'status'=>$item->status];
+//        }          
+//      }
+//    }
     }
-    $totalToPay = $totalPrice - $totalPayment;
     $result = [
         'status' => 'ok',
         'totalItems' => $totalItems,
@@ -623,15 +651,21 @@ class ForfaitsItemController extends AppController {
         'totalMat' => $totalMat,
         'totalClas' => $totalClas,
         'totalPrice' => $totalPrice,
-        'totalPayment' => $totalPayment,
-        'totalToPay' => $totalToPay,
+//        'totalPayment' => $totalPayment,
+//        'totalToPay' => $totalToPay,
         'extraForfait' => $extraForfait,
-        'ff_status' => ($order->status) ? $order->status : 0
+//        'orders_list' => $orders,
+//        'ff_status' => $ff_status
     ];
 
     return $result;
   }
 
+//  function aaaa(){
+//    $a = $this->bookingData('2B108O14S3','ECCBCEBCEFEFDFABAF87452283089273',false);
+//    dd($a);
+//    
+//  }
   public function bookingData($ordenID, $control, $returnJson = true) {
     $userData = [
         'user_name' => '',
@@ -678,24 +712,30 @@ class ForfaitsItemController extends AppController {
           
           
           $orders = [];
+          $ordersCancel = [];
+          // get info to FFExpress cancels
+          $bookingNumbers = [];
           $orderLst = ForfaitsOrders::where('forfats_id',$oForfait->id)->get();
           if ($orderLst){
             foreach ($orderLst as $item){
               $orders[] = ['id'=>$item->id,'total'=>$item->total,'status'=>$item->status];
-            }          
+              if ($item->status == 3)
+              $ordersCancel[] = $item->id;
+            }  
+            // get info to FFExpress cancels
+//              $ffCanceled = ForfaitsOrderItem::whereIn('order_id',$ordersCancel)->get();
+              $ffCanceled = ForfaitsOrderItem::whereIn('order_id',$ordersCancel)
+                  ->where('type','forfaits')->whereNotNull('ffexpr_status')->get();
+              if ($ffCanceled){
+                foreach ($ffCanceled as $ff){
+                  $bookingNumbers[] = $ff->ffexpr_bookingNumber;
+                }
+              }
+            
           }
         
-          /** @FF-ToDo */
-          // get info to FFExpress cancels
-          $bookingNumbers = [];
-//          $ffCanceled = ForfaitsOrderItem::where('order_id',$order->id)
-//                  ->where('type','forfaits')
-//                  ->where('cancel',1)->whereNotNull('ffexpr_status')->get();
-//          if ($ffCanceled){
-//            foreach ($ffCanceled as $ff){
-//              $bookingNumbers[] = $ff->ffexpr_bookingNumber;
-//            }
-//          }
+          
+//        
     
         }
       }
@@ -779,23 +819,23 @@ class ForfaitsItemController extends AppController {
 
   
   
-  public function sendBookingOrder($order,$lastItemIDPayment) {
+  public function sendBookingOrder($order,$oForfait,$lastItemIDPayment) {
     
     $error = [
         'order_id' => $order->id,
-        'book_id' => ($order->book_id) ? $order->book_id : -1,
+        'book_id' => ($oForfait->book_id) ? $oForfait->book_id : -1,
         'detail' => '',
         'item_id' => '',
         'created_at' => date('Y-m-d H:i:s'),
     ];
     
-    $book = Book::find($order->book_id);
+    $book = Book::find($oForfait->book_id);
     if ($book){
       $clientName = $book->customer->name;
       $clientEmail = $book->customer->email;
     } else {
-      $clientName = $order->name;
-      $clientEmail = $order->email;
+      $clientName = $oForfait->name;
+      $clientEmail = $oForfait->email;
     }
     
     $forfaitsLst = ForfaitsOrderItem::where('order_id', $order->id)
@@ -810,7 +850,7 @@ class ForfaitsItemController extends AppController {
           $result = $this->sendBooking($f,$clientName,$clientEmail);
           if ($result != 'ok'){
             $error['item_id'] = $f->id;
-            $error['book_id'] = $order->book_id;
+            $error['book_id'] = $oForfait->book_id;
             $error['detail'] = $result;
             DB::table('forfaits_errors')->insert($error);
           }
@@ -959,7 +999,7 @@ class ForfaitsItemController extends AppController {
         $control = isset($aKey[1]) ? ($aKey[1]) : null;
         $orderID = desencriptID($orderID);
         if (is_numeric($orderID) &&  $control == getKeyControl($orderID)){
-            $order = ForfaitsOrders::find($orderID);
+            $order = Forfaits::find($orderID);
             if ($order){
               $bookingID = $order->book_id;
               $book = Book::find($bookingID);
@@ -1036,6 +1076,7 @@ class ForfaitsItemController extends AppController {
     //get by Order ID
     $orderID = $req->input('order_id',null);
     if ($orderID) {
+//      $suborder = ForfaitsOrders::find($orderID);
       $order = Forfaits::find($orderID);
     }
     

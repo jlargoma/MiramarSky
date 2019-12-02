@@ -40,7 +40,8 @@
         font-size: 18px;
         font-weight: bold;
         margin-bottom: 0px;
-        padding: 3em 0 6em 0;
+        padding:  7px 0 6em 0;
+
         
       }
 
@@ -174,6 +175,13 @@ label.checkbox :checked + span:after {
     animation: spin 2s linear infinite;
     display: none;
 }
+.tpv{
+      width: 100%;
+    text-align: center;
+    color: #fff;
+    font-size: 2.1em;
+    margin: 0;
+}
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
@@ -184,6 +192,7 @@ label.checkbox :checked + span:after {
   <body>
     <div class="background"></div>
     <div class="contenedor">
+      <h3 class="tpv">TPV</h3>
       <?php if (env('APP_APPLICATION') == "riad"): ?>
         <a class="logo" href="/">
           <img src="{{ assetV('img/riad/logo_riad_b.png') }}" alt="Riad">
@@ -196,7 +205,7 @@ label.checkbox :checked + span:after {
 
       @if($request_dni)
       <div class="form black">
-        <h3>TPV</h3>
+       
         <ul>
           <li id="step_1" class="active step">1</li>
           <li class="line"><span>Pasos</span></li>

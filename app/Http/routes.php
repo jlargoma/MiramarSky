@@ -71,7 +71,7 @@
     Route::get('/el-tiempo', 'HomeController@tiempo');
     Route::get('/condiciones-contratacion', 'HomeController@condicionesContratacion')->name('cond.contratacion');
     Route::get('/condiciones-fianza', 'HomeController@condicionesFianza')->name('cond.fianza');
-    Route::get('/restaurantes', 'HomeController@restaurantes')->name('cond.fianza');
+    Route::get('/restaurantes', 'HomeController@restaurantes')->name('cond.resto');
     Route::post('/getDiffIndays', 'HomeController@getDiffIndays');
     Route::post('/solicitudForfait', 'HomeController@solicitudForfait');
     Route::get('/admin/links-stripe', 'StripeController@link');
@@ -183,6 +183,9 @@
     Route::get('/api/forfaits/getSeasons', 'ForfaitsItemController@getForfaitSeasons');
     Route::post('/api/forfaits/createNewOrder', 'ForfaitsItemController@createNewOrder');
     Route::post('/api/forfaits/sendClassToAdmin', 'ForfaitsItemController@sendClassToAdmin');
+    Route::post('/api/forfaits/getFFOrders', 'ForfaitsItemController@getFFOrders');
+    Route::post('/api/forfaits/remove-order', 'ForfaitsItemController@removeOrder');
+//    Route::get('/aaaa', 'ForfaitsItemController@aaaa');
 
 
     include_once 'routes-admin.php';

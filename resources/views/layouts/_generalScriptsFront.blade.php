@@ -46,6 +46,7 @@ if (($mobile->isMobile() || $mobile->isTablet())):
                 var recaptcha_script = document.createElement('script');
                 recaptcha_script.setAttribute('src', "https://www.google.com/recaptcha/api.js?render=6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV");
                 document.body.appendChild(recaptcha_script);
+                $('.carousel-caption').css('display','block');
               }, 1700);
     });
   </script>
