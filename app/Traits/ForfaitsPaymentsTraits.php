@@ -1146,4 +1146,73 @@ trait ForfaitsPaymentsTraits {
         'ff_status' => $ff_status
             ]);
   }
+  
+  function ordersHistory(Request $req){
+
+    $key = $req->input('key', null);
+
+    $forfait = Forfaits::getByKey($key);
+    if (!$forfait) {  return 'error';  }
+    
+    else{
+      $orders = $forfait->orders()->get();
+      $lstOrderResponse = [
+          'quick_order' => [],
+          'forfaits'    => []
+      ];
+      $totalItemsQ = $totalItemsF = 0;
+      $totalForf = $price_wdForf = $extraForfait = $totalQO = 0;
+      if ($orders && count($orders)>0){
+        foreach ($orders as $order){
+          $forfaits = [];
+          $aux = [
+            'order' => $order->id,
+            'total' => $order->total,
+            'forfaits'=>null,
+            'quick_order'=>null,
+          ];
+          
+          if ($order->quick_order){
+            $totalItemsQ++;
+            $aux['quick_order'] = [
+                'type'=>$order->type,
+                'q'=>$order->quantity,
+                'd'=>$order->detail
+            ];
+            $totalQO += $order->total;
+          $lstOrderResponse['quick_order'][] = $aux;
+          } else {
+            $forfaitsLst = ForfaitsOrderItem::where('order_id', $order->id)->where('type', 'forfaits')->WhereNull('cancel')->get();
+            if ($forfaitsLst) {
+              foreach ($forfaitsLst as $f) {
+                $f_aux = json_decode($f->data);
+                $insurances = json_decode($f->insurances);
+                $totalItemsF += count($f_aux);
+                $forfaits[$f->id] = ['usr'=>$f_aux,'insur'=>$insurances];
+                $totalForf += $f->total;
+                $price_wdForf += $f->price_wd;
+                $extraForfait += $f->extra;
+              }
+            }
+            $aux['forfaits'] = $forfaits;
+            $lstOrderResponse['forfaits'][] = $aux;
+          }
+          
+        }
+      }
+      $result = [
+        'status' => 'ok',
+        'orders' => $lstOrderResponse,
+        'totalItemsQ' => $totalItemsQ,
+        'totalItemsF' => $totalItemsF,
+        'totalForf' => $totalForf,
+        'totalQO' => $totalQO,
+        'price_wdForf' => $price_wdForf,
+        'extraForfait' => $extraForfait,
+      ];
+      
+      return response()->json($result);
+    }
+    return response()->json(['status' => 'error']);
+  }
 }
