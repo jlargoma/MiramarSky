@@ -205,6 +205,9 @@ class ForfaitsItemController extends AppController {
   }
 
   public function getForfaitSeasons() {
+    
+    return json_decode(\App\Settings::getKeyValue('FORFAIT_SEASONS'));
+     
     $skiResortId = env('FORFAIT_RESORTID');
     $curl = curl_init();
     $endpoint = env('FORFAIT_ENDPOINT') . 'getseasons';
