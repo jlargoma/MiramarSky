@@ -185,6 +185,7 @@
     Route::post('/api/forfaits/sendClassToAdmin', 'ForfaitsItemController@sendClassToAdmin');
     Route::post('/api/forfaits/getFFOrders', 'ForfaitsItemController@getFFOrders');
     Route::post('/api/forfaits/remove-order', 'ForfaitsItemController@removeOrder');
+    Route::post('/api/forfaits/orders-history', 'ForfaitsItemController@ordersHistory');
 //    Route::get('/aaaa', 'ForfaitsItemController@aaaa');
 
 
