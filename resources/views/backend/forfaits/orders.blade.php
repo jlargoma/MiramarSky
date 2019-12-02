@@ -146,6 +146,8 @@ $mobile = new Mobile();
             <th class="th-bookings th-6">
               CLASS<br/><?php echo number_format($totals['class'], 0, ',', '.') ?> €</th>
             <th class="th-bookings th-6">
+              ORDEN RÁPIDA<br/><?php echo number_format($totals['quick_order'], 0, ',', '.') ?> €</th>
+            <th class="th-bookings th-6">
               COBRADO<br/><?php echo number_format($totals['totalPayment'], 0, ',', '.') ?> €</th>
             <th class="th-bookings th-2">FF</th>
             <th class="th-bookings th-2" title="Reservas hechas en Forfait Express">FFExpress</th>
@@ -237,6 +239,7 @@ $mobile = new Mobile();
             <td class="text-center"><?php echo number_format($order['forfaits'], 0, ',', '.') ?> €</td>
             <td class="text-center"><?php echo number_format($order['material'], 0, ',', '.') ?> €</td>
             <td class="text-center"><?php echo number_format($order['class'], 0, ',', '.') ?> €</td>
+            <td class="text-center"><?php echo number_format($order['quick_order'], 0, ',', '.') ?> €</td>
             <td class="text-center">
               <div class="col-md-6">
                 <?php echo number_format($order['totalPayment'], 0, ',', '.') ?> €
@@ -268,11 +271,13 @@ $mobile = new Mobile();
              <a data-booking="<?php echo $order['id']; ?>" class="openFF" title="Ir a Forfaits" >
               <?php
                 $ff_status = $order['status'];
-                if ($ff_status['icon']) {
-                  echo '<img src="' . $ff_status['icon'] . '" style="max-width:30px;" alt="' . $ff_status['name'] . '"/>';
-                } else {
-                   echo '<img src="/img/miramarski/ski_icon_status_transparent.png" style="max-width:30px;" alt="Externo"/>';
-                }
+                
+                  if ($ff_status['icon']) {
+                    echo '<img src="' . $ff_status['icon'] . '" style="max-width:30px;" alt="' . $ff_status['name'] . '"/>';
+                  } else {
+                     echo '<img src="/img/miramarski/ski_icon_status_transparent.png" style="max-width:30px;" alt="Externo"/>';
+                  }
+                
               ?>
               </a>
             </td>  

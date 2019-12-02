@@ -105,4 +105,22 @@ class Forfaits extends Model
     }
     return $result;
   }
+  
+  function orders() {
+    return $this->hasMany('App\Models\Forfaits\ForfaitsOrders','forfats_id','id');
+  }
+  
+  function checkStatus(){
+    $orders = self::orders()->get();
+    $payment = $this->status;
+    if ($orders && count($orders)>0){
+      $payment = 3;
+      foreach ($orders as $o){
+        if ($o->status == 1)
+          $payment = 2;
+        
+      }
+    }
+    return $payment;
+  }
 }

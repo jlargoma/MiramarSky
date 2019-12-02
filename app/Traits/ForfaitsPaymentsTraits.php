@@ -19,6 +19,8 @@ trait ForfaitsPaymentsTraits {
 
   use BookEmailsStatus;
   
+  var $listOrders = [];
+  
   public function createPaylandsOrder($key) {
     
     $oForfait = Forfaits::getByKey($key);
@@ -68,6 +70,27 @@ trait ForfaitsPaymentsTraits {
     $order->status=1;
     $order->save();
         
+    $this->listOrders = [];
+    if ($oForfait){
+      $oForfait->status = 2;
+      $oForfait->save();
+      
+      $book = Book::find($oForfait->book_id);
+      if ($book){
+        $book->ff_status = 2;
+        $book->save();
+      }
+      
+      $orderLst = $oForfait->orders()->get();
+      if ($orderLst){
+        foreach ($orderLst as $item){
+          $orders[] = ['id'=>$item->id,'total'=>$item->total,'status'=>$item->status];
+        }          
+      }
+      $this->listOrders = $orders;
+    }
+    
+    
     return $token;
   }
   
@@ -97,7 +120,13 @@ trait ForfaitsPaymentsTraits {
                   $payment->amount,
                   $payment->last_item_id
                   );
-          return response()->json(['status' => 'ok', 'url' => $urlPayland]);
+          
+          
+          return response()->json([
+              'status' => 'ok',
+              'url' => $urlPayland,
+              'orders_list'=>$this->listOrders
+                  ]);
         }
       }
     return die('404');
@@ -126,7 +155,11 @@ trait ForfaitsPaymentsTraits {
           }
           
           $amount = $payment->amount;
-          return response()->json(['status' => 'ok', 'content' => $this->getPaymentText($urlPay,$amount)]);
+          return response()->json([
+              'status' => 'ok',
+              'content' => $this->getPaymentText($urlPay,$amount),
+              'orders_list'=>$this->listOrders
+                  ]);
         }
       }
       
@@ -170,34 +203,33 @@ trait ForfaitsPaymentsTraits {
       \App\BookLogs::saveLogStatus($bookID, null, $PaymentOrder->cli_email, "Pago de Forfaits de $amount ($key_token)");
       $order = ForfaitsOrders::find($PaymentOrder->order_id);
       if ($order){
-        $this->sendBookingOrder($order,null);
+        $oForfait = Forfaits::getByBook($PaymentOrder->book_id);
+        $this->sendBookingOrder($order,$oForfait,null);
         $orderStatus = null;
         $totalPrice = $order->total;
-        /** @FF-ToDo */
-//        $totalPayment =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->sum('amount');
-//        if ($totalPayment>0) $totalPayment = $totalPayment/100;
-//        if ($totalPrice<=$totalPayment){
-//           $order->status = 3; //cobrada
-//           $orderStatus = 3;
-//           $order->save();
-//           
-//        }
-//        
         $order->status = 2; //cobrada
         $order->save();
+        
+        /** Check booking Status */
+        $book_status = $oForfait->checkStatus();
+        if ($book_status){
+          $oForfait->status = $book_status;
+          $oForfait->save();
+        }
+
         //send email
         $book = Book::find($PaymentOrder->book_id);
         if ($book){
           $cli_email = $book->customer->email;
           $cli_name = $book->customer->name;
-          if ($orderStatus){
-            $book->ff_status = $orderStatus;
+          if ($book_status){
+            $book->ff_status = $book_status;
             $book->save();
           }
           $subject = translateSubject('Confirmación de Pago',$book->customer->country);
         } else {
-          $cli_name = $order->name;
-          $cli_email = $order->email;
+          $cli_name = $oForfait->name;
+          $cli_email = $oForfait->email;
           $subject = 'Confirmación de Pago';
         }
         
@@ -263,23 +295,28 @@ trait ForfaitsPaymentsTraits {
     
     $key = $req->input('key', null);
     if ($key) {
-        $order = ForfaitsOrders::getByKey($key);
-        if (!$order) {
-          return die('404');
+      
+      $oForfait = Forfaits::getByKey($key);
+      if (!$oForfait) {  return 'error';  }
+    
+      $orders = [];
+      $orderLst = $oForfait->orders()->get();
+      if ($orderLst){
+        foreach ($orderLst as $item){
+          $orders[] = $item->id;
+        }          
+      }
+      $payments =  ForfaitsOrderPayments::whereIn('order_id', $orders)->where('paid',1)->get();
+      $paymentsLst = [];
+      if ($payments){
+        foreach ($payments as $p){
+          $paymentsLst[] = [
+              'order_id' => $p->order_id,
+              'date' => $p->updated_at->format('d M, y'),
+              'amount' => $p->amount/100,
+          ];
         }
-        $orderID = $order->id;
-
-
-        $payments =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->get();
-        $paymentsLst = [];
-        if ($payments){
-          foreach ($payments as $p){
-            $paymentsLst[] = [
-                'date' => $p->updated_at->format('d M, y'),
-                'amount' => $p->amount/100,
-            ];
-          }
-        }
+      }
 
         return response()->json(['status' => 'ok', 'content' => $paymentsLst]);
     }
@@ -293,72 +330,112 @@ trait ForfaitsPaymentsTraits {
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
     
-    $allOrders = ForfaitsOrders::whereNotNull('total')->where('status','!=',1)->get();
+//    $allOrders = ForfaitsOrders::whereNotNull('total')->where('status','!=',1)->get();
+    $allForfaits = Forfaits::where('status','!=',1)->get();
 //    $allOrders = ForfaitsOrders::where('id',3)->get();
     $lstOrders = [];
    
     $totals = [
-        'orders' =>0,
-        'totalSale' =>0,
-        'totalPrice' =>0,
-        'forfaits'   => 0,
-        'class'      => 0,
-        'material'   => 0,
+        'orders'      => 0,
+        'totalSale'   => 0,
+        'totalPrice'  => 0,
+        'forfaits'    => 0,
+        'class'       => 0,
+        'material'    => 0,
+        'quick_order' => 0,
         'totalPayment'=> 0,
-        'totalToPay'  =>0,
+        'totalToPay'  => 0,
       ];
             
-    if ($allOrders){
-      foreach ($allOrders as $order){
+    if ($allForfaits){
+      foreach ($allForfaits as $forfait){
           
-          $book = Book::find($order->book_id);
-            $totalPrice = $order->total;
-            $forfaits = ForfaitsOrderItem::where('order_id', $order->id)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
-            $class = ForfaitsOrderItem::where('order_id', $order->id)->where('type', 'class')->WhereNull('cancel')->sum('total');
-            $material = ForfaitsOrderItem::where('order_id', $order->id)->where('type', 'material')->WhereNull('cancel')->sum('total');
-            $totalPayment =  ForfaitsOrderPayments::where('order_id', $order->id)->where('paid',1)->sum('amount');
-            
-            if ($totalPayment>0){
-              $totalPayment = $totalPayment/100;
+          $book = Book::find($forfait->book_id);
+          $allOrders = $forfait->orders()->get();
+          $quick_order = 0;
+          $totalPrice = 0;
+          $totalPayment = 0;
+          $forfaits = $class = $material = 0;
+          $common_ordersID = [];
+          $ordersID = [];
+          $ff_sent = NULL;
+          $ff_item_total = NULL;
+          if ($allOrders){
+            foreach ($allOrders as $order){
+              
+              if ($order->status == 3){
+                continue; //ORder cancel
+              }
+              
+              if ($order->quick_order){
+                $quick_order += $order->total;
+              } else {
+                $common_ordersID[] = $order->id;
+              }
+                
+              $ordersID[] = $order->id;
+              $totalPrice += $order->total;
             }
+            
+            if (count($common_ordersID)>0){
+              
+              $forfaits = ForfaitsOrderItem::whereIn('order_id',$common_ordersID)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
+              $class = ForfaitsOrderItem::whereIn('order_id',$common_ordersID)->where('type', 'class')->WhereNull('cancel')->sum('total');
+              $material = ForfaitsOrderItem::whereIn('order_id',$common_ordersID)->where('type', 'material')->WhereNull('cancel')->sum('total');
+              
+            }
+            
+            if (count($ordersID)>0){
+              
+              $totalPayment =  ForfaitsOrderPayments::whereIn('order_id', $ordersID)->where('paid',1)->sum('amount');
+              
+              if ($totalPayment>0){
+                $totalPayment = $totalPayment/100;
+              }
+              
+              $ff_sent = ForfaitsOrderItem::where('order_id', $order->id)
+                      ->where('type', 'forfaits')
+                      ->where('ffexpr_status', 1)
+                      ->WhereNull('cancel')->count();
+              $ff_item_total = ForfaitsOrderItem::where('order_id', $order->id)
+                      ->where('type', 'forfaits')
+                      ->WhereNull('cancel')->count();
+              
+              
+            }
+            
             $totalToPay = $totalPrice - $totalPayment;
-    
-//            var_dump($totalPayment,$totalPrice,$totalToPay); die;
-            
-            $ff_sent = ForfaitsOrderItem::where('order_id', $order->id)
-                    ->where('type', 'forfaits')
-                    ->where('ffexpr_status', 1)
-                    ->WhereNull('cancel')->count();
-            $ff_item_total = ForfaitsOrderItem::where('order_id', $order->id)
-                    ->where('type', 'forfaits')
-                    ->WhereNull('cancel')->count();
-            $lstOrders[] = [
-                'id'       => $order->id,
-                'name'       => $order->name,
-                'email'       => $order->email,
-                'phon'       => $order->phone,
-                'book'       => $book,
-                'totalPrice' =>$totalPrice,
-                'forfaits'   => $forfaits,
-                'class'      => $class,
-                'material'   => $material,
-                'totalPayment'=> $totalPayment,
-                'totalToPay'  =>$totalToPay,
-                'ff_sent'     => $ff_sent,
-                'status'     => $order->get_ff_status(),
-                'ff_item_total'=> $ff_item_total,
-            ];
-            
-            if ($order->status == 2 || $order->status == 3){
-              $totals['orders']++;
-              $totals['totalSale'] = $totals['totalSale']+$totalPrice;
-              $totals['totalPrice'] = $totals['totalPrice']+$totalPrice;
-              $totals['forfaits'] = $totals['forfaits']+$forfaits;
-              $totals['class'] = $totals['class']+$class;
-              $totals['material'] = $totals['material']+$material;
-              $totals['totalPayment'] = $totals['totalPayment']+$totalPayment;
-              $totals['totalToPay'] = $totals['totalToPay']+$totalToPay;
-            }
+//dd($forfait);
+              $lstOrders[] = [
+                  'id'       => $forfait->id,
+                  'name'       => $forfait->name,
+                  'email'       => $forfait->email,
+                  'phon'       => $forfait->phone,
+                  'book'       => $book,
+                  'totalPrice' =>$totalPrice,
+                  'forfaits'   => $forfaits,
+                  'class'      => $class,
+                  'material'   => $material,
+                  'quick_order'   => $quick_order,
+                  'totalPayment'=> $totalPayment,
+                  'totalToPay'  =>$totalToPay,
+                  'ff_sent'     => $ff_sent,
+                  'status'     => $forfait->get_ff_status(),
+                  'ff_item_total'=> $ff_item_total,
+              ];
+//              if (true){  /** @FFToDo no mostrar las canceladas**/
+              
+                $totals['orders']++;
+                $totals['totalSale'] = $totals['totalSale']+$totalPrice;
+                $totals['totalPrice'] = $totals['totalPrice']+$totalPrice;
+                $totals['forfaits'] = $totals['forfaits']+$forfaits;
+                $totals['class'] = $totals['class']+$class;
+                $totals['material'] = $totals['material']+$material;
+                $totals['quick_order'] = $totals['quick_order']+$quick_order;
+                $totals['totalPayment'] = $totals['totalPayment']+$totalPayment;
+                if ($totalToPay>0)
+                $totals['totalToPay'] = $totals['totalToPay']+$totalToPay;
+          }
       }
       $rooms = \App\Rooms::all();
       
@@ -675,7 +752,7 @@ trait ForfaitsPaymentsTraits {
                
       $token = $req->header('token-ff');
       $client = $req->header('client');
-      if (!$this->checkUserAdmin($token,$client)) return die('404');
+      if (!$this->checkUserAdmin($token,$client)) response()->json(['status' => 'error0']);
     
       $oForfait = Forfaits::getByKey($key);
       if (!$oForfait) {
@@ -687,7 +764,7 @@ trait ForfaitsPaymentsTraits {
           if (!$order) {
             return response()->json(['status' => 'error2']);
           }
-          
+          $urlPay = '';
           $payment = ForfaitsOrderPaymentLinks::where('order_id',$oID)->first();
           if ($payment){
         
@@ -706,7 +783,7 @@ trait ForfaitsPaymentsTraits {
             $orderText = $this->renderOrder($order->id);
           }
           
-          $orderText .="<p>Link del pago: $urlPay</p>";
+          $orderText .="<p>Link del pago: <a href='$urlPay' target='_black'>$urlPay</a></p>";
      
           return response()->json(['status' => 'ok','msg'=>$orderText]);
         }
@@ -923,6 +1000,7 @@ trait ForfaitsPaymentsTraits {
       $order->detail = $detail;
       $order->type = $p_type;
       $order->total = $amount;
+      $order->quick_order = 1;
       $order->save();
       $bookingID = $oForfait->book_id;
       $book = Book::find($bookingID);
@@ -947,6 +1025,25 @@ trait ForfaitsPaymentsTraits {
         $PaymentOrders->last_item_id = null;
         $PaymentOrders->save();
 
+        if ($oForfait){
+          $oForfait->status = 2;
+          $oForfait->save();
+
+          $book = Book::find($oForfait->book_id);
+          if ($book){
+            $book->ff_status = 2;
+            $book->save();
+          }
+
+          $orderLst = $oForfait->orders()->get();
+          if ($orderLst){
+            foreach ($orderLst as $item){
+              $orders[] = ['id'=>$item->id,'total'=>$item->total,'status'=>$item->status];
+            }          
+          }
+          $this->listOrders = $orders;
+        }
+    
 
         if ($typePayment == 'link'){
           
@@ -955,7 +1052,10 @@ trait ForfaitsPaymentsTraits {
           } else {
             $urlPay = 'https://miramarski.com/payments-forms-forfaits?t='.$token;
           }
-          return response()->json(['status' => 'ok', 'content' => $this->getPaymentText($urlPay,$amount)]);
+          return response()->json(['status' => 'ok',
+              'content' => $this->getPaymentText($urlPay,$amount),
+              'orders_list'=>$this->listOrders
+                  ]);
           
         } else{
           
@@ -967,7 +1067,11 @@ trait ForfaitsPaymentsTraits {
                   $PaymentOrders->amount,
                   $PaymentOrders->last_item_id
                   );
-          return response()->json(['status' => 'ok', 'url' => $urlPayland]);
+          return response()->json([
+              'status' => 'ok',
+              'url' => $urlPayland,
+              'orders_list'=>$this->listOrders
+                  ]);
           
         }
       
@@ -975,5 +1079,71 @@ trait ForfaitsPaymentsTraits {
     }
 
     return response()->json(['status' => 'error']);
+  }
+  
+  function getFFOrders(Request $req){
+    
+    $key = $req->input('key', null);
+
+    $oForfait = Forfaits::getByKey($key);
+    if (!$oForfait) {  return 'error';  }
+    
+    $orders = [];
+    $ff_status = $oForfait->checkStatus();
+    
+    $orderLst = $oForfait->orders()->get();
+    if ($orderLst){
+      foreach ($orderLst as $item){
+        $orders[] = ['id'=>$item->id,'total'=>$item->total,'status'=>$item->status];
+      }          
+    }
+    
+    return response()->json([
+        'status'=>'ok',
+        'orders_list' => $orders,
+        'ff_status' => $ff_status
+            ]);
+  }
+  
+  function removeOrder(Request $req) {
+    
+    $key = $req->input('key', null);
+    $ordenID = $req->input('orden', null);
+
+    $oForfait = Forfaits::getByKey($key);
+    if (!$oForfait) {  return 'error';  }
+    if (!$ordenID || $ordenID<1) {  return 'error';  }
+    
+    $orders = [];
+    $ff_status = 0;
+    $orderLst = $oForfait->orders()->get();
+    if ($orderLst){
+      foreach ($orderLst as $item){
+        if ($ordenID == $item->id){
+          $item->status = 3;
+          $item->save();
+        }
+        $orders[] = ['id'=>$item->id,'total'=>$item->total,'status'=>$item->status];
+      }          
+    }
+    $ff_status = $oForfait->checkStatus();
+    if ($ff_status){
+      $oForfait->status = $ff_status;
+      $oForfait->save();
+      
+      $book = Book::find($oForfait->book_id);
+      if ($book){
+        $book->ff_status = $ff_status;
+        $book->save();
+      }
+          
+          
+    }
+    
+    return response()->json([
+        'status'=>'ok',
+        'orders_list' => $orders,
+        'ff_status' => $ff_status
+            ]);
   }
 }

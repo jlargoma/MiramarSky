@@ -106,4 +106,9 @@ class ForfaitsOrders extends Model
     }
     return $result;
   }
+  
+  
+  function forfaits() {
+    return $this->belongsTo('App\Models\Forfaits\Forfaits');
+  }
 }
