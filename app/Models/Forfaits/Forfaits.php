@@ -123,4 +123,74 @@ class Forfaits extends Model
     }
     return $payment;
   }
+  
+  /**
+   * Get the forfaits resume
+   * @return type
+   */
+  function resume() {
+    
+    $orders = self::orders()->get();
+    $response = [
+      'forfaits'=>0,
+      'clases' => 0,
+      'equipos' => 0,
+      'otros' => 0,
+      'status_forfaits'=>null,
+      'status_clases' => null,
+      'status_equipos' => null,
+      'status_otros' => null,
+      'total'=>0
+    ];
+    if ($orders && count($orders)>0){
+      
+      foreach ($orders as $order){
+        if ($order->status == 1 || $order->status == 2){
+          if ($order->quick_order){
+            $type = $order->type;
+            if (!isset($response[$order->type])){
+              $type = 'otros';
+            }
+              
+            $response[$type] += $order->total;
+            
+            if ($response['status_'.$type] != 1){
+              $response['status_'.$type] = $order->status;
+            }
+            
+          } else {
+            
+            $type = 'forfaits';
+            $response[$type] += $order->total;
+            
+            if ($response['status_'.$type] != 1){
+              $response['status_'.$type] = $order->status;
+            }
+            
+          }
+          $response['total'] += $order->total;
+        }
+       
+      }
+    }
+    
+    $lst = ['forfaits','clases','equipos','otros'];
+
+    $text = '<table class="table">';
+    foreach ($lst as $item){
+      if($response[$item]>0){
+        $status = ($response['status_'.$item] ==2) ? 'Pagado' : 'Pendiente';
+        $text.='<tr><td>'. strtoupper($item) 
+                .'</td><td>'
+                . $response[$item].'€ <span class="'.$status.'">'.$status.'</span>'
+                . '</td></tr>';
+      }
+    }
+    $text .= '<tr><td>Total</td><td>'
+            . $response['total'].'€'
+            . '</td></tr></table>';
+
+    
+    return $text;
+  }
 }

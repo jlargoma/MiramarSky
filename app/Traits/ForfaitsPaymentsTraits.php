@@ -265,6 +265,35 @@ trait ForfaitsPaymentsTraits {
     if ($token){
       $payment = ForfaitsOrderPaymentLinks::where('token',$token)->first();
       if ($payment){
+        
+        $order = ForfaitsOrders::find($payment->order_id);
+        if (!$order) return redirect()->route('paymeny-error');
+        
+        
+        if ($order->type){
+          //http://miramarski.virtual/payments-forms-forfaits/5a65d2a727d1c85de7ee298e3993c7b1
+            
+            $orderText ='<h3>Orden Rápida</h3>
+                  <table class="forfait">
+                  <tr class="forfaitHeader">
+                  <th colspan="2"><b>'.ucfirst($order->type).' ('.$order->quantity.')</th>
+                  </th>
+                  <tr>
+                  <td colspan="2">'.nl2br($order->detail).'</td>
+                  </tr>
+                  <tr>
+                  <td >Total</td>
+                  <td class="tright">'.$order->total.'€</td>
+                  </tr>
+                  </table>';
+            
+          } else {
+            //http://miramarski.virtual/payments-forms-forfaits/fe4353212db091a5539106dda28ed83e
+            $orderText = '<h3>Forfaits</h3>';
+            $orderText .= $this->renderOrder($order->id);
+          }
+          
+        
         $urlPayland = $this->generateOrderPaymentForfaits(
                 $payment->book_id,
                 $payment->order_id,
@@ -280,7 +309,11 @@ trait ForfaitsPaymentsTraits {
           $background = assetV('img/miramarski/lockscreen.jpg');
         }
 
-         return view('frontend.bookStatus.paylandPayForfait', ['urlPayland' => $urlPayland,'background'=>$background]);
+        
+         return view('frontend.bookStatus.paylandPayForfait', [
+             'urlPayland' => $urlPayland,
+             'background'=>$background,
+             'orderText' => $orderText]);
       }
       return redirect()->route('paymeny-error');
     }
@@ -776,9 +809,19 @@ trait ForfaitsPaymentsTraits {
             $amount = $payment->amount;
           }
           if ($order->type){
-            $orderText = '<h3>Orden Rápida</h3><p><b>Tipo: </b> '.$order->type.'</p>'
-                . '<p><b>Cantidad: </b>'.$order->quantity.'</p>'
-                . '<p><b>Detalle: </b>'.$order->detail.'</p>';
+             $orderText ='<h3>Orden Rápida</h3>
+                  <table class="forfait">
+                  <tr class="forfaitHeader">
+                  <th colspan="2"><b>'.ucfirst($order->type).' ('.$order->quantity.')</th>
+                  </th>
+                  <tr>
+                  <td colspan="2">'.nl2br($order->detail).'</td>
+                  </tr>
+                  <tr>
+                  <td >Total</td>
+                  <td class="tright">'.$order->total.'€</td>
+                  </tr>
+                  </table>';
           } else {
             $orderText = $this->renderOrder($order->id);
           }
@@ -1054,7 +1097,8 @@ trait ForfaitsPaymentsTraits {
           }
           return response()->json(['status' => 'ok',
               'content' => $this->getPaymentText($urlPay,$amount),
-              'orders_list'=>$this->listOrders
+              'orders_list'=>$this->listOrders,
+              'order_id'=>$order->id
                   ]);
           
         } else{
@@ -1094,14 +1138,18 @@ trait ForfaitsPaymentsTraits {
     $orderLst = $oForfait->orders()->get();
     if ($orderLst){
       foreach ($orderLst as $item){
-        $orders[] = ['id'=>$item->id,'total'=>$item->total,'status'=>$item->status];
+        $type = $item->type;
+        if (!$type) $type = 'forfaits';
+        if ($item->status != 3)
+        $orders[] = ['id'=>$item->id,'type'=>ucfirst($type),'total'=>$item->total,'status'=>$item->status];
       }          
     }
     
     return response()->json([
         'status'=>'ok',
         'orders_list' => $orders,
-        'ff_status' => $ff_status
+        'ff_status' => $ff_status,
+        'resume'=>$oForfait->resume()
             ]);
   }
   
@@ -1123,7 +1171,8 @@ trait ForfaitsPaymentsTraits {
           $item->status = 3;
           $item->save();
         }
-        $orders[] = ['id'=>$item->id,'total'=>$item->total,'status'=>$item->status];
+//        if ($item->status!=3)
+//          $orders[] = ['id'=>$item->id,'total'=>$item->total,'status'=>$item->status];
       }          
     }
     $ff_status = $oForfait->checkStatus();
@@ -1142,7 +1191,7 @@ trait ForfaitsPaymentsTraits {
     
     return response()->json([
         'status'=>'ok',
-        'orders_list' => $orders,
+        'orders_list' => null,
         'ff_status' => $ff_status
             ]);
   }
@@ -1215,4 +1264,65 @@ trait ForfaitsPaymentsTraits {
     }
     return response()->json(['status' => 'error']);
   }
+  
+  /**
+   * Show the payment widget to payland
+   * 
+   * @param Request $req
+   * @return string
+   */
+   function getPayment(Request $req) {
+    
+    $key = $req->input('key', null);
+    $ordenID = $req->input('order', null);
+
+    $oForfait = Forfaits::getByKey($key);
+    if (!$oForfait) {  return 'error 1';  }
+    if (!$ordenID || $ordenID<1) {  return 'error 2';  }
+    
+    $order = ForfaitsOrders::where('forfats_id',$oForfait->id)
+            ->where('status',1)
+            ->where('id',$ordenID)->first();
+    
+    if (!$order) return 'error 3';
+    $payment = ForfaitsOrderPaymentLinks::where('order_id',$order->id)->first();
+    if ($payment){
+      $urlPayland = $this->generateOrderPaymentForfaits(
+              $payment->book_id,
+              $payment->order_id,
+              $payment->cli_email,
+              $payment->subject,
+              $payment->amount,
+              $payment->last_item_id
+              );
+
+      return response()->json([
+              'status' => 'ok',
+              'url' => $urlPayland
+                  ]);
+    }
+        
+        
+    return 'error 4';
+  }
+  
+  public function getResumeBy_book($id) {
+    $oForfait = Forfaits::where('book_id',$id)->first();
+    if ($oForfait){
+      $resume = $oForfait->resume();
+      echo $resume;
+    } else {
+      echo '<p>Sin datos</p>';
+    }
+  }
+  public function getResume($id) {
+    $oForfait = Forfaits::find($id);
+    if ($oForfait){
+      $resume = $oForfait->resume();
+      echo $resume;
+    } else {
+      echo '<p>Sin datos</p>';
+    }
+  }
+  
 }

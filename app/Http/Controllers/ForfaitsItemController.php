@@ -677,6 +677,7 @@ class ForfaitsItemController extends AppController {
         'ff_status' => '',
         'ff_statusLst' => '',
         'apto' => '',
+        'agency' => null,
         'start' => '',
         'finish' => '',
         'sent_class' => '',
@@ -705,6 +706,10 @@ class ForfaitsItemController extends AppController {
             $userData['start'] = $book->start;
             $userData['finish'] = $book->finish;
             $userData['ff_status'] = $status;
+            if ($book->agency != 0){
+              $userData['agency'] = url('/pages/'.strtolower($book->getAgency($book->agency)).'.png');
+              
+            }
           } else {
             $userData['user_name'] = $oForfait->name;
             $userData['user_email'] = $oForfait->email;
@@ -1035,19 +1040,21 @@ class ForfaitsItemController extends AppController {
 
     $token = desencriptID($token);
     if (is_numeric($token)) {
-      $ip = explode('.', $ipClient);
-      $aux = 1;
-      if ($ip[0] > $ip[1]) {
-        $aux = $ip[0] - $ip[1];
-      } else {
-        $aux = $ip[1] - $ip[0];
-      }
-
-      if ($ip[2] > $ip[3]) {
-        $aux .= $ip[2] - $ip[3];
-      } else {
-        $aux .= $ip[3] - $ip[2];
-      }
+//      $ip = explode('.', $ipClient);
+//      $aux = 1;
+//      if ($ip[0] > $ip[1]) {
+//        $aux = $ip[0] - $ip[1];
+//      } else {
+//        $aux = $ip[1] - $ip[0];
+//      }
+//
+//      if ($ip[2] > $ip[3]) {
+//        $aux .= $ip[2] - $ip[3];
+//      } else {
+//        $aux .= $ip[3] - $ip[2];
+//      }
+      
+      $aux = date('WYyd');
 
       $uID = $token / $aux;
       $user = \App\User::find($uID);
@@ -1101,6 +1108,7 @@ class ForfaitsItemController extends AppController {
         $aux .= $ip[3] - $ip[2];
       }
 
+      $aux = date('WYyd');
       $token = $aux * Auth::user()->id;
       $return['admin'] = encriptID($token);
     }
@@ -1111,6 +1119,7 @@ class ForfaitsItemController extends AppController {
     $c_name = $req->input('c_name',null);
     $c_email = $req->input('c_email',null);
     $c_phone = $req->input('c_phone',null);
+    $c_petition = $req->input('c_petition',null);
     
     $return = array(
         'status' => 'ok',
@@ -1121,10 +1130,14 @@ class ForfaitsItemController extends AppController {
     $order->name  = $c_name;
     $order->email = $c_email;
     $order->phone = $c_phone;
+    $order->more_info = $c_petition;
     $order->save();
     
     
-    $return['link'] = env('FF_PAGE').encriptID($order->id).'-'. getKeyControl($order->id);     
+    $link = env('FF_PAGE').encriptID($order->id).'-'. getKeyControl($order->id);   
+    
+    $this->sendEmail_ForfaitNewOrder($order,$link);
+    $return['link'] = $link;     
 
     return $return;
             

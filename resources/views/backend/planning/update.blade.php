@@ -156,7 +156,7 @@ $mobile = new Mobile();
             </h2>
           </div>
 
-          <div class="col-md-2 col-xs-3 icon-lst hiddenOnlyRiad">
+          <div class="col-md-2 col-xs-3 icon-lst hiddenOnlyRiad showFF_resume">
             
               <a data-booking="<?php echo $book->id; ?>" class="openFF" title="Ir a Forfaits" >
               <?php
@@ -166,7 +166,7 @@ $mobile = new Mobile();
               }
               ?>
             </a>
-
+            <div class="FF_resume tooltiptext"></div>
           </div>
           <div class="col-md-4 col-xs-6 icon-lst partee-icon" style="position:relative">
             <?php
@@ -1412,7 +1412,7 @@ $mobile = new Mobile();
         </div>
   
              
-            <form method="post" id="formFF" action="" target="_blank">
+            <form method="post" id="formFF" action="" <?php if (!$mobile->isMobile()){ echo 'target="_blank"';} ?>>
               <input type="hidden" name="admin_ff" id="admin_ff">
             </form>
   
@@ -1626,6 +1626,14 @@ $mobile = new Mobile();
         });
         
 
+        var loadFF_resume = true;
+        $('.showFF_resume').on('mouseover',function(){
+          if (loadFF_resume){
+            var tooltip = $(this).find('.FF_resume');
+            tooltip.load('/admin/forfaits/resume-by-book/{{$book->id}}');
+            loadFF_resume = false;
+          }
+        });
     });
   
   </script>
@@ -1693,5 +1701,26 @@ $mobile = new Mobile();
       height: 2.3em;
       margin-top: 00;
     }
+    .tooltiptext.FF_resume{
+      color: inherit;
+      text-align: left;
+      z-index: 9;
+      width: 22em;
+      display: none;
+    }
+    .showFF_resume:hover .tooltiptext.FF_resume{
+      display: block;
+    }
+    .tooltiptext.FF_resume .table tbody tr td{
+          padding: 8px !important;
+          font-size: 1.3em;
+              font-weight: 600;
+    }
+    .tooltiptext.FF_resume span.Pendiente {
+      color: red;
+    }
+    .tooltiptext.FF_resume p{
+          color: #fff;
+        }
   </style>
   @endsection
