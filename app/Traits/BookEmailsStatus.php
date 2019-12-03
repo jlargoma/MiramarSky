@@ -481,5 +481,35 @@ trait BookEmailsStatus
         
         return $sended;
     }
+     /**
+     *
+     * @param type $book
+     * @param type $subject
+     */
+    public function sendEmail_ForfaitNewOrder($order,$link)
+    {
+       
+      $subject = 'Nueva solicitud pública de Forfaits';
+      
+      $mailClientContent = 'Hola, un nuevo usuario ha solicitado Forfaits desde la parte pública:<br/><br/>';
+       
+      $mailClientContent .= '<b>Nombre:</b>:'.$order->name.'<br/><br/>';
+      $mailClientContent .= '<b>e-mail:</b>:'.$order->email.'<br/><br/>';
+      $mailClientContent .= '<b>Teléfono:</b>:'.$order->phone.'<br/><br/>';
+      $mailClientContent .= '<b>Petición:</b>:'.$order->more_info.'<br/><br/>';
+
+      $mailClientContent .= '<br/><br/>Puedes acceder a la vista pública de la orden a travéz del enlace'
+              . '<br/><a href="'.$link.'" title="Ir al Forfaits">'.$link.'</a><br/><br/>';
+        $sended = Mail::send('backend.emails.forfait', [
+            'mailContent' => $mailClientContent,
+            'title'       => $subject
+        ], function ($message) use ($subject) {
+            $message->from(env('MAIL_FROM_FORFAITS'));
+            $message->to(env('MAIL_FROM_FORFAITS'));
+            $message->subject($subject);
+        });
+        
+        return $sended;
+    }
     
 }

@@ -193,7 +193,8 @@
               <?php
                 $ff_status = $book->get_ff_status(false);
                 if ($ff_status['icon']){
-                      echo '<img src="'.$ff_status['icon'].'" style="max-width:25px;" alt="'.$ff_status['name'].'"/>';
+                      echo '<img data-booking="'.$book->id.'" src="'.$ff_status['icon'].'" class="showFF_resume" style="max-width:25px;" alt="'.$ff_status['name'].'"/>';
+                      echo '<div class="FF_resume tooltiptext"></div>';
                 }
               ?>
              
@@ -355,7 +356,8 @@
                   <?php
                 $ff_status = $book->get_ff_status(false);
                 if ($ff_status['icon']){
-                      echo '<img src="'.$ff_status['icon'].'" style="max-width:25px;" alt="'.$ff_status['name'].'"/>';
+                   echo '<img data-booking="'.$book->id.'" src="'.$ff_status['icon'].'" class="showFF_resume" style="max-width:25px;" alt="'.$ff_status['name'].'"/>';
+                      echo '<div class="FF_resume tooltiptext"></div>';
                 }
               ?>
                

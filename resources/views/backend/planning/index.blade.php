@@ -25,6 +25,36 @@ setlocale(LC_TIME, "es_ES");
           width: 29px;
           font-size: 18px;
         }
+        .tooltiptext {
+          position: absolute;
+          font-size: 11px;
+          color: #fff;
+          background-color: rgba(0, 0, 0, 0.42);
+          padding: 2px 5px;
+          width: 10em;
+          border-radius: 7px;
+        }
+        .tooltiptext.FF_resume{
+          color: inherit;
+          text-align: left;
+          z-index: 9;
+          width: 22em;
+          display: none;
+        }
+        .tooltiptext.FF_resume p{
+          color: #fff;
+        }
+        .showFF_resume:hover .tooltiptext.FF_resume{
+          display: block;
+        }
+        .tooltiptext.FF_resume .table tbody tr td{
+          padding: 8px !important;
+          font-size: 1.3em;
+          font-weight: 600;
+        }
+        .tooltiptext.FF_resume span.Pendiente {
+          color: red;
+        }
     </style>
 @endsection
 
@@ -522,7 +552,7 @@ setlocale(LC_TIME, "es_ES");
               </div>
             </div>
         </div>
-          <form method="post" id="formFF" action="" target="_blank">
+          <form method="post" id="formFF" action=""  <?php if (!$mobile->isMobile()){ echo 'target="_blank"';} ?>>
               <input type="hidden" name="admin_ff" id="admin_ff">
             </form>
 @endsection
@@ -686,7 +716,7 @@ setlocale(LC_TIME, "es_ES");
         event.preventDefault();
         var id = $(this).data('booking');
         $.post('/admin/forfaits/open', { _token: "{{ csrf_token() }}",id:id }, function(data) {
-          console.log(data);
+//          console.log(data);
           var formFF = $('#formFF');
           formFF.attr('action', data.link);
           formFF.find('#admin_ff').val(data.admin);
@@ -821,6 +851,16 @@ setlocale(LC_TIME, "es_ES");
           });
       });
       
+      
+      var loadFF_resume = true;
+      $('body').on('mouseover','.showFF_resume',function(){
+        var id = $(this).data('booking');
+          if (loadFF_resume != id){
+            var tooltip = $(this).find('.FF_resume');
+            tooltip.load('/admin/forfaits/resume-by-book/'+id);
+            loadFF_resume = id;
+          }
+      });
 
 
 

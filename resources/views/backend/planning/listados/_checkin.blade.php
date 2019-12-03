@@ -171,14 +171,15 @@
                                 <b><?php echo $finish->formatLocalized('%d %b'); ?></b>
                             </td>
                             
-                            <td class="text-center hiddenOnlyRiad">
-                              <a data-booking="<?php echo $book->id; ?>" class="openFF" title="Ir a Forfaits" >
+                            <td class="text-center hiddenOnlyRiad ">
+                              <a data-booking="<?php echo $book->id; ?>" class="openFF showFF_resume" title="Ir a Forfaits" >
                                 <?php
                                 $ff_status = $book->get_ff_status();
                                 if ($ff_status['icon']) {
                                   echo '<img src="' . $ff_status['icon'] . '" style="max-width:30px;" alt="' . $ff_status['name'] . '"/>';
                                 }
                                 ?>
+                                <div class="FF_resume tooltiptext"></div>
                                 </a>
                             </td>
                            
@@ -396,15 +397,16 @@
 		                <?php echo $finish->formatLocalized('%d %b'); ?>
                     </td>
                     
-                    <td class="text-center hiddenOnlyRiad">
-                      <a data-booking="<?php echo $book->id; ?>" class="openFF" title="Ir a Forfaits" >
+                    <td class="text-center hiddenOnlyRiad ">
+                      <a data-booking="<?php echo $book->id; ?>" class="openFF showFF_resume" title="Ir a Forfaits" >
                      <?php
                      $ff_status = $book->get_ff_status();
                      if ($ff_status['icon']) {
                        echo '<img src="' . $ff_status['icon'] . '" style="max-width:30px;" alt="' . $ff_status['name'] . '"/>';
                      }
                      ?>
-                     </a>                 
+                      <div class="FF_resume tooltiptext"></div>
+                     </a>  
                     </td>
                     
                     <td class ="text-center" >

@@ -99,21 +99,7 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin/aptos',], function
   Route::post('/edit-room-descript', 'RoomsController@updRoomDescript');
   Route::post('/edit-descript', 'RoomsController@updDescript');
 });
-/**
- * FORFAITS
- */
-Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin/forfaits',], function () {
-  Route::get('/orders', 'ForfaitsItemController@listOrders');
-  Route::get('/balance', 'ForfaitsItemController@getBalance');
-  Route::post('/open', 'ForfaitsItemController@getOpenData');
-  Route::get('/edit/{id}', 'ForfaitsItemController@edit');
-  Route::post('/upd', 'ForfaitsItemController@update');
-  Route::get('/createItems', 'ForfaitsItemController@createItems');
-  Route::get('/getBookItems/{bookingID}', 'ForfaitsItemController@getBookingFF');
-  Route::post('/loadComment', 'ForfaitsItemController@loadComment');
-  Route::post('/sendBooking', 'ForfaitsItemController@sendBooking');
-  Route::get('/{class?}', 'ForfaitsItemController@index');
-});
+
 
 /**
  * GENERAL
