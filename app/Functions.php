@@ -212,5 +212,5 @@ function date_policies($date){
   return  date('d',$time).' '.
           getMonthsSpanish(date('n',$time)).
           ' del '.date('Y',$time).
-          ' a las '.date('H:i',$time);
+          ' a las '.date('H:i',$time).' hrs.';
 }
