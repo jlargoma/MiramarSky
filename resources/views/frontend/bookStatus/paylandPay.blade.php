@@ -290,6 +290,33 @@ label.checkbox :checked + span:after {
           return;
         }
         
+           var token = '{{csrf_token()}}';
+                    var data = {dni: dni, _token: token,accepted_hiring_policies:$('#tyc_1').is(':checked'),accepted_bail_conditions:$('#tyc_2').is(':checked')};
+                    $.ajax({
+                          url: '{{$urlSend}}',
+                          data: data,
+                          type: 'POST',
+                          crossDomain: true,
+//                          dataType: 'jsonp'
+                        }).done( function(result) { 
+                              if (result == 'ok') {
+                                $('.loader').hide();
+                                $('#step_1').removeClass('active');
+                                $('#step_2').addClass('active');
+                                $('#form_step_1').hide(500, function () {
+                                  $('#form_step_2').show();
+                                });
+
+                              } else {
+                                showError(result);
+                                return;
+                              }
+                          }).fail(function(response) {
+                            showError('Error de sistema'); 
+                          });
+                          
+                          return ;
+        
         grecaptcha.ready(function () {
         grecaptcha.execute(public_key, {action: 'launch_form_submit'})
             .then(function (token) {
