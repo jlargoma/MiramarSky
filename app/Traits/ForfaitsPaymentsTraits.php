@@ -646,28 +646,29 @@ trait ForfaitsPaymentsTraits {
         
         if ($orderItems['totalForfOrig'] != $orderItems['totalForf']){
             $resume = '<tr>
-                    <td ><b>SubTotal Forfaits</b></td>
+                    <td ><b>Total Forfaits </b></td>
                     <td class="center" style="text-decoration:line-through;">'.number_format($orderItems['totalForfOrig'], 2).'€</td>
                     <td class="tright">'.number_format($orderItems['totalForf'], 2).'€</td>
                   </tr>';
         } else {
             $resume = '<tr>
-                    <td colspan="2"><b>SubTotal Forfaits</b></td>
+                    <td colspan="2"><b>Total Forfaits </b></td>
                     <td class="tright">'.number_format($orderItems['totalForf'], 2).'€</td>
                   </tr>';
         }
         
         
-         $resume .= '<tr>
-                    <td colspan="2"><b>SubTotal Materiales</b></td>
-                    <td class="tright">'.number_format($orderItems['totalMat'], 2).'€</td>
-                  </tr><tr>
-                    <td colspan="2"><b>SubTotal Clases</b></td>
-                    <td class="tright">'.number_format($orderItems['totalClas'], 2).'€</td>
-                  </tr><tr>
-                    <td colspan="2"><b>Total</b></td>
-                    <td class="tright">'.number_format($orderItems['totalPrice'], 2).'€</td>
-                  </tr>';
+//         $resume .= '<tr>
+//                    <td colspan="2"><b>SubTotal Materiales</b></td>
+//                    <td class="tright">'.number_format($orderItems['totalMat'], 2).'€</td>
+//                  </tr><tr>
+//                    <td colspan="2"><b>SubTotal Clases</b></td>
+//                    <td class="tright">'.number_format($orderItems['totalClas'], 2).'€</td>
+//                  </tr>';
+//        $resume .= '<tr>
+//                    <td colspan="2"><b>Total</b></td>
+//                    <td class="tright">'.number_format($orderItems['totalPrice'], 2).'€</td>
+//                  </tr>';
         
       }
       return '<table class="forfait">
