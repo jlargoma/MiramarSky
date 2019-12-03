@@ -569,9 +569,18 @@ class PaylandsController extends AppController
     
    public function saveDni(Request $request,$token) {
       $dni = $request->input('dni', null);
+      $accepted_hiring_policies = $request->input('accepted_hiring_policies', null);
+      $accepted_bail_conditions = $request->input('accepted_bail_conditions', null);
+      
      
       if (trim($dni) == '' || strlen(trim($dni))<7){
         return response()->json('Por favor, ingrese su DNI para continuar');
+      }
+      if ($accepted_hiring_policies !== "true"){
+        return response()->json('Por favor, acepte las políticas de contratación');
+      }
+      if ($accepted_bail_conditions !== "true"){
+        return response()->json('Por favor, acepte las políticas de fianza');
       }
       if ($token){
           $payment = \App\PaymentOrders::where('token',$token)->first();
@@ -580,6 +589,8 @@ class PaylandsController extends AppController
             $customer = $book->customer;
             if ($customer){
               $customer->dni = $dni;
+              $customer->accepted_hiring_policies = date('Y-m-d H:i:s');
+              $customer->accepted_bail_conditions = date('Y-m-d H:i:s');
               $customer->save();
               return response()->json('ok');
             }

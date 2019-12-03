@@ -205,3 +205,12 @@ function urlBase(){
     $_SERVER['REQUEST_URI']
   );
 }
+
+function date_policies($date){
+  $time = strtotime($date);
+  
+  return  date('d',$time).' '.
+          getMonthsSpanish(date('n',$time)).
+          ' del '.date('Y',$time).
+          ' a las '.date('H:i',$time);
+}
