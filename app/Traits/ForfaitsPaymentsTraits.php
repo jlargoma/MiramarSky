@@ -670,6 +670,11 @@ trait ForfaitsPaymentsTraits {
           }
         }
         
+        if ($orderItems['extraForfait']>0){
+          $text .= '<tr><td>Extra'
+                  . '</td><td class="tcenter">1</td><td class="tright">' . $orderItems['extraForfait'] . '€</td></tr>';
+        }
+        
         
         if (count($orderItems['materials'])){
           foreach ($orderItems['materials'] as $m){
@@ -738,6 +743,7 @@ trait ForfaitsPaymentsTraits {
     public function renderOrderList($orderIDs)
     {
       $orders = ForfaitsOrders::whereIn('id',$orderIDs)->where('quick_order',1)->get();
+      $oOrder = new ForfaitsOrders();
       $text_ff = $textQ = '';
       $totalOrders = 0;
       $totalForf = $price_wdForf = $extraForfait = 0;
@@ -773,7 +779,7 @@ trait ForfaitsPaymentsTraits {
         if ( isset($insurances) ){
           foreach ($insurances as $insur){
             $text_ff .= '<tr><td>'
-                    .$order->getInsurName($insur->insuranceId)
+                    .$oOrder->getInsurName($insur->insuranceId)
                     . '<br/>'.$insur->clientName
                     . '<br/>DNI: '.$insur->clientDni
                     . '<br/>Inicio: '.$insur->dateFrom
@@ -783,7 +789,7 @@ trait ForfaitsPaymentsTraits {
         }
         
         if ( $ffItem->extra > 0){
-           $text_ff .= '<tr><td>Gastos varios'
+           $text_ff .= '<tr><td>Extra'
                     . '</td><td class="tcenter">1</td><td class="tright">'.$ffItem->extra.'€</td></tr>';
         }
         $totalForf += $ffItem->total+$ffItem->extra;

@@ -123,11 +123,11 @@ class SendFFAdmin extends Command {
           }
 
           if ($ffItem->extra > 0) {
-            $text_ff .= '<tr><td>Gastos varios'
+            $text_ff .= '<tr><td>Extra'
                     . '</td><td class="tcenter">1</td><td class="tright">' . $ffItem->extra . '€</td></tr>';
           }
-          $totalForf += $ffItem->total + $ffItem->extra;
-          $price_wdForf += $ffItem->price_wd + $ffItem->extra;
+          $totalForf += $ffItem->total;
+          $price_wdForf += $ffItem->price_wd;
         }
         
        
