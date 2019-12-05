@@ -161,7 +161,7 @@ class SendFFAdmin extends Command {
         
         if ($hasForfaits){
           $listDetail[] = [
-            'tit'=>'Detalle de la orden de '.$c_name.' | Entrada el '.$forfait->start,
+            'tit'=>''.$c_name.' | Entrada el '.$forfait->start,
             'content' => $text_ff,
             'total' =>  $totalForf,
             'total_wd' =>$price_wdForf
@@ -178,10 +178,10 @@ class SendFFAdmin extends Command {
                 . '<td>'.$c_name.'<br/>'.$email.'</td>'
                 . '<td>'.$phone.'</td>'
                 . '<td>'.$forfait->pax.'</td>'
-                . '<td>'.$forfait->room->nameRoom .' - '.$forfait->room->name.'</td>'
+                . '<td>'.$forfait->room->nameRoom.'</td>'
                 . '<td>'.convertDateToShow($forfait->start).' - '.convertDateToShow($forfait->finish) .'</td>'
-                . '<td class="tcenter">'.$totalForf.'€</td>'
                 . '<td class="tcenter">'.$qForf.'</td>'
+                . '<td class="tcenter">'.$totalForf.'€</td>'
                 . '</tr>';
         }
       
