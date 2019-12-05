@@ -23,10 +23,14 @@ $mobile = new Mobile();
 @section('content')
 
 <div class="container-fluid padding-25 sm-padding-10 table-responsive">
-  <div class="row">
-    <div class="col-md-12 text-center">
-      <h2>Liquidación Forfaits {{ $year->year }} - {{ $year->year + 1 }}</h2>
+    <div class="row text-center">
+      <h2 class="col-md-6 text-right">Liquidación Forfaits
+        </h2>
+      <div class="col-md-2 text-left" style="padding: 10px">
+        @include('backend.years._selector')
+      </div>
     </div>
+  <div class="row">
     <div class="col-md-12 text-center">
       <div class="btn-contabilidad">
         <?php if (Request::path() == 'admin/forfaits/orders'): ?>
@@ -63,17 +67,17 @@ $mobile = new Mobile();
               <b><?php echo number_format(round($totals['totalSale']), 0, ',', '.') ?> €</b>
             </td>
           </tr>
-          <tr style="background-color: #ef6464;">
-            <td class="text-white" style="padding: 5px 8px!important;background-color: #ef6464!important;">
+          <tr style="background-color: #38C8A7;">
+            <td class="text-white" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
               Cobrado Temporada
             </td>
-            <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #ef6464!important;">
+            <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
               <?php echo number_format(round($totals['totalPayment']), 0, ',', '.') ?> € 
             </td>
           </tr>
-          <tr style="background-color: #38C8A7;">
-            <td class="text-white" style="padding: 5px 8px!important;background-color: #38C8A7!important;">Pendiente Cobro</td>
-            <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
+          <tr style="background-color: #ef6464;">
+            <td class="text-white" style="padding: 5px 8px!important;background-color: #ef6464!important;">Pendiente Cobro</td>
+            <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #ef6464!important;">
               <?php echo number_format(round($totals['totalToPay']), 0, ',', '.') ?> €
             </td>
           </tr>
@@ -117,6 +121,10 @@ $mobile = new Mobile();
       <div class="bordered bg-white p-8 ">
         <h4 class="hint-text bold black">Wallet de Forfait Express</h4>
         <h3 class="<?php if($ff_mount<100) echo 'text-danger';?>"><?php echo number_format($ff_mount, 0, ',', '.')?>€</h3>
+      </div>
+      <div class="bordered bg-white p-8 ">
+        <h4 class="hint-text bold black">% FORFAITS/RVAS CHECK IN</h4>
+        <h3>{{$ff_checkin}}%</h3>
       </div>
     </div>
 </div>
@@ -345,7 +353,7 @@ $mobile = new Mobile();
           labels: ["Cobrado", "Pendiente", ],
           datasets: [{
               label: "Population (millions)",
-              backgroundColor: ["#ef6464", "#38C8A7"],
+              backgroundColor: ["#38C8A7", "#ef6464"],
               data: [
                 //Comprobamos si existen cobros
               <?php echo round($totals['totalPayment']) ?>,

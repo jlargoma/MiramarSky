@@ -105,89 +105,74 @@ if ($pending<0) $pending = 0;
   </div>
 </div>
 
-<div class="col-lg-6 col-md-12 col-xs-12">
-  <div class="row ">
-    <?php $oldTotalPVP = 0; ?>
-    <?php $arrayColors = [1 => 'bg-info', 2 => 'bg-complete', 3 => 'bg-primary',]; ?>
-    <?php $lastThreeSeason = \Carbon\Carbon::createFromFormat('Y', $year->year)->subYears(2) ?>
-    <?php for ($i = 1; $i < 4; $i++): ?>
-      <div class="col-md-4 m-b-10">
-
-        <div class="widget-9 no-border <?php echo $arrayColors[$i] ?> no-margin widget-loader-bar">
-          <div class="full-height d-flex flex-column">
-
-            <div class="p-l-20" style="padding: 10px 20px;">
-              <h4 class="no-margin p-b-5 text-white ">
-                Temp <b><?php echo $lastThreeSeason->copy()->format('y'); ?>-<?php echo $lastThreeSeason->copy()->addYear()->format('y'); ?></b>
-              </h4>
-              <?php $totalPVP = \App\Rooms::getPvpByYear($lastThreeSeason->copy()->format('Y')); ?>
-              <h4 class="no-margin p-b-5 text-white">
-                <?php echo number_format($totalPVP, 0, ',', '.'); ?>€ 
-                <span style="font-size: 14px;">
-                  <?php if ($i > 1): ?>
-                    <?php if ($totalPVP > $oldTotalPVP): ?>
-                      <i class="fa fa-arrow-up text-success" style="font-size: 20px;"></i>
-                    <?php else: ?>
-                      <i class="fa fa-arrow-down text-danger" style="font-size: 20px;"></i>
-
-                    <?php endif ?>
-                  <?php endif ?>
-                </span>
-              </h4>
-            </div>
-          </div>
-        </div>
-
+@if($ffData)
+<div class="col-lg-6 col-md-6 col-xs-12">
+    <div class="col-md-6 col-sm-12">
+      <table class="table table-hover table-striped table-ingresos" style="background-color: #92B6E2">
+        <thead class="bg-complete" style="background: #d3e8f7">
+        <th colspan="2" class="text-black text-center"> Ingresos Temporada - Forfaits</th>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="" style="padding: 5px 8px!important; background-color: #d3e8f7!important;"><b>VENTAS TEMPORADA</b></td>
+            <td class=" text-center" style="padding: 5px 8px!important; background-color: #d3e8f7!important;">
+              <b><?php echo number_format(round($ffData['total']), 0, ',', '.') ?> €</b>
+            </td>
+          </tr>
+          <tr style="background-color: #38C8A7;">
+            <td class="text-white" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
+              Cobrado Temporada
+            </td>
+            <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
+              <?php echo number_format(round($ffData['pay']), 0, ',', '.') ?> € 
+            </td>
+          </tr>
+          <tr style="background-color: #ef6464;">
+            <td class="text-white" style="padding: 5px 8px!important;background-color: #ef6464!important;">Pendiente Cobro</td>
+            <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #ef6464!important;">
+              <?php echo number_format(round($ffData['to_pay']), 0, ',', '.') ?> €
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div >
+        <canvas id="pieIngFF" style="width: 100%; height: 250px;"></canvas>
       </div>
-      <?php $oldTotalPVP = $totalPVP; ?>
-      <?php $lastThreeSeason->addYear(); ?>
-    <?php endfor; ?>
-
-  </div>
-  <div class="row">
-    <div class="row bg-white push-30">
-      <div class="col-md-12">
-        <div class="col-md-6 bordered">
-          <div class="card-title text-black hint-text">
-            COBRADO
-          </div>
+    </div>
+    
+  <div class="col-md-6 col-sm-12" style="font-size:16px;">
+       <div class="row bg-white push-30">
+        <div class="col-md-6 bordered text-center">
+          <b class="hint-text">Cobrado Temporada</b>
+          <b ><?php echo number_format(round($ffData['pay']), 0, ',', '.') ?> €</b>
+        </div>
+        <div class="col-md-6 bordered text-center">
+          <b class="hint-text bold">Vendido Temporada</b>
+          <b ><?php echo number_format(round($ffData['total']), 0, ',', '.') ?> €</b>
+        </div>
+        <div class="col-md-6 bordered text-center">
+          <b class="hint-text">Total de Ordenes</b>
           <div class="p-l-20">
-            <h3 class="text-black font-w400 text-center"><?php echo number_format($cobrado, 0, ',', '.') ?>€</h3>
+            <b ><?php echo $ffData['q']; ?></b>
           </div>
         </div>
-        <div class="col-md-6 bordered">
-          <div class="card-title text-black hint-text">
-            PENDIENTE
-          </div>
-          <div class="p-l-20">
-            <h3 class="text-black font-w400 text-center"><?php echo number_format($pending, 0, ',', '.') ?>€</h3>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-12">
-        <div class="col-md-6 bordered">
-          <div class="card-title text-black hint-text">
-            CAJA
-          </div>
-          <div class="p-l-20">
-            <h3 class="text-black font-w400 text-center">
-              <?php echo number_format($metalico, 0, ',', '.') ?>€
-            </h3>
-          </div>
-        </div>
-        <div class="col-md-6 bordered">
-          <div class="card-title text-black hint-text">
-            BANCO
-          </div>
-          <div class="p-l-20">
-            <h3 class="text-black font-w400 text-center"><?php echo number_format($banco, 0, ',', '.') ?>€</h3>
-          </div>
+        <div class="col-md-6 bordered text-center">
+          <b class="hint-text">Promedio por Orden</b>
+            <b >
+              <?php 
+              $promedio = 0;
+              if ($ffData['q']>0){
+                $promedio = round($ffData['total'])/$ffData['q'];
+              }
+              echo number_format(round($promedio), 0, ',', '.')
+              ?>
+              €</b>
         </div>
       </div>
     </div>
-  </div>
-
-</div>  
+    </div>
+  
+  @endif
 
 
 <script type="text/javascript">
@@ -235,5 +220,27 @@ if ($pending<0) $pending = 0;
       }
     }
   });
-
+  @if($ffData)
+   new Chart(document.getElementById("pieIngFF"), {
+        type: 'pie',
+        data: {
+          labels: ["Cobrado", "Pendiente", ],
+          datasets: [{
+              label: "Population (millions)",
+              backgroundColor: ["#38C8A7", "#ef6464"],
+              data: [
+                //Comprobamos si existen cobros
+              <?php echo round($ffData['pay']) ?>,
+              <?php echo round($ffData['to_pay']) ?>,
+              ]
+            }]
+        },
+        options: {
+          title: {
+            display: false,
+            text: 'Ingresos de la temporada'
+          }
+        }
+      });
+@endif
 </script>

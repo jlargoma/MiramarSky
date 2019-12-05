@@ -112,11 +112,25 @@
         display: none;
       }
       @media (max-width: 768px){
+        .contenedor {
+          top: 0em;
+        }
         .col-detail,.col-payment {
           width: 96%;
           padding: 1em 2%;
           float: none;
         }
+        .title{
+          margin: 13px auto;
+        }
+        
+        .show-mobile {
+            display: block;
+            margin-top: -146px;
+            z-index: 57;
+            position: absolute;
+        }
+
         .hide-mobile{
         display: none;
         }

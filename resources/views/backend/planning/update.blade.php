@@ -158,7 +158,7 @@ $mobile = new Mobile();
 
           <div class="col-md-2 col-xs-3 icon-lst hiddenOnlyRiad showFF_resume">
             
-              <a data-booking="<?php echo $book->id; ?>" class="openFF" title="Ir a Forfaits" >
+              <a data-booking="<?php echo $book->id; ?>" class="openFF"   >
               <?php
               $ff_status = $book->get_ff_status();
               if ($ff_status['icon']) {

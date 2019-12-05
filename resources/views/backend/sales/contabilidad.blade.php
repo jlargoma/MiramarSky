@@ -48,6 +48,7 @@ setlocale(LC_TIME, "es_ES");
                         <canvas id="barChart2" style="width: 100%; height: 250px;"></canvas>
                     </div>
                 </div>
+                @include('backend.sales._by_season')
             </div>
             <div class="col-lg-8 col-md-6 col-xs-12">
                 @include('backend.sales._stats')

@@ -147,11 +147,28 @@ setlocale(LC_TIME, "es_ES");
 
             </div>
         <div class="col-md-5">
+              @if($ff_mount !== null)
+              <div class="row">
+                <div class="col-xs-4" style="margin-top: 11px;">
+                  <div class="bordered bg-white p-8 ">
+                    <strong class="hint-text bold black">Wallet de Forfait Express</strong>
+                    <h3 class="text-center <?php if($ff_mount<100) echo 'text-danger';?>"><?php echo number_format($ff_mount, 0, ',', '.')?>€</h3>
+                  </div>
+                </div>
+                
+                <div class="col-xs-8">
+                    <!-- www.tutiempo.net - Ancho:446px - Alto:89px -->
+                    <div id="TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"> </div>
+                    <script type="text/javascript" src="https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"></script>
+                </div>
+              </div>
+              @else
                 <div class="col-xs-12">
                     <!-- www.tutiempo.net - Ancho:446px - Alto:89px -->
                     <div id="TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"> </div>
                     <script type="text/javascript" src="https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"></script>
                 </div>
+              @endif
                 <div class="row content-calendar push-20" style="min-height: 515px;">
                     <div class="col-xs-12 text-center sending" style="padding: 120px 15px;">
                         <i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br>
