@@ -172,7 +172,7 @@
                             </td>
                             
                             <td class="text-center hiddenOnlyRiad ">
-                              <a data-booking="<?php echo $book->id; ?>" class="openFF showFF_resume" title="Ir a Forfaits" >
+                              <a data-booking="<?php echo $book->id; ?>" class="openFF showFF_resume" >
                                 <?php
                                 $ff_status = $book->get_ff_status();
                                 if ($ff_status['icon']) {
@@ -398,7 +398,7 @@
                     </td>
                     
                     <td class="text-center hiddenOnlyRiad ">
-                      <a data-booking="<?php echo $book->id; ?>" class="openFF showFF_resume" title="Ir a Forfaits" >
+                      <a data-booking="<?php echo $book->id; ?>" class="openFF showFF_resume"  >
                      <?php
                      $ff_status = $book->get_ff_status();
                      if ($ff_status['icon']) {

@@ -168,12 +168,22 @@ class BookController extends AppController
         
         $parteeToActive = $this->countPartte();
 //        $parteeToActive = BookPartee::whereIn('status', ['HUESPEDES',"FINALIZADO"])->count();
-        
+        $ff_mount = null;
+        if (Auth::user()->role == "admin"){
+          $cachedRepository  = new CachedRepository();
+          $ForfaitsItemController = new \App\Http\Controllers\ForfaitsItemController($cachedRepository);
+          $balance = $ForfaitsItemController->getBalance();
+          $ff_mount = 0;
+          if (isset($balance->success) && $balance->success ){
+            $ff_mount = $balance->data->total;
+          }
+        }
+          
 		return view(
 			'backend/planning/index',
 			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
 			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits',
-                                'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment','ff_pendientes')
+                                'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment','ff_pendientes','ff_mount')
 		);
     }
     

@@ -493,8 +493,9 @@ trait BookEmailsStatus
       
       $mailClientContent = 'Hola, un nuevo usuario ha solicitado Forfaits desde la parte pública:<br/><br/>';
        
+      $clientMail = $order->email;
       $mailClientContent .= '<b>Nombre:</b>:'.$order->name.'<br/><br/>';
-      $mailClientContent .= '<b>e-mail:</b>:'.$order->email.'<br/><br/>';
+      $mailClientContent .= '<b>e-mail:</b>:'.$clientMail.'<br/><br/>';
       $mailClientContent .= '<b>Teléfono:</b>:'.$order->phone.'<br/><br/>';
       $mailClientContent .= '<b>Petición:</b>:'.$order->more_info.'<br/><br/>';
 
@@ -503,8 +504,8 @@ trait BookEmailsStatus
         $sended = Mail::send('backend.emails.forfait', [
             'mailContent' => $mailClientContent,
             'title'       => $subject
-        ], function ($message) use ($subject) {
-            $message->from(env('MAIL_FROM_FORFAITS'));
+        ], function ($message) use ($subject,$clientMail) {
+            $message->from($clientMail);
             $message->to(env('MAIL_FROM_FORFAITS'));
             $message->subject($subject);
         });

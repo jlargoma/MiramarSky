@@ -1,6 +1,7 @@
 <?php
 
     Route::get('/payments-forms-forfaits/{token}', 'ForfaitsItemController@paymentsForms')->name('front.payments.forfaits');
+    Route::get('/payments-forms-forfaits-complete/{token}', 'ForfaitsItemController@paymentsFormsAll')->name('front.payments.forfaits.all');
     Route::get('/api/forfaits/thansk-you/{key_token}', 'ForfaitsItemController@thansYouPayment')->name('payland.thanks.forfait');
     Route::get('/api/forfaits/error/{key_token}', 'ForfaitsItemController@errorPayment')->name('payland.error.forfait');
     Route::get('/api/forfaits/process/{key_token}', 'ForfaitsItemController@processPayment')->name('payland.process.forfait');

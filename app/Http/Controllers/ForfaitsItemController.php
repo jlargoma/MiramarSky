@@ -827,10 +827,10 @@ class ForfaitsItemController extends AppController {
 
   
   
-  public function sendBookingOrder($order,$oForfait,$lastItemIDPayment) {
+  public function sendBookingOrder($orderIDs,$oForfait,$lastItemIDPayment) {
     
     $error = [
-        'order_id' => $order->id,
+        'order_id' => null,
         'book_id' => ($oForfait->book_id) ? $oForfait->book_id : -1,
         'detail' => '',
         'item_id' => '',
@@ -846,7 +846,7 @@ class ForfaitsItemController extends AppController {
       $clientEmail = $oForfait->email;
     }
     
-    $forfaitsLst = ForfaitsOrderItem::where('order_id', $order->id)
+    $forfaitsLst = ForfaitsOrderItem::whereIn('order_id', $orderIDs)
             ->where('type', 'forfaits')->WhereNull('cancel')->get();
 //            ->where('id','<=',$lastItemIDPayment)
             
@@ -857,6 +857,7 @@ class ForfaitsItemController extends AppController {
           }
           $result = $this->sendBooking($f,$clientName,$clientEmail);
           if ($result != 'ok'){
+            $error['order_id'] = $f->order_id;
             $error['item_id'] = $f->id;
             $error['book_id'] = $oForfait->book_id;
             $error['detail'] = $result;
@@ -926,7 +927,7 @@ class ForfaitsItemController extends AppController {
     }
     if ($forfait_insurances){
       foreach ($forfait_insurances as $ff_data) {
-        $data['insurances'][] = [
+        $data['extras']['insurances'][] = [
             "insuranceId" => $ff_data->insuranceId,
             "clientName" => $ff_data->clientName,
             "clientDni" => $ff_data->clientDni,
@@ -937,6 +938,15 @@ class ForfaitsItemController extends AppController {
     }
     
     $json = json_encode($data);
+    
+    //////////////////////////////////////////////////////////////////////////
+    $dir = storage_path().'/ffExpress';
+    if (!file_exists($dir)) {
+        mkdir($dir, 0775, true);
+    }
+    file_put_contents($dir."/".time(),$json);
+    //////////////////////////////////////////////////////////////////////////
+    
     $curl = curl_init();
     $endpoint = env('FORFAIT_ENDPOINT') . 'createbooking';
     $Bearer = env('FORFAIT_TOKEN');

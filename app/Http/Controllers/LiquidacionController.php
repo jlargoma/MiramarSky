@@ -9,6 +9,8 @@ use \DB;
 use App\Classes\Mobile;
 use Excel;
 use Auth;
+use App\Models\Forfaits\Forfaits;
+use App\Models\Forfaits\ForfaitsOrderPayments;
 
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
@@ -163,6 +165,9 @@ class LiquidacionController extends AppController {
     /* Inquilinos media */
     $data['pax-media'] = ($data['num-pax'] / $totBooks);
 
+      
+    
+    
     $mobile = new Mobile();
     if (Auth::user()->role == "subadmin"){
       return view('backend/sales/index-subadmin', [
@@ -176,7 +181,7 @@ class LiquidacionController extends AppController {
           'percentBenef' => DB::table('percent')->find(1)->percent,
       ]);
     }
-    if (!$mobile->isMobile()) {
+   
       return view('backend/sales/index', [
           'books' => $books,
           'lowProfits' => $lowProfits,
@@ -184,23 +189,52 @@ class LiquidacionController extends AppController {
           'percentBenef' => $percentBenef,
           'totales' => $totales,
           'year' => $year,
-          'data' => $data,
-          'percentBenef' => DB::table('percent')->find(1)->percent,
+          'data' => $data
       ]);
-    } else {
-      return view('backend/sales/index', [
-          'books' => $books,
-          'lowProfits' => $lowProfits,
-          'alert_lowProfits' => $alert_lowProfits,
-          'percentBenef' => $percentBenef,
-          'totales' => $totales,
-          'year' => $year,
-          'data' => $data,
-          'percentBenef' => DB::table('percent')->find(1)->percent,
-      ]);
-    }
+  
   }
 
+  public function getFF_Data($startYear,$endYear) {
+    $allForfaits = Forfaits::where('status','!=',1)
+            ->where('created_at', '>=', $startYear)->where('created_at', '<=', $endYear)->get();
+      
+    $totalPrice = 0;
+    $forfaitsIDs = $ordersID = array();
+    if ($allForfaits){
+      foreach ($allForfaits as $forfait){
+        $allOrders = $forfait->orders()->get();
+        if ($allOrders){
+            foreach ($allOrders as $order){
+              if ($order->status == 0 || $order->status == 3){ 
+                continue; // cancel and open orders
+              }
+              $totalPrice += $order->total;
+              $ordersID[] = $order->id;
+            }
+        }
+      }
+    }
+    
+    $totalPayment =  ForfaitsOrderPayments::whereIn('order_id', $ordersID)->where('paid',1)->sum('amount');
+    if ($totalPayment>0){
+      $totalPayment = $totalPayment/100;
+    }
+    $totalPayment2 =  ForfaitsOrderPayments::whereIn('forfats_id', $forfaitsIDs)->where('paid',1)->sum('amount');
+
+    if ($totalPayment2>0){
+      $totalPayment += $totalPayment2/100;
+    }
+    $totalToPay = $totalPrice - $totalPayment;
+      
+    return [
+        'q'=>count($ordersID),
+        'to_pay'=>$totalToPay,
+        'total'=>$totalPrice,
+        'pay'=>$totalPayment
+    ];
+      
+  }
+  
   public function apto($year = "") {
     $now = Carbon::now();
 
@@ -329,6 +363,11 @@ class LiquidacionController extends AppController {
       $dataChartMonths[getMonthsSpanish($v['m'])] = $val;
     }
     
+    $ffData = null;
+    if (env('APP_APPLICATION') != "riad"){
+      $ffData = $this->getFF_Data($startYear,$endYear);
+    }
+    
     return view('backend/sales/contabilidad', [
         'year' => $year,
         'diff' => $diff,
@@ -342,7 +381,8 @@ class LiquidacionController extends AppController {
         'metalico' =>$metalico,
         'banco' =>$banco,
         'vendido'=>$vendido,
-        'dataChartMonths' => $dataChartMonths
+        'dataChartMonths' => $dataChartMonths,
+        'ffData'=>$ffData
         ]);
   }
 
