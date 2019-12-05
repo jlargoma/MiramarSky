@@ -24,6 +24,7 @@ class Kernel extends ConsoleKernel
         Commands\forfaitPaymentReminder::class,
         Commands\CreatePaymentFianza::class,
         Commands\GetDailyFFSeason::class,
+        Commands\SendFFAdmin::class,
     ];
 
     /**
@@ -44,5 +45,6 @@ class Kernel extends ConsoleKernel
          $schedule->command('ical:import')->everyMinute();
          $schedule->command('mails:read')->everyThirtyMinutes();
          $schedule->command('forfait:sendReminder')->dailyAt('8:00')->timezone('Europe/Madrid');
+         $schedule->command('sendFFAdmin:sendForfaits')->dailyAt('6:45')->timezone('Europe/Madrid');
     }
 }
