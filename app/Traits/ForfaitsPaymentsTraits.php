@@ -661,7 +661,7 @@ trait ForfaitsPaymentsTraits {
                 $text .= '<tr><td>'
                         .$order->getInsurName($insur->insuranceId)
                         . '<br/>'.$insur->clientName
-                        . '<br/>DIN: '.$insur->clientDni
+                        . '<br/>DNI: '.$insur->clientDni
                         . '<br/>Inicio: '.$insur->dateFrom
                         . '<br/>Fin: '.$insur->dateTo
                         . '</td><td class="tcenter">1</td><td class="tright">'.$insur->price.'€</td></tr>';
@@ -775,7 +775,7 @@ trait ForfaitsPaymentsTraits {
             $text_ff .= '<tr><td>'
                     .$order->getInsurName($insur->insuranceId)
                     . '<br/>'.$insur->clientName
-                    . '<br/>DIN: '.$insur->clientDni
+                    . '<br/>DNI: '.$insur->clientDni
                     . '<br/>Inicio: '.$insur->dateFrom
                     . '<br/>Fin: '.$insur->dateTo
                     . '</td><td class="tcenter">1</td><td class="tright">'.$insur->price.'€</td></tr>';
@@ -1028,7 +1028,7 @@ trait ForfaitsPaymentsTraits {
             $text .= '<tr><td>'
                     .$order->getInsurName($insur->insuranceId)
                     . '<br/>'.$insur->clientName
-                    . '<br/>DIN: '.$insur->clientDni
+                    . '<br/>DNI: '.$insur->clientDni
                     . '<br/>Inicio: '.$insur->dateFrom
                     . '<br/>Fin: '.$insur->dateTo
                     . '</td><td class="tcenter">1</td><td class="tright">'.$insur->price.'€</td></tr>';
