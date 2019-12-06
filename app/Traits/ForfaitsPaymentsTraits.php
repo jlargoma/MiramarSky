@@ -494,7 +494,7 @@ trait ForfaitsPaymentsTraits {
                   'id'       => $forfait->id,
                   'name'       => $forfait->name,
                   'email'       => $forfait->email,
-                  'phon'       => $forfait->phone,
+                  'phone'       => $forfait->phone,
                   'book'       => $book,
                   'totalPrice' =>$totalPrice,
                   'forfaits'   => $forfaits,

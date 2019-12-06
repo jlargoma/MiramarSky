@@ -4,6 +4,7 @@ use \Carbon\Carbon;
 use \App\Classes\Mobile;
 
 $mobile = new Mobile();
+$is_mobile = $mobile->isMobile();
 ?>
 @extends('layouts.admin-master')
 
@@ -17,6 +18,61 @@ $mobile = new Mobile();
   .table thead tr.text-white th{
     color: #fff !important;
   }
+  img.img-agency {
+    width: 15px;
+    float: left;
+    margin-right: 7px;
+  }
+@if($is_mobile)
+  .th-name{
+    width: 190px !important;
+    text-align: left;
+    max-width: 190px !important;
+  }
+  .table thead tr .th-1{
+    width: 30px !important;
+  }
+  .table thead tr .th-2{
+    width: 30px !important;
+  }
+  .table thead tr .th-3{
+    width: 30px !important;
+  }
+  
+  table {
+  display: block;
+  overflow-x: auto;
+}
+
+th.static {
+    position: absolute;
+    height: 5em;
+        background-color: #51b1f7;
+    padding: 31px !important;
+    margin: 5px auto;
+}
+td.static{
+  /*border-top: 1px solid #d8d2d2 !important;*/
+  position: absolute;
+  background-color: white;
+  border-right: 1px solid #efefef;
+}
+
+.first-col {
+  padding-left: 190px !important;
+}
+
+.t-ff{
+  float: none;
+}
+.t-ff td,
+.t-ff th{
+  height: 6em;
+}
+.t-ff a{
+  white-space: initial !important;
+}
+@endif
 </style>
 @endsection
 
@@ -132,14 +188,19 @@ $mobile = new Mobile();
   
   <div class="clearfix"></div>
   <div class="row">
-    <div class="col-md-9 col-xs-12 content-table-rooms">
-      <table class="table ">
+    <div class="col-md-9 col-xs-12 content-table-rooms table-responsive t-ff">
+      <table class="table">
         <thead>
-          <tr>
+          
           <tr class ="text-center bg-complete text-white">
-            <th class="th-bookings text-white th-1" >&nbsp;</th> 
-            <th class="th-bookings th-name">Cliente</th>
-            <th class="th-bookings">Telefono</th>
+            <th class="th-bookings th-name static">Cliente</th>
+            <th class="th-bookings first-col">
+              @if($is_mobile)
+                <i class="fa fa-phone fa-2x"></i>
+              @else                                  
+                Telefono
+              @endif
+            </th>
             <th class="th-bookings th-2">Pax</th>
             <th class="th-bookings">Apart</th>
             <th class="th-bookings th-2"><i class="fa fa-moon-o"></i> </th>
@@ -169,13 +230,11 @@ $mobile = new Mobile();
           ?>
           <tr>
             <?php if ($book): ?>
-            <td>
-            <?php if ( $book->agency != 0): ?>
-            <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+            <td class="text-center th-name static" style="padding: 10px !important">
+                <?php if ( $book->agency != 0): ?>
+              <img src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" class="img-agency" />
             <?php endif ?>
-            </td>
-            <td class="text-center" style="padding: 10px !important">
-              
+              <div class="th-name">
                                 <?php if (isset($payment[$book->id])): ?>
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
                                 <?php else: ?>
@@ -200,12 +259,18 @@ $mobile = new Mobile();
                             <?php endif ?>
                                 <?php endif ?>
             
-                           
+                           </div>
                             </td>
-                            <td class="text-center">
-                                <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
-                                    <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
-                                <?php endif ?>
+                            <td class="text-center first-col">
+                              <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
+                                <a href="tel:<?php echo $book->customer->phone ?>">
+                                @if($is_mobile)
+                                <i class="fa fa-phone fa-2x"></i>
+                                @else
+                                      <?php echo $book->customer->phone ?>
+                                @endif
+                                </a>
+                              <?php endif ?>
                             </td>
                             <td class ="text-center" >
                                 <?php if ($book->real_pax > 6): ?>
@@ -233,9 +298,22 @@ $mobile = new Mobile();
                             <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
                             <b><?php echo $finish->formatLocalized('%d %b'); ?></b>
             <?php else: ?>
-                            <td></td>
-                            <td class="text-center"><?php echo $order['name'].'<br>'.$order['email']; ?></td>
-                            <td class="text-center"><?php echo $order['name']; ?></td>
+                            <td class="text-center static">
+                              <div class="th-name">
+                                
+                                <?php echo $order['name'].'<br>'.$order['email']; ?>
+                              </div></td>
+                            <td class="text-center first-col">
+                              <?php if ( $order['phone'] != 0 &&  $order['phone'] != "" ): ?>
+                                <a href="tel:<?php echo $order['phone']?>">
+                                @if($is_mobile)
+                                <i class="fa fa-phone fa-2x"></i>
+                                @else
+                                      <?php echo $order['phone']?>
+                                @endif
+                                </a>
+                              <?php endif ?>
+                            </td>
                             <td class="text-center"> - </td>
                             <td class="text-center"> - </td>
                             <td class="text-center"> - </td>
