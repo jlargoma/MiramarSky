@@ -84,6 +84,11 @@
 <?php endif ?>
     
 <?php if (Auth::user()->role == "subadmin"): ?>
+    @if (env('APP_APPLICATION') != "riad")
+        <li class="{{ Request::path() == 'admin/forfaits/orders' ? 'active' : '' }}">
+          <a href="{{ url('admin/forfaits/orders') }}" class="detailed">Forfaits</a>
+        </li>
+     @endif
     <li class="{{ Request::path() == 'admin/orders-payland' ? 'active' : '' }}">
           <a href="{{ url('admin/orders-payland') }}" class="detailed">PAYLAND</a>
     </li>
