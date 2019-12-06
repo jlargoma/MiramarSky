@@ -920,11 +920,15 @@ trait ForfaitsPaymentsTraits {
           if ($type == 'text'){
             $message = $message_wsp = Settings::getContent('SMS_forfait');
             $message = str_replace('{customer_name}', $cli_name, $message);
-            $message = str_replace('{link_forfait}', $urlPay, $message);
             $message = str_replace('{total_payment}', $amount, $message);
+            
+            $message = str_replace('{link_forfait}', $urlPay, $message);
             $message = $this->clearVars($message);
+            $messageWSP = $message;
             $message = strip_tags($message);
-            return response()->json(['status' => 'ok','msg'=>$message,'wsp'=>$message]);
+//            $messageWSP = str_replace(' ', '%20', $messageWSP);
+            
+            return response()->json(['status' => 'ok','msg'=>$message,'wsp'=> urlencode($messageWSP)]);
           }
           if ($type == 'mail'){
             
