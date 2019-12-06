@@ -867,9 +867,9 @@ trait ForfaitsPaymentsTraits {
            
           /** @FFToDo habilitar link**/
 //          $link = env('FF_PAGE').$orderKey.'-'.$control;
-          $link = '';
+//          $link = '';
           $urlPay = '';
-          
+          $amount = 'NaN';
           if ($order) {
             $payment = ForfaitsOrderPaymentLinks::where('order_id',$oID)->first();
             if ($payment){
@@ -879,7 +879,7 @@ trait ForfaitsPaymentsTraits {
               } else {
                 $urlPay = 'https://miramarski.com/payments-forms-forfaits?t='.$payment->token;
               }
-  //            $amount = $payment->amount;
+              $amount = $payment->amount;
             }
           } else {
             if (env('APP_APPLICATION') == "riad" || env('APP_APPLICATION') == "miramarLocal"){
@@ -887,6 +887,10 @@ trait ForfaitsPaymentsTraits {
             } else {
               $urlPay = 'https://miramarski.com/payments-forms-forfaits?f='.md5(time()).'&t='.$key;
             }
+            
+            $amount = ForfaitsOrders::where('forfats_id',$oForfait->id)
+                ->where('status',1)->sum('total');
+            
           }
      
           if ($type == 'sms'){
@@ -900,6 +904,7 @@ trait ForfaitsPaymentsTraits {
               $message = Settings::getContent('SMS_forfait');
               $message = str_replace('{customer_name}', $cli_name, $message);
               $message = str_replace('{link_forfait}', $urlPay, $message);
+              $message = str_replace('{total_payment}', $amount, $message);
               $message = $this->clearVars($message);
               $message = strip_tags($message);
 
@@ -913,12 +918,13 @@ trait ForfaitsPaymentsTraits {
         
           }
           if ($type == 'text'){
-            $message = Settings::getContent('SMS_forfait');
+            $message = $message_wsp = Settings::getContent('SMS_forfait');
             $message = str_replace('{customer_name}', $cli_name, $message);
             $message = str_replace('{link_forfait}', $urlPay, $message);
+            $message = str_replace('{total_payment}', $amount, $message);
             $message = $this->clearVars($message);
             $message = strip_tags($message);
-            return response()->json(['status' => 'ok','msg'=>$message]);
+            return response()->json(['status' => 'ok','msg'=>$message,'wsp'=>$message]);
           }
           if ($type == 'mail'){
             
