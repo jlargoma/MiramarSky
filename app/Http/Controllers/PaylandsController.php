@@ -512,7 +512,8 @@ class PaylandsController extends AppController
             $request_dni = false;
             if ($book){
               $payments = \App\Payments::where('book_id', $book->id)->first();
-              if(!$payments){
+              $customer = $book->customer;
+              if($customer && !$customer->accepted_hiring_policies){
                 $request_dni = true;
                 $room = '';
                 if ($book->room && $book->room->sizeRooms){

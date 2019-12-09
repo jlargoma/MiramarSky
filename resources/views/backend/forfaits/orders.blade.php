@@ -56,6 +56,7 @@ td.static{
   position: absolute;
   background-color: white;
   border-right: 1px solid #efefef;
+  z-index: 9;
 }
 
 .first-col {
