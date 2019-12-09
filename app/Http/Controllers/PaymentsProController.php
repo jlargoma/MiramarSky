@@ -126,8 +126,15 @@ class PaymentsProController extends AppController {
         }
       }
     }
+    
+        $gastos = \App\Expenses::where('date', '>=', $startYear)
+                    ->Where('date', '<=', $endYear)
+                    ->where('concept', 'NOT LIKE', '%LIMPIEZA RESERVA PROPIETARIO.%')
+                    ->orderBy('date', 'DESC')->get();
+        
     return view('backend/paymentspro/index', [
         'year' => $year,
+        'gastos' => $gastos,
         'data' => $data,
         'summary' => $summary,
         'rooms' => $rooms,

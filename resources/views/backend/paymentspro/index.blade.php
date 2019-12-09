@@ -53,6 +53,9 @@ $mobile = new Mobile();
     width: 75%;
   }
 
+  #expencesByRoom .col-md-8.col-xs-12.not-padding{
+    padding-right: 20px !important;
+  }
   @media screen and (max-width: 767px){
     .modal-big{
       width: 100%;
@@ -225,7 +228,11 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
         </table>
       </div>
     </div>
-    <div class="col-md-4 col-xs-12"></div>
+    <div class="col-md-4 col-xs-12 ">
+      <button class="btn btn-md btn-complete pull-right" data-toggle="modal" data-target="#expencesByRoom">
+              Hoja de gastos
+      </button>
+    </div>
   </div>
   <div class="row">
     <div class="col-md-8 col-xs-12 push-0">
@@ -520,6 +527,25 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
     <!-- /.modal-content -->
   </div>
   <!-- /.modal-dialog -->
+</div>
+<div class="modal fade slide-up disable-scroll in" id="expencesByRoom" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg modal-big" style="width: 70%;">
+		<div class="modal-content-wrapper">
+			<div class="modal-content">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close fa-2x"></i></button>
+				<div class="container-xs-height full-height">
+					<div class="row-xs-height">
+						<div class="modal-body contentExpencesByRoom">
+							@include('backend.sales.gastos._expensesByRoom', ['gastos' => $gastos, 'room' => 'all',
+							'year' => $year])
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
 </div>
 @endsection
 
