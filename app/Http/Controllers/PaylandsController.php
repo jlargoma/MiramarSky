@@ -347,18 +347,17 @@ class PaylandsController extends AppController
           $auxY = $startYear->format('y');
           for ($i=0; $i<$diff;$i++){
             $c_month = $aux+$i;
+            if ($c_month == 13){
+              $auxY++;
+            }
             if ($c_month>12){
               $c_month -= 12;
-            }
-            if ($c_month == 12){
-              $auxY++;
             }
             $SUCCESS[$auxY.'_'.$c_month] = 0;
             $REFUSED[$auxY.'_'.$c_month] = 0;
             $ERROR[$auxY.'_'.$c_month] = 0;
           }
           
-      
           $orderPayment = $this->getPaylandApiClient()->getOrders($startDate,$endDate);
           $count = [
                   'SUCCESS' => 0,
@@ -513,7 +512,8 @@ class PaylandsController extends AppController
             $request_dni = false;
             if ($book){
               $payments = \App\Payments::where('book_id', $book->id)->first();
-              if(!$payments){
+              $customer = $book->customer;
+              if($customer && !$customer->accepted_hiring_policies){
                 $request_dni = true;
                 $room = '';
                 if ($book->room && $book->room->sizeRooms){

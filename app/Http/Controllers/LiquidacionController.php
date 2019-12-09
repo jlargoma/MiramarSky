@@ -766,6 +766,11 @@ class LiquidacionController extends AppController {
   }
 
   public function bank() {
+    
+    if (env('APP_APPLICATION') == "riad" ){
+      return view('backend.sales.bank.after-bank'); 
+    }
+   
     $year = $this->getActiveYear();
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
@@ -789,6 +794,7 @@ class LiquidacionController extends AppController {
       endif;
     endforeach;
 
+    
     return view('backend.sales.bank.bank', [
         'year' => $year,
         'totals' => $totals,
