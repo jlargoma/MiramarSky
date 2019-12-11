@@ -4,14 +4,14 @@ $isMobile = $mobile->isMobile();
 ?>
 
 <div class="table-responsive">
-<table class="table table-data" data-type="pendientes">
+<table class="table" data-type="pendientes">
     <thead>
     <tr>
         @if($isMobile)
           <th class="text-center Reservado-table text-white static" style="width: 130px; padding: 14px !important;">  
              Cliente
           </th>
-          <th class="text-center Reservado-table text-white first-col" style="padding-left: 140px!important">
+          <th class="text-center Reservado-table text-white first-col" style="padding-left: 130px!important">
             <i class="fa fa-phone"></i>
           </th>
         @else
@@ -21,14 +21,14 @@ $isMobile = $mobile->isMobile();
         <th class="text-center Reservado-table text-white" style="width: 7%!important"> Pax</th>
         <th class="text-center Reservado-table text-white" style="width: 5%!important"></th>
         <th class="text-center Reservado-table text-white" style="width: 10%!important"> Apart</th>
-        <th class="text-center Reservado-table text-white" style="width: 30px !important"> IN</th>
-        <th class="text-center Reservado-table text-white" style="width: 30px !important"> OUT</th>
+        <th class="text-center Reservado-table text-white" style="width: 6%!important"> IN</th>
+        <th class="text-center Reservado-table text-white" style="width: 7%!important"> OUT</th>
         <th class="text-center Reservado-table text-white" style="width: 6%!important"><i class="fa fa-moon-o"></i></th>
         <th class="text-center Reservado-table text-white"> Precio</th>
         @if(Auth::user()->role != "agente" )
         <th class="text-center Reservado-table text-white" style="width: 12%!important"> Estado</th>
         @endif
-        <th class="text-center Reservado-table text-white" style="max-width:30px !important;">&nbsp;</th>
+        <th class="text-center Reservado-table text-white" style="width: 6%!important">&nbsp;</th>
 		<?php if ( Auth::user()->role != "agente" ): ?>
         <th class="text-center Reservado-table text-white" style="width: 65px!important">Acciones</th>
 		<?php endif ?>
@@ -202,7 +202,7 @@ $isMobile = $mobile->isMobile();
                 </select>
             </td>
              @endif
-             <td class="text-center" style="max-width:30px !important;">
+            <td class="text-center">
                 <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
                 <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
                                 <img src="/pages/oferta.png" style="width: 40px;">

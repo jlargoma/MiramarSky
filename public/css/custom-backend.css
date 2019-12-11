@@ -185,14 +185,14 @@ td.text-center.pay-status-error {
 }
 #tabPagadas .th-bookings.th-4{
   padding: 3px !important;
-  max-width: 60px !important;
-  width: 60px !important;
+  max-width: 95px !important;
+  min-width: 65px !important;
   overflow: none;
 }
 #tabPagadas .th-bookings.th-6{
   padding: 3px !important;
   max-width: 105px !important;
-  width: 105px !important;
+  min-width: 105px !important;
   overflow: none;
 }
 #tabPagadas .th-bookings.th-name{
@@ -203,6 +203,7 @@ td.text-center.pay-status-error {
 }
 #tabPagadas select{
   padding: 3px !important;
+  min-width: 2.5em;
 }
 #tabPagadas select {
   -webkit-appearance: none;
