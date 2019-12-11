@@ -55,6 +55,9 @@ setlocale(LC_TIME, "es_ES");
         .tooltiptext.FF_resume span.Pendiente {
           color: red;
         }
+        .th-w125{
+          min-width: 125px;
+        }
     </style>
 @endsection
 

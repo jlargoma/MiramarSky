@@ -45,9 +45,9 @@
             border-right: 1px solid black;
         }
 
-        .coste {
+/*        .coste {
             background-color: rgba(200, 200, 200, 0.5) !important;
-        }
+        }*/
 
         th.text-center.bg-complete.text-white {
             padding: 10px 5px;
@@ -102,16 +102,21 @@
 @section('content')
 
 
-    <div class="container-fluid padding-5 sm-padding-10">
-
+    <div class="container-fluid padding-5 sm-padding-10 row">
+        <div class="col-md-3 text-center show-mobile">
+          <h2>Liquidación por reservas {{ $year->year }} - {{ $year->year + 1 }}</h2>
+        </div>
+       <div class="col-md-1 show-mobile mb-1em " >
+                @include('backend.years._selector', ['minimal' => true])
+            </div>
         <div class="row push-10">
-            <div class="col-md-5 push-20">
-                <div class="col-md-6">
+            <div class="col-md-4">
+              <div class="col-md-6 mb-1em ">
                     <label>Nombre del cliente:</label>
                     <input id="nameCustomer" type="text" name="searchName" class="searchabled form-control"
                            placeholder="nombre del cliente" value="{{ old('searchName') }}"/>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-xs-6 mb-1em ">
                     <label>APTO:</label>
                     <select class="form-control searchSelect minimal" name="searchByRoom">
                         <option value="all">Todos</option>
@@ -122,7 +127,7 @@
 						<?php endforeach ?>
                     </select>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-3 col-xs-6 mb-1em ">
                     <label>AGENCIA:</label>
                     <select class="form-control searchAgency minimal" name="searchByAgency">
                     <?php $book = new \App\Book(); ?>
@@ -130,43 +135,33 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3 text-center">
-                <h2>Liquidación por reservas {{ $year->year }} - {{ $year->year + 1 }}</h2>
+          <div class="col-md-4 hidden-mobile">
+            <div class="col-md-8">
+              <h2>Liquidación por reservas</h2>
             </div>
-            <div class="col-md-1" style="padding: 10px 0;">
-                @include('backend.years._selector', ['minimal' => true])
+            <div class="col-md-4 mt-1em">
+              @include('backend.years._selector', ['minimal' => true])
             </div>
-
-            <div class="col-md-1 pull-right">
-                <button class="btn btn-md btn-primary exportExcel">
-                    Exportar Excel
-                </button>
+          </div>
+          <div class="col-md-4 mt-1em">
+            <div class="col-xs-4">
+              <button class="btn btn-md btn-primary exportExcel">
+                Exportar Excel
+              </button>
             </div>
-            
-        </div>
-        <div class="row">
-            <?php if ( !$mobile->isMobile() ): ?>
-                <div class="col-lg-1 col-lg-offset-3 text-center">
-                    <button id="booking_agency_details" class="btn btn-primary btn-xs">Ventas por Agencia</button>
-                </div>
-            <?php else: ?>
-                <div class="col-lg-1 col-lg-offset-3 text-right">
-                    <button id="booking_agency_details" class="btn btn-primary btn-xs">Ventas por Agencia</button>
-                </div>
-            <?php endif; ?>
-          
-          @if ( $mobile->isMobile() ): 
-            <div class="col-lg-1 col-lg-offset-3 text-right m-t-5">
-          @else:
-            <div class="col-lg-1 col-lg-offset-3 text-center">
-          @endif
-          <button class="btn btn-danger btn-cons btn-xs <?php if($alert_lowProfits) echo 'btn-alarms'; ?> " id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
+            <div class="col-xs-4">
+              <button id="booking_agency_details" class="btn btn-primary">
+                Vtas X Agenc
+              </button>
+            </div>
+            <div class="col-xs-4">
+              <button class="btn btn-danger btn-cons btn-xs <?php if ($alert_lowProfits) echo 'btn-alarms'; ?> " id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
                 <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">BAJO BENEFICIO</span>
-                <span class="numPaymentLastBooks"  data-val="{{$alert_lowProfits}}"><?php echo  $alert_lowProfits; ?></span>
-            </button>
+                <span class="numPaymentLastBooks"  data-val="{{$alert_lowProfits}}"><?php echo $alert_lowProfits; ?></span>
+              </button>
+            </div>
           </div>
         </div>
-
         <div class="row">
             <div class="liquidationSummary">
                 @include('backend.sales._tableSummary', ['totales' => $totales, 'books' => $books, 'year' => $year])

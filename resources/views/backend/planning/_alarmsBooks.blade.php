@@ -109,18 +109,16 @@
                         <tbody>
                             <?php foreach ($alarms as $key => $book): ?>
                                 <tr>
-                                    <td class="text-center"  style="width: 30px; padding: 5px 0!important">
-                                        <?php if ($book->agency != 0): ?>
-                                            <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
-                                        <?php endif ?>
-                                    </td>
-                                    <td class ="text-center" style="color: black;padding: 5px!important;">  
+                                    <td class ="text-left static" style="width: 100px;color: black;overflow-x: scroll; padding: 7px 1px !important; ">  
+                                      <?php if ( $book->agency != 0): ?>
+                              <img src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" class="img-agency" />
+                            <?php endif ?>
                                         <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                                             <?php echo substr($book->customer->name, 0, 10) ?>
                                         </a> 
                                         
                                     </td>
-                                    <td class="text-center" style="color: black; padding: 5px!important">   
+                                    <td class="text-center first-col" style="padding-left: 100px!important">     
                                         <?php echo substr($book->room->nameRoom,0,5) ?>       
                                     </td>
                                     <td class="text-center" style="color: black; padding: 5px!important">   

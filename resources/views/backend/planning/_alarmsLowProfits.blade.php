@@ -4,23 +4,21 @@
         $total_pvp = 0;
         $total_coste = 0;
 ?>
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
-    <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
-</button>
+<div class="row">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+        <i class="pg-close fs-20" style="color: #000!important;"></i>
+    </button>
+</div>
 
 <div class="col-md-12 not-padding content-last-books">
-    <div class="alert alert-info fade in alert-dismissable" style="max-height: 600px; overflow-y: auto;">
-        <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a> -->
-        <!-- <strong>Info!</strong> This alert box indicates a neutral informative change or action. -->
-        <h4 class="text-center"> ALARMAS DE BAJO BENEFICIOS </h4>
-        
-        
-         <div class="col-md-12 col-xs-12" style="padding-right: 0;">
-           <table class="table table-striped" id="list_lowProf">
-                <thead >
-                    <th class ="text-center bg-complete text-white sorting_disabled" style="width: 20% !important; font-size:
-                    10px!important">Nombre</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">Apto</th>
+    <div class="alert alert-info fade in alert-dismissable" style="background-color: #daeffd!important;">
+        <h4 class="text-center">ALARMAS DE BAJO BENEFICIOS</h4>
+        <div class="table-responsive">
+        <table class="table" >
+          <thead >
+                    <th class ="text-center bg-complete text-white static" style="width: 130px; padding: 14px !important;">  
+                      Nombre</th>
+                    <th class ="text-center bg-complete text-white first-col" style="padding-left: 130px!important"> Apto</th>
                     <th class ="text-center bg-complete text-white" style="width: 12% !important;font-size:10px!important">IN - OUT</th>
                     <th class ="text-center bg-complete text-white" style="width: 7% !important;font-size:10px!important">
                       PVP<br/><b id="alarms_totalPVP"></b></th>
@@ -29,31 +27,21 @@
                     <th class ="text-center bg-complete text-white" style="width: 7% !important;font-size:10px!important">%Benef</th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important"></th>
                 </thead>
-                <tbody >
-                    <!-- Totales -->
-
+            <tbody>
                     <?php foreach ($alarms as $book): ?>
-                        <tr >
-                            <td class="text-center">
-                                <span style="display: none;"><?php echo strtotime($book->start);?></span>
-                                <div class="col-xs-2">
+                        <tr>
+                            <td class ="text-left static" style="width: 130px;color: black;overflow-x: scroll;    padding: 4px 3px !important; ">  
                                     <?php if ($book->agency != 0): ?>
-                                        <img style="width: 20px;margin: 0 auto;position: absolute; left: 0px;" src="/pages/<?php  echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+                                        <img class="img-agency" src="/pages/<?php  echo strtolower($book->getAgency($book->agency)) ?>.png" />
 	                               <?php endif ?>
-
-                                </div>
-                                <div class="col-xs-8">
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                                         <?php  echo $book->customer->name ?>
                                     </a>
-                                </div>
-                                <div class="col-xs-2">
                                     <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
-                                        <img src="/pages/oferta.png" style="width: 40px;" title="<?php echo $book->book_owned_comments ?>">
+                                        <img src="/pages/oferta.png" class="img-oferta" title="<?php echo $book->book_owned_comments ?>">
                                     <?php endif ?>
-                                </div>
                             </td>
-                            <td class="text-center">
+                            <td class="text-center first-col" style="padding-right:13px !important;padding-left: 135px!important">   
                                 <!-- apto -->
                                 <?php echo $book->room->nameRoom ?>
                             </td>
@@ -98,9 +86,8 @@
                             </td>
                         </tr>
                     <?php endforeach ?>
-
-                </tbody>
-            </table>
+            </tbody>
+        </table>
         </div>
         <button id="activateAlertLowProfits" class="btn btn-xs btn-default " type="button" >
           <i class="fa fa-bell" aria-hidden="true"></i>&nbsp;Activar para todos
@@ -110,6 +97,7 @@
         </button>
     </div>
 </div> 
+
 
 <script type="text/javascript">
     $(document).ready(function() {

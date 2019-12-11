@@ -20,18 +20,16 @@
             <tbody>
                 <?php foreach ($books as $key => $book): ?>
                     <tr>
-                        <td class="text-center" style="width: 30px; padding: 5px 0!important">
-                          <?php if ($book->agency != 0): ?>
-                              <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
-                          <?php endif ?>
-                        </td>
-                        <td class ="text-center" style="color: black;padding: 5px!important;">  
+                        <td class ="text-left static" style="width: 130px;color: black;overflow-x: scroll;    padding: 9px !important; ">  
+                           <?php if ( $book->agency != 0): ?>
+                              <img src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" class="img-agency" />
+                            <?php endif ?>
                             <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                                 <?php echo $book->customer->name ?>
                             </a> 
                             
                         </td>
-                        <td class="text-center" style="color: black; padding: 5px!important">   
+                        <td class="text-center first-col" style="padding-left: 130px!important">   
                             <?php echo substr($book->room->nameRoom,0,5) ?>       
                         </th>
                         <td class="text-center" style="color: black;padding: 5px 10px!important">   
@@ -49,7 +47,7 @@
                             </b>           
                         </td>
                         <td class="text-center" style="color: black;padding: 5px!important;">
-                             <b><?php echo $book->total_price ?>€</b>
+                             <b><?php echo  number_format($book->total_price,0,'','.') ?>€</b>
                         </td>
                         <td class="text-center" style="color: black;">  
 
@@ -84,5 +82,5 @@
 </div> 
 <script>
 
-jQuery('#totalPayment').text(<?php echo $total;?>);
+jQuery('#totalPayment').text(<?php echo number_format($total,0,'','.') ;?>);
 </script>

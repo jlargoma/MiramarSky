@@ -20,7 +20,8 @@
 
       <?php endif ?>
         <button class="btn btn-success btn-calcuteBook btn-cons" type="button" data-toggle="modal" data-target="#modalCalculateBook">
-          <i class="fa fa-calendar-alt" aria-hidden="true"></i><span class="bold hidden-mobile">Calcular reserva</span>
+          <span class="bold hidden-mobile"><i class="fa fa-calendar-alt" aria-hidden="true"></i>&nbsp;Calcular reserva</span>
+          <span class="bold show-mobile">$</span>
         </button>
       <?php if (Auth::user()->role != "agente"): ?>
        <button class="btn btn-orange btn-cons btn-tables btn-blink hiddenOnlyRiad"  type="button" data-type="ff_pdtes">
