@@ -33,11 +33,18 @@
                     @endif
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
+                      <?php if ($mobile->isMobile()): ?>
+                        <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
+                          <a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a>
+                        <?php endif ?>
+                      <?php else:?>
                         <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
                             <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
                         <?php else: ?>
                             <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>" placeholder="telefono..."/>
                         <?php endif ?>
+                      <?php endif;?>
+                            
                     </td>
                     <td class ="text-center" >
                         <?php if ($book->real_pax > 6 ): ?>
@@ -51,7 +58,11 @@
                         <?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b-%y') ?>
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
+                      <?php if ($mobile->isMobile()): ?>
+                        <b><?php echo substr($book->room->nameRoom, 0, 8);?></b>
+                      <?php else:?>
                         <b><?php echo substr($book->room->nameRoom." - ".$book->room->name, 0, 15)  ?></b>
+                      <?php endif;?>
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                         <select id="scheduleOut" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?>" style="width: 100%;" data-type="out" data-id="<?php echo $book->id ?>" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>

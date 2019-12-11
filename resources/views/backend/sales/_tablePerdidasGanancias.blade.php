@@ -2,8 +2,8 @@
 <table class=" table table-bordered table-striped table-header-bg">
 	<thead>
 		<tr>
-			<th class="bg-complete text-white text-center"></th>
-			<th class="bg-complete text-white text-center">Total</th>
+			<th class="bg-complete text-white text-center static" style="width: 180px;padding: 16px !important;height: 60px;"></th>
+			<th class="bg-complete text-white text-center first-col">Total</th>
 			<th class="bg-danger text-white text-center">Pendiente</th>
 			<?php $x = Carbon::createFromFormat('Y-m-d', $year->start_date); ?>
 			<?php for($i = 1 ; $i <= $diff; $i++): ?>
@@ -28,10 +28,10 @@
 				<?php $totalYear += $totalMonth; ?>
 				<?php $init->addMonths(1); ?>
 			<?php endfor; ?>
-			<td class="text-center" style="color: #fff; background-color:#46c37b!important; border-bottom-color:#46c37b; padding: 8px 5px!important;">
+			<td class="text-center static col-ingr" style="color: #fff; background-color:#46c37b!important; border-bottom-color:#46c37b;">
 				<b>INGRESOS</b>
 			</td>
-			<td class="text-center" style="color: #fff; background-color: #46c37b!important; border-bottom-color:#46c37b; padding: 8px 5px!important;">
+			<td class="text-center first-col" style="color: #fff; background-color: #46c37b!important; border-bottom-color:#46c37b;">
 				<b>
 					<?php echo number_format($totalYear,0,',','.' ); ?> €
 				</b>
@@ -71,11 +71,11 @@
 				<?php $totalYear += $totalMonth; ?>
 				<?php $init->addMonths(1); ?>
 			<?php endfor; ?>
-			<td class="text-center" style="padding: 8px 5px!important;">
+                  <td class="text-center  static col-ingr" >
 				<b>VENTAS TEMPORADA</b>
 			</td>
 			
-			<td class="text-center" style="padding: 8px 5px!important;">
+			<td class="text-center first-col">
 				<b>
 					<?php echo number_format($totalYear,0,',','.' ); ?> €
 				</b>
@@ -110,10 +110,10 @@
 				<?php $init->addMonths(1); ?>
 			<?php endfor; ?>
 			<tr>
-				<td class="text-center" style="padding: 8px 5px!important;">
+                          <td class="text-center static col-ingr" >
 					<b><?php echo $key; ?></b>
 				</td>
-				<td class="text-center" style="padding: 8px 5px!important;">
+				<td class="text-center first-col">
 					<b>
 						<?php echo number_format($totalYear,0,',','.' ); ?> €
 					</b>
@@ -172,10 +172,10 @@
 				<?php $totalYear += $totalMonth; ?>
 				<?php $init->addMonths(1); ?>
 			<?php endfor; ?>
-			<td class="text-center" style="color: #fff; background-color: #a94442!important; border-bottom-color: #a94442!important;padding: 8px 5px!important;">
+			<td class="text-center  static col-ingr" style="color: #fff; background-color: #a94442!important; border-bottom-color: #a94442!important;">
 				<b>GASTOS</b>
 			</td>
-			<td class="text-center" style="color: #fff; background-color: #a94442!important; border-bottom-color:#46c37b; padding: 8px 5px!important;">
+			<td class="text-center first-col" style="color: #fff; background-color: #a94442!important; border-bottom-color:#46c37b;">
 				<b>
 					<?php echo number_format($totalYear,0,',','.' ); ?> €
 				</b>
@@ -240,10 +240,10 @@
 				<?php $init->addMonths(1); ?>
 			<?php endfor; ?>
 			<tr>
-				<td class="text-center" style="padding: 8px 5px!important;">
+                          <td class="text-center  static col-ingr" >
 					<b><?php echo $key; ?></b>
 				</td>
-				<td class="text-center" style="padding: 8px 5px!important;">
+                                <td class="text-center first-col" >
 					<b>
 						<?php echo number_format($totalYear,0,',','.' ); ?> €
 					</b>
@@ -330,7 +330,7 @@
 										$totalYearExpenses;
 			?>
 
-			<td class="text-center" style="color: #fff; background-color: #5c90d2!important; border-bottom-color: #5c90d2!important; font-size: 18px; padding: 8px 5px!important">
+			<td class="text-center static col-ingr" style="color: #fff; background-color: #5c90d2!important; border-bottom-color: #5c90d2!important; font-size: 18px;">
 				<b>BENEFICIO CONTABLE</b><br>
 				<b>
 					<?php echo number_format( ($totalYearBeneficios - $totalExpensesPending) ,0,',','.' ); ?> €
@@ -340,7 +340,7 @@
 
 			
 			
-			<td class="text-center" style="color: #fff; background-color: #5c90d2!important; border-bottom-color: #5c90d2; font-size: 18px; padding: 8px 5px!important">
+			<td class="text-center first-col" style="color: #fff; background-color: #5c90d2!important; border-bottom-color: #5c90d2; font-size: 18px;">
 				<b><?php echo number_format(($totalYearBeneficios ),2,',','.'); ?> €</b>
 			</td>
 			<td class="text-center" style="color: #fff; background-color: #f55753!important; border-bottom-color:#46c37b; padding: 8px 5px!important;">

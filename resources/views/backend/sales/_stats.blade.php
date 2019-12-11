@@ -37,8 +37,8 @@
 $pending = ($vendido-$cobrado);
 if ($pending<0) $pending = 0;
 ?>
-<div class="col-lg-3 col-md-6 col-xs-12">
-
+<div class="col-lg-3 col-md-6 col-xs-12 mb-1em">
+  <div class="col-md-12 col-xs-6">
   <table class="table table-hover table-striped table-ingresos" style="background-color: #92B6E2">
     <thead class="bg-complete" style="background: #d3e8f7">
     <th colspan="2" class="text-black text-center"> Ingresos Temporada</th>
@@ -66,13 +66,14 @@ if ($pending<0) $pending = 0;
       </tr>
     </tbody>
   </table>
-
-  <div>
+  </div>
+  <div class="col-md-12 col-xs-6">
     <canvas id="pieIng" style="width: 100%; height: 250px;"></canvas>
   </div>
 </div>
 
-<div class="col-lg-3 col-md-6 col-xs-12">
+<div class="col-lg-3 col-md-6 col-xs-12 mb-1em">
+  <div class="col-md-12 col-xs-6">
 
   <table class="table table-hover table-striped table-cobros" style="background-color: #38C8A7">
     <thead style="background-color: #38C8A7">
@@ -100,12 +101,13 @@ if ($pending<0) $pending = 0;
 
     </tbody>
   </table>
-  <div>
+  </div>
+  <div class="col-md-12 col-xs-6">
     <canvas id="pieCobros" style="width: 100%; height: 250px;"></canvas>
   </div>
 </div>
 
-@if($ffData)
+@if($ffData && !$isMobile)
 <div class="col-lg-6 col-md-6 col-xs-12">
     <div class="col-md-6 col-sm-12">
       <table class="table table-hover table-striped table-ingresos" style="background-color: #92B6E2">

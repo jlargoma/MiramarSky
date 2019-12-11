@@ -18,11 +18,7 @@ $is_mobile = $mobile->isMobile();
   .table thead tr.text-white th{
     color: #fff !important;
   }
-  img.img-agency {
-    width: 15px;
-    float: left;
-    margin-right: 7px;
-  }
+
 @if($is_mobile)
   .th-name{
     width: 190px !important;
@@ -44,24 +40,7 @@ $is_mobile = $mobile->isMobile();
   overflow-x: auto;
 }
 
-th.static {
-    position: absolute;
-    height: 5em;
-        background-color: #51b1f7;
-    padding: 31px !important;
-    margin: 5px auto;
-}
-td.static{
-  /*border-top: 1px solid #d8d2d2 !important;*/
-  position: absolute;
-  background-color: white;
-  border-right: 1px solid #efefef;
-  z-index: 9;
-}
 
-.first-col {
-  padding-left: 190px !important;
-}
 
 .t-ff{
   float: none;

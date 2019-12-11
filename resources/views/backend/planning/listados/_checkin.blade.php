@@ -276,7 +276,7 @@
             <th class="bg-success text-white text-center hiddenOnlyRiad" style="min-width:50px">FF</th>
             <th class="bg-success text-white text-center">Pax</th>
             <th class="bg-success text-white text-center"><i class="fa fa-moon-o"></i></th>
-            <th class="bg-success text-white text-center">a</th>
+            <th class="bg-success text-white text-center th-w125" >a</th>
         </thead>
         <tbody>
 
@@ -354,8 +354,6 @@
                     <td class="text-center">
                         <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
                              <a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a>
-                        <?php else: ?>
-                            <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>"/>
                         <?php endif ?>
                        
                     </td>

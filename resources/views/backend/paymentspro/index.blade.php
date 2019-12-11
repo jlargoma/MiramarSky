@@ -3,6 +3,7 @@
 use \App\Classes\Mobile;
 
 $mobile = new Mobile();
+$isMobile = $mobile->isMobile()
 ?>
 @extends('layouts.admin-master')
 
@@ -236,15 +237,22 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
   </div>
   <div class="row">
     <div class="col-md-8 col-xs-12 push-0">
-      <div class="col-md-12 col-xs-12 pull-right not-padding table-responsive">
+      <div class="table-responsive">
         <table class="table tableRooms">
           <thead>
             <tr>
-
-              <th class ="text-center bg-complete text-white" style="padding: 10px 5px; width: 8%">
+              @if($isMobile)
+              <th class ="text-center bg-complete text-white  static" style="width: 130px;padding-top: 9px !important;height: 3em;"> 
+              @else
+              <th class ="text-center bg-complete text-white" style="padding: 10px 5px;" >
+              @endif
                 Prop.
               </th>
-              <th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
+              @if($isMobile)
+              <th class ="text-center bg-complete text-white first-col" style="padding-right:13px !important;padding-left: 135px!important">
+              @else
+              <th class ="text-center bg-complete text-white" style="padding: 10px 5px;" >
+              @endif
                 C. Prop.   
               </th>
               <th class ="text-center bg-complete text-white" style="padding: 10px 5px;" >
@@ -294,7 +302,11 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
     ?>
                       <?php $pendiente = $costPropTot - $data[$room->id]['pagos'] ?>
                 <tr>
-                  <td class="text-left"  style="padding: 10px 5px !important;">
+                @if($isMobile)
+                  <td class="text-left static" style="width: 130px;color: black;overflow-x: scroll;   margin-top: 4px; ">  
+                @else
+                <td class="text-left">
+                @endif
                     <a class="update-payments" data-debt="<?php echo $pendiente ?>"
                        data-month="{{ $year->year }}" data-id="<?php echo $room->id ?>"
                        data-toggle="modal"
@@ -303,8 +315,11 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
                     </a>
 
                   </td>
-                  <td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
-
+                   @if($isMobile)
+                  <td class="text-center  costeApto bordes first-col" style="padding-right:13px !important;padding-left: 135px!important">   
+              @else
+              <td class="text-left costeApto bordes ">
+              @endif
                     <button class="btn-transparent liquidationByRoom" data-id="<?php echo $room->id ?>" data-costeProp="<?php echo $costPropTot; ?>" data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer; font-weight: 600" title="Liquidación de <?php echo $room->nameRoom ?>">
     <?php if ($costPropTot != 0): ?>
       <?php echo number_format($costPropTot, 0, ',', '.'); ?>€
@@ -529,7 +544,7 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
   <!-- /.modal-dialog -->
 </div>
 <div class="modal fade slide-up disable-scroll in" id="expencesByRoom" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg modal-big" style="width: 70%;">
+	<div class="modal-dialog modal-lg modal-big">
 		<div class="modal-content-wrapper">
 			<div class="modal-content">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close fa-2x"></i></button>

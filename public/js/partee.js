@@ -104,6 +104,18 @@
                 });
         });
         
+        $('#table_partee').on('click','.msgs', function(){
+//          var msg = $(this).data('msg');
+          $('#conteiner_msg_lst').show();
+          $('#box_msg_lst').html($(this).data('msg'))
+          
+          console.log(msg);
+        });
+        $('#box_msg_close').on('click', function(){
+          $('#conteiner_msg_lst').hide();
+        });
+        
+        
     });
   var copyParteeMsg = function (bookID,elem=null,tooltip='tooltipPartee') {
       $.get('/get-partee-msg', {bookID: bookID},

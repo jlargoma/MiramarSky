@@ -4,40 +4,26 @@
     setlocale(LC_TIME, "ES");
     setlocale(LC_TIME, "es_ES");
     $mobile = new Mobile();
-    $isMobile = $mobile->isMobile()
 ?>
-<style type="text/css">
-   <?php if ( !$isMobile ): ?>
-    @media screen and (min-width: 998px){
-        .summary-text{ width: 22%; }
-    }
-    .fix-col{
-      min-width: 150px;
-    }
-    <?php else:?>
-    th, td { white-space: nowrap; }
-    .fix-col{
-      width:120px;overflow-x: scroll;
-    }
-    table.dataTable{
-      margin:0px !important
-    }
-    <?php endif;?>
+<?php if ( !$mobile->isMobile() ): ?>
+    <style type="text/css">
+        @media screen and (min-width: 998px){
+            .summary-text{ width: 22%; }
+        }
     .liquidationSummary {
-      width: 98%;
-      padding: 0;
-      margin: 10px auto;
+        width: 98%;
+        padding: 0;
+        margin: 10px auto;
     }
-    input.form-control.percentBenef {
-      font-size: 2em;
-      color: red !important;
-      border: none;
-      width: 4em;
-      float: right;
-    }
-
-</style>
-
+    input.form-control.font-w400.text-center.percentBenef {
+    font-size: 2em;
+    color: red !important;
+    border: none;
+    width: 4em;
+    float: right;
+}
+    </style>
+<?php endif;?>
     
     <div class="row">
       <div class="col-md-8">
@@ -52,16 +38,22 @@
       
       @include('backend.sales._tableSummaryBoxes', ['totales' => $totales, 'books' => $books, 'data' => $data, 'year'=> $year])
       
-      <div >
+
+    
+    
+    
+    
+    <div class="col-xs-12">
         <div class="row push-10">
            <h2 class="text-left font-w800">
               Resumen liquidación
           </h2>
         </div>
-      <div class="table-responsive" >
-            <table class="table " id="tableOrderable">
-             <thead >
-                <th class="text-center bg-complete text-white sorting_disabled fix-col">Nombre</th>
+        <div class="col-md-12 col-xs-12 table-responsive" style="padding-right: 0;">
+            <table class="table table-striped" id="tableOrderable">
+                <thead >
+                    <th class ="text-center bg-complete text-white sorting_disabled" style="width: 7% !important; font-size:
+                    10px!important">Nombre</th>
                     <th class ="text-center bg-complete text-white" style="width: 3% !important;font-size:10px!important">&nbsp;&nbsp;&nbsp;Tipo&nbsp;&nbsp;&nbsp;</th>
                     <th class ="text-center bg-complete text-white" style="width: 2% !important;font-size:10px!important">Pax</th>
                     <th class ="text-center bg-complete text-white" style="width: 1% !important;font-size:10px!important">Apto</th>
@@ -139,21 +131,26 @@
 
                     <?php foreach ($books as $book): ?>
                         <tr >
-                          <td class ="text-left">  
-                            <div class=" fix-col">
-                          <?php if ($book->agency != 0): ?>
-                          <img src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" class="img-agency" />
-                          <?php endif ?>
-                          <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
-                              <img src="/pages/oferta.png" class="img-oferta" title="<?php echo $book->book_owned_comments ?>">
-                          <?php endif ?>
-                            
-                          <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                            <?php  echo $book->customer->name ?>
-                          </a>
-                                        </div>
+                            <td class="text-center">
+                                <span style="display: none;"><?php echo strtotime($book->start);?></span>
+                                <div class="col-xs-2">
+                                    <?php if ($book->agency != 0): ?>
+                                        <img style="width: 20px;margin: 0 auto;position: absolute; left: 0px;" src="/pages/<?php  echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+	                               <?php endif ?>
+
+                                </div>
+                                <div class="col-xs-8">
+                                    <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                                        <?php  echo $book->customer->name ?>
+                                    </a>
+                                </div>
+                                <div class="col-xs-2">
+                                    <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
+                                        <img src="/pages/oferta.png" style="width: 40px;" title="<?php echo $book->book_owned_comments ?>">
+                                    <?php endif ?>
+                                </div>
                             </td>
-                            <td class ="text-center">  
+                            <td class="text-center">
                                 <!-- type -->
                                 <b>
                                 <?php
@@ -289,45 +286,29 @@
             </table>
         </div>
     </div>
-      
-      
-      
-      
-      
-      
-<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
-
-
-
+<script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
+<script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
+<script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
+<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
+<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
+<script type="text/javascript" src="/assets/js/datatables.js"></script>
 <script src="/assets/js/scripts.js" type="text/javascript"></script>
 <script>
 
-$(document).ready(function() {
-    @if($isMobile)
-      $('#tableOrderable').dataTable({
-	searching: true,
-	ordering:true,
-	paging:  false,
-        scrollX: true,
-        scrollY: false,
-        scrollCollapse: true,
-         fixedColumns:   {
-            leftColumns: 1
-          }
-        });
-    @else
-      $('#tableOrderable').dataTable({
-	searching: true,
-	ordering:true,
-	paging:  false,
-        });
-    @endif
-} );
-	
+	$('#tableOrderable').dataTable({
+	"searching": false,
+	"ordering": true,
+	"paging":   false,
+//	"columnDefs": [
+//	                {
+//	                    "targets": [0,2,3,4,5,6,7,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23], // column or
+//	                  // columns numbers
+//	                    "orderable": false,  // set orderable for selected columns
+//	                }
+//	            ],
 
+	});
 
   	$('.updateLimp').change(function(){
 		var id = $(this).attr('data-idBook');

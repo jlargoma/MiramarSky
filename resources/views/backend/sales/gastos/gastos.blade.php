@@ -68,7 +68,7 @@ background: white;
 </div>
 
 <div class="modal fade slide-up disable-scroll in" id="expencesByRoom" tabindex="-1" role="dialog" aria-hidden="true">
-	<div class="modal-dialog modal-lg modal-big" style="width: 70%;">
+	<div class="modal-dialog modal-lg modal-big" >
 		<div class="modal-content-wrapper">
 			<div class="modal-content">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-close fa-2x"></i></button>
