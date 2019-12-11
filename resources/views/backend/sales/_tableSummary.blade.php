@@ -36,6 +36,11 @@
       float: right;
     }
 
+    .paginate_button {
+      padding: 7px;
+      margin: 2px;
+      border: 1px solid #c7c7c7;
+  }
 </style>
 
     
@@ -314,6 +319,9 @@ $(document).ready(function() {
         scrollX: true,
         scrollY: false,
         scrollCollapse: true,
+        paging:  true,
+        pageLength: 30,
+        pagingType: "full_numbers"
          fixedColumns:   {
             leftColumns: 1
           }
