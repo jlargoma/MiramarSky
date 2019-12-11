@@ -58,6 +58,14 @@ setlocale(LC_TIME, "es_ES");
         .th-w125{
           min-width: 125px;
         }
+        @media only screen and (max-width: 991px){
+          select#schedule,
+          select#scheduleOut {
+            width: 3em !important;
+            background-color: transparent;
+            height: 2em;
+          }
+        }
     </style>
 @endsection
 

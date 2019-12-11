@@ -43,7 +43,12 @@ $isMobile = $mobile->isMobile()
             <th class="th-bookings th-2"><i class="fa fa-moon-o"></i> </th>
             <th class="th-bookings th-2"><i class="fa fa-clock-o"></i></th>
             <th class="th-bookings  th-4">IN - OUT </th>
-            <th class="th-bookings th-6">   Precio      </th>
+            @if($isMobile)
+            <th class="th-bookings th-6" style="min-width: 110px;">
+            @else
+            <th class="th-bookings th-6">  
+            @endif
+              Precio      </th>
 <?php if (Auth::user()->role != "limpieza"): ?>
               <th class="th-bookings th-6">   a      </th>
 <?php endif ?>
@@ -156,9 +161,15 @@ $isMobile = $mobile->isMobile()
                 <span>-</span>
                 <b><?php echo $finish->formatLocalized('%d %b'); ?></b>
               </td>
+                
+              @if($isMobile)
+              <td class ="text-center" style="min-width: 110px;"> 
+              @else
               <td class ="text-center">
+              @endif
+            
                   <?php if (Auth::user()->role != "limpieza"): ?>
-                  <div class="col-md-6 col-xs-12 not-padding">
+                  <div class="col-md-6 col-xs-6 not-padding">
                       <?php echo round($book->total_price) . "€" ?><br>
                     <?php if (isset($payment[$book->id])): ?>
                       <p style="color: <?php if ($book->total_price == $payment[$book->id]): ?>#008000<?php else: ?>red<?php endif ?>;">
@@ -170,11 +181,11 @@ $isMobile = $mobile->isMobile()
 
     <?php if (isset($payment[$book->id])): ?>
                     <?php if ($payment[$book->id] == 0): ?>
-                      <div class="col-md-5 col-xs-12 not-padding bg-success">
+                      <div class="col-md-5 col-xs-6 not-padding bg-success">
                         <b style="color: red;font-weight: bold">0%</b>
                       </div>
       <?php else: ?>
-                      <div class="col-md-5  col-xs-12 not-padding">
+                      <div class="col-md-5  col-xs-6 not-padding">
         <?php $total = number_format(100 / ($book->total_price / $payment[$book->id]), 0); ?>
                         <p class="text-white m-t-10">
                           <b style="color: <?php if ($total == 100): ?>#008000<?php else: ?>red<?php endif ?>;font-weight: bold"><?php echo $total . '%' ?></b>
@@ -183,7 +194,7 @@ $isMobile = $mobile->isMobile()
 
       <?php endif; ?>
                   <?php else: ?>
-                    <div class="col-md-5 col-xs-12 not-padding bg-success">
+                    <div class="col-md-5 col-xs-6 not-padding bg-success">
                       <b style="color: red;font-weight: bold">0%</b>
                     </div>
                   <?php endif ?>

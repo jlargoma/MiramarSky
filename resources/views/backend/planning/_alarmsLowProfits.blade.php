@@ -1,8 +1,12 @@
-<?php   use \Carbon\Carbon;  
-        setlocale(LC_TIME, "ES"); 
-        setlocale(LC_TIME, "es_ES");  
-        $total_pvp = 0;
-        $total_coste = 0;
+<?php   
+use \Carbon\Carbon; 
+use \App\Classes\Mobile;
+setlocale(LC_TIME, "ES"); 
+setlocale(LC_TIME, "es_ES");  
+$total_pvp = 0;
+$total_coste = 0;
+$mobile = new Mobile();
+$isMobile = $mobile->isMobile();
 ?>
 <div class="row">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
@@ -16,21 +20,34 @@
         <div class="table-responsive">
         <table class="table" >
           <thead >
-                    <th class ="text-center bg-complete text-white static" style="width: 130px; padding: 14px !important;">  
+            @if($isMobile)
+              <th class="text-center bg-complete text-white static" style="width: 130px; padding: 14px !important;">  
+            @else
+              <th class="text-left bg-complete text-white" style="width: 25%;" >
+            @endif
                       Nombre</th>
-                    <th class ="text-center bg-complete text-white first-col" style="padding-left: 130px!important"> Apto</th>
-                    <th class ="text-center bg-complete text-white" style="width: 12% !important;font-size:10px!important">IN - OUT</th>
-                    <th class ="text-center bg-complete text-white" style="width: 7% !important;font-size:10px!important">
-                      PVP<br/><b id="alarms_totalPVP"></b></th>
-                    <th class ="text-center bg-complete text-white" style="width: 7% !important;font-size:10px!important">
-                      Coste Total<br/><b id="alarms_totalCosteTotal"></b></th>
-                    <th class ="text-center bg-complete text-white" style="width: 7% !important;font-size:10px!important">%Benef</th>
-                    <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important"></th>
-                </thead>
+            @if($isMobile)
+              <th class ="text-center bg-complete text-white first-col" style="padding-left: 130px!important">
+            @else
+              <th class="text-center bg-complete text-white" style="width: 5%;" >
+            @endif
+             Apto</th>
+                <th class ="text-center bg-complete text-white" style="width: 17% !important;font-size:10px!important">IN - OUT</th>
+                <th class ="text-center bg-complete text-white" style="width: 16% !important;font-size:10px!important">
+                  PVP<br/><b id="alarms_totalPVP"></b></th>
+                <th class ="text-center bg-complete text-white" style="width: 17% !important;font-size:10px!important">
+                  Coste Total<br/><b id="alarms_totalCosteTotal"></b></th>
+                <th class ="text-center bg-complete text-white" style="width: 10% !important;font-size:10px!important">%Benef</th>
+                <th class ="text-center bg-complete text-white" style="width: 10% !important;font-size:10px!important"></th>
+            </thead>
             <tbody>
                     <?php foreach ($alarms as $book): ?>
                         <tr>
+                          @if($isMobile)
                             <td class ="text-left static" style="width: 130px;color: black;overflow-x: scroll;    padding: 4px 3px !important; ">  
+                          @else
+                            <td class="text-left" >
+                          @endif
                                     <?php if ($book->agency != 0): ?>
                                         <img class="img-agency" src="/pages/<?php  echo strtolower($book->getAgency($book->agency)) ?>.png" />
 	                               <?php endif ?>
@@ -41,7 +58,11 @@
                                         <img src="/pages/oferta.png" class="img-oferta" title="<?php echo $book->book_owned_comments ?>">
                                     <?php endif ?>
                             </td>
+                          @if($isMobile)
                             <td class="text-center first-col" style="padding-right:13px !important;padding-left: 135px!important">   
+                          @else
+                            <td class="text-center" >
+                          @endif
                                 <!-- apto -->
                                 <?php echo $book->room->nameRoom ?>
                             </td>

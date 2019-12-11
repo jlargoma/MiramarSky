@@ -1,7 +1,11 @@
-<?php   use \Carbon\Carbon;  
-        setlocale(LC_TIME, "ES"); 
-        setlocale(LC_TIME, "es_ES");  
-        $total = 0;
+<?php   
+use \Carbon\Carbon;  
+use \App\Classes\Mobile;
+setlocale(LC_TIME, "ES"); 
+setlocale(LC_TIME, "es_ES");  
+$total = 0;
+$mobile = new Mobile();
+$isMobile = $mobile->isMobile();
 ?>
 <div class="row">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
@@ -20,7 +24,11 @@
             <tbody>
                 <?php foreach ($books as $key => $book): ?>
                     <tr>
+                      @if($isMobile)
                         <td class ="text-left static" style="width: 130px;color: black;overflow-x: scroll;    padding: 9px !important; ">  
+                      @else
+                        <td class="text-left" style="padding-left: 1em !important;">
+                      @endif
                            <?php if ( $book->agency != 0): ?>
                               <img src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" class="img-agency" />
                             <?php endif ?>
@@ -29,7 +37,11 @@
                             </a> 
                             
                         </td>
+                      @if($isMobile)
                         <td class="text-center first-col" style="padding-left: 130px!important">   
+                      @else
+                        <td class="text-center" >
+                      @endif
                             <?php echo substr($book->room->nameRoom,0,5) ?>       
                         </th>
                         <td class="text-center" style="color: black;padding: 5px 10px!important">   

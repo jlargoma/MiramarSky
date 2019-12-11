@@ -96,6 +96,18 @@
         .title-year-selector{
             display: none;
         }
+       @media only screen and (max-width: 768px){
+         button.btn.btn-md.btn-primary.exportExcel,
+         button#booking_agency_details,
+         button#btnLowProfits{
+            white-space: inherit;
+            text-align: center;
+            padding: 7px;
+            min-width: auto;
+         }
+       }
+        
+           
     </style>
 @endsection
 

@@ -23,6 +23,27 @@ setlocale(LC_TIME, "es_ES");
   .form-control{
     border: 1px solid rgba(0, 0, 0, 0.07)!important;
   }
+   td{
+      height: 3em !important;
+      padding: 7px 9px !important;
+    }
+  @media only screen and (max-width: 768px){
+   
+    td.static {
+    position: absolute !important;
+    }
+    .col-ingr{
+      width: 180px;
+      overflow-x: scroll;
+      text-align: left;
+      margin-top: 10px;
+      padding: 16px 9px !important;
+    }
+    tr:first-child .col-ingr{
+      height: 3em !important;
+      margin-top: 0px;
+    }
+  }
 </style>
 
 @endsection
@@ -56,12 +77,13 @@ setlocale(LC_TIME, "es_ES");
     </div>
     <div class="col-xs-12 col-md-12">
 
-      <div class="row table-responsive" style="border: 0px!important">
-        <table class="table table-mounts " style="margin-top: 0;">
+      <div class="table-responsive">
+        <table class="table">
           <thead>
             <tr>
-              <th class="text-center bg-complete text-white">AREA DE NEGOCIO</th>
-              <th class="text-center bg-complete text-white">
+              <th class="text-center bg-complete text-white static" style="width: 180px;padding: 16px !important;height: 60px;">
+                  AREA DE NEGOCIO</th>
+              <th class="text-center bg-complete text-white first-col">
                 total<br/>
                 <?php echo number_format( $total, 0, ',', '.' ); ?>€
               </th>
@@ -82,8 +104,8 @@ setlocale(LC_TIME, "es_ES");
           </thead>           
           <tbody>
             <tr>
-              <td >VENTAS TEMPORADA</td>
-              <td >
+              <td class="static col-ingr">VENTAS TEMPORADA</td>
+              <td class="first-col">
                 <?php echo number_format($totalBooks, 0, ',', '.'); ?>€
               </td>
               <td>
@@ -105,8 +127,8 @@ setlocale(LC_TIME, "es_ES");
             </tr>
             @foreach($aIncomes as $k => $income)
             <tr>
-              <td>{{$income[0]}}</td>
-              <td>
+              <td class="static col-ingr">{{$income[0]}}</td>
+              <td class="first-col">
               <?php echo number_format($income[1], 0, ',', '.'); ?>€
               </td>
               <td>

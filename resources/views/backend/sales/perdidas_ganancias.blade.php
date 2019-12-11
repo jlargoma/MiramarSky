@@ -9,6 +9,50 @@
 @section('externalScripts') 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+<style>
+  @media only screen and (max-width: 991px){
+    .resume-box .col-md-4{
+      width: 33% !important;
+      float: left;
+      padding: 2px;
+      text-align: center;
+    }
+  }
+  
+   td{
+      height: 3em !important;
+      padding: 7px 9px !important;
+    }
+  @media only screen and (max-width: 768px){
+   
+    td.static {
+    position: absolute !important;
+    white-space: nowrap;
+    }
+    .col-ingr{
+      width: 180px;
+      overflow-x: scroll;
+      text-align: left !important;
+      margin-top: 1px;
+      padding: 13px 9px !important;
+    }
+     tr:last-child td{
+      height: 4em !important;
+    }
+  }
+   @media only screen and (max-width: 425px){
+      .resume-box .col-md-4 .p-l-20{
+        padding: 1em 0px !important;
+      }
+      
+      .resume-box .col-md-4 h3{
+        font-size: 22px;
+      }
+      .resume-box .col-md-4 h5{
+        font-size: 15px;
+      }
+   }
+</style>
 @endsection
 
 @section('content')
@@ -78,7 +122,7 @@
 				<?php $init->addMonths(1); ?>
 		<?php endfor; ?>
 		<div class="col-lg-6 col-md-8 col-xs-12">
-		   <div class="col-md-12 col-xs-12">
+		   <div class="col-md-12 col-xs-12 resume-box">
 		   		<div class="col-md-4 m-b-10">
 		   			<div class="widget-9 no-border bg-success no-margin widget-loader-bar" style="background-color: #46c37b!important;">
 		   				<div class="full-height d-flex flex-column">

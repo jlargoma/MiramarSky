@@ -1,6 +1,10 @@
-<?php   use \Carbon\Carbon;
+<?php   
+use \Carbon\Carbon;
+use \App\Classes\Mobile;
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
+$mobile = new Mobile();
+$isMobile = $mobile->isMobile();
 ?>
 @extends('layouts.admin-master')
 
@@ -38,17 +42,19 @@ setlocale(LC_TIME, "es_ES");
         </div>
         <div class="row bg-white push-30">
             <div class="col-lg-4 col-md-6 col-xs-12">
-                <div class="col-lg-6 col-md-12 col-xs-12">
+                <div class="col-lg-6 col-md-6 hidden-mobile">
                     <div>
                         <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
                     </div>
                 </div>
-                <div class="col-lg-6 col-md-12 col-xs-12">
+                <div class="col-lg-6 col-md-6  hidden-mobile">
                     <div>
                         <canvas id="barChart2" style="width: 100%; height: 250px;"></canvas>
                     </div>
                 </div>
+              <div class="col-md-12 col-xs-12">
                 @include('backend.sales._by_season')
+                </div>
             </div>
             <div class="col-lg-8 col-md-6 col-xs-12">
                 @include('backend.sales._stats')
@@ -61,9 +67,14 @@ setlocale(LC_TIME, "es_ES");
                     <table class="table">
                        <thead>
                         <tr>
-                            <th class="text-center bg-complete text-white">Apto</th>
-                            <th class="text-center bg-complete text-white">
-                              total<br/>
+                          @if($isMobile)
+                            <th class="text-center bg-complete text-white static" style="width: 130px;padding: 16px !important;height: 60px;">Apto</th>
+                            <th class="text-center bg-complete text-white first-col" style="padding-left: 145px !important;padding-right: 11px !important;">total<br/>
+                          @else
+                            <th class="text-center bg-complete text-white" >Apto</th>
+                            <th class="text-center bg-complete text-white" >total<br/>
+                          @endif
+                              
                               <?php echo number_format( $t_all_rooms, 0, ',', '.' ); ?>€
                             </th>
                             <th class="text-center bg-complete text-white">%</th>
@@ -82,10 +93,22 @@ setlocale(LC_TIME, "es_ES");
                             
                        <tbody>
                             @foreach($lstRooms as $roomID => $name)
+                            
                             <tr class="text-center">
-                              <td class="text-center" style="padding: 12px 20px!important">{!!$name!!}</td>
-                              <th class="text-center">
-                                <?php
+                          @if($isMobile)
+                              <td class="text-left static" style="white-space: nowrap; width: 130px;color: black;overflow-x: scroll;margin-top: 2px;padding: 7px 9px !important;">  
+                                {!!$name!!}
+                              </td>
+                              <th class="text-center first-col" style="padding-right:13px !important;padding-left: 135px!important">  
+                          @else
+                              <td class="text-left" style="width: 130px;">  
+                                {!!$name!!}
+                              </td>
+                              <th class="text-center ">  
+                          @endif
+                          
+                          
+                             <?php
                                 $totalRoom = 0;
                                 if (isset($t_rooms[$roomID]) && $t_rooms[$roomID]>1){
                                   $totalRoom = $t_rooms[$roomID];
