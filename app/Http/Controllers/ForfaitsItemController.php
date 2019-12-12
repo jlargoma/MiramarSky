@@ -54,6 +54,7 @@ class ForfaitsItemController extends AppController {
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "GET",
         CURLOPT_CONNECTTIMEOUT => 3,
+        CURLOPT_TIMEOUT => 3,
         CURLOPT_HTTPHEADER => array(
             "Content-Type: application/json",
             "Authorization: Bearer $Bearer"
@@ -151,6 +152,7 @@ class ForfaitsItemController extends AppController {
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "GET",
         CURLOPT_CONNECTTIMEOUT => 3,
+        CURLOPT_TIMEOUT => 10,
         CURLOPT_POSTFIELDS => $json,
         CURLOPT_HTTPHEADER => array(
             "Content-Type: application/json",
@@ -188,6 +190,7 @@ class ForfaitsItemController extends AppController {
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "GET",
         CURLOPT_CONNECTTIMEOUT => 3,
+        CURLOPT_TIMEOUT => 10,
         CURLOPT_POSTFIELDS => $json,
         CURLOPT_HTTPHEADER => array(
             "Content-Type: application/json",
@@ -217,6 +220,7 @@ class ForfaitsItemController extends AppController {
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_CUSTOMREQUEST => "GET",
         CURLOPT_CONNECTTIMEOUT => 3,
+        CURLOPT_TIMEOUT => 10,
         CURLOPT_HTTPHEADER => array(
             "Content-Type: application/json",
             "Authorization: Bearer $Bearer"

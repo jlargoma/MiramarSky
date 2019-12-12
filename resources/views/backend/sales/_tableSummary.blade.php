@@ -321,7 +321,7 @@ $(document).ready(function() {
         scrollCollapse: true,
         paging:  true,
         pageLength: 30,
-        pagingType: "full_numbers"
+        pagingType: "full_numbers",
          fixedColumns:   {
             leftColumns: 1
           }

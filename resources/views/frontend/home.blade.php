@@ -8,7 +8,6 @@
 
   <div id="content-form-book" class="content-wrap notoppadding" style="padding: 0;">
 
-    <?php if (!$mobile->isMobile()): ?>
     <!-- DESKTOP -->
     <div class="row clearfix" style="background-color: #3F51B5;">
       <div id="close-form-book" style="position: absolute; top: 20px; right: 10px; z-index: 50;  cursor: pointer;">
@@ -38,58 +37,27 @@
     </div>
   </div>
 </section>
-<?php else: ?>
+
 
 <style>
 
-
-  #form-content .col-md-3.col-xs-3{
-    width: 25% !important;
-    margin-top: 1em;
+@media only screen and (max-width: 426px) {
+  .form-group.col-sm-12.col-xs-6.col-md-5.apto-type,
+  .form-group.col-sm-12.col-xs-6.col-md-5.apto-lujo, {
+      clear: both;
+      margin: 1em auto;
   }
-  #form-content  .col-md-6.col-xs-6 {
-    width: 50% !important;
-    margin: 1em 0;
-}
-  #form-content .radio-style-1-label:before, .radio-style-2-label:before, .radio-style-3-label:before {
-    margin-bottom: 6px;
-}
-#form-book-apto-lujo label.col-md-12.luxury.white{
-  text-align: left;
-}
-#form-content label.col-xs-12.col-md-12.text-left.parking.white,
-#form-content label.col-md-12.luxury.white{
-    margin-left: -15px;
-    margin-top: 1em;
+  .apto-type .col-md-3.col-xs-6{
+    max-width: 24%;
+  }
+  .apto-lujo .col-md-6{
+    max-width: 50%;
+    float: left;
+    margin: 1em auto;
+  }
 }
 </style>
-  <div id="content-book" class="col-xs-12 bg-bluesky" style="display: none;">
 
-    <span style="padding: 0 5px; cursor: pointer; opacity: 1" id="close-form-book" class="close pull-right white text-white sm-m-r-20 sm-m-t-10">
-                      <i class="fa fa-times"></i>
-                    </span>
-
-                    <div class="container-mobile clearfix" style="margin-top: 10px; height: 133vh;">
-                      <div class="col-md-6 col-md-offset-3">
-                        <div class="row" id="content-book-response">
-                          <div class="front" style="max-height: 520px!important;">
-                            <div class="col-xs-12">
-                              <h3 class="text-center white">CALCULA TU PRECIO</h3>
-                            </div>
-                            <div id="form-content">
-                              @include('frontend._formBook')
-                            </div>
-                          </div>
-                          <div class="back" style="background-color: #3F51B5; max-height: 520px!important;">
-
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-</section>
-<?php endif; ?>
 <!-- blog y edificio (sierra nevada) -->    
 <section class="feature-home">
   <div class="box-feature-home">
@@ -155,11 +123,12 @@
   </div>
     
 </section>
-@if ($mobile->isMobile()):
+<div class="show-mobile">
   @include('frontend.blocks.othersRoomsMobile')
-@else
+</div>
+<div class="hidden-mobile">
   @include('frontend.blocks.othersRooms')
-@endif
+</div>
 @include('frontend.blocks.services')
 @include('frontend.blocks.info-links')
 @endsection

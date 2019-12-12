@@ -12,14 +12,20 @@ setlocale(LC_TIME, "es_ES");
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 
 <style type="text/css">
-.bordered{
-padding: 15px;
-border:1px solid #e8e8e8;
-background: white;
-}
-.form-control{
-		border: 1px solid rgba(0, 0, 0, 0.07)!important;
-	}
+  .bordered{
+    padding: 15px;
+    border:1px solid #e8e8e8;
+    background: white;
+  }
+  .form-control{
+    border: 1px solid rgba(0, 0, 0, 0.07)!important;
+  }
+
+  .row-xs-height {
+    display: block !important;
+    height: 30em !important;
+    overflow: scroll;
+  }
 </style>
 
 @endsection

@@ -1,24 +1,14 @@
 <?php   use \Carbon\Carbon;  
         setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES"); 
-        $isMobile = $mobile->isMobile();
 ?>
 <?php $startWeek = Carbon::now()->startOfWeek(); ?>
 <?php $endWeek = Carbon::now()->endOfWeek(); ?>
 <div class="table-responsive">
-    <table class="table table-data" style="margin: 0;">
+    <table class="table table-striped no-footer table-data" style="margin: 0;">
         <thead>
-          @if($isMobile)
-          <th class="bg-primary text-white static" style="background-color: #6d5cae;margin-top: 0;width: 130px;padding: 14px !important;">  
-            Cliente
-          </th>
-          <th class="bg-primary text-white first-col" style="padding-left: 140px!important">
-            <i class="fa fa-phone"></i>
-          </th>
-          @else
-          <th class="bg-primary text-white" style="min-width: 180px !important;">Cliente</th>
-          <th class="bg-primary text-white">Telefono</th>
-          @endif
+            <th class="bg-primary text-white text-center">Nombre</th>
+            <th class="bg-primary text-white text-center">Tel</th>
             <th class="bg-primary text-white text-center">Pax</th>
             <th class="bg-primary text-white text-center">Out</th>
             <th class="bg-primary text-white text-center">Apto</th>
@@ -34,13 +24,7 @@
                     <?php $class = "lined"; $count++ ?>
                 <?php endif ?>
                 <tr class="<?php if($count <= 1){echo $class;} ?>">
-                  
-                    @if($isMobile)
-                    <td class ="text-left static static-td" style="height: 57px;padding: 19px 2px !important;" >  
-                   @else
                     <td class="text-center sm-p-t-10 sm-p-b-10">
-                   @endif
-                         
                         <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                             <?php echo substr($book->customer->name, 0, 10) ?>
                         </a> 
@@ -48,36 +32,19 @@
                     <img style="width: 30px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
                     @endif
                     </td>
-                    @if($isMobile)
-                    <td class="text-center  first-col" style="padding-left: 140px!important">
-                      <?php if ($book->customer->phone != 0 && $book->customer->phone != ""): ?>
-                        <a href="tel:<?php echo $book->customer->phone ?>">
-                          <i class="fa fa-phone"></i>
-                        </a>
-                      <?php endif ?>
-                    @else
-                    <td class="text-center">
-                      <?php if ($book->customer->phone != 0 && $book->customer->phone != ""): ?>
-                        <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?></a>
-                      <?php else: ?>
-                        <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>"/>
-                      <?php endif ?>
-                    @endif
-                      <?php if (Auth::user()->role != "limpieza" && (!empty($book->comment) || !empty($book->book_comments))): ?>
-                          <?php 
-                              $textComment = "";
-                              if (!empty($book->comment)) {
-                                  $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:"."<br>"." ".$book->comment."<br>";
-                              }
-                              if (!empty($book->book_comments)) {
-                                  $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments;
-                              }
-                          ?>
-                          <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
-                              <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
-                          </span>
-                          <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $textComment ?></p></div>
-                      <?php endif ?>
+                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                      <?php if ($mobile->isMobile()): ?>
+                        <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
+                          <a href="tel:<?php echo $book->customer->phone ?>"><i class="fa fa-phone"></i></a>
+                        <?php endif ?>
+                      <?php else:?>
+                        <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
+                            <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?>
+                        <?php else: ?>
+                            <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>" placeholder="telefono..."/>
+                        <?php endif ?>
+                      <?php endif;?>
+                            
                     </td>
                     <td class ="text-center" >
                         <?php if ($book->real_pax > 6 ): ?>

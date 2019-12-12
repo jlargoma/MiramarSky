@@ -200,6 +200,11 @@ $mobile = new Mobile();
                 </option>
               <?php endif ?>
             <?php endfor; ?>
+                <option <?php echo 99 == ($book->type_book) ? "selected" : ""; ?>
+                  value="<?php echo 99 ?>" data-id="<?php echo $book->id ?>">
+                <?php echo $book->getStatus(99) ?>
+                </option>
+                
           </select>
           @endif
           <h5 class="guardar" style="font-weight: bold; display: none; font-size: 15px;"></h5>

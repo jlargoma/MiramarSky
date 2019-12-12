@@ -3,6 +3,7 @@
 /public/storage
 /public/actividades
 /public/contratos
+/public/page-cache
 /public/img/miramarski/contents/*
 public/img/miramarski/apartamentos/*
 Homestead.yaml

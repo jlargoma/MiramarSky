@@ -58,12 +58,53 @@ setlocale(LC_TIME, "es_ES");
         .th-w125{
           min-width: 125px;
         }
+        .btn-tabs .btn{
+          width: 13%;
+          padding: 8px 0;
+          margin-bottom: 5px;
+          min-width: 82px;
+        }
+        
+        .btn-tabs .btn span.bold {
+            max-width: 60%;
+            display: inline-block;
+            overflow: hidden;
+        }
+        .table tbody tr td {
+          background: transparent;
+        }
+        select.status.form-control.minimal {
+            padding: 0;
+        }
         @media only screen and (max-width: 991px){
           select#schedule,
           select#scheduleOut {
             width: 3em !important;
             background-color: transparent;
             height: 2em;
+          }
+          .static-td{
+            width: 130px;
+            color: black;
+            overflow-x: scroll;
+            padding: 7px 3px !important;
+            background-color: #fff !important;
+            margin-top: 1px;
+            height: 36px;
+            z-index: 100 !important;
+            border-right: 1px solid #5f5d5d !important;
+          }
+          .Reservado .static-td{       
+            background-color: #bdf9bd  !important;
+          }
+          .Reservado .static-td{       
+            background-color: #bdf9bd  !important;
+          }
+          .Blocked-ical  .static-td{   
+            background-color: #c1c1c1 !important;
+          }
+          .tooltip-2 {
+            position: relative !important;
           }
         }
     </style>
@@ -96,8 +137,7 @@ setlocale(LC_TIME, "es_ES");
                     </div>
                 </div>
             <?php endif ?>
-            <div class="col-xs-12 text-left push-0" style="padding-left: 0;">
-
+            <div class="col-xs-12 text-left push-0 btn-tabs" style="padding-left: 0;">
                     <button class="btn btn-primary  btn-blue btn-tables btn-cons" type="button" data-type="pendientes">
                         <span class="bold">Pendientes</span>
                         <?php if ( Auth::user()->role != "agente" ): ?>
@@ -352,7 +392,7 @@ setlocale(LC_TIME, "es_ES");
                     </div>
                 </div>
                 <div class="row text-left push-0" style="overflow-x:auto;">
-                    <div style=" width: 515px;">
+                    <div class="btn-tabs">
                         <button class="btn btn-primary  btn-blue btn-tables" type="button" data-type="pendientes">
                             <span class="bold">Pend</span>
                             <?php if ( Auth::user()->role != "agente" ): ?>

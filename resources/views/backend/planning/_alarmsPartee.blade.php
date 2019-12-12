@@ -8,7 +8,7 @@ $total_pvp = 0;
 $total_coste = 0;
 $today = Carbon::now();
 
-$isMobile = $mobile->isMobile()
+$isMobile = $mobile->isMobile();
 ?>
 <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
   <i class="fa fa-times fa-2x" style="color: #000!important;"></i>

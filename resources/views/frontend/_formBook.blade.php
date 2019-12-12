@@ -49,7 +49,7 @@
                 </p> -->
             </div>
             
-            <div class="form-group col-sm-12 col-xs-6 col-md-5" style="padding: 0">
+            <div class="form-group col-sm-12 col-xs-6 col-md-5 apto-type" style="padding: 0">
                 <label for="parking"  class="col-md-12 text-left parking white">* Tipo Apto</label>
 
                 <div class="col-md-3 col-xs-6">
@@ -69,7 +69,7 @@
                <label for="apto-estudio" class="radio-style-3-label">Est.</label>
             </div>
             </div>
-            <div class="form-group col-sm-12 col-xs-4 col-md-3">
+            <div class="form-group col-sm-12 col-xs-4 col-md-3 apto-lujo">
                 <label  class="col-md-12 luxury white">*lujo</label>
                 <div class="col-md-6"> 
                <input id="luxury-yes" class="radio-style" name="luxury" type="radio"  value="si">
