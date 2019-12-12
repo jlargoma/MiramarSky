@@ -94,7 +94,8 @@ class ParteeService
         $ch = curl_init($this->PARTEE_URL.$endpoint);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);                                                                     
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);     
+        curl_setopt($ch, CURLOPT_TIMEOUT , 10); //  CURLOPT_TIMEOUT => 10,
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
             'Content-Type: application/json',        
             'Authorization:Bearer '.$this->JWT,
@@ -107,6 +108,7 @@ class ParteeService
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);                                                                     
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , 7); //Timeout after 7 seconds
+        curl_setopt($ch, CURLOPT_TIMEOUT , 10); //  CURLOPT_TIMEOUT => 10,
         curl_setopt($ch, CURLOPT_USERAGENT , "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)");
         curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
             'Content-Type: application/json',        
