@@ -1,4 +1,11 @@
 <IfModule mod_rewrite.c>
+
+    RewriteCond %{REQUEST_URI} ^/?$
+    RewriteCond %{DOCUMENT_ROOT}/page-cache/pc__index__pc.html -f
+    RewriteRule .? page-cache/pc__index__pc.html [L]
+    RewriteCond %{DOCUMENT_ROOT}/page-cache%{REQUEST_URI}.html -f
+    RewriteRule . page-cache%{REQUEST_URI}.html [L]
+
     <IfModule mod_negotiation.c>
         Options -MultiViews
     </IfModule>
@@ -10,17 +17,6 @@
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(.*)/$ /$1 [L,R=301]
-
-    # Serve Cached Page If Available...
-#    RewriteCond %{DOCUMENT_ROOT}/page-cache/pc__index__pc.html -f
-#    RewriteCond %{DOCUMENT_ROOT}/page-cache/pc__index__pc.html -f
-
-
-    RewriteCond %{REQUEST_URI} /$
-    RewriteCond %{DOCUMENT_ROOT}/public/page-cache/pc__index__pc.html -f
-    RewriteRule ^ page-cache/pc__index__pc.html [L]
-    RewriteCond %{DOCUMENT_ROOT}/public/page-cache/%{REQUEST_URI} -f
-    RewriteRule . ^/page-cache/%{REQUEST_URI}.html [L]
 
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d

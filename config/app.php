@@ -122,7 +122,7 @@ return [
 	*/
 
 	'providers' => [
-
+             Silber\PageCache\LaravelServiceProvider::class,
 		/*
 		 * Laravel Framework Service Providers...
 		 */
@@ -163,6 +163,7 @@ return [
 		Maatwebsite\Excel\ExcelServiceProvider::class,
 		Barryvdh\DomPDF\ServiceProvider::class,
             Intervention\Image\ImageServiceProvider::class
+           
 	],
 
 	/*

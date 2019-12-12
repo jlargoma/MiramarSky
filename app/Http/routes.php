@@ -14,7 +14,21 @@
 
     
     Route::auth();
-    Route::get('/', 'HomeController@index');
+    
+    Route::group(['middleware' => ['page-cache']], function () {
+      Route::get('/', 'HomeController@index');
+      
+      Route::get('/404', function () {
+         return view('404');
+      });
+      Route::get('/no-allowed', function () {
+          return view('no-allowed');
+      });
+      Route::get('403', function () {
+          return view('no-allowed');
+      });
+    
+    });
    
   
     Route::get('/partee-checkHuespedes', function () {
@@ -25,15 +39,7 @@
         dd($partee);
     });
     
-    Route::get('/404', function () {
-        return view('404');
-    });
-    Route::get('/no-allowed', function () {
-        return view('no-allowed');
-    });
-    Route::get('403', function () {
-        return view('no-allowed');
-    });
+   
     
   
     Route::get('/thanks-you', 'HomeController@thanksYou')->name('thanks-you');

@@ -23,10 +23,21 @@
 
   $('div#blank_loader').fadeOut(500);
 </script>
+<style>
+.show-mobile{
+   display: none;
+ }
+@media only screen and (max-width: 426px) {
+  .hidden-mobile{
+    display: none;
+  }
+  .show-mobile{
+    display: block;
+  }
+}
 
-<?php
-if (($mobile->isMobile() || $mobile->isTablet())):
-  ?>
+
+</style>
 
   <script type="text/javascript">
     $(document).ready(function () {
@@ -36,6 +47,9 @@ if (($mobile->isMobile() || $mobile->isTablet())):
                 var my_awesome_script = document.createElement('script');
                 my_awesome_script.setAttribute('src', "{{ getCloudfl(asset('/js/scripts-ext-v2.js'))}}");
                 document.body.appendChild(my_awesome_script);
+                var lightslider = document.createElement('script');
+                lightslider.setAttribute('src', "{{ getCloudfl(assetV('/frontend/vendor/lightslider-master/dist/js/lightslider.min.js'))}}");
+                document.body.appendChild(lightslider);
 
                 var my_awesome_style = document.createElement('link');
                 my_awesome_style.setAttribute('href', "{{ getCloudfl(assetV('/frontend/css/responsive-mobile.css'))}}");
@@ -47,22 +61,10 @@ if (($mobile->isMobile() || $mobile->isTablet())):
                 recaptcha_script.setAttribute('src', "https://www.google.com/recaptcha/api.js?render=6LdOoYYUAAAAAPKBszrHm6BWXPE8Gfm3ywnoOEUV");
                 document.body.appendChild(recaptcha_script);
                 $('.carousel-caption').css('display','block');
+                
               }, 1700);
-    });
-  </script>
-<?php else: ?>
-
-  <script type="text/javascript">
-    $(document).ready(function () {
       $('div.bg-img img').attr('style', 'max-width:none !important;');
     });
   </script>
-  <link href="//fonts.googleapis.com/css?family=Open+Sans%3A800|Lato:300,400,400italic,600,700|Raleway:300,400,500,600,700,800,900|Crete+Round:400italic" rel="stylesheet" type="text/css"/>
-  <link rel="stylesheet" href="{{ getCloudfl(assetV('/frontend/css/responsive.css'))}}" type="text/css"/>
-  <script src="{{ getCloudfl(assetV('/frontend/vendor/lightslider-master/dist/js/lightslider.min.js'))}}"  defer=""></script>
-  <script type="text/javascript" src="{{ getCloudfl(assetV('/js/scripts-ext.js'))}}" async="async"></script>
-<?php endif; ?>
-
-
 
 </body>
