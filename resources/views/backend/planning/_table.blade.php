@@ -83,7 +83,7 @@
             <script>
           $('.table-data').dataTable({
             "searching": false,
-            "order": [[ 7, "asc" ]],
+            "order": [[ 6, "asc" ]],
             "paging":   false,
             "columnDefs": [
               {"targets": [0,1,2,3,4,5,8,9,10,11], "orderable": false }
