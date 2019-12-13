@@ -10,20 +10,13 @@ endif
 ?>
 <div class="tab-pane" id="tabPagadas">
     <div class="table-responsive">
-        <table class="table table-data"  data-type="confirmadas">
+        <table class="table table-data table-striped"  data-type="confirmadas">
             <thead>
                 <tr>
-                  @if($isMobile)
-                  <th class="text-center {{$classTH}} text-white static" style="background-color: #f2a405;width: 130px; padding: 14px !important;">  
-                    Cliente
-                  </th>
-                  <th class="text-center {{$classTH}} text-white first-col" style="padding-left: 130px!important">
-                    <i class="fa fa-phone"></i>
-                  </th>
-                  @else
                   <th class ="{{$classTH}}" style="min-width: 130px;">   Cliente     </th>
-                  <th class ="{{$classTH}}" style="width: 10%">   Telefono     </th>
-                  @endif
+                  <th class ="{{$classTH}}" style="width: 10%">
+                    @if($isMobile) <i class="fa fa-phone"></i> @else Telefono @endif
+                  </th>
                     <th class ="{{$classTH}}" style="width: 25px">   Pax         </th>
                     <th class ="{{$classTH}}" style="width: 30px"> </th>
                     <th class ="{{$classTH}}" style="width: 100px">   Apart       </th>
@@ -40,11 +33,7 @@ endif
             <tbody>
                 <?php foreach ($books as $book): ?>
                     <tr>
-                      @if($isMobile)
-                      <td class ="text-left static static-td" style="height: 50px; padding: 16px 0px !important;" >  
-                      @else
                       <td class="text-left" style="padding: 10px 5px!important">
-                      @endif
                             <?php if ($book->agency != 0): ?>
                                 <img style="width: 18px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                             <?php endif;?>
@@ -64,28 +53,11 @@ endif
                             >
                                             <?php echo $book->customer['name']  ?></a>
                                     <?php endif ?>
-                                    <?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
-                                    <?php
-                                    $textComment = "";
-                                    if (!empty($book->comment))
-                                    {
-                                            $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:" . "<br>" . " " . $book->comment . "<br>";
-                                    }
-                                    if (!empty($book->book_comments))
-                                    {
-                                            $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:" . "<br>" . " " . $book->book_comments;
-                                    }
-                                    ?>
-                            <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
-                                    <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
-                                </span>
-                            <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;"><p
-                                        class="text-left"><?php echo $textComment ?></p></div>
-                                    <?php endif ?>
+                                   
                         </td>
 
                         @if($isMobile)
-                          <td class="text-center  first-col" style="padding-left: 140px!important">
+                          <td class="text-center ">
                             <?php if ($book->customer->phone != 0 && $book->customer->phone != ""): ?>
                               <a href="tel:<?php echo $book->customer->phone ?>">
                                 <i class="fa fa-phone"></i>
@@ -109,16 +81,16 @@ endif
                             <?php endif ?>
 
                         </td>
-                        <td class ="text-center" >
+                        <td class ="text-center" style="position:relative">
                                     <?php if ($book->hasSendPicture()): ?>
-                            <button class="font-w800 btn btn-xs getImagesCustomer" type="button" data-toggle="modal" data-target="#modalRoomImages" style="z-index: 99; border: none; background-color:transparent!important; color: lightgray; padding: 0;"
+                            <button class="font-w800 btn btn-xs getImagesCustomer" type="button" data-toggle="modal" data-target="#modalRoomImages" style="border: none; background-color:transparent!important; color: lightgray; padding: 0;"
                                     data-id="<?php echo $book->room->id ?>"
                                     data-idCustomer="<?php echo $book->id ?>"
                                     onclick="return confirm('¿Quieres reenviar las imagenes');">
                                 <i class="fa fa-eye"></i>
                             </button>
                                     <?php else: ?>
-                            <button class="font-w800 btn btn-xs getImagesCustomer" type="button" data-toggle="modal" data-target="#modalRoomImages" style="z-index: 99; border: none; background-color: transparent!important; color:black; padding: 0;"
+                            <button class="font-w800 btn btn-xs getImagesCustomer" type="button" data-toggle="modal" data-target="#modalRoomImages" style="border: none; background-color: transparent!important; color:black; padding: 0;"
                                     data-id="<?php echo $book->room->id ?>"
                                     data-idCustomer="<?php echo $book->id ?>"
                             >

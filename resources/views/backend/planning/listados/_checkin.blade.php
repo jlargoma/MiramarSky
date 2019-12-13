@@ -7,21 +7,13 @@ $isMobile = $mobile->isMobile();
 ?>
 <div class="tab-pane" id="tabPagadas">
     <div class="table-responsive">
-        <table class="table table-data"  data-type="confirmadas" style="margin-top: 0;">
+        <table class="table table-data table-striped"  data-type="confirmadas" style="margin-top: 0;">
             <thead>
                 <tr class ="text-center bg-success text-white">
-                  @if($isMobile)
-                  <th class="th-bookings static" style="background-color: #57d0bd;width: 130px; padding: 14px !important;">  
-                    Cliente
-                  </th>
-                  <th class="th-bookings first-col" style="padding-left: 140px!important">
-                    <i class="fa fa-phone"></i>
-                  </th>
-                  @else
-                  <th class="th-bookings th-name" style="min-width: 180px !important;">Cliente</th>
-                    <th class="th-bookings">Telefono</th>
-                  @endif
-                  
+                    <th class="th-bookings th-name" style="min-width: 180px !important;">Cliente</th>
+                    <th class="th-bookings"> 
+                      @if($isMobile) <i class="fa fa-phone"></i> @else Telefono @endif
+                    </th>
                     <th class="th-bookings th-2">Pax</th>
                     <th class="th-bookings">Apart</th>
                     <th class="th-bookings th-2">  <i class="fa fa-moon-o"></i> </th>
@@ -62,12 +54,7 @@ $isMobile = $mobile->isMobile();
                             $dateStart = Carbon::createFromFormat('Y-m-d', $book->start);
                             $now = Carbon::now();
                         ?>
-                          @if($isMobile)
-                          <td class ="text-left static static-td" style="height: 57px;padding: 19px 2px !important;" >  
-                         @else
                          <td class="text-left" style="padding: 10px 5px!important">
-                         @endif
-            
                             <?php if ( $payment[$book->id] == 0): ?>
                                 <?php if ( $now->diffInDays($dateStart) <= 15 ):?>
                                     <span class=" label label-danger alertDay heart text-white">
@@ -117,7 +104,7 @@ $isMobile = $mobile->isMobile();
                             <?php endif ?>
                         </td>
                         @if($isMobile)
-                          <td class="text-center  first-col" style="padding-left: 140px!important">
+                          <td class="text-center">
                             <?php if ($book->customer->phone != 0 && $book->customer->phone != ""): ?>
                               <a href="tel:<?php echo $book->customer->phone ?>">
                                 <i class="fa fa-phone"></i>
@@ -257,11 +244,13 @@ $isMobile = $mobile->isMobile();
                                 </button> 
                             <?php endif ?>
                              <?php
-                            $partee = $book->partee();
-                            if ($partee):
-                              echo $partee->print_status($book->id,$book->start,$book->pax);
-                             endif;
-//                             echo $book->getFianza();
+                              if(env('APP_APPLICATION') == "riad"):
+                              $partee = $book->partee();
+                              if ($partee):
+                                echo $partee->print_status($book->id,$book->start,$book->pax);
+                               endif;
+                               echo $book->getFianza();
+                              endif;
                             ?>
                         </td>
                         <?php endif ?>

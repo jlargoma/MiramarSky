@@ -5,7 +5,7 @@ $isMobile = $mobile->isMobile();
 ?>
 <?php if (count($books) > 0): ?>
   <div class="table-responsive">
-        <table class="table table-data"  data-type="pendientes" style="margin-top: 0;">
+        <table class="table table-data table-striped"  data-type="pendientes" style="margin-top: 0;">
             <thead>
                 <tr>  
                   @if($isMobile)

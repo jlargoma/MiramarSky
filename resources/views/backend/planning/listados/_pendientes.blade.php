@@ -4,20 +4,13 @@ $isMobile = $mobile->isMobile();
 ?>
 
 <div class="table-responsive">
-<table class="table table-data" data-type="pendientes">
+<table class="table table-data table-striped" data-type="pendientes">
     <thead>
     <tr>
-        @if($isMobile)
-          <th class="text-center Reservado-table text-white static" style="    height: 42px;width: 130px; padding: 14px !important;">  
-             Cliente
-          </th>
-          <th class="text-center Reservado-table text-white first-col" style="padding-left: 140px!important">
-            <i class="fa fa-phone"></i>
-          </th>
-        @else
-          <th class="text-center Reservado-table text-white"> Cliente</th>
-          <th class="text-center Reservado-table text-white"> Telefono</th>
-        @endif
+        <th class="text-center Reservado-table text-white"> Cliente</th>
+        <th class="text-center Reservado-table text-white">
+          @if($isMobile) <i class="fa fa-phone"></i> @else Telefono @endif
+        </th>
         <th class="text-center Reservado-table text-white" style="width: 7%!important"> Pax</th>
         <th class="text-center Reservado-table text-white" style="width: 5%!important"></th>
         <th class="text-center Reservado-table text-white" style="width: 10%!important"> Apart</th>
@@ -54,12 +47,8 @@ $isMobile = $mobile->isMobile();
                 <?php endif ?>
 
         <tr class="<?php echo $class;?>">
-          
-          @if($isMobile)
-         <td class ="text-left static static-td" >  
-            @else
-            <td class="text-left" style="padding: 10px 5px!important">
-            @endif
+            <td class="text-left fix-col" style="padding: 10px 5px!important">
+               <div class=" fix-col-data">
                 <?php if ($book->agency != 0): ?>
                   <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center"/>
                 <?php endif ?>
@@ -82,9 +71,10 @@ $isMobile = $mobile->isMobile();
                     <?php echo $book->customer['name']  ?>
                 </a>
                 <?php endif ?>
+               </div>
             </td>
             @if($isMobile)
-            <td class="text-center  first-col" style="padding-left: 140px!important">
+            <td class="text-center ">
               <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
               <a href="tel:<?php echo $book->customer->phone ?>">
                 <i class="fa fa-phone"></i>
@@ -113,14 +103,14 @@ $isMobile = $mobile->isMobile();
 
             <td class ="text-center" >
                 <?php if ($book->hasSendPicture()): ?>
-                <button class="font-w800 btn btn-xs getImagesCustomer" type="button" data-toggle="modal" data-target="#modalRoomImages" style="z-index: 99; border: none; background-color:transparent!important; color: lightgray; padding: 0;"
+                <button class="font-w800 btn btn-xs getImagesCustomer" type="button" data-toggle="modal" data-target="#modalRoomImages" style="border: none; background-color:transparent!important; color: lightgray; padding: 0;"
                         data-id="<?php echo $book->room->id ?>"
                         data-idCustomer="<?php echo $book->id ?>"
                         onclick="return confirm('¿Quieres reenviar las imagenes');">
                     <i class="fa fa-eye"></i>
                 </button>
                 <?php else: ?>
-                <button class="font-w800 btn btn-xs getImagesCustomer" type="button" data-toggle="modal" data-target="#modalRoomImages" style="z-index: 99; border: none; background-color: transparent!important; color:black; padding: 0;"
+                <button class="font-w800 btn btn-xs getImagesCustomer" type="button" data-toggle="modal" data-target="#modalRoomImages" style="border: none; background-color: transparent!important; color:black; padding: 0;"
                         data-id="<?php echo $book->room->id ?>"
                         data-idCustomer="<?php echo $book->id ?>"
                 >

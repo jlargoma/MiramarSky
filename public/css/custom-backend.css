@@ -446,3 +446,15 @@ div#box_msg_lst {
     padding: 1em 3px;
   }
 }
+.Reservado, .table.table-striped tbody tr.Reservado td {
+    background-color: #96ef99 !important;
+}
+.contestado-email {
+    background-color: #f8f7c8 !important;
+}
+.Blocked-ical {
+    background-color: #9f9f9f !important;
+}
+.atipicas, .table.table-striped tbody tr.atipicas td {
+    background-color: #a59bcc !important;
+}

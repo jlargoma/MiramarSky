@@ -1,137 +1,130 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-<script src="/assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js" type="text/javascript"></script>
-<script src="/assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js" type="text/javascript"></script>
-<script src="/assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js" type="text/javascript"></script>
-<script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
-<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
-<script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
-<script type="text/javascript" src="/assets/js/datatables.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
 
+<?php $isMobile = $mobile->isMobile(); ?>
 <?php if ( $type == 'pendientes'): ?>
 
 	@include('backend.planning.listados._pendientes', ['books' => $books ])
     <?php if (Auth::user()->role != "agente" ): ?>
-        <?php if (!$mobile->isMobile() ): ?>
             <script>
               $('.table-data').dataTable({
                 "searching": false,
                 "paging":  false,
                 "aaSorting": [],
                 "columnDefs": [
-                  { "targets": [0,1,2,3,4,8,9,10,11,12], "orderable": false }
+                  { "targets": [0,1,2,3,4,8,9,10,11], "orderable": false }
                   //5,6,7,
                 ],
+                @if($isMobile)
+                  scrollX: true,
+                  scrollY: false,
+                  scrollCollapse: true,
+                  fixedColumns:   {
+                    leftColumns: 1
+                  },
+                @endif
 
               });
             </script>
-        <?php else: ?>
-            <script>
-//              $('.table-data').dataTable({
-//                "searching": false,
-//                "paging":   false,
-//                "aaSorting": [],
-//                "columnDefs": [
-//                  {"targets": [0,3,4,6,7,8,9], "orderable": false }
-//                  //1,2,5
-//                ],
-//
-//              });
-            </script>
-        <?php endif ?>
     <?php endif ?>
 <?php elseif( $type == 'especiales'): ?>
 
 	@include('backend.planning.listados._especiales', ['books' => $books ])
+         <script>
+              $('.table-data').dataTable({
+                "searching": false,
+                "aaSorting": [],
+                "paging":   false,
+                "columnDefs": [
+                  {"targets": [0,1,2,3,6,7,8,9], "orderable": false }
+                ],
+                @if($isMobile)
+                  scrollX: true,
+                  scrollY: false,
+                  scrollCollapse: true,
+                  fixedColumns:   {
+                    leftColumns: 1
+                  },
+                @endif
+
+              });
+            </script>
 
 <?php elseif( $type == 'confirmadas' || $type == 'blocked-ical' ): ?>
 
 	@include('backend.planning.listados._pagadas', ['books' => $books, "type" => $type ])
     <?php if (Auth::user()->role != "agente" ): ?>
-        <?php if (!$mobile->isMobile() ): ?>
             <script>
               $('.table-data').dataTable({
                 "searching": false,
                 "aaSorting": [],
                 "paging":   false,
                 "columnDefs": [
-                  {"targets": [0,1,2,3,4,6,9,10], "orderable": false }
+                  {"targets": [0,1,2,3,4,9,10], "orderable": false }
                 ],
+                @if($isMobile)
+                  scrollX: true,
+                  scrollY: false,
+                  scrollCollapse: true,
+                  fixedColumns:   {
+                    leftColumns: 1
+                  },
+                @endif
 
               });
             </script>
-        <?php else: ?>
-<!--            <script>
-              $('.table-data').dataTable({
-                "searching": false,
-                "aaSorting": [],
-                "paging":   false,
-                "columnDefs": [
-                  {"targets": [0,2,4,5,6,7,8], "orderable": false }
-                ],
-
-              });
-            </script>-->
-        <?php endif ?>
     <?php endif ?>
 <?php elseif( $type == 'checkin' || $type == 'ff_pdtes'): ?>
 	@include('backend.planning.listados._checkin', ['books' => $books ])
     <?php if (Auth::user()->role != "agente" && Auth::user()->role != "limpieza"): ?>
-        <?php if (!$mobile->isMobile() ): ?>
             <script>
           $('.table-data').dataTable({
             "searching": false,
             "order": [[ 7, "asc" ]],
             "paging":   false,
             "columnDefs": [
-              {"targets": [0,1,2,3,4,5,6,8,9,10,11], "orderable": false }
+              {"targets": [0,1,2,3,4,5,8,9,10,11], "orderable": false }
             ],
+            @if($isMobile)
+              scrollX: true,
+              scrollY: false,
+              scrollCollapse: true,
+              fixedColumns:   {
+                leftColumns: 1
+              },
+            @endif
           });
         </script>
-        <?php else: ?>
-<!--            <script>
-              $('.table-data').dataTable({
-                "searching": false,
-                "order": [[ 5, "asc" ], [6, "asc" ]],
-                "paging":   false,
-                "columnDefs": [
-                  {"targets": [0,1,2,3,4,7,8,9], "orderable": false }
-                ],
 
-              });
-            </script>-->
-        <?php endif ?>
     <?php endif ?>
 
 <?php elseif( $type == 'checkout'): ?>
 	@include('backend.planning.listados._checkout', ['books' => $books ])
 	<?php if (Auth::user()->role != "limpieza"): ?>
-        
-         <?php if (!$mobile->isMobile() ): ?>
 	<script>
 	  $('.table-data').dataTable({
 		"searching": false,
 		"paging":   false,
 		"order": [[ 3, "asc" ]],
 		"columnDefs": [
-		  {"targets": [0,1,2,4,5,6], "orderable": false }
+		  {"targets": [0,1,2,5,6], "orderable": false }
 		],
+                @if($isMobile)
+                  scrollX: true,
+                  scrollY: false,
+                  scrollCollapse: true,
+                  fixedColumns:   {
+                    leftColumns: 1
+                  },
+                @endif
 
 	  });
 	</script>
         <?php endif ?>
-	<?php else: ?>
-<!--	<script>
-	  $('.table-data').dataTable({
-		"searching": false,
-		"paging":   false,
-		"order": [[ 3, "asc" ]],
-		"columnDefs": [
-		  {"targets": [0,1,2,4,5], "orderable": false }
-		],
 
-	  });
-	</script>-->
-	<?php endif ?>
 <?php elseif( $type == 'eliminadas'): ?>
 	@include('backend.planning.listados._eliminadas', ['books' => $books ])
 <?php endif ?>

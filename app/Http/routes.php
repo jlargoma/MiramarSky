@@ -15,8 +15,8 @@
     
     Route::auth();
     
-    Route::group(['middleware' => ['page-cache']], function () {
       Route::get('/', 'HomeController@index');
+//      Route::get('/', 'HomeController@index')->middleware('page-cache');
       
       Route::get('/404', function () {
          return view('404');
@@ -28,7 +28,6 @@
           return view('no-allowed');
       });
     
-    });
    
   
     Route::get('/partee-checkHuespedes', function () {
