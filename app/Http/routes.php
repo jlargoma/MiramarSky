@@ -28,6 +28,10 @@
           return view('no-allowed');
       });
     
+      Route::post('static-token', function () {
+          return csrf_token();
+      });
+    
    
   
     Route::get('/partee-checkHuespedes', function () {
