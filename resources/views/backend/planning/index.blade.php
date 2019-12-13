@@ -94,6 +94,9 @@ setlocale(LC_TIME, "es_ES");
             z-index: 100 !important;
             border-right: 1px solid #5f5d5d !important;
           }
+          .table tbody tr.contestado-email td.static-td {
+            background-color: #f8f7c8 !important;
+          }
           .Reservado .static-td{       
             background-color: #bdf9bd  !important;
           }
