@@ -6,20 +6,13 @@
 
 <div class="tab-pane " id="tabEspeciales">
   <div class="table-responsive">
-    <table class="table table-data"  data-type="especiales">
+    <table class="table table-data table-striped"  data-type="especiales">
       <thead>
           <tr>  
-          @if($isMobile)
-            <th class="text-centerReserva Propietario text-white static" style="background-color: #f2a405;width: 130px; padding: 14px !important;">  
-               Cliente
-            </th>
-            <th class="text-center Reserva Propietario text-white first-col" style="padding-left: 130px!important">
-              <i class="fa fa-phone"></i>
-            </th>
-          @else
             <th class ="text-center Reserva Propietario text-white" >   Cliente     </th>
-            <th class ="text-center Reserva Propietario text-white" >   Telefono     </th>
-          @endif
+            <th class ="text-center Reserva Propietario text-white" >   
+              @if($isMobile) <i class="fa fa-phone"></i> @else Telefono @endif    
+            </th>
               <th class ="text-center Reserva Propietario text-white" style="width: 7%!important">   Pax         </th>
               <th class ="text-center Reserva Propietario text-white" style="width: 10%!important">   Apart       </th>
               <th class ="text-center Reserva Propietario text-white" style="width: 6%!important">   IN     </th>
@@ -39,12 +32,8 @@
 
           <tr class="<?php echo strtolower( $class) ;?>">
 
-            @if($isMobile)
-            <td class ="text-left static static-td" >  
-            @else
-            <td class="text-left" style="padding: 10px 5px!important">
-            @endif
-            
+            <td class="text-left fix-col" style="padding: 10px 5px!important">
+              <div class=" fix-col-data">
               @if($book->is_fastpayment == 1 || $book->type_book == 99 )
               <img style="width: 18px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
               @endif
@@ -53,9 +42,10 @@
               <?php else: ?>
                   <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
               <?php endif ?> 
+              </div>
             </td>
             @if($isMobile)
-            <td class="text-center  first-col" style="padding-left: 140px!important">
+            <td class="text-center">
               <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
               <a href="tel:<?php echo $book->customer->phone ?>">
                 <i class="fa fa-phone"></i>

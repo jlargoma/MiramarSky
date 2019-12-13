@@ -6,19 +6,12 @@
 <?php $startWeek = Carbon::now()->startOfWeek(); ?>
 <?php $endWeek = Carbon::now()->endOfWeek(); ?>
 <div class="table-responsive">
-    <table class="table table-data" style="margin: 0;">
+    <table class="table table-data table-striped"  style="margin: 0;">
         <thead>
-          @if($isMobile)
-          <th class="bg-primary text-white static" style="background-color: #6d5cae;margin-top: 0;width: 130px;padding: 14px !important;">  
-            Cliente
-          </th>
-          <th class="bg-primary text-white first-col" style="padding-left: 140px!important">
-            <i class="fa fa-phone"></i>
-          </th>
-          @else
           <th class="bg-primary text-white" style="min-width: 180px !important;">Cliente</th>
-          <th class="bg-primary text-white">Telefono</th>
-          @endif
+          <th class="bg-primary text-white">
+            @if($isMobile) <i class="fa fa-phone"></i> @else Telefono @endif
+          </th>
             <th class="bg-primary text-white text-center">Pax</th>
             <th class="bg-primary text-white text-center">Out</th>
             <th class="bg-primary text-white text-center">Apto</th>
@@ -35,12 +28,7 @@
                 <?php endif ?>
                 <tr class="<?php if($count <= 1){echo $class;} ?>">
                   
-                    @if($isMobile)
-                    <td class ="text-left static static-td" style="height: 57px;padding: 19px 2px !important;" >  
-                   @else
                     <td class="text-center sm-p-t-10 sm-p-b-10">
-                   @endif
-                         
                         <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                             <?php echo substr($book->customer->name, 0, 10) ?>
                         </a> 
@@ -49,7 +37,7 @@
                     @endif
                     </td>
                     @if($isMobile)
-                    <td class="text-center  first-col" style="padding-left: 140px!important">
+                    <td class="text-center">
                       <?php if ($book->customer->phone != 0 && $book->customer->phone != ""): ?>
                         <a href="tel:<?php echo $book->customer->phone ?>">
                           <i class="fa fa-phone"></i>
