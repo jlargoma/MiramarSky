@@ -8,7 +8,7 @@ $isMobile = $mobile->isMobile();
     <thead>
     <tr>
         @if($isMobile)
-          <th class="text-center Reservado-table text-white static" style="width: 130px; padding: 14px !important;">  
+          <th class="text-center Reservado-table text-white static" style="    height: 42px;width: 130px; padding: 14px !important;">  
              Cliente
           </th>
           <th class="text-center Reservado-table text-white first-col" style="padding-left: 140px!important">

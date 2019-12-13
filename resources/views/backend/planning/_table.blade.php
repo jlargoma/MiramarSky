@@ -26,16 +26,16 @@
             </script>
         <?php else: ?>
             <script>
-              $('.table-data').dataTable({
-                "searching": false,
-                "paging":   false,
-                "aaSorting": [],
-                "columnDefs": [
-                  {"targets": [0,3,4,6,7,8,9], "orderable": false }
-                  //1,2,5
-                ],
-
-              });
+//              $('.table-data').dataTable({
+//                "searching": false,
+//                "paging":   false,
+//                "aaSorting": [],
+//                "columnDefs": [
+//                  {"targets": [0,3,4,6,7,8,9], "orderable": false }
+//                  //1,2,5
+//                ],
+//
+//              });
             </script>
         <?php endif ?>
     <?php endif ?>
@@ -60,7 +60,7 @@
               });
             </script>
         <?php else: ?>
-            <script>
+<!--            <script>
               $('.table-data').dataTable({
                 "searching": false,
                 "aaSorting": [],
@@ -70,7 +70,7 @@
                 ],
 
               });
-            </script>
+            </script>-->
         <?php endif ?>
     <?php endif ?>
 <?php elseif( $type == 'checkin' || $type == 'ff_pdtes'): ?>
@@ -88,7 +88,7 @@
           });
         </script>
         <?php else: ?>
-            <script>
+<!--            <script>
               $('.table-data').dataTable({
                 "searching": false,
                 "order": [[ 5, "asc" ], [6, "asc" ]],
@@ -98,13 +98,15 @@
                 ],
 
               });
-            </script>
+            </script>-->
         <?php endif ?>
     <?php endif ?>
 
 <?php elseif( $type == 'checkout'): ?>
 	@include('backend.planning.listados._checkout', ['books' => $books ])
 	<?php if (Auth::user()->role != "limpieza"): ?>
+        
+         <?php if (!$mobile->isMobile() ): ?>
 	<script>
 	  $('.table-data').dataTable({
 		"searching": false,
@@ -116,8 +118,9 @@
 
 	  });
 	</script>
+        <?php endif ?>
 	<?php else: ?>
-	<script>
+<!--	<script>
 	  $('.table-data').dataTable({
 		"searching": false,
 		"paging":   false,
@@ -127,7 +130,7 @@
 		],
 
 	  });
-	</script>
+	</script>-->
 	<?php endif ?>
 <?php elseif( $type == 'eliminadas'): ?>
 	@include('backend.planning.listados._eliminadas', ['books' => $books ])

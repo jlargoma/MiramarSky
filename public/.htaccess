@@ -15,12 +15,12 @@
 #    RewriteCond %{DOCUMENT_ROOT}/page-cache/pc__index__pc.html -f
 #    RewriteCond %{DOCUMENT_ROOT}/page-cache/pc__index__pc.html -f
 
-
-    RewriteCond %{REQUEST_URI} /$
-    RewriteCond %{DOCUMENT_ROOT}/public/page-cache/pc__index__pc.html -f
-    RewriteRule ^ page-cache/pc__index__pc.html [L]
-    RewriteCond %{DOCUMENT_ROOT}/public/page-cache/%{REQUEST_URI} -f
-    RewriteRule . ^/page-cache/%{REQUEST_URI}.html [L]
+# 
+  RewriteCond %{REQUEST_URI} /$
+  RewriteCond %{DOCUMENT_ROOT}/public/page-cache/pc__index__pc.html -f
+  RewriteRule ^ page-cache/pc__index__pc.html [L]
+  RewriteCond %{DOCUMENT_ROOT}/public/page-cache/%{REQUEST_URI} -f
+  RewriteRule . ^/page-cache/%{REQUEST_URI}.html [L]
 
     # Handle Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
