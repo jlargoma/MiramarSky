@@ -80,6 +80,9 @@ setlocale(LC_TIME, "es_ES");
           .tooltip-2 {
             position: relative !important;
           }
+          .btn-tabs{
+            min-width: 515px;
+          }
         }
     </style>
 @endsection
