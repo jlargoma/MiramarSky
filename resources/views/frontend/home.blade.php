@@ -22,7 +22,7 @@
                   <h3 class="text-center white">CALCULA TU PRECIO</h3>
                 </div>
                 <div id="form-content">
-                  @include('frontend._formBook')
+                  @include('frontend._formBook_static')
                 </div>
               </div>
             </div>

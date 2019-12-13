@@ -64,6 +64,16 @@
                 
               }, 1700);
       $('div.bg-img img').attr('style', 'max-width:none !important;');
+      
+      
+      $('#confirmBookStatic').on('click', function(event){
+         event.preventDefault();
+         $.post('/static-token', function (data) {
+            $('#_static_token').val(data);
+            $('#form-book-apto-lujo').submit()
+          });
+         
+      });
     });
   </script>
 
