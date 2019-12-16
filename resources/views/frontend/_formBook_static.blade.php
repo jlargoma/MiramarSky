@@ -1,3 +1,9 @@
+
+<style>
+  div#content-response {
+    padding: 1em 0px 1em 2em !important;
+  }
+</style>
 <form id="form-book-apto-lujo" action="{{url('/getPriceBook')}}" method="post">
     <input type="hidden" name="_token" id="_static_token" value="ss">
 
