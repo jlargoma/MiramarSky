@@ -315,7 +315,6 @@ $(document).ready(function() {
       $('#tableOrderable').dataTable({
 	searching: true,
 	ordering:true,
-	paging:  false,
         scrollX: true,
         scrollY: false,
         scrollCollapse: true,

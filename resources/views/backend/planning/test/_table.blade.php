@@ -19,6 +19,9 @@
                   //5,6,7,
                 ],
                 @if($isMobile)
+                  paging:  true,
+                  pageLength: 30,
+                  pagingType: "full_numbers",
                   scrollX: true,
                   scrollY: false,
                   scrollCollapse: true,
