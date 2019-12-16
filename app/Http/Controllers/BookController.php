@@ -178,6 +178,15 @@ class BookController extends AppController
             $ff_mount = $balance->data->total;
           }
         }
+        
+        if (isset($_GET['test'])){
+          return view(
+                  'backend/planning/test/index',
+                  compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
+                          'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits',
+                          'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment','ff_pendientes','ff_mount')
+          );
+        }
           
 		return view(
 			'backend/planning/index',
