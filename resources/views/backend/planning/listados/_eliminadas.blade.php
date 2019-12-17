@@ -8,17 +8,10 @@ $isMobile = $mobile->isMobile();
         <table class="table table-data table-striped"  data-type="pendientes" style="margin-top: 0;">
             <thead>
                 <tr>  
-                  @if($isMobile)
-                  <th class="bg-danger text-center text-white static" style="background-color: #ee5653;margin-top: 0;width: 130px;padding: 14px !important;">  
-                    Cliente
+                  <th class="bg-danger text-center text-white"> Cliente</th>
+                  <th class="bg-danger text-center text-white">
+                    @if($isMobile) <i class="fa fa-phone"></i> @else Telefono @endif
                   </th>
-                  <th class="bg-danger text-center text-white first-col" style="padding-left: 140px!important">
-                    <i class="fa fa-phone"></i>
-                  </th>
-                  @else
-                  <th class="bg-danger text-center text-white" style="min-width: 180px !important;">Cliente</th>
-                  <th class="bg-danger text-center text-white">Telefono</th>
-                  @endif
                   <th class ="bg-danger text-center text-white" style="width: 7%!important">   Pax         </th>
                   <th class ="bg-danger text-center text-white" style="width: 10%!important">   Apart       </th>
                   <th class ="bg-danger text-center text-white" style="width: 6%!important">   IN     </th>
@@ -34,21 +27,19 @@ $isMobile = $mobile->isMobile();
                 <?php foreach ($books as $book): ?>
                     <?php $class = ucwords($book->getStatus($book->type_book)) ?>
                     <tr class="<?php echo $class ;?>">  
-                      @if($isMobile)
-                        <td class ="text-left static static-td" style="height: 57px;padding: 19px 2px !important;" >  
-                      @else
-                        <td class="text-center sm-p-t-10 sm-p-b-10">
-                      @endif
+                      <td class="text-left fix-col" style="padding: 10px 5px!important">
+                          <div class=" fix-col-data">
                           <?php if ($book->agency != 0): ?>
                               <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
                           <?php endif ?>
                               <a class="update-book" data-id="<?php echo $book->id ?>" title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red">
                                   <?php echo substr( $book->customer->name , 0, 8)  ?>
                               </a>
+                          </div>
                       </td>
 
                     @if($isMobile)
-                    <td class="text-center  first-col" style="padding-left: 140px!important">
+                    <td class="text-center">
                       <?php if ($book->customer->phone != 0 && $book->customer->phone != ""): ?>
                         <a href="tel:<?php echo $book->customer->phone ?>">
                           <i class="fa fa-phone"></i>
