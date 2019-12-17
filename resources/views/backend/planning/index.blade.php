@@ -93,6 +93,10 @@ $is_mobile = $mobile->isMobile();
             display: block;
             margin: 6em auto;
           }
+          .title-year-selector{    
+            margin-top: -14px;
+            font-weight: 800;
+          }
         }
     </style>
 @endsection
@@ -360,9 +364,14 @@ $is_mobile = $mobile->isMobile();
         <div class="container-fluid  p-l-15 p-r-15 p-t-20 bg-white">
             <div class="row push-10">
             <div class="container">
-                <div class="col-xs-12 text-center">
-                     @include('backend.years.selector', ['minimal' => false])
+               <div class="row">
+                <div class="col-md-12 col-xs-5 title-year-selector">
+                   <h2>Planning</h2>
                 </div>
+                <div class="col-md-12 col-xs-7">
+                   @include('backend.years._selector')
+                </div>
+              </div>
             </div>
             @include('backend.planning._buttons_top',[
             'alarms'=>$alarms,
