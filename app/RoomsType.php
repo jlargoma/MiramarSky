@@ -49,7 +49,7 @@ class RoomsType extends Model
       case 4:
       case 7:
       case 8:
-         $typeApto = "3 DORM";
+         $typeApto = "4 DORM";
          break;
       case 9:
          $typeApto = "CHALET";

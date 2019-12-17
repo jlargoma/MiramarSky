@@ -1,24 +1,30 @@
 <?php 
 use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); 
+$isMobile = $mobile->isMobile();
 ?>
+
 <div class="table-responsive">
 <table class="table table-data table-striped" data-type="pendientes">
     <thead>
     <tr>
-        <th > Cliente</th>
-        <th >
-          <i class="fa fa-phone"></i> 
+        <th class="text-center Reservado-table text-white"> Cliente</th>
+        <th class="text-center Reservado-table text-white">
+          @if($isMobile) <i class="fa fa-phone"></i> @else Telefono @endif
         </th>
-        <th> Pax</th>
-        <th></th>
-        <th> Apart</th>
-        <th> IN</th>
-        <th> OUT</th>
-        <th><i class="fa fa-moon-o"></i></th>
-        <th > Precio</th>
-        <th  style="width: 12%!important"> Estado</th>
-        <th  style="max-width:30px !important;">&nbsp;</th>
-        <th  style="width: 65px!important">Acciones</th>
+        <th class="text-center Reservado-table text-white" style="width: 7%!important"> Pax</th>
+        <th class="text-center Reservado-table text-white" style="width: 5%!important"></th>
+        <th class="text-center Reservado-table text-white" style="width: 10%!important"> Apart</th>
+        <th class="text-center Reservado-table text-white" style="width: 30px !important"> IN</th>
+        <th class="text-center Reservado-table text-white" style="width: 30px !important"> OUT</th>
+        <th class="text-center Reservado-table text-white" style="width: 6%!important"><i class="fa fa-moon-o"></i></th>
+        <th class="text-center Reservado-table text-white"> Precio</th>
+        @if(Auth::user()->role != "agente" )
+        <th class="text-center Reservado-table text-white" style="width: 12%!important"> Estado</th>
+        @endif
+        <th class="text-center Reservado-table text-white" style="max-width:30px !important;">&nbsp;</th>
+		<?php if ( Auth::user()->role != "agente" ): ?>
+        <th class="text-center Reservado-table text-white" style="width: 65px!important">Acciones</th>
+		<?php endif ?>
     </tr>
     </thead>
     <tbody>
@@ -41,7 +47,7 @@ use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES");
                 <?php endif ?>
 
         <tr class="<?php echo $class;?>">
-            <td>
+            <td class="text-left fix-col" style="padding: 10px 5px!important">
                <div class=" fix-col-data">
                 <?php if ($book->agency != 0): ?>
                   <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center"/>
@@ -60,25 +66,33 @@ use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES");
                 <?php else: ?>
                 <a class="update-book" data-id="<?php echo $book->id ?>"
                    title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"
-                   href="/admin/reservas/update/<?php echo $book->id ?>"
+                   href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"
                 >
                     <?php echo $book->customer['name']  ?>
                 </a>
                 <?php endif ?>
                </div>
             </td>
-
-            <td>
+            @if($isMobile)
+            <td class="text-center ">
               <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
               <a href="tel:<?php echo $book->customer->phone ?>">
                 <i class="fa fa-phone"></i>
               </a>
               <?php endif ?>
             </td>
-         
+            @else
+            <td class="text-center">
+                <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
+              <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?></a>
+                    <?php else: ?>
+                    <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>"/>
+                <?php endif ?>
+            </td>
+            @endif
             
 
-            <td>
+            <td class="text-center">
                 <?php if ($book->real_pax > 6 ): ?>
                 <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
                 <?php else: ?>
@@ -87,7 +101,7 @@ use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES");
 
             </td>
 
-            <td>
+            <td class ="text-center" >
                 <?php if ($book->hasSendPicture()): ?>
                 <button class="font-w800 btn btn-xs getImagesCustomer" type="button" data-toggle="modal" data-target="#modalRoomImages" style="border: none; background-color:transparent!important; color: lightgray; padding: 0;"
                         data-id="<?php echo $book->room->id ?>"
@@ -121,25 +135,28 @@ use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES");
                 <?php endif ?>
             </td>
 
-            <td>
-               
-            </td>
-            <td>
-                <?php echo $book->start; ?>
-            </td>
-            <td>
-                <?php echo $book->finish; ?>
+            <td class="text-center">
             </td>
 
-            <td><?php echo $book->nigths ?></td>
+            <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
+            <td class ="text-center" data-order="<?php echo strtotime($start->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
+                <?php echo $start->formatLocalized('%d %b'); ?>
+            </td>
+            <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
+            <td class ="text-center" data-order="<?php echo strtotime($finish->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
+                <?php echo $finish->formatLocalized('%d %b'); ?>
+            </td>
 
-            <td><?php echo ($book->total_price) . "€" ?><br>
+            <td class="text-center"><?php echo $book->nigths ?></td>
+
+            <td class="text-center"><?php echo round($book->total_price) . "€" ?><br>
             </td>
-         
-            <td>
-               <?php echo $book->getStatus($book->type_book) ?>
+            @if(Auth::user()->role != "agente" )
+            <td class="text-center">
+                
             </td>
-             <td>
+             @endif
+             <td class="text-center" style="max-width:30px !important;">
                 <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
                 <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
                                 <img src="/pages/oferta.png" style="width: 40px;">
@@ -149,9 +166,23 @@ use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES");
 
                 <?php endif ?>
             </td>
-            <td>
+            <?php if ( Auth::user()->role != "agente" ): ?>
+            <td class="text-center">
+              <?php
+                $ff_status = $book->get_ff_status(false);
+                if ($ff_status['icon']){
+                      echo '<img data-booking="'.$book->id.'" src="'.$ff_status['icon'].'" class="showFF_resume" style="max-width:25px;" alt="'.$ff_status['name'].'"/>';
+                      echo '<div class="FF_resume tooltiptext"></div>';
+                }
+              ?>
              
+                <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button"
+                        data-toggle="tooltip" title="" data-original-title="Eliminar Reserva"
+                        onclick="return confirm('¿Quieres Eliminar la reserva?');">
+                    <i class="fa fa-trash"></i>
+                </button>
             </td>
+            <?php endif ?>
         </tr>
         <?php endforeach ?>
     </tbody>

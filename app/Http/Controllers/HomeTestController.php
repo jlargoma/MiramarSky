@@ -97,7 +97,7 @@ class HomeTestController extends AppController
 
 			case 'apartamento lujo gran capacidad':
 				$aptoHeading       = "APTOS 3/4 DORMITORIOS LUJO";
-				$aptoHeadingMobile = "3DORM GRAN CAPACIDAD";
+				$aptoHeadingMobile = "4DORM GRAN CAPACIDAD";
 
 				$typeApto = 6;
 				break;
@@ -445,7 +445,7 @@ class HomeTestController extends AppController
 				$roomAssigned = 149;
 			}
 
-			$typeApto = "3 DORM Lujo";
+			$typeApto = "4 DORM Lujo";
 			$limp     = (int) \App\Extras::find(3)->price;
 		}
 
@@ -490,7 +490,7 @@ class HomeTestController extends AppController
 			$parking      = 2;
 		}
 
-		if ($typeApto == "3 DORM Lujo")
+		if ($typeApto == "4 DORM Lujo")
 		{
 			if ($roomAssigned == 153 || $roomAssigned = 149)
 				$priceParking = $priceParking * 2;

@@ -95,7 +95,7 @@ class HomeControllerOld extends AppController
 
             case 'apartamento lujo gran capacidad':
                 $aptoHeading       = "APTOS 3/4 DORMITORIOS LUJO";
-                $aptoHeadingMobile = "3DORM GRAN CAPACIDAD";
+                $aptoHeadingMobile = "4DORM GRAN CAPACIDAD";
 
                 $typeApto = 6;
                 break;
