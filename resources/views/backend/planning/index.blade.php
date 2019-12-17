@@ -1,6 +1,8 @@
 <?php   use \Carbon\Carbon;
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
+
+$is_mobile = $mobile->isMobile();
 ?>
 @extends('layouts.admin-master')
 
@@ -83,6 +85,14 @@ setlocale(LC_TIME, "es_ES");
           .btn-tabs{
             min-width: 515px;
           }
+          .dataTables_length{
+            display: none;
+          }
+          
+          #cargar_calend{
+            display: block;
+            margin: 6em auto;
+          }
         }
     </style>
 @endsection
@@ -93,7 +103,7 @@ setlocale(LC_TIME, "es_ES");
       {{ implode('', $errors->all(':message')) }}
     </div>
   @endif
-    <?php if (!$mobile->isMobile() ): ?>
+    <?php if (!$is_mobile ): ?>
         <div class="container-fluid  p-l-15 p-r-15 p-t-20 bg-white">
             @include('backend.years.selector', ['minimal' => false])
             @include('backend.planning._buttons_top',[
@@ -430,21 +440,13 @@ setlocale(LC_TIME, "es_ES");
                 @include('backend.planning._table', ['type'=> 'pendientes'])
             </div>
             <div class="col-md-5">
-                <div class="row content-calendar calendar-mobile" style="min-height: 485px;">
-                    <div class="col-xs-12 text-center sending" style="padding: 120px 15px;">
-                        <i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br>
-                        <h2 class="text-center">CARGANDO CALENDARIO</h2>
-                    </div>
-                </div>
-
-                <div class="col-md-12" id="stripe-conten-index" style="display: none;">
-                    @include('backend.stripe.stripe', ['bookTocharge' => null])
+                <div class="row content-calendar calendar-mobile" style="min-height: 485px; width: 100%;">
+                  <button type="button" id="cargar_calend" class="btn btn-success btn-large">Cargar calendario</button>
                 </div>
 
                 <div class="col-xs-12">
                     <!-- www.tutiempo.net - Ancho:446px - Alto:89px -->
                     <div id="TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G">El tiempo - Tutiempo.net</div>
-                    <script type="text/javascript" src="https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"></script>
                 </div>
             </div>
         </div>
@@ -597,7 +599,7 @@ setlocale(LC_TIME, "es_ES");
               </div>
             </div>
         </div>
-          <form method="post" id="formFF" action=""  <?php if (!$mobile->isMobile()){ echo 'target="_blank"';} ?>>
+          <form method="post" id="formFF" action=""  <?php if (!$is_mobile){ echo 'target="_blank"';} ?>>
               <input type="hidden" name="admin_ff" id="admin_ff">
             </form>
 @endsection
@@ -606,6 +608,12 @@ setlocale(LC_TIME, "es_ES");
 
     <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
     <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
+
 
     <script src="/assets/js/notifications.js" type="text/javascript"></script>
     <script type="text/javascript">
@@ -695,13 +703,16 @@ setlocale(LC_TIME, "es_ES");
         
         
           
-
+        @if(!$is_mobile)
         // Cargamos el calendario cuando acaba de cargar la pagina
         setTimeout(function(){
           $('.content-calendar').empty().load('/getCalendarMobile');
         }, 1500);
-
-
+        @endif
+        $('#cargar_calend').on('click',function(){
+          $('.content-calendar').empty().load('/getCalendarMobile');
+          $(this).remove();
+        });
         // CARGAMOS POPUP DE CALENDARIO BOOKING
         $('.btn-calendarBooking').click(function(event) {
           $('#modalCalendarBooking .modal-content').empty().load('/admin/reservas/api/calendarBooking');
@@ -768,8 +779,10 @@ setlocale(LC_TIME, "es_ES");
           formFF.submit();
         });
       });
+      
+      
 
-      });
+     
       
       
       //Fianzas
@@ -907,7 +920,13 @@ setlocale(LC_TIME, "es_ES");
           }
       });
 
-
+    setTimeout(
+      function () {
+        var my_awesome_script = document.createElement('script');
+        my_awesome_script.setAttribute('src', "https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G");
+        document.body.appendChild(my_awesome_script);
+      }, 1700);
+ });
 
     </script>
 
