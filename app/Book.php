@@ -132,7 +132,7 @@ class Book extends Model {
 
   //Para poner nombre al estado de la reserva//
   public function getStatus($status) {
-    return $this->typeBooks[$status];
+    return isset($this->typeBooks[$status]) ? $this->typeBooks[$status] : $status;
   }
 
   public function getTypeBooks() {

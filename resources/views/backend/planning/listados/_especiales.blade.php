@@ -2,6 +2,7 @@
         setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES"); 
         $isMobile = $mobile->isMobile();
+
 ?>
 
 <div class="tab-pane " id="tabEspeciales">
@@ -30,12 +31,11 @@
               <?php $class = "contestado-email" ?>
           <?php endif ?>
 
-          <tr class="<?php echo strtolower( $class) ;?>">
-
-            <td class="text-left fix-col" style="padding: 10px 5px!important">
+          <tr class="<?php echo strtolower( $class) ;?>" data-id="{{$book->id}}" >
+            <td class="fix-col td-b1">
               <div class=" fix-col-data">
               @if($book->is_fastpayment == 1 || $book->type_book == 99 )
-              <img style="width: 18px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
+              <img class="img-agency" src="/pages/fastpayment.png"/>
               @endif
               <?php if (isset($payment[$book->id])): ?>
                   <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
@@ -45,7 +45,7 @@
               </div>
             </td>
             @if($isMobile)
-            <td class="text-center">
+            <td >
               <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
               <a href="tel:<?php echo $book->customer->phone ?>">
                 <i class="fa fa-phone"></i>
@@ -53,7 +53,7 @@
               <?php endif ?>
             </td>
             @else
-            <td class="text-center">
+            <td >
                 <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
               <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?></a>
                     <?php else: ?>
@@ -61,66 +61,44 @@
                 <?php endif ?>
             </td>
             @endif
-            <td class ="text-center" >
+            <td  >
                 <?php if ($book->real_pax > 6 ): ?>
                     <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
                 <?php else: ?>
                     <?php echo $book->pax ?>
                 <?php endif ?>
-
             </td>
-                      <td class ="text-center">
-                          <select class="room form-control minimal" data-id="<?php echo $book->id ?>" >
-
-                              <?php foreach ($rooms as $room): ?>
-                                  <?php if ($room->id == $book->room_id): ?>
-                                      <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                         <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
-                                      </option>
-                                  <?php else:?>
-                                      <option value="<?php echo $room->id ?>"><?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?></option>
-                                  <?php endif ?>
-                              <?php endforeach ?>
-
-                          </select>
+                      <td >
+                          <?php 
+              if ($book->room){
+                $room = $book->room;
+                ?>
+              <button type="button" class="btn changeRoom" data-c="{{$room->id}}">
+              <?php echo substr($room->nameRoom . " - " . $room->name, 0, 15);?>
+              </button>  
+                <?php
+              }
+              ?>
                       </td>
-                      <td class ="text-center" style="width: 20%!important">
-                          <?php
-                              $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                              echo $start->formatLocalized('%d %b');
-                          ?>
-                      </td>
-                      <td class ="text-center" style="width: 20%!important">
-                          <?php
-                              $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                              echo $finish->formatLocalized('%d %b');
-                          ?>
-                      </td>
-                      <td class ="text-center"><?php echo $book->nigths ?></td>
-                      <td class ="text-center">
+                       <td class="td-date" data-order="{{$book->start}}">
+              <?php echo dateMin($book->start) ?>
+            </td>
+            <td class="td-date" data-order="{{$book->finish}}">
+              <?php echo dateMin($book->finish) ?>
+            </td>
+                      <td ><?php echo $book->nigths ?></td>
+                      <td >
                           <?php echo round($book->total_price)."€" ?><br>
                           <?php if (isset($payment[$book->id])): ?>
                               <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
                           <?php endif ?>
                       </td>
-                      <td class ="text-center">
-                          <select class="status form-control minimal" data-id="<?php echo $book->id ?>" >
-                              <?php for ($i=1; $i <= 11; $i++): ?> 
-                                  <?php if ($i == 5 && $book->customer->email == ""): ?>
-                                  <?php else: ?>
-                                      <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
-                                      <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
-                                      value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
-                                          <?php echo $book->getStatus($i) ?>
-
-                                      </option>   
-                                  <?php endif ?>
-
-
-                              <?php endfor; ?>
-                          </select>
+                      <td >
+                        <button type="button" class="btn changeStatus" data-c="{{$book->type_book}}">
+                          {{$book->getStatus($book->type_book)}}
+                        </button>
                       </td>
-                      <td class="text-center"> 
+                      <td > 
                           <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
                               <i class="fa fa-trash"></i>
                           </button>

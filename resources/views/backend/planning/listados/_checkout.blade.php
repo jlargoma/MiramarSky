@@ -26,7 +26,7 @@
                 <?php else: ?>
                     <?php $class = "lined"; $count++ ?>
                 <?php endif ?>
-                <tr class="<?php if($count <= 1){echo $class;} ?>">
+                <tr class="<?php if($count <= 1){echo $class;} ?>" data-id="{{$book->id}}" >
                   
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                         <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
