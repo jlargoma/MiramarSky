@@ -1,6 +1,7 @@
 <?php   use \Carbon\Carbon;
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
+$is_mobile = $mobile->isMobile();
 ?>
 @extends('layouts.admin-master')
 
@@ -170,7 +171,7 @@ setlocale(LC_TIME, "es_ES");
                 </div>
                 <div class="col-xs-12" id="resultSearchBook" style="display: none; padding-left: 0;"></div>
                 <div class="col-xs-12 content-tables" style="padding-left: 0;">
-                    @include('backend.planning._table', ['type'=> 'pendientes'])
+                    @include('backend.planning.test._table', ['type'=> 'pendientes'])
                 </div>
 
             </div>
@@ -591,6 +592,11 @@ setlocale(LC_TIME, "es_ES");
 
     <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
     <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
 
     <script src="/assets/js/notifications.js" type="text/javascript"></script>
     <script type="text/javascript">

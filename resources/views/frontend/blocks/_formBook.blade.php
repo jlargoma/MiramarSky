@@ -53,7 +53,7 @@
       <label class="col-md-12 text-left parking white">* Tipo Apto</label>
       <div class="apto-type">
         <input id="apto-3dorm" class="radio-style apto-3dorm form-control" name="apto" type="radio" value="3dorm">
-        <label for="apto-3dorm" class="radio-style-3-label">3Dor</label>
+        <label for="apto-3dorm" class="radio-style-3-label">4Dor</label>
       </div>
       <div class="apto-type">
         <input id="apto-2dorm" class="radio-style apto-2dorm form-control" name="apto" type="radio" value="2dorm">

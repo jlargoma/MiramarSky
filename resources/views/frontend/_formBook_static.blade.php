@@ -52,7 +52,7 @@
 
                 <div class="col-md-3 col-xs-6">
                     <input id="apto-3dorm" class="radio-style apto-3dorm form-control" name="apto" type="radio" value="3dorm">
-                    <label for="apto-3dorm" class="radio-style-3-label">3Dor</label>
+                    <label for="apto-3dorm" class="radio-style-3-label">4Dor</label>
                 </div>
                 <div class="col-md-3 col-xs-6">
                     <input id="apto-2dorm" class="radio-style apto-2dorm form-control" name="apto" type="radio" value="2dorm">

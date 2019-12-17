@@ -2474,7 +2474,7 @@ class BookController extends AppController
                 //$roomAssigned = 149;
                 $sizeRoom = 4;
             }
-            $typeApto = "3 DORM";
+            $typeApto = "4 DORM";
             $limp     = (int) \App\Extras::find(3)->price;
         }
 
