@@ -1,6 +1,7 @@
 <?php 
 use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES"); 
 $isMobile = $mobile->isMobile();
+$uRole = Auth::user()->role;
 ?>
 
 <div class="table-responsive">
@@ -18,11 +19,11 @@ $isMobile = $mobile->isMobile();
         <th class="text-center Reservado-table text-white" style="width: 30px !important"> OUT</th>
         <th class="text-center Reservado-table text-white" style="width: 6%!important"><i class="fa fa-moon-o"></i></th>
         <th class="text-center Reservado-table text-white"> Precio</th>
-        @if(Auth::user()->role != "agente" )
+        @if($uRole != "agente" )
         <th class="text-center Reservado-table text-white" style="width: 12%!important"> Estado</th>
         @endif
         <th class="text-center Reservado-table text-white" style="max-width:30px !important;">&nbsp;</th>
-		<?php if ( Auth::user()->role != "agente" ): ?>
+		<?php if ($uRole != "agente" ): ?>
         <th class="text-center Reservado-table text-white" style="width: 65px!important">Acciones</th>
 		<?php endif ?>
     </tr>
@@ -46,35 +47,28 @@ $isMobile = $mobile->isMobile();
                     <?php $class = "contestado-email" ?>
                 <?php endif ?>
 
-        <tr class="<?php echo $class;?>">
-            <td class="text-left fix-col" style="padding: 10px 5px!important">
-               <div class=" fix-col-data">
+        <tr class="<?php echo $class;?>" data-id="{{$book->id}}" >
+            <td class="fix-col td-b1">
+               <div class="fix-col-data">
                 <?php if ($book->agency != 0): ?>
-                  <img style="width: 20px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center"/>
+                  <img class="img-agency" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png"/>
                 <?php endif ?>
                 @if($book->is_fastpayment == 1 || $book->type_book == 99 )
-                 <img style="width: 30px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
+                 <img class="img-agency" src="/pages/fastpayment.png" />
                 @endif
                 <?php if (isset($payment[$book->id])): ?>
-                <a class="update-book" data-id="<?php echo $book->id ?>"
-                   title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"
-                   href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"
-                   style="color: red"
-                >
-                    <?php echo $book->customer['name']  ?>
+                <a class="update-book r" data-id="<?php echo $book->id ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                  <?php echo $book->customer['name']  ?>
                 </a>
                 <?php else: ?>
-                <a class="update-book" data-id="<?php echo $book->id ?>"
-                   title="<?php echo $book->customer->name ?> - <?php echo $book->customer->email ?>"
-                   href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>"
-                >
-                    <?php echo $book->customer['name']  ?>
+                <a class="update-book" data-id="<?php echo $book->id ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
+                  <?php echo $book->customer['name']  ?>
                 </a>
                 <?php endif ?>
                </div>
             </td>
             @if($isMobile)
-            <td class="text-center ">
+            <td>
               <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
               <a href="tel:<?php echo $book->customer->phone ?>">
                 <i class="fa fa-phone"></i>
@@ -82,7 +76,7 @@ $isMobile = $mobile->isMobile();
               <?php endif ?>
             </td>
             @else
-            <td class="text-center">
+            <td>
                 <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
               <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?></a>
                     <?php else: ?>
@@ -90,106 +84,56 @@ $isMobile = $mobile->isMobile();
                 <?php endif ?>
             </td>
             @endif
-            
-
-            <td class="text-center">
+            <td>
                 <?php if ($book->real_pax > 6 ): ?>
                 <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
                 <?php else: ?>
-                            <?php echo $book->pax ?>
-                        <?php endif ?>
-
+                  <?php echo $book->pax ?>
+                <?php endif ?>
             </td>
-
-            <td class ="text-center" >
+            <td>
                 <?php if ($book->hasSendPicture()): ?>
-                <button class="font-w800 btn btn-xs getImagesCustomer" type="button" data-toggle="modal" data-target="#modalRoomImages" style="border: none; background-color:transparent!important; color: lightgray; padding: 0;"
-                        data-id="<?php echo $book->room->id ?>"
-                        data-idCustomer="<?php echo $book->id ?>"
-                        onclick="return confirm('¿Quieres reenviar las imagenes');">
+                <button class="btn btn-xs getImagesCustomer a" type="button" data-toggle="modal" data-target="#modalRoomImages" data-id="<?php echo $book->room->id ?>" data-idCustomer="<?php echo $book->id ?>" onclick="return confirm('¿Quieres reenviar las imagenes');">
                     <i class="fa fa-eye"></i>
                 </button>
                 <?php else: ?>
-                <button class="font-w800 btn btn-xs getImagesCustomer" type="button" data-toggle="modal" data-target="#modalRoomImages" style="border: none; background-color: transparent!important; color:black; padding: 0;"
-                        data-id="<?php echo $book->room->id ?>"
-                        data-idCustomer="<?php echo $book->id ?>"
-                >
+                <button class="btn btn-xs getImagesCustomer b" type="button" data-toggle="modal" data-target="#modalRoomImages" data-id="<?php echo $book->room->id ?>" data-idCustomer="<?php echo $book->id ?>">
                     <i class="fa fa-eye"></i>
                 </button>
                 <?php endif ?>
-
                 <?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
-                <?php
-                $textComment = "";
-                if (!empty($book->comment)) {
-                    $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:"."<br>"." ".$book->comment."<br>";
-                }
-                if (!empty($book->book_comments)) {
-                    $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments;
-                }
-                ?>
-                <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
-                                        <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
-                                    </span>
-                <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $textComment ?></p></div>
+                    <div data-booking="<?php echo $book->id; ?>" class="showBookComm" >
+                      <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                      <div class="BookComm tooltiptext"></div>
+                    </div>
                 <?php endif ?>
             </td>
-
-            <td class="text-center">
-                @include('backend.planning.listados._select-rooms', ['rooms'=>$rooms,'bookID' => $book->id,'select'=>$book->room_id])
+            <td>
+              <?php 
+              if ($book->room){
+                $room = $book->room;
+                ?>
+              <button type="button" class="btn changeRoom" data-c="{{$room->id}}">
+              <?php echo substr($room->nameRoom . " - " . $room->name, 0, 15);?>
+              </button>  
+                <?php
+              }
+              ?>
             </td>
-
-            <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
-            <td class ="text-center" data-order="<?php echo strtotime($start->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
-                <?php echo $start->formatLocalized('%d %b'); ?>
+            <td class="td-date" data-order="{{$book->start}}">
+              <?php echo dateMin($book->start) ?>
             </td>
-            <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
-            <td class ="text-center" data-order="<?php echo strtotime($finish->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
-                <?php echo $finish->formatLocalized('%d %b'); ?>
+            <td class="td-date" data-order="{{$book->finish}}">
+              <?php echo dateMin($book->finish) ?>
             </td>
-
-            <td class="text-center"><?php echo $book->nigths ?></td>
-
-            <td class="text-center"><?php echo round($book->total_price) . "€" ?><br>
+            <td><?php echo $book->nigths ?></td>
+            <td><?php echo round($book->total_price) . "€" ?><br>
             </td>
-            @if(Auth::user()->role != "agente" )
-            <td class="text-center">
-                <select class="status form-control minimal" data-id="<?php echo $book->id ?>">
-                    <?php
-
-                        $status = [ 1 => 1, 2 => 2 ];
-                        if (!in_array($book->type_book, $status))
-                            $status[] = $book->type_book;
-
-                    ?>
-                  
-                    <?php if (in_array($book->type_book, $status)): ?>
-                        <?php foreach($book->getTypeBooks() as $key => $typeStatusBook ): ?>
-                            <?php if ($key == 5 && $book->customer->email == ""): ?>
-
-                            <?php else: ?>
-                                <option
-                                    <?php echo $key == ($book->type_book) ? "selected" : ""; ?> <?php echo ($key == 1 || $key == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $key ?>"
-                                    data-id="<?php echo
-                                    $book->id ?>">
-                                    <?php echo $book->getStatus($key) ?>
-                                </option>
-                            <?php endif ?>
-                        <?php endforeach; ?>
-                    <?php else: ?>
-                        <?php for ($i = 1; $i <= count($status); $i++): ?>
-                            <?php if ($i == 5 && $book->customer->email == ""): ?> <?php else: ?>
-                                <option <?php echo $status[$i] == ($book->type_book) ? "selected" : ""; ?> <?php
-                                        echo ($status[$i] == 1 || $status[$i] == 5) ? "style='font-weight:bold'" : "" ?> value="<?php echo $status[$i] ?>"
-                                        data-id="<?php echo
-                                        $book->id ?>">
-                                    <?php echo $book->getStatus($status[$i]) ?>
-                                </option>
-                            <?php endif ?>
-                        <?php endfor; ?>
-                    <?php endif ?>
-                   
-                </select>
+            @if($uRole != "agente" )
+            <td>
+              <button type="button" class="btn changeStatus" data-c="{{$book->type_book}}">
+                {{$book->getStatus($book->type_book)}}
+              </button>
             </td>
              @endif
              <td class="text-center" style="max-width:30px !important;">
@@ -202,8 +146,8 @@ $isMobile = $mobile->isMobile();
 
                 <?php endif ?>
             </td>
-            <?php if ( Auth::user()->role != "agente" ): ?>
-            <td class="text-center">
+            <?php if ( $uRole != "agente" ): ?>
+            <td>
               <?php
                 $ff_status = $book->get_ff_status(false);
                 if ($ff_status['icon']){

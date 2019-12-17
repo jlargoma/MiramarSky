@@ -1,7 +1,7 @@
 <?php   use \Carbon\Carbon;
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
-
+$uRole = Auth::user()->role;
 $is_mobile = $mobile->isMobile();
 ?>
 @extends('layouts.admin-master')
@@ -36,17 +36,20 @@ $is_mobile = $mobile->isMobile();
           width: 10em;
           border-radius: 7px;
         }
-        .tooltiptext.FF_resume{
+        .tooltiptext.FF_resume,
+        .tooltiptext.BookComm{
           color: inherit;
           text-align: left;
           z-index: 9;
           width: 22em;
           display: none;
         }
-        .tooltiptext.FF_resume p{
+        .tooltiptext.FF_resume p,
+        .tooltiptext.BookComm p{
           color: #fff;
         }
-        .showFF_resume:hover .tooltiptext.FF_resume{
+        .showFF_resume:hover .tooltiptext.FF_resume,
+        .showBookComm:hover .tooltiptext.BookComm{
           display: block;
         }
         .tooltiptext.FF_resume .table tbody tr td{
@@ -57,6 +60,17 @@ $is_mobile = $mobile->isMobile();
         .tooltiptext.FF_resume span.Pendiente {
           color: red;
         }
+        .showBookComm{
+          cursor: pointer;
+          padding: 6px;
+        }
+        .BookComm.tooltiptext {
+              color: #fff;
+              padding: 11px;
+              background-color: #333;
+              font-size: 1em;
+          }
+
         .th-w125{
           min-width: 125px;
         }
@@ -68,7 +82,61 @@ $is_mobile = $mobile->isMobile();
         .fix-col-data{
           min-width: 150px;
         }
+        .table.table-data tbody td{
+          text-align: center;
+        }
+        .td-b1{
+          padding: 10px 5px!important;
+          text-align: left !important;
+        }
+        .td-date{
+          width: 20%!important
+        }
+        .p-rel{
+          position: relative;
+        }
+        .getImagesCustomer.a{
+          border: none; background-color:transparent!important; color: lightgray; padding: 0;
+        }
+        .getImagesCustomer.b{
+          border: none; background-color: transparent!important; color:black; padding: 0;
+        }
+        
+        button.btn.changeStatus,
+        button.btn.changeRoom {
+            max-width: 80px;
+            min-width: 80px;
+            overflow: hidden;
+            padding-left: 2px;
+            border: solid 1px #292929;
+            background-color: transparent;
+            color: #000;
+        }
+        
+        .btn.btnChangeRoom,
+        .btn.btnChangeStatus {
+            display: block;
+            width: 70%;
+            margin: 1px auto;
+        }
+        .btn.btnChangeRoom.active,
+        .btn.btnChangeStatus.active {
+            background-color: #a2a0a0;
+            color: #fff;
+        }
+        
+        .update-book.r{
+          color: red;
+        }
+        #modalChangeBook .modal-dialog {
+            margin-top: 4em;
+        }
         @media only screen and (max-width: 991px){
+          button.btn.changeStatus,
+          button.btn.changeRoom {
+            max-width: 120px;
+            min-width: 120px;
+          }
           select#schedule,
           select#scheduleOut {
             width: 3em !important;
@@ -89,7 +157,7 @@ $is_mobile = $mobile->isMobile();
             display: none;
           }
           
-          #cargar_calend{
+          .cargar_calend.btn-large{
             display: block;
             margin: 6em auto;
           }
@@ -121,7 +189,7 @@ $is_mobile = $mobile->isMobile();
         </div>
 
         <div class="col-md-7">
-                <?php if ( Auth::user()->role != "agente" ): ?>
+                <?php if ( $uRole != "agente" ): ?>
             <div class="row push-10">
                     <div class="col-md-5 col-xs-12">
                         <input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
@@ -131,13 +199,13 @@ $is_mobile = $mobile->isMobile();
             <div class="col-xs-12 text-left push-0 btn-tabs" style="padding-left: 0;">
                     <button class="btn btn-primary  btn-blue btn-tables btn-cons" type="button" data-type="pendientes">
                         <span class="bold">Pendientes</span>
-                        <?php if ( Auth::user()->role != "agente" ): ?>
+                        <?php if ( $uRole != "agente" ): ?>
                         <span class="numPaymentLastBooks">
                                 {{ $booksCount['pending'] }}
                             </span>
                         <?php endif ?>
                     </button>
-                <?php if ( Auth::user()->role != "agente" ): ?>
+                <?php if ( $uRole != "agente" ): ?>
                 <button class="btn btn-primary  btn-orange btn-tables btn-cons" type="button" data-type="especiales">
                         <span class="bold">Especiales</span>
                         <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
@@ -151,7 +219,7 @@ $is_mobile = $mobile->isMobile();
                                 {{ $booksCount['confirmed'] }}
                             </span>
                     </button>
-                <?php if ( Auth::user()->role != "agente" ): ?>
+                <?php if ( $uRole != "agente" ): ?>
                 <button class="btn btn-success btn-tables btn-cons" type="button" data-type="checkin">
                         <span class="bold">Check IN</span>
                         <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
@@ -391,13 +459,13 @@ $is_mobile = $mobile->isMobile();
                     <div class="btn-tabs">
                         <button class="btn btn-primary  btn-blue btn-tables" type="button" data-type="pendientes">
                             <span class="bold">Pend</span>
-                            <?php if ( Auth::user()->role != "agente" ): ?>
+                            <?php if ( $uRole != "agente" ): ?>
                             <span class="numPaymentLastBooks" style="top: 0px;right: 0;padding: 0px 7px;">
                                     {{ $booksCount['pending'] }}
                                 </span>
                             <?php endif ?>
                         </button>
-                        <?php if ( Auth::user()->role != "agente" ): ?>
+                        <?php if ( $uRole != "agente" ): ?>
                             <button class="btn btn-primary  btn-orange btn-tables" type="button" data-type="especiales">
                                 <span class="bold">Esp</span>
                                 <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
@@ -411,7 +479,7 @@ $is_mobile = $mobile->isMobile();
                                        {{ $booksCount['confirmed'] }}
                                    </span>
                             </button>
-                        <?php if ( Auth::user()->role != "agente" ): ?>
+                        <?php if ( $uRole != "agente" ): ?>
                             <button class="btn btn-success btn-tables" type="button" data-type="checkin">
                                 <span class="bold">IN</span>
                                 <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
@@ -449,8 +517,8 @@ $is_mobile = $mobile->isMobile();
                 @include('backend.planning._table', ['type'=> 'pendientes'])
             </div>
             <div class="col-md-5">
-                <div class="row content-calendar calendar-mobile" style="min-height: 485px; width: 100%;">
-                  <button type="button" id="cargar_calend" class="btn btn-success btn-large">Cargar calendario</button>
+                <div class="row content-calendar calendar-mobile">
+                  <button type="button" class="cargar_calend btn btn-success btn-large">Cargar calendario</button>
                 </div>
 
                 <div class="col-xs-12">
@@ -564,7 +632,7 @@ $is_mobile = $mobile->isMobile();
         </div>
     <?php endif ?>
         
-         <?php if (Auth::user()->role != "agente"): ?>
+         <?php if ($uRole != "agente"): ?>
           <!-- GENERADOR DE LINKS PAYLAND  -->
            <div class="modal fade slide-up in" id="modalLinkStrip" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-xd">
@@ -611,6 +679,58 @@ $is_mobile = $mobile->isMobile();
           <form method="post" id="formFF" action=""  <?php if (!$is_mobile){ echo 'target="_blank"';} ?>>
               <input type="hidden" name="admin_ff" id="admin_ff">
             </form>
+     
+          
+<div class="modal fade" id="modalChangeBook" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong class="modal-title" id="modalChangeBookTit" style="font-size: 1.4em;">Cambiar Reserva</strong>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="btnChangeBook" value="">
+        <div id="modalChangeBook_room" style="display:none;">
+          <?php foreach ($rooms as $room): ?>
+            <?php if ($room->state == 0) continue; ?>
+          <button 
+            class="btn btnChangeRoom" 
+            id="btn_CR{{$room->id}}"
+            data-id="{{$room->id}}" 
+            >
+            <?php echo substr($room->nameRoom . " - " . $room->name, 0, 15) ?>
+          </button>
+          <?php endforeach ?>
+        </div>
+        
+        <div id="modalChangeBook_status" style="display:none;">
+          <?php $bookAux = new App\Book(); ?>
+          <?php for ($i=1; $i <= 11; $i++): ?> 
+          <button 
+            class="btn btnChangeStatus" 
+            id="btn_CS{{$i}}"
+            data-id="{{$i}}" 
+            >
+            <?php echo $bookAux->getStatus($i) ?>
+          </button>
+          <?php endfor ?>
+          <button 
+            class="btn btnChangeStatus" 
+            id="btn_CS99"
+            data-id="99" 
+            >
+            <?php echo $bookAux->getStatus(99) ?>
+          </button>
+        </div>
+        
+        
+        
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -681,7 +801,7 @@ $is_mobile = $mobile->isMobile();
 
         });
         
-        $('#sendImportICal').click(function(event) {
+        $('.sendImportICal').click(function(event) {
           event.preventDefault()
           $('#modalICalImport').modal('show'); 
           $('#modal_ical_content').load("{{ url('ical/getLasts') }}");
@@ -718,7 +838,7 @@ $is_mobile = $mobile->isMobile();
           $('.content-calendar').empty().load('/getCalendarMobile');
         }, 1500);
         @endif
-        $('#cargar_calend').on('click',function(){
+        $('.cargar_calend').on('click',function(){
           $('.content-calendar').empty().load('/getCalendarMobile');
           $(this).remove();
         });
@@ -928,6 +1048,79 @@ $is_mobile = $mobile->isMobile();
             loadFF_resume = id;
           }
       });
+      
+      
+      
+      ///////////////////////////////////////////////
+      
+      @if (!($uRole == "limpieza") || ($uRole == "agente"))
+        $('body').on('click','.changeRoom',function(){
+          var bID = $(this).closest('tr').data('id');
+          var current = $(this).data('c');
+          
+          $('#modalChangeBook_room').show();
+          $('#modalChangeBook_status').hide();
+          $('#btnChangeBook').val(bID);
+          $('#modalChangeBookTit').text('Cambiar Apartamento');
+          $('.btnChangeRoom').removeClass('active');
+          $('#btn_CR'+current).addClass('active');
+          $('#modalChangeBook').modal('show'); 
+        });
+        $('body').on('click','.changeStatus',function(){
+          var bID = $(this).closest('tr').data('id');
+          var current = $(this).data('c');
+          
+          $('#modalChangeBookTit').text('Cambiar Estado');
+          $('#modalChangeBook_room').hide();
+          $('#modalChangeBook_status').show();
+          $('#btnChangeBook').val(bID);
+          $('.btnChangeStatus').removeClass('active');
+          $('#btn_CS'+current).addClass('active');
+          $('#modalChangeBook').modal('show'); 
+        });
+      
+      // Cambiamos las reservas
+	$('.btnChangeRoom, .btnChangeStatus').on('click',function(event) {
+	    var id = $('#btnChangeBook').val();
+	    if ($(this).hasClass('btnChangeStatus')) {
+	        var status = $(this).data('id');
+	        var room = "";
+	    }else if ($(this).hasClass('btnChangeRoom')) {
+	        var room = $(this).data('id');
+	        var status = "";
+	    }
+            $('#modalChangeBook').modal('hide');
+	    if (status == 5) {
+	        $('.modal-content.contestado').empty().load('/admin/reservas/ansbyemail/'+id);
+	        $('#btnContestado').trigger('click');      
+	    }else{
+	       	$.get('/admin/reservas/changeBook/'+id, {status:status,room: room}, function(data) {
+	            if (data.status == 'danger') {
+                      window.show_notif(data.title,data.status,data.response);
+	            } else {
+                      window.show_notif(data.title,data.status,data.response);
+	            }
+	            var type = $('.table-data').attr('data-type');
+                    var year = $('#fecha').val();
+                    $.get('/admin/reservas/api/getTableData', { type: type, year: year }, function(data) {
+		            $('.content-tables').empty().append(data);
+		        });
+	       }); 
+	    }
+	});
+      @endif
+      
+      var load_comment = true;
+      $('body').on('mouseover','.showBookComm',function(){
+        var id = $(this).data('booking');
+          if (load_comment != id){
+            var tooltip = $(this).find('.BookComm');
+            tooltip.load('/ajax/get-book-comm/'+id);
+            load_comment = id;
+          }
+      });
+      
+      ///////////////////////////////////////////////
 
     setTimeout(
       function () {

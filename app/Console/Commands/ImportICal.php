@@ -75,13 +75,15 @@ class ImportICal extends Command
      */
     public function importICalendar()
     {              
-        $icalendars_to_import = IcalImport::where('processed','!=',1)->get();
+//        $icalendars_to_import = IcalImport::where('processed','!=',1)->get();
+        $icalendars_to_import = IcalImport::all();
         if (count($icalendars_to_import)>0){
         foreach ($icalendars_to_import as $ical_to_import) {
             $this->result = [];
             //id releated with the icalendar to import
             $room_id = $ical_to_import->room_id;
 
+            $ical_to_import->processed = 1;
             //agency from where we are importing the calendar
             $agency = $this->getAgencyFromURL($ical_to_import->url);
 
@@ -104,8 +106,6 @@ class ImportICal extends Command
 //            $this->printEvents($events);
             $count = 0;
             if (true){
-              
-              $ical_to_import->processed = 1;
               $ical_to_import->save();
               foreach ($events as $event) {
 

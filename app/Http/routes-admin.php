@@ -25,6 +25,9 @@ Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin']], function
   Route::get('/ajax/showSendRemember/{bookID}', 'BookController@showSendRemember');
   Route::get('/ajax/showFianza/{bookID}', 'BookController@showFianza');
   
+  // Route::get('/resume-by-book/{id}', 'ForfaitsItemController@getResumeBy_book');
+  Route::get('/ajax/get-book-comm/{bookID}', 'BookController@getComment');
+  
 });
 Route::group(['middleware' => ['auth','role:admin|propietario'], 'prefix' => 'admin',], function () {
   //Facturas

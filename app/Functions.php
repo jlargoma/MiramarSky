@@ -189,6 +189,17 @@ function getCloudfl($url){
     }
     return null;
   }
+  function dateMin($date){
+    $date= trim($date);
+    if ($date){
+      
+      $aux = explode('-',$date);
+      if (is_array($aux) && count($aux)==3){
+        return $aux[2].' '.getMonthsSpanish(intval($aux[1]));
+      }
+    }
+    return null;
+  }
   
 function paylandCost($val){
   if ($val>0)

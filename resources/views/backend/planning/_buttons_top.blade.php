@@ -44,11 +44,11 @@
           <span class="numPaymentLastBooks"><?php echo  $parteeToActive; ?></span>
         </button>
       <?php endif ?>
-          <button class="btn btn-primary btn-sm calend show-mobile" type="button" >
+        <button class="btn btn-primary btn-sm calend show-mobile cargar_calend" type="button" >
               <span class="bold"><i class="fa fa-calendar"></i></span>
           </button>
         
-        <a href="#" id="sendImportICal" class="btn btn-primary btn-cons show-mobile" <?php if (count(\App\IcalImport::all()) == 0): ?> disabled="" <?php endif ?> style="background-color: #337ab7; border-color: #2e6da4;">
+        <a href="#" class=" sendImportICal btn btn-primary btn-cons show-mobile" <?php if (count(\App\IcalImport::all()) == 0): ?> disabled="" <?php endif ?> style="background-color: #337ab7; border-color: #2e6da4;">
         <span class="bold">IMPORTACIÓN</span>
       </a>
     </div>
@@ -65,7 +65,7 @@
         <span class="bold">Calendario booking</span>
       </button>
 
-      <a href="#" id="sendImportICal" class="btn btn-primary btn-cons " <?php if (count(\App\IcalImport::all()) == 0): ?> disabled="" <?php endif ?> style="background-color: #337ab7; border-color: #2e6da4;">
+      <a href="#"  class=" sendImportICal btn btn-primary btn-cons " <?php if (count(\App\IcalImport::all()) == 0): ?> disabled="" <?php endif ?> style="background-color: #337ab7; border-color: #2e6da4;">
         <span class="bold">IMPORTACIÓN</span>
       </a>
       <?php if (Auth::user()->role == "admin"): ?>

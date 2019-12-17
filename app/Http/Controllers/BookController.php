@@ -93,6 +93,15 @@ class BookController extends AppController
                                         })->orderBy('created_at', 'DESC')->get();
         }
 
+        
+        $booksCount['pending'] = 0;
+        $booksCount['special'] = 0;
+        $booksCount['confirmed']= 0;
+        $booksCount['blocked-ical'] = 0;
+        $booksCount['deletes'] = 0;
+        $booksCount['checkin'] = 0;
+        $booksCount['checkout']=0;
+                
         $booksCount['pending'] = $booksCollection->where('type_book', 3)->count();
 
         $booksCount['special']      = $booksCollection->whereIn('type_book', [
@@ -153,7 +162,7 @@ class BookController extends AppController
                   if ($percentAux>0)
                   $percent = 100 / $percentAux;
                 }
-                if ($percent < 100) if ($now->diffInDays($dateStart) <= 15) $alarms[] = $book;
+                if ($percent < 100 && $diff <= 15) $alarms[] = $book;
             } else
             {
                 if ($diff <= 15) $alarms[] = $book;
@@ -169,13 +178,15 @@ class BookController extends AppController
         $parteeToActive = $this->countPartte();
 //        $parteeToActive = BookPartee::whereIn('status', ['HUESPEDES',"FINALIZADO"])->count();
         $ff_mount = null;
-        if (Auth::user()->role == "admin"){
-          $cachedRepository  = new CachedRepository();
-          $ForfaitsItemController = new \App\Http\Controllers\ForfaitsItemController($cachedRepository);
-          $balance = $ForfaitsItemController->getBalance();
-          $ff_mount = 0;
-          if (isset($balance->success) && $balance->success ){
-            $ff_mount = $balance->data->total;
+        if (!$mobile->isMobile()){
+          if (Auth::user()->role == "admin"){
+            $cachedRepository  = new CachedRepository();
+            $ForfaitsItemController = new \App\Http\Controllers\ForfaitsItemController($cachedRepository);
+            $balance = $ForfaitsItemController->getBalance();
+            $ff_mount = 0;
+            if (isset($balance->success) && $balance->success ){
+              $ff_mount = $balance->data->total;
+            }
           }
         }
         
@@ -2561,6 +2572,23 @@ class BookController extends AppController
         {
             return view('frontend.bookStatus.bookError');
         }
+    }
+    
+    public function getComment($bookID) {
+      $book = Book::find($bookID);
+      if ($book){
+        
+        $textComment = "";
+        if (!empty($book->comment)) {
+            $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:"."<br>"." ".$book->comment."<br>";
+        }
+        if (!empty($book->book_comments)) {
+            $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments;
+        }
+        echo $textComment;
+      } else {
+        echo '<p>Sin datos</p>';
+      }
     }
 
 }

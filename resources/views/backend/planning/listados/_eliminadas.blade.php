@@ -2,6 +2,7 @@
 use \Carbon\Carbon;  setlocale(LC_TIME, "ES"); setlocale(LC_TIME, "es_ES");
 
 $isMobile = $mobile->isMobile();
+$uRole = Auth::user()->role;
 ?>
 <?php if (count($books) > 0): ?>
   <div class="table-responsive">
@@ -26,7 +27,7 @@ $isMobile = $mobile->isMobile();
             <tbody>
                 <?php foreach ($books as $book): ?>
                     <?php $class = ucwords($book->getStatus($book->type_book)) ?>
-                    <tr class="<?php echo $class ;?>">  
+                    <tr class="<?php echo $class ;?>" data-id="{{$book->id}}" >
                       <td class="text-left fix-col" style="padding: 10px 5px!important">
                           <div class=" fix-col-data">
                           <?php if ($book->agency != 0): ?>
@@ -39,21 +40,21 @@ $isMobile = $mobile->isMobile();
                       </td>
 
                     @if($isMobile)
-                    <td class="text-center">
+                    <td>
                       <?php if ($book->customer->phone != 0 && $book->customer->phone != ""): ?>
                         <a href="tel:<?php echo $book->customer->phone ?>">
                           <i class="fa fa-phone"></i>
                         </a>
                       <?php endif ?>
                     @else
-                    <td class="text-center">
+                    <td>
                       <?php if ($book->customer->phone != 0 && $book->customer->phone != ""): ?>
                         <a href="tel:<?php echo $book->customer->phone ?>"><?php echo $book->customer->phone ?></a>
                       <?php else: ?>
                         <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>"/>
                       <?php endif ?>
                     @endif
-                      <?php if (Auth::user()->role != "limpieza" && (!empty($book->comment) || !empty($book->book_comments))): ?>
+                      <?php if ($uRole != "limpieza" && (!empty($book->comment) || !empty($book->book_comments))): ?>
                           <?php 
                               $textComment = "";
                               if (!empty($book->comment)) {
@@ -76,7 +77,7 @@ $isMobile = $mobile->isMobile();
                       <?php endif ?>
                     </td>
 
-                        <td class ="text-center" >
+                        <td>
                             <?php if ($book->real_pax > 6 ): ?>
                                 <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
                             <?php else: ?>
@@ -85,62 +86,35 @@ $isMobile = $mobile->isMobile();
                                 
                         </td>
 
-                        <td class ="text-center" >
-                            <select class="room form-control minimal" data-id="<?php echo $book->id ?>"  >
-                                
-                                <?php foreach ($rooms as $room): ?>
-                                    <?php if ($room->id == $book->room_id): ?>
-                                        <option selected value="<?php echo $book->room_id ?>" data-id="<?php echo $room->name ?>">
-                                            <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
-                                        </option>
-                                    <?php else:?>
-                                        <option value="<?php echo $room->id ?>">
-                                            <?php echo substr($room->nameRoom." - ".$room->name, 0, 15)  ?>
-                                        </option>
-                                    <?php endif ?>
-                                <?php endforeach ?>
-
-                            </select>
-                        </td>
-
-                        <td class ="text-center"  style="width: 20%!important">
-                            <?php
-                                $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                echo $start->formatLocalized('%d %b');
+                        <td>
+                          <?php 
+                          if ($book->room){
+                            $room = $book->room;
                             ?>
-                        </td>
-
-                        <td class ="text-center"  style="width: 20%!important">
+                          <button type="button" class="btn changeRoom" data-c="{{$room->id}}">
+                          <?php echo substr($room->nameRoom . " - " . $room->name, 0, 15);?>
+                          </button>  
                             <?php
-                                $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                echo $finish->formatLocalized('%d %b');
-                            ?>
+                          }
+                          ?>
                         </td>
-
-                        <td class ="text-center" ><?php echo $book->nigths ?></td>
-
-                        <td class ="text-center" ><?php echo round($book->total_price)."€" ?><br>
+                        <td class="td-date" data-order="{{$book->start}}">
+                          <?php echo dateMin($book->start) ?>
                         </td>
-
-                        <td class ="text-center"  >
-                            <select class="status form-control minimal" data-id="<?php echo $book->id ?>" >
-
-                                <?php for ($i=0; $i <= 11; $i++): ?> 
-                                    <?php if ($i == 5 && $book->customer->email == ""): ?>
-                                    <?php else: ?>
-                                        <option <?php echo $i == ($book->type_book) ? "selected" : ""; ?> 
-                                        <?php echo ($i  == 1 || $i == 5) ? "style='font-weight:bold'" : "" ?>
-                                        value="<?php echo $i ?>"  data-id="<?php echo $book->id ?>">
-                                            <?php echo $book->getStatus($i) ?>
-                                            
-                                        </option>   
-                                    <?php endif ?>
-                                                                     
-
-                                <?php endfor; ?>
-                            </select>
+                        <td class="td-date" data-order="{{$book->finish}}">
+                          <?php echo dateMin($book->finish) ?>
                         </td>
-                        <td class="text-center">
+                        <td><?php echo $book->nigths ?></td>
+                        <td><?php echo round($book->total_price)."€" ?><br>
+                        </td>
+                        @if($uRole != "agente" )
+                        <td>
+                          <button type="button" class="btn changeStatus" data-c="{{$book->type_book}}">
+                            {{$book->getStatus($book->type_book)}}
+                          </button>
+                        </td>
+                         @endif
+                        <td>
                             <?php if (!empty($book->book_owned_comments)): ?>
                                 <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
                                     <img src="/pages/oferta.png" style="width: 40px;">
@@ -150,7 +124,7 @@ $isMobile = $mobile->isMobile();
                             <?php endif ?>
                         </td>
 
-                        <td class="text-center">                                                         
+                        <td>                                                         
                             <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary restoreBook" type="button" data-toggle="tooltip" title="" data-original-title="Restaurar Reserva" onclick="return confirm('¿Quieres restaurar la reserva?');">
                                <i class="fa fa-undo" aria-hidden="true"></i>
                             </button>                            

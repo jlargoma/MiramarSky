@@ -4,6 +4,7 @@
 $startWeek = Carbon::now()->startOfWeek();
 $endWeek = Carbon::now()->endOfWeek(); 
 $isMobile = $mobile->isMobile();
+$uRole = Auth::user()->role;
 ?>
 <div class="tab-pane" id="tabPagadas">
     <div class="table-responsive">
@@ -22,7 +23,7 @@ $isMobile = $mobile->isMobile();
                     <th class="th-bookings th-4">   OUT      </th>
                     <th class="th-bookings th-3 hiddenOnlyRiad">FF</th>
                     <th class="th-bookings th-6" style="min-width:110px !important;">   Precio      </th>
-                    <?php if (Auth::user()->role != "limpieza"): ?>
+                    <?php if ($uRole != "limpieza"): ?>
                         <th class="th-bookings th-6">   a      </th>
                     <?php endif ?>
                     <th class="th-bookings th-2">&nbsp;</th>
@@ -49,12 +50,13 @@ $isMobile = $mobile->isMobile();
                        <?php endif ?>
                    <?php endif ?>
 
-                    <tr class="<?php if($count <= 1){echo $class;} ?>">
+                    <tr class="<?php if($count <= 1){echo $class;} ?>" data-id="{{$book->id}}" >
                         <?php 
                             $dateStart = Carbon::createFromFormat('Y-m-d', $book->start);
                             $now = Carbon::now();
                         ?>
-                         <td class="text-left" style="padding: 10px 5px!important">
+                         <td class="fix-col td-b1">
+                          <div class="fix-col-data">
                             <?php if ( $payment[$book->id] == 0): ?>
                                 <?php if ( $now->diffInDays($dateStart) <= 15 ):?>
                                     <span class=" label label-danger alertDay heart text-white">
@@ -91,10 +93,10 @@ $isMobile = $mobile->isMobile();
 
 
                             <?php if ($book->agency != 0): ?>
-                                <img style="width: 15px;margin: 0 auto;" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" align="center" />
+                                <img src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" class="img-agency"/>
                             <?php endif ?>
                             @if($book->is_fastpayment == 1 || $book->type_book == 99 )
-                            <img style="width: 15px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
+                            <img  src="/pages/fastpayment.png" class="img-agency"/>
                             @endif
 
                             <?php if (isset($payment[$book->id])): ?>
@@ -102,6 +104,7 @@ $isMobile = $mobile->isMobile();
                             <?php else: ?>
                                 <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
                             <?php endif ?>
+                          </div>
                         </td>
                         @if($isMobile)
                           <td class="text-center">
@@ -118,20 +121,12 @@ $isMobile = $mobile->isMobile();
                               <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>"/>
                             <?php endif ?>
                           @endif
-                            <?php if (Auth::user()->role != "limpieza" && (!empty($book->comment) || !empty($book->book_comments))): ?>
-                                <?php 
-                                    $textComment = "";
-                                    if (!empty($book->comment)) {
-                                        $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:"."<br>"." ".$book->comment."<br>";
-                                    }
-                                    if (!empty($book->book_comments)) {
-                                        $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments;
-                                    }
-                                ?>
-                                <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
-                                    <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
-                                </span>
-                                <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $textComment ?></p></div>
+                            <?php if ($uRole != "limpieza" && (!empty($book->comment) || !empty($book->book_comments))): ?>
+                          
+                            <div data-booking="<?php echo $book->id; ?>" class="showBookComm" >
+                              <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                              <div class="BookComm tooltiptext"></div>
+                            </div>
                             <?php endif ?>
                           </td>
                         <td class ="text-center" >
@@ -143,12 +138,21 @@ $isMobile = $mobile->isMobile();
 
                         </td>
                         <td class ="text-center">
-                           @include('backend.planning.listados._select-rooms', ['rooms'=>$rooms,'bookID' => $book->id,'select'=>$book->room_id])
+                          <?php 
+                          if ($book->room){
+                            $room = $book->room;
+                            ?>
+                          <button type="button" class="btn changeRoom" data-c="{{$room->id}}">
+                          <?php echo substr($room->nameRoom . " - " . $room->name, 0, 15);?>
+                          </button>  
+                            <?php
+                          }
+                          ?>
                         </td>
                         <td class ="text-center"><?php echo $book->nigths ?></td>
                         <td class="text-center sm-p-t-10 sm-p-b-10">
 
-                            <select id="schedule" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?> <?php if ($book->schedule < 17 && $book->schedule > 0): ?>alerta-horarios<?php endif ?>" data-type="in" data-id="<?php echo $book->id ?>" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php
+                            <select id="schedule" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?> <?php if ($book->schedule < 17 && $book->schedule > 0): ?>alerta-horarios<?php endif ?>" data-type="in" data-id="<?php echo $book->id ?>" <?php if ($uRole == "limpieza"): ?>disabled<?php
                             endif ?>>
                                 <option>-- Sin asignar --</option>
                                 <?php for ($i = 0; $i < 24; $i++): ?>
@@ -167,17 +171,12 @@ $isMobile = $mobile->isMobile();
                                 <?php endfor ?>
                             </select>
                         </td>
-
-                        <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
-                        <td class ="text-center" data-order="<?php echo strtotime($start->copy()->format('Y-m-d'))?>"  style="width:20%!important">
-                            <b><?php echo $start->formatLocalized('%d %b'); ?></b>
+                        <td class="td-date" data-order="{{$book->start}}">
+                          <?php echo dateMin($book->start) ?>
                         </td>
-
-                        <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
-                        <td class ="text-center" data-order="<?php echo strtotime($finish->copy()->format('Y-m-d'))?>"  style="width: 20%!important">
-                            <b><?php echo $finish->formatLocalized('%d %b'); ?></b>
+                        <td class="td-date" data-order="{{$book->finish}}">
+                          <?php echo dateMin($book->finish) ?>
                         </td>
-
                         <td class="text-center hiddenOnlyRiad ">
                           <a data-booking="<?php echo $book->id; ?>" class="openFF showFF_resume" >
                             <?php
@@ -190,8 +189,8 @@ $isMobile = $mobile->isMobile();
                             </a>
                         </td>
 
-                        <td class ="text-center" style="    padding: 6px 10px 0 !important;">
-                            <?php if (Auth::user()->role != "limpieza"): ?>
+                        <td>
+                            <?php if ($uRole != "limpieza"): ?>
                                 <div class="col-xs-6 not-padding">
                                 <?php echo round($book->total_price)."€" ?><br>
                                     <?php if (isset($payment[$book->id])): ?>
@@ -230,7 +229,7 @@ $isMobile = $mobile->isMobile();
                             <?php endif ?>
                         </td>
 
-                        <?php if (Auth::user()->role != "limpieza"): ?>
+                        <?php if ($uRole != "limpieza"): ?>
                         <td class="text-center sm-p-t-10 sm-p-b-10">
 
 
