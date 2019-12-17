@@ -1,4 +1,4 @@
-<div class="row push-10">
+<div class="row">
   <div class="col-md-7">
     <div class="row btn-mb-1">
       <button class="btn btn-success btn-cons btn-newBook" type="button" data-toggle="modal" data-target="#modalNewBook">
@@ -47,28 +47,34 @@
           <button class="btn btn-primary btn-sm calend show-mobile" type="button" >
               <span class="bold"><i class="fa fa-calendar"></i></span>
           </button>
+        
+        <a href="#" id="sendImportICal" class="btn btn-primary btn-cons show-mobile" <?php if (count(\App\IcalImport::all()) == 0): ?> disabled="" <?php endif ?> style="background-color: #337ab7; border-color: #2e6da4;">
+        <span class="bold">IMPORTACIÓN</span>
+      </a>
     </div>
   </div>
-  <div class="col-md-5 ">
+  @if(!$is_mobile)
+  <div class="col-md-5 hidden-mobile">
     <div class="row btn-mb-1">
     <?php if (Auth::user()->role != "agente"): ?>
-      <button id="btnAlertsBookking" disabled class="btn btn-success btn-cons hidden-mobile" type="button" data-toggle="modal" data-target="#modalAlertsBooking">
+      <button id="btnAlertsBookking" disabled class="btn btn-success btn-cons " type="button" data-toggle="modal" data-target="#modalAlertsBooking">
         <span class="bold">Alertas booking</span>
       </button>
 
-      <button class="btn btn-primary btn-calendarBooking btn-cons hidden-mobile" type="button" data-toggle="modal" data-target="#modalCalendarBooking">
+      <button class="btn btn-primary btn-calendarBooking btn-cons " type="button" data-toggle="modal" data-target="#modalCalendarBooking">
         <span class="bold">Calendario booking</span>
       </button>
 
-      <a href="#" id="sendImportICal" class="btn btn-primary btn-cons" <?php if (count(\App\IcalImport::all()) == 0): ?> disabled="" <?php endif ?> style="background-color: #337ab7; border-color: #2e6da4;">
+      <a href="#" id="sendImportICal" class="btn btn-primary btn-cons " <?php if (count(\App\IcalImport::all()) == 0): ?> disabled="" <?php endif ?> style="background-color: #337ab7; border-color: #2e6da4;">
         <span class="bold">IMPORTACIÓN</span>
       </a>
       <?php if (Auth::user()->role == "admin"): ?>
-      <button class="btn btn-primary btn-cupos btn-cons hidden-mobile" type="button" data-toggle="modal" data-target="#modalCuposVtn">
+      <button class="btn btn-primary btn-cupos btn-cons" type="button" data-toggle="modal" data-target="#modalCuposVtn">
         <span class="bold">Cupos Vtn Rapida</span>
       </button>
       <?php endif ?>
     <?php endif ?>
   </div>
 </div>
+   @endif
 </div>
