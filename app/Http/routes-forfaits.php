@@ -51,5 +51,6 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::post('/sendBooking', 'ForfaitsItemController@sendBooking');
   Route::get('/resume/{id}', 'ForfaitsItemController@getResume');
   Route::get('/resume-by-book/{id}', 'ForfaitsItemController@getResumeBy_book');
+  Route::get('/resent_thansYouPayment/{id}', 'ForfaitsItemController@resent_thansYouPayment');
   Route::get('/{class?}', 'ForfaitsItemController@index');
 });
