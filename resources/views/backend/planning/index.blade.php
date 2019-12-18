@@ -707,7 +707,7 @@ $is_mobile = $mobile->isMobile();
         
         <div id="modalChangeBook_status" style="display:none;">
           <?php $bookAux = new App\Book(); ?>
-          <?php for ($i=1; $i <= 11; $i++): ?> 
+          <?php for ($i=1; $i < 13; $i++): ?> 
           <button 
             class="btn btnChangeStatus" 
             id="btn_CS{{$i}}"

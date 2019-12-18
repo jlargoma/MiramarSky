@@ -247,7 +247,7 @@ trait ForfaitsPaymentsTraits {
 
         //send email
         $book = Book::find($PaymentOrder->book_id);
-        if ($book){
+        if ($book && $PaymentOrder->book_id){
           $cli_email = $book->customer->email;
           $cli_name = $book->customer->name;
           if ($book_status){
