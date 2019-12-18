@@ -1644,6 +1644,13 @@ trait ForfaitsPaymentsTraits {
       if ($book && $book->id == $bookID){
         $oForfait = Forfaits::find($ffID);
         if ($oForfait && $oForfait->id == $ffID){
+          if ($oForfait->book_id){
+            return [
+                'status'   => 'danger',
+                'title'    => 'Error',
+                'response' => 'El forfait ya posee una reserva cargada'
+            ];
+          }
           $oForfait->book_id = $bookID;
           $oForfait->save();
           
