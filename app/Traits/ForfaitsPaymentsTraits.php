@@ -202,17 +202,21 @@ trait ForfaitsPaymentsTraits {
       if (!$bookID) $bookID = -1;
       
       \App\BookLogs::saveLogStatus($bookID, null, $PaymentOrder->cli_email, "Pago de Forfaits de $amount ($key_token)");
-      $order = ForfaitsOrders::find($PaymentOrder->order_id);
+      
+      $order = null;
+      if ($PaymentOrder->order_id)
+        $order = ForfaitsOrders::find($PaymentOrder->order_id);
+      
       $successful = false;
       if ($order){
-        $oForfait = Forfaits::getByBook($PaymentOrder->book_id);
+        $oForfait = Forfaits::find($order->forfats_id);
         $this->sendBookingOrder([$order->id],$oForfait,null);
         $orderStatus = null;
         $totalPrice = $order->total;
         $order->status = 2; //cobrada
         $order->save();
-         
-        $orderText = $this->renderOrder($PaymentOrder->order_id);
+        $orderText = $this->renderOrderList([$PaymentOrder->order_id]);
+//        $orderText = $this->renderOrder($PaymentOrder->order_id);
         $successful = true;
        
       } else {
@@ -265,12 +269,6 @@ trait ForfaitsPaymentsTraits {
         $this->sendEmail_confirmForfaitPayment($cli_email,$cli_name,$subject,$orderText,$amount,$book);
       
       }
-      
-      
-      
-      
-      
-      
       
     }
     return redirect()->route('thanks-you-forfait');
@@ -1569,5 +1567,66 @@ trait ForfaitsPaymentsTraits {
       return redirect()->route('paymeny-error');
     }
     return redirect()->route('paymeny-error');
+  }
+  
+  
+  
+  public function resent_thansYouPayment($id) {
+
+    $PaymentOrder = ForfaitsOrderPayments::where('id', $id)->whereNotNull('paid')->first();
+
+    if ($PaymentOrder) {
+      $amount = ($PaymentOrder->amount / 100) . ' €';
+      
+      $bookID = $PaymentOrder->book_id;
+      if (!$bookID) $bookID = -1;
+      
+      $order = null;
+      if ($PaymentOrder->order_id)
+        $order = ForfaitsOrders::find($PaymentOrder->order_id);
+      
+      $successful = false;
+      if ($order){
+        $oForfait = Forfaits::find($order->forfats_id);
+        $orderText = $this->renderOrderList([$PaymentOrder->order_id]);
+        $successful = true;
+      } else {
+        
+        $oForfait = Forfaits::find($PaymentOrder->forfats_id);
+        if ($oForfait){
+          $allOrders = $oForfait->orders()->get();
+          $ordersLst = [];
+          $lastOrderId = $PaymentOrder->last_item_id;
+          foreach ($allOrders as $order){
+            if ($order->status == 1 && $order->id <=$lastOrderId){
+               $ordersLst[] = $order->id;
+            }
+          }
+          
+   
+          $orderText = $this->renderOrderList($ordersLst);
+          $successful = true;
+        }
+        }
+      if ($successful){
+        //send email
+        $book = Book::find($PaymentOrder->book_id);
+        if ($book && $PaymentOrder->book_id){
+          $cli_email = $book->customer->email;
+          $cli_name = $book->customer->name;
+          $subject = translateSubject('Confirmación de Pago',$book->customer->country);
+        } else {
+          $cli_name = $oForfait->name;
+          $cli_email = $oForfait->email;
+          $subject = 'Confirmación de Pago';
+        }
+//        var_dump($cli_email,$cli_name,$subject,$orderText,$amount); die;
+       
+//        $this->sendEmail_confirmForfaitPayment($cli_email,$cli_name,$subject,$orderText,$amount,$book);
+      
+      }
+    die('enviado');
+    } 
+    die('not found');
   }
 }
