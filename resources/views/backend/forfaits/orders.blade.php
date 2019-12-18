@@ -295,9 +295,11 @@ $is_mobile = $mobile->isMobile();
                               <?php endif ?>
                             </td>
                             <td class="text-center"> - </td>
-                            <td class="text-center"> - </td>
-                            <td class="text-center"> - </td>
-                            <td class="text-center"> - </td>
+                            <td class="text-center" colspan="3">
+                              <button type="button" class="btn btn-default changeBook" data-id="<?php echo $order['id']; ?>">
+                                Asignar Reserva
+                              </button>
+                            </td>
                             <td class="text-center"> - </td>
             <?php endif ?>
                             </td>
@@ -346,6 +348,7 @@ $is_mobile = $mobile->isMobile();
                 
               ?>
               </a>
+              
             </td>  
             <td class="text-center">
                 <?php echo $order['ff_sent'].'/'.$order['ff_item_total']; ?>
@@ -388,6 +391,33 @@ $is_mobile = $mobile->isMobile();
 <form method="post" id="formFF" action="" target="_blank">
               <input type="hidden" name="admin_ff" id="admin_ff">
             </form>
+<div class="modal fade" id="modalChangeBook" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong class="modal-title" style="font-size: 1.4em;">Asociar Reserva</strong>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div id="first">
+          <label>ID de la reserva:</label>
+          <input type="number" id="changeBook_bookID" value="" class="form-control">
+          <div style="width:100%; margin: 1em auto; text-align: center">
+          <button type="button" class="btn btn-success" id="changeBook_find">Buscar</button>
+          </div>
+        </div>
+        <div id="seccond" style="display:none; text-align: center">
+          <h5>Asignar la reserva de: 
+          <div id="changeBook_bookTit"></div>
+          </h5>
+          <button type="button" class="btn btn-success" id="changeBook_send">Asignar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -448,7 +478,41 @@ $is_mobile = $mobile->isMobile();
                 }
                 }
         });
-  
+        
+      var FFID = null;
+      $('body').on('click','.changeBook',function(){
+          FFID = $(this).data('id');
+          $('#first').show();
+          $('#seccond').hide();
+          $('#modalChangeBook').modal('show'); 
+      });
+      $('#changeBook_find').on('click',function(event) {
+        var bID = $('#changeBook_bookID').val();
+        $('#first').hide();
+        $('#seccond').show();
+        $.get('/admin/forfaits/getBookData/'+bID, function(data) {
+          console.log(data);
+          $('#changeBook_bookTit').html(data);
+        });
+      });
+      // Cambiamos las reservas
+	$('#changeBook_send').on('click',function(event) {
+	    var bID = $('#changeBook_bookID').val();
+            
+            $.get('/admin/forfaits/changeBook/'+bID+'/'+FFID,function(data) {
+              $('#modalChangeBook').modal('hide'); 
+              if (data.status == 'danger') {
+                window.show_notif(data.title,data.status,data.response);
+              } else {
+                window.show_notif(data.title,data.status,data.response);
+              }
+              
+              setTimeout(function(){location.reload();},3000);
+                    
+	           
+	       }); 
+	});
+        
     });
   </script>
 @endsection

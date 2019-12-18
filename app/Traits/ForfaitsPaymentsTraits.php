@@ -1629,4 +1629,41 @@ trait ForfaitsPaymentsTraits {
     } 
     die('not found');
   }
+  
+  function getBookData($bookID) {
+    $book = Book::find($bookID);
+    if ($book){
+      return $book->customer->name.' - '.$book->customer->email;
+    }
+    return "Reserva no encontrada";
+  }
+  function changeBook($bookID,$ffID) {
+    if ($bookID>0 && $ffID>0){
+      
+      $book = Book::find($bookID);
+      if ($book && $book->id == $bookID){
+        $oForfait = Forfaits::find($ffID);
+        if ($oForfait && $oForfait->id == $ffID){
+          $oForfait->book_id = $bookID;
+          $oForfait->save();
+          
+          $aux = $book->customer->name.' - '.$book->customer->email;
+          return [
+              'status'   => 'success',
+              'title'    => 'Exito',
+              'response' => 'Se ha asociado la reserva de '.$aux.' al forfaits.'
+              . '<br/>Nota: la página se recargará en 3 segundos'
+          ];
+        }
+      }
+      
+    }
+    
+    return [
+        'status'   => 'danger',
+        'title'    => 'Error',
+        'response' => 'No hay datos para cambiar, por favor intentalo de nuevo'
+    ];
+    
+  }
 }

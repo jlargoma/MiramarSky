@@ -116,7 +116,10 @@ $mobile = new Mobile();
             <br>
             <span class="font-s18"><?php echo $fecha->copy()->formatLocalized('%d %B %Y') . " Hora: " . $fecha->copy()->format('H:m') ?></span>
           </h4>
-          <h5>Creado por <?php echo "<b>" . strtoupper($book->user->name) . "</b>" ?></h5>
+          <h5>
+            Creado por <?php echo "<b>" . strtoupper($book->user->name) . "</b>" ?>
+            / ID: <?php echo "<b>" . $book->id . "</b>" ?>
+          </h5>
 <?php if ($book->type_book == 2): ?>
             <div class="col-md-2 col-xs-3 icon-lst">
               <a href="{{ url('/admin/pdf/pdf-reserva/'.$book->id) }}">
