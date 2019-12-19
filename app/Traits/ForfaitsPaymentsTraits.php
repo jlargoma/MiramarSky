@@ -1654,6 +1654,10 @@ trait ForfaitsPaymentsTraits {
           $oForfait->book_id = $bookID;
           $oForfait->save();
           
+          $book->ff_status = $oForfait->status;
+          $book->save();
+                 
+          
           $aux = $book->customer->name.' - '.$book->customer->email;
           return [
               'status'   => 'success',
