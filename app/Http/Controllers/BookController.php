@@ -1898,7 +1898,7 @@ class BookController extends AppController
         return view('backend.planning._tableAlertBooking', compact('days', 'dateX', 'arrayMonths', 'mobile'));
     }
 
-    public function getCalendarMobileView()
+    public function getCalendarMobileView($month=null)
     {
 
         $mes           = [];
@@ -1914,28 +1914,45 @@ class BookController extends AppController
 //        if ($uRole == "agente" || $uRole == "limpieza"){
 //            $type_book_not[] = 8;
 //        }
-        $books = \App\Book::where_book_times($startYear,$endYear)
+        
+        
+        $mobile = new Mobile();
+        $isMobile = $mobile->isMobile();
+        if (!$month) $month = time();
+        $currentM = date('n',$month);
+        $startAux = new Carbon(date('Y-m-d', strtotime('-1 months',$month)));
+        $endAux = new Carbon(date('Y-m-d', strtotime('+1 months',$month)));
+        $startAux->firstOfMonth();
+        $endAux->lastOfMonth();
+        $books = \App\Book::where_book_times($startAux,$endAux)
                 ->whereNotIn('type_book', $type_book_not)->orderBy('start', 'ASC')->get();
 
+        
+        setlocale(LC_TIME, "ES");
+        setlocale(LC_TIME, "es_ES");
+        $uRole = Auth::user()->role;
         foreach ($books as $book)
         {
             $dia        = Carbon::createFromFormat('Y-m-d', $book->start);
             $start      = Carbon::createFromFormat('Y-m-d', $book->start);
             $finish     = Carbon::createFromFormat('Y-m-d', $book->finish);
             $diferencia = $start->diffInDays($finish);
+            $event = $this->calendarEvent($book,$uRole,$isMobile);
+           
             for ($i = 0; $i <= $diferencia; $i++)
             {
-                $arrayReservas[$book->room_id][$dia->copy()->format('Y')][$dia->copy()->format('n')][$dia->copy()
-                                                                                                         ->format('j')][] = $book;
-                $dia                                                                                                      = $dia->addDay();
+              $aux = $dia->copy();
+              $arrayReservas[$book->room_id][$aux->format('Y')][$aux->format('n')][$aux->format('j')][] = $event;
+              $dia = $dia->addDay();
             }
         }
+        
+//        dd($arrayReservas);
 
-        $firstDayOfTheYear = $startYear->copy()->firstOfMonth();
-        $diffInMonths      = $startYear->diffInMonths($endYear) + 1;
-
-        for ($i = 1; $i <= $diffInMonths; $i++)
+        $firstDayOfTheYear = $startAux->copy();
+        for ($i = 1; $i < 4; $i++)
         {
+
             $mes[$firstDayOfTheYear->copy()->format('n')] = $firstDayOfTheYear->copy()->format('M Y');
 
             $startMonth = $firstDayOfTheYear->copy()->startOfMonth();
@@ -1973,7 +1990,15 @@ class BookController extends AppController
         }
         $days = $arrayDays;
 
-        return view('backend/planning/calendar', compact('arrayBooks', 'arrayMonths', 'arrayTotales', 'rooms', 'roomscalendar', 'arrayReservas', 'mes', 'date', 'extras', 'days', 'startYear', 'endYear'));
+        
+
+//ob_start("ob_html_compress");
+  $buffer = ob_html_compress(view('backend.planning.calendar.content', compact('arrayBooks', 'arrayMonths', 'arrayTotales', 'rooms', 'roomscalendar', 'arrayReservas', 'mes', 'date', 'extras', 'days', 'startYear', 'endYear','currentM','startAux')));
+//  $buffer = ob_get_contents();
+//ob_end_flush();
+//echo $buffer; die;
+ return view('backend.planning.calendar.index',['content'=>$buffer]);
+        return $buffer;
     }
 
     static function getCounters($type)
@@ -2591,4 +2616,46 @@ class BookController extends AppController
       }
     }
 
+    /**
+     * Prepare the event to show in the calendar
+     * @param type $book
+     * @param type $uRole
+     * @return type
+     */
+    private function calendarEvent($book,$uRole,$isMobile) {
+      
+      $class = $book->getStatus($book->type_book);
+      if ($class == "Contestado(EMAIL)"){ $class = "contestado-email";}
+      $classTd = ' class="td-calendar" ';
+      $titulo = '';
+      $agency = '';
+      if (!$isMobile){
+      $agency = ($book->agency != 0) ? "Agencia: ".$book->getAgency($book->agency) : "";
+      $titulo = $book->customer->name.'&#10'.
+              'Pax-real '.$book->real_pax.'&#10;'.
+              Carbon::createFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b').
+              ' - '.Carbon::createFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b')
+              .'&#10;';
+      }
+      $href = '';
+      if ($uRole != "agente" && $uRole != "limpieza"){
+        $titulo .='PVP:'.$book->total_price.'&#10';
+        $href = ' href="'.url ('/admin/reservas/update').'/'.$book->id.'" ';
+      }
+
+      $titulo .= $agency;
+      
+      if ($isMobile) $titulo = '';
+      $return = json_encode([
+          'start' => $book->start,
+          'finish' => $book->finish,
+          'type_book'=>$book->type_book,
+          'titulo'  => $titulo,
+          'classTd' => $classTd,
+          'href' => $href,
+          'class' => $class,
+      ]);
+      
+      return json_decode($return);
+    }
 }

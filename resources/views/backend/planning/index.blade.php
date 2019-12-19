@@ -269,14 +269,14 @@ $is_mobile = $mobile->isMobile();
                 <div class="col-xs-8">
                     <!-- www.tutiempo.net - Ancho:446px - Alto:89px -->
                     <div id="TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"> </div>
-                    <script type="text/javascript" src="https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"></script>
+                    
                 </div>
               </div>
               @else
                 <div class="col-xs-12">
                     <!-- www.tutiempo.net - Ancho:446px - Alto:89px -->
                     <div id="TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"> </div>
-                    <script type="text/javascript" src="https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G"></script>
+                    
                 </div>
               @endif
                 <div class="row content-calendar push-20" style="min-height: 515px;">
@@ -517,12 +517,16 @@ $is_mobile = $mobile->isMobile();
                 @include('backend.planning._table', ['type'=> 'pendientes'])
             </div>
             <div class="col-md-5">
-                <div class="row content-calendar calendar-mobile">
-                  <button type="button" class="cargar_calend btn btn-success btn-large">Cargar calendario</button>
+                <div class="row content-calendar calendar-mobile" style="min-height: 485px;">
+                    <div class="col-xs-12 text-center sending" style="padding: 120px 15px;">
+                        <i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br>
+                        <h2 class="text-center">CARGANDO CALENDARIO</h2>
+                    </div>
                 </div>
 
                 <div class="col-xs-12">
                     <!-- www.tutiempo.net - Ancho:446px - Alto:89px -->
+                    
                     <div id="TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G">El tiempo - Tutiempo.net</div>
                 </div>
             </div>
@@ -832,16 +836,16 @@ $is_mobile = $mobile->isMobile();
         
         
           
-        @if(!$is_mobile)
+      
         // Cargamos el calendario cuando acaba de cargar la pagina
         setTimeout(function(){
           $('.content-calendar').empty().load('/getCalendarMobile');
         }, 1500);
-        @endif
-        $('.cargar_calend').on('click',function(){
-          $('.content-calendar').empty().load('/getCalendarMobile');
-          $(this).remove();
-        });
+      
+//        $('.cargar_calend').on('click',function(){
+//          $('.content-calendar').empty().load('/getCalendarMobile');
+//          $(this).remove();
+//        });
         // CARGAMOS POPUP DE CALENDARIO BOOKING
         $('.btn-calendarBooking').click(function(event) {
           $('#modalCalendarBooking .modal-content').empty().load('/admin/reservas/api/calendarBooking');
@@ -1124,10 +1128,10 @@ $is_mobile = $mobile->isMobile();
 
     setTimeout(
       function () {
-        var my_awesome_script = document.createElement('script');
-        my_awesome_script.setAttribute('src', "https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G");
-        document.body.appendChild(my_awesome_script);
-      }, 1700);
+        var tutiempo_script = document.createElement('script');
+        tutiempo_script.setAttribute('src', "https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G");
+        document.body.appendChild(tutiempo_script);
+      }, 700);
  });
 
     </script>
