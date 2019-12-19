@@ -103,7 +103,7 @@
     Route::post('/getPriceBook', 'HomeController@getPriceBook');
     Route::get('/getFormBook', 'HomeController@form');
     Route::get('/getCitiesByCountry', 'HomeController@getCitiesByCountry');
-    Route::get('/getCalendarMobile', 'BookController@getCalendarMobileView');
+    Route::get('/getCalendarMobile/{month?}', 'BookController@getCalendarMobileView');
     Route::post('admin/reservas/create', 'BookController@create')->name('book.create');
    
     Route::get('/reservas/stripe/pagos/{id_book}', 'StripeController@stripePayment');
