@@ -407,7 +407,7 @@ trait ForfaitsPaymentsTraits {
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
     
-    $allForfaits = Forfaits::where('status','!=',1)
+    $allForfaits = Forfaits::whereIn('status',[2,3])
             ->where('created_at', '>=', $startYear)->where('created_at', '<=', $endYear)->get();
 
     $lstOrders = [];
@@ -445,7 +445,21 @@ trait ForfaitsPaymentsTraits {
               }
               
               if ($order->quick_order){
-                $quick_order += $order->total;
+                switch ($order->type){
+                  case 'forfaits':
+                    $forfaits += $order->total;
+                    break;
+                  case 'equipos':
+                    $material += $order->total;
+                    break;
+                  case 'clases':
+                    $class += $order->total;
+                    break;
+                  default :
+                    $quick_order += $order->total;
+                    break;
+                }
+                
               } else {
                 $common_ordersID[] = $order->id;
               }
@@ -455,11 +469,9 @@ trait ForfaitsPaymentsTraits {
             }
             
             if (count($common_ordersID)>0){
-              
-              $forfaits = ForfaitsOrderItem::whereIn('order_id',$common_ordersID)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
-              $class = ForfaitsOrderItem::whereIn('order_id',$common_ordersID)->where('type', 'class')->WhereNull('cancel')->sum('total');
-              $material = ForfaitsOrderItem::whereIn('order_id',$common_ordersID)->where('type', 'material')->WhereNull('cancel')->sum('total');
-              
+              $forfaits += ForfaitsOrderItem::whereIn('order_id',$common_ordersID)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
+//              $class = ForfaitsOrderItem::whereIn('order_id',$common_ordersID)->where('type', 'class')->WhereNull('cancel')->sum('total');
+//              $material = ForfaitsOrderItem::whereIn('order_id',$common_ordersID)->where('type', 'material')->WhereNull('cancel')->sum('total');
             }
             
             if (count($ordersID)>0){
@@ -532,10 +544,17 @@ trait ForfaitsPaymentsTraits {
       $errors = [];
 //      $errors = DB::table('forfaits_errors')->whereNull('watched')->get();
          
-      $booksCheckin = Book::where('start', date('Y-m-d'))->where('type_book', 2)->count();
+//      $booksCheckin = Book::where('start', date('Y-m-d'))->where('type_book', 2)->count();
       $ff_checkin = 0;
+      
+      $dateX = Carbon::now();
+      $booksCheckin = Book::where('start', '>=', $dateX->copy()->subDays(3))
+              ->where('start', '<=', $endYear)
+              ->where('type_book', 2)->count();
+                
+      
       if ($booksCheckin>0 && count($lstOrders)>0){
-        $ff_checkin = ceil($booksCheckin/(count($lstOrders))*100);
+        $ff_checkin = ceil((count($lstOrders)/$booksCheckin)*100);
       }
                 
       return view('backend.forfaits.orders', [
@@ -557,12 +576,12 @@ trait ForfaitsPaymentsTraits {
   }
   
       /**
-         * Get Limpieza Objet by Year Object
+         * Get Forfaits Objet by Year Object
          * 
          * @param Object $year
          * @return array
       */
-      private function getMonthlyData($year) {
+     public function getMonthlyData($year) {
           
           $startYear = new Carbon($year->start_date);
           $endYear   = new Carbon($year->end_date);
@@ -579,11 +598,11 @@ trait ForfaitsPaymentsTraits {
           $selected = null;
           for ($i=0; $i<$diff;$i++){
             $c_month = $aux+$i;
+            if ($c_month == 13){
+              $auxY++;
+            }
             if ($c_month>12){
               $c_month -= 12;
-            }
-            if ($c_month == 12){
-              $auxY++;
             }
             
             if ($thisMonth == $c_month){
@@ -598,15 +617,49 @@ trait ForfaitsPaymentsTraits {
                 'month' => $c_month,
                 'year'  => $auxY,
                 'name'  => $arrayMonthMin[$c_month-1],
-                'value' => 0
+                'value' => 0,
+                'data'  => [
+                    'forfaits' => 0, 
+                    'equipos' => 0, 
+                    'clases' => 0, 
+                    'otros' => 0, 
+                ]
+                
             ];
           }
           
           
           $monthValue = array();
           foreach ($months_obj as $k=>$months){
-            $value = ForfaitsOrders::whereYear('created_at', '=', $months['dateYear'])
-                    ->whereMonth('created_at', '=', $months['month'])->sum('total');
+            $common_ordersID = [];
+            $value = 0;
+
+                    
+            $orders = Forfaits::getAllOrdersSold($months['month'],$months['dateYear']);
+            if ($orders){
+              foreach ($orders as $order){
+//                if ($order->status != 2)continue;
+                if ($order->quick_order){
+                  $type = 'otros';
+                  if ($order->type){
+                    $type = $order->type;
+                  }
+                  $months_obj[$k]['data'][$type] += $order->total;
+                  
+                  $value += $order->total;
+                } else {
+                  $common_ordersID[] = $order->id;
+                }
+              }
+              
+              if (count($common_ordersID)>0){
+               $ffTotal = ForfaitsOrderItem::whereIn('order_id',$common_ordersID)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
+               $months_obj[$k]['data']['forfaits'] += $ffTotal;
+               $value += $ffTotal;
+              }
+            }
+            
+           
             if ($value){
               $months_obj[$k]['value'] = $value;
               $monthValue[] = $value;
@@ -617,7 +670,7 @@ trait ForfaitsPaymentsTraits {
             }
             
           }
-          
+//          dd($months_obj);
           return [
               'year'        => $year->year,
               'selected'    => $selected,

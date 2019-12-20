@@ -14,6 +14,44 @@ $isMobile = $mobile->isMobile();
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+    <style>
+      
+       .resume-head{
+    background-color: #51b1f7;
+  }
+  .resume-head th {
+    background-color: #51b1f7;
+    color: #fff !important;
+    min-width: 75px;
+    text-align: center;
+  }
+  .table-resumen td,
+  .table-resumen th{
+    height: 2em;
+    text-align: right;
+  }
+  .table-resumen th.static{
+    position: absolute;
+    height: 42px;
+    background-color: #51b1f7;
+    padding: 10px !important;
+    margin: 5px auto;
+  }
+  .table-resumen td.static{
+    position: absolute;
+    background-color: white;
+    border-right: 1px solid #efefef;
+    z-index: 9;
+    min-width: 8em;
+    padding: 5px 0 0 14px !important;
+    text-align: left;
+  }
+  
+  .table-resumen .first-col {
+    padding-left: 130px !important;
+  }
+  
+    </style>
 @endsection
 
 @section('content')
@@ -156,6 +194,64 @@ $isMobile = $mobile->isMobile();
                         <canvas id="barChartTemp" style="width: 100%; height: 250px;"></canvas>
                     </div>
                 </div>
+              
+                <?php 
+                 $t_forfaits = $t_equipos = $t_clases = $t_otros = 0;
+                ?>
+
+                <div class="col-md-12 col-xs-12">
+                  <h3>Resumen Forfaits</h3>
+                  <div class=" table-responsive">
+                  <table class="table table-resumen">
+                    <thead>
+                      <tr class="resume-head">
+                        <th class="static">Concepto</th>
+                        <th class="first-col">Total</th>
+                        @foreach($months_ff as $item)
+                        <th>{{$item['name']}} {{$item['year']}}</th>
+                         <?php 
+                           $t_forfaits += $item['data']['forfaits'];
+                           $t_equipos  += $item['data']['equipos'];
+                           $t_clases   += $item['data']['clases'];
+                           $t_otros    += $item['data']['otros'];
+                         ?>
+                        @endforeach
+                      </tr>
+                   </thead>
+                   <tbody>
+                      <tr>
+                        <td class="static">Forfaits</td>
+                        <td class="first-col"><?php echo number_format($t_forfaits, 0, ',', '.') ?> €</td>
+                        @foreach($months_ff as $item)
+                        <td><?php echo number_format($item['data']['forfaits'], 0, ',', '.'); ?>€</td>
+                        @endforeach
+                      </tr>
+                      <tr>
+                        <td class="static">Materiales</td>
+                        <td class="first-col"><?php echo number_format($t_equipos, 0, ',', '.') ?> €</td>
+                        @foreach($months_ff as $item)
+                        <td><?php echo number_format($item['data']['equipos'], 0, ',', '.'); ?>€</td>
+                        @endforeach
+                      </tr>
+                      <tr>
+                        <td class="static">Clases</td>
+                        <td class="first-col"><?php echo number_format($t_clases, 0, ',', '.') ?> €</td>
+                        @foreach($months_ff as $item)
+                        <td><?php echo number_format($item['data']['clases'], 0, ',', '.'); ?>€</td>
+                        @endforeach
+                      </tr>
+                      <tr>
+                        <td class="static">Otros</td>
+                        <td class="first-col"><?php echo number_format($t_otros, 0, ',', '.') ?> €</td>
+                        @foreach($months_ff as $item)
+                        <td><?php echo number_format($item['data']['otros'], 0, ',', '.'); ?>€</td>
+                        @endforeach
+                      </tr>
+                     </tbody>
+                  </table>
+                </div>
+              </div>
+              
             </div>
         </div>
     </div>

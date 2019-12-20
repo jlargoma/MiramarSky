@@ -142,17 +142,17 @@ class Rooms extends Model
 	    $startYear  = new Carbon($activeYear->start_date);
 	    $endYear    = new Carbon($activeYear->end_date);
 
-        $books = \App\Book::whereIn('type_book', [2,7,8])
+        $total = \App\Book::whereIn('type_book', [2,7,8])
                             ->where('start', '>=', $startYear)
                             ->where('start', '<=', $endYear)
                             ->orderBy('start', 'ASC')
-                            ->get();
+                            ->sum('total_price');
 
-
-        $total = 0;
-        foreach ($books as $book) {
-           $total  +=  $book->total_price;
-        }
+//
+//        $total = 0;
+//        foreach ($books as $book) {
+//           $total  +=  $book->total_price;
+//        }
 
         return $total;
 

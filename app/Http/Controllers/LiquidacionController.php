@@ -368,6 +368,14 @@ class LiquidacionController extends AppController {
       $ffData = $this->getFF_Data($startYear,$endYear);
     }
     
+    
+    $months_ff = null;
+    $cachedRepository  = new \App\Repositories\CachedRepository();
+    $ForfaitsItemController = new \App\Http\Controllers\ForfaitsItemController($cachedRepository);
+    $months_obj = $ForfaitsItemController->getMonthlyData($year);
+    if ($months_obj){
+      $months_ff = $months_obj['months_obj'];
+    }
     return view('backend/sales/contabilidad', [
         'year' => $year,
         'diff' => $diff,
@@ -382,7 +390,8 @@ class LiquidacionController extends AppController {
         'banco' =>$banco,
         'vendido'=>$vendido,
         'dataChartMonths' => $dataChartMonths,
-        'ffData'=>$ffData
+        'ffData'=>$ffData,
+        'months_ff' => $months_ff
         ]);
   }
 

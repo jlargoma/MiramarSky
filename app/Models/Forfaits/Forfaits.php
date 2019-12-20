@@ -4,6 +4,7 @@ namespace App\Models\Forfaits;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Forfaits\ForfaitsOrderItem;
+use \Carbon\Carbon;
 
 class Forfaits extends Model
 {
@@ -192,5 +193,50 @@ class Forfaits extends Model
 
     
     return $text;
+  }
+  
+  static function getAllOrdersSold($month,$year) {
+    $qry = Forfaits::select('forfaits_orders.*')
+            ->join('forfaits_orders','forfaits.id','=','forfaits_orders.forfats_id');
+    
+    
+    if ($month){
+      $qry->whereYear('forfaits_orders.created_at','=', $year)
+              ->whereMonth('forfaits_orders.created_at','=', $month);
+    } else {
+      $activeYear = \App\Years::where('year', $year)->first();
+      if (!$activeYear) return 0;
+      $startYear  = new Carbon($activeYear->start_date);
+      $endYear    = new Carbon($activeYear->end_date);
+      $qry->whereYear('forfaits_orders.created_at', '>=', $startYear)
+              ->where('forfaits_orders.created_at', '<=', $endYear);
+    }
+      
+    
+    return $qry->whereIn('forfaits.status', [2,3]) // cobrada
+            ->where('forfaits_orders.status', '!=',3) // no cancel
+            ->get();
+  }
+
+
+  static function getTotalByYear($year){
+  
+    $total = 0;
+    $ffItems = [];
+    $allForfaits =  self::getAllOrdersSold(null,$year);
+    if (count($allForfaits)){
+      foreach ($allForfaits as $order){
+        if ($order->quick_order){
+          $total += $order->total;
+        } else {
+          $ffItems[] = $order->id;
+        }
+      }
+    }
+    
+    if ($ffItems){
+      $total += ForfaitsOrderItem::whereIn('order_id',$ffItems)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
+    }
+    return $total;
   }
 }
