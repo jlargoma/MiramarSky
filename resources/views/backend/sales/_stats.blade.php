@@ -41,7 +41,7 @@ if ($pending<0) $pending = 0;
   <div class="col-md-12 col-xs-6">
   <table class="table table-hover table-striped table-ingresos" style="background-color: #92B6E2">
     <thead class="bg-complete" style="background: #d3e8f7">
-    <th colspan="2" class="text-black text-center"> Ingresos Temporada</th>
+    <th colspan="2" class="text-black text-center"> Ingresos Reservas</th>
     </thead>
     <tbody>
       <tr>
@@ -77,7 +77,7 @@ if ($pending<0) $pending = 0;
 
   <table class="table table-hover table-striped table-cobros" style="background-color: #38C8A7">
     <thead style="background-color: #38C8A7">
-    <th colspan="2" class="text-white text-center">Cobros Temporada</th>
+    <th colspan="2" class="text-white text-center">Cobros Reservas</th>
     </thead>
     <tbody style="background-color: #38C8A7">
       <tr class="tr-cobros">
@@ -112,7 +112,7 @@ if ($pending<0) $pending = 0;
     <div class="col-md-6 col-sm-12">
       <table class="table table-hover table-striped table-ingresos" style="background-color: #92B6E2">
         <thead class="bg-complete" style="background: #d3e8f7">
-        <th colspan="2" class="text-black text-center"> Ingresos Temporada - Forfaits</th>
+        <th colspan="2" class="text-black text-center"> Ingresos Forfaits</th>
         </thead>
         <tbody>
           <tr>

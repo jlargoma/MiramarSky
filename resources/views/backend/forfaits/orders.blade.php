@@ -5,6 +5,7 @@ use \App\Classes\Mobile;
 
 $mobile = new Mobile();
 $is_mobile = $mobile->isMobile();
+$oRole = Auth::user()->role;
 ?>
 @extends('layouts.admin-master')
 
@@ -18,41 +19,116 @@ $is_mobile = $mobile->isMobile();
   .table thead tr.text-white th{
     color: #fff !important;
   }
-
-@if($is_mobile)
-  .th-name{
-    width: 190px !important;
+  .fix-col-data{
+    min-width: 150px;
+  }
+  .table.table-data tbody td{
+    text-align: center;
+  }
+  .td-b1{
+    padding: 10px 5px!important;
+    text-align: left !important;
+  }
+  .tooltiptext {
+    position: absolute;
+    font-size: 11px;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.42);
+    padding: 2px 5px;
+    width: 10em;
+    border-radius: 7px;
+  }
+  .showBookComm{
+    cursor: pointer;
+    padding: 6px;
+  }
+  .tooltiptext.FF_resume,
+  .BookComm.tooltiptext {
+    padding: 11px;
+    background-color: #333;
+    font-size: 1em;
     text-align: left;
-    max-width: 190px !important;
+    z-index: 9;
+    width: 22em;
+    display: none;
   }
-  .table thead tr .th-1{
-    width: 30px !important;
+  .BookComm.tooltiptext {
+    color: #fff !important;
   }
-  .table thead tr .th-2{
-    width: 30px !important;
+  .tooltiptext.FF_resume {
+    color: inherit !important;
+    right: 26px;
+    bottom: -70px;
   }
-  .table thead tr .th-3{
-    width: 30px !important;
+  a.openFF.showFF_resume {
+      position: relative;
+  }
+
+  .showFF_resume:hover .tooltiptext.FF_resume,
+  .showBookComm:hover .tooltiptext.BookComm{
+    display: block;
+  }
+
+  .tooltiptext.FF_resume .table tbody tr td{
+    padding: 8px !important;
+    font-size: 1.3em;
+    font-weight: 600;
+  }
+  .tooltiptext.FF_resume span.Pendiente {
+    color: red;
+  }
+  .resume-head{
+    background-color: #51b1f7;
+  }
+  .resume-head th {
+    background-color: #51b1f7;
+    color: #fff !important;
+    min-width: 75px;
+    text-align: center;
+  }
+  .table-resumen td,
+  .table-resumen th{
+    height: 2em;
+    text-align: right;
+  }
+  .table-resumen th.static{
+    position: absolute;
+    height: 42px;
+    background-color: #51b1f7;
+    padding: 10px !important;
+    margin: 5px auto;
+  }
+  .table-resumen td.static{
+    position: absolute;
+    background-color: white;
+    border-right: 1px solid #efefef;
+    z-index: 9;
+    min-width: 8em;
+    padding: 5px 0 0 14px !important;
+    text-align: left;
   }
   
-  table {
-  display: block;
-  overflow-x: auto;
-}
+  .table-resumen .first-col {
+    padding-left: 130px !important;
+  }
+ 
+  @media only screen and (max-width: 991px){
 
-
-
-.t-ff{
-  float: none;
-}
-.t-ff td,
-.t-ff th{
-  height: 6em;
-}
-.t-ff a{
-  white-space: initial !important;
-}
-@endif
+    .fix-col-data{
+      width:120px;overflow-x: scroll;
+      white-space: nowrap;
+    }
+    .t-ff{
+      float: none;
+    }
+    .t-ff td,
+    .t-ff th{
+      height: 6em;
+    }
+    .t-ff a{
+      white-space: initial !important;
+    }
+  }
 </style>
 @endsection
 
@@ -168,13 +244,14 @@ $is_mobile = $mobile->isMobile();
   
   <div class="clearfix"></div>
   <div class="row">
-    <div class="col-md-9 col-xs-12 content-table-rooms table-responsive t-ff">
-      <table class="table">
+    <div class="col-md-9 col-xs-12  t-ff">
+      <div class="table-responsive">
+      <table class="table table-data-ff">
         <thead>
           
           <tr class ="text-center bg-complete text-white">
-            <th class="th-bookings th-name static">Cliente</th>
-            <th class="th-bookings first-col">
+            <th class="th-bookings th-name">Cliente</th>
+            <th class="th-bookings">
               @if($is_mobile)
                 <i class="fa fa-phone fa-2x"></i>
               @else                                  
@@ -185,7 +262,8 @@ $is_mobile = $mobile->isMobile();
             <th class="th-bookings">Apart</th>
             <th class="th-bookings th-2"><i class="fa fa-moon-o"></i> </th>
             <th class="th-bookings th-2"><i class="fa fa-clock-o"></i></th>
-            <th class="th-bookings th-4">IN - OUT</th>
+            <th class="th-bookings th-4">IN</th>
+            <th class="th-bookings th-4">OUT</th>
             <th class="th-bookings th-6">
               TOTAL<br/><?php echo number_format($totals['totalPrice'], 0, ',', '.') ?> €</th>
             <th class="th-bookings th-6">
@@ -195,12 +273,11 @@ $is_mobile = $mobile->isMobile();
             <th class="th-bookings th-6">
               CLASS<br/><?php echo number_format($totals['class'], 0, ',', '.') ?> €</th>
             <th class="th-bookings th-6">
-              ORDEN RÁPIDA<br/><?php echo number_format($totals['quick_order'], 0, ',', '.') ?> €</th>
+              OTROS<br/><?php echo number_format($totals['quick_order'], 0, ',', '.') ?> €</th>
             <th class="th-bookings th-6">
               COBRADO<br/><?php echo number_format($totals['totalPayment'], 0, ',', '.') ?> €</th>
             <th class="th-bookings th-2">FF</th>
             <th class="th-bookings th-2" title="Reservas hechas en Forfait Express">FFExpress</th>
-          </tr>
           </tr>
         </thead>
         <tbody>
@@ -210,7 +287,8 @@ $is_mobile = $mobile->isMobile();
           ?>
           <tr>
             <?php if ($book): ?>
-            <td class="text-center th-name static" style="padding: 10px !important">
+            <td class="fix-col td-b1">
+              <div class="fix-col-data">
                 <?php if ( $book->agency != 0): ?>
               <img src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" class="img-agency" />
             <?php endif ?>
@@ -220,36 +298,25 @@ $is_mobile = $mobile->isMobile();
                                 <?php else: ?>
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
                                 <?php endif ?>
-                                <?php if (Auth::user()->role != "limpieza"): ?>
-                                <?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
-                                    <?php 
-                                        $textComment = "";
-                                        if (!empty($book->comment)) {
-                                            $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:"."<br>"." ".$book->comment."<br>";
-                                        }
-                                        if (!empty($book->book_comments)) {
-                                            $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments;
-                                        }
-                                    ?>
-                                    
-                                    <div class="tooltip-2">
-                                      <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
-                                      <div class="tooltiptext"><p class="text-left"><?php echo $textComment ?></p></div>
-                                    </div>
-                            <?php endif ?>
-                                <?php endif ?>
-            
+                               
+              </div>
                            </div>
                             </td>
-                            <td class="text-center first-col">
+                            <td class="text-center">
                               <?php if ($book->customer->phone != 0 && $book->customer->phone != "" ): ?>
                                 <a href="tel:<?php echo $book->customer->phone ?>">
                                 @if($is_mobile)
-                                <i class="fa fa-phone fa-2x"></i>
+                                  <i class="fa fa-phone fa-2x"></i>
                                 @else
                                       <?php echo $book->customer->phone ?>
                                 @endif
                                 </a>
+                              <?php endif ?>
+                              <?php if ($oRole != "limpieza" && ( !empty($book->comment) || !empty($book->book_comments)) ): ?>
+                                  <div data-booking="<?php echo $book->id; ?>" class="showBookComm" >
+                                    <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                                    <div class="BookComm tooltiptext"></div>
+                                  </div>
                               <?php endif ?>
                             </td>
                             <td class ="text-center" >
@@ -271,19 +338,19 @@ $is_mobile = $mobile->isMobile();
                             <td class="text-center sm-p-t-10 sm-p-b-10">
                                 {{$book->schedule}}
                             </td>
-                            <td class ="text-center">
-                            <?php $start = Carbon::createFromFormat('Y-m-d',$book->start); ?>
-                            <b><?php echo $start->formatLocalized('%d %b'); ?></b>
-                            <span> - </span>
-                            <?php $finish = Carbon::createFromFormat('Y-m-d',$book->finish);?>
-                            <b><?php echo $finish->formatLocalized('%d %b'); ?></b>
+                           <td class="td-date" data-order="{{$book->start}}">
+                              <?php echo dateMin($book->start) ?>
+                            </td>
+                            <td class="td-date" data-order="{{$book->finish}}">
+                              <?php echo dateMin($book->finish) ?>
+                            </td>
             <?php else: ?>
-                            <td class="text-center static">
-                              <div class="th-name">
+                              <td class="fix-col td-b1">
+                                <div class="fix-col-data">
                                 
                                 <?php echo $order['name'].'<br>'.$order['email']; ?>
                               </div></td>
-                            <td class="text-center first-col">
+                            <td class="text-center">
                               <?php if ( $order['phone'] != 0 &&  $order['phone'] != "" ): ?>
                                 <a href="tel:<?php echo $order['phone']?>">
                                 @if($is_mobile)
@@ -295,15 +362,18 @@ $is_mobile = $mobile->isMobile();
                               <?php endif ?>
                             </td>
                             <td class="text-center"> - </td>
-                            <td class="text-center" colspan="3">
+                            <td class="text-center">
                               <button type="button" class="btn btn-default changeBook" data-id="<?php echo $order['id']; ?>">
                                 Asignar Reserva
                               </button>
                             </td>
                             <td class="text-center"> - </td>
+                            <td class="text-center"> - </td>
+                            <td class="text-center"> - </td>
+                            <td class="text-center"> - </td>
             <?php endif ?>
-                            </td>
-            <td class="text-center"><?php echo number_format($order['totalPrice'], 0, ',', '.') ?> €</td>
+                         
+            <td class="text-center"><b><?php echo number_format($order['totalPrice'], 0, ',', '.') ?> €</b></td>
             <td class="text-center"><?php echo number_format($order['forfaits'], 0, ',', '.') ?> €</td>
             <td class="text-center"><?php echo number_format($order['material'], 0, ',', '.') ?> €</td>
             <td class="text-center"><?php echo number_format($order['class'], 0, ',', '.') ?> €</td>
@@ -336,7 +406,7 @@ $is_mobile = $mobile->isMobile();
               
             </td>
             <td class="text-center">
-             <a data-booking="<?php echo $order['id']; ?>" class="openFF" title="Ir a Forfaits" >
+             <a data-booking="<?php echo $order['id']; ?>" class="openFF showFF_resume" title="Ir a Forfaits" >
               <?php
                 $ff_status = $order['status'];
                 
@@ -347,6 +417,7 @@ $is_mobile = $mobile->isMobile();
                   }
                 
               ?>
+                <div class="FF_resume tooltiptext"></div>
               </a>
               
             </td>  
@@ -359,9 +430,65 @@ $is_mobile = $mobile->isMobile();
           ?>
         </tbody>
       </table>
+        </div>
     </div>
     <div class="col-md-3" >
        <canvas id="barChartMounth" style="width: 100%; height: 250px;"></canvas>
+       <?php 
+        $t_forfaits = $t_equipos = $t_clases = $t_otros = 0;
+       ?>
+       
+       <div class="row table-responsive">
+         <table class="table table-resumen">
+           <thead>
+             <tr class="resume-head">
+               <th class="static">Concepto</th>
+               <th class="first-col">Total</th>
+               @foreach($months_obj as $item)
+               <th>{{$item['name']}} {{$item['year']}}</th>
+                <?php 
+                  $t_forfaits += $item['data']['forfaits'];
+                  $t_equipos  += $item['data']['equipos'];
+                  $t_clases   += $item['data']['clases'];
+                  $t_otros    += $item['data']['otros'];
+                ?>
+               @endforeach
+             </tr>
+          </thead>
+          <tbody>
+             <tr>
+               <td class="static">Forfaits</td>
+               <td class="first-col"><?php echo number_format($t_forfaits, 0, ',', '.') ?> €</td>
+               @foreach($months_obj as $item)
+               <td><?php echo number_format($item['data']['forfaits'], 0, ',', '.'); ?>€</td>
+               @endforeach
+             </tr>
+             <tr>
+               <td class="static">Materiales</td>
+               <td class="first-col"><?php echo number_format($t_equipos, 0, ',', '.') ?> €</td>
+               @foreach($months_obj as $item)
+               <td><?php echo number_format($item['data']['equipos'], 0, ',', '.'); ?>€</td>
+               @endforeach
+             </tr>
+             <tr>
+               <td class="static">Clases</td>
+               <td class="first-col"><?php echo number_format($t_clases, 0, ',', '.') ?> €</td>
+               @foreach($months_obj as $item)
+               <td><?php echo number_format($item['data']['clases'], 0, ',', '.'); ?>€</td>
+               @endforeach
+             </tr>
+             <tr>
+               <td class="static">Otros</td>
+               <td class="first-col"><?php echo number_format($t_otros, 0, ',', '.') ?> €</td>
+               @foreach($months_obj as $item)
+               <td><?php echo number_format($item['data']['otros'], 0, ',', '.'); ?>€</td>
+               @endforeach
+             </tr>
+            </tbody>
+         </table>
+       </div>
+       
+       
        <div class="box-errors" style="display:none;">
          <h3 class="text-danger">Errores Forfaits</h3>
         <?php 
@@ -421,6 +548,11 @@ $is_mobile = $mobile->isMobile();
 @endsection
 
 @section('scripts')
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+  <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+  <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
+
   <script type="text/javascript">
     $(document).ready(function () {
       $('.openFF').on('click', function (event) {
@@ -513,6 +645,49 @@ $is_mobile = $mobile->isMobile();
 	       }); 
 	});
         
+        
+        
+        $('.table-data-ff').dataTable({
+          "searching": true,
+          "paging":   false,
+          "order": [[ 6, "desc" ]],
+          "columnDefs": [
+            {"targets": ['1,2,11,12,13'], "orderable": false }
+          ],
+          @if($is_mobile)
+            paging:  true,
+            pageLength: 30,
+            pagingType: "full_numbers",
+            scrollX: true,
+            scrollY: false,
+            scrollCollapse: true,
+            fixedColumns:   {
+              leftColumns: 1
+            },
+          @endif
+
+        });
+
+      var load_comment = true;
+      $('body').on('mouseover','.showBookComm',function(){
+        var id = $(this).data('booking');
+          if (load_comment != id){
+            var tooltip = $(this).find('.BookComm');
+            tooltip.load('/ajax/get-book-comm/'+id);
+            load_comment = id;
+          }
+      });
+      
+      var loadFF_resume = true;
+      $('body').on('mouseover','.showFF_resume',function(){
+        var id = $(this).data('booking');
+          if (loadFF_resume != id){
+            var tooltip = $(this).find('.FF_resume');
+            tooltip.load('/admin/forfaits/resume/'+id);
+            loadFF_resume = id;
+          }
+      });
+      
     });
   </script>
 @endsection

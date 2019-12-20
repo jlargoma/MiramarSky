@@ -5,6 +5,7 @@ $role = Auth::user()->role;
 ?>
 <?php 
   $columnDefs = null;
+  $orden = null;
   switch ($type):
     case 'pendientes':
       ?> @include('backend.planning.listados._pendientes', ['books' => $books ])<?php
@@ -29,6 +30,7 @@ $role = Auth::user()->role;
       if  ($role != "agente" && $role != "limpieza"){
         $columnDefs = '0,1,2,3,4,5,8,9,10,11';
       }
+      $orden = '  "order": [[ 6, "asc" ]],';
       break;
     case 'checkout':
       ?> @include('backend.planning.listados._checkout', ['books' => $books ])<?php
@@ -54,6 +56,7 @@ $role = Auth::user()->role;
           "columnDefs": [
             {"targets": [{{$columnDefs}}], "orderable": false }
           ],
+          @if($orden) {!!$orden!!}@endif
           @if($isMobile)
             paging:  true,
             pageLength: 30,

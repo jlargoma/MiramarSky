@@ -63,7 +63,7 @@
     width: 100%;height: 100%; cursor: pointer;
   }
   .content-calendar .td-month{
-    border:1px solid black;width: 24px; height: 20px;font-size: 10px;padding: 5px!important
+    border:1px solid black;width: 24px; height: 20px;font-size: 10px;padding: 5px!important;
     text-align: center;
     min-width: 25px;
   }
