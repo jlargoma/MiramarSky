@@ -552,9 +552,9 @@ trait ForfaitsPaymentsTraits {
               ->where('start', '<=', $endYear)
               ->where('type_book', 2)->count();
                 
-      
-      if ($booksCheckin>0 && count($lstOrders)>0){
-        $ff_checkin = ceil((count($lstOrders)/$booksCheckin)*100);
+      $totalOrders = $allForfaits->count();
+      if ($booksCheckin>0 && $totalOrders>0){
+        $ff_checkin = ceil(($totalOrders/$booksCheckin)*100);
       }
                 
       return view('backend.forfaits.orders', [
@@ -570,6 +570,7 @@ trait ForfaitsPaymentsTraits {
           'monthValue'=> $obj1['monthValue'],
           'months_label'=> $obj1['months_label'],
           'ff_checkin'=> $ff_checkin,
+          'totalOrders'=> $totalOrders,
               ]);
     }
     

@@ -212,7 +212,7 @@ $oRole = Auth::user()->role;
         <div class="col-md-6 bordered text-center">
           <h4 class="hint-text">Total de Ordenes</h4>
           <div class="p-l-20">
-            <h3 ><?php echo $totals['orders']; ?></h3>
+            <h3 ><?php echo $totalOrders; ?></h3>
           </div>
         </div>
         <div class="col-md-6 bordered text-center">
