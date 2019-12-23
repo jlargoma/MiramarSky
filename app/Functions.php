@@ -95,6 +95,7 @@ function getMonthsSpanish($m,$min=true){
   } else {
     $arrayMonth = ['','Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   }
+  $m = intval($m);
   return isset($arrayMonth[$m]) ? $arrayMonth[$m] : '';
 }
 
@@ -248,4 +249,28 @@ function ob_html_compress($buffer){
   
   return preg_replace(array('/<!--(.*)-->/Uis',"/[[:blank:]]+/"),array('',' '),str_replace(array("\n","\r","\t"),'',$buf));
     return str_replace(array("\n","\r","\t"),'',$buf);
+}
+
+function getArrayMonth($startYear,$endYear){
+
+  $diff = $startYear->diffInMonths($endYear) + 1;
+  $thisMonth = date('m');
+  
+  $result = [];
+  $aux = $startYear->format('n');
+  $auxY = $startYear->format('y');
+  $c_month = null;
+  for ($i = 0; $i < $diff; $i++) {
+      $c_month = $aux + $i;
+      if ($c_month == 13) {
+        $auxY++;
+      }
+      if ($c_month > 12) {
+        $c_month -= 12;
+      }
+      $tMonth = $c_month;
+      if ($tMonth<10) $tMonth = '0'.$tMonth;
+      $result[] = ['y' => $auxY,'m'=> $tMonth];
+    }
+  return $result;
 }

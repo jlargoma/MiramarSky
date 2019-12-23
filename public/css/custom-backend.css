@@ -447,14 +447,57 @@ div#box_msg_lst {
   }
 }
 .Reservado, .table.table-striped tbody tr.Reservado td {
-    background-color: #96ef99 !important;
+  background-color: #96ef99 !important;
 }
 .contestado-email {
-    background-color: #f8f7c8 !important;
+  background-color: #f8f7c8 !important;
 }
 .Blocked-ical {
-    background-color: #9f9f9f !important;
+  background-color: #9f9f9f !important;
 }
 .atipicas, .table.table-striped tbody tr.atipicas td {
-    background-color: #a59bcc !important;
+  background-color: #a59bcc !important;
+}
+
+.table-resumen td,
+.table-resumen th{
+  height: 2em;
+  text-align: right;
+}
+.table-resumen th.static{
+  position: absolute;
+  height: 42px;
+  background-color: #51b1f7;
+  padding: 10px !important;
+  margin: 5px auto;
+}
+.table-resumen td.static{
+  position: absolute;
+  background-color: white;
+  border-right: 1px solid #efefef;
+  z-index: 9;
+  min-width: 8em;
+  padding: 5px 0 0 14px !important;
+  text-align: left;
+}
+
+.table-resumen .first-col {
+  padding-left: 130px !important;
+}
+.resume-head{
+  background-color: #51b1f7;
+}
+.resume-head th {
+  background-color: #51b1f7;
+  color: #fff !important;
+  min-width: 75px;
+  text-align: right;
+}
+
+@media only screen and (max-width: 991px){
+
+  .table-resumen  .fix-col-data{
+    width:120px;overflow-x: scroll;
+    white-space: nowrap;
+  }
 }

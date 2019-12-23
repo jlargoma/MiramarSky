@@ -14,6 +14,17 @@ setlocale(LC_TIME, "es_ES");
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 <script type="text/javascript" src="{{asset('/js/bootbox.min.js')}}"></script>
+<style>
+ 
+ 
+  @media only screen and (max-width: 991px){
+
+    .table-resumen .fix-col-data{
+      width:120px;overflow-x: scroll;
+      white-space: nowrap;
+    }
+  }
+</style>
 @endsection
 
 @section('content')
@@ -103,6 +114,39 @@ setlocale(LC_TIME, "es_ES");
       <div>
         <canvas id="barChartTemp" style="width: 100%; height: 250px;"></canvas>
       </div>
+      
+      <div class="row table-responsive">
+         <table class="table table-resumen">
+           <thead>
+             <tr class="resume-head">
+               <th class="static">Concepto</th>
+               <th class="first-col">Total</th>
+               @foreach($t_month as $item)
+               <th>{{$item['label']}}</th>
+               @endforeach
+             </tr>
+          </thead>
+          <tbody>
+             <tr>
+               <td class="static">Limpieza</td>
+               <td class="first-col"><?php echo number_format($totalCostBooks, 0, ',', '.') ?> €</td>
+               @foreach($t_month as $item)
+               <td><?php echo number_format($item['limp'], 0, ',', '.'); ?>€</td>
+               @endforeach
+             </tr>
+             <tr>
+               <td class="static">Extras</td>
+               <td class="first-col"><?php echo number_format($extraCostBooks, 0, ',', '.') ?> €</td>
+               @foreach($t_month as $item)
+               <td><?php echo number_format($item['extra'], 0, ',', '.'); ?>€</td>
+               @endforeach
+             </tr>
+            </tbody>
+         </table>
+       </div>
+      
+      
+      
     </div>
   </div>
 </div>

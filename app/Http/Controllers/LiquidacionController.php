@@ -2434,15 +2434,61 @@ class LiquidacionController extends AppController {
 
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
-    $totalCostBooks = \App\Book::where_type_book_sales()
-            ->where('start', '>=', $startYear)
-            ->where('start', '<=', $endYear)
-            ->sum('cost_limp');
-    $extraCostBooks = \App\Book::where_type_book_sales()
-            ->where('start', '>=', $startYear)
-            ->where('start', '<=', $endYear)
-            ->sum('extraCost');
+    
 
+    
+    // calculate total by month: limp and extra
+    $dates = getArrayMonth($startYear,$endYear);
+    $t_month = [];
+    foreach ($dates as $d){
+      
+      $t_month[$d['m'].'-'.$d['y']] = [
+          'limp' => 0,
+          'extra' => 0,
+          'label'=> getMonthsSpanish($d['m']).' '.$d['y']
+      ];
+    }
+    
+    
+    $extraCostBooks = 0;
+    $monthlyCost = \App\Book::getMonthSum('extraCost','finish',$startYear,$endYear);
+    if (count($monthlyCost)){
+      foreach ($monthlyCost as $item){
+        if (isset($t_month[$item->new_date])){
+          $t_month[$item->new_date]['extra'] = $item->total;
+          $extraCostBooks += $item->total;
+        }
+      }
+    }
+    $totalCostBooks = 0;
+    $monthlyCost = \App\Book::getMonthSum('cost_limp','finish',$startYear,$endYear);
+    if (count($monthlyCost)){
+      foreach ($monthlyCost as $item){
+        if (isset($t_month[$item->new_date])){
+          $t_month[$item->new_date]['limp'] = $item->total;
+          $totalCostBooks += $item->total;
+        }
+      }
+    }
+    
+    $monthlyFix = \App\Expenses::select('import',DB::raw('DATE_FORMAT(date, "%m-%y") new_date'))
+            ->where('date', '>=', $startYear)
+            ->where('date', '<=', $endYear)
+            ->where('type', 'LIMPIEZA')
+            ->where('concept', 'LIMPIEZA MENSUAL')
+            ->get();
+    if (count($monthlyFix)) {
+      foreach ($monthlyFix as $m){
+        if (isset($t_month[$m->new_date])){
+          $t_month[$m->new_date]['limp'] += $m->import;
+          $totalCostBooks += $m->import;
+        }
+      }
+    }
+    
+    
+    
+    
     
     return view('backend/sales/limpiezas', [
         'year' => $year,
@@ -2453,6 +2499,7 @@ class LiquidacionController extends AppController {
         'months_3' => $obj3,
         'totalCostBooks'=>$totalCostBooks,
         'extraCostBooks'=>$extraCostBooks,
+        't_month' => $t_month
             ]
     );
   }
@@ -2468,59 +2515,48 @@ class LiquidacionController extends AppController {
 
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
-    $diff = $startYear->diffInMonths($endYear) + 1;
-    $thisMonth = date('m');
+   
     //get the books to these date range
-    $lstBooks = \App\Book::where_type_book_sales()
-            ->where('start', '>=', $startYear)
-            ->where('start', '<=', $endYear)
-            ->get();
+//    $lstBooks = \App\Book::where_type_book_sales()
+//            ->where('finish', '>=', $startYear)
+//            ->where('finish', '<=', $endYear)
+//            ->get();
 
     $arrayMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     $arrayMonthMin = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sept', 'Oct', 'Nov', 'Dic'];
     $lstMonthlyCost = [];
-    foreach ($lstBooks as $book) {
-      $date = Carbon::createFromFormat('Y-m-d', $book->start);
-      $cMonth = intval($date->format('n'));
-      if (isset($lstMonthlyCost[$cMonth])) {
-        $lstMonthlyCost[$cMonth] += floatval($book->cost_limp);
-      } else {
-        $lstMonthlyCost[$cMonth] = floatval($book->cost_limp);
-      }
+    
+    $monthlyCost = \App\Book::getMonthSum('cost_limp','finish',$startYear,$endYear);
+    foreach ($monthlyCost as $item) {
+      $cMonth = intval(substr($item->new_date,0,2));
+      $lstMonthlyCost[$cMonth] = floatval($item->total);
     }
 
     //Prepare objets to JS Chars
     $months_lab = '';
     $months_val = [];
     $months_obj = [];
-    $aux = $startYear->format('n');
-    $auxY = $startYear->format('y');
+    $thisMonth = date('m');
+    $dates = getArrayMonth($startYear,$endYear);
     $selected = null;
-    for ($i = 0; $i < $diff; $i++) {
-      $c_month = $aux + $i;
-      if ($c_month > 12) {
-        $c_month -= 12;
-      }
-      if ($c_month == 12) {
-        $auxY++;
+    foreach ($dates as $d) {
+      
+      if ($thisMonth == $d['m']) {
+        $selected = $d['y'].','.$d['m'];
       }
 
-      if ($thisMonth == $c_month) {
-        $selected = "$auxY,$c_month";
-      }
-
-      $months_lab .= "'" . $arrayMonth[$c_month - 1] . "',";
-      if (!isset($lstMonthlyCost[$c_month])) {
+      $months_lab .= "'" . $arrayMonth[$d['m'] - 1] . "',";
+      if (!isset($lstMonthlyCost[$d['m']])) {
         $months_val[] = 0;
       } else {
-        $months_val[] = $lstMonthlyCost[$c_month];
+        $months_val[] = $lstMonthlyCost[$d['m']];
       }
       //Only to the Months select
       $months_obj[] = [
-          'id' => $auxY . '_' . $c_month,
-          'month' => $c_month,
-          'year' => $auxY,
-          'name' => $arrayMonthMin[$c_month - 1]
+          'id' => $d['y'] . '_' . $d['m'],
+          'month' => $d['m'],
+          'year' => $d['y'],
+          'name' => $arrayMonthMin[$d['m'] - 1]
       ];
     }
 
@@ -2565,9 +2601,9 @@ class LiquidacionController extends AppController {
     }
 
 
-    $lstBooks = \App\Book::where_type_book_sales()->where('start', '>=', $startYear)
-                    ->where('start', '<=', $endYear)
-                    ->orderBy('start', 'ASC')->get();
+    $lstBooks = \App\Book::where_type_book_sales()->where('finish', '>=', $startYear)
+                    ->where('finish', '<=', $endYear)
+                    ->orderBy('finish', 'ASC')->get();
 
 
     $respo_list = [];

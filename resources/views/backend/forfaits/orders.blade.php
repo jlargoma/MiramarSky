@@ -77,47 +77,9 @@ $oRole = Auth::user()->role;
   .tooltiptext.FF_resume span.Pendiente {
     color: red;
   }
-  .resume-head{
-    background-color: #51b1f7;
-  }
-  .resume-head th {
-    background-color: #51b1f7;
-    color: #fff !important;
-    min-width: 75px;
-    text-align: center;
-  }
-  .table-resumen td,
-  .table-resumen th{
-    height: 2em;
-    text-align: right;
-  }
-  .table-resumen th.static{
-    position: absolute;
-    height: 42px;
-    background-color: #51b1f7;
-    padding: 10px !important;
-    margin: 5px auto;
-  }
-  .table-resumen td.static{
-    position: absolute;
-    background-color: white;
-    border-right: 1px solid #efefef;
-    z-index: 9;
-    min-width: 8em;
-    padding: 5px 0 0 14px !important;
-    text-align: left;
-  }
   
-  .table-resumen .first-col {
-    padding-left: 130px !important;
-  }
  
   @media only screen and (max-width: 991px){
-
-    .fix-col-data{
-      width:120px;overflow-x: scroll;
-      white-space: nowrap;
-    }
     .t-ff{
       float: none;
     }
