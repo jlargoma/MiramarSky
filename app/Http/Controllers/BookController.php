@@ -179,7 +179,7 @@ class BookController extends AppController
 //        $parteeToActive = BookPartee::whereIn('status', ['HUESPEDES',"FINALIZADO"])->count();
         $ff_mount = null;
         if (!$mobile->isMobile()){
-          if (env('APP_APPLICATION') !== "riad" && Auth::user()->role == "admin"){
+          if (env('APP_APPLICATION') == "apartamentosierranevada.net" && Auth::user()->role == "admin"){
             $cachedRepository  = new CachedRepository();
             $ForfaitsItemController = new \App\Http\Controllers\ForfaitsItemController($cachedRepository);
             $balance = $ForfaitsItemController->getBalance();
