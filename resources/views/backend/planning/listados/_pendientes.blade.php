@@ -148,14 +148,6 @@ $uRole = Auth::user()->role;
             </td>
             <?php if ( $uRole != "agente" ): ?>
             <td>
-              <?php
-                $ff_status = $book->get_ff_status(false);
-                if ($ff_status['icon']){
-                      echo '<img data-booking="'.$book->id.'" src="'.$ff_status['icon'].'" class="showFF_resume" style="max-width:25px;" alt="'.$ff_status['name'].'"/>';
-                      echo '<div class="FF_resume tooltiptext"></div>';
-                }
-              ?>
-             
                 <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button"
                         data-toggle="tooltip" title="" data-original-title="Eliminar Reserva"
                         onclick="return confirm('¿Quieres Eliminar la reserva?');">
