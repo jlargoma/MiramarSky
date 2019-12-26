@@ -1731,4 +1731,19 @@ trait ForfaitsPaymentsTraits {
     ];
     
   }
+  
+  function sendFFExpress($order_id,$forfats_id) {
+    return;
+      $order = ForfaitsOrders::find($order_id);
+      
+      $successful = false;
+      if ($order){
+        $oForfait = Forfaits::find($forfats_id);
+        if ($oForfait->id == $order->forfats_id)
+          if ($order->status == 2 ){
+            $this->sendBookingOrder([$order->id],$oForfait,null);
+//            die('Forfaits enviados');
+          }
+      }
+  }
 }

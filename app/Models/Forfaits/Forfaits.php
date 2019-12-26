@@ -115,7 +115,7 @@ class Forfaits extends Model
     $orders = self::orders()->get();
     $payment = $this->status;
     if ($orders && count($orders)>0){
-      $payment = 3;
+//      $payment = 3;
       foreach ($orders as $o){
         if ($o->status == 1)
           $payment = 2;
