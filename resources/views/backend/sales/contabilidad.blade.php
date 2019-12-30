@@ -195,6 +195,7 @@ $isMobile = $mobile->isMobile();
                     </div>
                 </div>
               
+                @if(env('APP_APPLICATION') != "riad")
                 <?php 
                  $t_forfaits = $t_equipos = $t_clases = $t_otros = 0;
                 ?>
@@ -251,7 +252,7 @@ $isMobile = $mobile->isMobile();
                   </table>
                 </div>
               </div>
-              
+              @endif
             </div>
         </div>
     </div>
