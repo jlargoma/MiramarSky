@@ -198,7 +198,7 @@ class PaymentsProController extends AppController {
     $metalico = 0;
     $banco = 0;
     foreach ($gastos as $payment) {
-      if ($payment->typePayment == 0 || $payment->typePayment == 1) {
+      if ($payment->typePayment == 1 || $payment->typePayment == 2) {
         $divisor = 0;
         if (preg_match('/,/', $payment->PayFor)) {
           $aux = explode(',', $payment->PayFor);
@@ -211,7 +211,7 @@ class PaymentsProController extends AppController {
           $divisor = 1;
         }
         $metalico += ($payment->import / $divisor);
-      } elseif ($payment->typePayment == 2 || $payment->typePayment == 3) {
+      } else {
         $divisor = 0;
         if (preg_match('/,/', $payment->PayFor)) {
           $aux = explode(',', $payment->PayFor);
@@ -473,7 +473,7 @@ class PaymentsProController extends AppController {
     $total += ($apto + $park + $lujo);
     $roomID = isset($room->id) ? $room->id : -1;
     $pagos = \App\Expenses::where('date', '>=', $start)
-            ->where('date', '<=', $start)
+            ->where('date', '<=', $finish)
             ->where('PayFor', 'LIKE', '%' . $roomID . '%')
             ->orderBy('date', 'ASC')
             ->get();
@@ -544,6 +544,80 @@ class PaymentsProController extends AppController {
         'year' => $year,
         'room_id' => $room_id
     ]);
+  }
+  
+  public function getLiquidationByMonth() {
+    
+    $year = self::getActiveYear();
+    $startYear = new Carbon($year->start_date);
+    $endYear = new Carbon($year->end_date);
+    
+    $lstMonths = getArrayMonth($startYear,$endYear,true);
+    
+    $rooms = \App\Rooms::where('state',1)->orderBy('order', 'ASC')->get();
+    $roomLujo = [];
+    $lstRooms = [];
+    $roomsIDs = [];
+    foreach ($rooms as $room) {
+      if ($room->luxury == 1) {
+        $roomLujo[] = $room->id;
+      }
+      $roomsIDs[] = $room->id;
+      $lstRooms[$room->id] = ucfirst($room->user->name).' ('.$room->nameRoom.')';
+    }
+    
+    
+    
+    $booksByRoom = \App\Book::where('type_book', 2)
+              ->whereIn('room_id',$roomsIDs)
+              ->where('start', '>=', $startYear)
+              ->where('start', '<=', $endYear)
+              ->get();
+
+    $roomLst = [];
+    foreach ($booksByRoom as $book) {
+          
+      
+      $roomID = $book->room_id;
+      $costTotal = $book->cost_apto + $book->cost_park;
+      if (in_array($roomID, $roomLujo)) {
+         $costTotal += $book->cost_lujo;
+      }
+      
+      $date = date('ym', strtotime($book->start));
+      if (!isset($roomLst[$roomID])) $roomLst[$roomID] = [$date=>$costTotal];
+      elseif(!isset($roomLst[$roomID][$date])){
+        $roomLst[$roomID][$date] = $costTotal;
+      } else {
+        $roomLst[$roomID][$date] += $costTotal;
+      }
+    }
+    
+    //totals by rooms
+    $t_room_month = [];
+    $t_rooms = [];
+    $t_all_rooms = 0;
+    foreach ($roomLst as $roomID => $item){
+      foreach ($item as $m => $v){
+        if (!isset($t_room_month[$m])) $t_room_month[$m] = $v;
+        else $t_room_month[$m] += $v;
+        
+        if (isset($t_rooms[$roomID])) $t_rooms[$roomID] += $v;
+        else $t_rooms[$roomID] = $v;
+        
+        $t_all_rooms += $v;
+      }
+    }
+    
+    return view('backend/paymentspro/byMonths', [
+        'lstRooms' => $lstRooms,
+        'roomLst' => $roomLst,
+        'lstMonths'=>$lstMonths,
+        't_rooms' => $t_rooms,
+        't_room_month' =>$t_room_month,
+        't_all_rooms' =>$t_all_rooms,
+    ]);
+    
   }
 
 }

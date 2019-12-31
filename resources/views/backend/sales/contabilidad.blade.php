@@ -15,41 +15,7 @@ $isMobile = $mobile->isMobile();
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
     <style>
-      
-       .resume-head{
-    background-color: #51b1f7;
-  }
-  .resume-head th {
-    background-color: #51b1f7;
-    color: #fff !important;
-    min-width: 75px;
-    text-align: center;
-  }
-  .table-resumen td,
-  .table-resumen th{
-    height: 2em;
-    text-align: right;
-  }
-  .table-resumen th.static{
-    position: absolute;
-    height: 42px;
-    background-color: #51b1f7;
-    padding: 10px !important;
-    margin: 5px auto;
-  }
-  .table-resumen td.static{
-    position: absolute;
-    background-color: white;
-    border-right: 1px solid #efefef;
-    z-index: 9;
-    min-width: 8em;
-    padding: 5px 0 0 14px !important;
-    text-align: left;
-  }
-  
-  .table-resumen .first-col {
-    padding-left: 130px !important;
-  }
+   
   
     </style>
 @endsection
@@ -195,6 +161,7 @@ $isMobile = $mobile->isMobile();
                     </div>
                 </div>
               
+                @if(env('APP_APPLICATION') != "riad")
                 <?php 
                  $t_forfaits = $t_equipos = $t_clases = $t_otros = 0;
                 ?>
@@ -251,7 +218,7 @@ $isMobile = $mobile->isMobile();
                   </table>
                 </div>
               </div>
-              
+              @endif
             </div>
         </div>
     </div>

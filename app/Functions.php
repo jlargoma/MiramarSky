@@ -251,7 +251,7 @@ function ob_html_compress($buffer){
     return str_replace(array("\n","\r","\t"),'',$buf);
 }
 
-function getArrayMonth($startYear,$endYear){
+function getArrayMonth($startYear,$endYear,$index=false){
 
   $diff = $startYear->diffInMonths($endYear) + 1;
   $thisMonth = date('m');
@@ -270,7 +270,8 @@ function getArrayMonth($startYear,$endYear){
       }
       $tMonth = $c_month;
       if ($tMonth<10) $tMonth = '0'.$tMonth;
-      $result[] = ['y' => $auxY,'m'=> $tMonth];
+      if($index) $result[$auxY.$tMonth] = ['y' => $auxY,'m'=> $tMonth];
+        else $result[] = ['y' => $auxY,'m'=> $tMonth];
     }
   return $result;
 }
