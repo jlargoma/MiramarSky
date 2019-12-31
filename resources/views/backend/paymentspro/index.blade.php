@@ -233,6 +233,9 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
       <button class="btn btn-md btn-complete pull-right" data-toggle="modal" data-target="#expencesByRoom">
               Hoja de gastos
       </button>
+      <button class="btn btn-md btn-complete pull-right" id="costeByMonths">
+              Coste Prop por mes
+      </button>
     </div>
   </div>
   <div class="row">
@@ -562,6 +565,23 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
 	</div>
 	<!-- /.modal-dialog -->
 </div>
+
+<h1>ddddddddddddddddddd</h1>
+<div class="modal fade" id="modalCosteByMonths" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document" style="min-width: 80%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong class="modal-title" style="font-size: 1.4em;">Coste Prop por mes</strong>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -698,6 +718,10 @@ $.get('/admin/paymentspro/getLiquidationByRoom', {idRoom: idRoom, date: date, co
 $('.contentLiquidationByRoom').empty().append(data);
 });
 
+});
+$('#costeByMonths').on('click', function(){
+  $('#modalCosteByMonths').find('.modal-body').load('/admin/paymentspro/getLiquidationByMonth');
+  $('#modalCosteByMonths').modal('show');   
 });
 </script>
 @endsection
