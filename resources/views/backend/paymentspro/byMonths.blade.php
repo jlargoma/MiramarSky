@@ -39,7 +39,7 @@ $isMobile = $mobile->isMobile();
         <th>%</th>
         @foreach($lstMonths as $k => $month)
         <th >
-          {{getMonthsSpanish($month['m'])}}<br/>
+          {{getMonthsSpanish($month['m'])}} {{$month['y']}}<br/>
           <?php
           if (isset($t_room_month[$k]) && $t_room_month[$k] > 1) {
             echo number_format($t_room_month[$k], 0, ',', '.') . '€';
