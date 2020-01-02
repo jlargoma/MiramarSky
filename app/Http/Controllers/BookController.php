@@ -1493,9 +1493,9 @@ class BookController extends AppController
             return response()->json('', JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        $year     = $request->input('year', date('Y'));
-        $dateFrom = (new Carbon("first day of September {$year}"));
-        $dateTo   = $dateFrom->copy()->addYear();
+        $year     = $this->getActiveYear();
+        $dateFrom = new Carbon($year->start_date);
+        $dateTo   = new Carbon($year->end_date);
 
         $customerIds = \App\Customers::where('name', 'LIKE', '%' . $request->searchString . '%')->pluck('id')
                                      ->toArray();
@@ -1515,7 +1515,7 @@ class BookController extends AppController
             $payments[$book->id] = $book->payments->pluck('import')->sum();
         }
 
-        return view('backend/planning/responses/_resultSearch', [
+        return view('backend/planning/listados/_resultSearch', [
             'books'   => $books,
             'payment' => $payments
         ]);
