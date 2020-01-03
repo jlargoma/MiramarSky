@@ -134,6 +134,9 @@ class BookController extends AppController
                      ->orWhere('type_book', '<>', 6);
         })->count();*/
 
+        $totalReserv = $books->where('type_book', 1)->count();
+        $amountReserv = $books->where('type_book', 1)->sum('total_price');
+        
         $mobile      = new Mobile();
         $now         = Carbon::now();
         $booksAlarms = \App\Book::where('start', '>', $startYear)->where('finish', '<', $endYear)
@@ -199,11 +202,12 @@ class BookController extends AppController
           );
         }
           
+        
 		return view(
 			'backend/planning/index',
 			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
 			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits',
-                                'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment','ff_pendientes','ff_mount')
+                                'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment','ff_pendientes','ff_mount','totalReserv','amountReserv')
 		);
     }
     
