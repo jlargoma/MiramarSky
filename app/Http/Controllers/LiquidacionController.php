@@ -608,7 +608,7 @@ class LiquidacionController extends AppController {
     $incomeMonth = [];
     foreach ($aIncomes as $k => $income) {
       $typeIncome = $income[0];
-      $incomesLst = \App\Incomes::where('concept', $typeIncome)->where('date', '>', $startYear)
+      $incomesLst = \App\Incomes::where('concept', $typeIncome)->where('date', '>=', $startYear)
                       ->where('date', '<=', $endYear)->get();
       if ($incomesLst){
         foreach ($incomesLst as $item){
