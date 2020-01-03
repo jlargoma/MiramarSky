@@ -669,17 +669,17 @@ class LiquidacionController extends AppController {
     if ($y) $y += 2000;
     if ($m<10) $m = "0$m";
     
-    $ingreso = \App\Incomes::where('concept',$type)
-            ->whereYear('date','=',$y)
-            ->whereMonth('date','=',$m)
-            ->first();
+    $ingreso = \App\Incomes::where('month',$m)
+              ->where('year',$y)
+              ->where('concept',$type)
+              ->first();
     if (!$ingreso){
       $ingreso = new \App\Incomes();
       $ingreso->concept = $type;
-      $date = $y.'-'.$m.'-05';
-      if ($startYear>$date) $date = $startYear->format('Y-m-d');
-      if ($endYear<$date) $date = $endYear->format('Y-m-d');
-      $ingreso->date = $date;
+      $ingreso->month = $m;
+      $ingreso->year  = $y;
+      if ($m<10) $m = '0'.$m;
+      $ingreso->date = $y.'-'.$m.'-01';
     }
     
     $ingreso->import = $val;
@@ -689,13 +689,34 @@ class LiquidacionController extends AppController {
     return 'error';
   }
   public function ingresosCreate(Request $request) {
-    $ingreso = new \App\Incomes();
-    $ingreso->concept = $request->input('concept');
-    $ingreso->date = Carbon::createFromFormat('d/m/Y', $request->input('fecha'))->format('Y-m-d');
-    $ingreso->import = $request->input('import');
-    if ($ingreso->save()) {
-      return redirect('/admin/ingresos');
+    $date =  $request->input('fecha');
+    $aDate = explode('/', $date);
+    $month = isset($aDate[1]) ? $aDate[1] : null;
+    $year  = isset($aDate[2]) ? $aDate[2] : null;
+    $concept = $request->input('concept');
+    $import = $request->input('import');
+    if ($month && $year){
+      $ingreso = \App\Incomes::where('month',$month)
+              ->where('year',$year)
+              ->where('concept',$concept)
+              ->first();
+      if (!$ingreso){
+        $ingreso = new \App\Incomes();
+        $ingreso->month = intval($month);
+        $ingreso->year  = $year;
+        $ingreso->concept  = $concept;
+        $ingreso->date = $year.'-'.$month.'-01';
+        $ingreso->import = $import;
+      } else {
+        $ingreso->import = $ingreso->import + $import;
+      }
+      
+      if ($ingreso->save()) {
+        return redirect('/admin/ingresos');
+      }
     }
+    
+    return redirect()->back()->withErrors(['No se pudo cargar el ingreso.']);
   }
 
   public function caja() {

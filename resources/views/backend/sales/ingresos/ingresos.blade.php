@@ -72,6 +72,9 @@ setlocale(LC_TIME, "es_ES");
 
   <div class="row bg-white push-30">
 
+    @if($errors->any())
+    <p class="alert alert-danger">{{$errors->first()}}</p>
+    @endif
     <div class="col-xs-12 col-md-12 push-30" >
       @include('backend.sales.ingresos._formIngreso')
     </div>
