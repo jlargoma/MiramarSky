@@ -661,6 +661,7 @@ $is_mobile = $mobile->isMobile();
                 <div class="col-md-7"  id="modal_ical_content"></div>
                 <div class="col-md-5">
                   <button id="syncr_ical" class="btn btn-primary">Sincronizar <i class="fa fa-refresh"></i></button>
+                  <a href="/admin/ical/importFromUrl?detail"class="btn btn-secondary">iCal con LOGs</a>
                 </div>
               </div>
               <p class="alert alert-success" id="syncr_ical_succss" style="display: none;">Sincronización enviada</p>

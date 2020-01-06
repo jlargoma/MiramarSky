@@ -10,6 +10,17 @@ use Log;
 use App\IcalImport;
 use Illuminate\Support\Facades\DB;
 
+/***
+ * Add in /vendor/johngrogg/ics-parser/src/ICal/ICal.php:2700
+ * $context = stream_context_create(
+            array(
+                "http" => array(
+                    "header" => "User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/188.164.197.231 Safari/537.36"
+                )
+            )
+        );
+ */
+
 ///admin/ical/importFromUrl?detail=1
 class ImportICal extends Command
 {
