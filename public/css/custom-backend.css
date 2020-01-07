@@ -533,6 +533,8 @@ div#box_msg_lst {
     padding: 5px 0 0 14px !important;
     text-align: left;
     width: 8em;
+    overflow-y: hidden;
+    min-height: 26px;
     overflow-x: scroll;
     white-space: nowrap;
   }
