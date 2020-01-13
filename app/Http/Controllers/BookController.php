@@ -134,6 +134,9 @@ class BookController extends AppController
                      ->orWhere('type_book', '<>', 6);
         })->count();*/
 
+        $totalReserv = $books->where('type_book', 1)->count();
+        $amountReserv = $books->where('type_book', 1)->sum('total_price');
+        
         $mobile      = new Mobile();
         $now         = Carbon::now();
         $booksAlarms = \App\Book::where('start', '>', $startYear)->where('finish', '<', $endYear)
@@ -199,11 +202,12 @@ class BookController extends AppController
           );
         }
           
+        
 		return view(
 			'backend/planning/index',
 			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
 			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits',
-                                'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment','ff_pendientes','ff_mount')
+                                'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment','ff_pendientes','ff_mount','totalReserv','amountReserv')
 		);
     }
     
@@ -311,43 +315,18 @@ class BookController extends AppController
 
                 $book->is_fastpayment = ($book->type_book == 99 ) ? 1:0;
                 $room = \App\Rooms::find($request->input('newroom'));
-                if ($room->sizeApto == 1 || $room->sizeApto == 5)
-                {
-
-                    $book->sup_limp  = \App\Extras::find(2)->price;//30;
-                    $book->cost_limp = \App\Extras::find(2)->cost;//30;
-
-                    $book->sup_park  = $this->getPricePark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-                    $book->cost_park = $this->getCostPark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-                } elseif ($room->sizeApto == 2 || $room->sizeApto == 6 || $room->sizeApto == 9)
-                {
-
-                    $book->sup_limp  = \App\Extras::find(1)->price;//50;
-                    $book->cost_limp = \App\Extras::find(1)->cost;//40;
-
-                    $book->sup_park  = $this->getPricePark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-                    $book->cost_park = $this->getCostPark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-                } elseif ($room->sizeApto == 3 || $room->sizeApto == 4 || $room->sizeApto == 7 || $room->sizeApto == 8)
-                {
-
-                    $book->sup_limp  = \App\Extras::find(3)->price;//100;
-                    $book->cost_limp = \App\Extras::find(3)->cost;//70;
-
-                    $book->sup_park  = $this->getPricePark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-                    $book->cost_park = $this->getCostPark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-                }
-
+                
+                $costes = $room->priceLimpieza($room->sizeApto);
+                $book->sup_limp  = $costes['price_limp'];
+                $book->cost_limp = $costes['cost_limp'];
+                $book->sup_park  = $this->getPricePark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
+                $book->cost_park = $this->getCostPark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
                 $book->type_park = $request->input('parking', 0);
 
                 $book->type_luxury = $request->input('type_luxury', 0);
                 $book->sup_lujo    = $this->getPriceLujo($request->input('type_luxury'));
                 $book->cost_lujo   = $this->getCostLujo($request->input('type_luxury'));
-                // if ($room->typeApto == 3 || $room->typeApto == 1) {
-                //     $book->cost_apto     = 0;
-                // }else{
                 $book->cost_apto = $this->getCostBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->cost_limp;
-                // }
-
                 $book->cost_total = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
 
                 if ($request->input('priceDiscount') == "yes" || $request->input('price-discount') == "yes")
@@ -543,36 +522,15 @@ class BookController extends AppController
                     {
 
                         $book->PVPAgencia = ($request->input('agencia')) ? $request->input('agencia') : 0;
-                        //$book->sup_limp   = ($room->sizeApto == 1 || $room->sizeApto == 5) ? 30 : 50;
                         $room = \App\Rooms::find($request->input('newroom'));
-                        if ($room->sizeApto == 1 || $room->sizeApto == 5)
-                        {
-                            $book->sup_limp  = \App\Extras::find(2)->price;//30;
-                            $book->cost_limp = \App\Extras::find(2)->cost;//30;
-
-                            $book->sup_park  = $this->getPricePark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-                            $book->cost_park = $this->getCostPark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-                        } elseif ($room->sizeApto == 2 || $room->sizeApto == 6 || $room->sizeApto == 9)
-                        {
-
-                            $book->sup_limp  = \App\Extras::find(1)->price;//50;
-                            $book->cost_limp = \App\Extras::find(1)->cost;//40;
-
-                            $book->sup_park  = $this->getPricePark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-                            $book->cost_park = $this->getCostPark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-                        } elseif ($room->sizeApto == 3 || $room->sizeApto == 4 || $room->sizeApto == 7 || $room->sizeApto == 8)
-                        {
-
-                            $book->sup_limp  = \App\Extras::find(3)->price;//100;
-                            $book->cost_limp = \App\Extras::find(3)->cost;//70;
-
-                            $book->sup_park  = $this->getPricePark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-                            $book->cost_park = $this->getCostPark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-                        }
-
+                        
+                        $costes = $room->priceLimpieza($room->sizeApto);
+                        $book->sup_limp  = $costes['price_limp'];
+                        $book->cost_limp = $costes['cost_limp'];
+                        $book->sup_park  = $this->getPricePark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
+                        $book->cost_park = $this->getCostPark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
                         $book->sup_lujo  = $this->getPriceLujo($request->input('type_luxury'));
                         $book->cost_lujo = $this->getCostLujo($request->input('type_luxury'));
-
                         $book->cost_apto = ($request->input('costApto')) ? $request->input('costApto') : $this->getCostBook($start, $finish, $request->input('pax'), $request->input('newroom')) + $book->cost_limp;
                         $book->cost_total = ($request->input('cost')) ? $request->input('cost') : $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
 
@@ -2242,24 +2200,11 @@ class BookController extends AppController
             $book = Book::find($request->book_id);
         }
 
+        $costes = $room->priceLimpieza($room->sizeApto);
+        $data['totales']['limp'] = $costes['price_limp'];
+        $data['costes']['limp']  = $costes['cost_limp'];
+        
         $promotion = $request->promotion ? floatval($request->promotion) : 0;
-
-        if ($room->sizeApto == 1 || $room->sizeApto == 5)
-        {
-            $data['totales']['limp']  = \App\Extras::find(2)->price;//30;
-            $data['costes']['limp'] = \App\Extras::find(2)->cost;//30;
-
-        } elseif ($room->sizeApto == 2 || $room->sizeApto == 6 || $room->sizeApto == 9)
-        {
-            $data['totales']['limp']  = \App\Extras::find(1)->price;//50;
-            $data['costes']['limp'] = \App\Extras::find(1)->cost;//40;
-
-        } elseif ($room->sizeApto == 3 || $room->sizeApto == 4 || $room->sizeApto == 7 || $room->sizeApto == 8)
-        {
-            $data['totales']['limp']  = \App\Extras::find(3)->price;//100;
-            $data['costes']['limp'] = \App\Extras::find(3)->cost;//70;
-        }
-
 
         
         $start  = $request->start;
@@ -2468,22 +2413,18 @@ class BookController extends AppController
         $finish    = Carbon::createFromFormat('d M, y', trim($date[1]));
         $countDays = $finish->diffInDays($start);
 
+        $limp = 0;
         if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si')
         {
-            //$roomAssigned = 115;
             $typeApto = "2 DORM Lujo";
             $sizeRoom = 6;
-            $limp     = (int) \App\Extras::find(1)->price;
         } elseif ($request->input('apto') == '2dorm' && $request->input('luxury') == 'no')
         {
             //$roomAssigned = 122;
             $typeApto = "2 DORM estandar";
             $sizeRoom = 2;
-            $limp     = (int) \App\Extras::find(1)->price;
         } elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'si')
         {
-            //$roomAssigned = 138;
-            $limp         = (int) \App\Extras::find(2)->price;
             $sizeRoom = 5;
             $typeApto = "Estudio Lujo";
         } elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'no')
@@ -2491,13 +2432,11 @@ class BookController extends AppController
             //$roomAssigned = 110;
             $typeApto = "Estudio estandar";
             $sizeRoom = 1;
-            $limp     = (int) \App\Extras::find(2)->price;
         } elseif ($request->input('apto') == 'chlt' && $request->input('luxury') == 'no')
         {
             //$roomAssigned = 144;
             $typeApto = "CHALET los pinos";
             $sizeRoom = 2;
-            $limp     = (int) \App\Extras::find(1)->price;
         } elseif ($request->input('apto') == '3dorm')
         {
             /* Rooms para grandes capacidades */
@@ -2511,11 +2450,12 @@ class BookController extends AppController
                 $sizeRoom = 4;
             }
             $typeApto = "4 DORM";
-            $limp     = (int) \App\Extras::find(3)->price;
         }
 
-        if (isset($sizeRoom))
+        if (isset($sizeRoom)){
           $size = \App\SizeRooms::find($sizeRoom);
+         
+        }
         else {
           return view('backend.bookStatus.bookError');
         }
@@ -2549,6 +2489,9 @@ class BookController extends AppController
 
         $room = \App\Rooms::find($roomID);
 
+        $costes = $room->priceLimpieza($sizeRoom);
+        $limp = $costes['price_limp'];
+          
         if ($request->input('parking') == 'si')
         {
             $priceParking = BookController::getPricePark(1, $countDays) * $room->num_garage;

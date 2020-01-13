@@ -279,4 +279,36 @@ class Rooms extends Model
         return self::GIFT_PRICE;
     }
     
+    
+  public function priceLimpieza($sizeApto) {
+    
+    if ($sizeApto == 1 || $sizeApto == 5){
+      $oExtra = \App\Extras::find(2);
+    }
+    if ($sizeApto == 2 || $sizeApto == 6 || $sizeApto == 9){
+      $oExtra = \App\Extras::find(1);
+    }
+    if ($sizeApto == 3 || $sizeApto == 4 || $sizeApto == 7 || $sizeApto == 8){
+      $oExtra = \App\Extras::find(3);
+    }
+    
+    if (env('APP_APPLICATION') != "riad"){
+      if ($this->id == 165 || $this->id == 122){
+        $oExtra = \App\Extras::find(6);
+      }
+    }
+    
+    if ($oExtra){
+      return  [
+          'price_limp'=>floatval($oExtra->price),
+          'cost_limp'=>floatval($oExtra->cost)
+          ];
+    } 
+    
+    return  [
+          'price_limp'=>0,
+          'cost_limp'=>0
+          ];
+  }
+    
 }

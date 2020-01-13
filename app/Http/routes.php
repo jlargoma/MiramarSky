@@ -125,7 +125,7 @@
     Route::get('admin/pdf/descarga-excel-propietario/{id}', 'PdfController@pdfPropietario');
     Route::get('/importPaymenCashBank', 'Admin\BackendController@migrationCashBank');
     Route::get('/insertDNIS', 'Admin\BackendController@insertDNIS');
-    Route::get('/refreshBloqueos', 'Admin\BackendController@refreshBloqueos');
+//    Route::get('/refreshBloqueos', 'Admin\BackendController@refreshBloqueos');
     // AJAX REQUESTS
     Route::post('/ajax/requestPrice', 'FortfaitsController@calculatePrice');
     Route::post('/ajax/forfaits/updateRequestStatus', 'FortfaitsController@updateRequestStatus');

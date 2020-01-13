@@ -686,17 +686,15 @@ class HomeController extends AppController
             //$roomAssigned = 115;
             $typeApto = "2 DORM Lujo";
             $sizeRoom = 6;
-            $limp     = (int) \App\Extras::find(1)->price;
+           
         } elseif ($request->input('apto') == '2dorm' && $request->input('luxury') == 'no')
         {
             //$roomAssigned = 122;
             $typeApto = "2 DORM estandar";
             $sizeRoom = 2;
-            $limp     = (int) \App\Extras::find(1)->price;
         } elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'si')
         {
             //$roomAssigned = 138;
-            $limp     = (int) \App\Extras::find(2)->price;
             $sizeRoom = 5;
             $typeApto = "Estudio Lujo";
         } elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'no')
@@ -704,13 +702,11 @@ class HomeController extends AppController
             //$roomAssigned = 110;
             $typeApto = "Estudio estandar";
             $sizeRoom = 1;
-            $limp     = (int) \App\Extras::find(2)->price;
         } elseif ($request->input('apto') == 'chlt' && $request->input('luxury') == 'no')
         {
             //$roomAssigned = 144;
             $typeApto = "CHALET los pinos";
             $sizeRoom = 9;
-            $limp     = (int) \App\Extras::find(1)->price;
         } elseif ($request->input('apto') == '3dorm')
         {
             /* Rooms para grandes capacidades */
@@ -724,9 +720,8 @@ class HomeController extends AppController
                 $sizeRoom = 4;
             }
             $typeApto = "4 DORM";
-            $limp     = (int) \App\Extras::find(3)->price;
         }
-        $size         = \App\SizeRooms::find($sizeRoom);
+        $size = \App\SizeRooms::find($sizeRoom);
         $getRoomToBook = $this->calculateRoomToFastPayment($size, $start, $finish, $request->input('luxury'));
         $roomAssigned = $getRoomToBook['id'];
         $paxPerRoom = \App\Rooms::getPaxRooms($request->input('quantity'), $roomAssigned);
@@ -755,6 +750,11 @@ class HomeController extends AppController
         if (!$room){
           return view('frontend.bookStatus.bookError');
         }
+        
+        $costes = $room->priceLimpieza($room->sizeApto);
+        $limp   = $costes['price_limp'];
+                
+                
         if ($request->input('parking') == 'si')
         {
             $priceParking = BookController::getPricePark(1, $countDays) * $room->num_garage;
