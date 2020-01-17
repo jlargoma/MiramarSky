@@ -7,6 +7,24 @@
     .black {
         color: black!important;
     }
+    #content-book-response .back .heading-block.nobottomborder.nobottommargin{
+      background-color: #d68282;
+      padding: 18px;
+      text-align: center;
+    }
+    #content-book-response .back .backBooking{
+        background-color: #dc5656;
+      padding: 1em;
+      border: none;
+      color: #fff;
+      font-size: 1.2em;
+      font-weight: 800;
+      border-radius: 7px;
+    }
+    
+    #content-book-response .back .backBooking .icon-angle-right{
+      display: none;
+    }
     @media only screen and (max-width: 767px){
         .not-padding-mobile{
             padding: 0!important;
@@ -181,6 +199,14 @@
             });
 
         });
+        
+        $("#content-book-response").on('click','.backBooking',function(){
+          $('#content-book-response .back').empty();
+          $("#content-book-response .back").hide();
+          $("#content-book-response .front").show();
+
+        });
+        
         
     });
 

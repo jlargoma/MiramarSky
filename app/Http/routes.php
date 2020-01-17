@@ -182,7 +182,22 @@
       } else {
         return redirect('/admin/reservas');
       }
-    })->middleware('auth');   
+    })->middleware('auth');  
+    
+    
+    Route::get('/tests-Wubook', function () {
+    
+          $WuBook =  new \App\Services\Wubook\WuBook();
+//      $WuBook->conect();
+//      $WuBook->fetch_rooms();
+//      $WuBook->set_Closes(date('Y-m-d'));
+//      $WuBook->fetch_plan_prices(date('Y-m-d'),'2020-06-01');
+      $WuBook->fetch_bookings();
+//      $WuBook->fetch_booking();
+//      $WuBook->fetch_new_bookings();
+//      $WuBook->disconect();
+    })->middleware('auth');  
+      
     
     /* ICalendar links */
     Route::get('/ical/{aptoID}', [

@@ -190,6 +190,16 @@ function getCloudfl($url){
     }
     return null;
   }
+  function convertDateToDB($date){
+    $date= trim($date);
+    if ($date){
+      $aux = explode('/',$date);
+      if (is_array($aux) && count($aux)==3){
+        return $aux[2].'-'.$aux[1].'-'.$aux[0];
+      }
+    }
+    return null;
+  }
   function dateMin($date){
     $date= trim($date);
     if ($date){

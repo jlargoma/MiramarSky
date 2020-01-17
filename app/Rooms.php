@@ -279,7 +279,38 @@ class Rooms extends Model
         return self::GIFT_PRICE;
     }
     
+  /**
+   * 
+   * @param type $start
+   * @param type $finish
+   */
+  public function getPVP($start,$finish,$pax) {
+    $price = \App\DailyPrices::where('id_room',$this->id)
+                ->where('date','>=',$start)
+                ->where('date','<=',$finish)
+                ->sum('price');
+//    if (!$price){
+//      $price   = 0;
+//      $counter = $start->copy();
+//      $countDays = $finish->diffInDays($start);
+//      for ($i = 1; $i <= $countDays; $i++){
+//          $seasonActive = \App\Seasons::getSeasonType($counter->copy()->format('Y-m-d'));
+//          if ($seasonActive == null)
+//          {
+//              $seasonActive = 0;
+//          }
+//          $prices = \App\Prices::where('season', $seasonActive)->where('occupation', $pax)->get();
+//          foreach ($prices as $precio)
+//          {
+//              $price = $price + $precio->price;
+//          }
+//          $counter->addDay();
+//      }
+//    }
     
+    return $price;
+  }
+  
   public function priceLimpieza($sizeApto) {
     
     if ($sizeApto == 1 || $sizeApto == 5){
