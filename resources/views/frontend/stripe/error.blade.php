@@ -29,7 +29,7 @@ use \Carbon\Carbon;
     </div>
     <div class="text-center">
       <h2 class="text-center ls1" style="line-height: 1; color: white">
-        Ups! A ocurrido un error con su pago.
+        Ups! Ha ocurrido un error con su pago.
       </h2>
       <br>
       <p style="line-height: 1; color: white">

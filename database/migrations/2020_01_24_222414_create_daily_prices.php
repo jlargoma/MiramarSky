@@ -14,16 +14,15 @@ class CreateDailyPrices extends Migration
     {
       Schema::create('daily_prices', function(Blueprint $table)
       {
-          $table->integer('id_room')->unsigned();
-          $table->integer('rId_wubook')->unsigned();
+          $table->string('channel_group',8)->nullable();
           $table->date('date')->nullable();
-          $table->double('price', 8, 2);
+          $table->double('price', 8, 2)->nullable();
+          $table->integer('min_estancia')->nullable();
+          $table->integer('user_id')->nullable();
 
-          $table->primary(['id_room', 'date']);
-
-          $table->foreign('id_room')
-                      ->references('id')
-                      ->on('rooms');    
+          $table->primary(['channel_group', 'date']);
+          $table->timestamps();
+       
          
       });
     }

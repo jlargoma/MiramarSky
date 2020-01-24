@@ -626,6 +626,24 @@ class HomeController extends AppController
         {
             $minDays = $checkSpecialSegment->minDays;
         }
+        
+        
+        $aSize = \App\SizeRooms::findSizeApto($request->input('apto'),$request->input('luxury'),$request->input('quantity'));
+        if ($aSize){
+          $sizeRoom = $aSize['sizeRoom'];
+          $rooms = \App\Rooms::where('sizeApto',$sizeRoom)->first();
+          if ($rooms){
+            $minEstancia_day = $rooms->getMin_estancia($date1->format('Y-m-d'),$date2->format('Y-m-d'));
+            if ($minEstancia_day>0 && $minEstancia_day>$minDays){
+              $minDays = $minEstancia_day;
+              $checkSpecialSegment = true;
+            }
+          }
+        }
+        
+        
+        
+        
         return [
             'minDays'        => $minDays,
             'specialSegment' => $checkSpecialSegment,
@@ -681,46 +699,11 @@ class HomeController extends AppController
         $start     = Carbon::createFromFormat('d M, y', trim($date[0]));
         $finish    = Carbon::createFromFormat('d M, y', trim($date[1]));
         $countDays = $finish->diffInDays($start);
-        if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si')
-        {
-            //$roomAssigned = 115;
-            $typeApto = "2 DORM Lujo";
-            $sizeRoom = 6;
-           
-        } elseif ($request->input('apto') == '2dorm' && $request->input('luxury') == 'no')
-        {
-            //$roomAssigned = 122;
-            $typeApto = "2 DORM estandar";
-            $sizeRoom = 2;
-        } elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'si')
-        {
-            //$roomAssigned = 138;
-            $sizeRoom = 5;
-            $typeApto = "Estudio Lujo";
-        } elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'no')
-        {
-            //$roomAssigned = 110;
-            $typeApto = "Estudio estandar";
-            $sizeRoom = 1;
-        } elseif ($request->input('apto') == 'chlt' && $request->input('luxury') == 'no')
-        {
-            //$roomAssigned = 144;
-            $typeApto = "CHALET los pinos";
-            $sizeRoom = 9;
-        } elseif ($request->input('apto') == '3dorm')
-        {
-            /* Rooms para grandes capacidades */
-            if ($request->input('quantity') >= 8 && $request->input('quantity') <= 10)
-            {
-                //$roomAssigned = 153;
-                $sizeRoom = 3;
-            } else
-            {
-                //$roomAssigned = 149;
-                $sizeRoom = 4;
-            }
-            $typeApto = "4 DORM";
-        }
+        $aSize = \App\SizeRooms::findSizeApto($request->input('apto'),$request->input('luxury'),$request->input('quantity'));
+        
+        $sizeRoom = $aSize['sizeRoom'];
+        $typeApto = $aSize['typeApto'];
+
         $size = \App\SizeRooms::find($sizeRoom);
         $getRoomToBook = $this->calculateRoomToFastPayment($size, $start, $finish, $request->input('luxury'));
         $roomAssigned = $getRoomToBook['id'];

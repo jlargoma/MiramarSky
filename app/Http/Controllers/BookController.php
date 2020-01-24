@@ -1063,15 +1063,11 @@ class BookController extends AppController
 
     public static function getPriceBook($start, $finish, $pax, $room)
     {
-        $start     = Carbon::createFromFormat('d/m/Y', $start);
-        $finish    = Carbon::createFromFormat('d/m/Y', $finish);
-        $countDays = $finish->diffInDays($start);
-
-
+        $start     = Carbon::createFromFormat('d/m/Y', $start)->format('Y-m-d');
+        $finish    = Carbon::createFromFormat('d/m/Y', $finish)->format('Y-m-d');
         $paxPerRoom = \App\Rooms::getPaxRooms($pax, $room);
 
         $room = \App\Rooms::find($room);
-
         $pax = $pax;
         if ($paxPerRoom > $pax)
         {

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddFieldsWubook extends Migration
+class AddChannelManager extends Migration
 {
     /**
      * Run the migrations.
@@ -12,28 +12,31 @@ class AddFieldsWubook extends Migration
      */
     public function up()
     {
-      Schema::create('wubook_queues', function(Blueprint $table)
+      Schema::create('channel_manager_queues', function(Blueprint $table)
       {
-          $table->integer('id')->unsigned();
-          $table->integer('id_room');
-          $table->integer('rId_wubook')->nullable();
+          $table->bigIncrements('id');
+          $table->string('channel_group',8)->nullable();
           $table->date('date_start')->nullable();
           $table->date('date_end')->nullable();
           $table->boolean('avail');
           $table->boolean('sent');
-          $table->primary('id');
-
+          $table->timestamps();
          
       });
-      
+//      
       Schema::table('book', function (Blueprint $table) {
-         $table->integer('rId_wubook')->nullable();
+         $table->integer('external_id')->nullable();
       });
       
-      Schema::table('customers', function (Blueprint $table) {
-         $table->string('surname')->nullable();
-         $table->string('language')->nullable();
+      Schema::table('rooms', function (Blueprint $table) {
+         $table->string('channel_group',8)->nullable();
+         $table->double('price_extra_pax', 8, 2)->nullable();
       });
+//      
+//      Schema::table('customers', function (Blueprint $table) {
+//         $table->string('surname')->nullable();
+//         $table->string('language')->nullable();
+//      });
     }
 
     /**

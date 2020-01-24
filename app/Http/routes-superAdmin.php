@@ -36,14 +36,9 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::get('admin/precios/delete/{id}','PricesController@delete');
   Route::get('admin/precios/deleteExtra/{id}','PricesController@delete');
   Route::post('admin/precios/createExtras','PricesController@createExtras');
+
   // Prices
-  Route::get('admin/precios', 'PricesController@index');
-  Route::get('admin/precios/update', 'PricesController@update');
-  Route::get('admin/precios/updateExtra', 'PricesController@updateExtra');
-  Route::post('admin/precios/create', 'PricesController@create');
-  Route::get('admin/precios/delete/{id}', 'PricesController@delete');
-  Route::get('admin/precios/deleteExtra/{id}', 'PricesController@delete');
-  Route::post('admin/precios/createExtras', 'PricesController@createExtras');
+
   // seasons
   Route::get('admin/temporadas', 'SeasonsController@index');
   Route::get('admin/temporadas/new', 'SeasonsController@newSeasons');
@@ -270,4 +265,14 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/ical/importFromUrl', function () {
       \Artisan::call('ical:import');
   });
+  
+  
+  // ZODOMUS  
+  Route::get('/channel-manager/price/{apto?}','ZodomusController@calendRoom')->name('channel.price.cal');
+  Route::post('/channel-manager/price/{apto?}','ZodomusController@calendRoomUPD')->name('channel.price.cal.upd');
+  Route::get('/channel-manager/price/precios/list/{apto}','ZodomusController@listBy_room')->name('channel.price.cal.list');
+  Route::get('/channel-manager/list/{apto}','ZodomusController@listBy_apto')->name('channel.cal.list');
+  Route::get('/channel-manager/config', 'ZodomusController@generate_config');
+  Route::get('/channel-manager', 'ZodomusController@calendRoom')->name('channel');
+  
 });

@@ -576,21 +576,22 @@ $mobile = new Mobile();
               }
 //              dd($price);
               ?>
-              <div class="col-md-2 text-white" style="background-color: #0c685f;">
-                PVP<br>{{$price['t_price']}}
+            
+      
+              <div class="col-md-2 text-white" style="background-color: #c1c1c1;">
+                PVP<br>{{$price['pvp']}}
               </div>
-              <div class="col-md-2 text-white" style="background-color: #99D9EA;">
-                COSTE TOTAL<br>{{$price['t_cost']}}
+              <div class="col-md-2 text-white" style="background-color: #c1c1c1;">
+                PARKING<br>{{$price['parking']}}
               </div>
-              <div class="col-md-2 text-white" style="background-color: #91cf81;">
-                COSTE APTO<br>{{$price['cost']}}
+              <div class="col-md-2 text-white" style="background-color: #c1c1c1;">
+                SUP lUX<br>{{$price['price_lux']}}
               </div>
-              <div class="col-md-3 text-white" style="background-color: #337ab7;">
-                COSTE PARKING<br>{{$price['parking_cost']}}
+              <div class="col-md-3 text-white" style="background-color: #c1c1c1;">
+                LIMP<br>{{$price['price_limp']}}
               </div>
-              <div class="col-md-3 text-white" style="background-color: #ff7f27;">
-                BENEFICIO<br>{{$price['t_benef']}}<br/>
-                <small>(<?php echo number_format($price['benef'], 0) . "%" ?>)</small>
+              <div class="col-md-3 text-white" style="background-color: #c1c1c1;">
+                TOTAL PVP<br>{{$price['price_total']}}<br/>
               </div>
             </div>
             <?php endif ?>

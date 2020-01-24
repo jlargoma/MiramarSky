@@ -185,19 +185,27 @@
     })->middleware('auth');  
     
     
-    Route::get('/tests-Wubook', function () {
+    Route::get('/tests-Zodomus', function () {
     
-          $WuBook =  new \App\Services\Wubook\WuBook();
-//      $WuBook->conect();
-//      $WuBook->fetch_rooms();
-//      $WuBook->set_Closes(date('Y-m-d'));
-//      $WuBook->fetch_plan_prices(date('Y-m-d'),'2020-06-01');
-      $WuBook->fetch_bookings();
-//      $WuBook->fetch_booking();
-//      $WuBook->fetch_new_bookings();
-//      $WuBook->disconect();
+      $Zodomus =  new \App\Services\Zodomus\Zodomus();
+//      $Zodomus->getChannels();
+//      $Zodomus->activateChannels();
+//      $Zodomus->getRates();
+      $Zodomus->getRoomsAvailability();
+      
+      
+      
+//      $Zodomus->checkProperty();
+//      $Zodomus->createRoom();
+//      $Zodomus->activateRoom();
+//      $Zodomus->setRates();
     })->middleware('auth');  
       
+    
+     Route::get('admin/Wubook/Availables', function () {
+        \Artisan::call('wubook:sendAvaliables');
+        die('finish');
+    });
     
     /* ICalendar links */
     Route::get('/ical/{aptoID}', [

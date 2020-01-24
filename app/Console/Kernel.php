@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
         Commands\CreatePaymentFianza::class,
         Commands\GetDailyFFSeason::class,
         Commands\SendFFAdmin::class,
+        Commands\WubookAvailables::class,
     ];
 
     /**

@@ -99,6 +99,31 @@ function getMonthsSpanish($m,$min=true){
   return isset($arrayMonth[$m]) ? $arrayMonth[$m] : '';
 }
 
+function listDaysSpanish($min = false) {
+    if ($min) {
+      $array = [
+          1 => 'Lun', 
+          2 => 'Mar', 
+          3 => 'Mié', 
+          4 => 'Jue', 
+          5 => 'Vie',
+          6 => 'Sáb',
+          0 => 'Dom', 
+          ];
+    } else {
+      $array = [
+          1 => 'Lunes', 
+          2 => 'Martes', 
+          3 => 'Miércoles', 
+          4 => 'Jueves', 
+          5 => 'Viernes',
+          6 => 'Sábado',
+          0 => 'Domingo', 
+          ];
+    }
+    return $array;
+  }
+  
 function getUserIpAddr(){
     if(!empty($_SERVER['HTTP_CLIENT_IP'])){
         //ip from share internet
@@ -284,4 +309,10 @@ function getArrayMonth($startYear,$endYear,$index=false){
         else $result[] = ['y' => $auxY,'m'=> $tMonth];
     }
   return $result;
+}
+
+function configZodomusAptos(){
+  
+  $confFile = Illuminate\Support\Facades\File::get(storage_path('app/config/zodomus'));
+  return json_decode($confFile);
 }

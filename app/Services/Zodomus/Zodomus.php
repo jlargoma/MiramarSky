@@ -1,0 +1,207 @@
+<?php
+
+namespace App\Services\Zodomus;
+use App\Services\Zodomus\Config as ZConfig;
+use Illuminate\Support\Facades\DB;
+use DateTime;
+use DateInterval;
+use App\DailyPrices;
+
+
+class Zodomus{
+   
+  public $response;
+  public $responseCode;
+  public $rooms;
+  protected   $token;
+  protected   $URL;
+  protected   $usr;
+  protected   $psw;
+  protected   $psw_card;
+  protected   $ZConfig;
+  
+  
+   public function __construct()
+    {
+      $this->URL = 'https://api.zodomus.com/';
+      $this->usr = 'mvwgA9k4Xlizvx3Znsod3vxXfsXv1a+v1LOQ88DNXmc=';
+      $this->psw = 'JFyoMMKjssKDOdZ+Nz+snuus8epX0pzxFmpgcP/SWlw=';
+      $this->psw_card = "8JvtVvGDUQVfn86nPdOyCwwD6A3EWfF6XaiH7x2Ktrk=";
+      $this->ZConfig = new ZConfig();
+    }
+    
+    /**
+     * 
+     * @param type $endpoint
+     * @param type $method
+     * @param type $data
+     * @return boolean
+     */
+    public function call( $endpoint,$method = "POST", $data = [])
+    {
+      if(!$this->usr || !$this->psw) 
+      { 
+        $this->response = 'user required';
+        return FALSE; 
+      } 
+      
+      $credentials = ($this->usr.":".$this->psw);
+       
+      if ($method == "POST" || $method == "PUT"){
+        
+        $data_string = json_encode($data);   
+//        echo $data_string;die;
+        $ch = curl_init($this->URL.$endpoint);
+        curl_setopt($ch, CURLOPT_USERPWD,$credentials);
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);                                                                     
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);     
+        curl_setopt($ch, CURLOPT_TIMEOUT , 10); //  CURLOPT_TIMEOUT => 10,
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Content-Type: application/json',   
+//            'Content-Length: ' . strlen($data_string)
+            )                                                                       
+        );          
+        
+      } else {
+        $url = $this->URL.$endpoint;
+        if (count($data)){
+          $param=[];
+          foreach ($data as $k=>$d){
+            $param[] = "$k=$d";
+          }
+          $url .='?'. implode('&',$param);
+        }
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);                                                                     
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);  
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_USERPWD,$credentials);
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT , 7); //Timeout after 7 seconds
+        curl_setopt($ch, CURLOPT_TIMEOUT , 10); //  CURLOPT_TIMEOUT => 10,
+        curl_setopt($ch, CURLOPT_USERAGENT , "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1)");
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(                                                                          
+            'Content-Type: application/json',        
+        ));     
+      }
+      
+      $result = curl_exec($ch);
+      $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE); 
+      curl_close($ch);
+      $this->response = null;
+      $this->responseCode = $httpCode;
+      switch ($httpCode){
+        case 200:
+          if(!$result) 
+          { 
+            $this->response = null;
+            return FALSE; 
+          } 
+          $this->response = \json_decode($result);
+          return TRUE; 
+          break;
+        case 400:
+          $this->response = 'Wrong data - Bad Request';
+          break;
+        case 401:
+          $this->response = $result;
+          break;
+        case 404:
+          $this->response = 'NotFound';
+          break;
+        default :
+          $this->response = 'Server error';
+          break;
+      }
+
+      return FALSE; 
+      
+    }
+    
+    
+    public function getChannels() {
+      $this->call('price-model','GET');
+      //EUR
+      var_dump($this->response);
+      var_dump($this->responseCode);
+    }
+    
+    public function activateChannels() {
+      
+      $params = [
+        "channelId"=> 1,
+        "propertyId"=> "321000",
+        "priceModelId"=> 1
+      ];
+      $this->call('property-activation','POST',$params);
+      //EUR
+      var_dump($this->response);
+      var_dump($this->responseCode);
+    }
+    
+    public function checkProperty() {
+//      echo '"propertyId"=> "2798863"<br>';
+      $params = [
+        "channelId"=> 1,
+        "propertyId"=> "321000",
+      ];
+      $this->call('property-check','POST',$params);
+      //EUR
+      var_dump($this->response);
+      var_dump($this->responseCode);
+    }
+    
+    public function createRoom() {
+      
+      $params = [
+        "channelId"=> 1,
+        "propertyId"=> "321000",
+        "status"=> "New",
+        "name"=> "Habitación 1"
+      ];
+      $this->call('room','POST',$params);
+      //EUR
+      var_dump($this->response);
+      var_dump($this->responseCode);
+    }
+    
+    public function activateRoom() {
+      $params = $this->ZConfig->getExampleRoom();
+      $this->call('rooms-activation','POST',$params);
+      var_dump($this->response);
+      var_dump($this->responseCode);
+      
+    }
+    public function getRoomsAvailability($apto,$startDate,$endDate) {
+      
+//      dd($startDate,$endDate);
+      
+      $params = [
+        "channelId"=> 1,
+        "propertyId"=> $apto,
+        "dateFrom"=> $startDate,
+        "dateTo"=> $endDate,
+      ];
+      $this->call('availability','GET',$params);
+      return $this->response;
+      
+    }
+    
+    public function getRates($apto) {
+      $params = [
+        "channelId"=> 1,
+        "propertyId"=> $apto,
+      ];
+      $this->call('room-rates','GET',$params);
+      return $this->response;
+    }
+    public function setRates() {
+      $params = $this->ZConfig->getExampleRates();
+      $this->call('rates','POST',$params);
+      var_dump($this->response);
+      var_dump($this->responseCode);
+    }
+   
+    
+}

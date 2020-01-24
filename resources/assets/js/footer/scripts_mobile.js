@@ -60,7 +60,7 @@ $(document).ready(function () {
     var timeDiff = Math.abs(date2.getTime() - date1.getTime());
 
 
-    $.post('/getDiffIndays', {date1: arrayDates[0], date2: arrayDates[1]}, function (data) {
+    $.post('/getDiffIndays', {date1: arrayDates[0], date2: arrayDates[1],apto:apto,luxury:luxury,quantity:quantity}, function (data) {
       var diffDays = data.diff;
       var minDays = data.minDays;
       if (diffDays >= 2) {
