@@ -185,21 +185,7 @@
     })->middleware('auth');  
     
     
-    Route::get('/tests-Zodomus', function () {
-    
-      $Zodomus =  new \App\Services\Zodomus\Zodomus();
-//      $Zodomus->getChannels();
-//      $Zodomus->activateChannels();
-//      $Zodomus->getRates();
-      $Zodomus->getRoomsAvailability();
-      
-      
-      
-//      $Zodomus->checkProperty();
-//      $Zodomus->createRoom();
-//      $Zodomus->activateRoom();
-//      $Zodomus->setRates();
-    })->middleware('auth');  
+  
       
     
      Route::get('admin/Wubook/Availables', function () {

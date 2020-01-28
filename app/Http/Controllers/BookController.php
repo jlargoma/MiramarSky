@@ -723,6 +723,11 @@ class BookController extends AppController
         if ($book->existDateOverrride($start, $finish, $request->input('newroom'), $id))
         {
 
+            $OldRoom   = $book->room_id;
+            $oldStart  = $book->start;
+            $oldFinish = $book->finish;
+            
+            
             $room = \App\Rooms::find($request->input('newroom'));
 
             $book->user_id     = Auth::user()->id;
@@ -816,7 +821,33 @@ class BookController extends AppController
             }
             if ($book->save())
             {
+               
+              //si esta reservada, cambio la disponibilidad
+              if (in_array($book->type_book,$book->typeBooksReserv)){
+               
+                  $auxStart = $book->start->format('Y-m-d');
+                  $auxFinish = $book->finish->format('Y-m-d');
+                  if($oldStart != $auxStart || $oldFinish != $auxFinish){
+                    if ($oldStart<$auxStart) $date1 = $oldStart;
+                    else $date1 = $auxStart;
+                    if ($oldFinish>$auxFinish) $date2 = $oldFinish;
+                    else $date2 = $auxFinish;
 
+                    if ($OldRoom != $book->room_id){
+                      $book->sendAvailibilityBy_Rooms($OldRoom,$date1,$date2);
+                    } else {
+                      $book->sendAvailibilityBy_dates($date1,$date2);
+                    }
+
+
+                  } else {
+                    if ($OldRoom != $book->room_id){
+                      $book->sendAvailibilityBy_Rooms($OldRoom);
+                    }
+                  }
+              }
+              
+              
                 if ($book->room->isAssingToBooking())
                 {
 
@@ -906,14 +937,39 @@ class BookController extends AppController
         {
 
             $book = \App\Book::find($id);
-            return $book->changeBook("", $request->room, $book);
+            $oldRoom = $book->room_id;
+            
+            $response =  $book->changeBook("", $request->room, $book);
+            if ($response['status'] == 'success'){
+              $book->sendAvailibilityBy_Rooms($oldRoom);
+            }
+            return $response;
+            
         }
 
         if (isset($request->status) && !empty($request->status))
         {
 
-            $book = \App\Book::find($id);
-            return $book->changeBook($request->status, "", $book);
+            $book = Book::find($id);
+            $oldStatus = $book->type_book;
+            $type_book_not = [0,3,6,12,99];
+            
+            $response = $book->changeBook($request->status, "", $book);
+            if ($response['status'] == 'success'){
+              if (in_array($oldStatus,$type_book_not) && !in_array($book->type_book,$type_book_not)){
+                //Ya no esta disponible
+                $book->sendAvailibilityBy_status();
+                return $response;
+              } 
+              
+              if (!in_array($oldStatus,$type_book_not) && in_array($book->type_book,$type_book_not)){
+                //Ya esta disponible
+                $book->sendAvailibilityBy_status();
+                return $response;
+              }
+              
+            }
+            return $response;
 
         } else
         {

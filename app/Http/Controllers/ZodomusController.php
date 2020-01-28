@@ -10,6 +10,7 @@ use App\Services\Zodomus\Zodomus;
 use App\Services\Zodomus\Config as ZConfig;
 use App\Rooms;
 use App\DailyPrices;
+use App\ChannelManagerQueues;
 
 class ZodomusController extends Controller {
 
@@ -177,7 +178,7 @@ class ZodomusController extends Controller {
       $rooms[$k] = $item->name;
     }
 
-    $dw = listDaysSpanish();
+    $dw = listDaysSpanish(true);
     
     return view('backend/zodomus/cal-room', [
         'rooms' => $rooms,
@@ -187,23 +188,49 @@ class ZodomusController extends Controller {
   }
 
   public function calendRoomUPD(Request $request, $apto) {
-    $start = $request->input('date_start', null);
-    $end = $request->input('date_end', null);
+    
+    $date_range = $request->input('date_range', null);
+    
     $price = $request->input('price', null);
     $min_estancia = $request->input('min_estancia', null);
-    if (!$start)
+    if (!$date_range)
       return response()->json(['status'=>'error','msg'=>'Debe seleccionar al menos una fecha de inicio']);
-    if (!$end)
-      return response()->json(['status'=>'error','msg'=>'Debe seleccionar al menos una fecha de fin']);
+    
     if (!$price || $price<0)
       return response()->json(['status'=>'error','msg'=>'Debe seleccionar al menos una fecha de inicio']);
 
-    $dw = listDaysSpanish();
+    $date = explode(' - ', $date_range);
+    
+    
+    $startTime = strtotime(convertDateToDB($date[0]));
+    $endTime = strtotime(convertDateToDB($date[1]));
+    
+   
+    
+    $dw = listDaysSpanish(true);
     $dayWeek = [];
+    
+    
+    $weekDaysID =  [
+          0=>"sun",
+          1=>"mon",
+          2=>"tue",
+          3=>"wed",
+          4=>"thu",
+          5=>"fri",
+          6=>"sat",
+        ];
+            
+    $weekDays = [];
     foreach ($dw as $k => $v) {
-      if ($request->input('dw_' . $k, null))
+      if ($request->input('dw_' . $k, null)){
         $dayWeek[] = $k;
+        $weekDays[] = $weekDaysID[$k];
+      }
     }
+    $weekDays = implode('|', $weekDays);
+    
+    
     
     if (count($dayWeek) == 0)
       return response()->json(['status'=>'error','msg'=>'Debe seleccionar al menos un día de la semana']);
@@ -211,30 +238,46 @@ class ZodomusController extends Controller {
     
     $uID = Auth::user()->id;
     
-    
-    $startTime = strtotime(convertDateToDB($start));
-    $endTime = strtotime(convertDateToDB($end));
-    
     $day = 24*60*60;
-    while ($startTime<=$endTime){
-      $dWeek = date('w',$startTime);
+    $startTimeAux = $startTime;
+    while ($startTimeAux<=$endTime){
+      $dWeek = date('w',$startTimeAux);
       if (in_array($dWeek,$dayWeek)){
         $oPrice = DailyPrices::where('channel_group', $apto)
-              ->where('date', '=', date('Y-m-d',$startTime))
+              ->where('date', '=', date('Y-m-d',$startTimeAux))
               ->first();
         if (!$oPrice){
           $oPrice = new DailyPrices();
           $oPrice->channel_group = $apto;
-          $oPrice->date = date('Y-m-d',$startTime);
+          $oPrice->date = date('Y-m-d',$startTimeAux);
         }
         $oPrice->price = $price;
         $oPrice->min_estancia = $min_estancia;
         $oPrice->user_id = $uID;
         $oPrice->save();
       }
-      $startTime += $day;
+      $startTimeAux += $day;
     }
 
+    
+    
+    
+    $insert = [
+        'price'=>$price,
+        'minAdvanceRes'=>$min_estancia,
+        'weekDays'=>$weekDays,
+        'channel_group'=>$apto,
+        'date_start'=>date('Y-m-d',$startTime),
+        'date_end'=>date('Y-m-d',$endTime),
+        'sent'=>0,
+    ];
+    ChannelManagerQueues::insert($insert);
+    
+    
+    $response = $this->sendPricesZodomus($insert);
+    if ($response) {
+      return response()->json(['status'=>'error','msg'=>'Channel Manager: '.$response]);
+    }
     return response()->json(['status'=>'OK','msg'=>'datos cargados']);
   }
 
@@ -256,17 +299,16 @@ class ZodomusController extends Controller {
 
     $pax = $room->minOcu;
     if ($start && $end) {
+      
+      $start = (convertDateToDB($start));
+      $end = (convertDateToDB($end));
 
-      $startTime = strtotime($start);
-      $endTime = strtotime($end);
-      $startDate = date('Y-m-d', $startTime);
-      $endDate = date('Y-m-d', $endTime);
 
       $defaults = $room->defaultCostPrice($start, $end, $pax);
       $priceDay = $defaults['priceDay'];
       $oPrice = DailyPrices::where('channel_group', $apto)
-              ->where('date', '>=', $startDate)
-              ->where('date', '<=', $endDate)
+              ->where('date', '>=', $start)
+              ->where('date', '<=', $end)
               ->get();
       if ($oPrice) {
         foreach ($oPrice as $p) {
@@ -274,33 +316,14 @@ class ZodomusController extends Controller {
         }
       }
       $priceLst = [];
-      $start = $end = $price = null;
       foreach ($priceDay as $d => $p) {
-        if (!$price) {
-          $price = $p;
-          $start = $d;
-        }
-        if ($price != $p) {
+       
           $priceLst[] = [
-              "title" => $price . ' €',
-              "start" => $start,
-              "end" => $d,
+              "title" => $p . ' €',
+              "start" => $d,
           ];
 
-          $price = $p;
-          $start = $d;
-        }
-
-        $end = $d;
       }
-
-      $priceLst[] = [
-          "title" => $price . ' €',
-          "start" => $start,
-          "end" => $end,
-      ];
-
-
 
 
 
@@ -318,6 +341,164 @@ class ZodomusController extends Controller {
 //    $condif = configZodomusAptos(); dd($condif); die;
     $confFile = \Illuminate\Support\Facades\File::get(storage_path('app/config/zodomus.php'));
 //  eval($confFile);
+  }
+  
+  
+  
+  /**
+   * Send the new rates to Zodomus
+   * 
+   * @param type $data
+   * @return type
+   */
+  private function sendPricesZodomus($data) {
+    
+    //week Days 
+    $weekDays =  [
+          "sun" =>  "false",
+          "mon" =>  "false",
+          "tue" =>  "false",
+          "wed" =>  "false",
+          "thu" =>  "false",
+          "fri" =>  "false",
+          "sat" =>  "false"
+        ];
+    
+    $weekDaysLst = explode('|', $data['weekDays']);
+    foreach ($weekDaysLst as $wd){
+      if (isset($weekDays[$wd])) $weekDays[$wd] = "true";
+      $weekDays[$wd] = "true";
+    }
+    
+    //min Advance Res
+    $minAdvanceRes = null;
+    if ($data['minAdvanceRes']>0) $minAdvanceRes = $data['minAdvanceRes'].'D';
+    
+    
+    $oZodomus = new Zodomus();
+    $channel_group = $data['channel_group'];
+    $aptos = configZodomusAptos();
+    foreach ($aptos as $cg => $apto){
+      if ($cg == $channel_group){
+        //send all channels
+        foreach ($apto->rooms as $room){
+              $param = [
+                "channelId" =>  $room->channel,
+                "propertyId" => $room->propID,
+                "roomId" =>  $room->roomID,
+                "dateFrom" => $data['date_start'],
+                "dateTo" => $data['date_end'],
+                "currencyCode" =>  "EUR",
+                "rateId" =>  $room->rateID,
+                "weekDays" => $weekDays,
+                "prices" =>   [
+                  "price" => $data['price'].""
+                ],
+                "closed" =>  0,//"0=false , 1=true, (optional restrition)",
+              ];
+
+              if ($minAdvanceRes){
+      //          "minAdvanceRes" => '2D',// "4D = four days; 4D4H = four days and four hours, (optional restrition)",
+                $param['minAdvanceRes'] = $minAdvanceRes;
+              }
+              $errorMsg = $oZodomus->setRates($param);
+              if ($errorMsg){
+                return $errorMsg;
+              }
+        }
+      }
+    }
+    
+    return null;
+    
+   
+  }
+  
+  /**
+   * /admin/channel-manager/ZODOMUS
+   */
+  function zodomusTest(){
+    
+      $Zodomus =  new \App\Services\Zodomus\Zodomus();
+      $apto = 321000; 
+//      $apto = 2798863; 
+      $apto = 123456789; 
+      $return = null;
+//      $Zodomus->getInfo();
+//      
+//      $return = $Zodomus->activateChannels($apto);
+//      $return = $Zodomus->getRates($apto);
+//      $return = $Zodomus->getRoomsAvailability($apto,'2020-02-05','2020-02-11');
+
+      
+      $roomToAt = [
+        "channelId" =>  1,
+        "propertyId" => $apto,
+        "rooms" =>  [
+            [
+            "roomId" =>  "12345678901",
+            "roomName" =>  "Single room",
+            "status" =>  1,
+            "quantity" =>2, //max availability
+            "rates" =>  [123456789991,123456789992,123456789993]
+            ],
+            [
+            "roomId" =>  12345678902,
+            "status" =>  1,
+            "roomName" =>  "Single room 2",
+            "quantity" =>1,
+            "rates" =>  [123456789991,123456789992,123456789993]
+            ],
+            [
+            "roomId" =>  12345678903,
+            "status" =>  1,
+            "roomName" =>  "Single room 2",
+            "quantity" =>1,
+            "rates" =>  [123456789991,123456789992,123456789993]
+            ]
+        ]
+      ];
+//      
+//      $return = $Zodomus->activateRoom($roomToAt);
+      
+//        $return = $Zodomus->checkProperty($apto);
+       
+      
+//      $return = $Zodomus->getBookings($apto);
+//      $return = $Zodomus->createTestReserv($apto);
+      
+//      $Zodomus->createRoom();
+       $paramRates = [
+                "channelId" =>  1,
+                "propertyId" => $apto,
+                "roomId" =>  "12345678901",
+                "dateFrom" => "2020-02-01",
+                "dateTo" => "2020-02-25",
+                "currencyCode" =>  "EUR",
+                "rateId" =>  "123456789991",
+                "baseOccupancy" =>  "6",
+//                "weekDays" => $weekDays,
+                "prices" => ['price'=>350 ],
+//                "closed" =>  0,//"0=false , 1=true, (optional restrition)",
+              ];
+//      $Zodomus->setRates($paramRates);
+//      $return = $Zodomus->setRatesDerived($apto);
+        $paramAvail = [
+                "channelId" =>  1,
+                "propertyId" => $apto,
+                "roomId" =>  "12345678901",
+                "dateFrom" => "2020-02-01",
+                "dateTo" => "2020-02-25",
+                "availability" =>  "2",
+              ];
+       
+       
+//      $return = $Zodomus->setRoomsAvailability($paramAvail);
+//      $return = $Zodomus->getRates($apto);
+       
+//      $return = $Zodomus->getSummary($apto);
+      if ($return)   dd($return);
+      
   }
 
 }

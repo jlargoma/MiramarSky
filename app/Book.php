@@ -88,6 +88,16 @@ class Book extends Model {
       12 => 'ICAL - INVISIBLE',
       99 => 'FASTPAYMENT - SOLICITUD',
   ];
+  
+  var $typeBooksReserv = [
+      1,// => 'Reservado - stripe',
+      2,// => 'Pagada-la-señal',
+      4,// => 'Bloqueado',
+      7,// => 'Reserva Propietario',
+      8,// => 'ATIPICAS',
+      9,// => 'Booking',
+      11,// => 'blocked-ical',
+  ];
 
   use BookEmailsStatus;
 
@@ -238,7 +248,30 @@ class Book extends Model {
       return false;
     }
   }
+  
+  //Para comprobar el dia de la reserva en el calendario
+  static function availDate($startDate, $endDate, $room) {
 
+    
+    $match1 = [['start','>=', $startDate ],['start','<=', $endDate ]];
+    $match2 = [['finish','>=', $startDate ],['finish','<=', $endDate ]];
+    $match3 = [['start','<', $startDate ],['finish','>', $endDate ]];
+
+    $booksCount = self::where_type_book_reserved()->where('room_id',$room)
+            ->where(function ($query) use ($match1,$match2,$match3) {
+              $query->where($match1)
+                      ->orWhere($match2)
+                      ->orWhere($match3);
+            })->count();
+      
+    if ($books>0) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  
   public function existDateOverrride($start, $finish, $room, $id_excluded) {
 
     if ($room >= 5) {
@@ -303,7 +336,7 @@ class Book extends Model {
           $this->sendEmailChangeStatus($book, 'Reserva denegada', $status);
           $response['response'] = "Reserva cambiada a ICAL - INVISIBLE";
         }
-        $this->queueWubook(1);
+        
         \App\BookLogs::saveLogStatus($this->id, $this->room_id, $this->customer->email, $this->getStatus($status));
         return $response;
       } else {
@@ -346,7 +379,7 @@ class Book extends Model {
           if ($status == 2) {
             $this->sendToPartee();
           }
-          $this->queueWubook(1);
+          
           if ($this->customer->email == "") {
             $this->save();
             \App\BookLogs::saveLogStatus($this->id, $this->room_id, $this->customer->email, $this->getStatus($status));
@@ -828,7 +861,7 @@ class Book extends Model {
    * @return Object Query
    */
   static function where_type_book_reserved() {
-    return self::whereIn('type_book', [1,2,4,7,8,9,11]);
+    return self::whereIn('type_book', [1,2,4,7,8,9,11,5]);
   }
   
   static function get_type_book_reserved() {
@@ -1058,36 +1091,153 @@ class Book extends Model {
     
   }
     
-  public function queueWubook($available) {
-    //id	id_room	rId_wubook	date_start	date_end	avail	sent
-    
-    $WBConfig = new Services\Wubook\Config();
-    
-    $rId_wubook = array_search($this->room_id,$WBConfig->roomsEquivalent());
-    
-    /** @todo cuando cambio de habitación, genero 2 registros
-     * la vieja habitación se libera
-     * la nueva habitación se ocupa
-     */
-    
-    /** @todo cuando cambio de fecha, genero 2 registros
-     * la vieja fecha se libera
-     * la nueva fecha se ocupa
-     */
-    
-    if ($rId_wubook) {
-      WubookQueues::insert(
-            [
-            'id_room' =>$this->room_id,
-            'rId_wubook' =>$rId_wubook,
-            'date_start' =>$this->start,
-            'date_end' =>$this->finish,
-            'avail' =>$available,
-            'sent' => 0
-            ]
-            );
-//    } else {
-//      die('banana');
+  /**
+   * send to channel manager the availibility
+   * @param type $available
+   */
+  public function sendAvailibilityBy_dates($start=null,$finish=null) {
+    //check si es del mismo grupo
+    $room = Rooms::find($this->room_id);
+    if(!$start) $start = $this->start;
+    if(!$finish) $finish = $this->finish;
+    if (in_array($this->type_book,$this->typeBooksReserv))
+      $this->sendAvailibility($this->room_id,$start,$finish);
+    else die('asdfasdf');
+  }
+  /**
+   * send to channel manager the availibility
+   * @param type $available
+   */
+  public function sendAvailibilityBy_Rooms($old_room,$start=null,$finish=null) {
+    //check si es del mismo grupo
+    $room = Rooms::find($this->room_id);
+    if(!$start) $start = $this->start;
+    if(!$finish) $finish = $this->finish;
+    if ($room){
+      $oRooms = Rooms::where('channel_group',$room->channel_group)->pluck('id')->toArray();
+      if (!in_array($old_room,$oRooms)){
+        $this->sendAvailibility($old_room,$start,$finish);
+      } 
+      $this->sendAvailibility($this->room_id,$start,$finish);
     }
   }
+  /**
+   * send to channel manager the availibility
+   * @param type $available
+   */
+  public function sendAvailibilityBy_status() {
+    $this->sendAvailibility($this->room_id,$this->start,$this->finish);
+  }
+  /**
+   * send to channel manager the availibility
+   * @param type $available
+   */
+  public function sendAvailibility($room_id,$start,$finish) {
+    
+    $Zodomus  =  new \App\Services\Zodomus\Zodomus();
+    $room     = Rooms::find($room_id);
+    
+    if ($room){
+      $oRooms = Rooms::where('channel_group',$room->channel_group)->pluck('id')->toArray();
+      
+      $match1 = [['start','>=', $start ],['start','<=', $finish ]];
+      $match2 = [['finish','>=', $start ],['finish','<=', $finish ]];
+      $match3 = [['start','<', $start ],['finish','>', $finish ]];
+
+      $books = self::where_type_book_reserved()->whereIn('room_id',$oRooms)
+            ->where(function ($query) use ($match1,$match2,$match3) {
+              $query->where($match1)
+                      ->orWhere($match2)
+                      ->orWhere($match3);
+            })->get();
+            
+      $avail  = count($oRooms);
+      $oneDay = 24*60*60;
+      
+      //Prepara la disponibilidad por día de la reserva
+      $startAux = strtotime($start);
+      $endAux = strtotime($finish);
+      $aLstDays = [];
+      while ($startAux<=$endAux){
+        $aLstDays[date('Y-m-d',$startAux)] = $avail;
+        $startAux+=$oneDay;
+      }
+      
+      
+      if ($books){
+        foreach ($books as $book){
+            //Resto los días reservados
+            $startAux = strtotime($book->start);
+            $endAux = strtotime($book->finish);
+            
+            while ($startAux<=$endAux){
+              if (isset($aLstDays[date('Y-m-d',$startAux)]))
+                $aLstDays[date('Y-m-d',$startAux)]--;
+              
+              $startAux+=$oneDay;
+            }
+          
+        }
+      }
+      
+      //Genero el listado para enviar a Zodomus
+      $resultLst = [];
+      $start = $end = $value = null;
+      foreach ($aLstDays as $d => $v) {
+        if (!$value) {
+          $value = $v;
+          $start = $d;
+        }
+        if ($value != $v) {
+          $resultLst[] = [
+              "avail" => $value,
+              "start" => $start,
+              "end" => date('Y-m-d', strtotime($end)+$oneDay),
+          ];
+
+          $value = $v;
+          $start = $d;
+        }
+
+        $end = $d;
+      }
+
+      $resultLst[] = [
+          "avail" => $v,
+          "start" => $start,
+          "end" => date('Y-m-d', strtotime($end)+$oneDay),
+      ];
+      
+      //buscos los OTAs
+      $otas = [];
+      $aptos = configZodomusAptos();
+      foreach ($aptos as $cg => $apto){
+        if ($cg == $room->channel_group)
+          $otas = $apto->rooms;
+      }
+      
+      //envío cada periodo de disponibilidad
+      foreach ($resultLst as $data){
+        foreach ($otas as $ota){
+
+          $paramAvail = [
+              "channelId" =>  $ota->channel,
+              "propertyId" => $ota->propID,
+              "roomId" =>  $ota->roomID,
+              "dateFrom" => $data['start'],
+              "dateTo" => $data['end'],
+              "availability" =>  $data['avail'],
+            ];
+          $return = $Zodomus->setRoomsAvailability($paramAvail);
+//          var_dump($paramAvail);
+        }
+      }
+      
+    }
+  }
+    
+    
+    
+    
+    
 }

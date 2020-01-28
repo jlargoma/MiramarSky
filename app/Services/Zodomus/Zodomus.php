@@ -108,7 +108,7 @@ class Zodomus{
           $this->response = $result;
           break;
         case 404:
-          $this->response = 'NotFound';
+          $this->response = $result;//'NotFound';
           break;
         default :
           $this->response = 'Server error';
@@ -120,36 +120,37 @@ class Zodomus{
     }
     
     
-    public function getChannels() {
+    public function getInfo() {
+      $params = [ "channelId"=> 1];
+//      $this->call('reporting-misconduct-categories','GET',$params);
       $this->call('price-model','GET');
+//      $this->call('account','GET');
+//      $this->call('channels','GET');
       //EUR
       var_dump($this->response);
       var_dump($this->responseCode);
     }
     
-    public function activateChannels() {
+    public function activateChannels($apto) {
       
       $params = [
         "channelId"=> 1,
-        "propertyId"=> "321000",
-        "priceModelId"=> 1
+        "propertyId"=> $apto,
+        "priceModelId"=> 2
       ];
+//      $this->call('property-status','POST',$params);
       $this->call('property-activation','POST',$params);
-      //EUR
-      var_dump($this->response);
-      var_dump($this->responseCode);
+      return  ($this->response);
     }
     
-    public function checkProperty() {
+    public function checkProperty($apto) {
 //      echo '"propertyId"=> "2798863"<br>';
       $params = [
         "channelId"=> 1,
-        "propertyId"=> "321000",
+        "propertyId"=> $apto,
       ];
       $this->call('property-check','POST',$params);
-      //EUR
-      var_dump($this->response);
-      var_dump($this->responseCode);
+      return $this->response;
     }
     
     public function createRoom() {
@@ -166,16 +167,17 @@ class Zodomus{
       var_dump($this->responseCode);
     }
     
-    public function activateRoom() {
-      $params = $this->ZConfig->getExampleRoom();
+    /**
+     * Activate Apt: must map all Rooms and Rates
+     * @param type $params
+     * @return type
+     */
+    public function activateRoom($params) {
       $this->call('rooms-activation','POST',$params);
-      var_dump($this->response);
-      var_dump($this->responseCode);
+      return $this->response;
       
     }
     public function getRoomsAvailability($apto,$startDate,$endDate) {
-      
-//      dd($startDate,$endDate);
       
       $params = [
         "channelId"=> 1,
@@ -187,6 +189,22 @@ class Zodomus{
       return $this->response;
       
     }
+    public function setRoomsAvailability($params) {
+      
+    
+      $this->call('availability','POST',$params);
+      return $this->response;
+      
+    }
+    
+    public function getSummary($apto) {
+      $params = [
+        "channelId"=> 1,
+        "propertyId"=> $apto,
+      ];
+      $this->call('reservations-summary','GET',$params);
+      return $this->response;
+    }
     
     public function getRates($apto) {
       $params = [
@@ -196,12 +214,88 @@ class Zodomus{
       $this->call('room-rates','GET',$params);
       return $this->response;
     }
-    public function setRates() {
-      $params = $this->ZConfig->getExampleRates();
+    
+    /**
+     * Send Rates
+     * @param type $params
+     * @return Error Message
+     */
+    public function setRates($params) {
+//      $params = $this->ZConfig->processPriceRates($params);
+//      var_dump($params);
       $this->call('rates','POST',$params);
-      var_dump($this->response);
-      var_dump($this->responseCode);
+      if (isset($this->response->status)){
+        if (isset($this->response->status->returnCode)){
+          if ($this->response->status->returnCode == 200){
+            return null;
+          } else {
+            return $this->response->status->returnMessage;
+          }
+        }
+      }
+      return 'Algo ha salido mal. Intenta nuevamente';
     }
    
+    
+    public function getBookings($channelId,$apto) {
+      
+      
+       $params = [
+        "channelId"=> $channelId,
+        "propertyId"=> $apto,
+      ];
+      
+      $this->call('reservations-summary','GET',$params);
+       return $this->response;
+      if (isset($this->response->status)){
+        if (isset($this->response->status->returnCode)){
+          if ($this->response->status->returnCode == 200){
+            return null;
+          } else {
+            return $this->response->status->returnMessage;
+          }
+        }
+      }
+      return 'Algo ha salido mal. Intenta nuevamente';
+    }
+    
+    
+    public function createTestReserv($apto) {
+      
+      
+      $params = [
+        "channelId"=> 1,
+        "propertyId"=> $apto,
+        "status"=> "new",
+        'reservationId' => time() 
+      ];
+        
+      $this->call('reservations-createtest','POST',$params);
+      return $this->response;
+    
+    }
+    
+    public function setRatesDerived($apto) {
+      
+      $params = [
+        "channelId"=> 1,
+        "propertyId"=> $apto,
+        "roomId"=> 12345678901,
+        "rateId"=> 123456789991,
+        "baseOccupancy"=> 6,
+        "occupancy"=> [
+            //With percentage
+            ["persons"=>1,"percentage"=>"-25","round"=>"1"],
+//          With Additional cost
+            ["persons"=>3,"additional"=>"10","round"=>"1"],
+        ],
+      ];
+        
+      $this->call('rates-derived','POST',$params);
+      return $this->response;
+      
+       
+      
+    }             
     
 }

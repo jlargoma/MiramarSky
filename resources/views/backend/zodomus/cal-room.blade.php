@@ -11,8 +11,34 @@
 <script src='/vendors/fullcalendar/dayGrid/main.min.js'></script>
 <script src='/vendors/fullcalendar/dayGrid/resourceDayGrid.min.js'></script>
 
-<link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
-<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+<!--<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
+
+<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+
+<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />-->
+    <style type="text/css" media="screen"> 
+        .daterangepicker{
+            z-index: 10000!important;
+        }
+        .pg-close{
+            font-size: 45px!important;
+            color: white!important;
+        }
+        @media only screen and (max-width: 767px){
+           .daterangepicker {
+                left: 12%!important;
+                top: 3%!important; 
+            }
+        }
+
+    </style>
+    
+<!--<link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
+<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />-->
 @endsection
 
 @section('content')
@@ -22,7 +48,7 @@
       <h3>Listado de Precios:</h3>
       <div class="row">
         <div class="form-material pt-1 col-xs-12 col-md-6">
-          <label>Apartamento</label>
+          <label class="hidden-mobile">Apartamento</label>
           <select class="form-control" id="room_list">
             @foreach($rooms as $k=>$name)
             <option value="{{$k}}" @if($room == $k) selected @endif>{{$name}}</option>
@@ -33,39 +59,34 @@
       <div id='calendar'></div>   
     </div>
     <div class="col-md-5">
-
-      <h3>Editar Precios:</h3>
+      <p class="mobile-tit">Editar Precios:</p>
       <div class="row">
         <form method="POST" action="{{route('channel.price.cal.upd',$room)}}" id="channelForm">
           <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
-          <div class="form-material pt-1 col-xs-12 col-md-6">
-            <label>Fecha Inicio</label>
-            <div id="datepicker_start" class="input-group date col-xs-12">
-              <input type="text" class="form-control" name="date_start" id="date_start" value="" style="font-size: 12px">
-              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-            </div>
-          </div>
-          <div class="form-material pt-1 col-xs-12 col-md-6">
-            <label>Fecha Fin</label>
-            <div id="datepicker_end" class="input-group date">
-              <input type="text" class="form-control" name="date_end" id="date_end" value="" style="font-size: 12px">
-              <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-            </div>
-          </div>
-
           <div class="pt-1 col-md-12">
+            <div class="row">
+              <div class="col-md-3 col-xs-5 pt-1"><label>Rango de Fechas</label></div>
+              <div class="col-md-9 col-xs-7">
+              <input type="text" class="form-control daterange1" id="date_range" name="date_range" value="">
+              </div>
+            </div>
+            
+          </div>
+          <div class="pt-1 col-md-12 row">
             @foreach($dw as $k=>$v)
-            <div class="input-group">
-              <input type="checkbox" name="dw_{{$k}}" id="dw_{{$k}}" data-init-plugin="switchery" data-size="small" data-color="primary" checked="checked" />
-              <label class="inline">&nbsp; {{$v}}</label>
+            <div class="weekdays">
+              <label>
+                <input type="checkbox" name="dw_{{$k}}" id="dw_{{$k}}" checked="checked"/>
+                <span> {{$v}}</span>
+              </label>
             </div> 
             @endforeach
           </div>
-          <div class="pt-1 col-md-6">
+          <div class="pt-1 col-xs-6">
             <label>Precio por día (€)</label>
-            <input type="number" class="form-control" name="price" id="price">
+            <input type="number" class="form-control" name="price" id="price" step="any">
           </div>
-          <div class="pt-1 col-md-6">
+          <div class="pt-1 col-xs-6">
             <label>Estancia Mín.</label>
             <input type="number" class="form-control" name="min_estancia" id="min_estancia">
           </div>
@@ -83,8 +104,7 @@
   </div>
 </div>
 
-
-
+ 
 @endsection
 
 @section('scripts')
@@ -92,6 +112,87 @@
 
 <script type="text/javascript">
 $(document).ready(function () {
+
+
+
+
+
+$(".daterange1").daterangepicker({
+    "buttonClasses": "button button-rounded button-mini nomargin",
+    "applyClass": "button-color",
+    "cancelClass": "button-light",
+    autoUpdateInput: true,
+    locale: {
+      format: 'DD/MM/YYYY',
+      "applyLabel": "Aplicar",
+      "cancelLabel": "Cancelar",
+      "fromLabel": "From",
+      "toLabel": "To",
+      "customRangeLabel": "Custom",
+      "daysOfWeek": [
+        "Do",
+        "Lu",
+        "Mar",
+        "Mi",
+        "Ju",
+        "Vi",
+        "Sa"
+      ],
+      "monthNames": [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre"
+      ],
+      "firstDay": 1,
+    },
+
+  });
+
+Date.prototype.ddmmmyyyy = function() {
+  var mm = this.getMonth() + 1; // getMonth() is zero-based
+  var dd = this.getDate();
+  return [
+          (dd>9 ? '' : '0') + dd,
+          (mm>9 ? '' : '0') + mm,
+          this.getFullYear()
+         ].join('/');
+};
+Date.prototype.yyyymmmdd = function() {
+  var mm = this.getMonth() + 1; // getMonth() is zero-based
+  var dd = this.getDate();
+  return [
+          this.getFullYear(),
+          (mm>9 ? '' : '0') + mm,
+          (dd>9 ? '' : '0') + dd
+         ].join('-');
+};
+var render_yyyymmmdd = function(dates,moreDay=0) {
+  var date = dates.trim().split('/');
+  return date[2]+'-'+date[1]+'-'+date[0];
+};
+
+
+  $('.daterange1').change(function (event) {
+    var date = $(this).val();
+
+    var arrayDates = date.split('-');
+    var date1 = render_yyyymmmdd(arrayDates[0]);
+    var date2 = render_yyyymmmdd(arrayDates[1],1);
+    date2 = new Date(date2);
+    date2.setDate(date2.getDate() + 1);
+    pintar(date1,date2);
+  });
+
+
 
   $('#datepicker_start,#datepicker_end').datepicker();
 
@@ -106,7 +207,6 @@ $(document).ready(function () {
     $.get('{{route("channel.price.cal.list",$room)}}',
       { "start": start.toLocaleDateString("es-ES"), "end": end.toLocaleDateString("es-ES") },
       function (data) {
-        console.log(data);
         callback((data));
     });
   },
@@ -117,12 +217,13 @@ $(document).ready(function () {
   calendar.setOption('locale', 'es');
 
   calendar.on('select', function (info) {
+    console.log(info);
     var start = new Date(info.start);
     var end = new Date(info.end);
     end.setDate(end.getDate() - 1);
-    $('#date_start').datepicker('setDate', start);
-    $('#date_end').datepicker('setDate', end);
-//    $('#date_start').val(start.toLocaleDateString("es-ES"));
+    $('#date_range').data('daterangepicker').setStartDate(start.ddmmmyyyy());
+    $('#date_range').data('daterangepicker').setEndDate(end.ddmmmyyyy());
+
   });
 
 
@@ -134,9 +235,10 @@ $(document).ready(function () {
   var pintar = function (start, end) {
     let event = calendar.getEventById('event_edit');
     if (event) {
+      
       if (start)
         event.setStart(start);
-      event.setEnd(end);
+        event.setEnd(end);
     } else {
       calendar.addEventSource(
               {
@@ -208,12 +310,61 @@ $('#channelForm').on('submit', function (event) {
 <style>
   .fc-event, .fc-event-dot{
     background-color: transparent;
+    border: none;
+    text-align: center;
+    font-size: 1.2em;
     color: inherit;
-    padding: 5px 1em;
-    font-weight: 600;
   }
   .fc-event:hover, .fc-event-dot:hover{
     color: red;
   }
+  .fc-day-grid-event .fc-time {
+    display: none;
+  }
+  .weekdays:first-child {
+    margin-left: 10px;
+  }
+  .weekdays {
+    float: left;
+    
+    width: 14%;
+  }
+  .col-xs-5.pt-1 {
+    padding-top: 7px;
+  }
+  .pt-1.col-md-12.row{
+    margin: auto;
+  }
+.weekdays label {
+    display: block;
+    padding-left: 10px;
+    text-indent: -17px;
+    color:#a7a7a7;
+}
+
+.weekdays input {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: 0;
+  vertical-align: bottom;
+  position: relative;
+  top: -1px;
+}
+
+
+input:checked + span {
+  color: red;
+}
+
+p.mobile-tit {
+    padding: 7px 11px;
+    margin: 8px auto 2px;
+    background-color: #4886d2;
+    color: #fff;
+    font-size: 1.4em;
+    box-shadow: 1px 3px 2px #00132b;
+    font-weight: 600;
+}
 </style>
 @endsection

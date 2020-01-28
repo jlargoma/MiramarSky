@@ -66,45 +66,41 @@ class Config{
       ];
     }
     
-    /**
-     * Apply math function to the price based on the Channel
-     * @param type $params
-     * @return type
-     */
-    public function processPriceRates($params) {
-      
-      $channelId = $params['channelId'];
-      $price = $params['prices']['price'];
-      $priceSingle = isset($params['prices']['priceSingle']) ? $params['prices']['priceSingle'] : 0;
-      
-      switch ($channelId){
-        case 1:
-        case "1": //"Booking.com",
-          $price = $price+($price*0.22);//+15;
-          $priceSingle = $priceSingle+($priceSingle*0.2)+15;
-          break;
-      }
-      
-              
-      $params['prices']['price'] = ceil($price);
-      if (isset($params['prices']['priceSingle']))
-        $params['prices']['priceSingle'] = ceil($priceSingle);
-      
-      return $params;
-      
+    
+    public function getExampleRates() {
+      return [
+        "channelId" =>  1,
+        "propertyId" =>  "999999",
+        "roomId" =>  "99999901",
+        "rateId" =>  "999999991",
+        "dateFrom" =>  "2020-07-01",
+        "dateTo" =>  "2020-07-23",
+        "currencyCode" =>  "EUR",
+        "prices" =>   [
+          "price" =>  "850.00",
+          "priceSingle" => "850.00"
+        ],
+        "weekDays" =>  [
+          "sun" => FALSE,
+          "mon" => TRUE,
+          "tue" =>  TRUE,
+          "wed" =>  TRUE,
+          "thu" =>  TRUE,
+          "fri" =>  TRUE,
+          "sat" =>  FALSE
+        ],
+        "closed" =>  0,//"0=false , 1=true, (optional restrition)",
+        "minAdvanceRes" => '2D',// "4D = four days; 4D4H = four days and four hours, (optional restrition)",
+        "maxAdvanceRes" => '8D',// "4D = four days; 4D4H = four days and four hours, (optional restrition)",
+//        "minimumStay" =>  "Between 0 and 31, (optional restrition)",
+//        "maximumStay" =>  "Between 0 and 31, (optional restrition)",
+//        "minimumStayArrival" =>  "Between 0 and 31, (optional restrition)",
+//        "maximumStayArrival" =>  "Between 0 and 31, (optional restrition)",
+//        "exactStayArrival" =>  "Between 0 and 31, (optional restrition)",
+//        "closedOnArrival" =>  "0=false , 1=true, (optional restrition)",
+//        "closedOnDeparture" =>  "0=false , 1=true, (optional restrition)"
+      ];
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /////////////////////////////////////////////////////////////////////////////
-    
     
     function getExampleRoom(){
       return [
@@ -129,14 +125,4 @@ class Config{
       ];
       
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
