@@ -19,6 +19,9 @@ class AddChannelManager extends Migration
           $table->date('date_start')->nullable();
           $table->date('date_end')->nullable();
           $table->boolean('avail');
+          $table->double('price', 8, 2)->nullable();
+          $table->integer('minimumStay')->nullable();
+          $table->string('weekDays')->nullable();
           $table->boolean('sent');
           $table->timestamps();
          

@@ -264,7 +264,7 @@ class ZodomusController extends Controller {
     
     $insert = [
         'price'=>$price,
-        'minAdvanceRes'=>$min_estancia,
+        'minimumStay'=>$min_estancia,
         'weekDays'=>$weekDays,
         'channel_group'=>$apto,
         'date_start'=>date('Y-m-d',$startTime),
@@ -371,8 +371,8 @@ class ZodomusController extends Controller {
     }
     
     //min Advance Res
-    $minAdvanceRes = null;
-    if ($data['minAdvanceRes']>0) $minAdvanceRes = $data['minAdvanceRes'].'D';
+    $minimumStay = null;
+    if ($data['minimumStay']>0) $minimumStay = $data['minimumStay'];
     
     
     $oZodomus = new Zodomus();
@@ -397,10 +397,12 @@ class ZodomusController extends Controller {
                 "closed" =>  0,//"0=false , 1=true, (optional restrition)",
               ];
 
-              if ($minAdvanceRes){
-      //          "minAdvanceRes" => '2D',// "4D = four days; 4D4H = four days and four hours, (optional restrition)",
-                $param['minAdvanceRes'] = $minAdvanceRes;
+              if ($minimumStay){
+      //          "minimumStay" => '2D',// "4D = four days; 4D4H = four days and four hours, (optional restrition)",
+                $param['minimumStay'] = $minimumStay;
+                $param['minimumStayArrival'] = $minimumStay;
               }
+              
               $errorMsg = $oZodomus->setRates($param);
               if ($errorMsg){
                 return $errorMsg;
@@ -420,9 +422,11 @@ class ZodomusController extends Controller {
   function zodomusTest(){
     
       $Zodomus =  new \App\Services\Zodomus\Zodomus();
-      $apto = 321000; 
+      $apto = 2942008; 
+      $roomID = 294200801;
+      $rateId = 10537055;
       $return = null;
-      $return = $Zodomus->getInfo();
+//      $return = $Zodomus->getInfo();
 //      
 //      $return = $Zodomus->activateChannels($apto);
 //      $return = $Zodomus->getRates($apto);
@@ -434,28 +438,15 @@ class ZodomusController extends Controller {
         "propertyId" => $apto,
         "rooms" =>  [
             [
-            "roomId" =>  "12345678901",
-            "roomName" =>  "Single room",
+            "roomId" =>  $roomID,
+            "roomName" =>  "Deluxe Apartment",
             "status" =>  1,
-            "quantity" =>2, //max availability
-            "rates" =>  [123456789991,123456789992,123456789993]
+            "quantity" =>1, //max availability
+            "rates" =>  [$rateId]
             ],
-            [
-            "roomId" =>  12345678902,
-            "status" =>  1,
-            "roomName" =>  "Single room 2",
-            "quantity" =>1,
-            "rates" =>  [123456789991,123456789992,123456789993]
-            ],
-            [
-            "roomId" =>  12345678903,
-            "status" =>  1,
-            "roomName" =>  "Single room 2",
-            "quantity" =>1,
-            "rates" =>  [123456789991,123456789992,123456789993]
-            ]
         ]
       ];
+//      dd($roomToAt);
 //      
 //      $return = $Zodomus->activateRoom($roomToAt);
       
@@ -469,25 +460,25 @@ class ZodomusController extends Controller {
        $paramRates = [
                 "channelId" =>  1,
                 "propertyId" => $apto,
-                "roomId" =>  "12345678901",
-                "dateFrom" => "2020-02-01",
-                "dateTo" => "2020-02-25",
+                "roomId" =>  $roomID,
+                "dateFrom" => "2020-07-01",
+                "dateTo" => "2020-07-05",
                 "currencyCode" =>  "EUR",
-                "rateId" =>  "123456789991",
-                "baseOccupancy" =>  "6",
+                "rateId" =>  $rateId,
+                "baseOccupancy" =>  "1",
 //                "weekDays" => $weekDays,
-                "prices" => ['price'=>350 ],
+                "prices" => ['price'=>450 ],
 //                "closed" =>  0,//"0=false , 1=true, (optional restrition)",
               ];
-//      $Zodomus->setRates($paramRates);
+//      $return = $Zodomus->setRates($paramRates);
 //      $return = $Zodomus->setRatesDerived($apto);
         $paramAvail = [
                 "channelId" =>  1,
                 "propertyId" => $apto,
-                "roomId" =>  "12345678901",
-                "dateFrom" => "2020-02-01",
-                "dateTo" => "2020-02-25",
-                "availability" =>  "2",
+                "roomId" =>  $roomID,
+                "dateFrom" => "2020-07-01",
+                "dateTo" => "2020-07-05",
+                "availability" =>  1,
               ];
        
        

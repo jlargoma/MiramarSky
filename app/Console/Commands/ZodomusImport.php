@@ -78,7 +78,8 @@ class ZodomusImport extends Command {
       //get all channels
       foreach ($apto->rooms as $room) {
         $bookings = $Zodomus->getBookings($room->channel, $room->propID);
-        if ($bookings->status->returnCode == 200) {
+        if ($bookings && $bookings->status->returnCode == 200) {
+          
           foreach ($bookings->reservations as $book) {
 
             $reservIDs[] = $book->reservation->id;
@@ -129,7 +130,9 @@ class ZodomusImport extends Command {
       
       if (in_array($reserv['reser_id'], $alreadyExist)){
         $this->result[] = [
-          $agency, $reserv['reser_id'],'Reserva ya registrada', $reserv['start'], $reserv['end'],'',''
+          $agency, $reserv['reser_id'],
+            'Reserva ya registrada', $reserv['start'], $reserv['end'],'','',
+            $reserv['channel_group']
         ];
         continue;
       }
@@ -138,7 +141,7 @@ class ZodomusImport extends Command {
       $roomID = $this->calculateRoomToFastPayment($reserv['channel_group'], $reserv['start'], $reserv['end']);
       if ($roomID<0){
         $this->result[] = [
-          $agency, $reserv['reser_id'],'No dispone de Habitaciones para la reserva', $reserv['start'], $reserv['end'],'',''
+          $agency, $reserv['reser_id'],'No dispone de Habitaciones para la reserva', $reserv['start'], $reserv['end'],'','',$reserv['channel_group']
         ];
         continue;
       }
@@ -181,7 +184,7 @@ class ZodomusImport extends Command {
 
       $book->save();
       $this->result[] = [
-          $agency, $book->external_id, $customer->name, $book->start, $book->finish, $nights,$book->id
+          $agency, $book->external_id, $customer->name, $book->start, $book->finish, $nights,$book->id,$reserv['channel_group']
       ];
     }
   }

@@ -224,7 +224,7 @@ class Zodomus{
      * @return Error Message
      */
     public function setRates($params) {
-//      $params = $this->ZConfig->processPriceRates($params);
+      $params = $this->ZConfig->processPriceRates($params);
 //      var_dump($params);
       $this->call('rates','POST',$params);
       if (isset($this->response->status)){
@@ -249,17 +249,8 @@ class Zodomus{
       ];
       
       $this->call('reservations-summary','GET',$params);
-       return $this->response;
-      if (isset($this->response->status)){
-        if (isset($this->response->status->returnCode)){
-          if ($this->response->status->returnCode == 200){
-            return null;
-          } else {
-            return $this->response->status->returnMessage;
-          }
-        }
-      }
-      return 'Algo ha salido mal. Intenta nuevamente';
+      return $this->response;
+      
     }
     
     
