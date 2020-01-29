@@ -264,7 +264,7 @@ class Book extends Model {
                       ->orWhere($match3);
             })->count();
       
-    if ($books>0) {
+    if ($booksCount>0) {
       return false;
     } else {
       return true;

@@ -312,31 +312,31 @@ function getArrayMonth($startYear,$endYear,$index=false){
 }
 
 function configZodomusAptos(){
-  $confFile = [
-    'TEST' => [
-        'name' => 'Apto Test 1',
-        'rooms' => [
-            [
-                'channel' => 1, //booking.com
-                'propID' => 123456789,
-                'roomID' => 12345678901,
-                'rateID' => 123456789992,
-                'name' => 'Single Room'
-            ],
-            [
-                'channel' => 1, //booking.com
-                'propID' => 123456789,
-                'roomID' => 12345678902,
-                'rateID' => 123456789992,
-                'name' => 'Suite'
-            ]
-        ],
-    ],
-      ];
-  
-  return json_decode(json_encode($confFile));
-  
-  
+//  $confFile = [
+//    'TEST' => [
+//        'name' => 'Apto Test 1',
+//        'rooms' => [
+//            [
+//                'channel' => 1, //booking.com
+//                'propID' => 123456789,
+//                'roomID' => 12345678901,
+//                'rateID' => 123456789992,
+//                'name' => 'Single Room'
+//            ],
+//            [
+//                'channel' => 1, //booking.com
+//                'propID' => 123456789,
+//                'roomID' => 12345678902,
+//                'rateID' => 123456789992,
+//                'name' => 'Suite'
+//            ]
+//        ],
+//    ],
+//      ];
+//  
+//  return json_decode(json_encode($confFile));
+//  
+//  
   
   $confFile = Illuminate\Support\Facades\File::get(storage_path('app/config/zodomus'));
   return json_decode($confFile);

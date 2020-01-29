@@ -274,6 +274,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/channel-manager/list/{apto}','ZodomusController@listBy_apto')->name('channel.cal.list');
   Route::get('/channel-manager/config', 'ZodomusController@generate_config');
   Route::get('/channel-manager/ZODOMUS', 'ZodomusController@zodomusTest');
+  Route::get('/channel-manager/index', 'ZodomusController@index')->name('channel.index');
   Route::get('/channel-manager', 'ZodomusController@calendRoom')->name('channel');
   
   Route::get('/zodomus/import', function () {
