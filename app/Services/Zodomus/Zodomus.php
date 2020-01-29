@@ -24,9 +24,12 @@ class Zodomus{
    public function __construct()
     {
       $this->URL = 'https://api.zodomus.com/';
-      $this->usr = 'mvwgA9k4Xlizvx3Znsod3vxXfsXv1a+v1LOQ88DNXmc=';
-      $this->psw = 'JFyoMMKjssKDOdZ+Nz+snuus8epX0pzxFmpgcP/SWlw=';
-      $this->psw_card = "8JvtVvGDUQVfn86nPdOyCwwD6A3EWfF6XaiH7x2Ktrk=";
+      $this->usr = env('ZODOMUS_USR');
+      $this->psw = env('ZODOMUS_PSW');
+      $this->psw_card = env('ZODOMUS_PSW_CC');
+//      $this->usr = 'mvwgA9k4Xlizvx3Znsod3vxXfsXv1a+v1LOQ88DNXmc=';
+//      $this->psw = 'JFyoMMKjssKDOdZ+Nz+snuus8epX0pzxFmpgcP/SWlw=';
+//      $this->psw_card = "8JvtVvGDUQVfn86nPdOyCwwD6A3EWfF6XaiH7x2Ktrk=";
       $this->ZConfig = new ZConfig();
     }
     

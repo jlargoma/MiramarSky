@@ -11,8 +11,15 @@
 
 @section('content')
 <div class="container-fluid padding-25 sm-padding-10">
+  @if($errors->any())
+  <p class="alert alert-danger">{{$errors->first()}}</p>
+  @endif
+  @if (\Session::has('success'))
+  <p class="alert alert-success">{!! \Session::get('success') !!}</p>
+  @endif
   <div class="row">
     <div class="col-md-10 col-md-offset-1 ">
+      
       <h3>Listado de Apartamentos:</h3>
       <div class="row">
         <div class="form-material pt-1 col-xs-12">
@@ -35,7 +42,7 @@
               </div>
               <div class="col-md-6">
                 <h3>Enviar disponibilidad:</h3>
-                <form method="POST" action="" id="channelForm">
+                <form method="POST" action="{{route('channel.sendAvail',$k)}}" id="channelForm">
                   <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
                   <div class="row">
                     <div class="col-md-3 col-xs-5 pt-1"><label>Rango de Fechas</label></div>

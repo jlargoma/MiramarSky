@@ -421,10 +421,8 @@ class ZodomusController extends Controller {
     
       $Zodomus =  new \App\Services\Zodomus\Zodomus();
       $apto = 321000; 
-//      $apto = 2798863; 
-      $apto = 123456789; 
       $return = null;
-//      $Zodomus->getInfo();
+      $return = $Zodomus->getInfo();
 //      
 //      $return = $Zodomus->activateChannels($apto);
 //      $return = $Zodomus->getRates($apto);
@@ -499,6 +497,30 @@ class ZodomusController extends Controller {
 //      $return = $Zodomus->getSummary($apto);
       if ($return)   dd($return);
       
+  }
+  
+  
+  function sendAvail(Request $request, $apto) {
+    
+    $date_range = $request->input('date_range', null);
+    
+    if (!$date_range)
+      return back()->withErrors(['Debe seleccionar al menos una fecha de inicio']);
+    
+    $date = explode(' - ', $date_range);
+    $startTime = (convertDateToDB($date[0]));
+    $endTime = (convertDateToDB($date[1]));
+    
+    
+    $room = Rooms::where('channel_group',$apto)->first();
+    if ($room){
+      $book = new \App\Book();
+      $book->sendAvailibility($room->id,$startTime,$endTime);
+      return back()->with(['success'=>'Disponibilidad enviada']);
+    } else {
+      return back()->withErrors(['No posee apartamentos asignados']);
+    }
+    
   }
 
 }
