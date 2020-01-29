@@ -916,7 +916,26 @@ class BookController extends AppController
             if ($isReservable == 1)
             {
 
-                return $book->changeBook($request->status, "", $book);
+              $oldStatus = $book->type_book;
+              $typeBooksReserv =$book->typeBooksReserv;
+
+              $response = $book->changeBook($request->status, "", $book);
+              if ($response['status'] == 'success'){
+                if (!in_array($oldStatus,$typeBooksReserv) && in_array($book->type_book,$typeBooksReserv)){
+                  //Ya no esta disponible
+                  $book->sendAvailibilityBy_status();
+                  return $response;
+                } 
+
+                if (in_array($oldStatus,$typeBooksReserv) && !in_array($book->type_book,$typeBooksReserv)){
+                  //Ya esta disponible
+                  $book->sendAvailibilityBy_status();
+                  return $response;
+                }
+
+              }
+              return $response;
+                
             } else
             {
 
@@ -952,17 +971,17 @@ class BookController extends AppController
 
             $book = Book::find($id);
             $oldStatus = $book->type_book;
-            $type_book_not = [0,3,6,12,99];
+            $typeBooksReserv =$book->typeBooksReserv;
             
             $response = $book->changeBook($request->status, "", $book);
             if ($response['status'] == 'success'){
-              if (in_array($oldStatus,$type_book_not) && !in_array($book->type_book,$type_book_not)){
+              if (!in_array($oldStatus,$typeBooksReserv) && in_array($book->type_book,$typeBooksReserv)){
                 //Ya no esta disponible
                 $book->sendAvailibilityBy_status();
                 return $response;
               } 
               
-              if (!in_array($oldStatus,$type_book_not) && in_array($book->type_book,$type_book_not)){
+              if (in_array($oldStatus,$typeBooksReserv) && !in_array($book->type_book,$typeBooksReserv)){
                 //Ya esta disponible
                 $book->sendAvailibilityBy_status();
                 return $response;

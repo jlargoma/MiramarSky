@@ -1179,24 +1179,23 @@ class Book extends Model {
           
         }
       }
-      
       //Genero el listado para enviar a Zodomus
       $resultLst = [];
-      $start = $end = $value = null;
+      $startAux2 = $end = $value = null;
       foreach ($aLstDays as $d => $v) {
-        if (!$value) {
+        if ($value === null) {
           $value = $v;
-          $start = $d;
+          $startAux2 = $d;
         }
         if ($value != $v) {
           $resultLst[] = [
               "avail" => $value,
-              "start" => $start,
+              "start" => $startAux2,
               "end" => date('Y-m-d', strtotime($end)+$oneDay),
           ];
 
           $value = $v;
-          $start = $d;
+          $startAux2 = $d;
         }
 
         $end = $d;
@@ -1204,7 +1203,7 @@ class Book extends Model {
 
       $resultLst[] = [
           "avail" => $v,
-          "start" => $start,
+          "start" => $startAux2,
           "end" => date('Y-m-d', strtotime($end)+$oneDay),
       ];
       
@@ -1215,7 +1214,6 @@ class Book extends Model {
         if ($cg == $room->channel_group)
           $otas = $apto->rooms;
       }
-      
       //envío cada periodo de disponibilidad
       foreach ($resultLst as $data){
         foreach ($otas as $ota){
@@ -1228,8 +1226,8 @@ class Book extends Model {
               "dateTo" => $data['end'],
               "availability" =>  $data['avail'],
             ];
+         
           $return = $Zodomus->setRoomsAvailability($paramAvail);
-//          var_dump($paramAvail);
         }
       }
       
