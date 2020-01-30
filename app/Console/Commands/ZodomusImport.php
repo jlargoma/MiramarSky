@@ -89,9 +89,12 @@ class ZodomusImport extends Command {
           
           foreach ($bookings->reservations as $book) {
 
+            if ($book->reservation->status != 1)  continue;
             $reservIDs[] = $book->reservation->id;
             $reservations[] = [
                 'channel' => $room->channel,
+                'propID' => $room->propID,
+                'roomID' => $book->rooms[0]->id,
                 'channel_group' => $cg,
                 'agency' => $ZConfig->getAgency($room->channel),
                 'reser_id' => $book->reservation->id,
@@ -144,8 +147,8 @@ class ZodomusImport extends Command {
         continue;
       }
 
-
-      $roomID = $this->sZodomus->calculateRoomToFastPayment($reserv['channel_group'], $reserv['start'], $reserv['end']);
+      $channelGroup = $this->sZodomus->getChannelManager($reserv['channel'],$reserv['propID'],$reserv['roomID']);
+      $roomID = $this->sZodomus->calculateRoomToFastPayment($channelGroup, $reserv['start'], $reserv['end']);
       if ($roomID<0){
         $this->result[] = [
           $agency, $reserv['reser_id'],'No dispone de Habitaciones para la reserva', $reserv['start'], $reserv['end'],'','',$reserv['channel_group']

@@ -339,7 +339,7 @@ class ZodomusController extends Controller {
   function generate_config() {
     ///admin/channel-manager/config
 //    $condif = configZodomusAptos(); dd($condif); die;
-    $confFile = \Illuminate\Support\Facades\File::get(storage_path('app/config/zodomus.php'));
+//    $confFile = \Illuminate\Support\Facades\File::get(storage_path('app/config/zodomus.php'));
 //  eval($confFile);
   }
   
@@ -378,6 +378,8 @@ class ZodomusController extends Controller {
     $oZodomus = new Zodomus();
     $channel_group = $data['channel_group'];
     $aptos = configZodomusAptos();
+    
+    $data['date_end'] = date('Y-m-d', strtotime($data['date_end'])+(24*60*60));
     foreach ($aptos as $cg => $apto){
       if ($cg == $channel_group){
         //send all channels
@@ -421,10 +423,18 @@ class ZodomusController extends Controller {
    */
   function zodomusTest(){
     
+    /*2092950
+4284223
+6037501
+2942955
+5813366
+2798863
+     * */
+     
       $Zodomus =  new \App\Services\Zodomus\Zodomus();
-      $apto = 123456789; 
+      $apto = 1542253; 
       $roomID = 294200801;
-      $rateId = 10537055;
+      $rateId = 6280183;
       $return = null;
 //      $return = $Zodomus->getInfo();
 //      
@@ -433,24 +443,31 @@ class ZodomusController extends Controller {
 //      $return = $Zodomus->getRoomsAvailability($apto,'2020-02-05','2020-02-11');
 
       
+      $aptos = configZodomusAptos();
+      $rooms = [];
+      foreach ($aptos as $k => $item) {
+        foreach ($item->rooms as $room) {
+          if ($room->propID == $apto && $room->channel == 1)
+            $rooms[] = [
+                "roomId" =>  $room->roomID,
+                "roomName" =>   $room->name,
+                "status" =>  1,
+                "quantity" =>1, //max availability
+                "rates" =>  [$rateId]
+                ];
+        }
+      }
+    
       $roomToAt = [
         "channelId" =>  1,
         "propertyId" => $apto,
-        "rooms" =>  [
-            [
-            "roomId" =>  $roomID,
-            "roomName" =>  "Deluxe Apartment",
-            "status" =>  1,
-            "quantity" =>1, //max availability
-            "rates" =>  [$rateId]
-            ],
-        ]
+        "rooms" =>  $rooms
       ];
 //      dd($roomToAt);
 //      
 //      $return = $Zodomus->activateRoom($roomToAt);
       
-//        $return = $Zodomus->checkProperty($apto);
+        $return = $Zodomus->checkProperty($apto);
        
       
 //      $return = $Zodomus->getBookings(1,$apto); //1234567894827  1234567898746
@@ -534,9 +551,7 @@ class ZodomusController extends Controller {
     if ($webhookKey == env('ZODOMUS_WEBHOOK')){
       if ($reservationStatus == 1){
         
-        //check if exists
-        $alreadyExist = \App\Book::where('external_id', $reservationId)->first();
-        if ($alreadyExist) return 'ok';
+        
         
         $oZodomus = new Zodomus();
         $zConfig = new ZConfig();
@@ -546,10 +561,28 @@ class ZodomusController extends Controller {
                 "propertyId" => $propertyId,
                 "reservationId" =>  $reservationId,
               ];
-//        $reservation = $oZodomus->getBooking($param);
+        $reservation = $oZodomus->getBooking($param);
+        
         if ($reservation && $reservation->status->returnCode == 200){
-          
           $booking = $reservation->reservations;
+          //check if exists
+          $alreadyExist = \App\Book::where('external_id', $reservationId)->first();
+          if ($alreadyExist){
+            if ($booking->reservation->status == 3){ //Cancelada
+              
+              $response = $alreadyExist->changeBook(3, "", $alreadyExist);
+              if ($response['status'] == 'success' || $response['status'] ==  'warning'){
+                //Ya esta disponible
+                $alreadyExist->sendAvailibilityBy_status();
+              }
+            }
+            
+            return 'ok';
+          }
+          
+          if ($booking->reservation->status != 1) return 'ok';
+        
+          
           if ($booking) {
             $roomId = $booking->rooms[0]->id;
             

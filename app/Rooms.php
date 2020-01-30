@@ -360,10 +360,10 @@ class Rooms extends Model
       $priceDay = [];
       $seassonDay = [];
       $day = 24*60*60;
-      while ($startTime<=$endTime){
+      while ($startTime<$endTime){
         $priceDay[date('Y-m-d',$startTime)] = 600;
         $costDay[date('Y-m-d',$startTime)] = 1;
-        $seassonDay[date('Y-m-d',$startTime)] = 0;
+        $seassonDay[date('Y-m-d',$startTime)] = 1;
         $startTime += $day;
       }
 
@@ -380,7 +380,7 @@ class Rooms extends Model
                       ->orderBy('start_date')
                       ->get();
       
-      $seasonsActive = [0];
+      $seasonsActive = [1];
       if ($seasonActives){
         foreach ($seasonActives as $s){
           $s_start  = strtotime($s->start_date);
@@ -405,6 +405,7 @@ class Rooms extends Model
         
       $priceList = [];
       $prices = \App\Prices::whereIn('season', array_unique($seasonsActive))->where('occupation', $pricePax)->get();
+      
       if ($prices){
         foreach ($prices as $p){
           $priceList[$p->season] = [

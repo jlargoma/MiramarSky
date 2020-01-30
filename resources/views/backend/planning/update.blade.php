@@ -119,6 +119,7 @@ $mobile = new Mobile();
           <h5>
             Creado por <?php echo "<b>" . strtoupper($book->user->name) . "</b>" ?>
             / ID: <?php echo "<b>" . $book->id . "</b>" ?>
+            <input type="hidden" value="{{$book->external_id}}">
           </h5>
 <?php if ($book->type_book == 2): ?>
             <div class="col-md-2 col-xs-3 icon-lst">
