@@ -48,6 +48,12 @@ class ZodomusImport extends Command {
    * @var string
    */
   var $result = array();
+  /**
+   * The console command result.
+   *
+   * @var string
+   */
+  var $sZodomus = array();
 
   /**
    * Create a new command instance.
@@ -56,6 +62,7 @@ class ZodomusImport extends Command {
    */
   public function __construct() {
     $this->result = array();
+    $this->sZodomus = new Zodomus();
     parent::__construct();
   }
 
@@ -70,7 +77,7 @@ class ZodomusImport extends Command {
 
 
 
-    $Zodomus = new Zodomus();
+    $Zodomus = $this->sZodomus;
     $ZConfig = new ZConfig();
     $reservations = [];
     $reservIDs = [];
@@ -138,7 +145,7 @@ class ZodomusImport extends Command {
       }
 
 
-      $roomID = $this->calculateRoomToFastPayment($reserv['channel_group'], $reserv['start'], $reserv['end']);
+      $roomID = $this->sZodomus->calculateRoomToFastPayment($reserv['channel_group'], $reserv['start'], $reserv['end']);
       if ($roomID<0){
         $this->result[] = [
           $agency, $reserv['reser_id'],'No dispone de Habitaciones para la reserva', $reserv['start'], $reserv['end'],'','',$reserv['channel_group']
@@ -189,36 +196,7 @@ class ZodomusImport extends Command {
     }
   }
 
-  public function calculateRoomToFastPayment($apto, $start, $finish) {
-
-    $roomSelected = null;
-    $allRoomsBySize = Rooms::
-                    where('channel_group', $apto)
-                    ->where('state', 1)
-                    ->where('fast_payment', 1)
-                    ->orderBy('order_fast_payment', 'ASC')->get();
-
-    foreach ($allRoomsBySize as $room) {
-      $room_id = $room->id;
-      if (Book::availDate($start, $finish, $room_id)) {
-        return $room_id;
-      }
-    }
-
-    //search simple Rooms to Booking
-    $oRoomsGroup = Rooms::select('id')
-                    ->where('channel_group', $apto)
-                    ->where('state', 1)
-                    ->orderBy('fast_payment', 'ASC')
-                    ->orderBy('order_fast_payment', 'ASC')->first();
-    if ($oRoomsGroup) {
-      return $oRoomsGroup->id;
-      return ['isFastPayment' => false, 'id' => $oRoomsGroup->id];
-    }
-
-    return -1;
-//    return ['isFastPayment' => false, 'id' => -1];
-  }
+ 
 
   /**
    * Print result in the website

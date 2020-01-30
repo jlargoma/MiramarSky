@@ -290,6 +290,63 @@ class Zodomus{
       
        
       
-    }             
+    }   
     
+    function getBooking($params) {
+      
+      $this->call('reservations','GET',$params);
+      return $this->response;
+      
+    }
+    
+    function getChannelManager($channelId,$propertyId,$roomId){
+      
+      return '7J';
+      $aptos = configZodomusAptos();
+      foreach ($aptos as $cg => $data){
+        foreach ($data->rooms as $room){
+          if (
+            $room->channel == $channelId
+            && $room->propID == $propertyId
+            && $room->roomID == $roomId
+            )
+            return $cg;
+        }
+
+      }
+      
+      return null;
+    }
+    
+    
+  public function calculateRoomToFastPayment($apto, $start, $finish) {
+
+    $roomSelected = null;
+    $allRoomsBySize = \App\Rooms::
+                    where('channel_group', $apto)
+                    ->where('state', 1)
+                    ->where('fast_payment', 1)
+                    ->orderBy('order_fast_payment', 'ASC')->get();
+
+    foreach ($allRoomsBySize as $room) {
+      $room_id = $room->id;
+      if (\App\Book::availDate($start, $finish, $room_id)) {
+        return $room_id;
+      }
+    }
+
+    //search simple Rooms to Booking
+    $oRoomsGroup = \App\Rooms::select('id')
+                    ->where('channel_group', $apto)
+                    ->where('state', 1)
+                    ->orderBy('fast_payment', 'ASC')
+                    ->orderBy('order_fast_payment', 'ASC')->first();
+    if ($oRoomsGroup) {
+      return $oRoomsGroup->id;
+      return ['isFastPayment' => false, 'id' => $oRoomsGroup->id];
+    }
+
+    return -1;
+//    return ['isFastPayment' => false, 'id' => -1];
+  }
 }

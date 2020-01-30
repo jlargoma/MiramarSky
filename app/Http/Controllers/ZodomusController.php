@@ -422,7 +422,7 @@ class ZodomusController extends Controller {
   function zodomusTest(){
     
       $Zodomus =  new \App\Services\Zodomus\Zodomus();
-      $apto = 2942008; 
+      $apto = 123456789; 
       $roomID = 294200801;
       $rateId = 10537055;
       $return = null;
@@ -453,7 +453,7 @@ class ZodomusController extends Controller {
 //        $return = $Zodomus->checkProperty($apto);
        
       
-//      $return = $Zodomus->getBookings($apto);
+//      $return = $Zodomus->getBookings(1,$apto); //1234567894827  1234567898746
 //      $return = $Zodomus->createTestReserv($apto);
       
 //      $Zodomus->createRoom();
@@ -512,6 +512,111 @@ class ZodomusController extends Controller {
       return back()->withErrors(['No posee apartamentos asignados']);
     }
     
+  }
+  
+  function webHook(Request $request) {
+    
+    //save a copy
+    $json = json_encode($request->all());
+    $dir = storage_path().'/zodomus';
+    if (!file_exists($dir)) {
+        mkdir($dir, 0775, true);
+    }
+    file_put_contents($dir."/".time(),$json);
+    
+    
+    $webhookKey = $request->input('webhookKey');// (Your webhook key, you should validate if a call to your webhook has the correct key)
+    $channelId = $request->input('channelId');//channelId (Integer)
+    $propertyId = $request->input('propertyId');//propertyId (String)
+    $reservationId = $request->input('reservationId');//reservationId (String, sent from the channel to identify the reservation)
+    $reservationStatus = $request->input('reservationStatus');//(Integer 1=new, 2=modified, 3=cancelled)
+    
+    if ($webhookKey == env('ZODOMUS_WEBHOOK')){
+      if ($reservationStatus == 1){
+        
+        //check if exists
+        $alreadyExist = \App\Book::where('external_id', $reservationId)->first();
+        if ($alreadyExist) return 'ok';
+        
+        $oZodomus = new Zodomus();
+        $zConfig = new ZConfig();
+
+        $param = [
+                "channelId" =>  $channelId,
+                "propertyId" => $propertyId,
+                "reservationId" =>  $reservationId,
+              ];
+//        $reservation = $oZodomus->getBooking($param);
+        if ($reservation && $reservation->status->returnCode == 200){
+          
+          $booking = $reservation->reservations;
+          if ($booking) {
+            $roomId = $booking->rooms[0]->id;
+            
+            $cg = $oZodomus->getChannelManager($channelId,$propertyId,$roomId);
+            if (!$cg) return false;
+
+            $reserv = [
+                'channel' => $channelId,
+                'channel_group' => $cg,
+                'agency' => $zConfig->getAgency($channelId),
+                'reser_id' => $reservationId,
+                'status' => $booking->reservation->status,
+                'customer' => $booking->customer,
+                'totalPrice' => $booking->rooms[0]->totalPrice,
+                'numberOfGuests' => $booking->rooms[0]->numberOfGuests,
+                'mealPlan' => $booking->rooms[0]->mealPlan,
+                'start' => $booking->rooms[0]->arrivalDate,
+                'end' => $booking->rooms[0]->departureDate,
+            ];
+            
+            
+            
+          $roomID = $oZodomus->calculateRoomToFastPayment($cg, $reserv['start'], $reserv['end']);
+          if ($roomID<0){
+           return 'false';
+          }
+          $nights = calcNights($reserv['start'], $reserv['end']);
+          $book = new \App\Book();
+
+          $rCustomer = $reserv['customer'];
+          $customer = new \App\Customers();
+          $customer->user_id = 23;
+          $customer->name = $rCustomer->firstName . ' ' . $rCustomer->lastName . ' - ZodomusWH ';
+          $customer->email = $rCustomer->email;
+          $customer->phone = $rCustomer->phoneCountryCode . ' ' . $rCustomer->phoneCityArea . ' ' . $rCustomer->phone;
+          $customer->DNI = "";
+          $customer->save();
+
+          //Create Book
+          $book->user_id = 39;
+          $book->customer_id = $customer->id;
+          $book->room_id = $roomID;
+          $book->start = $reserv['start'];
+          $book->finish = $reserv['end'];
+          $book->comment = $reserv['mealPlan'];
+          $book->type_book = 11;
+          $book->nigths = $nights;
+          $book->agency = $reserv['agency'];
+          $book->pax = $reserv['numberOfGuests'];
+          $book->PVPAgencia = $reserv['totalPrice'];
+          $book->total_price = $reserv['totalPrice'];
+          $book->external_id = $reserv['reser_id'];
+
+          $book->save();
+          return 'ok';
+          }
+          
+          
+     
+        }
+      } else {
+        echo $reservationStatus.' error';
+      }
+        
+    } else {
+      echo 'token error';
+    }
   }
 
 }

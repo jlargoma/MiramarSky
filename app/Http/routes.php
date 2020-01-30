@@ -32,7 +32,8 @@
           return csrf_token();
       });
     
-   
+
+    Route::post('zodomus-Webhook','ZodomusController@webHook');
   
     Route::get('/partee-checkHuespedes', function () {
         $partee = new \App\Services\ParteeService();
