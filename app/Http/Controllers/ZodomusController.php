@@ -293,6 +293,7 @@ class ZodomusController extends Controller {
     $start = $request->input('start', null);
     $end = $request->input('end', null);
 
+    $zConfig = new ZConfig();
     $room = Rooms::where('channel_group',$apto)->first();
     if (!$room)
       return null;
@@ -317,10 +318,15 @@ class ZodomusController extends Controller {
       }
       $priceLst = [];
       foreach ($priceDay as $d => $p) {
-       
+        $priceBooking = $zConfig->priceByChannel($p,1);
           $priceLst[] = [
               "title" => $p . ' €',
               "start" => $d,
+          ];
+          $priceLst[] = [
+              "title" => ceil($priceBooking).' €',
+              "start" => $d,
+              'classNames' => 'price-booking'
           ];
 
       }
@@ -467,7 +473,7 @@ class ZodomusController extends Controller {
 //      
 //      $return = $Zodomus->activateRoom($roomToAt);
       
-        $return = $Zodomus->checkProperty($apto);
+//        $return = $Zodomus->checkProperty($apto);
        
       
 //      $return = $Zodomus->getBookings(1,$apto); //1234567894827  1234567898746

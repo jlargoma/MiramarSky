@@ -77,14 +77,8 @@ class Config{
       $price = $params['prices']['price'];
       $priceSingle = isset($params['prices']['priceSingle']) ? $params['prices']['priceSingle'] : 0;
       
-      switch ($channelId){
-        case 1:
-        case "1": //"Booking.com",
-          $price = $price+($price*0.22);//+15;
-          $priceSingle = $priceSingle+($priceSingle*0.2)+15;
-          break;
-      }
-      
+      $price = $this->priceByChannel($price,$channelId);
+      $priceSingle = $this->priceByChannel($priceSingle,$channelId);
               
       $params['prices']['price'] = ceil($price);
       if (isset($params['prices']['priceSingle']))
@@ -92,6 +86,19 @@ class Config{
       
       return $params;
       
+    }
+    
+    
+    public function priceByChannel($price,$channelId=null) {
+      
+      switch ($channelId){
+        case 1:
+        case "1": //"Booking.com",
+          $price = $price+($price*0.22);//+15;
+          break;
+      }
+      
+      return $price;
     }
     
     

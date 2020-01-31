@@ -47,8 +47,8 @@
       <input type="text" id="searchRoomByName" class="form-control" placeholder="Buscar..." />
     </div>
     <div class="col-md-2 col-xs-6 push-20">
-      <select class="form-control minimal" id="channel_group">
-        <option value=""> -- </option>
+      <select class="form-control minimal" id="channel_group" placeholder="ZODOMUS Apto">
+        <option value=""> - ZODOMUS Apto -</option>
         <?php foreach ($zodomusAptos as $id=>$data): ?>                                   
           <option value="{{$id}}" <?php echo ($id == $channel_group) ? "selected" : "" ?>>
             {{$data->name}}

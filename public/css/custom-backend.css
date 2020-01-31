@@ -502,43 +502,64 @@ div#box_msg_lst {
   }
 }
 
-   
-       .resume-head{
-    background-color: #51b1f7;
-  }
-  .resume-head th {
-    background-color: #51b1f7;
-    color: #fff !important;
-    min-width: 75px;
-    text-align: center;
-  }
-  .table-resumen td,
-  .table-resumen th{
-    height: 2em;
-    text-align: right;
-  }
-  .table-resumen th.static{
-    position: absolute;
-    height: 42px;
-    background-color: #51b1f7;
-    padding: 10px !important;
-    margin: 5px auto;
-  }
-  .table-resumen td.static{
-    position: absolute;
-    background-color: white;
-    border-right: 1px solid #efefef;
-    z-index: 9;
-    min-width: 8em;
-    padding: 5px 0 0 14px !important;
-    text-align: left;
-    width: 8em;
-    overflow-y: hidden;
-    min-height: 26px;
-    overflow-x: scroll;
-    white-space: nowrap;
-  }
-  
-  .table-resumen .first-col {
-    padding-left: 130px !important;
-  }
+
+.resume-head{
+  background-color: #51b1f7;
+}
+.resume-head th {
+  background-color: #51b1f7;
+  color: #fff !important;
+  min-width: 75px;
+  text-align: center;
+}
+.table-resumen td,
+.table-resumen th{
+  height: 2em;
+  text-align: right;
+}
+.table-resumen th.static{
+  position: absolute;
+  height: 42px;
+  background-color: #51b1f7;
+  padding: 10px !important;
+  margin: 5px auto;
+}
+.table-resumen td.static{
+  position: absolute;
+  background-color: white;
+  border-right: 1px solid #efefef;
+  z-index: 9;
+  min-width: 8em;
+  padding: 5px 0 0 14px !important;
+  text-align: left;
+  width: 8em;
+  overflow-y: hidden;
+  min-height: 26px;
+  overflow-x: scroll;
+  white-space: nowrap;
+}
+
+.table-resumen .first-col {
+  padding-left: 130px !important;
+}
+
+a.fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end.price-booking {
+  color: #9e9e9e;
+  font-size: 1.1em;
+  cursor: default;
+}
+a.price-booking:hover{
+  color: inherit;
+}
+
+a.price-booking .fc-content .fc-title:before{
+  content: '';
+  background:url('/pages/booking.png'); 
+  background-size: contain;
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin-left: 2em;
+  margin-top: 2px;
+  margin-right: -38px;
+}
