@@ -48,6 +48,7 @@ class ZodomusImport extends Command {
    * @var string
    */
   var $result = array();
+
   /**
    * The console command result.
    *
@@ -82,42 +83,54 @@ class ZodomusImport extends Command {
     foreach ($cannels as $cg => $apto) {
       //get all channels
       foreach ($apto->rooms as $room) {
-        if (true){
-          $keyIteration = $room->channel.'-'.$room->propID;
-          if (in_array($keyIteration, $alreadySent)) continue;
-          
-        $bookings = $Zodomus->getBookings($room->channel, $room->propID);
-        if ($bookings && $bookings->status->returnCode == 200) {
-          $alreadySent[] = $keyIteration;
-          if (count($bookings->reservations)>0){
-            foreach ($bookings->reservations as $book) {
+        if (true) {
+          $keyIteration = $room->channel . '-' . $room->propID;
+          if (in_array($keyIteration, $alreadySent))
+            continue;
 
-              if ($book->reservation->status != 1)  continue;
-              $reservIDs[] = $book->reservation->id;
-              $reservations[] = [
-                  'channel' => $room->channel,
-                  'propID' => $room->propID,
-                  'roomID' => $book->rooms[0]->id,
-                  'channel_group' => $cg,
-                  'agency' => $ZConfig->getAgency($room->channel),
-                  'reser_id' => $book->reservation->id,
-                  'status' => $book->reservation->status,
-                  'customer' => $book->customer,
-                  'totalPrice' => $book->rooms[0]->totalPrice,
-                  'numberOfGuests' => $book->rooms[0]->numberOfGuests,
-                  'mealPlan' => $book->rooms[0]->mealPlan,
-                  'start' => $book->rooms[0]->arrivalDate,
-                  'end' => $book->rooms[0]->departureDate,
-              ];
+          $channelId = $room->channel;
+          $propertyId = $room->propID;
+          $agency = $ZConfig->getAgency($channelId);
+
+
+//          $bookings = json_decode('{"status":{"returnCode":"200","returnMessage":"OK","channelLogId":"UmFuZG9tSVYkc2RlIyh9YbbIxbqGrE1IjB8pCVCGjzQC+tg2A3em6URaCSVkc5PlC\/YGkgX2OUoKZ2qfWpyPE0szXQdiop7o","channelOtherMessages":"","timestamp":"2020-02-03 04:33:55"},"reservations":[{"reservation":{"id":"2493440995","status":1,"currencyCode":"","totalPrice":"0","remarks":"","bookedAt":"0000-00-00 00:00:00","modifiedAt":"0000-00-00 00:00:00","source":"","confirmationStatus":"","RUID":"UmFuZG9tSVYkc2RlIyh9YbbIxbqGrE1IjB8pCVCGjzQC+tg2A3em6URaCSVkc5PlC\/YGkgX2OUoKZ2qfWpyPE0szXQdiop7o"},"customer":{"firstName":"name","middleName":"","lastName":"apel","address":"","city":"","zipCode":"","countryCode":"","email":"","phone":"","phoneCountryCode":"","phoneCityArea":"","remarks":""},"rooms":[{"id":"154225305","roomReservationId":"2785982929","name":"","totalPrice":"240","guestName":"","numberOfGuests":6,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-21","departureDate":"2020-02-23","smoking":0,"mealPlan":"El precio de esta habitaci\u00f3n no incluye servicio de comidas.","remarks":"","prices":[{"price":"120","date":"2020-02-21","dateend":"2020-02-21","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"},{"price":"120","date":"2020-02-22","dateend":"2020-02-22","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"}]},{"id":"154225301","roomReservationId":"2785982954","name":"","totalPrice":"160","guestName":"","numberOfGuests":4,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-21","departureDate":"2020-02-23","smoking":0,"mealPlan":"El precio de esta habitaci\u00f3n no incluye servicio de comidas.","remarks":"","prices":[{"price":"80","date":"2020-02-21","dateend":"2020-02-21","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"},{"price":"80","date":"2020-02-22","dateend":"2020-02-22","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"}]},{"id":"154225306","roomReservationId":"2785982972","name":"","totalPrice":"162","guestName":"","numberOfGuests":4,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-21","departureDate":"2020-02-23","smoking":0,"mealPlan":"El precio de esta habitaci\u00f3n no incluye servicio de comidas.","remarks":"","prices":[{"price":"81","date":"2020-02-21","dateend":"2020-02-21","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"},{"price":"81","date":"2020-02-22","dateend":"2020-02-22","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"}]}]}]}');
+          $bookings = $Zodomus->getBookings($room->channel, $room->propID);
+          if ($bookings && $bookings->status->returnCode == 200) {
+            $alreadySent[] = $keyIteration;
+            if (count($bookings->reservations) > 0) {
+              foreach ($bookings->reservations as $book) {
+
+                $reservationId = $book->reservation->id;
+                //Una reserva puede tener multiples habitaciones
+                $rooms = $book->rooms;
+                foreach ($rooms as $Zroom) {
+                  $roomId = $Zroom->id;
+
+
+                  $reservations[] = [
+                      'channel' => $channelId,
+                      'propID' => $propertyId,
+                      'external_roomId' => $roomId,
+                      'channel_group' => $cg,
+                      'status' => $book->reservation->status,
+                      'agency' => $agency,
+                      'reser_id' => $reservationId,
+                      'status' => $book->reservation->status,
+                      'customer' => $book->customer,
+                      'totalPrice' => $Zroom->totalPrice,
+                      'numberOfGuests' => $Zroom->numberOfGuests,
+                      'mealPlan' => $Zroom->mealPlan,
+                      'start' => $Zroom->arrivalDate,
+                      'end' => $Zroom->departureDate,
+                  ];
+                }
+              }
             }
+            $this->loadBookings($reservations);
           }
-        }
         }
       }
     }
-
-    $this->loadBookings($reservations, $reservIDs);
-
     if (isset($_SERVER['REQUEST_METHOD'])) {
       echo 'ok';
     }
@@ -129,36 +142,59 @@ class ZodomusImport extends Command {
   /**
    * Import ICaledar for the agencies
    */
-  public function loadBookings($reservations, $reservIDs) {
+  public function loadBookings($reservations) {
 
     $agencies = [
         1 => 'booking',
         4 => 'airbnb',
     ];
 
-
-    $alreadyExist = Book::whereIn('external_id', $reservIDs)->pluck('external_id')->toArray();
-
     foreach ($reservations as $reserv) {
-      
+
       $agency = isset($agencies[$reserv['agency']]) ? $agencies[$reserv['agency']] : '';
-      
-      if (in_array($reserv['reser_id'], $alreadyExist)){
+
+      //BEGIN: check if exists
+      $external_roomId = $reserv['external_roomId'];
+      $alreadyExist = \App\Book::where('external_id', $reserv['reser_id'])
+                      ->where(function ($query) use ($external_roomId) {
+                        $query->where('external_roomId', $external_roomId)
+                        ->orWhereNull('external_roomId');
+                      })->first();
+      if ($alreadyExist) {
+        if ($reserv['status'] == 3) { //Cancelada
+          $response = $alreadyExist->changeBook(3, "", $alreadyExist);
+          if ($response['status'] == 'success' || $response['status'] == 'warning') {
+            //Ya esta disponible
+            $alreadyExist->sendAvailibilityBy_status();
+          }
+        }
         $this->result[] = [
-          $agency, $reserv['reser_id'],
-            'Reserva ya registrada', $reserv['start'], $reserv['end'],'','',
-            $reserv['channel_group']
+            $agency, $reserv['reser_id'], 'Reserva ya registrada', $reserv['start'], $reserv['end'], '', $alreadyExist->id
         ];
         continue;
       }
+      //END: check if exists
 
-      $channelGroup = $this->sZodomus->getChannelManager($reserv['channel'],$reserv['propID'],$reserv['roomID']);
+
+
+
+
+
+
+
+
+
+
+
+
+      $channelGroup = $this->sZodomus->getChannelManager($reserv['channel'], $reserv['propID'], $reserv['external_roomId']);
       $roomID = $this->sZodomus->calculateRoomToFastPayment($channelGroup, $reserv['start'], $reserv['end']);
-      if ($roomID<0){
+      if ($roomID < 0) {
+        $roomID = 33;
         $this->result[] = [
-          $agency, $reserv['reser_id'],'No dispone de Habitaciones para la reserva', $reserv['start'], $reserv['end'],'','',$reserv['channel_group']
+            $agency, $reserv['reser_id'], 'No dispone de Habitaciones para la reserva', $reserv['start'], $reserv['end'], '', '', $reserv['channel_group']
         ];
-        continue;
+//        continue;
       }
 
 
@@ -172,8 +208,9 @@ class ZodomusImport extends Command {
 //        firstName-lastName-address-city-zipCode-countryCode-email
 //        -phone-phoneCountryCode-phoneCityArea
 
-      
+
       $rCustomer = $reserv['customer'];
+
       $customer = new \App\Customers();
       $customer->user_id = 23;
       $customer->name = $rCustomer->firstName . ' ' . $rCustomer->lastName . ' - ' . $agency;
@@ -196,15 +233,15 @@ class ZodomusImport extends Command {
       $book->PVPAgencia = $reserv['totalPrice'];
       $book->total_price = $reserv['totalPrice'];
       $book->propertyId = $reserv['propID'];
+      $book->external_id = $reserv['reser_id'];
+      $book->external_roomId = $reserv['external_roomId'];
 
       $book->save();
       $this->result[] = [
-          $agency, $book->external_id, $customer->name, $book->start, $book->finish, $nights,$book->id,$reserv['channel_group']
+          $agency, $book->external_id, $customer->name, $book->start, $book->finish, $nights, $book->id, $reserv['channel_group']
       ];
     }
   }
-
- 
 
   /**
    * Print result in the website
@@ -216,7 +253,7 @@ class ZodomusImport extends Command {
     if (!isset($_SERVER['REQUEST_METHOD']))
       return;
 
-    
+
     echo '<style>
 table {
   border-collapse: collapse;
@@ -245,7 +282,7 @@ table, td, th,td {
           </tr>
         </thead>
         <tbody>
-      <?php foreach ($this->result as $book): ?>
+          <?php foreach ($this->result as $book): ?>
             <tr>
               <td style="height: 5em;"><?php echo $book[0]; ?></td>
               <td><?php echo $book[1]; ?></td>
@@ -255,16 +292,15 @@ table, td, th,td {
               <td><?php echo $book[5]; ?></td>
               <td><?php echo $book[6]; ?></td>
             </tr>
-              <?php endforeach; ?>
+          <?php endforeach; ?>
         </tbody>
       </table>
       <?php
     } else {
       ?>
       <p class="alert alert-warning text-center mt-15">No hay registros que importar</p>
-          <?php
-        }
-      }
+      <?php
+    }
+  }
 
 }
-    

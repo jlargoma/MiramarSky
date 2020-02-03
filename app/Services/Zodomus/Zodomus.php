@@ -374,4 +374,42 @@ class Zodomus{
       return $this->response;
   }
   
+  function saveBooking($cg,$reserv){
+    
+    $roomID = $this->calculateRoomToFastPayment($cg, $reserv['start'], $reserv['end']);
+    if ($roomID<0){
+      $roomID = 33;
+    }
+            
+    $nights = calcNights($reserv['start'], $reserv['end']);
+    $book = new \App\Book();
+
+    $rCustomer = $reserv['customer'];
+    $customer = new \App\Customers();
+    $customer->user_id = 23;
+    $customer->name = $rCustomer->firstName . ' ' . $rCustomer->lastName;
+    $customer->email = $rCustomer->email;
+    $customer->phone = $rCustomer->phoneCountryCode . ' ' . $rCustomer->phoneCityArea . ' ' . $rCustomer->phone;
+    $customer->DNI = "";
+    $customer->save();
+
+    //Create Book
+    $book->user_id = 39;
+    $book->customer_id = $customer->id;
+    $book->room_id = $roomID;
+    $book->start = $reserv['start'];
+    $book->finish = $reserv['end'];
+    $book->comment = $reserv['mealPlan'];
+    $book->type_book = 11;
+    $book->nigths = $nights;
+    $book->agency = $reserv['agency'];
+    $book->pax = $reserv['numberOfGuests'];
+    $book->PVPAgencia = 0;
+    $book->total_price = $reserv['totalPrice'];
+    $book->external_id = $reserv['reser_id'];
+    $book->propertyId = $reserv['propertyId'];
+    $book->external_roomId = $reserv['external_roomId'];
+
+    $book->save();
+  }
 }

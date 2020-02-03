@@ -527,6 +527,7 @@ class ZodomusController extends Controller {
   
   function forceImport() {
   $response = $this->importAnReserv(1,1542253,2493440995);
+  die;
     $response = null;
     //http://miramarski.virtual/admin/channel-manager/forceImport
     $reservas = [];//, 2164564583, 2225255157, 2238669779, 2239480934, 2244610467, 2244688487, 2245112231, 2286649690, 2403348884, 2403381919, 2415193449,];
@@ -572,10 +573,7 @@ class ZodomusController extends Controller {
   }
 
   function importAnReserv($channelId,$propertyId,$reservationId){
-    {
-        
-        
-        
+    
         $oZodomus = new Zodomus();
         $zConfig = new ZConfig();
 
@@ -584,91 +582,63 @@ class ZodomusController extends Controller {
                 "propertyId" => $propertyId,
                 "reservationId" =>  $reservationId,
               ];
-        $reservation = $oZodomus->getBooking($param);
-        
-        dd($reservation);
+//        $reservation = $oZodomus->getBooking($param);
+        $reservation = json_decode('{"status":{"returnCode":"200","returnMessage":"OK","channelLogId":"UmFuZG9tSVYkc2RlIyh9YbbIxbqGrE1IjB8pCVCGjzQC+tg2A3em6URaCSVkc5PlC\/YGkgX2OUoKZ2qfWpyPE0szXQdiop7o","channelOtherMessages":"","timestamp":"2020-02-03 04:33:55"},"reservations":{"reservation":{"id":"24934409959","status":3,"currencyCode":"","totalPrice":"0","remarks":"","bookedAt":"0000-00-00 00:00:00","modifiedAt":"0000-00-00 00:00:00","source":"","confirmationStatus":"","RUID":"UmFuZG9tSVYkc2RlIyh9YbbIxbqGrE1IjB8pCVCGjzQC+tg2A3em6URaCSVkc5PlC\/YGkgX2OUoKZ2qfWpyPE0szXQdiop7o"},"customer":{"firstName":"Jos\u00e9 Mar\u00eda","middleName":"","lastName":"Guti\u00e9rrez Hern\u00e1ndez","address":"","city":"","zipCode":"","countryCode":"","email":"","phone":"","phoneCountryCode":"","phoneCityArea":"","remarks":""},"rooms":[{"id":"154225305","roomReservationId":"2785982929","name":"","totalPrice":"240","guestName":"","numberOfGuests":6,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-21","departureDate":"2020-02-23","smoking":0,"mealPlan":"El precio de esta habitaci\u00f3n no incluye servicio de comidas.","remarks":"","prices":[{"price":"120","date":"2020-02-21","dateend":"2020-02-21","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"},{"price":"120","date":"2020-02-22","dateend":"2020-02-22","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"}]},{"id":"154225301","roomReservationId":"2785982954","name":"","totalPrice":"160","guestName":"","numberOfGuests":4,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-21","departureDate":"2020-02-23","smoking":0,"mealPlan":"El precio de esta habitaci\u00f3n no incluye servicio de comidas.","remarks":"","prices":[{"price":"80","date":"2020-02-21","dateend":"2020-02-21","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"},{"price":"80","date":"2020-02-22","dateend":"2020-02-22","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"}]},{"id":"154225306","roomReservationId":"2785982972","name":"","totalPrice":"162","guestName":"","numberOfGuests":4,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-21","departureDate":"2020-02-23","smoking":0,"mealPlan":"El precio de esta habitaci\u00f3n no incluye servicio de comidas.","remarks":"","prices":[{"price":"81","date":"2020-02-21","dateend":"2020-02-21","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"},{"price":"81","date":"2020-02-22","dateend":"2020-02-22","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"}]}]}}');
+
+//        echo json_encode($reservation); die;
         if ($reservation && $reservation->status->returnCode == 200){
           $booking = $reservation->reservations;
-          //check if exists
-          $alreadyExist = \App\Book::where('external_id', $reservationId)->first();
-          if ($alreadyExist){
-            if ($booking->reservation->status == 3){ //Cancelada
-              
-              $response = $alreadyExist->changeBook(3, "", $alreadyExist);
-              if ($response['status'] == 'success' || $response['status'] ==  'warning'){
-                //Ya esta disponible
-                $alreadyExist->sendAvailibilityBy_status();
+          
+          //Una reserva puede tener multiples habitaciones
+          $rooms = $booking->rooms;
+          foreach ($rooms as $room){
+            $roomId = $room->id;
+             //check if exists
+            $alreadyExist = \App\Book::where('external_id', $reservationId)
+                    ->where(function ($query) use ($roomId) {
+                                            $query->where('external_roomId', $roomId)
+                                                  ->orWhereNull('external_roomId');
+                                        })->first();
+            if ($alreadyExist){
+              if ($booking->reservation->status == 3){ //Cancelada
+
+                $response = $alreadyExist->changeBook(3, "", $alreadyExist);
+                if ($response['status'] == 'success' || $response['status'] ==  'warning'){
+                  //Ya esta disponible
+                  $alreadyExist->sendAvailibilityBy_status();
+                }
               }
-            }
-            
-            return 'ok-exist';
-          }
-          
-          if ($booking->reservation->status != 1) return 'ok'.$booking->reservation->status;
-        
-          
-          if ($booking) {
-            $roomId = $booking->rooms[0]->id;
+              
+              continue;
+            }              
             
             $cg = $oZodomus->getChannelManager($channelId,$propertyId,$roomId);
-            if (!$cg) dd($cg,'no se encontro channel'); // return false;
-
+            if (!$cg){//'no se encontro channel'
+              continue;
+            }
+              
             $reserv = [
                 'channel' => $channelId,
                 'propertyId' => $propertyId,
+                'external_roomId' => $roomId,
                 'channel_group' => $cg,
                 'agency' => $zConfig->getAgency($channelId),
                 'reser_id' => $reservationId,
                 'status' => $booking->reservation->status,
                 'customer' => $booking->customer,
-                'totalPrice' => $booking->rooms[0]->totalPrice,
-                'numberOfGuests' => $booking->rooms[0]->numberOfGuests,
-                'mealPlan' => $booking->rooms[0]->mealPlan,
-                'start' => $booking->rooms[0]->arrivalDate,
-                'end' => $booking->rooms[0]->departureDate,
+                'totalPrice' => $room->totalPrice,
+                'numberOfGuests' => $room->numberOfGuests,
+                'mealPlan' => $room->mealPlan,
+                'start' => $room->arrivalDate,
+                'end' => $room->departureDate,
             ];
+            $oZodomus->saveBooking($cg,$reserv);
+           
             
-            
-            
-          $roomID = $oZodomus->calculateRoomToFastPayment($cg, $reserv['start'], $reserv['end']);
-          if ($roomID<0){
-            $roomID = 33;
-//           return 'false - room';
-          }
-          $nights = calcNights($reserv['start'], $reserv['end']);
-          $book = new \App\Book();
-
-          $rCustomer = $reserv['customer'];
-          $customer = new \App\Customers();
-          $customer->user_id = 23;
-          $customer->name = $rCustomer->firstName . ' ' . $rCustomer->lastName;
-          $customer->email = $rCustomer->email;
-          $customer->phone = $rCustomer->phoneCountryCode . ' ' . $rCustomer->phoneCityArea . ' ' . $rCustomer->phone;
-          $customer->DNI = "";
-          $customer->save();
-
-          //Create Book
-          $book->user_id = 39;
-          $book->customer_id = $customer->id;
-          $book->room_id = $roomID;
-          $book->start = $reserv['start'];
-          $book->finish = $reserv['end'];
-          $book->comment = $reserv['mealPlan'];
-          $book->type_book = 11;
-          $book->nigths = $nights;
-          $book->agency = $reserv['agency'];
-          $book->pax = $reserv['numberOfGuests'];
-          $book->PVPAgencia = 0;
-          $book->total_price = $reserv['totalPrice'];
-          $book->external_id = $reserv['reser_id'];
-          $book->propertyId = $reserv['propertyId'];
-
-          $book->save();
-          return 'ok - save';
           }
         }
         
-        return 'false - no reserv';
-      }
-  }
+    }
+        
+
 }
