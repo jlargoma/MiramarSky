@@ -74,39 +74,44 @@ class ZodomusImport extends Command {
   public function handle() {
     $cannels = configZodomusAptos();
 
-
-
-
     $Zodomus = $this->sZodomus;
     $ZConfig = new ZConfig();
     $reservations = [];
     $reservIDs = [];
+    $alreadySent = [];
     foreach ($cannels as $cg => $apto) {
       //get all channels
       foreach ($apto->rooms as $room) {
+        if (true){
+          $keyIteration = $room->channel.'-'.$room->propID;
+          if (in_array($keyIteration, $alreadySent)) continue;
+          
         $bookings = $Zodomus->getBookings($room->channel, $room->propID);
         if ($bookings && $bookings->status->returnCode == 200) {
-          
-          foreach ($bookings->reservations as $book) {
+          $alreadySent[] = $keyIteration;
+          if (count($bookings->reservations)>0){
+            foreach ($bookings->reservations as $book) {
 
-            if ($book->reservation->status != 1)  continue;
-            $reservIDs[] = $book->reservation->id;
-            $reservations[] = [
-                'channel' => $room->channel,
-                'propID' => $room->propID,
-                'roomID' => $book->rooms[0]->id,
-                'channel_group' => $cg,
-                'agency' => $ZConfig->getAgency($room->channel),
-                'reser_id' => $book->reservation->id,
-                'status' => $book->reservation->status,
-                'customer' => $book->customer,
-                'totalPrice' => $book->rooms[0]->totalPrice,
-                'numberOfGuests' => $book->rooms[0]->numberOfGuests,
-                'mealPlan' => $book->rooms[0]->mealPlan,
-                'start' => $book->rooms[0]->arrivalDate,
-                'end' => $book->rooms[0]->departureDate,
-            ];
+              if ($book->reservation->status != 1)  continue;
+              $reservIDs[] = $book->reservation->id;
+              $reservations[] = [
+                  'channel' => $room->channel,
+                  'propID' => $room->propID,
+                  'roomID' => $book->rooms[0]->id,
+                  'channel_group' => $cg,
+                  'agency' => $ZConfig->getAgency($room->channel),
+                  'reser_id' => $book->reservation->id,
+                  'status' => $book->reservation->status,
+                  'customer' => $book->customer,
+                  'totalPrice' => $book->rooms[0]->totalPrice,
+                  'numberOfGuests' => $book->rooms[0]->numberOfGuests,
+                  'mealPlan' => $book->rooms[0]->mealPlan,
+                  'start' => $book->rooms[0]->arrivalDate,
+                  'end' => $book->rooms[0]->departureDate,
+              ];
+            }
           }
+        }
         }
       }
     }
@@ -136,7 +141,7 @@ class ZodomusImport extends Command {
 
     foreach ($reservations as $reserv) {
       
-      $agency = isset($agencies[$reserv['agency']]) ? $agencies[$reserv['agency']] : 'Zodomus';
+      $agency = isset($agencies[$reserv['agency']]) ? $agencies[$reserv['agency']] : '';
       
       if (in_array($reserv['reser_id'], $alreadyExist)){
         $this->result[] = [
@@ -190,7 +195,7 @@ class ZodomusImport extends Command {
       $book->pax = $reserv['numberOfGuests'];
       $book->PVPAgencia = $reserv['totalPrice'];
       $book->total_price = $reserv['totalPrice'];
-      $book->external_id = $reserv['reser_id'];
+      $book->propertyId = $reserv['propID'];
 
       $book->save();
       $this->result[] = [

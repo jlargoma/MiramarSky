@@ -248,7 +248,7 @@ class Zodomus{
         "propertyId"=> $apto,
       ];
       
-      $this->call('reservations-summary','GET',$params);
+      $this->call('reservations-queue','GET',$params);
       return $this->response;
       
     }
@@ -301,7 +301,6 @@ class Zodomus{
     
     function getChannelManager($channelId,$propertyId,$roomId){
       
-      return '7J';
       $aptos = configZodomusAptos();
       foreach ($aptos as $cg => $data){
         foreach ($data->rooms as $room){
@@ -349,4 +348,30 @@ class Zodomus{
     return -1;
 //    return ['isFastPayment' => false, 'id' => -1];
   }
+  
+  function cancelRates($propertyId,$roomId,$rateId){
+      $params = [
+      "channelId" => 1,
+      "propertyId" => $propertyId,
+      "roomId" => $roomId,
+      "rateId" => $rateId,
+      "status" => "cancelled"
+      ];
+    
+      $this->call('product','GET',$params);
+      return $this->response;
+  }
+  
+  
+  function reservations_cc($propertyId,$reservationId){
+      $params = [
+      "channelId" => 1,
+      "propertyId" => $propertyId,
+      "reservationId" => $reservationId,
+      ];
+    
+      $this->call('reservations-cc','GET',$params);
+      return $this->response;
+  }
+  
 }

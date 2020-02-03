@@ -345,8 +345,8 @@ class ZodomusController extends Controller {
   function generate_config() {
     ///admin/channel-manager/config
 //    $condif = configZodomusAptos(); dd($condif); die;
-//    $confFile = \Illuminate\Support\Facades\File::get(storage_path('app/config/zodomus.php'));
-//  eval($confFile);
+    $confFile = \Illuminate\Support\Facades\File::get(storage_path('app/config/zodomus.php'));
+  eval($confFile);
   }
   
   
@@ -429,87 +429,75 @@ class ZodomusController extends Controller {
    */
   function zodomusTest(){
     
-    /*2092950
-4284223
-6037501
-2942955
-5813366
-2798863
-     * */
      
       $Zodomus =  new \App\Services\Zodomus\Zodomus();
       $apto = 1542253; 
-      $roomID = 294200801;
-      $rateId = 6280183;
+      $roomID = 9137803;
+      $rateId = 12283275;
       $return = null;
-//      $return = $Zodomus->getInfo();
-//      
-//      $return = $Zodomus->activateChannels($apto);
-//      $return = $Zodomus->getRates($apto);
-//      $return = $Zodomus->getRoomsAvailability($apto,'2020-02-05','2020-02-11');
-
       
-      $aptos = configZodomusAptos();
-      $rooms = [];
-      foreach ($aptos as $k => $item) {
-        foreach ($item->rooms as $room) {
-          if ($room->propID == $apto && $room->channel == 1)
-            $rooms[] = [
-                "roomId" =>  $room->roomID,
-                "roomName" =>   $room->name,
-                "status" =>  1,
-                "quantity" =>1, //max availability
-                "rates" =>  [$rateId]
-                ];
-        }
-      }
-    
-      $roomToAt = [
-        "channelId" =>  1,
-        "propertyId" => $apto,
-        "rooms" =>  $rooms
-      ];
-//      dd($roomToAt);
-//      
-//      $return = $Zodomus->activateRoom($roomToAt);
+      
+//      $return = $Zodomus->activateChannels($apto);
+//      $return = $Zodomus->cancelRates($apto,$roomID,$rateId);
+      
+      //Get reservations 
+//      $hoy = strtotime('-7 days');
+//        $bookings = $Zodomus->getBookings(1,$apto);
+//        $reservations = [];
+//       foreach ($bookings->reservations as $book) {
+//         $time = strtotime($book->date);
+//         if ($hoy<$time && $book->status != 3){
+//           echo $book->id.', ';
+//         }
+//       }
+//       var_dump($bookings); die;
+       
+       
+       
+      $return = $Zodomus->getRates($apto);
       
 //        $return = $Zodomus->checkProperty($apto);
-       
+//      $return = $Zodomus->getRoomsAvailability($apto,'2020-02-05','2020-02-11');
+
+//      $roomToAt = [
+//        "channelId" =>  1,
+//        "propertyId" => $apto,
+//        "rooms" =>  $rooms
+//      ];
+////      dd($roomToAt);
+////      
+//      $return = $Zodomus->activateRoom($roomToAt);
+   
       
-//      $return = $Zodomus->getBookings(1,$apto); //1234567894827  1234567898746
-//      $return = $Zodomus->createTestReserv($apto);
-      
-//      $Zodomus->createRoom();
        $paramRates = [
                 "channelId" =>  1,
                 "propertyId" => $apto,
                 "roomId" =>  $roomID,
-                "dateFrom" => "2020-07-01",
-                "dateTo" => "2020-07-05",
+                "dateFrom" => "2020-02-01",
+                "dateTo" => "2021-07-05",
                 "currencyCode" =>  "EUR",
                 "rateId" =>  $rateId,
-                "baseOccupancy" =>  "1",
+//                "baseOccupancy" =>  "1",
 //                "weekDays" => $weekDays,
-                "prices" => ['price'=>450 ],
-//                "closed" =>  0,//"0=false , 1=true, (optional restrition)",
+                "prices" => ['price'=>1450 ],
+                "closed" =>  1,//"0=false , 1=true, (optional restrition)",
               ];
 //      $return = $Zodomus->setRates($paramRates);
-//      $return = $Zodomus->setRatesDerived($apto);
         $paramAvail = [
                 "channelId" =>  1,
                 "propertyId" => $apto,
                 "roomId" =>  $roomID,
-                "dateFrom" => "2020-07-01",
-                "dateTo" => "2020-07-05",
-                "availability" =>  1,
+                "dateFrom" => "2020-01-31",
+                "dateTo" => "2021-07-05",
+                "availability" =>  0,
               ];
        
        
 //      $return = $Zodomus->setRoomsAvailability($paramAvail);
-//      $return = $Zodomus->getRates($apto);
-       
-//      $return = $Zodomus->getSummary($apto);
-      if ($return)   dd($return);
+      if ($return){
+        var_dump($return); die;
+        dd($return);
+      }
       
   }
   
@@ -537,6 +525,23 @@ class ZodomusController extends Controller {
     
   }
   
+  function forceImport() {
+  $response = $this->importAnReserv(1,1542253,2493440995);
+    $response = null;
+    //http://miramarski.virtual/admin/channel-manager/forceImport
+    $reservas = [];//, 2164564583, 2225255157, 2238669779, 2239480934, 2244610467, 2244688487, 2245112231, 2286649690, 2403348884, 2403381919, 2415193449,];
+
+    foreach ($reservas as $r){
+      
+      $alreadyExist = \App\Book::where('external_id', $r)->first();
+      if (!$alreadyExist){
+        $response = $this->importAnReserv(1,1542253,2493440995);
+        dd($r,$response);
+      }
+    }
+    dd($response);
+  }
+  
   function webHook(Request $request) {
     
     //save a copy
@@ -555,7 +560,19 @@ class ZodomusController extends Controller {
     $reservationStatus = $request->input('reservationStatus');//(Integer 1=new, 2=modified, 3=cancelled)
     
     if ($webhookKey == env('ZODOMUS_WEBHOOK')){
-      if ($reservationStatus == 1){
+       if ($reservationStatus == 1){
+         $this->importAnReserv($channelId,$propertyId,$reservationId);
+       }else {
+        echo $reservationStatus.' error';
+       }
+        
+    } else {
+      echo 'token error';
+    }
+  }
+
+  function importAnReserv($channelId,$propertyId,$reservationId){
+    {
         
         
         
@@ -569,6 +586,7 @@ class ZodomusController extends Controller {
               ];
         $reservation = $oZodomus->getBooking($param);
         
+        dd($reservation);
         if ($reservation && $reservation->status->returnCode == 200){
           $booking = $reservation->reservations;
           //check if exists
@@ -583,20 +601,21 @@ class ZodomusController extends Controller {
               }
             }
             
-            return 'ok';
+            return 'ok-exist';
           }
           
-          if ($booking->reservation->status != 1) return 'ok';
+          if ($booking->reservation->status != 1) return 'ok'.$booking->reservation->status;
         
           
           if ($booking) {
             $roomId = $booking->rooms[0]->id;
             
             $cg = $oZodomus->getChannelManager($channelId,$propertyId,$roomId);
-            if (!$cg) return false;
+            if (!$cg) dd($cg,'no se encontro channel'); // return false;
 
             $reserv = [
                 'channel' => $channelId,
+                'propertyId' => $propertyId,
                 'channel_group' => $cg,
                 'agency' => $zConfig->getAgency($channelId),
                 'reser_id' => $reservationId,
@@ -613,7 +632,8 @@ class ZodomusController extends Controller {
             
           $roomID = $oZodomus->calculateRoomToFastPayment($cg, $reserv['start'], $reserv['end']);
           if ($roomID<0){
-           return 'false';
+            $roomID = 33;
+//           return 'false - room';
           }
           $nights = calcNights($reserv['start'], $reserv['end']);
           $book = new \App\Book();
@@ -621,7 +641,7 @@ class ZodomusController extends Controller {
           $rCustomer = $reserv['customer'];
           $customer = new \App\Customers();
           $customer->user_id = 23;
-          $customer->name = $rCustomer->firstName . ' ' . $rCustomer->lastName . ' - ZodomusWH ';
+          $customer->name = $rCustomer->firstName . ' ' . $rCustomer->lastName;
           $customer->email = $rCustomer->email;
           $customer->phone = $rCustomer->phoneCountryCode . ' ' . $rCustomer->phoneCityArea . ' ' . $rCustomer->phone;
           $customer->DNI = "";
@@ -638,24 +658,17 @@ class ZodomusController extends Controller {
           $book->nigths = $nights;
           $book->agency = $reserv['agency'];
           $book->pax = $reserv['numberOfGuests'];
-          $book->PVPAgencia = $reserv['totalPrice'];
+          $book->PVPAgencia = 0;
           $book->total_price = $reserv['totalPrice'];
           $book->external_id = $reserv['reser_id'];
+          $book->propertyId = $reserv['propertyId'];
 
           $book->save();
-          return 'ok';
+          return 'ok - save';
           }
-          
-          
-     
         }
-      } else {
-        echo $reservationStatus.' error';
-      }
         
-    } else {
-      echo 'token error';
-    }
+        return 'false - no reserv';
+      }
   }
-
 }

@@ -29,6 +29,8 @@ class AddChannelManager extends Migration
 //      
       Schema::table('book', function (Blueprint $table) {
          $table->string('external_id',50)->nullable();
+         $table->string('propertyId',50)->nullable();
+         $table->string('external_roomId',50)->nullable();
       });
       
       Schema::table('rooms', function (Blueprint $table) {
