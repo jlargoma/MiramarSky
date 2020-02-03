@@ -92,9 +92,8 @@ class ZodomusImport extends Command {
           $propertyId = $room->propID;
           $agency = $ZConfig->getAgency($channelId);
 
-
-//          $bookings = json_decode('{"status":{"returnCode":"200","returnMessage":"OK","channelLogId":"UmFuZG9tSVYkc2RlIyh9YbbIxbqGrE1IjB8pCVCGjzQC+tg2A3em6URaCSVkc5PlC\/YGkgX2OUoKZ2qfWpyPE0szXQdiop7o","channelOtherMessages":"","timestamp":"2020-02-03 04:33:55"},"reservations":[{"reservation":{"id":"2493440995","status":1,"currencyCode":"","totalPrice":"0","remarks":"","bookedAt":"0000-00-00 00:00:00","modifiedAt":"0000-00-00 00:00:00","source":"","confirmationStatus":"","RUID":"UmFuZG9tSVYkc2RlIyh9YbbIxbqGrE1IjB8pCVCGjzQC+tg2A3em6URaCSVkc5PlC\/YGkgX2OUoKZ2qfWpyPE0szXQdiop7o"},"customer":{"firstName":"name","middleName":"","lastName":"apel","address":"","city":"","zipCode":"","countryCode":"","email":"","phone":"","phoneCountryCode":"","phoneCityArea":"","remarks":""},"rooms":[{"id":"154225305","roomReservationId":"2785982929","name":"","totalPrice":"240","guestName":"","numberOfGuests":6,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-21","departureDate":"2020-02-23","smoking":0,"mealPlan":"El precio de esta habitaci\u00f3n no incluye servicio de comidas.","remarks":"","prices":[{"price":"120","date":"2020-02-21","dateend":"2020-02-21","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"},{"price":"120","date":"2020-02-22","dateend":"2020-02-22","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"}]},{"id":"154225301","roomReservationId":"2785982954","name":"","totalPrice":"160","guestName":"","numberOfGuests":4,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-21","departureDate":"2020-02-23","smoking":0,"mealPlan":"El precio de esta habitaci\u00f3n no incluye servicio de comidas.","remarks":"","prices":[{"price":"80","date":"2020-02-21","dateend":"2020-02-21","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"},{"price":"80","date":"2020-02-22","dateend":"2020-02-22","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"}]},{"id":"154225306","roomReservationId":"2785982972","name":"","totalPrice":"162","guestName":"","numberOfGuests":4,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-21","departureDate":"2020-02-23","smoking":0,"mealPlan":"El precio de esta habitaci\u00f3n no incluye servicio de comidas.","remarks":"","prices":[{"price":"81","date":"2020-02-21","dateend":"2020-02-21","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"},{"price":"81","date":"2020-02-22","dateend":"2020-02-22","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"}]}]}]}');
           $bookings = $Zodomus->getBookings($room->channel, $room->propID);
+        
           if ($bookings && $bookings->status->returnCode == 200) {
             $alreadySent[] = $keyIteration;
             if (count($bookings->reservations) > 0) {
@@ -174,17 +173,6 @@ class ZodomusImport extends Command {
         continue;
       }
       //END: check if exists
-
-
-
-
-
-
-
-
-
-
-
 
 
       $channelGroup = $this->sZodomus->getChannelManager($reserv['channel'], $reserv['propID'], $reserv['external_roomId']);

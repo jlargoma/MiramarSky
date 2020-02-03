@@ -248,7 +248,7 @@ class Zodomus{
         "propertyId"=> $apto,
       ];
       
-      $this->call('reservations-queue','GET',$params);
+      $this->call('reservations-summary','GET',$params);
       return $this->response;
       
     }
