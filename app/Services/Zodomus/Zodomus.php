@@ -40,15 +40,15 @@ class Zodomus{
      * @param type $data
      * @return boolean
      */
-    public function call( $endpoint,$method = "POST", $data = [])
+    public function call( $endpoint,$method = "POST", $data = [],$cc=false)
     {
       if(!$this->usr || !$this->psw) 
       { 
         $this->response = 'user required';
         return FALSE; 
       } 
-      
       $credentials = ($this->usr.":".$this->psw);
+      if ($cc) $credentials = ($this->usr.":".$this->psw_card);
        
       if ($method == "POST" || $method == "PUT"){
         
@@ -370,7 +370,7 @@ class Zodomus{
       "reservationId" => $reservationId,
       ];
     
-      $this->call('reservations-cc','GET',$params);
+      $this->call('reservations-cc','GET',$params,true);
       return $this->response;
   }
   

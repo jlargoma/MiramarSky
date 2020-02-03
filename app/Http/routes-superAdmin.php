@@ -110,6 +110,7 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
   
   Route::get('/reservas/api/activateAlertLowProfits', 'BookController@activateAlertLowProfits');
   Route::get('/reservas/fianzas/cobrar/{id}', 'BookController@cobrarFianzas');
+  Route::post('/reservas/get-visa', 'BookController@getVisa')->name('booking.get_visa');
 
   // Rooms
   Route::get('/apartamentos', 'RoomsController@index');

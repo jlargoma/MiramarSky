@@ -26,6 +26,17 @@ class AddChannelManager extends Migration
           $table->timestamps();
          
       });
+      Schema::create('book_visa', function(Blueprint $table)
+      {
+          $table->bigIncrements('id');
+          $table->integer('book_id')->nullable();
+          $table->integer('customer_id')->nullable();
+          $table->integer('user_id')->nullable();
+          $table->text('visa_data')->nullable();
+          $table->date('sent_date')->nullable();
+          $table->timestamps();
+         
+      });
 //      
       Schema::table('book', function (Blueprint $table) {
          $table->string('external_id',50)->nullable();
