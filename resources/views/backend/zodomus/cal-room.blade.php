@@ -440,14 +440,17 @@ $(document).ready(function () {
   div#calendar {
     min-width: 706px;
   }
-  .daterangepicker {
-    top: auto !important;
-  }
+ 
   .disp-layout{
         background-color: #9ec4a0;
     padding: 5px !important;
     color: #fff;
     border-radius: 4px;
+  }
+@media only screen and (max-width: 768px) {
+     .daterangepicker {
+    top: auto !important;
+  }
   }
 </style>
 @endsection
