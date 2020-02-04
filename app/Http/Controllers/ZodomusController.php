@@ -658,5 +658,49 @@ class ZodomusController extends Controller {
         
     }
         
+  /**
+   * Just to test
+   * @param type $cg
+   * @param type $start
+   * @param type $finish
+   */  
+  function listDisponibilidad($cg, $start, $finish) {
+//    /channel-manager/disponibilidad/ROSADC/2020-02-15/2020-02-19
+    if (Auth::user()->role != "admin") return;
+    $typeBooks = [
+        0 => 'ELIMINADA',
+        1 => 'Reservado - stripe',
+        2 => 'Pagada-la-señal',
+        3 => 'SIN RESPONDER',
+        4 => 'Bloqueado',
+        5 => 'Contestado(EMAIL)',
+        6 => 'Denegada',
+        7 => 'Reserva Propietario',
+        8 => 'ATIPICAS',
+        //'SubComunidad',
+        9 => 'Booking',
+        10 => 'Overbooking',
+        11 => 'blocked-ical',
+        12 => 'ICAL - INVISIBLE',
+        99 => 'FASTPAYMENT - SOLICITUD',
+    ];
+
+    $oRooms = \App\Rooms::where('channel_group', $cg)->pluck('id')->toArray();
+    $match1 = [['start', '>=', $start], ['start', '<=', $finish]];
+    $match2 = [['finish', '>=', $start], ['finish', '<=', $finish]];
+    $match3 = [['start', '<', $start], ['finish', '>', $finish]];
+
+    $books = \App\Book::whereIn('type_book', [1, 2, 4, 7, 8, 9, 11, 5])->whereIn('room_id', $oRooms)
+                    ->where(function ($query) use ($match1, $match2, $match3) {
+                      $query->where($match1)
+                      ->orWhere($match2)
+                      ->orWhere($match3);
+                    })->get();
+    foreach ($books as $b) {
+      echo $b->id . ' start: ' . $b->start . ' finish: ' . $b->finish . ' Estado: ' . $typeBooks[$b->type_book] . ' -- ';
+      echo '<a href="http://admin.riadpuertasdelalbaicin.com/admin/reservas/update/' . $b->id . '">IR</a><br>';
+    }
+    dd($books);
+  }
 
 }

@@ -269,6 +269,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   
   
   // ZODOMUS  
+  Route::get('/channel-manager/disponibilidad/{apto}/{start}/{end}','ZodomusController@listDisponibilidad');
   Route::get('/channel-manager/price/{apto?}','ZodomusController@calendRoom')->name('channel.price.cal');
   Route::post('/channel-manager/price/{apto?}','ZodomusController@calendRoomUPD')->name('channel.price.cal.upd');
   Route::get('/channel-manager/price/precios/list/{apto}','ZodomusController@listBy_room')->name('channel.price.cal.list');
