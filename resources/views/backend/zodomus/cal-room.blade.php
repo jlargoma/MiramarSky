@@ -3,13 +3,13 @@
 @section('title') Precios de apartamentos @endsection
 
 @section('externalScripts') 
-<link href='/vendors/fullcalendar/core/main.min.css' rel='stylesheet' />
-<link href='/vendors/fullcalendar/dayGrid/main.min.css' rel='stylesheet' />
-
-<script src='/vendors/fullcalendar/core/main.min.js'></script>
-<script src='/vendors/fullcalendar/core/interaction.min.js'></script>
-<script src='/vendors/fullcalendar/dayGrid/main.min.js'></script>
-<script src='/vendors/fullcalendar/dayGrid/resourceDayGrid.min.js'></script>
+<link href='/vendors/fullcalendar-4.3.1/packages/core/main.min.css' rel='stylesheet' />
+<link href='/vendors/fullcalendar-4.3.1/packages/daygrid/main.min.css' rel='stylesheet' />
+<script src='/vendors/fullcalendar-4.3.1/packages/core/locales/es.js'></script>
+<script src='/vendors/fullcalendar-4.3.1/packages/core/main.min.js'></script>
+<script src='/vendors/fullcalendar-4.3.1/packages/interaction/main.min.js'></script>
+<script src='/vendors/fullcalendar-4.3.1/packages/daygrid/main.min.js'></script>
+<!--<script src='/vendors/fullcalendar-4.3.1/packages/daygrid/resourceDayGrid.min.js'></script>-->
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
@@ -20,23 +20,23 @@
 <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />-->
-    <style type="text/css" media="screen"> 
-        .daterangepicker{
-            z-index: 10000!important;
-        }
-        .pg-close{
-            font-size: 45px!important;
-            color: white!important;
-        }
-        @media only screen and (max-width: 767px){
-           .daterangepicker {
-                left: 12%!important;
-                top: 3%!important; 
-            }
-        }
+<style type="text/css" media="screen"> 
+  .daterangepicker{
+    z-index: 10000!important;
+  }
+  .pg-close{
+    font-size: 45px!important;
+    color: white!important;
+  }
+  @media only screen and (max-width: 767px){
+    .daterangepicker {
+      left: 12%!important;
+      top: 3%!important; 
+    }
+  }
 
-    </style>
-    
+</style>
+
 <!--<link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />-->
 @endsection
@@ -55,8 +55,21 @@
             @endforeach
           </select>
         </div>     
+        <div class="form-material pt-1 col-xs-12 col-md-6">
+          
+          <table class="table-prices">
+            <tr>
+              <td><span class="price-booking">+22%</span></td>
+              <td><span class="price-airbnb">+20%</span></td>
+              <td><span class="price-expedia">+15%</span></td>
+              <td><span class="disp-layout">Disp. / Est. Mín.</span></td>
+            </tr>
+          </table>
+        </div>
       </div>
+      <div class="calendar-blok">
       <div id='calendar'></div>   
+      </div>
     </div>
     <div class="col-md-5">
       <p class="mobile-tit">Editar Precios:</p>
@@ -67,10 +80,15 @@
             <div class="row">
               <div class="col-md-3 col-xs-5 pt-1"><label>Rango de Fechas</label></div>
               <div class="col-md-9 col-xs-7">
-              <input type="text" class="form-control daterange1" id="date_range" name="date_range" value="">
+                <input type="text" class="form-control daterange1" id="date_range" name="date_range" value="">
               </div>
             </div>
-            
+
+          </div>
+          <div class="pt-1 col-md-12 row">
+            <button id="selAllDays" type="button">Todos</button>
+            <button id="selWorkdays" type="button">Laborales</button>
+            <button id="selHolidays" type="button">Fin de semana</button>
           </div>
           <div class="pt-1 col-md-12 row">
             @foreach($dw as $k=>$v)
@@ -90,7 +108,7 @@
             <label>Estancia Mín.</label>
             <input type="number" class="form-control" name="min_estancia" id="min_estancia">
           </div>
-          <div class="form-material pt-1 col-md-12">
+          <div class=" pt-1 col-md-12" style="clear:both;">
             <button class="btn btn-primary m-t-20">Guardar</button>
           </div>
         </form>
@@ -104,7 +122,7 @@
   </div>
 </div>
 
- 
+
 @endsection
 
 @section('scripts')
@@ -117,12 +135,14 @@ $(document).ready(function () {
 
 
 
-$(".daterange1").daterangepicker({
+  $(".daterange1").daterangepicker({
     "buttonClasses": "button button-rounded button-mini nomargin",
     "applyClass": "button-color",
     "cancelClass": "button-light",
     autoUpdateInput: true,
+//    locale: 'es',
     locale: {
+      firstDay: 2,
       format: 'DD/MM/YYYY',
       "applyLabel": "Aplicar",
       "cancelLabel": "Cancelar",
@@ -152,33 +172,32 @@ $(".daterange1").daterangepicker({
         "Noviembre",
         "Diciembre"
       ],
-      "firstDay": 1,
     },
 
   });
 
-Date.prototype.ddmmmyyyy = function() {
-  var mm = this.getMonth() + 1; // getMonth() is zero-based
-  var dd = this.getDate();
-  return [
-          (dd>9 ? '' : '0') + dd,
-          (mm>9 ? '' : '0') + mm,
-          this.getFullYear()
-         ].join('/');
-};
-Date.prototype.yyyymmmdd = function() {
-  var mm = this.getMonth() + 1; // getMonth() is zero-based
-  var dd = this.getDate();
-  return [
-          this.getFullYear(),
-          (mm>9 ? '' : '0') + mm,
-          (dd>9 ? '' : '0') + dd
-         ].join('-');
-};
-var render_yyyymmmdd = function(dates,moreDay=0) {
-  var date = dates.trim().split('/');
-  return date[2]+'-'+date[1]+'-'+date[0];
-};
+  Date.prototype.ddmmmyyyy = function () {
+    var mm = this.getMonth() + 1; // getMonth() is zero-based
+    var dd = this.getDate();
+    return [
+      (dd > 9 ? '' : '0') + dd,
+      (mm > 9 ? '' : '0') + mm,
+      this.getFullYear()
+    ].join('/');
+  };
+  Date.prototype.yyyymmmdd = function () {
+    var mm = this.getMonth() + 1; // getMonth() is zero-based
+    var dd = this.getDate();
+    return [
+      this.getFullYear(),
+      (mm > 9 ? '' : '0') + mm,
+      (dd > 9 ? '' : '0') + dd
+    ].join('-');
+  };
+  var render_yyyymmmdd = function (dates, moreDay = 0) {
+    var date = dates.trim().split('/');
+    return date[2] + '-' + date[1] + '-' + date[0];
+  };
 
 
   $('.daterange1').change(function (event) {
@@ -186,10 +205,10 @@ var render_yyyymmmdd = function(dates,moreDay=0) {
 
     var arrayDates = date.split('-');
     var date1 = render_yyyymmmdd(arrayDates[0]);
-    var date2 = render_yyyymmmdd(arrayDates[1],1);
+    var date2 = render_yyyymmmdd(arrayDates[1], 1);
     date2 = new Date(date2);
     date2.setDate(date2.getDate() + 1);
-    pintar(date1,date2);
+    pintar(date1, date2);
   });
 
 
@@ -200,16 +219,25 @@ var render_yyyymmmdd = function(dates,moreDay=0) {
   var calendar = new FullCalendar.Calendar(calendarEl, {
     plugins: ['interaction', 'dayGrid', 'resourceDayGridMonth', 'resourceDayGridWeek'],
     selectable: true,
-    events: function(info,callback,failureCallback) {
+    header: {
+      left: '',
+      center: 'title',
+      right: 'today prev,next'
+    },
+    textEscape: false,
+    eventRender: function (info) {
+      info.el.querySelector('.fc-title').innerHTML = info.event.title;
+    },
+    events: function (info, callback, failureCallback) {
       var start = new Date(info.start);
       var end = new Date(info.end);
-    
-    $.get('{{route("channel.price.cal.list",$room)}}',
-      { "start": start.toLocaleDateString("es-ES"), "end": end.toLocaleDateString("es-ES") },
-      function (data) {
-        callback((data));
-    });
-  },
+
+      $.get('{{route("channel.price.cal.list",$room)}}',
+              {"start": start.toLocaleDateString("es-ES"), "end": end.toLocaleDateString("es-ES")},
+              function (data) {
+                callback((data));
+              });
+    },
 //    events: '{{route("channel.price.cal.list",$room)}}'
 
   });
@@ -229,16 +257,16 @@ var render_yyyymmmdd = function(dates,moreDay=0) {
 
 
   calendar.render();
-  
-  
+
+
 
   var pintar = function (start, end) {
     let event = calendar.getEventById('event_edit');
     if (event) {
-      
+
       if (start)
         event.setStart(start);
-        event.setEnd(end);
+      event.setEnd(end);
     } else {
       calendar.addEventSource(
               {
@@ -275,8 +303,27 @@ var render_yyyymmmdd = function(dates,moreDay=0) {
     location.href = '{{route('channel.price.cal')}}/' + rId;
   });
 
+  $('#selAllDays').on('click', function (e) {
+     for(i=0; i<7; i++){
+      $('#dw_'+i).prop("checked", true);
+    }
+  });
+  $('#selWorkdays').on('click', function (e) {
+    $('#dw_0').prop("checked", false);
+    $('#dw_6').prop("checked", false);
+    for(i=1; i<6; i++){
+      $('#dw_'+i).prop("checked", true);
+    }
+  });
+   $('#selHolidays').on('click', function (e) {
+    $('#dw_0').prop("checked", true);
+    $('#dw_6').prop("checked", true);
+    for(i=1; i<6; i++){
+      $('#dw_'+i).prop("checked", false);
+    }
+  });
 
-$('#channelForm').on('submit', function (event) {
+  $('#channelForm').on('submit', function (event) {
 
     event.preventDefault();
     $('#error').text('').hide();
@@ -284,22 +331,23 @@ $('#channelForm').on('submit', function (event) {
     var form_data = $(this).serialize();
     var url = $(this).attr('action');
     $.ajax({
-           type: "POST",
-           url: url,
-           data: form_data, // serializes the form's elements.
-           success: function(data)
-           {
-             if (data.status == 'OK'){
-               $('#success').text(data.msg).show();
-               let event = calendar.getEventById('event_edit');
-               if (event) event.remove()
-               calendar.refetchEvents();
-             } else {
-               $('#error').text(data.msg).show();
-             }
-               console.log(data.msg); // show response from the php script.
-           }
-         });
+      type: "POST",
+      url: url,
+      data: form_data, // serializes the form's elements.
+      success: function (data)
+      {
+        if (data.status == 'OK') {
+          $('#success').text(data.msg).show();
+          let event = calendar.getEventById('event_edit');
+          if (event)
+            event.remove()
+          calendar.refetchEvents();
+        } else {
+          $('#error').text(data.msg).show();
+        }
+        console.log(data.msg); // show response from the php script.
+      }
+    });
   });
 
 
@@ -326,7 +374,7 @@ $('#channelForm').on('submit', function (event) {
   }
   .weekdays {
     float: left;
-    
+
     width: 14%;
   }
   .col-xs-5.pt-1 {
@@ -335,29 +383,29 @@ $('#channelForm').on('submit', function (event) {
   .pt-1.col-md-12.row{
     margin: auto;
   }
-.weekdays label {
+  .weekdays label {
     display: block;
     padding-left: 10px;
     text-indent: -17px;
     color:#a7a7a7;
-}
+  }
 
-.weekdays input {
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: 0;
-  vertical-align: bottom;
-  position: relative;
-  top: -1px;
-}
+  .weekdays input {
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: 0;
+    vertical-align: bottom;
+    position: relative;
+    top: -1px;
+  }
 
 
-input:checked + span {
-  color: red;
-}
+  input:checked + span {
+    color: red;
+  }
 
-p.mobile-tit {
+  p.mobile-tit {
     padding: 7px 11px;
     margin: 8px auto 2px;
     background-color: #4886d2;
@@ -365,6 +413,41 @@ p.mobile-tit {
     font-size: 1.4em;
     box-shadow: 1px 3px 2px #00132b;
     font-weight: 600;
-}
+  }
+  .fc-center h2 {
+    font-weight: 800;
+  }
+  a.fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end.availibility {
+    position: absolute;
+    top: 0;
+    font-size: 11px;
+    color: #fff;
+    padding: 2px 4px;
+    margin: 6px;
+
+  }
+  a.fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end.availibility.yes {
+    background-color: rgba(32, 113, 0, 0.4);
+  }
+  a.fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end.availibility.no {
+    background-color: rgba(255, 0, 0, 0.40);
+  }
+  
+  .calendar-blok{
+    width: 100%;
+    overflow: scroll;
+  }
+  div#calendar {
+    min-width: 706px;
+  }
+  .daterangepicker {
+    top: auto !important;
+  }
+  .disp-layout{
+        background-color: #9ec4a0;
+    padding: 5px !important;
+    color: #fff;
+    border-radius: 4px;
+  }
 </style>
 @endsection

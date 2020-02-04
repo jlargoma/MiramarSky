@@ -14,7 +14,9 @@
     <button onclick="_createPayment('form')" class="btn btn-success" type="button" id="_createPaymentForm">Pago</button>
     <button class="btn  @if(isset($hasVisa) && $hasVisa) btn-success @else btn-default @endif" type="button" id="_getPaymentVisa">Visa</button>
   </div>
-  <div class="col-md-5" id="visaDataContent"></div>
+  <div class="col-md-5" id="visaDataContent">
+    {!!$visaHtml!!}
+  </div>
   <div class="col-md-7" id="paymentDataContent"></div>
 </div>
 <script>

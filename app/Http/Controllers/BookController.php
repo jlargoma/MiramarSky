@@ -615,23 +615,38 @@ class BookController extends AppController
       
       $updateBlade = '';
       $hasVisa = false;
-      if ( Auth::user()->role != "agente"){
+      $visaHtml = null;
+      $oUser = Auth::user();
+      if ( $oUser->role != "agente"){
          
           $book  = \App\Book::with('payments')->find($id);
           $rooms = \App\Rooms::orderBy('order')->get();
-          
+          if ( $oUser->role == "admin" || $oUser->role == "subadmin"){
           $oVisa = DB::table('book_visa')
                     ->where('book_id',$book->id)
                     ->first();
             
             if ($oVisa){
               $hasVisa = true;
+              $visaData = json_decode($oVisa->visa_data);
+              if ($visaData){
+                foreach ($visaData as $k=>$v){
+                  $visaHtml .= '
+                  <div>
+                  <label>'.$k.'</label>
+                  <input type="text" class="form-control" value="'.$v.'" >
+                  <button class="btn btn-success copy_data" type="button">CP</button>
+                  </div>';
+                }
+               
+              }
             }
+          }
           
        } else {
          
           $updateBlade = '-agente';
-          $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
+          $roomsAgents = \App\AgentsRooms::where('user_id', $oUser->id)->get(['room_id'])->toArray();
           $rooms       = \App\Rooms::whereIn('id', $roomsAgents)->orderBy('order')->get();
           $types       = [1,2];
           
@@ -670,7 +685,8 @@ class BookController extends AppController
         return view('backend/planning/update'.$updateBlade, [
             'book'         => $book,
             'low_profit'   => $low_profit,
-            'hasVisa'        => $hasVisa,
+            'hasVisa'      => $hasVisa,
+            'visaHtml'     => $visaHtml,
             'rooms'        => $rooms,
             'extras'       => \App\Extras::all(),
             'start'        => Carbon::createFromFormat('Y-m-d', $book->start)->format('d M,y'),
@@ -2688,12 +2704,12 @@ class BookController extends AppController
             
             $booking = Book::find($bookingID);
             if ($booking && $booking->customer_id == $clientID){
+              if (!$booking->propertyId) $booking->propertyId = 1542253; 
               if ($booking->external_id && $booking->propertyId){
                 $oZodomus = new \App\Services\Zodomus\Zodomus();
                 
-//                $creditCard = $oZodomus->reservations_cc($booking->propertyId,$booking->external_id);
-//                $creditCard = $oZodomus->reservations_cc(1542253,2493440995);
-                $creditCard = json_decode('{"status":{"returnCode":"200","returnMessage":"OK","channelLogId":"","channelOtherMessages":"","timestamp":"2020-02-03 08:36:04"},"reservation":{"id":"2493440995"},"customerCC":{"name":"","cvc":"","number":"","date":"","type":""}}');
+                $creditCard = $oZodomus->reservations_cc($booking->propertyId,$booking->external_id);
+//                $creditCard = json_decode('{"status":{"returnCode":"200","returnMessage":"OK","channelLogId":"","channelOtherMessages":"","timestamp":"2020-02-03 08:36:04"},"reservation":{"id":"2493440995"},"customerCC":{"name":"","cvc":"","number":"","date":"","type":""}}');
                 if ($creditCard && isset($creditCard->status) && $creditCard->status->returnCode == 200){
                   $visa_data = $creditCard->customerCC;
                   DB::table('book_visa')->insert([

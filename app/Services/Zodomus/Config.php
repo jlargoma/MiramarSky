@@ -96,7 +96,17 @@ class Config{
         case "1": //"Booking.com",
           $price = $price+($price*0.22);//+15;
           break;
+        case 2:
+        case "2": //Expedia,
+          $price = $price+($price*0.20);
+          break;
+        case 3:
+        case "3": //airbnb,
+          $price = $price+($price*0.15);
+          break;
       }
+      
+      
       
       return $price;
     }

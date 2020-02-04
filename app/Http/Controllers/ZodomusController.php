@@ -197,7 +197,7 @@ class ZodomusController extends Controller {
       return response()->json(['status'=>'error','msg'=>'Debe seleccionar al menos una fecha de inicio']);
     
     if (!$price || $price<0)
-      return response()->json(['status'=>'error','msg'=>'Debe seleccionar al menos una fecha de inicio']);
+      return response()->json(['status'=>'error','msg'=>'Debe seleccionar el precio']);
 
     $date = explode(' - ', $date_range);
     
@@ -307,6 +307,7 @@ class ZodomusController extends Controller {
 
       $defaults = $room->defaultCostPrice($start, $end, $pax);
       $priceDay = $defaults['priceDay'];
+      $min = [];
       $oPrice = DailyPrices::where('channel_group', $apto)
               ->where('date', '>=', $start)
               ->where('date', '<=', $end)
@@ -314,24 +315,39 @@ class ZodomusController extends Controller {
       if ($oPrice) {
         foreach ($oPrice as $p) {
           $priceDay[$p->date] = $p->price;
+          $min[$p->date] = $p->min_estancia;
         }
       }
       $priceLst = [];
       foreach ($priceDay as $d => $p) {
-        $priceBooking = $zConfig->priceByChannel($p,1);
-          $priceLst[] = [
-              "title" => $p . ' €',
-              "start" => $d,
-          ];
-          $priceLst[] = [
-              "title" => ceil($priceBooking).' €',
-              "start" => $d,
-              'classNames' => 'price-booking'
-          ];
+
+        $priceBooking = ceil($zConfig->priceByChannel($p,1));
+        $priceExpedia = ceil($zConfig->priceByChannel($p,2));
+        $priceAirbnb = ceil($zConfig->priceByChannel($p,3));
+        $priceLst[] = [
+            "title" => '<table>'
+            . '<tr><td colspan="2" class="main">'.$p.' €</td></tr>'
+            . '<tr><td><span class="price-booking">'.$priceBooking.'</span></td><td><span class="price-airbnb">'.$priceAirbnb.'</span></td></tr>'
+            . '<tr><td><span class="price-expedia">'.$priceExpedia.'</span></td><td>0</td></tr>'
+            . '</table>',
+            "start" => $d,
+            'classNames' => 'prices',
+        ];
 
       }
 
+      $book = new \App\Book();
+      $availibility = $book->getAvailibilityBy_channel($apto, $start, $end);
+      foreach ($availibility as $d => $p) {
+        $class = ($p>0) ? 'yes' : 'no';
+        $min_estancia = isset($min[$d]) ? $min[$d] : 0;
+        $priceLst[] = [
+            "title" => $p.'/'.$min_estancia,
+            "start" => $d.' 01:00',
+            'classNames' =>  'availibility '.$class
+        ];
 
+      }
 
       return response()->json($priceLst);
     }

@@ -1235,7 +1235,55 @@ class Book extends Model {
   }
     
     
+   /**
+   * Get Availibility Room By channel
+   * @param type $available
+   */
+  public function getAvailibilityBy_channel($apto, $start, $finish) {
+
+    $Zodomus = new \App\Services\Zodomus\Zodomus();
+    $oRooms = Rooms::where('channel_group', $apto)->pluck('id')->toArray();
+
+    $match1 = [['start', '>=', $start], ['start', '<=', $finish]];
+    $match2 = [['finish', '>=', $start], ['finish', '<=', $finish]];
+    $match3 = [['start', '<', $start], ['finish', '>', $finish]];
+
+    $books = self::where_type_book_reserved()->whereIn('room_id', $oRooms)
+                    ->where(function ($query) use ($match1, $match2, $match3) {
+                      $query->where($match1)
+                      ->orWhere($match2)
+                      ->orWhere($match3);
+                    })->get();
+
+    $avail = count($oRooms);
+    $oneDay = 24 * 60 * 60;
+
+    //Prepara la disponibilidad por día de la reserva
+    $startAux = strtotime($start);
+    $endAux = strtotime($finish);
+    $aLstDays = [];
+    while ($startAux <= $endAux) {
+      $aLstDays[date('Y-m-d', $startAux)] = $avail;
+      $startAux += $oneDay;
+    }
+
+
+    if ($books) {
+      foreach ($books as $book) {
+        //Resto los días reservados
+        $startAux = strtotime($book->start);
+        $endAux = strtotime($book->finish);
+
+        while ($startAux <= $endAux) {
+          if (isset($aLstDays[date('Y-m-d', $startAux)]))
+            $aLstDays[date('Y-m-d', $startAux)] --;
+
+          $startAux += $oneDay;
+        }
+      }
+    }
     
-    
-    
+    return $aLstDays;
+  }
+
 }
