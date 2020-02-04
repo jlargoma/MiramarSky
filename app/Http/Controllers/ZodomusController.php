@@ -324,9 +324,11 @@ class ZodomusController extends Controller {
         $priceBooking = ceil($zConfig->priceByChannel($p,1));
         $priceExpedia = ceil($zConfig->priceByChannel($p,2));
         $priceAirbnb = ceil($zConfig->priceByChannel($p,3));
+        $min_estancia = isset($min[$d]) ? $min[$d] : 0;
         $priceLst[] = [
             "title" => '<table>'
             . '<tr><td colspan="2" class="main">'.$p.' €</td></tr>'
+            . '<tr><td colspan="2" class="min-estanc">Min '.$min_estancia.' dias</td></tr>'
             . '<tr><td><span class="price-booking">'.$priceBooking.'</span></td><td><span class="price-airbnb">'.$priceAirbnb.'</span></td></tr>'
             . '<tr><td><span class="price-expedia">'.$priceExpedia.'</span></td><td>0</td></tr>'
             . '</table>',
@@ -340,9 +342,9 @@ class ZodomusController extends Controller {
       $availibility = $book->getAvailibilityBy_channel($apto, $start, $end);
       foreach ($availibility as $d => $p) {
         $class = ($p>0) ? 'yes' : 'no';
-        $min_estancia = isset($min[$d]) ? $min[$d] : 0;
+       
         $priceLst[] = [
-            "title" => $p.'/'.$min_estancia,
+            "title" => $p,
             "start" => $d.' 01:00',
             'classNames' =>  'availibility '.$class
         ];

@@ -62,7 +62,7 @@
               <td><span class="price-booking">+22%</span></td>
               <td><span class="price-airbnb">+20%</span></td>
               <td><span class="price-expedia">+15%</span></td>
-              <td><span class="disp-layout">Disp. / Est. Mín.</span></td>
+              <td><span class="disp-layout">Disponib</span></td>
             </tr>
           </table>
         </div>
@@ -86,9 +86,9 @@
 
           </div>
           <div class="pt-1 col-md-12 row">
-            <button id="selAllDays" type="button">Todos</button>
-            <button id="selWorkdays" type="button">Laborales</button>
-            <button id="selHolidays" type="button">Fin de semana</button>
+            <button id="selAllDays" type="button"  class="btn_days">Todos</button>
+            <button id="selWorkdays" type="button" class="btn_days">Laborales</button>
+            <button id="selHolidays" type="button" class="btn_days">Fin de semana</button>
           </div>
           <div class="pt-1 col-md-12 row">
             @foreach($dw as $k=>$v)
@@ -304,11 +304,15 @@ $(document).ready(function () {
   });
 
   $('#selAllDays').on('click', function (e) {
+    $('.btn_days').removeClass('active');
+    $(this).addClass('active');
      for(i=0; i<7; i++){
       $('#dw_'+i).prop("checked", true);
     }
   });
   $('#selWorkdays').on('click', function (e) {
+     $('.btn_days').removeClass('active');
+    $(this).addClass('active');
     $('#dw_0').prop("checked", false);
     $('#dw_6').prop("checked", false);
     for(i=1; i<6; i++){
@@ -316,6 +320,8 @@ $(document).ready(function () {
     }
   });
    $('#selHolidays').on('click', function (e) {
+      $('.btn_days').removeClass('active');
+    $(this).addClass('active');
     $('#dw_0').prop("checked", true);
     $('#dw_6').prop("checked", true);
     for(i=1; i<6; i++){
@@ -402,7 +408,15 @@ $(document).ready(function () {
 
 
   input:checked + span {
-    color: red;
+    color: #2b5d9b;
+  }
+  
+  .btn_days {
+    padding: 4px 15px;
+  }
+  .btn_days.active {
+    background-color: #2b5d9b;
+    color: #fff;
   }
 
   p.mobile-tit {
