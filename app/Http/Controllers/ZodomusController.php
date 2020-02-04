@@ -449,30 +449,33 @@ class ZodomusController extends Controller {
     
      
       $Zodomus =  new \App\Services\Zodomus\Zodomus();
-      $apto = 1542253; 
+      $apto = 91378; 
       $roomID = 9137803;
       $rateId = 12283275;
       $return = null;
-      
+//      echo date('Y-m-d H:i:s',1580597043); die;
       
 //      $return = $Zodomus->activateChannels($apto);
 //      $return = $Zodomus->cancelRates($apto,$roomID,$rateId);
       
       //Get reservations 
-//      $hoy = strtotime('-7 days');
-//        $bookings = $Zodomus->getBookings(1,$apto);
-//        $reservations = [];
-//       foreach ($bookings->reservations as $book) {
+      $hoy = strtotime('-7 days');
+        $bookings = $Zodomus->getBookings(1,$apto);
+        $reservations = [];
+       foreach ($bookings->reservations as $book) {
 //         $time = strtotime($book->date);
-//         if ($hoy<$time && $book->status != 3){
-//           echo $book->id.', ';
-//         }
-//       }
+         if ($book->status != 3){
+           echo $book->id.', ';
+         }
+       }
+       die;
+//       SELECT id,external_id,type_book,external_roomId FROM `book` WHERE `external_id` IN ()  
+//      SELECT external_id,count(*) FROM `book` WHERE `external_id` IN () GROUP by external_id
 //       var_dump($bookings); die;
        
        
        
-      $return = $Zodomus->getRates($apto);
+//      $return = $Zodomus->getRates($apto);
       
 //        $return = $Zodomus->checkProperty($apto);
 //      $return = $Zodomus->getRoomsAvailability($apto,'2020-02-05','2020-02-11');
@@ -544,18 +547,17 @@ class ZodomusController extends Controller {
   }
   
   function forceImport() {
-  $response = $this->importAnReserv(1,1542253,2493440995);
-  die;
+//  $response = $this->importAnReserv(1,1542253,3965543023);
+//  die;
     $response = null;
     //http://miramarski.virtual/admin/channel-manager/forceImport
-    $reservas = [];//, 2164564583, 2225255157, 2238669779, 2239480934, 2244610467, 2244688487, 2245112231, 2286649690, 2403348884, 2403381919, 2415193449,];
+    $reservas = [2283694293, 2285529323, 2475706777, 2909066157, 3353826030,];
 
     foreach ($reservas as $r){
       
       $alreadyExist = \App\Book::where('external_id', $r)->first();
       if (!$alreadyExist){
-        $response = $this->importAnReserv(1,1542253,2493440995);
-        dd($r,$response);
+        $response = $this->importAnReserv(1,91378,$r);
       }
     }
     dd($response);
@@ -563,13 +565,6 @@ class ZodomusController extends Controller {
   
   function webHook(Request $request) {
     
-    //save a copy
-    $json = json_encode($request->all());
-    $dir = storage_path().'/zodomus';
-    if (!file_exists($dir)) {
-        mkdir($dir, 0775, true);
-    }
-    file_put_contents($dir."/".time(),$json);
     
     
     $webhookKey = $request->input('webhookKey');// (Your webhook key, you should validate if a call to your webhook has the correct key)
@@ -577,6 +572,14 @@ class ZodomusController extends Controller {
     $propertyId = $request->input('propertyId');//propertyId (String)
     $reservationId = $request->input('reservationId');//reservationId (String, sent from the channel to identify the reservation)
     $reservationStatus = $request->input('reservationStatus');//(Integer 1=new, 2=modified, 3=cancelled)
+    //
+    //save a copy
+    $json = json_encode($request->all());
+    $dir = storage_path().'/zodomus';
+    if (!file_exists($dir)) {
+        mkdir($dir, 0775, true);
+    }
+    file_put_contents($dir."/".time().'-'.$reservationId.'-'.$propertyId,$json);
     
     if ($webhookKey == env('ZODOMUS_WEBHOOK')){
        if ($reservationStatus == 1){
@@ -600,13 +603,24 @@ class ZodomusController extends Controller {
                 "propertyId" => $propertyId,
                 "reservationId" =>  $reservationId,
               ];
-//        $reservation = $oZodomus->getBooking($param);
-        $reservation = json_decode('{"status":{"returnCode":"200","returnMessage":"OK","channelLogId":"UmFuZG9tSVYkc2RlIyh9YbbIxbqGrE1IjB8pCVCGjzQC+tg2A3em6URaCSVkc5PlC\/YGkgX2OUoKZ2qfWpyPE0szXQdiop7o","channelOtherMessages":"","timestamp":"2020-02-03 04:33:55"},"reservations":{"reservation":{"id":"24934409959","status":3,"currencyCode":"","totalPrice":"0","remarks":"","bookedAt":"0000-00-00 00:00:00","modifiedAt":"0000-00-00 00:00:00","source":"","confirmationStatus":"","RUID":"UmFuZG9tSVYkc2RlIyh9YbbIxbqGrE1IjB8pCVCGjzQC+tg2A3em6URaCSVkc5PlC\/YGkgX2OUoKZ2qfWpyPE0szXQdiop7o"},"customer":{"firstName":"Jos\u00e9 Mar\u00eda","middleName":"","lastName":"Guti\u00e9rrez Hern\u00e1ndez","address":"","city":"","zipCode":"","countryCode":"","email":"","phone":"","phoneCountryCode":"","phoneCityArea":"","remarks":""},"rooms":[{"id":"154225305","roomReservationId":"2785982929","name":"","totalPrice":"240","guestName":"","numberOfGuests":6,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-21","departureDate":"2020-02-23","smoking":0,"mealPlan":"El precio de esta habitaci\u00f3n no incluye servicio de comidas.","remarks":"","prices":[{"price":"120","date":"2020-02-21","dateend":"2020-02-21","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"},{"price":"120","date":"2020-02-22","dateend":"2020-02-22","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"}]},{"id":"154225301","roomReservationId":"2785982954","name":"","totalPrice":"160","guestName":"","numberOfGuests":4,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-21","departureDate":"2020-02-23","smoking":0,"mealPlan":"El precio de esta habitaci\u00f3n no incluye servicio de comidas.","remarks":"","prices":[{"price":"80","date":"2020-02-21","dateend":"2020-02-21","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"},{"price":"80","date":"2020-02-22","dateend":"2020-02-22","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"}]},{"id":"154225306","roomReservationId":"2785982972","name":"","totalPrice":"162","guestName":"","numberOfGuests":4,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-21","departureDate":"2020-02-23","smoking":0,"mealPlan":"El precio de esta habitaci\u00f3n no incluye servicio de comidas.","remarks":"","prices":[{"price":"81","date":"2020-02-21","dateend":"2020-02-21","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"},{"price":"81","date":"2020-02-22","dateend":"2020-02-22","rateId":"6280183","promotionId":"","geniusRate":"","rewrittenFromId":"","rewrittenFromName":"","extraPersonFees":"0.00","hotelServiceFees":"0.00"}]}]}}');
-
-//        echo json_encode($reservation); die;
+        $reservation = $oZodomus->getBooking($param);
         if ($reservation && $reservation->status->returnCode == 200){
           $booking = $reservation->reservations;
-          
+          if (!isset($booking->rooms)) {
+            if ($booking->reservation->status == 3) { //Cancelada
+              $alreadyExist = \App\Book::where('external_id', $reservationId)->get();
+              if ($alreadyExist) {
+                foreach ($alreadyExist as $item){
+                  $response = $item->changeBook(3, "", $item);
+                  echo $item->id.' cancelado - ';
+                  if ($response['status'] == 'success' || $response['status'] == 'warning') {
+                    //Ya esta disponible
+                    $item->sendAvailibilityBy_status();
+                  }
+                }
+              }
+            }
+          }
           //Una reserva puede tener multiples habitaciones
           $rooms = $booking->rooms;
           foreach ($rooms as $room){
@@ -617,6 +631,7 @@ class ZodomusController extends Controller {
                                             $query->where('external_roomId', $roomId)
                                                   ->orWhereNull('external_roomId');
                                         })->first();
+                                       
             if ($alreadyExist){
               if ($booking->reservation->status == 3){ //Cancelada
 

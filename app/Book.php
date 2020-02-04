@@ -1170,7 +1170,7 @@ class Book extends Model {
             $startAux = strtotime($book->start);
             $endAux = strtotime($book->finish);
             
-            while ($startAux<=$endAux){
+            while ($startAux<$endAux){
               if (isset($aLstDays[date('Y-m-d',$startAux)]))
                 $aLstDays[date('Y-m-d',$startAux)]--;
               
@@ -1274,7 +1274,7 @@ class Book extends Model {
         $startAux = strtotime($book->start);
         $endAux = strtotime($book->finish);
 
-        while ($startAux <= $endAux) {
+        while ($startAux < $endAux) {
           if (isset($aLstDays[date('Y-m-d', $startAux)]))
             $aLstDays[date('Y-m-d', $startAux)] --;
 
