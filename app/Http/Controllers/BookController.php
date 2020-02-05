@@ -947,18 +947,7 @@ class BookController extends AppController
 
               $response = $book->changeBook($request->status, "", $book);
               if ($response['status'] == 'success' || $response['status'] ==  'warning'){
-                if (!in_array($oldStatus,$typeBooksReserv) && in_array($book->type_book,$typeBooksReserv)){
-                  //Ya no esta disponible
-                  $book->sendAvailibilityBy_status();
-                  return $response;
-                } 
-
-                if (in_array($oldStatus,$typeBooksReserv) && !in_array($book->type_book,$typeBooksReserv)){
-                  //Ya esta disponible
-                  $book->sendAvailibilityBy_status();
-                  return $response;
-                }
-
+                $book->sendAvailibilityBy_status();
               }
               return $response;
                 
@@ -1001,18 +990,7 @@ class BookController extends AppController
             
             $response = $book->changeBook($request->status, "", $book);
             if ($response['status'] == 'success' || $response['status'] ==  'warning'){
-              if (!in_array($oldStatus,$typeBooksReserv) && in_array($book->type_book,$typeBooksReserv)){
-                //Ya no esta disponible
                 $book->sendAvailibilityBy_status();
-                return $response;
-              } 
-              
-              if (in_array($oldStatus,$typeBooksReserv) && !in_array($book->type_book,$typeBooksReserv)){
-                //Ya esta disponible
-                $book->sendAvailibilityBy_status();
-                return $response;
-              }
-              
             }
             return $response;
 
