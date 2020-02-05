@@ -32,7 +32,8 @@
           return csrf_token();
       });
     
-   
+
+    Route::post('zodomus-Webhook','ZodomusController@webHook');
   
     Route::get('/partee-checkHuespedes', function () {
         $partee = new \App\Services\ParteeService();
@@ -182,7 +183,16 @@
       } else {
         return redirect('/admin/reservas');
       }
-    })->middleware('auth');   
+    })->middleware('auth');  
+    
+    
+  
+      
+    
+     Route::get('admin/Wubook/Availables', function () {
+        \Artisan::call('wubook:sendAvaliables');
+        die('finish');
+    });
     
     /* ICalendar links */
     Route::get('/ical/{aptoID}', [

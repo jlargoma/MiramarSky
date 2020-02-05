@@ -84,19 +84,20 @@
 						</span>
 					</td>
 					<td class="text-center" style="min-width: 80px">
+                                          @if($room->user)
 						<a class="btn btn-default btn-pdf btn-sm" href="{{ url
 							('/admin/apartamentos/download/contrato/'.$room->user->id) }}">
 							<i class="fa fa-file-pdf"></i>
 						</a>
-
+                                          @endif
 						<a type="button" class="btn btn-default btn-sm" href="{{ url ('/fotos') }}/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
 							<i class="fa fa-paperclip"></i>
 						</a>
-
+ @if($room->user)
 						<button class="btn btn-default btn-emiling btn-sm" type="button" data-toggle="modal" data-target="#modalEmailing" data-id="<?php echo $room->user->id ?>">
 							<i class=" pg-mail"></i>
 						</button>
-
+@endif
 						<button type="button" class="btn btn-success btn-sm uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" title="Subir imagenes aptos">
 							<i class="fa fa-upload" aria-hidden="true"></i>
 						</button>    

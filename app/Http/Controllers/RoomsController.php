@@ -35,6 +35,8 @@ class RoomsController extends AppController {
    * @return \Illuminate\Http\Response
    */
   public function index() {
+    
+    $zConfig = new \App\Services\Zodomus\Config();
     return view('backend/rooms/index', [
 //        'rooms' => Rooms::where('state', "!=", 0)->orderBy('order', 'ASC')->get(),
         'rooms' => Rooms::orderBy('order', 'ASC')->get(),
@@ -44,6 +46,8 @@ class RoomsController extends AppController {
         'tipos' => \App\TypeApto::all(),
         'owners' => \App\User::all(),
         'typesApto' => \App\TypeApto::all(),
+        'zodomusAptos' => configZodomusAptos(),
+        'channel_group' => null,
     ]);
   }
 
@@ -613,6 +617,8 @@ class RoomsController extends AppController {
     $room->profit_percent = ($request->input('profit_percent')) ? $request->input('profit_percent') : $room->profit_percent;
     $room->description = ($request->input('description')) ? $request->input('description') : $room->description;
     $room->num_garage = ($request->input('num_garage')) ? $request->input('num_garage') : $room->num_garage;
+    $room->channel_group = $request->input('channel_group',null);
+    $room->price_extra_pax = $request->input('price_extra_pax',null);
 
     if ($room->save()) {
       return redirect()->action('RoomsController@index');
@@ -620,14 +626,36 @@ class RoomsController extends AppController {
   }
 
   public function getUpdateForm(Request $request) {
-    return view('backend/rooms/_updateFormRoom', ['room' => Rooms::find($request->id)]);
+    $zodomusAptos = configZodomusAptos();
+    return view('backend/rooms/_updateFormRoom', ['room' => Rooms::find($request->id),'zodomusAptos'=>$zodomusAptos]);
   }
 
   public function searchByName(Request $request) {
-    $rooms = Rooms::where('state', 1)->where('name', 'LIKE', '%' . $request->searchString . '%')
-                    ->orderBy('order', 'ASC')->get();
-    $roomsdesc = Rooms::where('state', 0)->where('name', 'LIKE', '%' . $request->searchString . '%')
-                    ->orderBy('order', 'ASC')->get();
+    
+    $sqlRooms = Rooms::where('state', 1);
+    $sqlRoomsdesc = Rooms::where('state', 0);
+    if ($request->searchString){
+      $searchString = trim($request->searchString);
+      $sqlRooms->where(function ($query) use ($searchString) {
+              $query->where('name', 'LIKE', '%' . $searchString . '%')
+                      ->orWhere('nameRoom', 'LIKE', '%' . $searchString . '%');
+            });
+      $sqlRoomsdesc->where(function ($query) use ($searchString) {
+              $query->where('name', 'LIKE', '%' . $searchString . '%')
+                      ->orWhere('nameRoom', 'LIKE', '%' . $searchString . '%');
+            });
+    }
+    
+    if ($request->channel_group){
+       $channel_group = trim($request->channel_group);
+       
+       $sqlRooms->where('channel_group',$channel_group);
+       $sqlRoomsdesc->where('channel_group',$channel_group);
+    }
+    
+    
+    $rooms = $sqlRooms->orderBy('order', 'ASC')->get();
+    $roomsdesc = $sqlRoomsdesc->orderBy('order', 'ASC')->get();
 
     return view('backend/rooms/_tableRooms', [
         'rooms' => $rooms,

@@ -279,7 +279,37 @@ class Rooms extends Model
         return self::GIFT_PRICE;
     }
     
+  /**
+   * 
+   * @param type $start
+   * @param type $finish
+   */
+  public function getPVP($start,$finish,$pax) {
+    $defaults = $this->defaultCostPrice($start,$finish,$pax);
+    $priceDay = $defaults['priceDay'];
+    $oPrice = \App\DailyPrices::where('channel_group',$this->channel_group)
+                ->where('date','>=',$start)
+                ->where('date','<=',$finish)
+                ->get();
+   
     
+    if ($oPrice) {
+        $extra_pax = 0;
+        if (($pax>$this->minOcu)){
+          $extra_pax =  $this->price_extra_pax*($pax-$this->minOcu);
+        }
+        foreach ($oPrice as $p) {
+          $priceDay[$p->date] = $p->price+$extra_pax;
+        }
+      }
+    $price = 0;
+    foreach ($priceDay as $p) {
+      $price +=$p;
+    }
+//    dd($price);
+    return $price;
+  }
+  
   public function priceLimpieza($sizeApto) {
     
     if ($sizeApto == 1 || $sizeApto == 5){
@@ -310,5 +340,114 @@ class Rooms extends Model
           'cost_limp'=>0
           ];
   }
+   
+  /**
+   * Get the default cost and price to pax and seassons
+   * 
+   * @param type $start
+   * @param type $end
+   * @return type
+   */
+  public function defaultCostPrice($start,$end,$pax) {
     
+    $response = ['priceDay'=>null,'costDay'=>null];
+    if ($start && $end){
+      $startTime = strtotime($start);
+      $endTime = strtotime($end);
+      $startDate = date('Y-m-d',$startTime);
+      $endDate = date('Y-m-d',$endTime);
+
+      $priceDay = [];
+      $seassonDay = [];
+      $day = 24*60*60;
+      while ($startTime<$endTime){
+        $priceDay[date('Y-m-d',$startTime)] = 600;
+        $costDay[date('Y-m-d',$startTime)] = 1;
+        $seassonDay[date('Y-m-d',$startTime)] = 1;
+        $startTime += $day;
+      }
+
+
+      /* BEGIN: default values by price */
+
+      $match1 = [['start_date','>=', $startDate ],['start_date','<=', $endDate ]];
+      $match2 = [['finish_date','>=', $startDate ],['finish_date','<=', $endDate ]];
+      $match3 = [['start_date','<', $startDate ],['finish_date','>', $endDate ]];
+
+      $seasonActives = \App\Seasons::where($match1)
+                      ->orWhere($match2)
+                      ->orWhere($match3)
+                      ->orderBy('start_date')
+                      ->get();
+      
+      $seasonsActive = [1];
+      if ($seasonActives){
+        foreach ($seasonActives as $s){
+          $s_start  = strtotime($s->start_date);
+          $s_end    = strtotime($s->finish_date);
+          $s_type   = $s->type; 
+          
+          $seasonsActive[] = $s_type;
+         
+          while ($s_start<=$s_end && $s_start<=$endTime){
+            $s_auxDate = date('Y-m-d',$s_start);
+            if (isset($seassonDay[$s_auxDate]))  $seassonDay[$s_auxDate] = $s_type;
+            $s_start += $day;
+          }
+        }
+      }
+
+      $extra_pax = 0;
+      $pricePax = $this->minOcu;
+      if (($pax>$pricePax)){
+        $extra_pax =  $this->price_extra_pax*($pax-$pricePax);
+      }
+        
+      $priceList = [];
+      $prices = \App\Prices::whereIn('season', array_unique($seasonsActive))->where('occupation', $pricePax)->get();
+      
+      if ($prices){
+        foreach ($prices as $p){
+          $priceList[$p->season] = [
+              "p" => $p->price+$extra_pax,
+              "c" => $p->cost
+              ];
+        }
+      }
+
+      foreach ($seassonDay as $s_time=>$s_type){
+        if (isset($priceList[$s_type])){
+          $priceDay[$s_time] = $priceList[$s_type]['p'];
+          $costDay[$s_time]  = $priceList[$s_type]['c'];
+        }
+      }
+
+      $response = ['priceDay'=>$priceDay,'costDay'=>$costDay];
+      /* END: default values by price */
+    }
+    return $response;
+  }
+  
+  
+   /**
+   * 
+   * @param type $start
+   * @param type $finish
+   */
+  public function getMin_estancia($start,$finish) {
+    
+    $oPrice = \App\DailyPrices::where('channel_group',$this->channel_group)
+                ->where('date','>=',$start)
+                ->where('date','<=',$finish)
+                ->get();
+    $return = 0;
+    if ($oPrice) {
+        foreach ($oPrice as $p) {
+          if ($p->min_estancia && $p->min_estancia>$return)
+          $return = $p->min_estancia;
+        }
+      }
+    return $return;
+  }
+  
 }

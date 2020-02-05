@@ -626,6 +626,24 @@ class HomeController extends AppController
         {
             $minDays = $checkSpecialSegment->minDays;
         }
+        
+        
+        $aSize = \App\SizeRooms::findSizeApto($request->input('apto'),$request->input('luxury'),$request->input('quantity'));
+        if ($aSize){
+          $sizeRoom = $aSize['sizeRoom'];
+          $rooms = \App\Rooms::where('sizeApto',$sizeRoom)->first();
+          if ($rooms){
+            $minEstancia_day = $rooms->getMin_estancia($date1->format('Y-m-d'),$date2->format('Y-m-d'));
+            if ($minEstancia_day>0 && $minEstancia_day>$minDays){
+              $minDays = $minEstancia_day;
+              $checkSpecialSegment = true;
+            }
+          }
+        }
+        
+        
+        
+        
         return [
             'minDays'        => $minDays,
             'specialSegment' => $checkSpecialSegment,
@@ -681,46 +699,11 @@ class HomeController extends AppController
         $start     = Carbon::createFromFormat('d M, y', trim($date[0]));
         $finish    = Carbon::createFromFormat('d M, y', trim($date[1]));
         $countDays = $finish->diffInDays($start);
-        if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si')
-        {
-            //$roomAssigned = 115;
-            $typeApto = "2 DORM Lujo";
-            $sizeRoom = 6;
-           
-        } elseif ($request->input('apto') == '2dorm' && $request->input('luxury') == 'no')
-        {
-            //$roomAssigned = 122;
-            $typeApto = "2 DORM estandar";
-            $sizeRoom = 2;
-        } elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'si')
-        {
-            //$roomAssigned = 138;
-            $sizeRoom = 5;
-            $typeApto = "Estudio Lujo";
-        } elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'no')
-        {
-            //$roomAssigned = 110;
-            $typeApto = "Estudio estandar";
-            $sizeRoom = 1;
-        } elseif ($request->input('apto') == 'chlt' && $request->input('luxury') == 'no')
-        {
-            //$roomAssigned = 144;
-            $typeApto = "CHALET los pinos";
-            $sizeRoom = 9;
-        } elseif ($request->input('apto') == '3dorm')
-        {
-            /* Rooms para grandes capacidades */
-            if ($request->input('quantity') >= 8 && $request->input('quantity') <= 10)
-            {
-                //$roomAssigned = 153;
-                $sizeRoom = 3;
-            } else
-            {
-                //$roomAssigned = 149;
-                $sizeRoom = 4;
-            }
-            $typeApto = "4 DORM";
-        }
+        $aSize = \App\SizeRooms::findSizeApto($request->input('apto'),$request->input('luxury'),$request->input('quantity'));
+        
+        $sizeRoom = $aSize['sizeRoom'];
+        $typeApto = $aSize['typeApto'];
+
         $size = \App\SizeRooms::find($sizeRoom);
         $getRoomToBook = $this->calculateRoomToFastPayment($size, $start, $finish, $request->input('luxury'));
         $roomAssigned = $getRoomToBook['id'];
@@ -730,53 +713,44 @@ class HomeController extends AppController
         {
             $pax = $paxPerRoom;
         }
-        $price   = 0;
-        $counter = $start->copy();
-        for ($i = 1; $i <= $countDays; $i++)
-        {
-            $seasonActive = \App\Seasons::getSeasonType($counter->copy()->format('Y-m-d'));
-            if ($seasonActive == null)
-            {
-                $seasonActive = 0;
-            }
-            $prices = \App\Prices::where('season', $seasonActive)->where('occupation', $pax)->get();
-            foreach ($prices as $precio)
-            {
-                $price = $price + $precio->price;
-            }
-            $counter->addDay();
-        }
+        
         $room = \App\Rooms::find($roomAssigned);
+
         if (!$room){
           return view('frontend.bookStatus.bookError');
         }
         
-        $costes = $room->priceLimpieza($room->sizeApto);
-        $limp   = $costes['price_limp'];
-                
-                
-        if ($request->input('parking') == 'si')
-        {
-            $priceParking = BookController::getPricePark(1, $countDays) * $room->num_garage;
-            $parking      = 1;
-        } else
-        {
-            $priceParking = 0;
-            $parking      = 2;
-        }
-        if ($request->input('luxury') == 'si')
-        {
-            $luxury = BookController::getPriceLujo(1);
-        } else
-        {
-            $luxury = BookController::getPriceLujo(2);
-        }
-        $total   = $price + $priceParking + $limp + $luxury;
-        $dni     = $request->input('dni');
-        $address = $request->input('address');
-        $setting = \App\Settings::where('key', 'discount_books')->first();
-        if ($seasonActive != 0)
-        {
+        $price = $room->getPVP($start,$finish,$pax);
+        
+        if ($price>0){
+        
+            $costes = $room->priceLimpieza($room->sizeApto);
+            $limp   = $costes['price_limp'];
+
+
+            if ($request->input('parking') == 'si')
+            {
+                $priceParking = BookController::getPricePark(1, $countDays) * $room->num_garage;
+                $parking      = 1;
+            } else
+            {
+                $priceParking = 0;
+                $parking      = 2;
+            }
+            if ($request->input('luxury') == 'si')
+            {
+                $luxury = BookController::getPriceLujo(1);
+            } else
+            {
+                $luxury = BookController::getPriceLujo(2);
+            }
+
+            $total   = $price + $priceParking + $limp + $luxury;
+            $dni     = $request->input('dni');
+            $address = $request->input('address');
+            $setting = \App\Settings::where('key', 'discount_books')->first();
+        
+
             return view('frontend.bookStatus.response', [
                 'id_apto'      => $roomAssigned,
                 'pax'          => $pax,
@@ -798,7 +772,7 @@ class HomeController extends AppController
                 'setting'      => ($setting) ? $setting : 0,
                 'comment'      => $request->input('comment'),
             ]);
-        } else
+        } else //$pice == 0
         {
           return view('frontend.bookStatus.bookError');
         }

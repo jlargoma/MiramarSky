@@ -36,14 +36,9 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::get('admin/precios/delete/{id}','PricesController@delete');
   Route::get('admin/precios/deleteExtra/{id}','PricesController@delete');
   Route::post('admin/precios/createExtras','PricesController@createExtras');
+
   // Prices
-  Route::get('admin/precios', 'PricesController@index');
-  Route::get('admin/precios/update', 'PricesController@update');
-  Route::get('admin/precios/updateExtra', 'PricesController@updateExtra');
-  Route::post('admin/precios/create', 'PricesController@create');
-  Route::get('admin/precios/delete/{id}', 'PricesController@delete');
-  Route::get('admin/precios/deleteExtra/{id}', 'PricesController@delete');
-  Route::post('admin/precios/createExtras', 'PricesController@createExtras');
+
   // seasons
   Route::get('admin/temporadas', 'SeasonsController@index');
   Route::get('admin/temporadas/new', 'SeasonsController@newSeasons');
@@ -115,6 +110,7 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
   
   Route::get('/reservas/api/activateAlertLowProfits', 'BookController@activateAlertLowProfits');
   Route::get('/reservas/fianzas/cobrar/{id}', 'BookController@cobrarFianzas');
+  Route::post('/reservas/get-visa', 'BookController@getVisa')->name('booking.get_visa');
 
   // Rooms
   Route::get('/apartamentos', 'RoomsController@index');
@@ -270,4 +266,23 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/ical/importFromUrl', function () {
       \Artisan::call('ical:import');
   });
+  
+  
+  // ZODOMUS  
+  Route::get('/channel-manager/disponibilidad/{apto}/{start}/{end}','ZodomusController@listDisponibilidad');
+  Route::get('/channel-manager/price/{apto?}','ZodomusController@calendRoom')->name('channel.price.cal');
+  Route::post('/channel-manager/price/{apto?}','ZodomusController@calendRoomUPD')->name('channel.price.cal.upd');
+  Route::get('/channel-manager/price/precios/list/{apto}','ZodomusController@listBy_room')->name('channel.price.cal.list');
+  Route::get('/channel-manager/list/{apto}','ZodomusController@listBy_apto')->name('channel.cal.list');
+  Route::get('/channel-manager/config', 'ZodomusController@generate_config');
+  Route::get('/channel-manager/ZODOMUS', 'ZodomusController@zodomusTest');
+  Route::get('/channel-manager/index', 'ZodomusController@index')->name('channel.index');
+  Route::get('/channel-manager/forceImport', 'ZodomusController@forceImport')->name('channel.forceImport');
+  Route::post('/channel-manager/send-avail/{apto}', 'ZodomusController@sendAvail')->name('channel.sendAvail');
+  Route::get('/channel-manager', 'ZodomusController@calendRoom')->name('channel');
+  
+  Route::get('/zodomus/import', function () {
+      \Artisan::call('zodomus:import');
+  });
+  
 });

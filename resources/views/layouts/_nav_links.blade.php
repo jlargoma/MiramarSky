@@ -99,4 +99,11 @@
     </li>
     <?php endif ?>
 
+ 
+    <?php if (Auth::user()->role == "admin" || Auth::user()->role == "subadmin"): ?>
+    <li class="{{ Request::path() == 'admin/channel-manager' ? 'active' : '' }}">
+        <a href="{{ url('/admin/channel-manager') }}" class="detailed">Zodomus</a>
+    </li>
+<?php endif ?>
+    
 </ul>

@@ -43,8 +43,18 @@
       <p class="alert alert-success">{!! \Session::get('success') !!}</p>
       @endif
     </div>
-    <div class="col-md-2 col-xs-12 push-20">
+    <div class="col-md-2 col-xs-6 push-20">
       <input type="text" id="searchRoomByName" class="form-control" placeholder="Buscar..." />
+    </div>
+    <div class="col-md-2 col-xs-6 push-20">
+      <select class="form-control minimal" id="channel_group" placeholder="ZODOMUS Apto">
+        <option value=""> - ZODOMUS Apto -</option>
+        <?php foreach ($zodomusAptos as $id=>$data): ?>                                   
+          <option value="{{$id}}" <?php echo ($id == $channel_group) ? "selected" : "" ?>>
+            {{$data->name}}
+          </option>
+        <?php endforeach ?>
+      </select>
     </div>
     <div class="col-md-1 col-xs-4 push-20">
       <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewSize">
@@ -475,6 +485,16 @@ $(document).ready(function () {
     var searchString = $(this).val();
 
     $.get('/admin/rooms/search/searchByName', {searchString: searchString}, function (data) {
+
+      $('.content-table-rooms').empty().append(data);
+
+    });
+  });
+  
+   $('#channel_group').on('change',function (event) {
+    var channel_group = $(this).val();
+
+    $.get('/admin/rooms/search/searchByName', {channel_group: channel_group}, function (data) {
 
       $('.content-table-rooms').empty().append(data);
 

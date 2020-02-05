@@ -25,7 +25,7 @@
 				<label for="locker">Taquilla</label>
 				<input type="text" name="locker" class="form-control only-numbers" value="<?php echo $room->locker; ?>"/>
 			</div>
-			<div class="col-md-4 col-xs-12 push-20">
+			<div class="col-md-3 col-xs-12 push-20">
 				<label for="sizeApto">Tamaño Apto.</label>
 				<select class="form-control minimal" name="sizeApto">
 					<?php foreach (\App\SizeRooms::all() as $size): ?>                                   
@@ -35,13 +35,28 @@
 					<?php endforeach ?>
 				</select>
 			</div>
-			<div class="col-md-3 col-xs-4 push-20">
+                        <div class="col-md-3 col-xs-12 push-20">
+				<label for="sizeApto">Zodomus Apto.</label>
+				<select class="form-control minimal" name="channel_group">
+                                  <option value=""> -- </option>
+                                  <?php foreach ($zodomusAptos as $id=>$data): ?>                                   
+                                    <option value="{{$id}}" <?php echo ($id == $room->channel_group) ? "selected" : "" ?>>
+                                      {{$data->name}}
+                                    </option>
+                                  <?php endforeach ?>
+				</select>
+			</div>
+			<div class="col-md-2 col-xs-4 push-20">
 				<label for="minOcu">Ocu. Min</label>
 				<input type="number" name="minOcu" class="form-control" value="<?php echo $room->minOcu; ?>"/>
 			</div>
-			<div class="col-md-3 col-xs-4 push-20">
+			<div class="col-md-2 col-xs-4 push-20">
 				<label for="maxOcu">Ocu. Max</label>
 				<input type="number" name="maxOcu" class="form-control" value="<?php echo $room->maxOcu; ?>"/>
+			</div>
+			<div class="col-md-2 col-xs-4 push-20">
+				<label for="price_extra_pax">Extra Pax €</label>
+				<input type="number" name="price_extra_pax" class="form-control" value="<?php echo $room->price_extra_pax; ?>"/>
 			</div>
 			
 		</div>

@@ -39,6 +39,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/ajax/send-partee-finish',
         '/admin/ingresos/upd',
         '/payments-save-dni/*',
-        '/static-token'
+        '/static-token',
+        '/zodomus-Webhook'
     ];
 }
