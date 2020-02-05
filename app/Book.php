@@ -97,6 +97,7 @@ class Book extends Model {
       8,// => 'ATIPICAS',
       9,// => 'Booking',
       11,// => 'blocked-ical',
+      99,// => 'blocked-ical',
   ];
 
   use BookEmailsStatus;
@@ -1100,9 +1101,9 @@ class Book extends Model {
     $room = Rooms::find($this->room_id);
     if(!$start) $start = $this->start;
     if(!$finish) $finish = $this->finish;
-    if (in_array($this->type_book,$this->typeBooksReserv))
+    if (in_array($this->type_book,$this->typeBooksReserv)){
       $this->sendAvailibility($this->room_id,$start,$finish);
-    else die('asdfasdf');
+    }
   }
   /**
    * send to channel manager the availibility

@@ -383,7 +383,7 @@ class BookController extends AppController
                           }
                         }        
                       }
-                      
+                      $book->sendAvailibilityBy_dates($book->start,$book->finish);
                       //Prin box to payment
                       $description = "COBRO RESERVA CLIENTE " . $book->customer->name;
                       $urlPayland = $this->generateOrderPaymentBooking(
@@ -576,6 +576,7 @@ class BookController extends AppController
                     if ($book->save())
                     {
 
+                      $book->sendAvailibilityBy_dates($book->start,$book->finish);
                         /* Creamos las notificaciones de booking */
                         /* Comprobamos que la room de la reserva este cedida a booking.com */
                         if ($room->isAssingToBooking())
