@@ -606,3 +606,10 @@ table.table-prices {
     display: block;
     
 }
+.table.table-striped tbody tr.Pagada-la-señal td{
+    background-color: #77f377 !important;
+}
+
+.table.table-striped tbody tr.Blocked-ical td {
+  background-color: #ffdcfe !important;
+}

@@ -393,18 +393,19 @@ class Zodomus{
     $customer->DNI = "";
     $customer->save();
 
+    $comment = $this->ZConfig->get_detailRate($reserv['rate_id']);
     //Create Book
     $book->user_id = 39;
     $book->customer_id = $customer->id;
     $book->room_id = $roomID;
     $book->start = $reserv['start'];
     $book->finish = $reserv['end'];
-    $book->comment = $reserv['mealPlan'];
+    $book->comment = $comment; //$reserv['mealPlan'];
     $book->type_book = 11;
     $book->nigths = $nights;
     $book->agency = $reserv['agency'];
     $book->pax = $reserv['numberOfGuests'];
-    $book->PVPAgencia = 0;
+    $book->PVPAgencia = $reserv['comision'];
     $book->total_price = $reserv['totalPrice'];
     $book->external_id = $reserv['reser_id'];
     $book->propertyId = $reserv['propertyId'];
