@@ -106,17 +106,26 @@ class ZodomusImport extends Command {
                   $roomId = $Zroom->id;
 
 
+                  $totalPrice = $Zroom->totalPrice;
+                  if (isset($Zroom->priceDetails)){
+                    foreach ($Zroom->priceDetails as $priceDetails){
+                      if ($totalPrice < $priceDetails->total){
+                        $totalPrice = $priceDetails->total;
+                      }
+                    }
+                  }
+                  $roomReservationId = $room->roomReservationId;
                   $reservations[] = [
                       'channel' => $channelId,
                       'propID' => $propertyId,
-                      'external_roomId' => $roomId,
+                      'external_roomId' => $roomReservationId,
                       'channel_group' => $cg,
                       'status' => $book->reservation->status,
                       'agency' => $agency,
                       'reser_id' => $reservationId,
                       'status' => $book->reservation->status,
                       'customer' => $book->customer,
-                      'totalPrice' => $Zroom->totalPrice,
+                      'totalPrice' => $totalPrice,
                       'numberOfGuests' => $Zroom->numberOfGuests,
                       'mealPlan' => $Zroom->mealPlan,
                       'start' => $Zroom->arrivalDate,

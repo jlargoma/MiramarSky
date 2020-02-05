@@ -363,8 +363,8 @@ class ZodomusController extends Controller {
   function generate_config() {
     ///admin/channel-manager/config
 //    $condif = configZodomusAptos(); dd($condif); die;
-    $confFile = \Illuminate\Support\Facades\File::get(storage_path('app/config/zodomus.php'));
-  eval($confFile);
+//    $confFile = \Illuminate\Support\Facades\File::get(storage_path('app/config/zodomus.php'));
+//  eval($confFile);
   }
   
   
@@ -449,35 +449,37 @@ class ZodomusController extends Controller {
     
      
       $Zodomus =  new \App\Services\Zodomus\Zodomus();
-      $apto = 91378; 
+      
       $roomID = 9137803;
       $rateId = 12283275;
       $return = null;
 //      echo date('Y-m-d H:i:s',1580597043); die;
       
 //      $return = $Zodomus->activateChannels($apto);
-//      $return = $Zodomus->cancelRates($apto,$roomID,$rateId);
-      
       //Get reservations 
-      $hoy = strtotime('-7 days');
-        $bookings = $Zodomus->getBookings(1,$apto);
-        $reservations = [];
-       foreach ($bookings->reservations as $book) {
-//         $time = strtotime($book->date);
-         if ($book->status != 3){
-           echo $book->id.', ';
-         }
-       }
-       die;
+//      $hoy = strtotime('-7 days');
+//        $bookings = $Zodomus->getBookings(1,$apto);
+//        $reservations = [];
+//       foreach ($bookings->reservations as $book) {
+////         $time = strtotime($book->date);
+//         if ($book->status != 3){
+//           echo $book->id.', ';
+//         }
+//       }
+//       die;
 //       SELECT id,external_id,type_book,external_roomId FROM `book` WHERE `external_id` IN ()  
 //      SELECT external_id,count(*) FROM `book` WHERE `external_id` IN () GROUP by external_id
 //       var_dump($bookings); die;
        
        
-       
+       $apto = 6037501; 
+//       $apto = 2798863; 
+//       $apto = 5813366; 
+//       $apto = 2942955; 
+//       $apto = 4284223; 
+//       $apto = 2092950; 
 //      $return = $Zodomus->getRates($apto);
-      
-//        $return = $Zodomus->checkProperty($apto);
+        $return = $Zodomus->checkProperty($apto);
 //      $return = $Zodomus->getRoomsAvailability($apto,'2020-02-05','2020-02-11');
 
 //      $roomToAt = [
@@ -547,8 +549,8 @@ class ZodomusController extends Controller {
   }
   
   function forceImport() {
-//  $response = $this->importAnReserv(1,1542253,3965543023);
-//  die;
+  $response = $this->importAnReserv(1,91378,3934048122,true);
+  die;
     $response = null;
     //http://miramarski.virtual/admin/channel-manager/forceImport
     $reservas = [2283694293, 2285529323, 2475706777, 2909066157, 3353826030,];
@@ -593,7 +595,7 @@ class ZodomusController extends Controller {
     }
   }
 
-  function importAnReserv($channelId,$propertyId,$reservationId){
+  function importAnReserv($channelId,$propertyId,$reservationId,$force=false){
     
         $oZodomus = new Zodomus();
         $zConfig = new ZConfig();
@@ -603,8 +605,15 @@ class ZodomusController extends Controller {
                 "propertyId" => $propertyId,
                 "reservationId" =>  $reservationId,
               ];
-        $reservation = $oZodomus->getBooking($param);
-        if ($reservation && $reservation->status->returnCode == 200){
+        if ($force){
+          $reservation = json_decode('{"status":{"returnCode":"200","returnMessage":"OK","channelLogId":"UmFuZG9tSVYkc2RlIyh9YbiPwRpq+LchiTbAE47odl0mXxYOQSZH+UOc4j8jEKD6i8v4QJNzJv+2rIDMH4rHddR4+oeM+iv7","channelOtherMessages":"","timestamp":"2020-02-05 12:10:26"},"reservations":{"reservation":{"id":"3934048122","status":1,"currencyCode":"EUR","totalPrice":"148.50","remarks":"","bookedAt":"2020-01-31 21:34:09","modifiedAt":"2020-01-31 21:34:10","source":"","confirmationStatus":"","RUID":"UmFuZG9tSVYkc2RlIyh9YbiPwRpq+LchiTbAE47odl0mXxYOQSZH+UOc4j8jEKD6i8v4QJNzJv+2rIDMH4rHddR4+oeM+iv7"},"customer":{"firstName":"Francisco","middleName":"","lastName":"Del Moral Lendinez","address":"Poeta Angel Gonzalez 15","city":"Jaen","zipCode":"23005","countryCode":"es","email":"flendi.823301@guest.booking.com","phone":"+34 670 76 53 85","phoneCountryCode":"","phoneCityArea":"","remarks":"Has recibido una tarjeta de cr\u00e9dito virtual para esta reserva.Puedes hacer el cargo a partir del 2020-01-31.\nPuedes cobrar tarjetas de cr\u00e9dito virtuales hasta seis meses despu\u00e9s de la fecha de check-out del cliente. Pasado este tiempo, la tarjeta caducar\u00e1. Si esto sucediese, el periodo de cobro de la tarjeta de cr\u00e9dito virtual se podr\u00eda ampliar otros seis meses, a contar desde la fecha de caducidad de la tarjeta. Una vez caducado el segundo periodo de seis meses, no podr\u00e1s cobrar estos fondos, que pasar\u00e1n a pertenecer a Booking.com desde ese momento.\nApproximate time of arrival: between 11:00 and 12:00\nThis guest would like the rooms in this booking to be close together if possible.\nNos gustar\u00eda que las habitaciones estuviesen en una planta alta."},"rooms":[{"id":"9137802","roomReservationId":"2796519085","name":"Habitaci\u00f3n Doble con vistas","totalPrice":"49.5","guestName":"Francisco Del Moral Lendinez","numberOfGuests":2,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-08","departureDate":"2020-02-09","smoking":0,"mealPlan":"El desayuno: EUR 10,60 por persona y noche.","remarks":"","cancelPenalties":[{"fromDate":"2020-01-31 21:34:09","untilDate":"0000-00-00 00:00:00","policyCode":"1","currencyCode":"EUR","amount":"49.5"}],"prices":[{"price":"49.50","date":"2020-02-08","dateend":"2020-02-08","rateId":"49136","promotionId":"VR64069469","geniusRate":"yes","rewrittenFromId":"0","rewrittenFromName":"50% - Oferta de principios de a\u00f1o - 31 de ene de 2020","extraPersonFees":"0.00","hotelServiceFees":"0.00"}],"priceDetails":[{"type":"guest","total":"49.50"},{"type":"hotel","total":"49.5"}],"priceDetailsExtra":[{"type":"guest","amount":"4.500000","currencyCode":"EUR","included":"yes","perNight":"no","perPerson":"no","percentage":"10%","text":"IVA"},{"type":"hotel","amount":"4.500000","currencyCode":"EUR","included":"yes","perNight":"no","perPerson":"no","percentage":"10%","text":"IVA"}]},{"id":"9137802","roomReservationId":"2796519098","name":"Habitaci\u00f3n Doble con vistas","totalPrice":"49.5","guestName":"Alberto Aguilar Gallardo","numberOfGuests":2,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-08","departureDate":"2020-02-09","smoking":0,"mealPlan":"El desayuno: EUR 10,60 por persona y noche.","remarks":"","cancelPenalties":[{"fromDate":"2020-01-31 21:34:10","untilDate":"0000-00-00 00:00:00","policyCode":"1","currencyCode":"EUR","amount":"49.5"}],"prices":[{"price":"49.50","date":"2020-02-08","dateend":"2020-02-08","rateId":"49136","promotionId":"VR64069469","geniusRate":"yes","rewrittenFromId":"0","rewrittenFromName":"50% - Oferta de principios de a\u00f1o - 31 de ene de 2020","extraPersonFees":"0.00","hotelServiceFees":"0.00"}],"priceDetails":[{"type":"guest","total":"49.50"},{"type":"hotel","total":"49.5"}],"priceDetailsExtra":[{"type":"guest","amount":"4.500000","currencyCode":"EUR","included":"yes","perNight":"no","perPerson":"no","percentage":"10%","text":"IVA"},{"type":"hotel","amount":"4.500000","currencyCode":"EUR","included":"yes","perNight":"no","perPerson":"no","percentage":"10%","text":"IVA"}]},{"id":"9137802","roomReservationId":"2796519104","name":"Habitaci\u00f3n Doble con vistas","totalPrice":"49.5","guestName":"Beatriz del Moral","numberOfGuests":2,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-08","departureDate":"2020-02-09","smoking":0,"mealPlan":"El desayuno: EUR 10,60 por persona y noche.","remarks":"","cancelPenalties":[{"fromDate":"2020-01-31 21:34:10","untilDate":"0000-00-00 00:00:00","policyCode":"1","currencyCode":"EUR","amount":"49.5"}],"prices":[{"price":"49.50","date":"2020-02-08","dateend":"2020-02-08","rateId":"49136","promotionId":"VR64069469","geniusRate":"yes","rewrittenFromId":"0","rewrittenFromName":"50% - Oferta de principios de a\u00f1o - 31 de ene de 2020","extraPersonFees":"0.00","hotelServiceFees":"0.00"}],"priceDetails":[{"type":"guest","total":"49.50"},{"type":"hotel","total":"49.5"}],"priceDetailsExtra":[{"type":"guest","amount":"4.500000","currencyCode":"EUR","included":"yes","perNight":"no","perPerson":"no","percentage":"10%","text":"IVA"},{"type":"hotel","amount":"4.500000","currencyCode":"EUR","included":"yes","perNight":"no","perPerson":"no","percentage":"10%","text":"IVA"}]}]}}');
+        } else {
+          $reservation = $oZodomus->getBooking($param);
+//          echo json_encode($reservation);
+        }
+//        
+        
+        if ($reservation && isset($reservation->status) && $reservation->status->returnCode == 200){
           $booking = $reservation->reservations;
           if (!isset($booking->rooms)) {
             if ($booking->reservation->status == 3) { //Cancelada
@@ -620,15 +629,17 @@ class ZodomusController extends Controller {
                 }
               }
             }
+            return;
           }
           //Una reserva puede tener multiples habitaciones
           $rooms = $booking->rooms;
           foreach ($rooms as $room){
             $roomId = $room->id;
+            $roomReservationId = $room->roomReservationId;
              //check if exists
             $alreadyExist = \App\Book::where('external_id', $reservationId)
-                    ->where(function ($query) use ($roomId) {
-                                            $query->where('external_roomId', $roomId)
+                    ->where(function ($query) use ($roomReservationId) {
+                                            $query->where('external_roomId', $roomReservationId)
                                                   ->orWhereNull('external_roomId');
                                         })->first();
                                        
@@ -649,24 +660,36 @@ class ZodomusController extends Controller {
             if (!$cg){//'no se encontro channel'
               continue;
             }
+            
+            $totalPrice = $room->totalPrice;
+            if (isset($room->priceDetails)){
+              foreach ($room->priceDetails as $priceDetails){
+                if ($totalPrice < $priceDetails->total){
+                  $totalPrice = $priceDetails->total;
+                }
+              }
+            }
               
             $reserv = [
                 'channel' => $channelId,
                 'propertyId' => $propertyId,
-                'external_roomId' => $roomId,
+                'external_roomId' => $roomReservationId,
                 'channel_group' => $cg,
                 'agency' => $zConfig->getAgency($channelId),
                 'reser_id' => $reservationId,
                 'status' => $booking->reservation->status,
                 'customer' => $booking->customer,
-                'totalPrice' => $room->totalPrice,
+                'totalPrice' => $totalPrice,
                 'numberOfGuests' => $room->numberOfGuests,
                 'mealPlan' => $room->mealPlan,
                 'start' => $room->arrivalDate,
                 'end' => $room->departureDate,
             ];
+            
             $oZodomus->saveBooking($cg,$reserv);
-           
+            if ($force){
+              var_dump($cg,$reserv);
+            }
             
           }
         }
