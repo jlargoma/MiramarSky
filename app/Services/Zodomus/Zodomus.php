@@ -405,6 +405,7 @@ class Zodomus{
     $book->nigths = $nights;
     $book->agency = $reserv['agency'];
     $book->pax = $reserv['numberOfGuests'];
+    $book->real_pax = $reserv['numberOfGuests'];
     $book->PVPAgencia = $reserv['comision'];
     $book->total_price = $reserv['totalPrice'];
     $book->external_id = $reserv['reser_id'];

@@ -235,6 +235,7 @@ class ZodomusImport extends Command {
       $book->nigths = $nights;
       $book->agency = $reserv['agency'];
       $book->pax = $reserv['numberOfGuests'];
+      $book->real_pax = $reserv['numberOfGuests'];
       $book->PVPAgencia = $reserv['comision'];
       $book->total_price = $reserv['totalPrice'];
       $book->propertyId = $reserv['propID'];

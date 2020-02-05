@@ -610,6 +610,11 @@ table.table-prices {
     background-color: #77f377 !important;
 }
 
-.table.table-striped tbody tr.Blocked-ical td {
-  background-color: #ffdcfe !important;
+.table.table-striped tbody tr.Blocked-ical td,
+.blocked-ical, .Blocked-ical{
+  background-color: #e8afe7 !important;
+}
+
+.line-divide {
+    border-top: 4px solid #000;
 }

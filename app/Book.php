@@ -1159,7 +1159,7 @@ class Book extends Model {
       $startAux = strtotime($start);
       $endAux = strtotime($finish);
       $aLstDays = [];
-      while ($startAux<=$endAux){
+      while ($startAux<$endAux){
         $aLstDays[date('Y-m-d',$startAux)] = $avail;
         $startAux+=$oneDay;
       }

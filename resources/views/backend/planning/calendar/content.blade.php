@@ -21,18 +21,20 @@ $uRole = Auth::user()->role;
                 <?php 
                 $luxAux = 1;
                 $typeAux = 2; 
+                $currentAux = null; 
                 ?>
                 <?php foreach ($roomscalendar as $key => $room): ?>
                   <?php $inicio = $inicioAux->copy() ?>
 
-                  <?php if ($room->luxury != $luxAux || $room->sizeApto != $typeAux): ?>
-                    <?php $line = "line-divide"; ?>
+                  <?php if ($room->luxury != $luxAux || ($currentAux && $room->channel_group != $currentAux)): ?>
+                    <?php $line = "line-divide "; ?>
                   <?php else: ?>
                     <?php $line = ""; ?>
                   <?php endif ?>
                   <?php
                   $luxAux = $room->luxury;
                   $typeAux = $room->sizeApto;
+                  $currentAux = $room->channel_group;
                   ?>
                   <tr class="<?php echo $line ?>">
 
