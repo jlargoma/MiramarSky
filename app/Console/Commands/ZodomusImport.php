@@ -114,11 +114,11 @@ class ZodomusImport extends Command {
                       }
                     }
                   }
-            
+                  $roomReservationId = $room->roomReservationId;
                   $reservations[] = [
                       'channel' => $channelId,
                       'propID' => $propertyId,
-                      'external_roomId' => $roomId,
+                      'external_roomId' => $roomReservationId,
                       'channel_group' => $cg,
                       'status' => $book->reservation->status,
                       'agency' => $agency,
