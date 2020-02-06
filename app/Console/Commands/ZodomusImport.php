@@ -115,10 +115,16 @@ class ZodomusImport extends Command {
                     }
                   }
                   $roomReservationId = $room->roomReservationId;
+                  
+                  $rateId = isset($Zroom->prices[0]) ? $Zroom->prices[0]->rateId : 0;
+                  $comision = $zConfig->get_comision($totalPrice,$channelId);
+                  
                   $reservations[] = [
                       'channel' => $channelId,
                       'propID' => $propertyId,
+                      'rate_id' => $rateId,
                       'external_roomId' => $roomReservationId,
+                      'comision'=>$comision,
                       'channel_group' => $cg,
                       'status' => $book->reservation->status,
                       'agency' => $agency,
@@ -216,18 +222,21 @@ class ZodomusImport extends Command {
       $customer->DNI = "";
       $customer->save();
 
+      $comment = $ZConfig->get_detailRate($reserv['rate_id']);
+      
       //Create Book
       $book->user_id = $this->user_id;
       $book->customer_id = $customer->id;
       $book->room_id = $roomID;
       $book->start = $reserv['start'];
       $book->finish = $reserv['end'];
-      $book->comment = $reserv['mealPlan'];
+      $book->comment = $comment;//$reserv['mealPlan'];
       $book->type_book = 11;
       $book->nigths = $nights;
       $book->agency = $reserv['agency'];
       $book->pax = $reserv['numberOfGuests'];
-      $book->PVPAgencia = 0;
+      $book->real_pax = $reserv['numberOfGuests'];
+      $book->PVPAgencia = $reserv['comision'];
       $book->total_price = $reserv['totalPrice'];
       $book->propertyId = $reserv['propID'];
       $book->external_id = $reserv['reser_id'];

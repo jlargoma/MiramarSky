@@ -449,7 +449,7 @@ class ZodomusController extends Controller {
     
      
       $Zodomus =  new \App\Services\Zodomus\Zodomus();
-      
+      $apto = 91378; 
       $roomID = 9137803;
       $rateId = 12283275;
       $return = null;
@@ -472,14 +472,14 @@ class ZodomusController extends Controller {
 //       var_dump($bookings); die;
        
        
-       $apto = 6037501; 
+      
 //       $apto = 2798863; 
 //       $apto = 5813366; 
 //       $apto = 2942955; 
 //       $apto = 4284223; 
 //       $apto = 2092950; 
-//      $return = $Zodomus->getRates($apto);
-        $return = $Zodomus->checkProperty($apto);
+      //$return = $Zodomus->getRates($apto);
+//        $return = $Zodomus->checkProperty($apto);
 //      $return = $Zodomus->getRoomsAvailability($apto,'2020-02-05','2020-02-11');
 
 //      $roomToAt = [
@@ -549,7 +549,7 @@ class ZodomusController extends Controller {
   }
   
   function forceImport() {
-  $response = $this->importAnReserv(1,91378,3934048122,true);
+  //$response = $this->importAnReserv(1,91378,2659096791,true);
   die;
     $response = null;
     //http://miramarski.virtual/admin/channel-manager/forceImport
@@ -606,7 +606,7 @@ class ZodomusController extends Controller {
                 "reservationId" =>  $reservationId,
               ];
         if ($force){
-          $reservation = json_decode('{"status":{"returnCode":"200","returnMessage":"OK","channelLogId":"UmFuZG9tSVYkc2RlIyh9YbiPwRpq+LchiTbAE47odl0mXxYOQSZH+UOc4j8jEKD6i8v4QJNzJv+2rIDMH4rHddR4+oeM+iv7","channelOtherMessages":"","timestamp":"2020-02-05 12:10:26"},"reservations":{"reservation":{"id":"3934048122","status":1,"currencyCode":"EUR","totalPrice":"148.50","remarks":"","bookedAt":"2020-01-31 21:34:09","modifiedAt":"2020-01-31 21:34:10","source":"","confirmationStatus":"","RUID":"UmFuZG9tSVYkc2RlIyh9YbiPwRpq+LchiTbAE47odl0mXxYOQSZH+UOc4j8jEKD6i8v4QJNzJv+2rIDMH4rHddR4+oeM+iv7"},"customer":{"firstName":"Francisco","middleName":"","lastName":"Del Moral Lendinez","address":"Poeta Angel Gonzalez 15","city":"Jaen","zipCode":"23005","countryCode":"es","email":"flendi.823301@guest.booking.com","phone":"+34 670 76 53 85","phoneCountryCode":"","phoneCityArea":"","remarks":"Has recibido una tarjeta de cr\u00e9dito virtual para esta reserva.Puedes hacer el cargo a partir del 2020-01-31.\nPuedes cobrar tarjetas de cr\u00e9dito virtuales hasta seis meses despu\u00e9s de la fecha de check-out del cliente. Pasado este tiempo, la tarjeta caducar\u00e1. Si esto sucediese, el periodo de cobro de la tarjeta de cr\u00e9dito virtual se podr\u00eda ampliar otros seis meses, a contar desde la fecha de caducidad de la tarjeta. Una vez caducado el segundo periodo de seis meses, no podr\u00e1s cobrar estos fondos, que pasar\u00e1n a pertenecer a Booking.com desde ese momento.\nApproximate time of arrival: between 11:00 and 12:00\nThis guest would like the rooms in this booking to be close together if possible.\nNos gustar\u00eda que las habitaciones estuviesen en una planta alta."},"rooms":[{"id":"9137802","roomReservationId":"2796519085","name":"Habitaci\u00f3n Doble con vistas","totalPrice":"49.5","guestName":"Francisco Del Moral Lendinez","numberOfGuests":2,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-08","departureDate":"2020-02-09","smoking":0,"mealPlan":"El desayuno: EUR 10,60 por persona y noche.","remarks":"","cancelPenalties":[{"fromDate":"2020-01-31 21:34:09","untilDate":"0000-00-00 00:00:00","policyCode":"1","currencyCode":"EUR","amount":"49.5"}],"prices":[{"price":"49.50","date":"2020-02-08","dateend":"2020-02-08","rateId":"49136","promotionId":"VR64069469","geniusRate":"yes","rewrittenFromId":"0","rewrittenFromName":"50% - Oferta de principios de a\u00f1o - 31 de ene de 2020","extraPersonFees":"0.00","hotelServiceFees":"0.00"}],"priceDetails":[{"type":"guest","total":"49.50"},{"type":"hotel","total":"49.5"}],"priceDetailsExtra":[{"type":"guest","amount":"4.500000","currencyCode":"EUR","included":"yes","perNight":"no","perPerson":"no","percentage":"10%","text":"IVA"},{"type":"hotel","amount":"4.500000","currencyCode":"EUR","included":"yes","perNight":"no","perPerson":"no","percentage":"10%","text":"IVA"}]},{"id":"9137802","roomReservationId":"2796519098","name":"Habitaci\u00f3n Doble con vistas","totalPrice":"49.5","guestName":"Alberto Aguilar Gallardo","numberOfGuests":2,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-08","departureDate":"2020-02-09","smoking":0,"mealPlan":"El desayuno: EUR 10,60 por persona y noche.","remarks":"","cancelPenalties":[{"fromDate":"2020-01-31 21:34:10","untilDate":"0000-00-00 00:00:00","policyCode":"1","currencyCode":"EUR","amount":"49.5"}],"prices":[{"price":"49.50","date":"2020-02-08","dateend":"2020-02-08","rateId":"49136","promotionId":"VR64069469","geniusRate":"yes","rewrittenFromId":"0","rewrittenFromName":"50% - Oferta de principios de a\u00f1o - 31 de ene de 2020","extraPersonFees":"0.00","hotelServiceFees":"0.00"}],"priceDetails":[{"type":"guest","total":"49.50"},{"type":"hotel","total":"49.5"}],"priceDetailsExtra":[{"type":"guest","amount":"4.500000","currencyCode":"EUR","included":"yes","perNight":"no","perPerson":"no","percentage":"10%","text":"IVA"},{"type":"hotel","amount":"4.500000","currencyCode":"EUR","included":"yes","perNight":"no","perPerson":"no","percentage":"10%","text":"IVA"}]},{"id":"9137802","roomReservationId":"2796519104","name":"Habitaci\u00f3n Doble con vistas","totalPrice":"49.5","guestName":"Beatriz del Moral","numberOfGuests":2,"numberOfAdults":0,"numberOChildren":0,"arrivalDate":"2020-02-08","departureDate":"2020-02-09","smoking":0,"mealPlan":"El desayuno: EUR 10,60 por persona y noche.","remarks":"","cancelPenalties":[{"fromDate":"2020-01-31 21:34:10","untilDate":"0000-00-00 00:00:00","policyCode":"1","currencyCode":"EUR","amount":"49.5"}],"prices":[{"price":"49.50","date":"2020-02-08","dateend":"2020-02-08","rateId":"49136","promotionId":"VR64069469","geniusRate":"yes","rewrittenFromId":"0","rewrittenFromName":"50% - Oferta de principios de a\u00f1o - 31 de ene de 2020","extraPersonFees":"0.00","hotelServiceFees":"0.00"}],"priceDetails":[{"type":"guest","total":"49.50"},{"type":"hotel","total":"49.5"}],"priceDetailsExtra":[{"type":"guest","amount":"4.500000","currencyCode":"EUR","included":"yes","perNight":"no","perPerson":"no","percentage":"10%","text":"IVA"},{"type":"hotel","amount":"4.500000","currencyCode":"EUR","included":"yes","perNight":"no","perPerson":"no","percentage":"10%","text":"IVA"}]}]}}');
+          $reservation = json_decode('');
         } else {
           $reservation = $oZodomus->getBooking($param);
 //          echo json_encode($reservation);
@@ -669,10 +669,14 @@ class ZodomusController extends Controller {
                 }
               }
             }
-              
+            
+            $rateId   = isset($room->prices[0]) ? $room->prices[0]->rateId : 0;
+            $comision = $zConfig->get_comision($totalPrice,$channelId);
             $reserv = [
                 'channel' => $channelId,
                 'propertyId' => $propertyId,
+                'rate_id' => $rateId,
+                'comision'=>$comision,
                 'external_roomId' => $roomReservationId,
                 'channel_group' => $cg,
                 'agency' => $zConfig->getAgency($channelId),

@@ -112,7 +112,47 @@ class Config{
     }
     
     
+    function get_detailRate($rateID){
+      
+      $text = '';
+      switch ($rateID){
+        case 17086560:
+        case "17086560": //Booking.com - RIAD
+          $text = 'NO REEMBOLSABLE';
+          break;
+        case 6224390:
+        case "6224390":  //Booking.com - ROSA
+          $text = 'NO REEMBOLSABLE';
+          break;
+        case 17086950:
+        case "17086950":  //Booking.com - ROSA
+          $text = 'DESAYUNO INCLUIDO';
+          break;
+      }
+      return $text;
+    }
     
+    function get_comision($price,$channelId=null) {
+      $comision = 0;
+      switch ($channelId){
+        case 1:
+        case "1": //"Booking.com",
+          $comision = ($price*0.17);
+          break;
+//        case 2:
+//        case "2": //Expedia,
+//          $price = $price+($price*0.20);
+//          break;
+//        case 3:
+//        case "3": //airbnb,
+//          $price = $price+($price*0.15);
+//          break;
+      }
+      
+      
+      
+      return round($comision,2);
+    }
     
     
     

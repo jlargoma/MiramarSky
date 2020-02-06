@@ -153,7 +153,7 @@ $is_mobile = $mobile->isMobile();
                             </span>
                     </button>
 
-                    <button class="btn btn-success btn-grey btn-tables btn-cons" type="button" data-type="blocked-ical">
+                    <button class="btn btn-success Blocked-ical btn-tables btn-cons" type="button" data-type="blocked-ical">
                         <span class="bold">Blocked ICal</span>
                         <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
                                 {{ $booksCount['blocked-ical'] }}
@@ -409,7 +409,7 @@ $is_mobile = $mobile->isMobile();
                             </button>
 
 
-                            <button class="btn btn-primary  btn-grey btn-tables" type="button" data-type="blocked-ical">
+                            <button class="btn btn-primary  Blocked-ical btn-tables" type="button" data-type="blocked-ical">
                                 <span class="bold">ICal</span>
                                 <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
                                         {{ $booksCount['blocked-ical'] }}
