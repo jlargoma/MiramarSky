@@ -618,3 +618,8 @@ table.table-prices {
 .line-divide {
     border-top: 4px solid #000;
 }
+@media (min-width: 768px){
+  #modalNewBook .modal-dialog {
+    margin: 0 2%;
+  }
+}

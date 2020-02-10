@@ -12,9 +12,9 @@
   <div class="col-md-4 col-xs-6 push-20">
     <button onclick="_createPayment('link')" class="btn btn-success" type="button" id="_createPaymentLink">Link</button>
     <button onclick="_createPayment('form')" class="btn btn-success" type="button" id="_createPaymentForm">Pago</button>
-    <button class="btn  @if(isset($hasVisa) && $hasVisa) btn-success @else btn-default @endif" type="button" id="_getPaymentVisa">Visa</button>
+    <button class="btn  @if(isset($hasVisa) && $hasVisa) btn-blue @else btn-info @endif" type="button" id="_getPaymentVisa">Visa</button>
   </div>
-  <div class="col-md-5" id="visaDataContent">
+  <div class="col-md-5 @if(isset($visaHtml) && $visaHtml) open @endif" id="visaDataContent">
     {!!$visaHtml!!}
   </div>
   <div class="col-md-7" id="paymentDataContent"></div>
@@ -45,20 +45,26 @@
     document.getElementById("cpy_link").style.display = "none";
 
   });
+  
   $('#_getPaymentVisa').on("click", function () {
 
-    var url = "{{route('booking.get_visa')}}";
-    var booking = $('#payland_booking').val();
-    var _token = $('#payland_token').val();
-    $.post(url, {
-      _token: _token,
-      booking: booking,
-    }, function (data) {
-      $('#visaDataContent').empty().append(data).fadeIn('300');
+    if ($('#visaDataContent').hasClass('open')){
+      $('#visaDataContent').fadeOut('300').removeClass('open');
+    } else {
+      var url = "{{route('booking.get_visa')}}";
+      var booking = $('#payland_booking').val();
+      var _token = $('#payland_token').val();
+      $.post(url, {
+        _token: _token,
+        booking: booking,
+      }, function (data) {
+        $('#visaDataContent').empty().append(data).fadeIn('300').addClass('open');
 
-    });
+      });
+    }
 
   });
+  
   $('#visaDataContent').on("click", '.copy_data', function () {
     var copyText = $(this).closest('div').find('input');
     copyText.select();

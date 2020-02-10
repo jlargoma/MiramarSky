@@ -285,4 +285,12 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
       \Artisan::call('zodomus:import');
   });
   
+  Route::get('/channel-manager-test', function(){
+    $book = new \App\Book();
+    $book->sendAvailibility_test();
+  });
+  
+  
+  
+  
 });

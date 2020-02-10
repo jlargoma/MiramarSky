@@ -33,6 +33,8 @@ setlocale(LC_TIME, "es_ES"); ?>
       </div>
     </div>
     @foreach($settings as $k=>$v)
+    <?php  if( $k == 'reservation_state_changed_reserv_ota') { continue; } ?>
+    
     <div class="col-md-6 text-center m-t-20 p-l-50 p-r-50">
       <h3 class="font-w800">{{$v}}</h3>
       <form method="POST" action="{{route('settings.msgs.upd',$lng)}}">
@@ -53,7 +55,28 @@ setlocale(LC_TIME, "es_ES"); ?>
             $ckeditor = false;
         ?>
         @if($ckeditor)
+          @if( $k == 'reservation_state_changed_reserv' || $k == 'reservation_state_changed_reserv_ota')
+            @if( $k == 'reservation_state_changed_reserv')
+            <ul class="tabs-btn">
+              <li id="rvn_2">OTA</li>
+              <li class="active" id="rvn_1">Normal</li>
+            </ul>
+            <div class="tab-container">
+              <div id="rvn_1_content">
+                <textarea class="ckeditor" name="{{$k}}" id="{{$k}}" rows="10" cols="80">{{$content}}</textarea>
+              </div>
+              <div id="rvn_2_content">
+                <?php 
+                $k_ota = $k.'_ota';
+                $content_2 = isset($data[$k_ota]) ? trim($data[$k_ota]) : '';  
+                ?>
+                <textarea class="ckeditor" name="{{$k_ota}}" id="{{$k_ota}}" rows="10" cols="80">{{$content_2}}</textarea>
+              </div>
+            </div>
+            @endif
+          @else
           <textarea class="ckeditor" name="{{$k}}" id="{{$k}}" rows="10" cols="80">{{$content}}</textarea>
+          @endif
         @else
           <textarea class="form-control" name="{{$k}}" id="{{$k}}" rows="10" cols="80">{{$content}}</textarea>
         @endif
@@ -107,7 +130,31 @@ setlocale(LC_TIME, "es_ES"); ?>
 @endsection
 
 @section('scripts')
- <script>tinymce.init({selector:'textarea'});</script>
+ <script></script>
+  <script type="text/javascript">
+//        tinymce.init({selector:'textarea'});
+
+      $(document).ready(function() {
+        $('#rvn_2_content').hide();
+        $('.tabs-btn').on('click','li',function(){
+          var that = $(this);
+          var id = that.attr('id');
+          
+          if (id == 'rvn_2'){
+            $('#rvn_2_content').show();
+            $('#rvn_1_content').hide();
+            
+          } else {
+            $('#rvn_2_content').hide();
+            $('#rvn_1_content').show();
+          }
+       
+          $('.tabs-btn').find('li').removeClass('active');
+          $('.tabs-btn').find('#'+id).addClass('active');
+          
+        });
+      });
+      </script>
  <style>
     .infomsg{
       font-size: 0.85em;
@@ -121,6 +168,23 @@ setlocale(LC_TIME, "es_ES"); ?>
     
     .infomsg b{
       margin-left: 1em;
+    }
+    ul.tabs-btn{
+      clear: both;
+      overflow: auto;
+    }
+    ul.tabs-btn li {
+    list-style: none;
+    float: right;
+    background-color: #6d5cae;
+    color: #fff;
+    padding: 3px 14px;
+    margin: 0 1px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+    ul.tabs-btn li.active {
+          background-color: #a093c9;
     }
  </style>
 @endsection

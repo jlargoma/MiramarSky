@@ -70,7 +70,7 @@ class Book extends Model {
   protected $cobJorge = 0;
   protected $cobJaime = 0;
   protected $pendiente = 0;
-  protected $agency = 0;
+  protected $agency_fix = 0;
   protected $typeBooks = [
       0 => 'ELIMINADA',
       1 => 'Reservado - stripe',
@@ -1164,22 +1164,28 @@ class Book extends Model {
         $startAux+=$oneDay;
       }
       
-      
-      if ($books){
-        foreach ($books as $book){
-            //Resto los días reservados
-            $startAux = strtotime($book->start);
-            $endAux = strtotime($book->finish);
-            
-            while ($startAux<$endAux){
-              if (isset($aLstDays[date('Y-m-d',$startAux)]))
-                $aLstDays[date('Y-m-d',$startAux)]--;
-              
-              $startAux+=$oneDay;
+      $control = [];
+      if ($books) {
+        foreach ($books as $book) {
+          //Resto los días reservados
+          $startAux = strtotime($book->start);
+          $endAux = strtotime($book->finish);
+
+          while ($startAux < $endAux) {
+            $auxTime = date('Y-m-d', $startAux);
+            $keyControl = $book->room_id.'-'.$auxTime;
+            if (!in_array($keyControl, $control)){
+              if (isset($aLstDays[$auxTime]))
+                $aLstDays[$auxTime] --;
+
+              $control[] = $keyControl;
             }
-          
+
+            $startAux += $oneDay;
+          }
         }
       }
+    
       //Genero el listado para enviar a Zodomus
       $resultLst = [];
       $startAux2 = $end = $value = null;
@@ -1269,6 +1275,7 @@ class Book extends Model {
     }
 
 
+    $control = [];
     if ($books) {
       foreach ($books as $book) {
         //Resto los días reservados
@@ -1276,8 +1283,14 @@ class Book extends Model {
         $endAux = strtotime($book->finish);
 
         while ($startAux < $endAux) {
-          if (isset($aLstDays[date('Y-m-d', $startAux)]))
-            $aLstDays[date('Y-m-d', $startAux)] --;
+          $auxTime = date('Y-m-d', $startAux);
+          $keyControl = $book->room_id.'-'.$auxTime;
+          if (!in_array($keyControl, $control)){
+            if (isset($aLstDays[$auxTime]))
+              $aLstDays[$auxTime] --;
+            
+            $control[] = $keyControl;
+          }
 
           $startAux += $oneDay;
         }
@@ -1285,6 +1298,154 @@ class Book extends Model {
     }
     
     return $aLstDays;
+  }
+  
+  
+  /**
+   * send to channel manager the availibility
+   * @param type $available
+   */
+  public function sendAvailibility_test($room_id=129,$start='2020-02-14',$finish='2020-02-17') {
+    
+    $Zodomus  =  new \App\Services\Zodomus\Zodomus();
+    $room     = Rooms::find($room_id);
+    
+    if ($room){
+      $oRooms = Rooms::where('channel_group',$room->channel_group)->pluck('id')->toArray();
+      
+      $match1 = [['start','>=', $start ],['start','<=', $finish ]];
+      $match2 = [['finish','>=', $start ],['finish','<=', $finish ]];
+      $match3 = [['start','<', $start ],['finish','>', $finish ]];
+
+      $books = self::where_type_book_reserved()->whereIn('room_id',$oRooms)
+            ->where(function ($query) use ($match1,$match2,$match3) {
+              $query->where($match1)
+                      ->orWhere($match2)
+                      ->orWhere($match3);
+            })->get();
+            
+      $avail  = count($oRooms);
+      $oneDay = 24*60*60;
+      
+      //Prepara la disponibilidad por día de la reserva
+      $startAux = strtotime($start);
+      $endAux = strtotime($finish);
+      $aLstDays = [];
+      while ($startAux<$endAux){
+        $aLstDays[date('Y-m-d',$startAux)] = $avail;
+        $startAux+=$oneDay;
+      }
+      
+      $control = [];
+      if ($books) {
+        foreach ($books as $book) {
+          //Resto los días reservados
+          $startAux = strtotime($book->start);
+          $endAux = strtotime($book->finish);
+
+          while ($startAux < $endAux) {
+            $auxTime = date('Y-m-d', $startAux);
+            $keyControl = $book->room_id.'-'.$auxTime;
+            if (!in_array($keyControl, $control)){
+              if (isset($aLstDays[$auxTime]))
+                $aLstDays[$auxTime] --;
+
+              $control[] = $keyControl;
+            }
+
+            $startAux += $oneDay;
+          }
+        }
+      }
+    
+      //Genero el listado para enviar a Zodomus
+      $resultLst = [];
+      $startAux2 = $end = $value = null;
+      foreach ($aLstDays as $d => $v) {
+        if ($value === null) {
+          $value = $v;
+          $startAux2 = $d;
+        }
+        if ($value != $v) {
+          $resultLst[] = [
+              "avail" => $value,
+              "start" => $startAux2,
+              "end" => date('Y-m-d', strtotime($end)+$oneDay),
+          ];
+
+          $value = $v;
+          $startAux2 = $d;
+        }
+
+        $end = $d;
+      }
+
+      $resultLst[] = [
+          "avail" => $v,
+          "start" => $startAux2,
+          "end" => date('Y-m-d', strtotime($end)+$oneDay),
+      ];
+      
+      //buscos los OTAs
+      $otas = [];
+      $aptos = configZodomusAptos();
+      foreach ($aptos as $cg => $apto){
+        if ($cg == $room->channel_group)
+          $otas = $apto->rooms;
+      }
+      //envío cada periodo de disponibilidad
+//      foreach ($resultLst as $data){
+//        foreach ($otas as $ota){
+//          
+//          $avail = intval($data['avail']);
+//
+//          $paramAvail = [
+//              "channelId" =>  $ota->channel,
+//              "propertyId" => $ota->propID,
+//              "roomId" =>  $ota->roomID,
+//              "dateFrom" => $data['start'],
+//              "dateTo" => $data['end'],
+//              "availability" =>  ($avail<1) ? $avail : 1,
+//            ];
+//          $return = $Zodomus->setRoomsAvailability($paramAvail);
+//            var_dump($paramAvail,$return);
+//        }
+//      }
+      
+      
+      $paramAvail = [
+              "channelId" =>  1,
+              "propertyId" => 2092950,
+              "roomId" =>  209295003,
+              "dateFrom" => "2020-07-14",
+              "dateTo" => "2020-07-15",
+              "availability" =>   0,
+            ];
+          $return = $Zodomus->setRoomsAvailability($paramAvail);
+           var_dump($paramAvail,$return);
+      $paramAvail = [
+              "channelId" =>  1,
+              "propertyId" => 2092950,
+              "roomId" =>  209295003,
+              "dateFrom" => "2020-07-15",
+              "dateTo" => "2020-07-16",
+              "availability" =>   1,
+            ];
+          $return = $Zodomus->setRoomsAvailability($paramAvail);
+           var_dump($paramAvail,$return);
+      $paramAvail = [
+              "channelId" =>  1,
+              "propertyId" => 2092950,
+              "roomId" =>  209295003,
+              "dateFrom" => "2020-07-16",
+              "dateTo" => "2020-07-17",
+              "availability" =>   0,
+            ];
+          $return = $Zodomus->setRoomsAvailability($paramAvail);
+           var_dump($paramAvail,$return);
+          
+      
+    }
   }
 
 }

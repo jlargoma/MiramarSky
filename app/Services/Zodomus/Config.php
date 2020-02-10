@@ -71,14 +71,14 @@ class Config{
      * @param type $params
      * @return type
      */
-    public function processPriceRates($params) {
+    public function processPriceRates($params,$channel_group) {
       
       $channelId = $params['channelId'];
       $price = $params['prices']['price'];
       $priceSingle = isset($params['prices']['priceSingle']) ? $params['prices']['priceSingle'] : 0;
       
-      $price = $this->priceByChannel($price,$channelId);
-      $priceSingle = $this->priceByChannel($priceSingle,$channelId);
+      $price = $this->priceByChannel($price,$channelId,$channel_group);
+      $priceSingle = $this->priceByChannel($priceSingle,$channelId,$channel_group);
               
       $params['prices']['price'] = ceil($price);
       if (isset($params['prices']['priceSingle']))
@@ -89,20 +89,23 @@ class Config{
     }
     
     
-    public function priceByChannel($price,$channelId=null) {
+    public function priceByChannel($price,$channelId=null,$room=null) {
       
       switch ($channelId){
         case 1:
         case "1": //"Booking.com",
-          $price = $price+($price*0.22);//+15;
+          if ($room == 'DDL')
+            $price = ($price>0) ? $price+($price*0.24) : 24;
+          else 
+            $price = ($price>0) ? $price+($price*0.20) : 20;
           break;
         case 2:
         case "2": //Expedia,
-          $price = $price+($price*0.20);
+          $price = ($price>0) ? $price+($price*0.20) : 20;
           break;
         case 3:
         case "3": //airbnb,
-          $price = $price+($price*0.15);
+          $price = ($price>0) ? $price+($price*0.15) : 15;
           break;
       }
       
@@ -128,8 +131,14 @@ class Config{
         case "17086950":  //Booking.com - ROSA
           $text = 'DESAYUNO INCLUIDO';
           break;
+        case 49136:
+        case "49136":  
+          $text = 'CANCELACIÓN  GRATUITA HASTA 3 DÍAS ANTES';
+          break;
       }
       return $text;
+ 
+        
     }
     
     function get_comision($price,$channelId=null) {

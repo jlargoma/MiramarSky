@@ -484,6 +484,10 @@ $mobile = new Mobile();
   <?php endfor ?>
               </select>
             </div>
+             <div class="col-md-2 col-xs-6 push-0" style="padding: 0 5px;">
+              <label>Zodomus ID</label>
+              <input type="text" id="external_id" name="external_id" value="{{$book->external_id}}" class="form-control">
+            </div>
           </div>
           <div class="col-xs-12 bg-white">
             <div class="col-md-6 col-xs-12 push-20 not-padding">
@@ -1072,6 +1076,7 @@ $mobile = new Mobile();
   <?php endfor ?>
               </select>
             </div>
+           
           </div>
 
           <div class="col-xs-12 bg-white">
@@ -1097,6 +1102,10 @@ $mobile = new Mobile();
                          value="<?php echo $book->PVPAgencia ?>">
   <?php endif ?>
               </div>
+            </div>
+             <div class="col-md-2 col-xs-6 push-20 ">
+              <label>Zodomus ID</label>
+              <input type="text" id="external_id" name="external_id" value="{{$book->external_id}}" class="form-control">
             </div>
             <div class="col-md-2 col-xs-6 push-20 ">
               <label>promoción 3x2</label>

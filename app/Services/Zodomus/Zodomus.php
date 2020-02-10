@@ -223,8 +223,8 @@ class Zodomus{
      * @param type $params
      * @return Error Message
      */
-    public function setRates($params) {
-      $params = $this->ZConfig->processPriceRates($params);
+    public function setRates($params,$channel_group=null) {
+      $params = $this->ZConfig->processPriceRates($params,$channel_group);
 //      var_dump($params);
       $this->call('rates','POST',$params);
       if (isset($this->response->status)){

@@ -643,6 +643,7 @@
                 var costApto            = $('input[name="costApto"]').val();
                 var costParking         = $('input[name="costParking"]').val();
                 var beneficio           = $('input[name="beneficio"]').val();
+                var external_id         = $('#external_id').val();
                 var comments            = $('textarea[name="comments"]').val();
                 var book_comments       = $('textarea[name="book_comments"]').val();
                 var book_owned_comments = $('textarea[name="book_owned_comments"]').val();
@@ -687,7 +688,8 @@
                                 book_owned_comments: book_owned_comments,
                                 computed_data: computed_data,
                                 has_ff_discount:has_ff_discount,
-                                ff_discount:ff_discount
+                                ff_discount:ff_discount,
+                                external_id:external_id,
                 },
                 function(data) {
 
