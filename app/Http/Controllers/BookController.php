@@ -796,6 +796,8 @@ class BookController extends AppController
             }
 
             
+            
+            
             $book->type_park  = $request->input('parking');
             $book->agency     = $request->input('agency');
             $book->PVPAgencia = $request->input('agencia') ? : 0;
@@ -846,6 +848,7 @@ class BookController extends AppController
               $book->ben_jorge   = $book->getJorgeProfit();
               $book->ben_jaime   = $book->getJaimeProfit();
             }
+            $book->external_id  = $request->input('external_id');
             if ($book->save())
             {
                
