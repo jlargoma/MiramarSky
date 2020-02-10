@@ -58,6 +58,7 @@ class SendSecondPay extends Command {
     $books = Book::where('start', '>=', $today)
             ->where('start', '<=', $today->copy()->addDays($daysToCheck))
             ->where('type_book', 2)
+            ->whereNotIn('agency', [1,4])
             ->where('send', 0)
             ->orderBy('created_at', 'DESC')->get();
 
