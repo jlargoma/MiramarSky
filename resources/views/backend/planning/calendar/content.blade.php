@@ -5,6 +5,7 @@ use \Carbon\Carbon;
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
 $uRole = Auth::user()->role;
+$appName = env('APP_APPLICATION');
 ?>
 <div class="col-md-12 col-xs-12">
   <div class="panel panel-mobile">
@@ -22,16 +23,29 @@ $uRole = Auth::user()->role;
                 $luxAux = 1;
                 $typeAux = 2; 
                 $currentAux = null; 
+                $posicion = 0;
+                
+                if ($appName == "riad"){
+                  $arrayLine = [5,11,14,21];
+                } else {
+                  $arrayLine = [];
+                }
                 ?>
                 <?php foreach ($roomscalendar as $key => $room): ?>
                   <?php $inicio = $inicioAux->copy() ?>
 
-                  <?php if ($room->luxury != $luxAux || ($currentAux && $room->channel_group != $currentAux)): ?>
-                    <?php $line = "line-divide "; ?>
-                  <?php else: ?>
-                    <?php $line = ""; ?>
-                  <?php endif ?>
-                  <?php
+                  <?php 
+                  $line = "";
+                  if ($appName == "riad"){
+                    if (in_array($posicion, $arrayLine)){
+                      $line = "line-divide ";
+                    }
+                  } else {
+                    if ($room->luxury != $luxAux || ($currentAux && $room->channel_group != $currentAux)){
+                      $line = "line-divide ";
+                    }
+                  }
+                  $posicion++;
                   $luxAux = $room->luxury;
                   $typeAux = $room->sizeApto;
                   $currentAux = $room->channel_group;

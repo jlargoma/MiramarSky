@@ -21,7 +21,16 @@ trait BookEmailsStatus
     {
       if (!$book->customer->email || trim($book->customer->email) == '') return;
         $cachedRepository  = new CachedRepository();
-        $keyMail = $this->getKeyTemplate($status);
+        $otaAgencies = [1,4];
+        if ($status == 1){
+          if (in_array($book->agency,$otaAgencies)){ 
+            $keyMail = $this->getKeyTemplate('1.1');
+          } else {
+            $keyMail = $this->getKeyTemplate($status);
+          }
+        } else {
+          $keyMail = $this->getKeyTemplate($status);
+        }
         if (!$keyMail){
           return;
         }
@@ -176,6 +185,10 @@ trait BookEmailsStatus
             case 1:
             case "1":
                 $key = 'reservation_state_changed_reserv';
+                break;
+            case 1.1:
+            case "1.1":
+                $key = 'reservation_state_changed_reserv_ota';
                 break;
             case 2:
             case "2":

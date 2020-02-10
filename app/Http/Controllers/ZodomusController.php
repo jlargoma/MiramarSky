@@ -179,11 +179,16 @@ class ZodomusController extends Controller {
     }
 
     $dw = listDaysSpanish(true);
-    
+    $price_booking = $zConfig->priceByChannel(0,1,$room);
+    $price_expedia = $zConfig->priceByChannel(0,2,$room);
+    $price_airbnb = $zConfig->priceByChannel(0,3,$room);
     return view('backend/zodomus/cal-room', [
         'rooms' => $rooms,
         'room' => $room,
         'dw' => $dw,
+        'price_booking' => $price_booking,
+        'price_expedia' => $price_expedia,
+        'price_airbnb' => $price_airbnb,
     ]);
   }
 
@@ -321,7 +326,7 @@ class ZodomusController extends Controller {
       $priceLst = [];
       foreach ($priceDay as $d => $p) {
 
-        $priceBooking = ceil($zConfig->priceByChannel($p,1));
+        $priceBooking = ceil($zConfig->priceByChannel($p,1,$apto));
         $priceExpedia = ceil($zConfig->priceByChannel($p,2));
         $priceAirbnb = ceil($zConfig->priceByChannel($p,3));
         $min_estancia = isset($min[$d]) ? $min[$d] : 0;
@@ -363,8 +368,8 @@ class ZodomusController extends Controller {
   function generate_config() {
     ///admin/channel-manager/config
 //    $condif = configZodomusAptos(); dd($condif); die;
-//    $confFile = \Illuminate\Support\Facades\File::get(storage_path('app/config/zodomus.php'));
-//  eval($confFile);
+    $confFile = \Illuminate\Support\Facades\File::get(storage_path('app/config/zodomus.php'));
+  eval($confFile);
   }
   
   
@@ -429,7 +434,7 @@ class ZodomusController extends Controller {
                 $param['minimumStayArrival'] = $minimumStay;
               }
               
-              $errorMsg = $oZodomus->setRates($param);
+              $errorMsg = $oZodomus->setRates($param,$channel_group);
               if ($errorMsg){
                 return $errorMsg;
               }

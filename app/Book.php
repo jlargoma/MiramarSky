@@ -70,7 +70,7 @@ class Book extends Model {
   protected $cobJorge = 0;
   protected $cobJaime = 0;
   protected $pendiente = 0;
-  protected $agency = 0;
+  protected $agency_fix = 0;
   protected $typeBooks = [
       0 => 'ELIMINADA',
       1 => 'Reservado - stripe',

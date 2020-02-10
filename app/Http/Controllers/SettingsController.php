@@ -170,6 +170,31 @@ class SettingsController extends AppController
                 $Object->save();
 
             }
+            
+            if ($key == 'reservation_state_changed_reserv'){
+              
+              $key = 'reservation_state_changed_reserv_ota';
+              $value  = $request->input($key, null);
+              $Object = Settings::where('key', $key)->first();
+
+              if ($Object)
+              {
+
+                  $Object->content = $value;
+                  $Object->save();
+
+              } else
+              {
+
+                  $Object          = new Settings();
+                  $Object->key     = $key;
+                  $Object->name    = $settings[$key];
+                  $Object->value   = 0;
+                  $Object->content = $value;
+                  $Object->save();
+
+              }
+            }
         }
         return back()->with('status', 'Setting updated!');
     }

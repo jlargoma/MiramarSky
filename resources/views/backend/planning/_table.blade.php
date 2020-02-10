@@ -124,49 +124,7 @@ $role = Auth::user()->role;
       });
     });
 
-    $('.deleteBook').click(function(event) {
-    	var id = $(this).attr('data-id');
-    	$.get('/admin/reservas/delete/'+id, function(data) {
-
-    		$.notify({
-                title: '<strong>'+data.title+'</strong>, ',
-                icon: 'glyphicon glyphicon-star',
-                message: data.response
-            },{
-                type: data.status,
-                animate: {
-                    enter: 'animated fadeInUp',
-                    exit: 'animated fadeOutRight'
-                },
-                placement: {
-                    from: "top",
-                    align: "left"
-                },
-                allow_dismiss: false,
-                offset: 80,
-                spacing: 10,
-                z_index: 1031,
-                delay: 5000,
-                timer: 1500
-            }); 
-
-    		// recargamos la actual tabla
-    		var type = $('.table-data').attr('data-type');
-	        var year = $('#fecha').val();
-	        $.get('/admin/reservas/api/getTableData', { type: type, year: year }, function(data) {
-	            $('.content-tables').empty().append(data);
-	        });
-
-    		// recargamos el calendario
-
-	        $('.content-calendar').empty().append('<div class="col-xs-12 text-center sending" style="padding: 120px 15px;"><i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br><h2 class="text-center">CARGANDO CALENDARIO</h2></div>');
-
-            $('.content-calendar').empty().load('/getCalendarMobile');
-
-
-
-        });
-    });
+    
 
 
 	// Cambiamos las reservas

@@ -149,8 +149,7 @@ $uRole = Auth::user()->role;
             <?php if ( $uRole != "agente" ): ?>
             <td>
                 <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button"
-                        data-toggle="tooltip" title="" data-original-title="Eliminar Reserva"
-                        onclick="return confirm('¿Quieres Eliminar la reserva?');">
+                        data-toggle="tooltip" title="" data-original-title="Eliminar Reserva">
                     <i class="fa fa-trash"></i>
                 </button>
             </td>

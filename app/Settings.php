@@ -41,6 +41,7 @@ class Settings extends Model
       $lst = [
           'new_request_rva'                   =>'Solicitud RVA',
           'reservation_state_changed_reserv'  =>'Reservado RVA',
+          'reservation_state_changed_reserv_ota'  =>'Reservado RVA',
           'reservation_state_changed_confirm' =>'Confirmado RVA',
           'reservation_state_changed_cancel'  =>'Denegada RVA',
           'reserva-propietario'               =>'RVA Propietario',
