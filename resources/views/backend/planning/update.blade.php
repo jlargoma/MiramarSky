@@ -119,7 +119,8 @@ $mobile = new Mobile();
           <h5>
             Creado por <?php echo "<b>" . strtoupper($book->user->name) . "</b>" ?>
             / ID: <?php echo "<b>" . $book->id . "</b>" ?>
-            <input type="hidden" value="{{$book->external_id}}">
+            <?php if ($book->external_id){ echo "/ OTA-ID: <b>" . $book->external_id . "</b>"; }?>
+            
           </h5>
 <?php if ($book->type_book == 2): ?>
             <div class="col-md-2 col-xs-3 icon-lst">
@@ -484,10 +485,10 @@ $mobile = new Mobile();
   <?php endfor ?>
               </select>
             </div>
-             <div class="col-md-2 col-xs-6 push-0" style="padding: 0 5px;">
+<!--             <div class="col-md-2 col-xs-6 push-0" style="padding: 0 5px;">
               <label>Zodomus ID</label>
               <input type="text" id="external_id" name="external_id" value="{{$book->external_id}}" class="form-control">
-            </div>
+            </div>-->
           </div>
           <div class="col-xs-12 bg-white">
             <div class="col-md-6 col-xs-12 push-20 not-padding">
@@ -1103,10 +1104,10 @@ $mobile = new Mobile();
   <?php endif ?>
               </div>
             </div>
-             <div class="col-md-2 col-xs-6 push-20 ">
+<!--             <div class="col-md-2 col-xs-6 push-20 ">
               <label>Zodomus ID</label>
               <input type="text" id="external_id" name="external_id" value="{{$book->external_id}}" class="form-control">
-            </div>
+            </div>-->
             <div class="col-md-2 col-xs-6 push-20 ">
               <label>promoción 3x2</label>
               <input type="number" step='0.01' class="promociones only-numbers form-control" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>
