@@ -206,6 +206,9 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/reservas/reserva/{id}', 'BookController@tabReserva');
   Route::get('/reservas/cobrar/{id}', 'BookController@cobroBook');
   Route::get('/reservas/api/lastsBooks', 'BookController@getLastBooks');
+  Route::get('/reservas/api/intercambio', 'BookController@getIntercambio');
+  Route::get('/reservas/api/intercambio-search/{block}/{search?}', 'BookController@getIntercambioSearch');
+  Route::post('/reservas/api/intercambio-change', 'BookController@intercambioChange');
   Route::get('/reservas/api/calendarBooking', 'BookController@getCalendarBooking');
   Route::get('/reservas/api/alertsBooking', 'BookController@getAlertsBooking');
 
