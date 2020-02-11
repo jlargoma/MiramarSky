@@ -1946,6 +1946,9 @@ class BookController extends AppController
         $isMobile = $mobile->isMobile();
         if (!$month){
           $month = strtotime($year->year.'-'.date('m').'-01');
+          if (strtotime($startYear)>$month){
+            $month = strtotime(($year->year+1).'-'.date('m').'-01');
+          }
         }
         $currentM = date('n',$month);
         $startAux = new Carbon(date('Y-m-d', strtotime('-1 months',$month)));
