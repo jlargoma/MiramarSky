@@ -74,7 +74,7 @@ class ZodomusImport extends Command {
    */
   public function handle() {
     $cannels = configZodomusAptos();
-if (!isset($_GET['detail'])) return 'ok';
+//if (!isset($_GET['detail'])) return 'ok';
 
 
     $Zodomus = $this->sZodomus;
@@ -95,8 +95,7 @@ if (!isset($_GET['detail'])) return 'ok';
           $agency = $ZConfig->getAgency($channelId);
 
           $bookings = $Zodomus->getBookings($room->channel, $room->propID);
-        echo json_encode($bookings);
-        dd($bookings);
+       
           if ($bookings && $bookings->status->returnCode == 200) {
             $alreadySent[] = $keyIteration;
             if (count($bookings->reservations) > 0) {

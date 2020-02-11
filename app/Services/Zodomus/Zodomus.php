@@ -253,6 +253,19 @@ class Zodomus{
       
     }
     
+    public function getBookingsQueue($channelId,$apto) {
+      
+      
+       $params = [
+        "channelId"=> $channelId,
+        "propertyId"=> $apto,
+      ];
+      
+      $this->call('reservations-queue','GET',$params);
+      return $this->response;
+      
+    }
+    
     
     public function createTestReserv($apto) {
       
