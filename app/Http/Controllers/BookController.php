@@ -849,7 +849,7 @@ class BookController extends AppController
               $book->ben_jorge   = $book->getJorgeProfit();
               $book->ben_jaime   = $book->getJaimeProfit();
             }
-            $book->external_id  = $request->input('external_id');
+//            $book->external_id  = $request->input('external_id');
             if ($book->save())
             {
                
