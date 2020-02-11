@@ -131,6 +131,13 @@ $is_mobile = $mobile->isMobile();
         #modalChangeBook .modal-dialog {
             margin-top: 4em;
         }
+        .minimal {
+            padding: 5px 7px !important;
+        }
+        .minimal span{
+          font-size: 12px;
+        }
+          
         @media only screen and (max-width: 991px){
           button.btn.changeStatus,
           button.btn.changeRoom {
@@ -736,6 +743,22 @@ $is_mobile = $mobile->isMobile();
     </div>
   </div>
 </div>
+          
+<div class="modal fade" id="modalIntercambio" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong class="modal-title" id="modalChangeBookTit" style="font-size: 1.4em;">Intercambio de Habitaciones</strong>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body contentModalIntercambio">
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('scripts')
@@ -772,6 +795,9 @@ $is_mobile = $mobile->isMobile();
 
         $('#lastBooks').click(function(event) {
           $('#modalLastBooks .modal-content').empty().load('/admin/reservas/api/lastsBooks');
+        });
+        $('.btn_intercambio').click(function(event) {
+          $('#modalIntercambio .contentModalIntercambio').empty().load('/admin/reservas/api/intercambio');
         });
 
 

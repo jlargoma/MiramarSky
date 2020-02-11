@@ -1944,7 +1944,9 @@ class BookController extends AppController
         
         $mobile = new Mobile();
         $isMobile = $mobile->isMobile();
-        if (!$month) $month = time();
+        if (!$month){
+          $month = strtotime($year->year.'-'.date('m').'-01');
+        }
         $currentM = date('n',$month);
         $startAux = new Carbon(date('Y-m-d', strtotime('-1 months',$month)));
         $endAux = new Carbon(date('Y-m-d', strtotime('+1 months',$month)));
@@ -2741,4 +2743,71 @@ class BookController extends AppController
         
         return 'Datos no encontrados';
     }
+    
+    function getIntercambio(){
+      return view('backend.planning._bookIntercambio');
+    }
+    function getIntercambioSearch($block,$search){
+      
+      if (trim($search) == '') return '';
+
+      $year     = $this->getActiveYear();
+      $dateFrom = new Carbon($year->start_date);
+      $dateTo   = new Carbon($year->end_date);
+
+      $books = null;
+      
+      if (is_numeric($search)){
+        $books = Book::find($search);
+        if (!$books){
+          return '';
+        }
+        return view('backend.planning.listados._bookIntercambio',['block'=>$block,'books'=>null,'book'=>$books]);
+      } else {
+        $customerIds = \App\Customers::where('name', 'LIKE', '%' . $search . '%')
+                ->orWhere('name', 'LIKE', '%' . $search . '%')->pluck('id')->toArray();
+        if (count($customerIds) > 0)
+        {
+           
+          $books = \App\Book::whereIn('customer_id', $customerIds)->where('start', '>=', $dateFrom)
+                        ->where('start', '<=', $dateTo)->where('type_book', '!=', 9)->where('type_book', '!=', 0)
+                        ->orderBy('start', 'ASC')->get();
+//          dd($books[0]->customer->name);
+        }
+      }
+      return view('backend.planning.listados._bookIntercambio',['block'=>$block,'books'   => $books,'book'=>null]);
+    }
+    function intercambioChange(Request $request){
+      
+      $book_1 = $request->input('book_1',null);
+      $book_2 = $request->input('book_2',null);
+    
+      if (!$book_1 || !$book_2){
+        return response()->json(['status'=>'error','msg'=>'Debe seleccionar ambas reservas']);
+      }
+      if ($book_1 == $book_2){
+        return response()->json(['status'=>'error','msg'=>'Ambas reservas no pueden ser la misma']);
+      }
+      
+      $b1 = Book::find($book_1);
+      $b2 = Book::find($book_2);
+      
+      if (!$b1 || !$b2){
+        return response()->json(['status'=>'error','msg'=>'Debe seleccionar ambas reservas']);
+      }
+      
+      $r1 = $b1->room_id;
+      $r2 = $b2->room_id;
+      
+      
+//      $b1->room_id = $r2;
+//      $b1->save();
+//      
+//      $b2->room_id = $r1;
+//      $b2->save();
+      
+      return response()->json(['status'=>'ok']);
+      
+    }
+    
 }
