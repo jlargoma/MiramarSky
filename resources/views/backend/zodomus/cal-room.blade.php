@@ -210,6 +210,7 @@ $(document).ready(function () {
     date2 = new Date(date2);
     date2.setDate(date2.getDate() + 1);
     pintar(date1, date2);
+    allDayW();
   });
 
 
@@ -246,13 +247,14 @@ $(document).ready(function () {
   calendar.setOption('locale', 'es');
 
   calendar.on('select', function (info) {
-    console.log(info);
+    
     var start = new Date(info.start);
     var end = new Date(info.end);
     end.setDate(end.getDate() - 1);
     $('#date_range').data('daterangepicker').setStartDate(start.ddmmmyyyy());
     $('#date_range').data('daterangepicker').setEndDate(end.ddmmmyyyy());
-
+    allDayW();
+    
   });
 
 
@@ -260,6 +262,12 @@ $(document).ready(function () {
   calendar.render();
 
 
+  var allDayW = function(){
+    $('.btn_days').removeClass('active');
+    for(i=0; i<7; i++){
+      $('#dw_'+i).prop("checked", true);
+    }
+  }
 
   var pintar = function (start, end) {
     let event = calendar.getEventById('event_edit');
@@ -291,11 +299,13 @@ $(document).ready(function () {
     var end = new Date(e.date);
     end.setDate(start.getDate() + 1);
     pintar(start, end);
+    allDayW();
   });
   $('#datepicker_end').on('changeDate', function (e) {
     var end = new Date(e.date);
     end.setDate(end.getDate() + 1);
     pintar(null, end);
+    allDayW();
   });
 
 
@@ -307,27 +317,23 @@ $(document).ready(function () {
   $('#selAllDays').on('click', function (e) {
     $('.btn_days').removeClass('active');
     $(this).addClass('active');
-     for(i=0; i<7; i++){
-      $('#dw_'+i).prop("checked", true);
-    }
+    allDayW();
   });
   $('#selWorkdays').on('click', function (e) {
      $('.btn_days').removeClass('active');
     $(this).addClass('active');
-    $('#dw_0').prop("checked", false);
+    allDayW();
+    $('#dw_5').prop("checked", false);
     $('#dw_6').prop("checked", false);
-    for(i=1; i<6; i++){
-      $('#dw_'+i).prop("checked", true);
-    }
   });
    $('#selHolidays').on('click', function (e) {
       $('.btn_days').removeClass('active');
     $(this).addClass('active');
-    $('#dw_0').prop("checked", true);
-    $('#dw_6').prop("checked", true);
-    for(i=1; i<6; i++){
+    for(i=0; i<7; i++){
       $('#dw_'+i).prop("checked", false);
     }
+    $('#dw_5').prop("checked", true);
+    $('#dw_6').prop("checked", true);
   });
 
   $('#channelForm').on('submit', function (event) {
