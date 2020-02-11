@@ -28,6 +28,12 @@
     font-size: 45px!important;
     color: white!important;
   }
+  .calend_red{
+    background-color: rgba(255, 210, 210, 0.3);
+  }
+  .calend_select{
+        background-color: #e8f5f7;
+  }
   @media only screen and (max-width: 767px){
     .daterangepicker {
       left: 12%!important;
@@ -195,7 +201,7 @@ $(document).ready(function () {
       (dd > 9 ? '' : '0') + dd
     ].join('-');
   };
-  var render_yyyymmmdd = function (dates, moreDay = 0) {
+  var render_yyyymmmdd = function (dates) {
     var date = dates.trim().split('/');
     return date[2] + '-' + date[1] + '-' + date[0];
   };
@@ -206,9 +212,9 @@ $(document).ready(function () {
 
     var arrayDates = date.split('-');
     var date1 = render_yyyymmmdd(arrayDates[0]);
-    var date2 = render_yyyymmmdd(arrayDates[1], 1);
+    var date2 = render_yyyymmmdd(arrayDates[1]);
+    date1 = new Date(date1);
     date2 = new Date(date2);
-    date2.setDate(date2.getDate() + 1);
     pintar(date1, date2);
     allDayW();
   });
@@ -237,7 +243,14 @@ $(document).ready(function () {
       $.get('{{route("channel.price.cal.list",$room)}}',
               {"start": start.toLocaleDateString("es-ES"), "end": end.toLocaleDateString("es-ES")},
               function (data) {
-                callback((data));
+                var el_lst = $(".fc-bg");
+                var total = data.redDays.length;
+                
+                for(var i=0;i<total;i++){
+                  el_lst.find("[data-date='" + data.redDays[i] + "']").addClass('calend_red'); 
+                }
+                console.log(data,total);
+                callback((data.priceLst));
               });
     },
 //    events: '{{route("channel.price.cal.list",$room)}}'
@@ -270,44 +283,25 @@ $(document).ready(function () {
   }
 
   var pintar = function (start, end) {
-    let event = calendar.getEventById('event_edit');
-    if (event) {
+    
+    var el_lst = $(".fc-bg");
+    var limit = 30;
+    var oneDay = 24*60*60;
+    $('.calend_select').removeClass('calend_select');
+    
+    // seconds * minutes * hours * milliseconds = 1 day 
+    var day = 60 * 60 * 24 * 1000;
+    start = new Date(start.getTime() + day);
+    end = new Date(end.getTime() + day);
 
-      if (start)
-        event.setStart(start);
-      event.setEnd(end);
-    } else {
-      calendar.addEventSource(
-              {
-                events: [
-                  {
-                    id: 'event_edit',
-                    title: 'EDITANDO',
-                    start: start,
-                    end: end
-                  },
-                ],
-                color: 'yellow', // an option!
-                textColor: 'black' // an option!
-              }
-      );
+    while( limit && start <= end){
+      el_lst.find("[data-date='" + start.yyyymmmdd() + "']").addClass('calend_select'); 
+      start = new Date(start.getTime() + day);
+      limit--;
     }
 
-  }
-  $('#datepicker_start').on('changeDate', function (e) {
-    var start = new Date(e.date);
-    var end = new Date(e.date);
-    end.setDate(start.getDate() + 1);
-    pintar(start, end);
-    allDayW();
-  });
-  $('#datepicker_end').on('changeDate', function (e) {
-    var end = new Date(e.date);
-    end.setDate(end.getDate() + 1);
-    pintar(null, end);
-    allDayW();
-  });
 
+  }
 
   $('#room_list').on('change', function (e) {
     var rId = $(this).val();
@@ -441,11 +435,10 @@ $(document).ready(function () {
   a.fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end.availibility {
     position: absolute;
     top: 0;
-    font-size: 11px;
+    font-size: 13px;
     color: #fff;
-    padding: 2px 4px;
-    margin: 6px;
-
+    padding: 1px 3px;
+    margin: 3px 50px 9px;
   }
   a.fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end.availibility.yes {
     background-color: rgba(32, 113, 0, 0.4);
@@ -454,10 +447,7 @@ $(document).ready(function () {
     background-color: rgba(255, 0, 0, 0.40);
   }
   
-  .calendar-blok{
-    width: 100%;
-    overflow: scroll;
-  }
+
   div#calendar {
     min-width: 706px;
   }
@@ -468,7 +458,22 @@ $(document).ready(function () {
     color: #fff;
     border-radius: 4px;
   }
+  span.fc-day-number {
+    font-weight: 800;
+    color: #000;
+}
+th.fc-day-header.fc-widget-header {
+    font-size: 18px;
+    color: #272727;
+    padding: 5px;
+    background-color: #e0e0e0;
+    border: 1px solid #000;
+}
 @media only screen and (max-width: 768px) {
+    .calendar-blok{
+    width: 100%;
+    overflow: scroll;
+  }
      .daterangepicker {
     top: auto !important;
   }

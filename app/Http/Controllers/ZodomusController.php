@@ -324,16 +324,19 @@ class ZodomusController extends Controller {
         }
       }
       $priceLst = [];
+      $redDays = [];
       foreach ($priceDay as $d => $p) {
 
         $priceBooking = ceil($zConfig->priceByChannel($p,1,$apto));
         $priceExpedia = ceil($zConfig->priceByChannel($p,2));
         $priceAirbnb = ceil($zConfig->priceByChannel($p,3));
         $min_estancia = isset($min[$d]) ? $min[$d] : 0;
+        
+        
         $priceLst[] = [
             "title" => '<table>'
             . '<tr><td colspan="2" class="main">'.$p.' €</td></tr>'
-            . '<tr><td colspan="2" class="min-estanc">Min '.$min_estancia.' dias</td></tr>'
+            . '<tr><td colspan="2" class="min-estanc">'.$min_estancia.' dias</td></tr>'
             . '<tr><td><span class="price-booking">'.$priceBooking.'</span></td><td><span class="price-airbnb">'.$priceAirbnb.'</span></td></tr>'
             . '<tr><td><span class="price-expedia">'.$priceExpedia.'</span></td><td>0</td></tr>'
             . '</table>',
@@ -347,6 +350,8 @@ class ZodomusController extends Controller {
       $availibility = $book->getAvailibilityBy_channel($apto, $start, $end);
       foreach ($availibility as $d => $p) {
         $class = ($p>0) ? 'yes' : 'no';
+        
+        if ($p<=0) $redDays[] = $d;
        
         $priceLst[] = [
             "title" => $p,
@@ -356,7 +361,7 @@ class ZodomusController extends Controller {
 
       }
 
-      return response()->json($priceLst);
+      return response()->json(['priceLst' => $priceLst,'redDays'=>$redDays]);
     }
 
 
@@ -458,6 +463,13 @@ class ZodomusController extends Controller {
       $roomID = 9137803;
       $rateId = 12283275;
       $return = null;
+      
+      
+//      $param = ["channelId" =>  1,"propertyId" => 1542253,"reservationId" =>2949791239];
+//      $reservation = $Zodomus->getBooking($param);
+//      dd($reservation);
+          
+          
 //      echo date('Y-m-d H:i:s',1580597043); die;
       
 //      $return = $Zodomus->activateChannels($apto);
@@ -553,18 +565,46 @@ class ZodomusController extends Controller {
     
   }
   
+  
+    
+  /**
+   * /admin/channel-manager/forceImport
+   */
   function forceImport() {
-  //$response = $this->importAnReserv(1,91378,2659096791,true);
-  die;
-    $response = null;
-    //http://miramarski.virtual/admin/channel-manager/forceImport
-    $reservas = [2283694293, 2285529323, 2475706777, 2909066157, 3353826030,];
+    $cannels = configZodomusAptos();
+    $Zodomus = new Zodomus();
+    $alreadySent = [];
+    $reservas = [];
+    foreach ($cannels as $cg => $apto) {
+     
+      //get all channels
+      foreach ($apto->rooms as $room) {
+        if (true) {
+          $keyIteration = $room->channel . '-' . $room->propID;
+          if (in_array($keyIteration, $alreadySent))
+            continue;
 
+          $channelId = $room->channel;
+          $propertyId = $room->propID;
+          $bookings = $Zodomus->getBookingsQueue($room->channel, $room->propID);
+       
+          if ($bookings && $bookings->status->returnCode == 200) {
+            $alreadySent[] = $keyIteration;
+            
+            foreach ($bookings->reservations as $book) {
+              $reservas[] = [
+                  $room->channel, $room->propID,$book->id
+                ];
+            }
+          }
+        }
+      }
+    }
+    $response = null;
     foreach ($reservas as $r){
-      
-      $alreadyExist = \App\Book::where('external_id', $r)->first();
+      $alreadyExist = \App\Book::where('external_id', $r[2])->first();
       if (!$alreadyExist){
-        $response = $this->importAnReserv(1,91378,$r);
+        $response = $this->importAnReserv($r[0],$r[1],$r[2]);
       }
     }
     dd($response);
