@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
         Commands\CreatePaymentFianza::class,
         Commands\GetDailyFFSeason::class,
         Commands\SendFFAdmin::class,
-        Commands\ZodomusImport::class,
+//        Commands\ZodomusImport::class,
         Commands\ZodomusImportAll::class,
     ];
 
@@ -45,7 +45,7 @@ class Kernel extends ConsoleKernel
          $schedule->command('FFSeasson:get')->dailyAt('4:00')->timezone('Europe/Madrid');
          $schedule->command('monthLimpieza:create')->monthlyOn(1, '5:00')->timezone('Europe/Madrid');
          $schedule->command('ical:import')->everyTenMinutes();
-         $schedule->command('zodomus:import')->everyTenMinutes();
+//         $schedule->command('zodomus:import')->everyTenMinutes();
          $schedule->command('zodomus:importAll')->hourly();
 //         $schedule->command('mails:read')->everyThirtyMinutes();
          $schedule->command('forfait:sendReminder')->dailyAt('8:00')->timezone('Europe/Madrid');

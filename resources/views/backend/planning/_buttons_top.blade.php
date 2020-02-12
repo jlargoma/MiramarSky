@@ -76,10 +76,10 @@
       <button class="btn btn-primary btn-cupos btn-cons minimal" type="button" data-toggle="modal" data-target="#modalCuposVtn">
         <span class="bold">Cupos Vtn Rapida</span>
       </button>
+      <?php endif ?>
       <button class="btn btn-blue btn_intercambio btn-cons minimal" type="button" data-toggle="modal" data-target="#modalIntercambio">
         <span class="bold">intercambio</span>
       </button>
-      <?php endif ?>
     <?php endif ?>
   </div>
 </div>

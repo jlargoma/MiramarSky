@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin']], function () {
+Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista']], function () {
   
   //LIMPIEZA
   Route::get('admin/limpieza', 'LimpiezaController@index');

@@ -4,6 +4,18 @@
   <?php if (Auth::user()->role == "propietario"): ?>
     @yield('nav_link')
   <?php endif ?>  
+  <?php if (Auth::user()->role == "recepcionista"): ?>
+    <li class="{{ Request::path() == 'admin/reservas' ? 'active' : '' }}">
+      <a href="{{ url('admin/reservas') }}" class="detailed">Reservas</a>
+    </li>
+    <li class="{{ Request::path() == 'admin/liquidacion'  ? 'active' : '' }}">
+      <a href="{{ url('admin/liquidacion') }}" class="detailed">Liq. por reservas</a>
+    </li>
+     <li class="{{ Request::path() == 'admin/orders-payland' ? 'active' : '' }}">
+          <a href="{{ url('admin/orders-payland') }}" class="detailed">PAYLAND</a>
+    </li>
+   
+  <?php endif ?>  
     
   <?php if (Auth::user()->role == "admin" || Auth::user()->role == "subadmin"): ?>
     <li class="{{ Request::path() == 'admin/reservas' ? 'active' : '' }}">
@@ -77,7 +89,7 @@
     </li>
 <?php endif ?>
     
-<?php if (Auth::user()->role == "admin" || Auth::user()->role == "limpieza" || Auth::user()->role == "subadmin"): ?>
+<?php if (Auth::user()->role == "admin" || Auth::user()->role == "limpieza" || Auth::user()->role == "subadmin" || Auth::user()->role == "recepcionista"): ?>
     <li class="{{ Request::path() == 'admin/limpiezas' ? 'active' : '' }}">
         <a href="{{ url('admin/limpiezas/') }}" class="detailed">Limpiezas</a>
     </li>
@@ -100,7 +112,7 @@
     <?php endif ?>
 
  
-    <?php if (Auth::user()->role == "admin" || Auth::user()->role == "subadmin"): ?>
+    <?php if (Auth::user()->role == "admin" || Auth::user()->role == "subadmin" || Auth::user()->role == "recepcionista"): ?>
     <li class="{{ Request::path() == 'admin/channel-manager' ? 'active' : '' }}">
         <a href="{{ url('/admin/channel-manager') }}" class="detailed">Zodomus</a>
     </li>
