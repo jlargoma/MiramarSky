@@ -110,7 +110,7 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
   
   Route::get('/reservas/api/activateAlertLowProfits', 'BookController@activateAlertLowProfits');
   Route::get('/reservas/fianzas/cobrar/{id}', 'BookController@cobrarFianzas');
-  Route::post('/reservas/get-visa', 'BookController@getVisa')->name('booking.get_visa');
+
 
   // Rooms
   Route::get('/apartamentos', 'RoomsController@index');
@@ -171,11 +171,11 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
  
 });
 
-Route::group(['middleware' => ['auth','role:admin|subadmin|agente'], 'prefix' => 'admin',], function () {
+Route::group(['middleware' => ['auth','role:admin|subadmin|agente|recepcionista'], 'prefix' => 'admin',], function () {
   Route::get('/reservas/update/{id}', 'BookController@update')->name('book.update');
   Route::post('/reservas/saveUpdate/{id}', 'BookController@saveUpdate');
 });
-Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin',], function () {
+Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista'], 'prefix' => 'admin',], function () {
   
   // Clientes
   Route::get('/clientes/update', 'CustomersController@update');
@@ -189,6 +189,8 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
 //  Route::get('/reservas/ff_status_popup/{id}', 'BookController@getBookFFData');
 
 //  Route::get('/reservas/ff_change_status_popup/{id}/{status}', 'BookController@updateBookFFStatus');
+    
+  Route::post('/reservas/get-visa', 'BookController@getVisa')->name('booking.get_visa');
   Route::get('/book-logs/see-more/{id}', 'BookController@getBookLog');
   Route::get('/book-logs/see-more-mail/{id}', 'BookController@getMailLog');
   Route::get('/book-logs/{id}/{month?}', 'BookController@printBookLogs');
@@ -215,11 +217,35 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/reservas/api/sendSencondEmail', 'BookController@sendSencondEmail');
   Route::get('/reservas/api/toggleAlertLowProfits', 'BookController@toggleAlertLowProfits');
   
-
-   //Liquidacion
+    //Paylands
+  Route::get('/orders-payland', 'PaylandsController@lstOrders');
+  Route::post('/getOrders-payland', 'PaylandsController@getOrders');
+  Route::get('/get-summary-payland', 'PaylandsController@getSummary');
+  
+  Route::post('/limpiezasUpd/','LiquidacionController@upd_limpiezas');
+  
+    // ZODOMUS  
+  Route::get('/channel-manager/disponibilidad/{apto}/{start}/{end}','ZodomusController@listDisponibilidad');
+  Route::get('/channel-manager/price/{apto?}','ZodomusController@calendRoom')->name('channel.price.cal');
+  Route::post('/channel-manager/price/{apto?}','ZodomusController@calendRoomUPD')->name('channel.price.cal.upd');
+  Route::get('/channel-manager/price/precios/list/{apto}','ZodomusController@listBy_room')->name('channel.price.cal.list');
+  Route::get('/channel-manager/list/{apto}','ZodomusController@listBy_apto')->name('channel.cal.list');
+  Route::get('/channel-manager/config', 'ZodomusController@generate_config');
+  Route::get('/channel-manager/ZODOMUS', 'ZodomusController@zodomusTest');
+  Route::get('/channel-manager/index', 'ZodomusController@index')->name('channel.index');
+  Route::get('/channel-manager/forceImport', 'ZodomusController@forceImport')->name('channel.forceImport');
+  Route::post('/channel-manager/send-avail/{apto}', 'ZodomusController@sendAvail')->name('channel.sendAvail');
+  Route::get('/channel-manager', 'ZodomusController@calendRoom')->name('channel');
+  
   Route::get('/liquidacion', 'LiquidacionController@index');
-  Route::get('/liquidacion-apartamentos', 'LiquidacionController@apto');
+    Route::get('/liquidacion-apartamentos', 'LiquidacionController@apto');
   Route::get('/liquidacion/export/excel', 'LiquidacionController@exportExcel');
+});
+  
+Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin',], function () {
+   //Liquidacion
+  
+
   Route::get('/gastos/{year?}', 'LiquidacionController@gastos');
   Route::post('/gastos/create', 'LiquidacionController@gastoCreate');
   Route::get('/gastos/getTableGastos', 'LiquidacionController@getTableGastos');
@@ -234,7 +260,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/estadisticas/{year?}','LiquidacionController@Statistics');
   Route::get('/contabilidad','LiquidacionController@contabilidad');
  
-  Route::post('/limpiezasUpd/','LiquidacionController@upd_limpiezas');
+  
   Route::get('/caja', 'LiquidacionController@caja');
   Route::get('/caja/getTableMoves/{year?}/{type}', 'LiquidacionController@getTableMoves');
   Route::post('/cashBox/create', 'LiquidacionController@cashBoxCreate');
@@ -250,10 +276,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/contabilidad','LiquidacionController@contabilidad');
   
   
-  //Paylands
-  Route::get('/orders-payland', 'PaylandsController@lstOrders');
-  Route::post('/getOrders-payland', 'PaylandsController@getOrders');
-  Route::get('/get-summary-payland', 'PaylandsController@getSummary');
+
   
   // Pagos-Propietarios
   Route::get('/pagos-propietarios', 'PaymentsProController@index');
@@ -271,18 +294,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   });
   
   
-  // ZODOMUS  
-  Route::get('/channel-manager/disponibilidad/{apto}/{start}/{end}','ZodomusController@listDisponibilidad');
-  Route::get('/channel-manager/price/{apto?}','ZodomusController@calendRoom')->name('channel.price.cal');
-  Route::post('/channel-manager/price/{apto?}','ZodomusController@calendRoomUPD')->name('channel.price.cal.upd');
-  Route::get('/channel-manager/price/precios/list/{apto}','ZodomusController@listBy_room')->name('channel.price.cal.list');
-  Route::get('/channel-manager/list/{apto}','ZodomusController@listBy_apto')->name('channel.cal.list');
-  Route::get('/channel-manager/config', 'ZodomusController@generate_config');
-  Route::get('/channel-manager/ZODOMUS', 'ZodomusController@zodomusTest');
-  Route::get('/channel-manager/index', 'ZodomusController@index')->name('channel.index');
-  Route::get('/channel-manager/forceImport', 'ZodomusController@forceImport')->name('channel.forceImport');
-  Route::post('/channel-manager/send-avail/{apto}', 'ZodomusController@sendAvail')->name('channel.sendAvail');
-  Route::get('/channel-manager', 'ZodomusController@calendRoom')->name('channel');
+
   
   Route::get('/zodomus/import', function () {
       \Artisan::call('zodomus:import');

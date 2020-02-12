@@ -2803,11 +2803,11 @@ class BookController extends AppController
       $r2 = $b2->room_id;
       
       
-//      $b1->room_id = $r2;
-//      $b1->save();
-//      
-//      $b2->room_id = $r1;
-//      $b2->save();
+      $b1->room_id = $r2;
+      $b1->save();
+      
+      $b2->room_id = $r1;
+      $b2->save();
       
       return response()->json(['status'=>'ok']);
       

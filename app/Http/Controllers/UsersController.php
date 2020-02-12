@@ -17,7 +17,7 @@ class UsersController extends AppController
     public function index()
     {
       return view('backend/users/index',  [
-              'users' => User::whereIn('role',User::getRolesLst())->get(),
+              'users' => User::all(),
                                             ]);
     }
 
