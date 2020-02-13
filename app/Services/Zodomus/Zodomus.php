@@ -426,5 +426,6 @@ class Zodomus{
     $book->external_roomId = $reserv['external_roomId'];
 
     $book->save();
+    return $book->id;
   }
 }

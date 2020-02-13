@@ -325,6 +325,11 @@ class Book extends Model {
     if (!empty($status)) {
 
       $response = ['status' => 'success', 'title' => 'OK', 'response' => ''];
+      if ($this->type_book == 0){
+        $response['status'] = "warning";
+        $response['response'] = "La Reserva esta eliminada";
+        return $response;
+      }
       
       if ($status == 3 || $status == 10 || $status == 12 || $status == 6 || $status == 98) {
         $this->type_book = $status;
