@@ -53,6 +53,7 @@ class BookController extends AppController
                 6,
                 10,
                 11,
+                98,
                 99
             ];
         } else
@@ -1602,6 +1603,7 @@ class BookController extends AppController
                 6,
                 10,
                 11,
+                98,
                 99
             ];
         } else

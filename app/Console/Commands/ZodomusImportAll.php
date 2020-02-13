@@ -64,6 +64,7 @@ class ZodomusImportAll extends Command {
   public function __construct() {
     $this->result = array();
     $this->sZodomus = new Zodomus();
+    $this->zConfig = new ZConfig();
     parent::__construct();
   }
 
@@ -77,7 +78,6 @@ class ZodomusImportAll extends Command {
     
     
     $cannels = configZodomusAptos();
-    $Zodomus = new Zodomus();
     $alreadySent = [];
     $reservas = [];
     foreach ($cannels as $cg => $apto) {
@@ -91,9 +91,9 @@ class ZodomusImportAll extends Command {
 
           $channelId = $room->channel;
           $propertyId = $room->propID;
-          $bookings = $Zodomus->getBookingsQueue($room->channel, $room->propID);
+          $bookings = $this->sZodomus->getBookingsQueue($room->channel, $room->propID);
        
-          if ($bookings && $bookings->status->returnCode == 200) {
+          if ($bookings && isset($bookings->status) && $bookings->status->returnCode == 200) {
             $alreadySent[] = $keyIteration;
             
             foreach ($bookings->reservations as $book) {
@@ -113,20 +113,24 @@ class ZodomusImportAll extends Command {
       }
     }
     
+    if (isset($_SERVER['REQUEST_METHOD'])) {
+      echo 'ok';
+    }
+
+    if (isset($_GET['detail']))
+      $this->printResults();
+    
   }
 
   function importAnReserv($channelId,$propertyId,$reservationId,$force=false){
     
-        $oZodomus = new Zodomus();
-        $zConfig = new ZConfig();
-
         $param = [
                 "channelId" =>  $channelId,
                 "propertyId" => $propertyId,
                 "reservationId" =>  $reservationId,
               ];
 
-        $reservation = $oZodomus->getBooking($param);
+        $reservation = $this->sZodomus->getBooking($param);
         
         if ($reservation && isset($reservation->status) && $reservation->status->returnCode == 200){
           $booking = $reservation->reservations;
@@ -135,8 +139,11 @@ class ZodomusImportAll extends Command {
               $alreadyExist = \App\Book::where('external_id', $reservationId)->get();
               if ($alreadyExist) {
                 foreach ($alreadyExist as $item){
-                  $response = $item->changeBook(3, "", $item);
+                  $response = $item->changeBook(98, "", $item);
                   echo $item->id.' cancelado - ';
+                  $this->result[] = [
+                    $reservationId, 'Reserva cancelada', $item->id
+                  ];
                   if ($response['status'] == 'success' || $response['status'] == 'warning') {
                     //Ya esta disponible
                     $item->sendAvailibilityBy_status();
@@ -161,7 +168,8 @@ class ZodomusImportAll extends Command {
             if ($alreadyExist){
               if ($booking->reservation->status == 3){ //Cancelada
 
-                $response = $alreadyExist->changeBook(3, "", $alreadyExist);
+                $response = $alreadyExist->changeBook(98, "", $alreadyExist);
+                $this->result[] = [$reservationId, 'Reserva cancelada', $alreadyExist->id];
                 if ($response['status'] == 'success' || $response['status'] ==  'warning'){
                   //Ya esta disponible
                   $alreadyExist->sendAvailibilityBy_status();
@@ -171,7 +179,7 @@ class ZodomusImportAll extends Command {
               continue;
             }              
             
-            $cg = $oZodomus->getChannelManager($channelId,$propertyId,$roomId);
+            $cg = $this->sZodomus->getChannelManager($channelId,$propertyId,$roomId);
             if (!$cg){//'no se encontro channel'
               continue;
             }
@@ -186,7 +194,7 @@ class ZodomusImportAll extends Command {
             }
             
             $rateId   = isset($room->prices[0]) ? $room->prices[0]->rateId : 0;
-            $comision = $zConfig->get_comision($totalPrice,$channelId);
+            $comision = $this->zConfig->get_comision($totalPrice,$channelId);
             $reserv = [
                 'channel' => $channelId,
                 'propertyId' => $propertyId,
@@ -194,7 +202,7 @@ class ZodomusImportAll extends Command {
                 'comision'=>$comision,
                 'external_roomId' => $roomReservationId,
                 'channel_group' => $cg,
-                'agency' => $zConfig->getAgency($channelId),
+                'agency' => $this->zConfig->getAgency($channelId),
                 'reser_id' => $reservationId,
                 'status' => $booking->reservation->status,
                 'customer' => $booking->customer,
@@ -205,7 +213,11 @@ class ZodomusImportAll extends Command {
                 'end' => $room->departureDate,
             ];
             
-            $oZodomus->saveBooking($cg,$reserv);
+            $this->sZodomus->saveBooking($cg,$reserv);
+            $this->result[] = [
+                $reservationId,
+                $rCustomer->firstName . ' ' . $rCustomer->lastName.': '.$room->arrivalDate.'-'.$room->departureDate,
+                $alreadyExist->id];
           }
         }
         
@@ -213,4 +225,63 @@ class ZodomusImportAll extends Command {
     
   
 
+    /**
+   * Print result in the website
+   * 
+   * @return type
+   */
+  function printResults() {
+
+    if (!isset($_SERVER['REQUEST_METHOD']))
+      return;
+
+
+    echo '<style>
+table {
+  border-collapse: collapse;
+}
+
+table, td, th {
+  border: 1px solid black;
+}
+table, td, th,td {
+ text-align: center;
+ }
+</style>';
+    if (count($this->result)) {
+      ?>
+      <p>Registros Importados (<?php echo count($this->result); ?>)</p>
+      <table class="table text-center">
+        <thead>
+          <tr>
+            <th  style="min-width: 90px;">Agencia</th>
+            <th  style="min-width: 90px;">ID Reserva</th>
+            <th  style="min-width: 90px;">Cliente</th>
+            <th  style="min-width: 90px;">CheckIn</th>
+            <th  style="min-width: 90px;">CheckOut</th>
+            <th  style="min-width: 90px;">Noches</th>
+            <th  style="min-width: 90px;">Reserva Admin</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php foreach ($this->result as $book): ?>
+            <tr>
+              <td style="height: 5em;"><?php echo $book[0]; ?></td>
+              <td><?php echo $book[1]; ?></td>
+              <td><?php echo $book[2]; ?></td>
+              <td><?php echo $book[3]; ?></td>
+              <td><?php echo $book[4]; ?></td>
+              <td><?php echo $book[5]; ?></td>
+              <td><?php echo $book[6]; ?></td>
+            </tr>
+          <?php endforeach; ?>
+        </tbody>
+      </table>
+      <?php
+    } else {
+      ?>
+      <p class="alert alert-warning text-center mt-15">No hay registros que importar</p>
+      <?php
+    }
+  }
 }

@@ -86,6 +86,7 @@ class Book extends Model {
       10 => 'Overbooking',
       11 => 'blocked-ical',
       12 => 'ICAL - INVISIBLE',
+      98 => 'cancel-XML',
       99 => 'FASTPAYMENT - SOLICITUD',
   ];
   
@@ -324,7 +325,8 @@ class Book extends Model {
     if (!empty($status)) {
 
       $response = ['status' => 'success', 'title' => 'OK', 'response' => ''];
-      if ($status == 3 || $status == 10 || $status == 12 || $status == 6) {
+      
+      if ($status == 3 || $status == 10 || $status == 12 || $status == 6 || $status == 98) {
         $this->type_book = $status;
         $this->save();
         if ($status == 3)
@@ -333,6 +335,8 @@ class Book extends Model {
           $response['response'] = "Reserva cambiada a Overbooking";
         if ($status == 12)
           $response['response'] = "Reserva cambiada a ICAL - INVISIBLE";
+        if ($status == 98)
+          $response['response'] = "Reserva cambiada a cancel-XML";
         if ($status == 6) {
           $this->sendEmailChangeStatus($book, 'Reserva denegada', $status);
           $response['response'] = "Reserva cambiada a ICAL - INVISIBLE";

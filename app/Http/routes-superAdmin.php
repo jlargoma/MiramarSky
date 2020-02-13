@@ -297,7 +297,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
 
   
   Route::get('/zodomus/import', function () {
-      \Artisan::call('zodomus:import');
+      \Artisan::call('zodomus:importAll');
   });
   
   Route::get('/channel-manager-test', function(){

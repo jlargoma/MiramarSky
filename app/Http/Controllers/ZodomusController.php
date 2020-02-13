@@ -691,7 +691,7 @@ class ZodomusController extends Controller {
             if ($alreadyExist){
               if ($booking->reservation->status == 3){ //Cancelada
 
-                $response = $alreadyExist->changeBook(3, "", $alreadyExist);
+                $response = $alreadyExist->changeBook(98, "", $alreadyExist);
                 if ($response['status'] == 'success' || $response['status'] ==  'warning'){
                   //Ya esta disponible
                   $alreadyExist->sendAvailibilityBy_status();
