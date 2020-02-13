@@ -107,10 +107,12 @@ class ZodomusImportAll extends Command {
     }
     $response = null;
     foreach ($reservas as $r){
-      $alreadyExist = \App\Book::where('external_id', $r[2])->first();
-      if (!$alreadyExist){
+//      $alreadyExist = \App\Book::where('external_id', $r[2])->first();
+//      if ($alreadyExist){
+//        $this->result[] = [$r[2], 'Reserva ya creada', $alreadyExist->id];
+//      } else {
         $response = $this->importAnReserv($r[0],$r[1],$r[2]);
-      }
+//      }
     }
     
     if (isset($_SERVER['REQUEST_METHOD'])) {
@@ -149,6 +151,8 @@ class ZodomusImportAll extends Command {
                     $item->sendAvailibilityBy_status();
                   }
                 }
+              } else {
+                 $this->result[] = [$reservationId, 'Reserva cancelada', '-1'];
               }
             }
             return;
@@ -174,6 +178,8 @@ class ZodomusImportAll extends Command {
                   //Ya esta disponible
                   $alreadyExist->sendAvailibilityBy_status();
                 }
+              } else {
+                 $this->result[] = [$reservationId, 'Reserva ya creada',$alreadyExist->id];
               }
               
               continue;
@@ -181,6 +187,7 @@ class ZodomusImportAll extends Command {
             
             $cg = $this->sZodomus->getChannelManager($channelId,$propertyId,$roomId);
             if (!$cg){//'no se encontro channel'
+              $this->result[] = [$reservationId, 'channel no encontrado',$propertyId.' - '.$roomId];
               continue;
             }
             
@@ -213,11 +220,11 @@ class ZodomusImportAll extends Command {
                 'end' => $room->departureDate,
             ];
             
-            $this->sZodomus->saveBooking($cg,$reserv);
+            $bookID = $this->sZodomus->saveBooking($cg,$reserv);
             $this->result[] = [
                 $reservationId,
-                $rCustomer->firstName . ' ' . $rCustomer->lastName.': '.$room->arrivalDate.'-'.$room->departureDate,
-                $alreadyExist->id];
+                $booking->customer->firstName . ' ' . $booking->customer->lastName.': '.$room->arrivalDate.'-'.$room->departureDate,
+                $bookID];
           }
         }
         
@@ -254,12 +261,8 @@ table, td, th,td {
       <table class="table text-center">
         <thead>
           <tr>
-            <th  style="min-width: 90px;">Agencia</th>
             <th  style="min-width: 90px;">ID Reserva</th>
-            <th  style="min-width: 90px;">Cliente</th>
-            <th  style="min-width: 90px;">CheckIn</th>
-            <th  style="min-width: 90px;">CheckOut</th>
-            <th  style="min-width: 90px;">Noches</th>
+            <th  style="min-width: 90px;">Resultado</th>
             <th  style="min-width: 90px;">Reserva Admin</th>
           </tr>
         </thead>
@@ -269,10 +272,6 @@ table, td, th,td {
               <td style="height: 5em;"><?php echo $book[0]; ?></td>
               <td><?php echo $book[1]; ?></td>
               <td><?php echo $book[2]; ?></td>
-              <td><?php echo $book[3]; ?></td>
-              <td><?php echo $book[4]; ?></td>
-              <td><?php echo $book[5]; ?></td>
-              <td><?php echo $book[6]; ?></td>
             </tr>
           <?php endforeach; ?>
         </tbody>
