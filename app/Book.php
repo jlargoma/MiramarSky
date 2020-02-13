@@ -276,7 +276,7 @@ class Book extends Model {
   
   public function existDateOverrride($start, $finish, $room, $id_excluded) {
 
-    if ($room >= 5) {
+    
 
       if ($this->type_book == 3 || $this->type_book == 0 || $this->type_book == 6) {
         return true;
@@ -298,9 +298,7 @@ class Book extends Model {
             $start = Carbon::createFromFormat('Y-m-d', $book->start);
             $finish = Carbon::createFromFormat('Y-m-d', $book->finish);
 
-            if ($start < $requestStart && $requestStart < $finish) {
-              $existStart = true;
-            } elseif ($start <= $requestStart && $requestStart < $finish) {
+            if ($start <= $requestStart && $requestStart < $finish) {
               $existStart = true;
             } elseif ($requestStart <= $start && $start < $requestFinish) {
               $existStart = true;
@@ -315,9 +313,7 @@ class Book extends Model {
           return false;
         }
       }
-    } else {
-      return true;
-    }
+   
   }
 
   // Funcion para cambiar la reserva de habitacion o estado
