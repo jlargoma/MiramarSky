@@ -358,6 +358,7 @@ class Rooms extends Model
       $endDate = date('Y-m-d',$endTime);
 
       $priceDay = [];
+      $costDay = [];
       $seassonDay = [];
       $day = 24*60*60;
       while ($startTime<$endTime){
