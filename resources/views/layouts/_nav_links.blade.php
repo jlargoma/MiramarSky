@@ -14,6 +14,14 @@
      <li class="{{ Request::path() == 'admin/orders-payland' ? 'active' : '' }}">
           <a href="{{ url('admin/orders-payland') }}" class="detailed">PAYLAND</a>
     </li>
+        
+    <li class="{{ Request::path() == 'admin/settings' ? 'active' : '' }}">
+      <a href="{{ url('admin/settings') }}" class="detailed">Settings</a>
+    </li>
+            
+    <li class="{{ Request::path() == 'admin/settings_msgs' ? 'active' : '' }}">
+        <a href="{{ url('admin/settings_msgs') }}" class="detailed">Txt Email</a>
+    </li>
    
   <?php endif ?>  
     
