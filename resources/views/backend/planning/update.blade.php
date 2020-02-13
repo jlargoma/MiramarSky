@@ -209,6 +209,10 @@ $mobile = new Mobile();
                   value="<?php echo 99 ?>" data-id="<?php echo $book->id ?>">
                 <?php echo $book->getStatus(99) ?>
                 </option>
+                <option <?php echo 98 == ($book->type_book) ? "selected" : ""; ?>
+                  value="<?php echo 98 ?>" data-id="<?php echo $book->id ?>">
+                <?php echo $book->getStatus(98) ?>
+                </option>
                 
           </select>
           @endif

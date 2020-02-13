@@ -735,6 +735,13 @@ $is_mobile = $mobile->isMobile();
             >
             <?php echo $bookAux->getStatus(99) ?>
           </button>
+          <button 
+            class="btn btnChangeStatus" 
+            id="btn_CS98"
+            data-id="98" 
+            >
+            <?php echo $bookAux->getStatus(98) ?>
+          </button>
         </div>
         
         
@@ -748,7 +755,7 @@ $is_mobile = $mobile->isMobile();
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <strong class="modal-title" id="modalChangeBookTit" style="font-size: 1.4em;">Intercambio de Habitaciones</strong>
+        <strong class="modal-title" style="font-size: 1.4em;">Intercambio de Habitaciones</strong>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
