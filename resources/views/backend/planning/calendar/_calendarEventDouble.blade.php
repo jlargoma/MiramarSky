@@ -8,6 +8,8 @@ if (!is_array($calendars)):
   
 else:
   foreach ($calendars as $calendar):
+    if ($calendar->type_book != 5):
+      
       if($calendar->finish == $inicio): ?>
         <a <?php echo $calendar->href; ?> title="<?php echo $calendar->titulo ?>" >
           <div class="<?php echo $calendar->class ;?> end" style="width: 45%;float: left;">  &nbsp; </div>
@@ -23,6 +25,7 @@ else:
           </a>
           <?php endif ?>
       <?php endif ?>
+    <?php endif ?>
   <?php endforeach; ?>
 <?php endif;
 

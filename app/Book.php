@@ -867,7 +867,7 @@ class Book extends Model {
    * @return Object Query
    */
   static function where_type_book_reserved() {
-    return self::whereIn('type_book', [1,2,4,7,8,9,11,5]);
+    return self::whereIn('type_book', [1,2,4,7,8,9,11]);
   }
   
   static function get_type_book_reserved() {
