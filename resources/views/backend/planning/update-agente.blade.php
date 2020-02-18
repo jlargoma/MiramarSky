@@ -453,13 +453,13 @@ $mobile = new Mobile();
             </div>
           </div>
             @if($book->type_book == 1)
-            <div class="row push-40 bg-white padding-block">
+<!--            <div class="row push-40 bg-white padding-block">
               <div class="col-md-4 col-md-offset-4 text-center">
                 <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit"
                         style="min-height: 50px;width: 100%;" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>Guardar
                 </button>
               </div>
-            </div>
+            </div>-->
         </form>
             @endif
       </div>

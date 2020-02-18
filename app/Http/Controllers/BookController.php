@@ -620,6 +620,12 @@ class BookController extends AppController
         $book = Book::find($id);
       } else {
          
+         return [
+                'status'   => 'warning',
+                'title'    => 'Cuidado',
+                'response' => "No puedes hacer cambios en la reserva"
+            ];
+         
           $IS_agente= true;
           $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
           $rooms       = \App\Rooms::whereIn('id', $roomsAgents)->orderBy('order')->get();
