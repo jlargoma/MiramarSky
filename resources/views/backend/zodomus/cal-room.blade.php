@@ -29,7 +29,7 @@
     background-color: rgba(255, 210, 210, 0.3);
   }
   .calend_select{
-        background-color: #e8f5f7;
+        background-color: yellow;
   }
   @media only screen and (max-width: 767px){
     .daterangepicker {
