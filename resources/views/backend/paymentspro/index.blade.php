@@ -314,7 +314,7 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
                        data-month="{{ $year->year }}" data-id="<?php echo $room->id ?>"
                        data-toggle="modal"
                        data-target="#payments">
-                      <?php echo ucfirst($room->user->name) ?> (<?php echo $room->nameRoom ?>)
+                      <?php echo (isset($room->user->name)) ? ucfirst($room->user->name): '-' ?> (<?php echo $room->nameRoom ?>)
                     </a>
 
                   </td>
@@ -473,7 +473,7 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
               <tr>
                 <td class="text-center"  style="padding: 10px 5px ;">
                   <a class="historic-production" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments">
-                  <?php echo ucfirst(substr($room->user->name, 0, 6)) ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
+                  <?php echo (isset($room->user->name)) ? ucfirst(substr($room->user->name, 0, 6)) : '-'  ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
                   </a>
                 </td>
                 <?php $lastThreeSeason = Carbon::createFromFormat('Y', $year->year)->subYears(2) ?>

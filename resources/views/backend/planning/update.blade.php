@@ -362,7 +362,7 @@ $mobile = new Mobile();
             </div>
             <div class="col-md-4 push-10">
               <label>Entrada</label>
-              <div class="input-prepend input-group">
+              <div class="input-prepend input-group input_dates">
                 <?php
                 $start1 = Carbon::createFromFormat('Y-m-d', $book->start)->format('d M, y');
                 // $start1 = str_replace('Apr','Abr',$start->format('d M, y'));
@@ -373,7 +373,8 @@ $mobile = new Mobile();
                 <input type="text" class="form-control daterange1" id="fechas" name="fechas" required=""
                        style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;"
                        value="<?php echo $start1; ?> - <?php echo $finish1 ?>" readonly="" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
-
+                <input type="hidden" class="date_start" id="start" name="start" value="{{$book->start}}">
+                <input type="hidden" class="date_finish" id="finish" name="finish" value="{{$book->finish}}">
               </div>
             </div>
             <div class="col-md-1 col-xs-3 push-10 p-l-0">
@@ -427,6 +428,7 @@ $mobile = new Mobile();
             <div class="col-md-2 col-xs-6 push-20 hiddenOnlyRiad">
               <label>Parking</label>
               <select class=" form-control parking minimal" name="parking" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
+              <option value="0"> -- </option>
   <?php for ($i = 1; $i <= 4; $i++): ?>
                   <option value="<?php echo $i ?>" {{ $book->type_park == $i ? 'selected' : '' }}><?php echo $book->getParking($i) ?></option>
                 <?php endfor; ?>
@@ -435,6 +437,7 @@ $mobile = new Mobile();
             <div class="col-md-2 col-xs-6 push-20 hiddenOnlyRiad">
               <label>Sup. Lujo</label>
               <select class=" form-control full-width type_luxury minimal" name="type_luxury" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
+                <option value="0"> -- </option>
   <?php for ($i = 1; $i <= 4; $i++): ?>
                   <option value="<?php echo $i ?>" {{ $book->type_luxury == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
   <?php endfor; ?>
@@ -963,7 +966,7 @@ $mobile = new Mobile();
                    style="cursor:pointer; position:absolute; font-size:1rem; right:2%; transform: translateY(50%)"></i>
               </h4>
             </div>
-            <div class="col-md-4  col-xs-8 push-20">
+            <div class="col-md-4  col-xs-8 push-20 input_dates">
               <label>Entrada</label>
   <?php $start1 = Carbon::createFromFormat('Y-m-d', $book->start)->format('d M, y');
   // $start1 = str_replace('Apr','Abr',$start->format('d M, y')); 
@@ -975,6 +978,8 @@ $mobile = new Mobile();
               <input type="text" class="form-control daterange1" id="fechas" name="fechas" required=""
                      style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;"
                      value="<?php echo $start1; ?> - <?php echo $finish1 ?>" readonly="" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
+                        <input type="hidden" class="date_start" id="start" name="start" value="{{$book->start}}">
+                        <input type="hidden" class="date_finish" id="finish" name="finish" value="{{$book->finish}}">
             </div>
             <div class="col-md-1 col-xs-4 push-20 ">
               <label>Noches</label>
@@ -1020,6 +1025,7 @@ $mobile = new Mobile();
             <div class="col-md-1 col-xs-6 push-20 hiddenOnlyRiad">
               <label>Parking</label>
               <select class=" form-control parking minimal" name="parking" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
+                <option value="0"> -- </option>
                 <?php for ($i = 1; $i <= 4; $i++): ?>
                   <option value="<?php echo $i ?>" {{ $book->type_park == $i ? 'selected' : '' }}><?php echo $book->getParking($i) ?></option>
                 <?php endfor; ?>
@@ -1028,6 +1034,7 @@ $mobile = new Mobile();
             <div class="col-md-2 col-xs-6 push-0 hiddenOnlyRiad">
               <label>Sup. Lujo</label>
               <select class=" form-control full-width type_luxury minimal" name="type_luxury" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
+                <option value="0"> -- </option>
                   <?php for ($i = 1; $i <= 4; $i++): ?>
                   <option value="<?php echo $i ?>" {{ $book->type_luxury == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
                   <?php endfor; ?>

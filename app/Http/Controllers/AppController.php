@@ -112,12 +112,11 @@ class AppController extends Controller
                 ->where('state', 1)
                 ->where('fast_payment', 1)
                 ->orderBy('order_fast_payment', 'ASC')->limit($size->num_aptos_fast_payment)->get();
-        
-        $startDate  = $start->copy()->format('d/m/Y');
-        $finishDate = $finish->copy()->format('d/m/Y');
+         
         foreach ($allRoomsBySize as $room){
             $room_id = $room->id;
-          if (Book::existDate($startDate,$finishDate, $room_id))
+           
+          if (Book::availDate($start,$finish, $room_id))
           {
             return ['isFastPayment'=>true,'id'=>$room_id];
           }

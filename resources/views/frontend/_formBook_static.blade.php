@@ -24,6 +24,8 @@
                 <label for="date" style="display: inherit!important;">*Entrada - Salida</label>
                 <div class="input-group">
                     <input type="text" class="sm-form-control daterange1" id="date"   name="date" required style="cursor: pointer;text-align: center;" readonly="">
+                    <input type="hidden" class="date_start" id="start" name="start" value="">
+                    <input type="hidden" class="date_finish" id="finish" name="finish" value="">
                 </div>
                 <p  class="help-block min-days" style="display:none;line-height:1.2;color:red;">
                     <b>* ESTANCIA M&IacuteNIMA: 2 NOCHES</b>

@@ -304,7 +304,7 @@ $mobile = new Mobile();
             </div>
             <div class="col-md-4 push-10">
               <label>Entrada</label>
-              <div class="input-prepend input-group">
+              <div class="input-prepend input-group input_dates">
                 <?php
                 $start1 = Carbon::createFromFormat('Y-m-d', $book->start)->format('d M, y');
                 // $start1 = str_replace('Apr','Abr',$start->format('d M, y'));
@@ -315,7 +315,8 @@ $mobile = new Mobile();
                 <input type="text" class="form-control daterange1" id="fechas" name="fechas" required=""
                        style="cursor: pointer; text-align: center; backface-visibility: hidden;min-height: 28px;"
                        value="<?php echo $start1; ?> - <?php echo $finish1 ?>" readonly="" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
-
+                <input type="hidden" class="date_start" id="start" name="start" value="{{$book->start}}">
+                <input type="hidden" class="date_finish" id="finish" name="finish" value="{{$book->finish}}">
               </div>
             </div>
             <div class="col-md-1 col-xs-3 push-10 p-l-0">
@@ -452,13 +453,13 @@ $mobile = new Mobile();
             </div>
           </div>
             @if($book->type_book == 1)
-            <div class="row push-40 bg-white padding-block">
+<!--            <div class="row push-40 bg-white padding-block">
               <div class="col-md-4 col-md-offset-4 text-center">
                 <button class="btn btn-complete font-s24 font-w400 padding-block" type="submit"
                         style="min-height: 50px;width: 100%;" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>Guardar
                 </button>
               </div>
-            </div>
+            </div>-->
         </form>
             @endif
       </div>

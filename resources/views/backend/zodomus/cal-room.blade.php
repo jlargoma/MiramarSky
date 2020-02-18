@@ -13,13 +13,10 @@
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 
-<!--<script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 
-<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
-
-<link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />-->
 <style type="text/css" media="screen"> 
   .daterangepicker{
     z-index: 10000!important;
@@ -66,9 +63,9 @@
           <table class="table-prices">
             <tr>
              
-              <td><span class="price-booking">+{{$price_booking}}%</span></td>
-              <td><span class="price-airbnb">+{{$price_airbnb}}%</span></td>
-              <td><span class="price-expedia">+{{$price_expedia}}%</span></td>
+              <td><span class="price-booking">{{$price_booking}}</span></td>
+              <td><span class="price-airbnb">{{$price_airbnb}}</span></td>
+              <td><span class="price-expedia">{{$price_expedia}}</span></td>
               <td><span class="disp-layout">Disponib</span></td>
             </tr>
           </table>
@@ -87,7 +84,7 @@
             <div class="row">
               <div class="col-md-3 col-xs-5 pt-1"><label>Rango de Fechas</label></div>
               <div class="col-md-9 col-xs-7">
-                <input type="text" class="form-control daterange1" id="date_range" name="date_range" value="">
+                <input type="text" class="form-control daterange01" id="date_range" name="date_range" value="">
               </div>
             </div>
 
@@ -134,80 +131,17 @@
 
 @section('scripts')
 
-
+<script type="text/javascript" src="/js/datePicker01.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
 
 
-
-
-
-  $(".daterange1").daterangepicker({
-    "buttonClasses": "button button-rounded button-mini nomargin",
-    "applyClass": "button-color",
-    "cancelClass": "button-light",
-    autoUpdateInput: true,
-//    locale: 'es',
-    locale: {
-      firstDay: 2,
-      format: 'DD/MM/YYYY',
-      "applyLabel": "Aplicar",
-      "cancelLabel": "Cancelar",
-      "fromLabel": "From",
-      "toLabel": "To",
-      "customRangeLabel": "Custom",
-      "daysOfWeek": [
-        "Do",
-        "Lu",
-        "Mar",
-        "Mi",
-        "Ju",
-        "Vi",
-        "Sa"
-      ],
-      "monthNames": [
-        "Enero",
-        "Febrero",
-        "Marzo",
-        "Abril",
-        "Mayo",
-        "Junio",
-        "Julio",
-        "Agosto",
-        "Septiembre",
-        "Octubre",
-        "Noviembre",
-        "Diciembre"
-      ],
-    },
-
-  });
-
-  Date.prototype.ddmmmyyyy = function () {
-    var mm = this.getMonth() + 1; // getMonth() is zero-based
-    var dd = this.getDate();
-    return [
-      (dd > 9 ? '' : '0') + dd,
-      (mm > 9 ? '' : '0') + mm,
-      this.getFullYear()
-    ].join('/');
-  };
-  Date.prototype.yyyymmmdd = function () {
-    var mm = this.getMonth() + 1; // getMonth() is zero-based
-    var dd = this.getDate();
-    return [
-      this.getFullYear(),
-      (mm > 9 ? '' : '0') + mm,
-      (dd > 9 ? '' : '0') + dd
-    ].join('-');
-  };
   var render_yyyymmmdd = function (dates) {
     var date = dates.trim().split('/');
     return date[2] + '-' + date[1] + '-' + date[0];
   };
 
-
-  $('.daterange1').change(function (event) {
+  $('.daterange01').change(function (event) {
     var date = $(this).val();
 
     var arrayDates = date.split('-');

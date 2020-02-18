@@ -75,7 +75,7 @@ class ZodomusImportAll extends Command {
    */
   public function handle() {
     
-    
+   
     
     $cannels = configZodomusAptos();
     $alreadySent = [];

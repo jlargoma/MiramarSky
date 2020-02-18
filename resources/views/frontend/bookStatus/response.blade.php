@@ -34,9 +34,7 @@
 		</div>
 		<div class="col-xs-12 push-10">
 			<span class="white push-10 font-s18 font-w300 pull-left">Fechas:</span> 
-			<span class="white push-10 font-s18 font-w300 pull-right"><b><?php echo $start->copy()
-                                                                                          ->format('d-M') ?> - <?php echo $finish->copy()
-                                                                                                                                 ->format('d-M') ?></b></span>
+			<span class="white push-10 font-s18 font-w300 pull-right"><b><?php echo convertDateToShow_text($start).' - '.convertDateToShow_text($finish); ?></b></span>
 		</div>
 		<div class="col-xs-12 push-10">
 			<span class="white push-10 font-s18 font-w300 pull-left">Sup. Lujo:<?php if($luxury > 0): ?>(SI)<?php else: ?>(NO)<?php endif; ?></span>
@@ -97,9 +95,8 @@
 				<input type="hidden" name="name" value="<?php echo $name; ?>">
 				<input type="hidden" name="email" value="<?php echo $email; ?>">
 				<input type="hidden" name="phone" value="<?php echo $phone; ?>">
-				<input type="hidden" name="fechas" value="<?php echo $start->copy()
-                                                                           ->format('d M, y') ?> - <?php echo $finish->copy()
-                                                                                                                     ->format('d M, y') ?>">
+				<input type="hidden" id="start" value="<?php echo $start ?>">
+                                <input type="hidden" id="finish" value="<?php echo $finish ?>">
 				<input type="hidden" name="pax" value="<?php echo $pax; ?>">
 				<input type="hidden" name="nigths" value="<?php echo $nigths; ?>">
 				<input type="hidden" name="comments" value="<?php echo $comment; ?>">
@@ -187,7 +184,8 @@
       var name = $('input[name="name"]').val();
       var email = $('input[name="email"]').val();
       var phone = $('input[name="phone"]').val();
-      var fechas = $('input[name="fechas"]').val();
+      var start = $(this).find('#start').val();
+      var finish = $(this).find('#finish').val();
       var pax = $('input[name="pax"]').val();
       var nigths = $('input[name="nigths"]').val();
       var comments = $('input[name="comments"]').val();
@@ -216,7 +214,8 @@ if(env('APP_ENV') == 'VIRTUAL'){
                       name: name,
                       email: email,
                       phone: phone,
-                      fechas: fechas,
+                      start: start,
+                      finish: finish,
                       pax: pax,
                       nigths: nigths,
                       comments: comments,
@@ -273,7 +272,8 @@ if(env('APP_ENV') == 'VIRTUAL'){
                       name: name,
                       email: email,
                       phone: phone,
-                      fechas: fechas,
+                      start: start,
+                      finish: finish,
                       pax: pax,
                       nigths: nigths,
                       comments: comments,

@@ -148,6 +148,7 @@
 <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 <script type="text/javascript" src="{{ asset('/frontend/js/form_booking.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/js/datePicker01.js')}}"></script>
 <script type="text/javascript">
     $(document).ready(function() {
 
@@ -173,6 +174,10 @@
             event.preventDefault();
 
 
+            var date = $('#date').val().trim().split(' - ');
+            var start = new Date(date[0]);
+            var end = new Date(date[1]);
+
             var _token   = $('input[name="_token"]').val();
             var name     = $('#cal-nombre').val();
             var email    = $('input[name="email"]').val();
@@ -185,8 +190,16 @@
             var comment  = "";
 
             var url = $(this).attr('action');
+            
+            
+            
 
-            $.post( url , {_token : _token,  name : name,  email : email,   phone : phone,   fechas : date,    quantity : quantity, apto : apto, luxury : luxury,  parking : parking, comment : comment}, function(data) {
+            $.post( url , {_token : _token,  name : name,  email : email,
+              phone : phone,
+              start : start.yyyymmmdd(),end : end.yyyymmmdd(),
+              quantity : quantity,
+              apto : apto, luxury : luxury,
+              parking : parking, comment : comment}, function(data) {
                 
                 $('#content-book-response .back').empty();
                 $('#content-book-response .back').append(data);

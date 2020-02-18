@@ -1,3 +1,4 @@
+<script type="text/javascript" src="{{ asset('/js/datePicker01.js')}}"></script>
 <script type="text/javascript">
 
     <?php if ($update == 0): // Datepicker pfor new book ?>
@@ -109,8 +110,9 @@
         var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
         var diffDays   = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-        var start      = date1.toLocaleDateString();
-        var finish     = date2.toLocaleDateString();
+
+        var start      = date1.yyyymmmdd();
+        var finish     = date2.yyyymmmdd();
 
 		if ( override ){
 	        if ( status == 8) {
@@ -189,8 +191,6 @@
 	                    //total_price: data && data.hasOwnProperty('pvp') ? data.pvp : '',
 	                    book_id: book_id
 	                }).done(function( data ) {
-	                    console.log(data);
-
 	                    $('#computed-data').html(JSON.stringify(data));
 
 	                    var isEdited = $('.total').attr('data-edited');
@@ -276,6 +276,12 @@
             var timeDiff = Math.abs(date2.getTime() - date1.getTime());
             var diffDays = Math.ceil(timeDiff / (1090 * 3600 * 24));
             $('.nigths').val(diffDays);
+            
+            var aDate = date.trim().split(' - ');
+            var start = new Date(aDate[0]);
+            var end = new Date(aDate[1]);
+            $(this).closest('.input_dates').find('.date_start').val(start.yyyymmmdd());
+            $(this).closest('.input_dates').find('.date_finish').val(end.yyyymmmdd());
 
             calculate();
 
@@ -644,6 +650,8 @@
                 var costParking         = $('input[name="costParking"]').val();
                 var beneficio           = $('input[name="beneficio"]').val();
                 var external_id         = $('#external_id').val();
+                var start               = $('#start').val();
+                var finish              = $('#finish').val();
                 var comments            = $('textarea[name="comments"]').val();
                 var book_comments       = $('textarea[name="book_comments"]').val();
                 var book_owned_comments = $('textarea[name="book_owned_comments"]').val();
@@ -690,6 +698,8 @@
                                 has_ff_discount:has_ff_discount,
                                 ff_discount:ff_discount,
                                 external_id:external_id,
+                                start:start,
+                                finish:finish
                 },
                 function(data) {
 

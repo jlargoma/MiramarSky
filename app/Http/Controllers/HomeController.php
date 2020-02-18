@@ -617,23 +617,17 @@ class HomeController extends AppController
 
     public function getDiffIndays(Request $request)
     {
-        $date1   = Carbon::createFromFormat('d M, y', trim($request->date1));
-        $date2   = Carbon::createFromFormat(' d M, y', trim($request->date2));
+        $date1   = trim($request->date1);
+        $date2   = trim($request->date2);
         $minDays = self::minDays;
-        /* Check min Days by segment */
-        $checkSpecialSegment = SpecialSegmentController::checkDates($date1, $date2);
-        if ($checkSpecialSegment)
-        {
-            $minDays = $checkSpecialSegment->minDays;
-        }
-        
-        
+        $nights  = calcNights($date1,$date2);
+        $checkSpecialSegment = false;
         $aSize = \App\SizeRooms::findSizeApto($request->input('apto'),$request->input('luxury'),$request->input('quantity'));
         if ($aSize){
           $sizeRoom = $aSize['sizeRoom'];
           $rooms = \App\Rooms::where('sizeApto',$sizeRoom)->first();
           if ($rooms){
-            $minEstancia_day = $rooms->getMin_estancia($date1->format('Y-m-d'),$date2->format('Y-m-d'));
+            $minEstancia_day = $rooms->getMin_estancia($date1,$date2);
             if ($minEstancia_day>0 && $minEstancia_day>$minDays){
               $minDays = $minEstancia_day;
               $checkSpecialSegment = true;
@@ -647,8 +641,10 @@ class HomeController extends AppController
         return [
             'minDays'        => $minDays,
             'specialSegment' => $checkSpecialSegment,
-            'diff'           => $date1->diffInDays($date2),
-            'dates'          => $date1->copy()->format('d M, y') . ' - ' . $date2->copy()->format('d M, y')
+            'diff'           => $nights,
+            'dates'          => $date1 . ' - ' . $date2,
+            'start'          => $date1,
+            'finish'          => $date2
         ];
     }
 
@@ -694,11 +690,10 @@ class HomeController extends AppController
 
     public function getPriceBook(Request $request)
     {
-        $aux       = str_replace('Abr', 'Apr', $request->input('fechas'));
-        $date      = explode('-', $aux);
-        $start     = Carbon::createFromFormat('d M, y', trim($date[0]));
-        $finish    = Carbon::createFromFormat('d M, y', trim($date[1]));
-        $countDays = $finish->diffInDays($start);
+      
+        $start     = $request->input('start');
+        $finish    = $request->input('finish');
+        $countDays = calcNights($start, $finish);
         $aSize = \App\SizeRooms::findSizeApto($request->input('apto'),$request->input('luxury'),$request->input('quantity'));
         
         $sizeRoom = $aSize['sizeRoom'];
@@ -721,7 +716,7 @@ class HomeController extends AppController
         }
         
         $price = $room->getPVP($start,$finish,$pax);
-        
+       
         if ($price>0){
         
             $costes = $room->priceLimpieza($room->sizeApto);
@@ -768,7 +763,7 @@ class HomeController extends AppController
                 'dni'          => $dni,
                 'address'      => $address,
                 'room'         => $room,
-                'isFastPayment'         => $getRoomToBook['isFastPayment'],
+                'isFastPayment'=> $getRoomToBook['isFastPayment'],
                 'setting'      => ($setting) ? $setting : 0,
                 'comment'      => $request->input('comment'),
             ]);

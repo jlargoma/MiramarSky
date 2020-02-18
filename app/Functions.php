@@ -215,6 +215,20 @@ function getCloudfl($url){
     }
     return null;
   }
+  
+  function convertDateToShow_text($date,$year = false){
+    $date= trim($date);
+    if ($date){
+      
+      $aux = explode('-',$date);
+      if (is_array($aux) && count($aux)==3){
+        if ($year)  return $aux[2].' '.getMonthsSpanish($aux[1]).', '.($aux[0]-2000);
+        return $aux[2].' '.getMonthsSpanish($aux[1]);
+      }
+    }
+    return null;
+  }
+  
   function convertDateToDB($date){
     $date= trim($date);
     if ($date){
