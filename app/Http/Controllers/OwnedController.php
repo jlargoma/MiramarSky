@@ -321,6 +321,7 @@ class OwnedController extends AppController {
       LiquidacionController::setExpenseLimpieza(7, $room->id, $finish);
 
       if ($book->save()) {
+        $book->sendAvailibilityBy_dates($book->start,$book->finish);
         /* Cliente */
         Mail::send(['html' => 'backend.emails.bloqueoPropietario'], ['book' => $book], function ($message) use ($book) {
           $message->from('bloqueos@apartamentosierranevada.net');

@@ -299,14 +299,14 @@ class Rooms extends Model
           $extra_pax =  $this->price_extra_pax*($pax-$this->minOcu);
         }
         foreach ($oPrice as $p) {
-          $priceDay[$p->date] = $p->price+$extra_pax;
+          if (isset($priceDay[$p->date]))
+            $priceDay[$p->date] = $p->price+$extra_pax;
         }
       }
     $price = 0;
     foreach ($priceDay as $p) {
       $price +=$p;
     }
-//    dd($price);
     return $price;
   }
   
@@ -341,6 +341,16 @@ class Rooms extends Model
           ];
   }
    
+  public function getCostRoom($start,$end,$pax) {
+    $costDay = $this->defaultCostPrice($start,$end,$pax);
+    $cost = 0;
+    if ($costDay['costDay']){
+      foreach ($costDay['costDay'] as $c){
+        $cost +=$c;
+      }
+    }
+    return $cost;
+  }
   /**
    * Get the default cost and price to pax and seassons
    * 

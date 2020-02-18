@@ -22,7 +22,7 @@
 		</div>
 		<div class="row push-10">
 			<span class="push-10 font-s18 black font-w300 pull-left">Fechas:</span> 
-			<span class="push-10 font-s18 black font-w300 pull-right"><b><?php echo $start->copy()->format('d-M') ?> - <?php echo $finish->copy()->format('d-M') ?></b></span>
+			<span class="push-10 font-s18 black font-w300 pull-right"><b><?php echo convertDateToShow_text($start).' - '.convertDateToShow_text($finish); ?></b></span>
 		</div>
 		<div class="row push-10">
 			<span class="push-10 font-s18 black font-w300 pull-left">Sup. Lujo:<?php if($luxury > 0): ?>(SI)<?php else: ?>(NO)<?php endif; ?></span>
@@ -88,7 +88,8 @@
 	    		<input type="hidden" name="name" value="<?php echo $name; ?>">
 	    		<input type="hidden" name="email" value="<?php echo $email; ?>">
 	    		<input type="hidden" name="phone" value="<?php echo $phone; ?>">
-	    		<input type="hidden" name="fechas" value="<?php echo $start->copy()->format('d M, y') ?> - <?php echo $finish->copy()->format('d M, y') ?>">
+	    		<input type="hidden" name="start" value="<?php echo $start ?>">
+	    		<input type="hidden" name="finish" value="<?php echo $finish ?>">
 	    		<input type="hidden" name="pax" value="<?php echo $pax; ?>">
 	    		<input type="hidden" name="nigths" value="<?php echo $nigths; ?>">
 	    		<input type="hidden" name="parking" value="<?php echo $parking; ?>">
@@ -122,6 +123,9 @@
 			</form>
 		</div>
     </div>
+    @if($msg)
+    <p class="alert alert-warning">{{$msg}}</p>
+    @endif
 </div>
 <script type="text/javascript">
 	$(document).ready(function() {

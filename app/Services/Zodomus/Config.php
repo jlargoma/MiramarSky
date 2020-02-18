@@ -89,28 +89,44 @@ class Config{
     }
     
     
-    public function priceByChannel($price,$channelId=null,$room=null) {
+    public function priceByChannel($price,$channelId=null,$room=null,$text=false) {
+      
+      $priceText = '';
+      //Parking
+      if ($room == '7J' || $room == '9F'){
+        $price += 40; 
+        $priceText = '(PVP+40€)';
+      } else {
+        $price += 20; 
+        $priceText = '(PVP+20€)';
+      }
       
       switch ($channelId){
         case 1:
         case "1": //"Booking.com",
-          if ($room == 'DDL')
-            $price = ($price>0) ? $price+($price*0.24) : 24;
-          else 
-            $price = ($price>0) ? $price+($price*0.20) : 20;
+          if ($room == 'DDL'){
+            $price = $price+($price*0.24);
+            $priceText .= '+24%';
+          }
+          else{
+            $price = $price+($price*0.20);
+            $priceText .= '+20%';
+          }
           break;
         case 2:
         case "2": //Expedia,
-          $price = ($price>0) ? $price+($price*0.20) : 20;
+          $price = $price+($price*0.20);
+          $priceText .= '+20%';
           break;
         case 3:
         case "3": //airbnb,
-          $price = ($price>0) ? $price+($price*0.15) : 15;
+          $price = $price+($price*0.15);
+          $priceText .= '+15%';
           break;
       }
       
       
-      
+      if ($text) return $priceText;
       return $price;
     }
     

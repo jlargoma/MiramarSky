@@ -107,4 +107,16 @@ class Settings extends Model
       return $lst;
     }
    
+    
+    static function priceParking(){
+      $parkCostSetting = self::where('key','parking_book_cost')->first();
+      if (!$parkCostSetting) return 0;
+      return $parkCostSetting->value;
+    }
+    
+    static function priceLujo(){
+      $luxuryCostSetting = self::where('key', 'luxury_book_cost')->first();
+      if ($luxuryCostSetting)  return $luxuryCostSetting->value;
+      return 0;
+    }
 }

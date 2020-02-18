@@ -4461,6 +4461,16 @@ var SEMICOLON = SEMICOLON || {};
 
  $(document).ready(function () {
 
+ Date.prototype.yyyymmmdd = function () {
+    var mm = this.getMonth() + 1; // getMonth() is zero-based
+    var dd = this.getDate();
+    return [
+      this.getFullYear(),
+      (mm > 9 ? '' : '0') + mm,
+      (dd > 9 ? '' : '0') + dd
+    ].join('-');
+  };
+  
 
   if ($("#image-gallery").length>0){
     $('#image-gallery').lightSlider({
@@ -4686,8 +4696,12 @@ if (elementVisible($('#progressData1'))){
       var date2 = new Date(res2);
       var timeDiff = Math.abs(date2.getTime() - date1.getTime());
 
-
-      $.post('/getDiffIndays', {date1: arrayDates[0], date2: arrayDates[1],apto:apto,luxury:luxury,quantity:quantity}, function (data) {
+      var date_start = date1.yyyymmmdd();
+      var date_finish = date2.yyyymmmdd();
+//      $(this).closest('.daterange1').find('.date_start').val(date_start);
+//      $(this).closest('.daterange1').find('.date_finish').val(date_finish);
+            
+      $.post('/getDiffIndays', {date1: date_start, date2: date_finish,apto:apto,luxury:luxury,quantity:quantity}, function (data) {
         var diffDays = data.diff;
         var minDays = data.minDays;
           if (diffDays >= 2) {
@@ -4701,6 +4715,8 @@ if (elementVisible($('#progressData1'))){
                 email: email,
                 phone: phone,
                 fechas: data.dates,
+                start: date_start,
+                finish: date_finish,
                 quantity: quantity,
                 apto: apto,
                 luxury: luxury,

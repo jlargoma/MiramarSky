@@ -24,6 +24,9 @@ class SizeRooms extends Model {
   }
 
   static function findSizeApto($apto, $luxury, $quantity) {
+    $sizeRoom = 0;
+    $typeApto = 'None';
+
     if ($apto == '2dorm' && $luxury == 'si') {
       //$roomAssigned = 115;
       $typeApto = "2 DORM Lujo";

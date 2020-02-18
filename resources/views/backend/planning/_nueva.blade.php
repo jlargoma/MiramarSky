@@ -121,9 +121,10 @@ $mobile = new Mobile();
                 </div>
                 <div class="col-md-3 col-xs-12 push-xs-10">
                     <label>Entrada</label>
-                    <div class="input-prepend input-group">
+                    <div class="input-prepend input-group input_dates">
                         <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
-
+                        <input type="hidden" class="date_start" id="start" name="start" value="">
+                        <input type="hidden" class="date_finish" id="finish" name="finish" value="">
                     </div>
                 </div>
                 <div class="col-md-1 col-xs-6 push-xs-10">
@@ -344,4 +345,5 @@ $mobile = new Mobile();
 
 <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
+<script type="text/javascript" src="{{ asset('/js/datePicker01.js')}}"></script>
 @include('backend.planning._bookScripts', ['update' => 0])

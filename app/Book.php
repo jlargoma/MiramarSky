@@ -252,20 +252,24 @@ class Book extends Model {
   }
   
   //Para comprobar el dia de la reserva en el calendario
-  static function availDate($startDate, $endDate, $room) {
+  static function availDate($startDate, $endDate, $room,$bookID=null) {
 
     
     $match1 = [['start','>=', $startDate ],['start','<=', $endDate ]];
     $match2 = [['finish','>=', $startDate ],['finish','<=', $endDate ]];
     $match3 = [['start','<', $startDate ],['finish','>', $endDate ]];
 
-    $booksCount = self::where_type_book_reserved()->where('room_id',$room)
+    $qry = self::where_type_book_reserved()->where('room_id',$room)
             ->where(function ($query) use ($match1,$match2,$match3) {
               $query->where($match1)
                       ->orWhere($match2)
                       ->orWhere($match3);
-            })->count();
-      
+            });
+    if ($bookID && $bookID>0) {
+      $qry->where('id','!=',$bookID);
+    } 
+     
+    $booksCount = $qry->count();
     if ($booksCount>0) {
       return false;
     } else {
@@ -1451,6 +1455,37 @@ class Book extends Model {
           
       
     }
+  }
+  
+  
+  public function getCostBook(){
+      $start     = Carbon::createFromFormat('Y-m-d', $this->start);
+      $finish    = Carbon::createFromFormat('Y-m-d', $this->finish);
+      $countDays = $finish->diffInDays($start);
+      $pax = $this->pax;
+      $paxPerRoom = Rooms::getPaxRooms($pax, $this->room_id);
+
+      if ($paxPerRoom > $pax)
+      {
+          $pax = $paxPerRoom;
+      }
+      $costBook = 0;
+      $counter  = $start->copy();
+      for ($i = 1; $i <= $countDays; $i++)
+      {
+          $date = $counter->copy()->format('Y-m-d');
+
+          $seasonActive = Seasons::getSeasonType($date);
+          $costs        = Prices::getCostsFromSeason($seasonActive, $pax);
+
+          foreach ($costs as $precio)
+          {
+              $costBook = $costBook + $precio['cost'];
+          }
+
+          $counter->addDay();
+      }
+      return $costBook;
   }
 
 }

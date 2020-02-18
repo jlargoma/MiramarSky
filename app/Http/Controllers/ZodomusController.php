@@ -179,9 +179,9 @@ class ZodomusController extends Controller {
     }
 
     $dw = listDaysSpanish(true);
-    $price_booking = $zConfig->priceByChannel(0,1,$room);
-    $price_expedia = $zConfig->priceByChannel(0,2,$room);
-    $price_airbnb = $zConfig->priceByChannel(0,3,$room);
+    $price_booking = $zConfig->priceByChannel(0,1,$room,true);
+    $price_expedia = $zConfig->priceByChannel(0,2,$room,true);
+    $price_airbnb = $zConfig->priceByChannel(0,3,$room,true);
     return view('backend/zodomus/cal-room', [
         'rooms' => $rooms,
         'room' => $room,

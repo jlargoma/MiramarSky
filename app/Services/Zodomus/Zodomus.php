@@ -424,8 +424,37 @@ class Zodomus{
     $book->external_id = $reserv['reser_id'];
     $book->propertyId = $reserv['propertyId'];
     $book->external_roomId = $reserv['external_roomId'];
+    $book->type_park = 0;
+    $book->type_luxury = 0;
+    
+    
+    //costes
+    $room = \App\Rooms::find($roomID);
+    $costes = $room->priceLimpieza($room->sizeApto);
+    $book->cost_limp = isset($costes['cost_limp']) ? $costes['cost_limp'] : 0;
+    
 
+    $book->cost_lujo = 0;
+    if ($room->luxury == 1){
+      $book->type_luxury = 1;
+      $book->cost_lujo = \App\Settings::priceLujo();
+      $book->cost_apto += $book->cost_lujo;
+    }
+    
+    
+    $book->cost_park = (\App\Settings::priceParking()*$nights) * $room->num_garage;
+    $book->type_park = 1;
+
+    $book->cost_apto = $book->getCostBook() + $book->cost_limp + $book->cost_park + $book->cost_apto;
+    
+    $extraCost  = \App\Extras::find(4)->cost;
+    
+    $book->cost_total = $book->cost_apto + $book->PVPAgencia+$extraCost;
+    
+    //save
     $book->save();
+    
+    
     return $book->id;
   }
 }
