@@ -337,7 +337,7 @@ class Zodomus{
     $allRoomsBySize = \App\Rooms::
                     where('channel_group', $apto)
                     ->where('state', 1)
-                    ->where('fast_payment', 1)
+                    ->orderBy('fast_payment','DESC')
                     ->orderBy('order_fast_payment', 'ASC')->get();
 
     foreach ($allRoomsBySize as $room) {
