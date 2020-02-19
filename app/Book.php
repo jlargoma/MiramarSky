@@ -255,15 +255,23 @@ class Book extends Model {
   static function availDate($startDate, $endDate, $room,$bookID=null) {
 
     
-    $match1 = [['start','>=', $startDate ],['start','<=', $endDate ]];
-    $match2 = [['finish','>=', $startDate ],['finish','<=', $endDate ]];
-    $match3 = [['start','<', $startDate ],['finish','>', $endDate ]];
-
+    
+//    $match1 = [['start','<', $endDate ],[$endDate,'<','finish' ]];
+//    $match2 = [[$startDate,'<','start'],['finish','<', $endDate]];
+//    $match3 = [['start','<', $startDate ],[$endDate,'<', 'finish']];
+//    $match4 = [['start','<', $startDate ],[$startDate,'<', 'finish' ]];
+    
+    $match1 = [['start','<', $endDate ],['finish','>',$endDate]];
+    $match2 = [['start','>',$startDate],['finish','<', $endDate]];
+    $match3 = [['start','<', $startDate ],['finish','>',$endDate]];
+    $match4 = [['start','<=', $startDate ],['finish','>',$startDate]];
+            
     $qry = self::where_type_book_reserved()->where('room_id',$room)
-            ->where(function ($query) use ($match1,$match2,$match3) {
+            ->where(function ($query) use ($match1,$match2,$match3,$match4) {
               $query->where($match1)
                       ->orWhere($match2)
-                      ->orWhere($match3);
+                      ->orWhere($match3)
+                      ->orWhere($match4);
             });
     if ($bookID && $bookID>0) {
       $qry->where('id','!=',$bookID);
