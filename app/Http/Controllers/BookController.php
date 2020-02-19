@@ -2232,7 +2232,7 @@ class BookController extends AppController
         $totalPrice = ($totalPrice == 0) ? $data['totales']['book'] : $totalPrice;
 
         $totalCost = array_sum($data['costes']) - $promotion;
-        $profit    = $totalPrice - $totalCost;
+        $profit    = round($totalPrice - $totalCost,2);
 
         $data['calculated']['total_price']       = $totalPrice;
         $data['calculated']['total_cost']        = $totalCost;
