@@ -2727,8 +2727,10 @@ class LiquidacionController extends AppController {
         $book = \App\Book::find($id);
         if ($book) {
 
+          $cost = $book->cost_total - ($book->cost_limp+$book->extraCost);
           $book->cost_limp = floatval($limp_value);
           $book->extraCost = floatval($extr_value);
+          $book->cost_total = $cost + ($book->cost_limp+$book->extraCost);
           $book->save();
 
           return response()->json(['status' => 'true']);
