@@ -110,7 +110,10 @@ class RouterActionsController extends AppController {
 
   function sales_updateLimpBook($id, $importe) {
     $book = \App\Book::find($id);
+    
+    $cost = $book->cost_total - $book->cost_limp;
     $book->cost_limp = $importe;
+    $book->cost_total = $cost + $importe;
     if ($book->save()) {
       return "OK";
     }
@@ -118,7 +121,9 @@ class RouterActionsController extends AppController {
 
   function sales_updateExtraCost($id, $importe) {
     $book = \App\Book::find($id);
+    $cost = $book->cost_total - $book->extraCost;
     $book->extraCost = $importe;
+    $book->cost_total = $cost + $importe;
     if ($book->save()) {
       return "OK";
     }
@@ -126,12 +131,14 @@ class RouterActionsController extends AppController {
 
   function sales_updateCostApto($id, $importe) {
     $book = \App\Book::find($id);
+    $cost = $book->cost_total - $book->cost_apto;
     $book->cost_apto = $importe;
+    $book->cost_total = $cost + $importe;
     if ($book->save()) {
       return "OK";
     }
   }
-
+ 
   function sales_updateCostPark($id, $importe) {
     $book = \App\Book::find($id);
     $book->cost_park = $importe;
