@@ -141,7 +141,9 @@ class RouterActionsController extends AppController {
  
   function sales_updateCostPark($id, $importe) {
     $book = \App\Book::find($id);
+    $cost = $book->cost_total - $book->cost_park;
     $book->cost_park = $importe;
+    $book->cost_total = $cost + $importe;
     if ($book->save()) {
       return "OK";
     }
