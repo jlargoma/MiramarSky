@@ -92,7 +92,12 @@ class ZodomusImportAll extends Command {
           $channelId = $room->channel;
           $propertyId = $room->propID;
           $bookings = $this->sZodomus->getBookingsQueue($room->channel, $room->propID);
-       
+//       dd($bookings);
+          /** test */
+//          $response = $this->importAnReserv(1, 2092950,1582574231);
+//          die;
+          /** test */
+          
           if ($bookings && isset($bookings->status) && $bookings->status->returnCode == 200) {
             $alreadySent[] = $keyIteration;
             
@@ -107,12 +112,7 @@ class ZodomusImportAll extends Command {
     }
     $response = null;
     foreach ($reservas as $r){
-//      $alreadyExist = \App\Book::where('external_id', $r[2])->first();
-//      if ($alreadyExist){
-//        $this->result[] = [$r[2], 'Reserva ya creada', $alreadyExist->id];
-//      } else {
-        $response = $this->importAnReserv($r[0],$r[1],$r[2]);
-//      }
+      $response = $this->importAnReserv($r[0],$r[1],$r[2]);
     }
     
     if (isset($_SERVER['REQUEST_METHOD'])) {
@@ -152,6 +152,7 @@ class ZodomusImportAll extends Command {
                   }
                 }
               } else {
+                
                  $this->result[] = [$reservationId, 'Reserva cancelada', '-1'];
               }
             }
@@ -160,6 +161,7 @@ class ZodomusImportAll extends Command {
           //Una reserva puede tener multiples habitaciones
           $rooms = $booking->rooms;
           foreach ($rooms as $room){
+            $update = null;
             $roomId = $room->id;
             $roomReservationId = $room->roomReservationId;
              //check if exists
@@ -178,11 +180,12 @@ class ZodomusImportAll extends Command {
                   //Ya esta disponible
                   $alreadyExist->sendAvailibilityBy_status();
                 }
+                continue;
               } else {
-                 $this->result[] = [$reservationId, 'Reserva ya creada',$alreadyExist->id];
+                $update = $alreadyExist->id;
+                $this->result[] = [$reservationId, 'Reserva ya creada',$alreadyExist->id];
               }
               
-              continue;
             }              
             
             $cg = $this->sZodomus->getChannelManager($channelId,$propertyId,$roomId);
@@ -220,7 +223,11 @@ class ZodomusImportAll extends Command {
                 'end' => $room->departureDate,
             ];
             
-            $bookID = $this->sZodomus->saveBooking($cg,$reserv);
+            if ($update){
+              $bookID = $this->sZodomus->updBooking($cg,$reserv,$update);
+            } else {
+              $bookID = $this->sZodomus->saveBooking($cg,$reserv);
+            }
             $this->result[] = [
                 $reservationId,
                 $booking->customer->firstName . ' ' . $booking->customer->lastName.': '.$room->arrivalDate.'-'.$room->departureDate,

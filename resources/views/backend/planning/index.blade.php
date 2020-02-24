@@ -138,6 +138,9 @@ $is_mobile = $mobile->isMobile();
           font-size: 12px;
         }
           
+        div.dataTables_length {
+          float: right !important;
+        }
         @media only screen and (max-width: 991px){
           button.btn.changeStatus,
           button.btn.changeRoom {

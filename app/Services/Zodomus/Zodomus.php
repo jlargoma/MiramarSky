@@ -331,14 +331,18 @@ class Zodomus{
     }
     
     
-  public function calculateRoomToFastPayment($apto, $start, $finish) {
+  public function calculateRoomToFastPayment($apto, $start, $finish,$roomID = null) {
 
     $roomSelected = null;
-    $allRoomsBySize = \App\Rooms::
+      
+    $qry = \App\Rooms::
                     where('channel_group', $apto)
-                    ->where('state', 1)
-                    ->orderBy('fast_payment','DESC')
-                    ->orderBy('order_fast_payment', 'ASC')->get();
+                    ->where('state', 1);
+        
+    if ($roomID) $qry->where('id',$roomID);
+
+    $allRoomsBySize = $qry->orderBy('fast_payment','DESC')
+            ->orderBy('order_fast_payment', 'ASC')->get();
 
     foreach ($allRoomsBySize as $room) {
       $room_id = $room->id;
@@ -453,6 +457,58 @@ class Zodomus{
     $book->save();
     
     
+    return $book->id;
+  }
+  
+  function updBooking($cg,$reserv,$bookID){
+    
+    $book = \App\Book::find($bookID);
+    
+    $roomID = $this->calculateRoomToFastPayment($cg, $reserv['start'], $reserv['end'],$book->room_id);
+    
+    if ($roomID<0){
+      $roomID = 33;
+    }
+            
+    $nights = calcNights($reserv['start'], $reserv['end']);
+    
+    $comment = $this->ZConfig->get_detailRate($reserv['rate_id']);
+    $book->room_id = $roomID;
+    $book->start = $reserv['start'];
+    $book->finish = $reserv['end'];
+    $book->comment = $book->comment.' - UPD '.date('Y-m-d H:i').' -' .$comment; //$reserv['mealPlan'];
+    $book->nigths = $nights;
+    $book->pax = $reserv['numberOfGuests'];
+    $book->real_pax = $reserv['numberOfGuests'];
+    $book->PVPAgencia = $reserv['comision'];
+    $book->total_price = $reserv['totalPrice'];
+    $book->save();
+    
+    
+    //costes
+    $room = \App\Rooms::find($roomID);
+    $costes = $room->priceLimpieza($room->sizeApto);
+    $book->cost_limp = isset($costes['cost_limp']) ? $costes['cost_limp'] : 0;
+    
+
+    $book->cost_lujo = 0;
+    if ($room->luxury == 1){
+      $book->type_luxury = 1;
+      $book->cost_lujo = \App\Settings::priceLujo();
+    }
+    
+    
+    $book->cost_park = (\App\Settings::priceParking()*$nights) * $room->num_garage;
+    $book->type_park = 1;
+
+    $book->cost_apto = $room->getCostRoom($book->start,$book->finish,$book->pax);
+    $extraCost  = \App\Extras::find(4)->cost;
+    
+    $book->cost_total = $book->cost_apto + $book->cost_limp + $book->cost_park + $book->cost_lujo + $book->PVPAgencia+$extraCost;
+    
+    //save
+    $book->save();
+            
     return $book->id;
   }
 }

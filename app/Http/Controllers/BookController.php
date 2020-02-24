@@ -551,6 +551,7 @@ class BookController extends AppController
                     </div>';
                 }
               }
+              $visaHtml .=  '<div class="btn btn-blue" type="button" id="_getPaymentVisaForce">Refrescar datos</div>';
             }
             
           }
@@ -2539,6 +2540,8 @@ class BookController extends AppController
      */
     function getVisa(Request $request){
         $booking = $request->input('booking', null);
+        $force = $request->input('force', null);
+        $imported = 0;
         $fieldsCard = ["name","number",'date',"cvc",'type'];
         if ($booking){
           $aux = explode('-', $booking);
@@ -2552,21 +2555,29 @@ class BookController extends AppController
                     ->first();
             
             if ($oVisa){
-              $visaData = json_decode($oVisa->visa_data, true);
-              
-              if ($visaData){
-                foreach ($fieldsCard as $f){
-                  if (isset($visaData[$f])){
-                    if ($f == 'date') $visaData[$f] = str_replace ('/20', ' / ', $visaData[$f]);
-                    echo '
-                      <div>
-                      <label>'.$f.'</label>
-                      <input type="text" class="form-control" value="'.$visaData[$f].'" >
-                      <button class="btn btn-success copy_data" type="button"><i class="fa fa-copy"></i></button>
-                      </div>';
+              if (!$force){
+                $visaData = json_decode($oVisa->visa_data, true);
+                if ($visaData){
+                  foreach ($fieldsCard as $f){
+                    if (isset($visaData[$f])){
+                      if ($f == 'date') $visaData[$f] = str_replace ('/20', ' / ', $visaData[$f]);
+                      echo '
+                        <div>
+                        <label>'.$f.'</label>
+                        <input type="text" class="form-control" value="'.$visaData[$f].'" >
+                        <button class="btn btn-success copy_data" type="button"><i class="fa fa-copy"></i></button>
+                        </div>';
+                    }
                   }
+                  echo '<div class="btn btn-blue" type="button" id="_getPaymentVisaForce">Refrescar datos</div>';
+                  return ;
                 }
-                return ;
+              } else {
+                $imported = $oVisa->imported;
+                if ($imported>1){
+                   echo '<p class="alert alert-warning">Excedió el máximo de descargas para esta reserva.</p>';
+                   return;
+                }
               }
             }
             
@@ -2582,17 +2593,29 @@ class BookController extends AppController
 //                $creditCard = json_decode('{"status":{"returnCode":"200","returnMessage":"OK","channelLogId":"","channelOtherMessages":"","timestamp":"2020-02-03 08:36:04"},"reservation":{"id":"2493440995"},"customerCC":{"name":"","cvc":"","number":"","date":"","type":""}}');
                 if ($creditCard && isset($creditCard->status) && $creditCard->status->returnCode == 200){
                   $visa_data = json_encode($creditCard->customerCC);
-                  DB::table('book_visa')->insert([
-                    'book_id' =>$bookingID,
-                    'user_id'=>Auth::user()->id,
-                    'customer_id'=>$clientID,
-                    'visa_data'=>($visa_data),
-                    'created_at'=>date('Y-m-d H:m:s'),
-                    'updated_at'=>date('Y-m-d H:m:s'),
-                   ]);
+                  if ($oVisa){
+                    DB::table('book_visa')
+                            ->where('id', $oVisa->id)
+                            ->update([
+                                'visa_data' => $visa_data,
+                                'updated_at'=>date('Y-m-d H:m:s'),
+                                'imported' => $imported+1]);
+                   
+                  } else {
+                    DB::table('book_visa')->insert([
+                      'book_id' =>$bookingID,
+                      'user_id'=>Auth::user()->id,
+                      'customer_id'=>$clientID,
+                      'visa_data'=>($visa_data),
+                      'imported' => 1,
+                      'created_at'=>date('Y-m-d H:m:s'),
+                      'updated_at'=>date('Y-m-d H:m:s'),
+                     ]);
+                  }
                   
                   if ($visa_data){
-                    $visa_data = json_decode($visa_data, true);
+                    $visaData = json_decode($visa_data, true);
+                    
                     foreach ($fieldsCard as $f){
                       if (isset($visaData[$f])){
                         if ($f == 'date') $visaData[$f] = str_replace ('/20', ' / ', $visaData[$f]);
@@ -2604,8 +2627,10 @@ class BookController extends AppController
                           </div>';
                       }
                     }
-                  }
-                } 
+                    echo '<div class="btn btn-blue" type="button" id="_getPaymentVisaForce">Refrescar datos</div>';
+                    
+                  }else { echo '<p class="alert alert-warning">Error de servicio.</p>';}
+                } else { echo '<p class="alert alert-warning">Error de servicio.</p>';}
                 
                  
                 return ;
