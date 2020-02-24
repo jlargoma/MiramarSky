@@ -14522,9 +14522,6 @@ border-top: 2px solid #000;
 .btn-fechas-calendar{
     font-size: 11px;
 }
-.btn-fechas-calendar[data-month="5"]{
-    display: none;
-}
 
 [data-notify="progressbar"] {
     margin-bottom: 0px;

@@ -25,10 +25,13 @@ trait BookEmailsStatus
         if ($status == 1){
           if (in_array($book->agency,$otaAgencies)){ 
             $keyMail = $this->getKeyTemplate('1.1');
+            $subject = "Confirmación de reserva";
           } else {
             $keyMail = $this->getKeyTemplate($status);
           }
         } else {
+          //don't send with OTAs
+          if ($status == 2 && in_array($book->agency,$otaAgencies)) return;
           $keyMail = $this->getKeyTemplate($status);
         }
         if (!$keyMail){

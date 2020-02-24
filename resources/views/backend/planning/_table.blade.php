@@ -57,10 +57,10 @@ $role = Auth::user()->role;
             {"targets": [{{$columnDefs}}], "orderable": false }
           ],
           @if($orden) {!!$orden!!}@endif
-          @if($isMobile)
             paging:  true,
             pageLength: 30,
             pagingType: "full_numbers",
+          @if($isMobile)
             scrollX: true,
             scrollY: false,
             scrollCollapse: true,

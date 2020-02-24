@@ -618,6 +618,12 @@ table.table-prices {
 .line-divide {
     border-top: 4px solid #000;
 }
+
+.Cancel-XML button.btn.changeStatus {
+    color: red;
+    font-weight: 600;
+}
+
 @media (min-width: 768px){
   #modalNewBook .modal-dialog {
     margin: 0 2%;

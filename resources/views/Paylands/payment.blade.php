@@ -75,6 +75,23 @@
 
   });
 
+    $('#visaDataContent').on("click", '#_getPaymentVisaForce', function () {
+
+    if (confirm('Refrescar datos de la targeta? (sólo se puede hacer una vez)')) {
+      var url = "{{route('booking.get_visa')}}";
+      var booking = $('#payland_booking').val();
+      var _token = $('#payland_token').val();
+      $.post(url, {
+        _token: _token,
+        booking: booking,
+        force: true,
+      }, function (data) {
+        $('#visaDataContent').empty().append(data).fadeIn('300').addClass('open');
+
+      });
+    }
+
+  });
 
   $('.only-numbers').keydown(function (e) {
     // Allow: backspace, delete, tab, escape, enter and .
