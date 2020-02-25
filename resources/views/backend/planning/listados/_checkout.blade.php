@@ -86,7 +86,7 @@
                       <?php endif;?>
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
-                        <select id="scheduleOut" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?>" style="width: 100%;" data-type="out" data-id="<?php echo $book->id ?>" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
+                        <select name="scheduleOut" class=" schedule <?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?>" style="width: 100%;" data-type="out" data-id="<?php echo $book->id ?>" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
                             <option>---</option>
                             <?php for ($i = 0; $i < 24; $i++): ?>
                                 <option value="<?php echo $i ?>" <?php if($i == $book->scheduleOut) { echo 'selected';}?>>
