@@ -78,8 +78,10 @@ $role = Auth::user()->role;
 
 <script type="text/javascript">
 	// Cambiamos los horarios para Check IN y Check Out
-	$('#schedule, #scheduleOut').change(function(event) {
+	$('body').on('change','.schedule',function(event) {
 
+        event.preventDefault();
+        event.stopImmediatePropagation();
         var type = $(this).attr('data-type');
         var id = $(this).attr('data-id');
         var schedule = $(this).val();

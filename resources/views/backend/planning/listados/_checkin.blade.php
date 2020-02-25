@@ -152,7 +152,7 @@ $uRole = Auth::user()->role;
                         <td class ="text-center"><?php echo $book->nigths ?></td>
                         <td class="text-center sm-p-t-10 sm-p-b-10">
 
-                            <select id="schedule" class="<?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?> <?php if ($book->schedule < 17 && $book->schedule > 0): ?>alerta-horarios<?php endif ?>" data-type="in" data-id="<?php echo $book->id ?>" <?php if ($uRole == "limpieza"): ?>disabled<?php
+                            <select name="schedule" class="schedule <?php if(!$mobile->isMobile() ): ?>form-control minimal<?php endif; ?> <?php if ($book->schedule < 17 && $book->schedule > 0): ?>alerta-horarios<?php endif ?>" data-type="in" data-id="<?php echo $book->id ?>" <?php if ($uRole == "limpieza"): ?>disabled<?php
                             endif ?>>
                                 <option>-- Sin asignar --</option>
                                 <?php for ($i = 0; $i < 24; $i++): ?>
