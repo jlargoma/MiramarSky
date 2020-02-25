@@ -1736,25 +1736,27 @@ $mobile = new Mobile();
           color: #fff;
         }
         
-.mobile-fixed {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 9;
-    background-color: #f9ff00;
-    padding: 7px;
-    left: 0;
-    box-shadow: 0px 2px 14px #000;
-  }
-  .mobile-fixed h4{
-    font-size: 18px;
-    line-height: 1.25;
-  }
-  .mobile-fixed h5{
-    font-size: 14px;
-  }
-   .mobile-right{
-    float: right;
-  }
+        @media (max-width: 518px){
+          .mobile-fixed {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 9;
+            background-color: #f9ff00;
+            padding: 7px;
+            left: 0;
+            box-shadow: 0px 2px 14px #000;
+          }
+          .mobile-fixed h4{
+            font-size: 18px;
+            line-height: 1.25;
+          }
+          .mobile-fixed h5{
+            font-size: 14px;
+          }
+          .mobile-right{
+            float: right;
+          }
+        }
   </style>
   @endsection
