@@ -100,18 +100,19 @@ $mobile = new Mobile();
     <div class="col-md-12 col-xs-12 center text-left0">
       <div class="col-md-6">
         <div class="col-md-9 col-xs-12">
+          <div class="" id="headerFixed">
           @if( url()->previous() != "" )
           @if( url()->previous() == url()->current() )
-          <a href="{{ url('/admin/reservas') }}" class=" m-b-10" style="min-width: 10px!important">
+          <a href="{{ url('/admin/reservas') }}" class=" m-b-10 mobile-right" style="min-width: 10px!important">
             <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px"/>
           </a>
           @else
-          <a href="{{ url()->previous() }}" class=" m-b-10" style="min-width: 10px!important">
+          <a href="{{ url()->previous() }}" class=" m-b-10 mobile-right" style="min-width: 10px!important">
             <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px"/>
           </a>
           @endif
           @else
-          <a href="{{ url('/admin/reservas') }}" class=" m-b-10"  style="min-width: 10px!important">
+          <a href="{{ url('/admin/reservas') }}" class=" m-b-10 mobile-right"  style="min-width: 10px!important">
             <img src="{{ asset('/img/miramarski/iconos/close.png') }}" style="width: 20px"/>
           </a>
           @endif
@@ -128,6 +129,7 @@ $mobile = new Mobile();
             <?php if ($book->external_id){ echo "/ OTA-ID: <b>" . $book->external_id . "</b>"; }?>
             
           </h5>
+          </div>
 <?php if ($book->type_book == 2): ?>
             <div class="col-md-2 col-xs-3 icon-lst">
               <a href="{{ url('/admin/pdf/pdf-reserva/'.$book->id) }}">
@@ -1632,6 +1634,19 @@ $mobile = new Mobile();
             loadFF_resume = false;
           }
         });
+        
+      
+      window.onscroll = function() {fixedHeader()};
+      var header = document.getElementById("headerFixed");
+      var sticky = header.offsetTop;
+      function fixedHeader() {
+        if (window.pageYOffset > sticky) {
+          header.classList.add("mobile-fixed");
+        } else {
+          header.classList.remove("mobile-fixed");
+        }
+      }
+  
     });
   
   </script>
@@ -1720,5 +1735,26 @@ $mobile = new Mobile();
     .tooltiptext.FF_resume p{
           color: #fff;
         }
+        
+.mobile-fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9;
+    background-color: #f9ff00;
+    padding: 7px;
+    left: 0;
+    box-shadow: 0px 2px 14px #000;
+  }
+  .mobile-fixed h4{
+    font-size: 18px;
+    line-height: 1.25;
+  }
+  .mobile-fixed h5{
+    font-size: 14px;
+  }
+   .mobile-right{
+    float: right;
+  }
   </style>
   @endsection
