@@ -594,6 +594,8 @@ class BookController extends AppController
         }
 
         //END: Check low_profit alert
+        
+        $priceBook = $book->room->getPVP($book->start, $book->finish, $book->park)-$book->promociones;
 
         return view('backend/planning/update'.$updateBlade, [
             'book'         => $book,
@@ -609,6 +611,7 @@ class BookController extends AppController
             'mobile'       => new Mobile(),
             'hasFiance'    => $hasFiance,
             'stripe'       => StripeController::$stripe,
+            'priceBook'    => $priceBook
         ]);
     }
 
@@ -702,9 +705,9 @@ class BookController extends AppController
                 $book->sup_limp  = $computedData->totales->limp;
                 $book->cost_limp = $computedData->costes->limp;
 
-                $book->sup_lujo   = $computedData->totales->lujo;
-                $book->cost_lujo  = $computedData->costes->lujo;
+                
                 $book->real_price = $computedData->calculated->real_price;
+               
               }
             }
 
@@ -717,7 +720,7 @@ class BookController extends AppController
 
             $book->type_luxury = $request->input('type_luxury');
             if ($computedData){
-              $book->sup_lujo    = $computedData->totales->lujo;
+              $book->sup_lujo    = intval($computedData->totales->lujo);
               $book->cost_lujo   = $computedData->costes->lujo;
             }
             

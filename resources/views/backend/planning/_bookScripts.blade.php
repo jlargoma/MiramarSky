@@ -208,6 +208,14 @@
 	                    $('.beneficio').val(data.calculated.profit);
 	                    $('.beneficio-text').html(data.calculated.profit_percentage + '%');
 	                    $('#real-price').html(data.calculated.real_price);
+	                    $('#realPVP').html(data.calculated.real_price);
+	                    $('#real_parking').html(data.totales.parking);
+	                    $('#real_limp').html(data.totales.limp);
+	                    $('#real_lujo').html(data.totales.lujo);
+	                    $('#real_book').html(data.totales.book);
+                        
+
+
                             /* fix data.aux.price_modified UNDEFINED */
                                     var price_modified = 0;
                                     if (data.aux){

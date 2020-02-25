@@ -991,7 +991,7 @@ class Book extends Model {
     return $result;
   }
 
-  public function getPriceBook($dStart,$dEnd,$roomID,$cant=1) {
+  public function getPriceBook($dStart,$dEnd,$roomID,$pax=null) {
 
     $oRoom = Rooms::find($roomID);
     $return = [
@@ -1011,22 +1011,25 @@ class Book extends Model {
       $return['msg'] = 'Apto '.$oRoom->name.' no Habilitado';
       return $return;
     }
+    if (!$pax) $pax = $this->pax;
     
-//    dd($this);
-    $price = $oRoom->getPVP($dStart,$dEnd,$this->pax);
-        
-        if ($price > 0){
-          $return['pvp'] = $price;
-          $costes = $oRoom->priceLimpieza($oRoom->sizeApto);
-          $return['price_limp'] = $costes['price_limp'];
+    $paxPerRoom = $oRoom->minOcu;
+    if ($paxPerRoom > $pax)  $pax = $paxPerRoom;
 
-          $return['parking'] = Http\Controllers\BookController::getPricePark($this->type_park,$this->nigths);
-          $return['price_lux'] = Http\Controllers\BookController::getPriceLujo($this->type_luxury);
-          
-          $return['price_total'] =  $return['pvp']+ $return['parking']+ $return['price_lux']+ $return['price_limp'];
+    $price = $oRoom->getPVP($dStart,$dEnd,$pax);
+   
+    if ($price > 0){
+      $return['pvp'] = $price;
+      $costes = $oRoom->priceLimpieza($oRoom->sizeApto);
+      $return['price_limp'] = $costes['price_limp'];
+
+      $return['parking'] = Http\Controllers\BookController::getPricePark($this->type_park,$this->nigths) * $room->num_garage;
+      $return['price_lux'] = Http\Controllers\BookController::getPriceLujo($this->type_luxury);
+
+      $return['price_total'] =  $return['pvp']+ $return['parking']+ $return['price_lux']+ $return['price_limp'];
 //          $total   = $price + $priceParking + $limp + $luxury;
-    
-        }
+
+    }
    
     $return['status'] = 'ok';
     return $return;
