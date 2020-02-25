@@ -579,32 +579,22 @@ $mobile = new Mobile();
   <?php endif ?>
 
             </div>
-            <?php if (Auth::user()->role == "admin"): ?>
+            <?php if (Auth::user()->role != "agente"): ?>
             <div class="col-md-12 col-xs-12 push-20 not-padding">
-            <p>Cáculos desde nueva fórmula</p>
-              <?php
-              $price = $book->getPriceBook($book->start,$book->finish,$book->room_id,$book->real_pax);
-              if ($price['status'] == 'error'){
-                echo '<p class="alert alert-warning">'.$price['msg'].'</p>';
-              }
-//              dd($price);
-              ?>
-            
-      
-              <div class="col-md-2 text-white" style="background-color: #c1c1c1;">
-                PVP<br>{{$price['pvp']}}
+              <div class="col-md-3 text-white" style="background-color: #c1c1c1;">
+                PVP<br><span  id="realPVP">{{$book->real_price}}</span><br/>
               </div>
               <div class="col-md-2 text-white" style="background-color: #c1c1c1;">
-                PARKING<br>{{$price['parking']}}
+                 Apto<br><span  id="real_book">{{$priceBook}}</span>
               </div>
               <div class="col-md-2 text-white" style="background-color: #c1c1c1;">
-                SUP lUX<br>{{$price['price_lux']}}
+                PARKING<br><span  id="real_parking">{{$book->sup_park}}</span>
+              </div>
+              <div class="col-md-2 text-white" style="background-color: #c1c1c1;">
+                SUP lUX<br><span  id="real_lujo">{{$book->sup_lujo}}</span>
               </div>
               <div class="col-md-3 text-white" style="background-color: #c1c1c1;">
-                LIMP<br>{{$price['price_limp']}}
-              </div>
-              <div class="col-md-3 text-white" style="background-color: #c1c1c1;">
-                TOTAL PVP<br>{{$price['price_total']}}<br/>
+                LIMP<br><span  id="real_limp">{{$book->sup_limp}}</span>
               </div>
             </div>
             <?php endif ?>
@@ -615,31 +605,6 @@ $mobile = new Mobile();
                   Van menos personas que la ocupacion minima del apartamento.
   <?php endif ?>
               </p>
-              @if ($book->real_price != $book->total_price)
-              <div class="col-xs-9">
-                <table class="table-striped price-references-table">
-                  <tbody>
-                    <tr>
-                      <td>PVP REAL GUARDADO EN BD</td>
-                      <td class="price-references"
-                          id="saved-real-price">{{ $book->real_price }}</td>
-                    </tr>
-                    <tr>
-                      <td>PVP MODIFICADO MANUALMENTE</td>
-                      <td class="price-references"
-                          id="modified-price">{{ $book->total_price }}</td>
-                    </tr>
-                    <tr>
-                      <td>PVP REAL GENERADO DINÁMICAMENTE</td>
-                      <td class="price-references" id="real-price">{{ $book->real_price }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="col-xs-3">
-                <i id="arrow-price-modification"></i>
-              </div>
-              @endif
             </div>
             <div class="col-md-12 col-xs-12 not-padding text-left">
               <p class="precio-antiguo font-s18">
@@ -1181,31 +1146,25 @@ $mobile = new Mobile();
                   Van menos personas que la ocupacion minima del apartamento.
   <?php endif ?>
               </p>
-              @if ($book->real_price != $book->total_price)
-              <div class="col-xs-9">
-                <table class="table-striped price-references-table">
-                  <tbody>
-                    <tr>
-                      <td>PVP REAL GUARDADO EN BD</td>
-                      <td class="price-references"
-                          id="saved-real-price">{{ $book->real_price }}</td>
-                    </tr>
-                    <tr>
-                      <td>PVP MODIFICADO MANUALMENTE</td>
-                      <td class="price-references"
-                          id="modified-price">{{ $book->total_price }}</td>
-                    </tr>
-                    <tr>
-                      <td>PVP REAL GENERADO DINÁMICAMENTE</td>
-                      <td class="price-references" id="real-price">{{ $book->real_price }}</td>
-                    </tr>
-                  </tbody>
-                </table>
+            <?php if (Auth::user()->role != "agente"): ?>
+            <div class="col-md-12 col-xs-12 push-20 not-padding">
+              <div class="col-md-3 text-white" style="background-color: #c1c1c1;">
+                PVP<br><span  id="realPVP">{{$book->real_price}}</span><br/>
               </div>
-              <div class="col-xs-3">
-                <i id="arrow-price-modification"></i>
+              <div class="col-md-2 text-white" style="background-color: #c1c1c1;">
+                Apto<br><span  id="real_book">{{$priceBook}}</span>
               </div>
-              @endif
+              <div class="col-md-2 text-white" style="background-color: #c1c1c1;">
+                PARKING<br><span  id="real_parking">{{$book->sup_park}}</span>
+              </div>
+              <div class="col-md-2 text-white" style="background-color: #c1c1c1;">
+                SUP lUX<br><span  id="real_lujo">{{$book->sup_lujo}}</span>
+              </div>
+              <div class="col-md-3 text-white" style="background-color: #c1c1c1;">
+                LIMP<br><span  id="real_limp">{{$book->sup_limp}}</span>
+              </div>
+            </div>
+            <?php endif ?>
             </div>
             <div class="col-md-8 col-xs-12 not-padding text-left">
               <p class="precio-antiguo font-s18">
