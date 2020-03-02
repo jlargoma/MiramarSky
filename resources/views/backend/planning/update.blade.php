@@ -709,7 +709,7 @@ $mobile = new Mobile();
                       </div>
                     </td>
                     <td class="text-center">
-                      <input class="importe m-t-5" type="number" name="importe"
+                      <input class="importe m-t-5 only-numbers" type="text" name="importe"
                              style="width: 100%;text-align: center;border-style: none none ">
                     </td>
                     <td class="text-center">
@@ -738,8 +738,10 @@ $mobile = new Mobile();
                       </div>
                     </td>
                     <td class="text-center">
-                      <input class="importe m-t-5" type="text" name="importe"
+                      
+                      <input class="importe m-t-5 only-numbers" type="text" name="importe"
                              style="width: 100%;text-align: center;border-style: none">
+                      
                     </td>
                     <td class="text-center">
                       <select class="full-width select2-hidden-accessible type_payment"
@@ -1327,8 +1329,9 @@ $mobile = new Mobile();
                       </div>
                     </td>
                     <td class="text-center">
-                      <input class="importe form-control" type="number" name="importe"
+                      <input class="importe form-control only-numbers" type="text" name="importe"
                              style="width: 100%;text-align: center;">
+                      banana
                     </td>
 
                     <td class="text-center">

@@ -168,9 +168,7 @@
 										<th class ="text-center bg-complete text-white">ING. PROP</th>
 										<th class ="text-center bg-complete text-white">Apto</th>
 										<th class ="text-center bg-complete text-white">Park</th>
-										<?php if ($room->luxury == 1): ?>
-											<th class ="text-center bg-complete text-white">Sup.Lujo</th>
-										<?php endif ?>
+                                                                                <th class ="text-center bg-complete text-white">Sup.Lujo</th>
 									</tr>
 									<tr>
 										<td class="text-center total">
@@ -194,7 +192,6 @@
 												--- €
 											<?php endif ?>
 										</td>
-										<?php if ($room->luxury == 1): ?>
 											<td class="text-center">
 												<?php if ($lujo > 0): ?>
 													<?php echo number_format($lujo,0,',','.'); ?>€
@@ -202,8 +199,6 @@
 													--- €
 												<?php endif ?>
 											</td>
-										<?php else: ?>
-										<?php endif ?>
 									</tr>
 								</table>
 							</div>
@@ -233,9 +228,7 @@
 											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">ING. PROP</th>
 											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Apto</th>
 											<th class ="text-center bg-complete text-white" style="width: 10%; padding: 4px 10px">Park.</th>
-											<?php if ($room->luxury == 1): ?>
-												<th class ="text-center bg-complete text-white" style="width: 10%">Sup.Lujo</th>
-											<?php endif ?>
+                                                                                        <th class ="text-center bg-complete text-white" style="width: 10%">Sup.Lujo</th>
                         					<th class ="text-center bg-complete text-white" style="width: 50px!important">   &nbsp;      </th>
 
 										</thead>
@@ -293,12 +286,11 @@
 																---€	
 														<?php endif ?>
 													</td>
-													<?php if ($room->luxury == 1): ?>
 														<td class="text-center" style="padding: 8px; ">
 															<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
 																<?php $auxLuxury = $book->cost_lujo ?>
 																<?php if ($auxLuxury > 0): ?>
-																	<?php echo $auxLuxury ?>€
+																	<?php echo round($auxLuxury) ?>€
 																<?php else: ?>
 																	---€	
 																<?php endif ?>
@@ -306,7 +298,6 @@
 																---€	
 															<?php endif ?>
 														</td>
-													<?php endif ?>
 													<td class="text-center">
 						                                <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
 				                                        	<img src="/pages/oferta.png" style="width: 40px;" title="<?php echo $book->book_owned_comments ?>">
@@ -533,10 +524,7 @@
 								<th class ="text-center bg-complete text-white">TOT. ING</th>
 								<th class ="text-center bg-complete text-white">APTO</th>
 								<th class ="text-center bg-complete text-white">PARK</th>
-								<?php if ($room->luxury == 1): ?>
-									<th class ="text-center bg-complete text-white">S.LUJO</th>
-								<?php else: ?>
-								<?php endif ?>
+                                                                <th class ="text-center bg-complete text-white">S.LUJO</th>
 							</tr>
 							<tr>
 								<td class="text-center total" style="padding: 8px;">
@@ -560,7 +548,6 @@
 										--- €
 									<?php endif ?>
 								</td>
-								<?php if ($room->luxury == 1): ?>
 									<td class="text-center" style="padding: 8px;">
 										<?php if ($lujo > 0): ?>
 											<?php echo number_format($lujo,0,',','.'); ?>€
@@ -568,8 +555,6 @@
 											--- €
 										<?php endif ?>
 									</td>
-								<?php else: ?>
-								<?php endif ?>
 							</tr>
 						</table>
 					</div>
@@ -597,9 +582,7 @@
 								<th class ="text-center bg-complete text-white">Tot. Ing</th>
 								<th class ="text-center bg-complete text-white">Apto</th>
 								<th class ="text-center bg-complete text-white">Parking</th>
-								<?php if ($room->luxury == 1): ?>
-									<th class ="text-center bg-complete text-white">Sup.Lujo</th>
-								<?php endif ?>
+                                                                <th class ="text-center bg-complete text-white">Sup.Lujo</th>
 								<th class ="text-center bg-complete text-white" style="width: 50px!important">   &nbsp;      </th>
 								
 							</thead>
@@ -646,15 +629,13 @@
 												---€	
 											<?php endif ?>
 										</td>
-										<?php if ($book->room->luxury == 1): ?>
 											<td class="text-center">
 												<?php if ($book->cost_lujo > 0): ?>
-													<?php echo $book->cost_lujo ?> €
+													<?php echo round($book->cost_lujo) ?> €
 												<?php else: ?>
 													---€	
 												<?php endif ?>
 											</td>
-										<?php endif ?>
 										<td class="text-center">
 			                                <?php if (!empty($book->book_owned_comments)): ?>
 	                                        	<img src="/pages/oferta.png" style="width: 40px;" title="<?php echo $book->book_owned_comments ?>">

@@ -663,7 +663,7 @@ class BookController extends AppController
         $customer->save();
 
         
-        if (Book::availDate($start, $finish, $request->input('newroom'),$book->id))
+        if (!in_array($book->type_book, $book->typeBooksReserv) || Book::availDate($start, $finish, $request->input('newroom'),$book->id))
         {
 
             $OldRoom   = $book->room_id;
