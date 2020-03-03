@@ -67,7 +67,12 @@ class ProcessData extends Command
       $rooms = Rooms::select('id')->where('state',1)->get();
       foreach ($rooms as $room){
         
-        $booksCount = book::where_type_book_reserved()->where('room_id',$room->id)->get();
+       $booksCount = book::where_type_book_reserved()
+                ->where('room_id',$room->id)
+                ->where('start','>=',$startDate)
+                ->where('start','<=',$endDate)
+                ->get();
+       
         $aLstDays = [];
         foreach ($booksCount as $b){
 
