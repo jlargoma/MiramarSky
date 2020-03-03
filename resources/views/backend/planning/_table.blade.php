@@ -8,6 +8,7 @@ $role = Auth::user()->role;
   $orden = null;
   switch ($type):
     case 'pendientes':
+    case 'overbooking':
       ?> @include('backend.planning.listados._pendientes', ['books' => $books ])<?php
       if ($role != "agente"){
         $columnDefs = '0,1,2,3,4,8,9,10,11';

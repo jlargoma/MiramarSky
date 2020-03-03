@@ -46,7 +46,11 @@
         <button class="btn btn-success btn-tables" style="background-color: #96ef99; color: black;padding: 7px 18px;     width: auto !important;border: none;" type="button" data-type="pendientes">
           <span >RVA({{$totalReserv}}) <?php echo number_format($amountReserv, 0, ',', '.')?>€</span>
         </button>
-        
+        @if(is_array($overbooking) && count($overbooking)>0)
+        <button class="btn btn-success btn-tables"  type="button" style="background-color: #e8b0e7; color: black;padding: 7px 18px;border: none;"  data-type="overbooking">
+          <span >OverBooking({{count($overbooking)}})</span>
+        </button>
+        @endif
       <?php endif ?>
         <button class="btn btn-primary btn-sm calend show-mobile cargar_calend" type="button" >
               <span class="bold"><i class="fa fa-calendar"></i></span>

@@ -194,21 +194,24 @@ class BookController extends AppController
           }
         }
         
-        if (isset($_GET['test'])){
-          return view(
-                  'backend/planning/test/index',
-                  compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
-                          'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits',
-                          'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment','ff_pendientes','ff_mount')
-          );
+     //BEGIN: Processed data
+        $bookOverbooking = null;
+        $overbooking = [];
+        $oData = \App\ProcessedData::where('key','overbooking')->get();
+        foreach ($oData as $d){
+          switch ($d->key){
+            case 'overbooking':
+              $overbooking = json_decode($d->content,true);
+              break;
+          }
         }
-          
+        //END: Processed data
         
 		return view(
 			'backend/planning/index',
 			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
 			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits',
-                                'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment','ff_pendientes','ff_mount','totalReserv','amountReserv')
+                                'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment','ff_pendientes','ff_mount','totalReserv','amountReserv','overbooking')
 		);
     }
     
@@ -1487,7 +1490,7 @@ class BookController extends AppController
         $year      = self::getActiveYear();
         $startYear = new Carbon($year->start_date);
         $endYear   = new Carbon($year->end_date);
-
+        $books = [];
 
         if (Auth::user()->role == "limpieza"){
           if (!($request->type == 'checkin' || $request->type == 'checkout')){
@@ -1600,6 +1603,14 @@ class BookController extends AppController
                         12
                     ])->orderBy('updated_at', 'DESC')->get();
                 break;
+            case 'overbooking':
+                //BEGIN: Processed data
+               $bookOverbooking = null;
+               $overbooking = [];
+               $oData = \App\ProcessedData::where('key','overbooking')->first();
+               if ($oData) $overbooking = json_decode($oData->content,true);
+               $books = Book::whereIn('id',$overbooking)->orderBy('updated_at', 'DESC')->get();
+              break;
         }
 
 
