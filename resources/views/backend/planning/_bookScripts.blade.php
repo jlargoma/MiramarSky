@@ -618,7 +618,7 @@
                 var dni                 = $('input[name="dni"]').val();
                 var address             = $('input[name="address"]').val();
                 var country             = $('select[name="country"]').val();
-                var city                = $('select[name="city"]').val();
+                var city                = $('input[name="city"]').val();
                 var fechas              = $('input[name="fechas"]').val();
                 var nigths              = $('input[name="nigths"]').val();
                 var pax                 = $('select[name="pax"]').val();

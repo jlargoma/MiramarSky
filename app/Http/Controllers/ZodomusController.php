@@ -484,7 +484,7 @@ class ZodomusController extends Controller {
 //        var_dump($return); die;
 //      }
 //    $return = $Zodomus->checkProperty($apto);
-    $return = $Zodomus->createTestReserv($apto);
+//    $return = $Zodomus->createTestReserv($apto);
     if ($return){
         var_dump($return); die;
         dd($return);

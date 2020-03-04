@@ -408,6 +408,9 @@ class Zodomus{
     $customer->email = $rCustomer->email;
     $customer->phone = $rCustomer->phoneCountryCode . ' ' . $rCustomer->phoneCityArea . ' ' . $rCustomer->phone;
     $customer->DNI = "";
+    $customer->country	 = $rCustomer->countryCode;
+    $customer->city	 = $rCustomer->city;
+    $customer->zipCode	 = $rCustomer->zipCode;
     $customer->save();
 
     $comment = $this->ZConfig->get_detailRate($reserv['rate_id']);

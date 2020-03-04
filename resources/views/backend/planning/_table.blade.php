@@ -335,13 +335,7 @@ $role = Auth::user()->role;
 		$('.'+content).hide();
 	});
 
-	
-        // Ensure that it is a number and stop the keypress
-        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
-            e.preventDefault();
-        }
-    });
-
+     
 	$('.customer-phone').change(function(event) {
 		var idCustomer = $(this).attr('data-id');
 		var phone = $(this).val();

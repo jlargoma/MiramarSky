@@ -106,7 +106,7 @@ class ProcessData extends Command
       $oData = ProcessedData::findOrCreate('overbooking');
       $oData->content = json_encode($overbooking);
       $oData->save();
-      dd($overbooking);
+      
     }
 
 }
