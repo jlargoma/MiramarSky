@@ -440,7 +440,7 @@ class BookController extends AppController
                         $book->ben_jaime   = 0;
 
                         /* Asiento automatico para reservas propietarios*/
-                        LiquidacionController::setExpenseLimpieza($book->type_book, $room->id, $finish);
+                        LiquidacionController::setExpenseLimpieza($book->type_book, $room->id, $date_finish);
                         /* Asiento automatico */
                     }elseif ($book->type_book == 7){
                         $book->sup_limp    = ($room->sizeApto == 1) ? 30 : 50;
@@ -463,7 +463,7 @@ class BookController extends AppController
                         $book->ben_jaime   = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
 
                         /* Asiento automatico para reservas subcomunidad*/
-                        LiquidacionController::setExpenseLimpieza($book->type_book, $room->id, $finish);
+                        LiquidacionController::setExpenseLimpieza($book->type_book, $room->id, $date_finish);
                         /* Asiento automatico */
                     }else{
                       $book->total_price = $request->input('total');
