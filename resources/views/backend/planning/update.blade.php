@@ -331,32 +331,20 @@ $mobile = new Mobile();
             <div class="col-md-3 col-xs-12 push-10">
               <label for="country">PAÍS</label>
               <select class="form-control country minimal" name="country" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
-                <option value="">--Seleccione país --</option>
-                <?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
-                  <option value="<?php echo $country->code ?>" <?php
-                          if ($country->code == $book->customer->country) {
-                            echo "selected";
-                          }
-                          ?>>
-    <?php echo $country->country ?>
-                  </option>
-  <?php endforeach; ?>
+                 <option value="">--Seleccione país --</option>
+                <?php 
+                $c_country = strtolower($book->customer->country);
+                foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): 
+                  ?>
+                <option value="<?php echo $country->code ?>" <?php  if (strtolower($country->code) == $c_country){echo "selected";}?>>
+                  <?php echo $country->country ?> 
+                </option>
+                <?php endforeach; ?>
               </select>
             </div>
             <div class="col-md-3 col-xs-12 push-10 content-cities">
               <label for="city">CIUDAD</label>
-              <select class="form-control city minimal" name="city" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
-                <option>--Seleccione ciudad --</option>
-                <?php foreach (\App\Cities::orderBy('city', 'ASC')->get() as $city): ?>
-                  <option value="<?php echo $city->id ?>" <?php
-                            if ($city->id == $book->customer->city) {
-                              echo "selected";
-                            }
-                            ?>>
-    <?php echo $city->city ?>
-                  </option>
-  <?php endforeach; ?>
-              </select>
+              <input class="form-control city" type="text" name="city" value="<?php echo $book->customer->city ?>" >
             </div>
           </div>
           <!-- DATOS DE LA RESERVA -->
@@ -902,34 +890,20 @@ $mobile = new Mobile();
             <div class="col-xs-12 push-10">
               <label for="country">PAÍS</label>
               <select class="form-control country minimal" name="country" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
-                <option value="">--Seleccione país --</option>
-  <?php foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): ?>
-                  <option value="<?php echo $country->code ?>" <?php
-    if ($country->code == $book->customer->country) {
-      echo "selected";
-    }
-    ?>>
-                  <?php echo $country->country ?>
-                  </option>
-                        <?php endforeach; ?>
+                 <option value="">--Seleccione país --</option>
+                <?php 
+                $c_country = strtolower($book->customer->country);
+                foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): 
+                  ?>
+                <option value="<?php echo $country->code ?>" <?php  if (strtolower($country->code) == $c_country){echo "selected";}?>>
+                  <?php echo $country->country ?> 
+                </option>
+                <?php endforeach; ?>
               </select>
             </div>
             <div class="col-xs-12 push-10 content-cities">
               <label for="city">CIUDAD</label>
-              <select class="form-control city minimal" name="city" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
-                <option>--Seleccione ciudad --</option>
-  <?php foreach (\App\Cities::where('code_country', $book->customer->country)
-          ->orderBy('city', 'ASC')->get() as $city):
-    ?>
-                  <option value="<?php echo $city->id ?>" <?php
-    if ($city->id == $book->customer->city) {
-      echo "selected";
-    }
-    ?>>
-    <?php echo $city->city ?>
-                  </option>
-  <?php endforeach; ?>
-              </select>
+              <input class="form-control city" type="text" name="city" value="<?php echo $book->customer->city ?>" >
             </div>
           </div>
 
