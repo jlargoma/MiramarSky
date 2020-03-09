@@ -1305,7 +1305,6 @@ $mobile = new Mobile();
                     <td class="text-center">
                       <input class="importe form-control only-numbers" type="text" name="importe"
                              style="width: 100%;text-align: center;">
-                      banana
                     </td>
 
                     <td class="text-center">
