@@ -96,6 +96,9 @@
   
 </script>
 <style>
+  #visaDataContent{
+    overflow: auto;
+  }
   #visaDataContent div{
     clear: both;
     display: block;
