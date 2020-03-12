@@ -709,4 +709,314 @@ trait BookCentroMensajeria {
       }
       return false;
     }
+/*****************************************************/
+    public function updSafetyBox($bookID,$value,$min=false) {
+      
+      if ($value == -1){
+        $oObject = \App\BookSafetyBox::where('book_id',$bookID)
+                ->update(['deleted'=>1,'key'=>-1]);
+        if ($min) return 'ok';
+        return $this->showSafetyBox($bookID);
+      }
+      
+      $book = Book::find($bookID);
+      if ($book){
+        $otherBooks = Book::where('start',$book->start)
+                ->join('book_safety_boxes','book_id','=','book.id')
+                ->where('key',$value)->count();
+        if ($otherBooks>0){
+          return 'overlap';
+        }
+      }
+      
+      $oObject = \App\BookSafetyBox::where('book_id',$bookID)->first();
+      if ($oObject){
+        $oObject->key = $value;
+        $oObject->deleted = null;
+        $oObject->save();
+      } else {
+        $oObject = new \App\BookSafetyBox();
+        $oObject->book_id = $bookID;
+        $oObject->key = $value;
+        $oObject->save();
+      }
+      if ($min) return 'ok';
+      return $this->showSafetyBox($bookID);
+      
+    }
+    public function showSafetyBox($bookID) {
+          $book = Book::find($bookID);
+          $disableEmail = 'disabled';
+          $disablePhone = 'disabled';
+          $messageSMS   = null;
+          $caja = null;
+          if ($book){
+            if ($book->customer->email) $disableEmail = '';
+            if ($book->customer->phone) $disablePhone = '';
+          }
+          $oObject = \App\BookSafetyBox::where('book_id',$bookID)->first();
+          $showInfo = [];
+          
+          $used = [];
+          if ($book){
+            $used = Book::select('book_safety_boxes.key')->where('start',$book->start)
+                    ->join('book_safety_boxes','book_id','=','book.id')->pluck('book_safety_boxes.key')->all();
+          }
+      
+      
+          if ($oObject && !$oObject->deleted){
+            $data = $oObject->log;
+            $caja = $oObject->key;
+            if ($data){
+              preg_match_all('|([0-9])*(\-sentSMS)|', $data, $info);
+              if (isset($info[0])){
+                foreach ($info[0] as $t){
+                  $showInfo[intval($t)] = '<b>SMS</b> enviado el '.date('d/m H:i', intval($t));
+                }
+              }
+              preg_match_all('|([0-9])*(\-sentMail)|', $data, $info);
+              if (isset($info[0])){
+                foreach ($info[0] as $t){
+                  $showInfo[intval($t)] = '<b>Mail</b> enviado el '.date('d/m H:i', intval($t));
+                }
+              }
+             
+            }
+//            $subject = translateSubject('Recordatorio de Datos del buzón',$book->customer->country);
+//            $message = $this->getMailData($book,'book_email_buzon');
+//            $message = $this->clearVars($message);
+            $messageSMS = $this->getMailData($book,'SMS_buzon');
+            $messageSMS = str_replace('{buzon}', $oObject->getBuzon(), $messageSMS);
+            $messageSMS = str_replace('{buzon_color}', $oObject->getBuzonColor(), $messageSMS);
+            $messageSMS = str_replace('{buzon_caja}', $oObject->getBuzonCaja(), $messageSMS);
+            $messageSMS = str_replace('{buzon_key}', $oObject->getKey(), $messageSMS);
+            $messageSMS = $this->clearVars($messageSMS);
+          } 
+          
+        ?>
+        <div class="col-md-5 mb-1em">
+          <b><?php echo $book->customer->name; ?></b>
+        </div>
+        <div class="col-md-3 mb-1em">
+          <b>Apto: </b><?php echo $book->room->nameRoom; ?>
+        </div>
+        <div class="col-md-4 mb-1em">
+          <b>Check-in: </b><?php echo dateMin($book->start).' - '.$book->schedule.' Hrs'; ?>
+        </div>
+        <div class="col-md-12 mb-1em"><br/></div>
+        <?php
+        if(!is_null($messageSMS)):
+          ?>
+        <input type="hidden" value="<?php echo csrf_token(); ?>" id="buzon_csrf_token">
+        <div class="col-xs-6 minH-4">
+          <button class="sendBuzonSMS btn btn-default <?php echo $disablePhone;?>" title="Enviar Texto Buzón por SMS" data-id="<?php echo $bookID;?>">
+            <i class="sendSMSIcon"></i>Enviar SMS
+          </button>
+        </div>
+        <div class="col-xs-6 minH-4">
+          <button class="sendBuzonMail btn btn-default <?php echo $disableEmail;?>" title="Enviar Texto Buzón por Correo" data-id="<?php echo $bookID;?>">
+            <i class="fa fa-inbox"></i> Enviar Email
+          </button>
+        </div>
+        <div class="col-xs-6 minH-4 mb-1em">
+          <a href="whatsapp://send?text=<?php echo $messageSMS; ?>"
+                 data-action="share/whatsapp/share"
+                 data-original-title="Enviar Buzon link"
+                 data-toggle="tooltip"
+                 class="btn btn-default <?php echo $disablePhone;?>">
+            <i class="fa  fa-whatsapp" aria-hidden="true" style="color: #000; margin-right: 7px;"></i>Enviar Whatsapp
+              </a>
+        </div>
+        <div class="col-xs-6 minH-4 mb-1em"> 
+          <button class="btn btn-default" title="Copiar mensaje Buzon" onclick="copyBuzonMsg(<?php echo $book->id; ?>,'cpMsgBuzon',0)">
+            <i class="far fa-copy"></i>  Copiar mensaje Buzon
+          </button>
+          <div id="cpMsgBuzon"></div>
+        </div>
+        <?php endif; ?>
+        <div class="col-md-6 minH-4 mb-1em" style="padding-right: 2em;overflow: auto;"> 
+          <label>Caja Asignada</label>
+          <select id="change_CajaAsig" class="form-control" data-id="<?php echo $book->id; ?>">
+            <option value="-1"> -- </option>
+            <?php 
+            $lst = \App\BookSafetyBox::$keys_name; 
+            foreach ($lst as $k=>$v){
+              $selected = ($caja == $k) ? 'selected': ''; 
+              $disabled =  (in_array($k, $used) && $caja != $k) ? 'disabled': ''; 
+              echo '<option value="'.$k.'" '.$selected.' '.$disabled.'>'.$v.'</option>';
+            }
+            ?>
+          </select>
+        </div>
+          <?php
+           if (count($showInfo)){
+            ksort($showInfo);
+            echo '<div class="col-md-6" ><b>Histórico:</b><br>';
+            echo implode('<br>', $showInfo);
+            echo '</div>';
+          }
+        }
+        
+         /**
+         * Get the custom message to Cajas
+         */
+        public function getSafetyBoxMsg($bookID) {
+          //Get Book object
+          $book = Book::find($bookID);
+          
+          if (!$book){
+            die('empty');
+          }
+          //get BookSafetyBox object
+          $oObject = \App\BookSafetyBox::where('book_id',$bookID)->first();
+          if ($oObject){
+            //Get msg content
+            $content = $this->getMailData($book,'SMS_buzon');
+            $content = str_replace('{buzon}', $oObject->getBuzon(), $content);
+            $content = str_replace('{buzon_key}', $oObject->getKey(), $content);
+            $content = str_replace('{buzon_color}', $oObject->getBuzonColor(), $content);
+            $content = str_replace('{buzon_caja}', $oObject->getBuzonCaja(), $content);
+            $content = $this->clearVars($content);
+            die($content);
+          } else {
+            die('empty');
+          }
+        }
+        
+        /**
+         * Send Partee to Finish CheckIn
+         * 
+         * @param Request $request
+         * @return type
+         */
+        public function sendSafetyBoxSMS(Request $request) {
+          
+          $bookID = $request->input('id',null);
+          
+          //Get Book object
+          $book = Book::find($bookID);
+          if (!$book){
+            return [
+                'status'   => 'danger',
+                'response' => "Reserva no encontrada."
+              ];
+          }
+          
+          //get BookSafetyBox object
+          $oObject = \App\BookSafetyBox::where('book_id',$bookID)->first();
+          if ($oObject){
+              //Send SMS
+              $SMSService = new \App\Services\SMSService();
+              if ($SMSService->conect()){
+
+                $messageSMS = $this->getMailData($book,'SMS_buzon');
+                $messageSMS = str_replace('{buzon}', $oObject->getBuzon(), $messageSMS);
+                $messageSMS = str_replace('{buzon_key}', $oObject->getKey(), $messageSMS);
+                $messageSMS = str_replace('{buzon_color}', $oObject->getBuzonColor(), $messageSMS);
+                $messageSMS = str_replace('{buzon_caja}', $oObject->getBuzonCaja(), $messageSMS);
+                $messageSMS = $this->clearVars($messageSMS);
+                $message = strip_tags($messageSMS);
+                if ($SMSService->sendSMS($message,$phone)){
+                  $oObject->log = $oObject->log .",".time() . '-' .'sentSMS';
+                  $oObject->save();
+                  return [
+                    'status'   => 'success',
+                    'response' => "Registro enviado",
+                  ];
+
+                } 
+              }
+          
+              return [
+                'status'   => 'danger',
+                'response' => $SMSService->response
+              ];
+             
+            }
+            
+            return [
+              'status'   => 'danger',
+              'response' => "El registro aún no está preparado."
+            ];
+              
+          }
+               /**
+         * Send Partee to Finish CheckIn
+         * 
+         * @param Request $request
+         * @return type
+         */
+        public function sendSafetyBoxMail(Request $request) {
+          
+          $bookID = $request->input('id',null);
+          
+          //Get Book object
+          $book = Book::find($bookID);
+          if (!$book){
+            return [
+                'status'   => 'danger',
+                'response' => "Reserva no encontrada."
+              ];
+          }
+          if (!$book->customer->email || trim($book->customer->email) == ''){
+              return [
+                'status'   => 'danger',
+                'response' => "La Reserva no posee email."
+              ];
+          }
+         //get BookSafetyBox object
+          $oObject = \App\BookSafetyBox::where('book_id',$bookID)->first();
+          if ($oObject){
+            $subject = translateSubject('Recordatorio para retiro de llaves',$book->customer->country);
+            $message = $this->getMailData($book,'book_email_buzon');
+            $message = str_replace('{buzon}', $oObject->getBuzon(), $message);
+            $message = str_replace('{buzon_key}', $oObject->getKey(), $message);
+            $message = str_replace('{buzon_color}', $oObject->getBuzonColor(), $message);
+            $message = str_replace('{buzon_caja}', $oObject->getBuzonCaja(), $message);
+            $message = $this->clearVars($message);
+                
+            $sended = Mail::send('backend.emails.base', [
+                    'mailContent' => $message,
+                    'title'       => $subject
+                ], function ($message) use ($book, $subject) {
+                    $message->from(config('mail.from.address'));
+                    $message->to($book->customer->email);
+                    $message->subject($subject);
+                    $message->replyTo(config('mail.from.address'));
+                });
+
+            \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'book_email_buzon',$subject,$message);
+            if ($sended){
+                  $oObject->log = $oObject->log .",".time() . '-' .'sentMail';
+                  $oObject->save();
+                  return [
+                    'status'   => 'success',
+                    'response' => "Registro enviado",
+                  ];
+              } 
+            }
+            
+            return [
+              'status'   => 'danger',
+              'response' => "El registro aún no está preparado."
+            ];
+              
+          }
+          
+          
+    public function getSafetyBoxLst(){
+          
+          $today = Carbon::now();
+          $books = \App\Book::select('book.*','book_safety_boxes.key')
+                  ->join('book_safety_boxes','book_id','=','book.id')
+                  ->where('start', '>=', $today->copy()->subDays(3))
+                  ->whereNull('deleted')
+                  ->whereYear('start','=', $today->copy()->format('Y'))
+                  ->orderBy('start', 'ASC')->get();
+          $safety_boxes = \App\BookSafetyBox::$keys_name;
+          $isMobile = config('app.is_mobile');
+          $today = $today->format('Y-m-d');
+          return view('backend/planning/_safety-boxs',compact('books','safety_boxes','isMobile','today'));
+          
+        }   
 }

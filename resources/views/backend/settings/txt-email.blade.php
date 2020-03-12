@@ -51,6 +51,8 @@ setlocale(LC_TIME, "es_ES"); ?>
               || $k == 'SMS_fianza_en'
               || $k == 'SMS_forfait'
               || $k == 'SMS_forfait_en'
+              || $k == 'SMS_buzon'
+              || $k == 'SMS_buzon_en'
             )
             $ckeditor = false;
         ?>
@@ -99,14 +101,14 @@ setlocale(LC_TIME, "es_ES"); ?>
       Fecha Salida:<b>{date_end}</b> <br>
       Noches:<b>{nigths}</b> <br>
       Ocupantes:<b>{pax}</b> <br>
-    </div>
-    <div class="col-md-6">
       Suplemento lujo:<b>{sup_lujo} €</b> <br>
       Comentarios:<b>{comment}</b><br>
       Observaciones internas:<b>{book_comments}</b><br>
       Precio total:<b>{total_price} €</b><br>
       Tipo de habitación:<b>{room_type}</b><br>
       Nombre habitación:<b>{room_name}</b><br>
+    </div>
+    <div class="col-md-6">
       <b>Pago de la señal {percent}% del total = {mount_percent} €.</b><br>
       
       % restante de tu reserva (Recordatorio 2º pago):<b>{pend_percent}</b><br>
@@ -118,6 +120,10 @@ setlocale(LC_TIME, "es_ES"); ?>
       Partee link:<b>{partee}</b> <br>
       Orden Forfait:<b>{forfait_order}</b> <br>
       Link Forfait:<b>{link_forfait}</b> <br>
+      Nombre Buzón/Caja:<b>{buzon}</b> <br>
+      Clave Buzón/Caja:<b>{buzon_key}</b> <br>
+      Color Buzón:<b>{buzon_color}</b> <br>
+      Caja Buzón:<b>{buzon_caja}</b> <br>
     </div>
   </div>
  </div>

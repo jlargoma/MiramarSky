@@ -79,6 +79,9 @@
   .flex-control-nav.flex-control-paging{
     display: none;
   }
+  .lSSlideOuter .lSPager.lSGallery li {
+    max-height: 60px !important;
+  }
 </style>
 
 @section('metadescription') {{ $aptoHeading }} en Sierra Nevada @endsection

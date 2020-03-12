@@ -1585,7 +1585,7 @@ class BookController extends AppController
             case 'ff_pdtes':
                 $dateX = Carbon::now();
                 $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $year->end_date)
-                                  ->where('type_book', 2)->orderBy('start', 'ASC')->get();
+                                  ->whereIn('type_book',[1,2])->orderBy('start', 'ASC')->get();
                 break;
             case 'checkout':
                 $dateX = Carbon::now();

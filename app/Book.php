@@ -644,6 +644,10 @@ class Book extends Model {
     return $lastPayment;
   }
 
+  public function SafetyBox() {
+    return $this->hasOne(\App\BookSafetyBox::class)->first();
+  }
+  
   // Funcion para Sacar Ventas por temporada
   public function getVentas($year) {
     $ventas = [
