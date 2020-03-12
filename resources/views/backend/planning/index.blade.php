@@ -13,6 +13,7 @@ $is_mobile = $mobile->isMobile();
     <link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css" />
     <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
     <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
+    <script type="text/javascript" src="{{ assetV('/js/backend/buzon.js')}}"></script>
     <style>
         #TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G{
             margin: 10px auto;
@@ -526,7 +527,7 @@ $is_mobile = $mobile->isMobile();
             <div class="row content-tables" >
                 @include('backend.planning._table', ['type'=> 'pendientes'])
             </div>
-            <div class="col-md-5">
+            <div class="col-md-5" style="overflow: auto;">
                 <div class="row content-calendar calendar-mobile" style="min-height: 485px;">
                     <div class="col-xs-12 text-center sending" style="padding: 120px 15px;">
                         <i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br>
@@ -753,6 +754,29 @@ $is_mobile = $mobile->isMobile();
     </div>
   </div>
 </div>
+          
+<div class="modal fade slide-up in" id="modalBookSafetyBox" tabindex="-1" role="dialog" aria-hidden="true" >
+     <div class="modal-dialog modal-lg">
+         <div class="modal-content-wrapper">
+             <div class="modal-content" id="_BookSafetyBox">
+
+             </div>
+         </div>
+     </div>
+ </div>
+<div class="modal fade slide-up in" id="modalSafetyBox" tabindex="-1" role="dialog" aria-hidden="true" style=" z-index: 9999;">
+<div class="modal-dialog modal-xd">
+ <div class="modal-content-classic">
+   <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+     <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
+   </button>
+   <h3 id="modalSafetyBox_title"></h3>
+   <div class="row" id="modalSafetyBox_content" style="margin-top:1em;">
+   </div>
+ </div>
+</div>
+</div>
+          
           
 <div class="modal fade" id="modalIntercambio" tabindex="-1" role="dialog"  aria-hidden="true">
   <div class="modal-dialog" role="document">

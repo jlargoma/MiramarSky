@@ -429,6 +429,13 @@ div#box_msg_lst {
   .first-col {
     padding-left: 190px !important;
   }
+  #tabPagadas select {
+    min-width: 0;
+    width: 33px;
+  }
+  .mobil-pad-x3{
+    padding: 0 18px !important;
+  }
 }
 @media only screen and (max-width: 425px) {
   .hidden-mobile{

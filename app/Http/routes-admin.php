@@ -28,6 +28,13 @@ Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionist
   // Route::get('/resume-by-book/{id}', 'ForfaitsItemController@getResumeBy_book');
   Route::get('/ajax/get-book-comm/{bookID}', 'BookController@getComment');
   
+  Route::get('/ajax/showSafetyBox/{bookID}', 'BookController@showSafetyBox');
+  Route::get('/ajax/updSafetyBox/{bookID}/{value}/{min?}', 'BookController@updSafetyBox');
+  Route::get('/ajax/SafetyBoxMsg/{bookID}', 'BookController@getSafetyBoxMsg');
+  Route::post('/ajax/send-SafetyBox-sms', 'BookController@sendSafetyBoxSMS');
+  Route::post('/ajax/send-SafetyBox-mail', 'BookController@sendSafetyBoxMail');
+  Route::get('admin/get-SafetyBox', 'BookController@getSafetyBoxLst');
+  
 });
 Route::group(['middleware' => ['auth','role:admin|propietario'], 'prefix' => 'admin',], function () {
   //Facturas

@@ -5,6 +5,7 @@ $startWeek = Carbon::now()->startOfWeek();
 $endWeek = Carbon::now()->endOfWeek(); 
 $isMobile = $mobile->isMobile();
 $uRole = Auth::user()->role;
+$lstSafetyBox = \App\BookSafetyBox::$keys_name; 
 ?>
 <div class="tab-pane" id="tabPagadas">
     <div class="table-responsive">
@@ -16,11 +17,12 @@ $uRole = Auth::user()->role;
                       @if($isMobile) <i class="fa fa-phone"></i> @else Telefono @endif
                     </th>
                     <th class="th-bookings th-2">Pax</th>
-                    <th class="th-bookings">Apart</th>
-                    <th class="th-bookings th-2">  <i class="fa fa-moon-o"></i> </th>
-                    <th class="th-bookings th-2"> <i class="fa fa-clock-o"></i></th>
-                    <th class="th-bookings th-4">   IN     </th>
-                    <th class="th-bookings th-4">   OUT      </th>
+                    <th class="th-bookings" style="min-width:136px !important;">Apart</th>
+                    <th class="th-bookings th-3">  <i class="fa fa-moon-o"></i> </th>
+                    <th class="th-bookings th-3"> <i class="fa fa-clock-o"></i></th>
+                    <th class="th-bookings th-4">IN</th>
+                    <th class="th-bookings th-4">OUT</th>
+                    <th class="th-bookings th-4"><i class="fa fa-lock"></i></th>
                     <th class="th-bookings th-3 hiddenOnlyRiad">FF</th>
                     <th class="th-bookings th-6" style="min-width:110px !important;">   Precio      </th>
                     <?php if ($uRole != "limpieza"): ?>
@@ -33,6 +35,7 @@ $uRole = Auth::user()->role;
             <tbody>
                 <?php $count = 0 ?>
                 <?php foreach ($books as $book): ?>
+                
                     <?php if ( $book->start >= $startWeek->copy()->format('Y-m-d') && $book->start <= $endWeek->copy()->format('Y-m-d')): ?>
 
                        <?php if ( $book->start <= Carbon::now()->copy()->subDay()->format('Y-m-d') ): ?>
@@ -49,8 +52,8 @@ $uRole = Auth::user()->role;
                            <?php $class = "lined"; $count++ ?>
                        <?php endif ?>
                    <?php endif ?>
-
-                    <tr class="<?php if($count <= 1){echo $class;} ?>" data-id="{{$book->id}}" >
+                   <?php //$class .= ' '.ucwords($book->getStatus($book->type_book)) ?>
+                    <tr class="{{$class}}" data-id="{{$book->id}}" >
                         <?php 
                             $dateStart = Carbon::createFromFormat('Y-m-d', $book->start);
                             $now = Carbon::now();
@@ -129,7 +132,7 @@ $uRole = Auth::user()->role;
                             </div>
                             <?php endif ?>
                           </td>
-                        <td class ="text-center" >
+                        <td class ="text-center mobil-pad-x3" >
                             <?php if ($book->real_pax > 6): ?>
                                 <?php echo $book->real_pax ?><i class="fa fa-exclamation" aria-hidden="true" style="color: red"></i>
                             <?php else: ?>
@@ -171,11 +174,25 @@ $uRole = Auth::user()->role;
                                 <?php endfor ?>
                             </select>
                         </td>
-                        <td class="td-date" data-order="{{$book->start}}">
+                        <td class="td-date mobil-pad-x3" data-order="{{$book->start}}">
                           <?php echo dateMin($book->start) ?>
                         </td>
-                        <td class="td-date" data-order="{{$book->finish}}">
+                        <td class="td-date mobil-pad-x3" data-order="{{$book->finish}}">
                           <?php echo dateMin($book->finish) ?>
+                        </td>
+                        <?php 
+                          $SafetyBox = $book->SafetyBox();
+                          $hasSafetyBox = 0;
+                          $safetyBoxClass = 'fa-lock';
+                          $titSafetyBox = 'Asignar Buzón';
+                          if ($SafetyBox && !$SafetyBox->deleted){
+                            $hasSafetyBox = 1;
+                            $safetyBoxClass = 'fa-unlock';
+                            $titSafetyBox = isset($lstSafetyBox[$SafetyBox->key]) ? $lstSafetyBox[$SafetyBox->key] : '';
+                          }
+                          ?>
+                        <td class="td-date mobil-pad-x3" data-order="{{$hasSafetyBox}}">
+                          <i class="fa {{$safetyBoxClass}} openSafetyBox" data-id="{{$book->id}}" title="{{$titSafetyBox}}"></i>
                         </td>
                         <td class="text-center hiddenOnlyRiad ">
                           <a data-booking="<?php echo $book->id; ?>" class="openFF showFF_resume" >
