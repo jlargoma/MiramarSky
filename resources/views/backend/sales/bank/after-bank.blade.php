@@ -18,25 +18,23 @@ setlocale(LC_TIME, "es_ES");
 @endsection
 
 @section('content')
-<div class="container padding-5 sm-padding-10">
-  <div class="row bg-white">
-    <div class="col-md-12 col-xs-12">
+    <div class="container padding-5 sm-padding-10">
+        <div class="row bg-white">
+            <div class="col-md-12 col-xs-12">
 
-      <div class="col-md-3 col-md-offset-3 col-xs-12">
-        <h2 class="text-center">
-          BANCO 
-        </h2>
-      </div>
-
+                <div class="col-md-3 col-md-offset-3 col-xs-12">
+                    <h2 class="text-center">Banco</h2>
+                </div>
+                <div class="col-md-2 col-xs-12 sm-padding-10" style="padding: 10px">
+                    @include('backend.years._selector')
+                </div>
+            </div>
+        </div>
+       <div class="row mb-1em">
+         @include('backend.sales._button-contabiliad')
+        </div>
     </div>
-  </div>
-</div>
-<div class="container-fluid">
-  <div class="row bg-white push-30">
-    <div class="col-lg-8 col-md-10 col-xs-12 push-20">
-      @include('backend.sales._button-contabiliad')
-    </div>
-  </div>
+    <div class="container-fluid">
 
   <div class="row bg-white">
     <div class="col-md-12 col-xs-12 contentBank">

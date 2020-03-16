@@ -359,3 +359,10 @@ function configZodomusAptos(){
 function calcNights($start,$end) {
   return intval(ceil((strtotime($end)-strtotime($start))/(24*60*60)));
 }
+function moneda($mount,$cero=true){
+  if ($cero)  return number_format($mount, 0, ',', '.' ).' €';
+  
+  if ($mount>0) return number_format($mount, 0, ',', '.' ).' €';
+  return '--';
+  
+}

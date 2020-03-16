@@ -7,6 +7,7 @@ use App\Http\Requests;
 use \Carbon\Carbon;
 use \DB;
 use App\Classes\Mobile;
+use App\Book;
 use Excel;
 use Auth;
 use App\Models\Forfaits\Forfaits;
@@ -297,24 +298,116 @@ class LiquidacionController extends AppController {
     ]);
   }
 
-  public function contabilidad() {
+  public function prepareTables() {
+      
     $year = $this->getActiveYear();
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
-    $diff = $startYear->diffInMonths($endYear) + 1;
+    
     $lstMonths = lstMonths($startYear,$endYear);
-    $rooms = \App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get();
-    $books = \App\Book::where_type_book_sales()->with('payments')
+    
+    $books = \App\Book::where_type_book_sales(true)->with('payments')
             ->where('start', '>=', $startYear)
             ->where('start', '<=', $endYear)->get();
     
-    $lstRooms = [];
-    if ($rooms){
+    
+    $months_empty = array();
+    for($i=0;$i<13;$i++) $months_empty[$i] = 0;
+    
+        
+    $aptos = configZodomusAptos();
+    $channels = [];
+    $chRooms = [];
+    foreach ($aptos as $k => $item) 
+    {
+      $channels[$k] = $item->name;
+    }
+
+    foreach ($channels as $k=>$v){
+      $rooms = \App\Rooms::where('state', 1)->where('channel_group',$k)->orderBy('order', 'ASC')->get();
       foreach ($rooms as $r){
-        $lstRooms[$r->id] = $r->name.' <b>'.$r->nameRoom.'</b>';
+        $channel_group = $r->channel_group;
+        if (!isset($chRooms[$channel_group])){
+          $chRooms[$channel_group] = [
+              'rooms'=>[],
+              'channel'=>$v,
+              'months'=>$months_empty
+              ];
+        }
+
+        $chRooms[$channel_group]['rooms'][$r->id] = $r->name;
       }
     }
     $sales_rooms = [];
+    foreach ($books as $key => $book) {
+      $date = date('n', strtotime($book->start));
+      $value = $book->total_price;
+      if (!isset($sales_rooms[$book->room_id])) $sales_rooms[$book->room_id] = [];
+      if (!isset($sales_rooms[$book->room_id][$date])) $sales_rooms[$book->room_id][$date] = 0;
+      $sales_rooms[$book->room_id][$date] += $book->total_price;
+      
+    }
+    //group Rooms
+    foreach ($chRooms as $ch=>$d1){
+      $auxMonth = $months_empty;
+      foreach ($d1['rooms'] as $roomID=>$d3 ){
+        if (isset($sales_rooms[$roomID])){
+          foreach ($sales_rooms[$roomID] as $date=>$total ){
+            $auxMonth[$date] += $total;
+            $auxMonth[0] += $total;
+          }
+        }
+        $chRooms[$ch]['months'] = $auxMonth;
+      }
+    }
+    
+    //prepate Rooms Table
+    $t_rooms = [];
+    $t_room_month = [];
+    $t_all_rooms = 0;
+    foreach ($sales_rooms as $r => $data){
+      foreach ($data as $month => $val){
+        $t_all_rooms += $val;
+        
+        if (!isset($t_rooms[$r])) $t_rooms[$r] = 0;
+        $t_rooms[$r] += $val;
+        
+        if (!isset($t_room_month[$month])) $t_room_month[$month] = 0;
+        $t_room_month[$month] += $val;
+        
+      }
+    }
+    return [
+        'books' => $books,
+        'lstMonths' => $lstMonths,
+        't_room_month' => $t_room_month,
+        'months_empty' => $months_empty,
+        'year' => $year,
+        'sales_rooms' => $sales_rooms,
+        't_rooms' => $t_rooms,
+        't_room_month' => $t_room_month,
+        't_all_rooms' => $t_all_rooms,
+        'chRooms' => $chRooms,
+        'channels' => $channels,
+        'startYear' => $startYear,
+        'endYear' => $endYear,
+        ];
+  }
+  
+  public function contabilidad() {
+    
+    $data = $this->prepareTables();
+    $months_empty = $data['months_empty'];
+    $lstMonths = $data['lstMonths'];
+    $t_room_month = $data['t_room_month'];
+    $year = $data['year'];
+    $channels = $data['channels'];
+    $chRooms = $data['chRooms'];
+    $sales_rooms = $data['sales_rooms'];
+    $books = $data['books'];
+    $startYear = $data['startYear'];
+    $endYear = $data['endYear'];
+    $diff = $startYear->diffInMonths($endYear) + 1;
     
     $cobrado = $metalico = $banco = $vendido = 0;
     foreach ($books as $key => $book) {
@@ -340,26 +433,11 @@ class LiquidacionController extends AppController {
       $vendido += $book->total_price;
       
     }
-    //prepate Rooms Table
-    $t_rooms = [];
-    $t_room_month = [];
-    $t_all_rooms = 0;
-    foreach ($sales_rooms as $r => $data){
-      foreach ($data as $month => $val){
-        $t_all_rooms += $val;
-        
-        if (!isset($t_rooms[$r])) $t_rooms[$r] = 0;
-        $t_rooms[$r] += $val;
-        
-        if (!isset($t_room_month[$month])) $t_room_month[$month] = 0;
-        $t_room_month[$month] += $val;
-        
-      }
-    }
     //First chart PVP by months
     $dataChartMonths = [];
+    
     foreach ($lstMonths as $k=>$v){
-      $val = isset($t_room_month[$k]) ? $t_room_month[$k] : 0;
+      $val = isset($t_room_month[$v['m']]) ? $t_room_month[$v['m']] : 0;
       $dataChartMonths[getMonthsSpanish($v['m'])] = $val;
     }
     
@@ -380,134 +458,150 @@ class LiquidacionController extends AppController {
         'year' => $year,
         'diff' => $diff,
         'sales_rooms' => $sales_rooms,
-        'lstRooms' => $lstRooms,
         'lstMonths' => $lstMonths,
-        't_rooms' => $t_rooms,
+        't_rooms' => $data['t_rooms'],
+        't_room_month' => $data['t_room_month'],
+        't_all_rooms' => (is_numeric($data['t_all_rooms']) && $data['t_all_rooms']>0) ? $data['t_all_rooms']:1,
         't_room_month' => $t_room_month,
-        't_all_rooms' => (is_numeric($t_all_rooms) && $t_all_rooms>0) ? $t_all_rooms:1,
         'cobrado' => $cobrado,
+        'months_extras' => null,
         'metalico' =>$metalico,
         'banco' =>$banco,
         'vendido'=>$vendido,
+        'chRooms'=>$chRooms,
         'dataChartMonths' => $dataChartMonths,
         'ffData'=>$ffData,
         'months_ff' => $months_ff
         ]);
   }
 
-  public function gastos() {
+   public function gastos($current=null) {
+    
     $year = $this->getActiveYear();
+    
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
     $diff = $startYear->diffInMonths($endYear) + 1;
-
-
+    $lstMonths = lstMonths($startYear,$endYear);
+    
+    if (!$current){
+      $current = ($year->year-2000).',0';
+    }
+    
+    $months_empty = array();
+    foreach ($lstMonths as $k=>$v){
+      $months_empty[$k] = 0;
+    }
+    $months_empty[0] = 0;
+    
+    $yearMonths = [
+        ($year->year)-2 => $months_empty,
+        ($year->year)-1 => $months_empty,
+        ($year->year) => $months_empty,
+    ];
+     
     $gastos = \App\Expenses::where('date', '>=', $startYear)
                     ->Where('date', '<=', $endYear)
-                    ->where('concept', 'NOT LIKE', '%LIMPIEZA RESERVA PROPIETARIO.%')
                     ->orderBy('date', 'DESC')->get();
 
-    $totalMonthLimpieza = 0;
-    $dateMonthLimpieza = '';
-//    foreach ($gastos as $key => $item) {
-////      if ($item->concept == 'LIMPIEZA MENSUAL') {
-////        $totalMonthLimpieza += $item->import;
-////        $dateMonthLimpieza = date('d M Y', strtotime($item->updated_at));
-////      }
-//    }
+    $gType = \App\Expenses::getTypes();
+    $listGasto = array();
+    if ($gType){
+      foreach ($gType as $k=>$v){
+        $listGasto[$k] = $months_empty;
+      }
+    }
+    $totalYearAmount = 0;
     
-     $totalMonthLimpieza = \App\Book::where_type_book_sales()
-            ->where('start', '>=', $startYear)
-            ->where('start', '<=', $endYear)
-            ->sum('cost_limp');
-    $extraCostBooks = \App\Book::where_type_book_sales()
-            ->where('start', '>=', $startYear)
-            ->where('start', '<=', $endYear)
-            ->sum('extraCost');
-    
-    
-    $books = \App\Book::whereIn('type_book', [2])->where('start', '>', $startYear)
-                    ->where('start', '<=', $endYear)
-                    ->orderBy('start', 'ASC')->get();
-    $totalStripep = 0;
-    $comisionBooking = 0;
-    foreach ($books as $key => $book) {
-
-      if (count($book->pago) > 0) {
-        foreach ($book->pago as $key => $pay) {
-          
-          if ($pay->comment == 'Pago desde stripe') {
-            $totalStripep += (((1.4 * $pay->import) / 100) + 0.25);
-          } elseif($pay->comment == 'Pago desde Payland'){
-            $totalStripep += paylandCost($pay->import);
-          }
+    if ($gastos){
+      foreach ($gastos as $g){
+        $month = date('ym', strtotime($g->date));
+        $totalYearAmount += $g->import;
+        $yearMonths[$year->year][$month] += $g->import;
+        
+        if (isset($listGasto[$g->type])){
+          $listGasto[$g->type][$month] += $g->import;
+          $listGasto[$g->type][0] += $g->import;
         }
       }
-
-      $comisionBooking += $book->PVPAgencia;
     }
+    $totalYear=[$year->year=>$totalYearAmount];
+              
+              
 
 
-    return view('backend/sales/gastos/gastos', [
+    
+    $auxYear = ($year->year)-1;
+    $totalYear[$auxYear] = 0;
+    $activeYear = \App\Years::where('year', $auxYear)->first();
+    $aux_startYear = new Carbon($activeYear->start_date);
+    $aux_endYear = new Carbon($activeYear->end_date);
+    $gastos = \App\Expenses::where('date', '>=', $aux_startYear)
+                    ->Where('date', '<=', $aux_endYear)
+                    ->orderBy('date', 'DESC')->get();
+    if ($gastos){
+      foreach ($gastos as $g){
+        $month = date('ym', strtotime($g->date));
+        if (isset($yearMonths[$auxYear][$month]))    $yearMonths[$auxYear][$month] += $g->import;
+        $totalYear[$auxYear] += $g->import;
+      }
+    }
+    $auxYear = ($year->year)-2;
+    $totalYear[$auxYear] = 0;
+    $activeYear = \App\Years::where('year', $auxYear)->first();
+    $aux_startYear = new Carbon($activeYear->start_date);
+    $aux_endYear = new Carbon($activeYear->end_date);
+    $gastos = \App\Expenses::where('date', '>=', $aux_startYear)
+                    ->Where('date', '<=', $aux_endYear)
+                    ->orderBy('date', 'DESC')->get();
+    if ($gastos){
+      foreach ($gastos as $g){
+        $month = date('ym', strtotime($g->date));
+        if (isset($yearMonths[$auxYear][$month]))    $yearMonths[$auxYear][$month] += $g->import;
+        $totalYear[$auxYear] += $g->import;
+      }
+    }
+    
+    
+    
+     //First chart PVP by months
+    $dataChartMonths = [];
+    foreach ($lstMonths as $k=>$v){
+      $val = isset($listGasto[$k]) ? $listGasto[$k] : 0;
+      $dataChartMonths[getMonthsSpanish($v['m'])] = $val;
+    }
+    
+   
+    
+    
+   
+    return view('backend/sales/gastos/index', [
         'year' => $year,
-        'gastos' => $gastos,
-        'totalStripep' => $totalStripep,
-        'comisionBooking' => $comisionBooking,
-        'obsequios' => $extraCostBooks,
-        'totalMonthLimpieza' => $totalMonthLimpieza,
-        'dateMonthLimpieza' => $dateMonthLimpieza,
+        'lstMonths' => $lstMonths,
+        'dataChartMonths' => $dataChartMonths,
+        'gType' => $gType,
+        'gastos' => $listGasto,
+        'current' => $current,
+        'totalYear' => $totalYear,
+        'total_year_amount' => $totalYearAmount,
+        'yearMonths' => $yearMonths,
     ]);
   }
 
+  
   public function gastoCreate(Request $request) {
-
-    //		var_dump($request->input());
-    //		die();
     $gasto = new \App\Expenses();
     $gasto->concept = $request->input('concept');
     $gasto->date = Carbon::createFromFormat('d/m/Y', $request->input('fecha'))->format('Y-m-d');
-    $gasto->import = $request->input('importe');
+    $gasto->import = $request->input('import');
     $gasto->typePayment = $request->input('type_payment');
     $gasto->type = $request->input('type');
     $gasto->comment = $request->input('comment');
 
     if ($request->input('type_payFor') == 1) {
-      $gasto->PayFor = $request->input('stringRooms');
+      $gasto->PayFor = $request->input('asig_rooms');
     }
 
-    if ($request->input('type_payment') == 1 || $request->input('type_payment') == 2) {
-
-
-      $data['concept'] = $request->input('concept');
-      $data['date'] = Carbon::createFromFormat('d/m/Y', $request->input('fecha'))->format('Y-m-d');
-      $data['import'] = $request->input('importe');
-      $data['comment'] = $request->input('comment');
-      $data['typePayment'] = ($request->input('type_payment') == 1) ? 1 : 0;
-      $data['type'] = 1;
-
-      $this->addCashbox($data);
-    } else if ($request->input('type_payment') == 0 || $request->input('type_payment') == 3 || $request->input('type_payment') == 4) {
-      switch ($request->input('type_payment')) {
-        case 0:
-          $data['concept'] = $request->input('concept');
-          $data['typePayment'] = 2;
-          break;
-        case 3:
-          $data['concept'] = $request->input('concept');
-          $data['typePayment'] = 2;
-          break;
-        case 4:
-          $data['concept'] = $request->input('concept');
-          $data['typePayment'] = 3;
-          break;
-      }
-      $data['date'] = Carbon::createFromFormat('d/m/Y', $request->input('fecha'))->format('Y-m-d');
-      $data['import'] = $request->input('importe');
-      $data['comment'] = $request->input('comment');
-      $data['type'] = 1;
-
-      $this->addBank($data);
-    }
     if ($gasto->save()) {
       return "OK";
     }
@@ -525,134 +619,153 @@ class LiquidacionController extends AppController {
     }
   }
 
-  public function getTableGastos() {
-    $year = $this->getActiveYear();
-    $startYear = new Carbon($year->start_date);
-    $endYear = new Carbon($year->end_date);
-    $diff = $startYear->diffInMonths($endYear) + 1;
-    $gastos = \App\Expenses::where('date', '>=', $startYear)
-                    ->Where('date', '<=', $endYear)
-                    ->orderBy('date', 'DESC')->get();
-
-    $books = \App\Book::whereIn('type_book', [2])
-            ->where('start', '>', $startYear)
-            ->where('start', '<=', $endYear)
-            ->orderBy('start', 'ASC')
-            ->get();
-
-    $totalStripep = 0;
-    $comisionBooking = 0;
-    $obsequios = 0;
-    foreach ($books as $key => $book) {
-
-      if (count($book->pago) > 0) {
-        foreach ($book->pago as $key => $pay) {
-          if ($pay->comment == 'Pago desde stripe') {
-            $totalStripep += (((1.4 * $pay->import) / 100) + 0.25);
-          } elseif($pay->comment == 'Pago desde Payland'){
-            $totalStripep += paylandCost($pay->import);
+  public function getTableGastos(Request $request, $isAjax = true) {
+    
+    $year = $request->input('year', null);
+    $month = $request->input('month', null);
+    if (!$year) {
+      return response()->json(['status' => 'wrong']);
+    }
+    
+    if ($year<100) $year = '20'.$year;
+    
+    
+    if ($month) {
+      $qry = \App\Expenses::whereYear('date','=', $year);
+      $qry->whereMonth('date','=', $month);
+    }else{
+      $oYear = \App\Years::where('year', $year)->first();
+      $qry = \App\Expenses::where('date', '>=', $oYear->start_date)->Where('date', '<=', $oYear->end_date);
+//    dd($startYear,$endYear,$oYear);
+    }
+    
+    
+    $oRooms = \App\Rooms::all();
+    $aptos = [];
+    foreach ($oRooms as $r){
+      $aptos[$r->id] = $r->name;
+    }
+    
+    $gastos = $qry->orderBy('date', 'DESC')->get();
+    $gType = \App\Expenses::getTypes();
+    $response = [
+        'status' => 'false',
+        'respo_list' => [],
+    ];
+    $totalMounth = 0;
+    $typePayment = Book::getTypeCobro();
+    if ($gastos){
+      $respo_list = array();
+      foreach ($gastos as $item){
+        
+        $lstAptos = array();
+        if ($item->PayFor){
+          $aux = explode(',',$item->PayFor);
+          if(is_array($aux)){
+            foreach ($aux as $i){
+              if (isset($aptos[$i])) $lstAptos[] = $aptos[$i];
+            }
+          } else {
+            if (isset($aptos[$aux])) $lstAptos[] = $aptos[$aux];
           }
         }
+        
+        
+        $respo_list[] = [
+            'id'=> $item->id,
+            'concept'=> $item->concept,
+            'date'=> convertDateToShow_text($item->date),
+            'typePayment'=> isset($typePayment[$item->typePayment]) ? $typePayment[$item->typePayment] : '--',
+            'type'=> isset($gType[$item->type]) ? $gType[$item->type] : '--',
+            'comment'=> $item->comment,
+            'import'=> $item->import,
+            'aptos' => (count($lstAptos)>0) ? implode(', ', $lstAptos) : 'TODOS',
+        ];
+        $totalMounth += $item->import;
       }
-
-      $comisionBooking += $book->PVPAgencia;
-      $obsequios += $book->extraPrice;
+     
+      $response = [
+          'status' => 'true',
+          'respo_list' => $respo_list,
+          'totalMounth' => moneda($totalMounth),
+      ];
     }
-
-    return view('backend.sales.gastos._tableExpenses', [
-        'gastos' => $gastos,
-        'totalStripep' => $totalStripep,
-        'comisionBooking' => $comisionBooking,
-        'obsequios' => $obsequios,
-    ]);
+    
+    if ($isAjax) {
+      return response()->json($response);
+    } else {
+      return $response;
+    }
   }
 
-  public function ingresos() {
-    $year = $this->getActiveYear();
-    $startYear = new Carbon($year->start_date);
-    $endYear = new Carbon($year->end_date);
-    $diff = $startYear->diffInMonths($endYear) + 1;
-    $lstMonths = lstMonths($startYear,$endYear);
-    $t_year = 0;
+    public function ingresos() {
+      $data = $this->prepareTables();
+      $months_empty = $data['months_empty'];
+      $lstMonths = $data['lstMonths'];
+      $t_room_month = $data['t_room_month'];
+      $year = $data['year'];
+      $channels = $data['channels'];
+      $chRooms = $data['chRooms'];
+      $sales_rooms = $data['sales_rooms'];
+      $books = $data['books'];
+      $startYear = $data['startYear'];
+      $endYear = $data['endYear'];
+      $diff = $startYear->diffInMonths($endYear) + 1;
     
-    
-    $books = \App\Book::where_type_book_sales()
-            ->where('start', '>=', $startYear)
-            ->where('start', '<=', $endYear)
-            ->get();
-
-    $salesBook = [];
-    $tBooks = 0;
-    if ($books){
-      foreach ($books as $key => $book) {
-        $date = date('ym', strtotime($book->start));
-        if (!isset($salesBook[$date])) $salesBook[$date] = 0;
-        $salesBook[$date] += $book->total_price;
-        $tBooks += $book->total_price;
-      }
-    }
-    $t_year += $tBooks;
-
-    $arrayIncomes = array();
-    $aIncomes = [
-        ['INGRESOS EXTRAORDINARIOS',0],
-        ['RAPPEL CLOSES',0],
-        ['RAPPEL FORFAITS',0],
-        ['RAPPEL ALQUILER MATERIAL',0]
-    ];
-
-    foreach ($aIncomes as $k=>$income) {
-      $arrayIncomes[$k]=[];
-    }
-    
-    $incomeMonth = [];
-    foreach ($aIncomes as $k => $income) {
-      $typeIncome = $income[0];
-      $incomesLst = \App\Incomes::where('concept', $typeIncome)->where('date', '>=', $startYear)
-                      ->where('date', '<=', $endYear)->get();
-      if ($incomesLst){
-        foreach ($incomesLst as $item){
-          $date = date('ym', strtotime($item->date));
-          if (!isset($arrayIncomes[$k][$date])) $arrayIncomes[$k][$date] = 0;
-          $arrayIncomes[$k][$date] += $item->import;
-          $aIncomes[$k][1] += $item->import;
-          
-          if (!isset($incomeMonth[$date])) $incomeMonth[$date] = 0;
-          $incomeMonth[$date] += $item->import;
-        }
-      }
-    }
-    foreach ($aIncomes as $k => $income) {
-      $t_year += $income[1];
-    }
-    
-    $tMonths = [];
-    $total = 0;
+    //First chart PVP by months
+    $dataChartMonths = [];
     foreach ($lstMonths as $k=>$v){
-      $aux = 0;
-      if (isset($salesBook[$k]) && $salesBook[$k] > 0)
-        $aux += $salesBook[$k];
-      if (isset($incomeMonth[$k]) && $incomeMonth[$k] > 0)
-        $aux += $incomeMonth[$k];
-      
-      $tMonths[$k] = $aux;
-      $total += $aux;
+      $val = isset($t_room_month[$k]) ? $t_room_month[$k] : 0;
+      $dataChartMonths[getMonthsSpanish($v['m'])] = $val;
     }
     
-    return view('backend/sales/ingresos/ingresos', [
+    
+    // BEGIN: Ingr X mes
+    $ingrType = \App\Incomes::getTypes();
+    $ingrMonths = array();
+    foreach ($ingrType as $k=>$t){
+      $ingrMonths[$k] = $months_empty;
+    }
+    
+    $incomesLst = \App\Incomes::where('date', '>=', $startYear)->Where('date', '<=', $endYear)->get();
+    if ($incomesLst){
+      foreach ($incomesLst as $item){
+        $date = date('n', strtotime($item->date));
+        $concept = isset($ingrType[$item->concept]) ? $item->concept : 'others';
+        if (!isset($ingrMonths[$concept][$date])) $ingrMonths[$concept][$date] = 0;
+        $ingrMonths[$concept][$date] += $item->import;
+        $ingrMonths[$concept][0] += $item->import;
+       
+      }
+    }
+    
+    // END: Ingr X mes
+    // BEGIN: Ingr X mes
+    $months_ff = null;
+    $cachedRepository  = new \App\Repositories\CachedRepository();
+    $ForfaitsItemController = new \App\Http\Controllers\ForfaitsItemController($cachedRepository);
+    $months_obj = $ForfaitsItemController->getMonthlyData($year);
+    if ($months_obj){
+      $months_ff = $months_obj['months_obj'];
+    }
+    // END: Ingr X mes
+    ///////////////////////////////
+    return view('backend/sales/ingresos/index', [
         'year' => $year,
-        'diff' => $diff,
-        't_year' => ($t_year>1) ? $t_year : 1,
-        'totalBooks' => $tBooks,
-        'arrayIncomes' => $arrayIncomes,
-        'aIncomes' => $aIncomes,
-        'salesBook' => $salesBook,
-        'lstMonths'=>$lstMonths,
-        'tMonths'=>$tMonths,
-        'total'=>$total,
-    ]);
+        'sales_rooms' => $data['sales_rooms'],
+        'lstMonths' => $lstMonths,
+        't_rooms' => $data['t_rooms'],
+        't_room_month' => $data['t_room_month'],
+        't_all_rooms' => (is_numeric($data['t_all_rooms']) && $data['t_all_rooms']>0) ? $data['t_all_rooms']:1,
+        'dataChartMonths' => $dataChartMonths,
+        'chRooms'=>$chRooms,
+        'channels'=>$data['channels'],
+        'ingrMonths' => $ingrMonths,
+        'ingrType' => $ingrType,
+        'months_ff' => $months_ff,
+        ]);
   }
-
+  
   public function ingresosUpd(Request $request) {
     
     $year = $this->getActiveYear();
@@ -688,34 +801,25 @@ class LiquidacionController extends AppController {
     }
     return 'error';
   }
-  public function ingresosCreate(Request $request) {
+    public function ingresosCreate(Request $request) {
     $date =  $request->input('fecha');
     $aDate = explode('/', $date);
     $month = isset($aDate[1]) ? $aDate[1] : null;
     $year  = isset($aDate[2]) ? $aDate[2] : null;
     $concept = $request->input('concept');
-    $import = $request->input('import');
-    if ($month && $year){
-      $ingreso = \App\Incomes::where('month',$month)
-              ->where('year',$year)
-              ->where('concept',$concept)
-              ->first();
-      if (!$ingreso){
+    $import = $request->input('import',null);
+    if ($month && $import){
         $ingreso = new \App\Incomes();
         $ingreso->month = intval($month);
         $ingreso->year  = $year;
         $ingreso->concept  = $concept;
-        $ingreso->date = $year.'-'.$month.'-01';
+        $ingreso->date = Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
         $ingreso->import = $import;
-      } else {
-        $ingreso->import = $ingreso->import + $import;
-      }
       
       if ($ingreso->save()) {
-        return redirect('/admin/ingresos');
+        return redirect()->back();
       }
     }
-    
     return redirect()->back()->withErrors(['No se pudo cargar el ingreso.']);
   }
 
@@ -723,25 +827,161 @@ class LiquidacionController extends AppController {
     $year = $this->getActiveYear();
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
+    $lstMonths = lstMonths($startYear,$endYear);
+    $ingrType = \App\Incomes::getTypes();
+    $gType = \App\Expenses::getTypes();
+    
+    $months_empty = array();
+    for($i=0;$i<13;$i++) $months_empty[$i] = 0;
+    
+    $gastos = \App\Expenses::where('date', '>=', $year->start_date)
+            ->where('date', '<=', $year->end_date)->sum('import');
+    $incomesLst = \App\Incomes::where('date', '>=', $year->start_date)
+            ->where('date', '<=', $year->end_date)->sum('import');
+    $totalYear = $incomesLst-$gastos;
+   
 
-    $cashJaime = \App\Cashbox::where('typePayment', 1)
-            ->where('date', '>=', $startYear)
-            ->where('date', '<=', $endYear)
-            ->orderBy('date', 'ASC')
-            ->get();
-    $saldoInicial = \App\Cashbox::where('concept', 'SALDO INICIAL')->where('typePayment', 1)->first();
-
-    $cashJorge = \App\Cashbox::where('typePayment', 0)
-            ->where('date', '>=', $startYear)
-            ->where('date', '<=', $endYear)
-            ->get();
-
-    return view('backend.sales.cashbox.cashbox', [
+    $current = ($year->year-2000).',0';
+    
+    return view('backend/sales/caja/index', [
         'year' => $year,
-        'cashJaime' => $cashJaime,
-        'cashboxJor' => $cashJorge,
-        'saldoInicial' => $saldoInicial,
+        'lstMonths' => $lstMonths,
+        'ingrType' => $ingrType,
+        'gType' => $gType,
+        'current' => $current,
+        'totalYear' => $totalYear,
     ]);
+    
+  }
+  
+  /**
+   * Get the Caja by month-years to ajax table
+   * 
+   * @param Request $request
+   * @return Json-Objet
+   */
+  
+  public function getTableCaja(Request $request, $isAjax = true) {
+
+    $year = $request->input('year', null);
+    $month = $request->input('month', null);
+    if (!$year) {
+      return response()->json(['status' => 'wrong']);
+    }
+    $total = 0;
+    if ($year<100) $year = '20'.$year;
+    
+    $oRooms = \App\Rooms::all();
+    $aptos = [];
+    foreach ($oRooms as $r){
+      $aptos[$r->id] = $r->name;
+    }
+    
+    if ($month) {
+      $qry = \App\Expenses::whereYear('date','=', $year);
+      $qry->whereMonth('date','=', $month);
+    }else{
+      $oYear = \App\Years::where('year', $year)->first();
+      $qry = \App\Expenses::where('date', '>=', $oYear->start_date)->Where('date', '<=', $oYear->end_date);
+    }
+    
+    $gastos = $qry->orderBy('date')->get();
+    $gType = \App\Expenses::getTypes();
+    $ingrType = \App\Incomes::getTypes();
+    $response = [
+        'status' => 'false',
+        'respo_list' => [],
+    ];
+    
+    $respo_list = array();
+    $typePayment = Book::getTypeCobro();
+    if ($gastos){
+      foreach ($gastos as $item){
+        
+        $lstAptos = array();
+        if ($item->PayFor){
+          $aux = explode(',',$item->PayFor);
+          if(is_array($aux)){
+            foreach ($aux as $i){
+              if (isset($aptos[$i])) $lstAptos[] = $aptos[$i];
+            }
+          } else {
+            if (isset($aptos[$aux])) $lstAptos[] = $aptos[$aux];
+          }
+        }
+        
+        $total -= $item->import;
+        if (!isset($respo_list[strtotime($item->date)])) $respo_list[strtotime($item->date)] = [];
+        $respo_list[strtotime($item->date)][] = [
+            'id'=> $item->id,
+            'concept'=> $item->concept,
+            'date'=> convertDateToShow_text($item->date),
+            'type'=> isset($gType[$item->type]) ? $gType[$item->type] : '--',
+            'haber'=> $item->import,
+            'debe'=> '--',
+            'comment'=> $item->comment,
+            'aptos' => (count($lstAptos)>0) ? implode(', ', $lstAptos) : 'TODOS',
+        ];
+      }
+     
+     
+    }
+    
+    
+    if ($month) {
+      $qry = \App\Incomes::whereYear('date','=', $year);
+      $qry->whereMonth('date','=', $month);
+    }else{
+      $oYear = \App\Years::where('year', $year)->first();
+      $qry = \App\Incomes::where('date', '>=', $oYear->start_date)->Where('date', '<=', $oYear->end_date);
+    }
+    
+   
+    $oIngr = $qry->orderBy('date')->get();
+    
+    if ($oIngr){
+     
+      foreach ($oIngr as $item){
+        $total += $item->import;
+        
+        if (!isset($respo_list[strtotime($item->date)])) $respo_list[strtotime($item->date)] = [];
+        
+        $respo_list[strtotime($item->date)][] = [
+            'id'=> $item->id,
+            'concept'=> isset($ingrType[$item->concept]) ? $ingrType[$item->concept] : $item->concept,
+            'date'=> convertDateToShow_text($item->date),
+            'type'=> isset($ingrType[$item->type]) ? $ingrType[$item->type] : '--',
+            'debe'=> $item->import,
+            'haber'=> '--',
+            'comment'=> '',
+            'aptos'=> '',
+        ];
+      }
+    }
+    
+    $return = [];
+    if (count($respo_list)>0){
+      ksort($respo_list);
+      foreach ($respo_list as $d => $array){
+        foreach ($array as $item){
+          $return[] = $item;
+        }
+      }
+      
+     $response = [
+          'status' => 'true',
+          'total' => moneda($total),
+          'respo_list' => $return,
+      ];
+    }
+    
+     
+    
+    if ($isAjax) {
+      return response()->json($response);
+    } else {
+      return $response;
+    }
   }
 
   public function getTableMoves($year, $type) {
