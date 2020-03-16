@@ -289,8 +289,8 @@ class BookController extends AppController
         $customer->DNI     = ($request->input('dni')) ? $request->input('dni') : "";
         $customer->address = ($request->input('address')) ? $request->input('address') : "";
         $customer->country = ($request->input('country')) ? $request->input('country') : "";
-        $customer->city    = ($request->input('city')) ? $request->input('city') : "";
-             
+        $customer->province= ($request->input('province')) ? $request->input('province') : "";     
+//        $customer->city    = ($request->input('city')) ? $request->input('city') : "";
         //Creacion de la reserva
         $book   = new \App\Book();
         $book->room_id       = $request->input('newroom');
@@ -671,7 +671,8 @@ class BookController extends AppController
         $customer->DNI     = ($request->input('dni')) ? $request->input('dni') : "";
         $customer->address = ($request->input('address')) ? $request->input('address') : "";
         $customer->country = ($request->input('country')) ? $request->input('country') : "";
-        $customer->city    = ($request->input('city')) ? $request->input('city') : "";
+//        $customer->city    = ($request->input('city')) ? $request->input('city') : "";
+        $customer->province = ($request->input('province')) ? $request->input('province') : 28;
         $customer->save();
 
         
