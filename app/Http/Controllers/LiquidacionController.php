@@ -495,8 +495,8 @@ class LiquidacionController extends AppController {
     $months_empty[0] = 0;
     
     $yearMonths = [
-        ($year->year)-2 => $months_empty,
-        ($year->year)-1 => $months_empty,
+        ($year->year)-2 => [],
+        ($year->year)-1 => [],
         ($year->year) => $months_empty,
     ];
      
@@ -539,13 +539,22 @@ class LiquidacionController extends AppController {
     $gastos = \App\Expenses::where('date', '>=', $aux_startYear)
                     ->Where('date', '<=', $aux_endYear)
                     ->orderBy('date', 'DESC')->get();
+    
+    
+    $lstMonths_aux = lstMonths($aux_startYear,$aux_endYear);
+    $yearMonths[$auxYear][0] = 0;
+    foreach ($lstMonths_aux as $k=>$v){
+      $yearMonths[$auxYear][$k] = 0;
+    }
     if ($gastos){
       foreach ($gastos as $g){
         $month = date('ym', strtotime($g->date));
-        if (isset($yearMonths[$auxYear][$month]))    $yearMonths[$auxYear][$month] += $g->import;
+        if (!isset($yearMonths[$auxYear][$month])) $yearMonths[$auxYear][$month] = 0;
+        $yearMonths[$auxYear][$month] += $g->import;
         $totalYear[$auxYear] += $g->import;
       }
     }
+    
     $auxYear = ($year->year)-2;
     $totalYear[$auxYear] = 0;
     $activeYear = \App\Years::where('year', $auxYear)->first();
@@ -554,6 +563,11 @@ class LiquidacionController extends AppController {
     $gastos = \App\Expenses::where('date', '>=', $aux_startYear)
                     ->Where('date', '<=', $aux_endYear)
                     ->orderBy('date', 'DESC')->get();
+    $lstMonths_aux = lstMonths($aux_startYear,$aux_endYear);
+    $yearMonths[$auxYear][0] = 0;
+    foreach ($lstMonths_aux as $k=>$v){
+      $yearMonths[$auxYear][$k] = 0;
+    }
     if ($gastos){
       foreach ($gastos as $g){
         $month = date('ym', strtotime($g->date));
