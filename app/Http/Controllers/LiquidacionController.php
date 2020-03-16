@@ -454,6 +454,42 @@ class LiquidacionController extends AppController {
     if ($months_obj){
       $months_ff = $months_obj['months_obj'];
     }
+    
+     /// BEGIN: Disponibilidad
+    $book = new \App\Book();
+    $ch_monthOcup = array();
+    $ch_monthOcupPercent = array();
+    $monthsDays = $months_empty;
+    foreach ($monthsDays as $m=>$d){
+      if ($m>0)
+      $monthsDays[$m] = cal_days_in_month(CAL_GREGORIAN, $m, $year->year);
+    }
+    foreach ($channels as $ch=>$d){
+      $ch_monthOcup[$ch] = $months_empty;
+      $ch_monthOcupPercent[$ch] = $months_empty;
+      $availibility = $book->getAvailibilityBy_channel($ch, $startYear, $endYear,true);
+      
+      foreach ($availibility[0] as $day=>$used){
+        if ($used>0){
+         $ch_monthOcup[$ch][date('n', strtotime($day))] += $used;
+        }
+      }
+      foreach ($ch_monthOcup[$ch] as $k=>$avail){
+      
+        if ($k>0){
+         
+          $aux = $availibility[1]*$monthsDays[$k];
+          if ($aux>0){   
+            $aux2 = $aux-$avail;
+//            $ch_monthOcupPercent[$ch][$k] = $avail.'+'.$aux;
+            $ch_monthOcupPercent[$ch][$k] = round($aux2/$aux*100);
+          }
+        }
+      }
+    }
+    // END: Disponibilidad
+    ///////////////////////////////
+    
     return view('backend/sales/contabilidad', [
         'year' => $year,
         'diff' => $diff,
@@ -471,7 +507,8 @@ class LiquidacionController extends AppController {
         'chRooms'=>$chRooms,
         'dataChartMonths' => $dataChartMonths,
         'ffData'=>$ffData,
-        'months_ff' => $months_ff
+        'months_ff' => $months_ff,
+        'ch_monthOcupPercent' => $ch_monthOcupPercent,
         ]);
   }
 

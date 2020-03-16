@@ -32,7 +32,7 @@ $isMobile = $mobile->isMobile();
       display: none;
     }
     span.ocup {
-        color: red;
+        color: #ffbaba;
         font-size: 11px;
         display: block;
     }
@@ -179,7 +179,6 @@ $isMobile = $mobile->isMobile();
                               } else {
                                 echo '--';
                               }
-//                              dd($ch_monthOcupPercent);
                               ?>
                               @if(isset($ch_monthOcupPercent[$ch][$k_month]) && $ch_monthOcupPercent[$ch][$k_month]>0)
                               <span class="ocup">{{$ch_monthOcupPercent[$ch][$k_month]}} %</span>
