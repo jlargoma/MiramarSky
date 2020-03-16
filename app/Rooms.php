@@ -304,9 +304,10 @@ class Rooms extends Model
         }
       }
     $price = 0;
-    foreach ($priceDay as $p) {
-      $price +=$p;
-    }
+    if (is_array($priceDay))
+      foreach ($priceDay as $p) {
+        $price +=$p;
+      }
     return $price;
   }
   

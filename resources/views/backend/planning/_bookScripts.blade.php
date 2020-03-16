@@ -618,7 +618,8 @@
                 var dni                 = $('input[name="dni"]').val();
                 var address             = $('input[name="address"]').val();
                 var country             = $('select[name="country"]').val();
-                var city                = $('input[name="city"]').val();
+                var province            = $('select[name="province"]').val();
+//                var city                = $('input[name="city"]').val();
                 var fechas              = $('input[name="fechas"]').val();
                 var nigths              = $('input[name="nigths"]').val();
                 var pax                 = $('select[name="pax"]').val();
@@ -660,7 +661,7 @@
                                 customer_id: customer_id,
                                 address: address,
                                 country: country,
-                                city: city,
+                                province: province,
                                 fechas: fechas,
                                 nigths: nigths,
                                 pax: pax,

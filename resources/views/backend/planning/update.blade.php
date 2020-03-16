@@ -253,12 +253,12 @@ $mobile = new Mobile();
               <input class="form-control cliente" type="text" name="address"
                      value="<?php echo $book->customer->address ?>" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
             </div>
-            <div class="col-md-3 col-xs-12 push-10">
+            <div class="col-xs-3  push-10 row-mobile">
               <label for="country">PAÍS</label>
-              <select class="form-control country minimal" name="country" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
-                 <option value="">--Seleccione país --</option>
+              <?php $c_country = ($book->customer->country) ? strtolower($book->customer->country):'es'; ?>
+              <select class="form-control country minimal" name="country" <?php if (getUsrRole() == "limpieza"): ?>disabled<?php endif ?>>
+                <option value="">--Seleccione país --</option>
                 <?php 
-                $c_country = strtolower($book->customer->country);
                 foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): 
                   ?>
                 <option value="<?php echo $country->code ?>" <?php  if (strtolower($country->code) == $c_country){echo "selected";}?>>
@@ -267,9 +267,17 @@ $mobile = new Mobile();
                 <?php endforeach; ?>
               </select>
             </div>
-            <div class="col-md-3 col-xs-12 push-10 content-cities">
-              <label for="city">CIUDAD</label>
-              <input class="form-control city" type="text" name="city" value="<?php echo $book->customer->city ?>" >
+          <div class="col-xs-3  push-10 content-cities row-mobile" <?php if($c_country != 'es') echo ' style="display: none;" '; ?>>
+              <label for="city">PROVINCIA</label>
+              <?php $book_prov = ($book->customer->province) ?  $book->customer->province : 28 ; ?>
+              <select class="form-control province minimal" name="province" <?php if (getUsrRole() == "limpieza"): ?>disabled<?php endif ?>>
+                <option>--Seleccione  --</option>
+                <?php foreach (\App\Provinces::orderBy('province', 'ASC')->get() as $prov): ?>
+                  <option value="<?php echo $prov->code ?>" <?php if ($prov->code == $book_prov) { echo "selected";}?>>
+                    {{$prov->province}}
+                  </option>
+                <?php endforeach; ?>
+              </select>
             </div>
           </div>
           <!-- DATOS DE LA RESERVA -->
@@ -683,12 +691,12 @@ $mobile = new Mobile();
               <input class="form-control cliente" type="text" name="address" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>
                      value="<?php echo $book->customer->address ?>">
             </div>
-            <div class="col-xs-12 push-10">
+            <div class="col-xs-3  push-10 row-mobile">
               <label for="country">PAÍS</label>
-              <select class="form-control country minimal" name="country" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>
-                 <option value="">--Seleccione país --</option>
+              <?php $c_country = ($book->customer->country) ? strtolower($book->customer->country):'es'; ?>
+              <select class="form-control country minimal" name="country" <?php if (getUsrRole() == "limpieza"): ?>disabled<?php endif ?>>
+                <option value="">--Seleccione país --</option>
                 <?php 
-                $c_country = strtolower($book->customer->country);
                 foreach (\App\Countries::orderBy('code', 'ASC')->get() as $country): 
                   ?>
                 <option value="<?php echo $country->code ?>" <?php  if (strtolower($country->code) == $c_country){echo "selected";}?>>
@@ -697,9 +705,17 @@ $mobile = new Mobile();
                 <?php endforeach; ?>
               </select>
             </div>
-            <div class="col-xs-12 push-10 content-cities">
-              <label for="city">CIUDAD</label>
-              <input class="form-control city" type="text" name="city" value="<?php echo $book->customer->city ?>" >
+          <div class="col-xs-3  push-10 content-cities row-mobile" <?php if($c_country != 'es') echo ' style="display: none;" '; ?>>
+              <label for="city">PROVINCIA</label>
+              <?php $book_prov = ($book->customer->province) ?  $book->customer->province : 28 ; ?>
+              <select class="form-control province minimal" name="province" <?php if (getUsrRole() == "limpieza"): ?>disabled<?php endif ?>>
+                <option>--Seleccione  --</option>
+                <?php foreach (\App\Provinces::orderBy('province', 'ASC')->get() as $prov): ?>
+                  <option value="<?php echo $prov->code ?>" <?php if ($prov->code == $book_prov) { echo "selected";}?>>
+                    {{$prov->province}}
+                  </option>
+                <?php endforeach; ?>
+              </select>
             </div>
           </div>
 
