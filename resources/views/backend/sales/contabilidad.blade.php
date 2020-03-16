@@ -32,7 +32,7 @@ $isMobile = $mobile->isMobile();
       display: none;
     }
     span.ocup {
-        color: red;
+        color: #ffbaba;
         font-size: 11px;
         display: block;
     }
@@ -148,7 +148,7 @@ $isMobile = $mobile->isMobile();
                           <tr class="text-center contab-ch contab-ch">
                           @if($isMobile)
                           <td class="text-left static" >
-                                <i class="fas fa-plus-circle toggle-contab" data-id="{{$ch}}"></i>{{$channels[$ch]}}
+                                <i class="fas fa-plus-circle toggle-contab" data-id="{{$ch}}"></i>{{$data2['channel']}}
                                 <span class="ocup">% Ocup.</span>
                               </td>
                               <th class="text-center first-col" style="padding-right:13px !important;padding-left: 135px!important">  
@@ -179,7 +179,6 @@ $isMobile = $mobile->isMobile();
                               } else {
                                 echo '--';
                               }
-//                              dd($ch_monthOcupPercent);
                               ?>
                               @if(isset($ch_monthOcupPercent[$ch][$k_month]) && $ch_monthOcupPercent[$ch][$k_month]>0)
                               <span class="ocup">{{$ch_monthOcupPercent[$ch][$k_month]}} %</span>

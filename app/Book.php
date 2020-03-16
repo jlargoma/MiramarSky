@@ -1273,7 +1273,7 @@ class Book extends Model {
    * Get Availibility Room By channel
    * @param type $available
    */
-  public function getAvailibilityBy_channel($apto, $start, $finish) {
+  public function getAvailibilityBy_channel($apto, $start, $finish,$return = false) {
 
     $Zodomus = new \App\Services\Zodomus\Zodomus();
     $oRooms = Rooms::where('channel_group', $apto)->pluck('id')->toArray();
@@ -1323,7 +1323,9 @@ class Book extends Model {
         }
       }
     }
-    
+    if($return){
+      return [$aLstDays,$avail];
+    }
     return $aLstDays;
   }
   

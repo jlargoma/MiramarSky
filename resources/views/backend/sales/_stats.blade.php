@@ -70,41 +70,17 @@ if ($pending<0) $pending = 0;
   <div class="col-md-12 col-xs-6">
     <canvas id="pieIng" style="width: 100%; height: 250px;"></canvas>
   </div>
+  <div class="col-md-12 col-xs-6">
+    <div class="col-xs-6">
+      <b>Metalico:</b><br/>{{moneda($metalico)}}
+    </div>
+    <div class="col-xs-6">
+      <b>Banco:</b><br/>{{moneda($banco)}}
+    </div>
+  </div>
 </div>
-
 <div class="col-lg-3 col-md-6 col-xs-12 mb-1em">
-  <div class="col-md-12 col-xs-6">
 
-  <table class="table table-hover table-striped table-cobros" style="background-color: #38C8A7">
-    <thead style="background-color: #38C8A7">
-    <th colspan="2" class="text-white text-center">Cobros Reservas</th>
-    </thead>
-    <tbody style="background-color: #38C8A7">
-      <tr class="tr-cobros">
-        <th class="text-white" style="padding: 5px 8px!important;background-color: #38C8A7!important;">TOTAL COBRADO</th>
-        <th class="text-white text-center" style="padding: 5px 8px!important;background-color: #38C8A7!important;">
-          <?php echo number_format(round($cobrado), 0, ',', '.') ?> €
-        </th>
-      </tr>
-      <tr class="tr-cobros">
-        <td class="text-white" style="padding: 5px 8px!important; background-color: #2ba840!important;">Metalico</td>
-        <td class="text-white text-center" style="padding: 5px 8px!important; background-color: #2ba840!important;">
-          <?php echo number_format(round($metalico), 0, ',', '.') ?> €
-        </td>
-      </tr>
-      <tr class="tr-cobros">
-        <td class="text-white" style="padding: 5px 8px!important;background-color: #2ca085!important;">Banco</td>
-        <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #2ca085!important;">
-          <?php echo number_format(round($banco), 0, ',', '.') ?> €
-        </td>
-      </tr>
-
-    </tbody>
-  </table>
-  </div>
-  <div class="col-md-12 col-xs-6">
-    <canvas id="pieCobros" style="width: 100%; height: 250px;"></canvas>
-  </div>
 </div>
 
 @if($ffData && !$isMobile)
@@ -202,26 +178,6 @@ if ($pending<0) $pending = 0;
     }
   });
   
-  new Chart(document.getElementById("pieCobros"), {
-    type: 'pie',
-    data: {
-      labels: ["Metalico", "Banco", ],
-      datasets: [{
-          backgroundColor: ["#2ba840", "#2ca085"],
-          data: [
-            //Comprobamos si existen cobros
-<?php echo round($metalico) ?>,
-<?php echo round($banco) ?>,
-          ]
-        }]
-    },
-    options: {
-      title: {
-        display: false,
-        text: ''
-      }
-    }
-  });
   @if($ffData)
    new Chart(document.getElementById("pieIngFF"), {
         type: 'pie',
