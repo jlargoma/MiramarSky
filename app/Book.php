@@ -152,15 +152,18 @@ class Book extends Model {
   }
 
   //Para poner nombre al tipo de cobro//
-  static function getTypeCobro($typePayment) {
+  static function getTypeCobro($typePayment=NULL) {
     $array = [
-        0 => "Metalico",//"Metalico Jorge",
-        1 => "Metalico",// "Metalico Jaime",
-        2 => "Banco",//"Banco Jorge",
-        3 => "Banco"//"Banco Jaime"
+        0 => "CASH",//"Metalico Jorge",
+        1 => "CASH",// "Metalico Jaime",
+        2 => "TPV",//"Banco Jorge",
+        3 => "TPV",//"Banco Jaime"
+        4 => "REINTEGRO"//Devoluciones
     ];
 
-    return $typePayment = $array[$typePayment];
+    if (!is_null($typePayment)) return $typePayment = $array[$typePayment];
+    
+    return $array;
   }
 
   //Para poner nombre al parking de la reserva//

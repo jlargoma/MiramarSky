@@ -249,6 +249,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/gastos/{year?}', 'LiquidacionController@gastos');
   Route::post('/gastos/create', 'LiquidacionController@gastoCreate');
   Route::get('/gastos/getTableGastos', 'LiquidacionController@getTableGastos');
+  Route::post('/gastos/gastosLst', 'LiquidacionController@getTableGastos');
   Route::get('/gastos/update/{id}', 'LiquidacionController@updateGasto');
   Route::get('/gastos/getHojaGastosByRoom/{year?}/{id}', 'LiquidacionController@getHojaGastosByRoom');
   Route::get('/gastos/containerTableExpensesByRoom/{year?}/{id}', 'LiquidacionController@getTableExpensesByRoom');
@@ -262,6 +263,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
  
   
   Route::get('/caja', 'LiquidacionController@caja');
+  Route::post('/caja/cajaLst', 'LiquidacionController@getTableCaja');
   Route::get('/caja/getTableMoves/{year?}/{type}', 'LiquidacionController@getTableMoves');
   Route::post('/cashBox/create', 'LiquidacionController@cashBoxCreate');
   Route::get('/cashbox/updateSaldoInicial/{id}/{type}/{importe}','RouterActionsController@cashbox_updateSaldoInicial');
