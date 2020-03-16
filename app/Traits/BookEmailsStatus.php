@@ -529,4 +529,76 @@ trait BookEmailsStatus
         return $sended;
     }
     
+     /**
+     *
+     * @param type $book
+     * @param type $subject
+     */
+    public function sendEmail_confirmCobros($book, $subject,$lastPayment,$email)
+    {
+      if (!$email || trim($email) == '') return;
+        $mailClientContent = $this->getMailData($book, 'payment_receipt');
+        setlocale(LC_TIME, "ES");
+        setlocale(LC_TIME, "es_ES");
+        
+        
+        $totalPayment = 0;
+        $payments     = \App\Payments::where('book_id', $book->id)->get();
+        $cobros_list  = '';
+        if ($payments){
+          $cobros_list = '<table style="width: 100%; text-align: left;">
+                          <tr><th width="30%">Fecha</th><th width="30%">Importe</th><th width="30%">Método</th></tr>
+                          <tr><td colspan="3">&nbsp;</td></tr>';
+
+          foreach ($payments as $key => $pay){
+            $cobros_list.= '<tr>
+                            <th>'. convertDateToShow_text($pay->datePayment,true).'</th>
+                            <th>'.round($pay->import,2).' €</th>
+                            <th>'.$book->getTypeCobro($pay->type).'</th>
+                          </tr>';
+            $totalPayment += $pay->import;
+           
+          }
+          
+          $cobros_list .= '</table>';
+        }
+        $pendiente  = ($book->total_price - $totalPayment);
+       
+        
+        $status = 'Su reserva se encuentra al corriente de pago';
+        if ($pendiente>0){
+          $status = 'Su reserva tiene pendiente de abonar '.round($pendiente,2).' €';
+        }
+        
+        $linkPartee = null;
+        $BookPartee = BookPartee::where('book_id', $book->id)->first();
+        if ($BookPartee && $BookPartee->partee_id > 0){
+            $linkPartee = $BookPartee->link;
+        }
+        $mailClientContent = str_replace('{partee}', $linkPartee, $mailClientContent);
+                
+        if ($book->priceOTA<1) $book->priceOTA = $book->total_price;
+                
+        
+        $mailClientContent = str_replace('{total_payment}', number_format($totalPayment, 2, ',', '.'), $mailClientContent);
+        $mailClientContent = str_replace('{LastPayment}', number_format($lastPayment, 2, ',', '.'), $mailClientContent);
+        $mailClientContent = str_replace('{priceOTA}', number_format($book->priceOTA, 2, ',', '.'), $mailClientContent);
+        $mailClientContent = str_replace('{cobros_estado}', $status, $mailClientContent);
+        $mailClientContent = str_replace('{cobros_list}', $cobros_list, $mailClientContent);
+        $mailClientContent = $this->clearVars($mailClientContent);
+        
+        $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $mailClientContent,
+            'title'       => $subject
+        ], function ($message) use ($email, $subject) {
+            $message->from(env('MAIL_FROM'));
+            $message->to($email);
+            $message->subject($subject);
+            $message->replyTo(env('MAIL_FROM'));
+        });
+        
+        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'second_payment_reminder',$subject,$mailClientContent);
+
+        return $sended;
+    }
 }

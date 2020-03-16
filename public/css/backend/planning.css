@@ -1,0 +1,334 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 26, 2020, 8:38:36 AM
+    Author     : cremonapg
+*/
+#TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G{
+  margin: 10px auto;
+}
+.table-data .form-control{
+  width: 100%;
+}
+.sendFianza {
+  border: 3px solid;
+  border-radius: 50%;
+  padding: 3px;
+  width: 29px;
+  font-size: 18px;
+}
+.tooltiptext {
+  position: absolute;
+  font-size: 11px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.42);
+  padding: 2px 5px;
+  width: 10em;
+  border-radius: 7px;
+}
+.tooltiptext.FF_resume,
+.tooltiptext.BookComm{
+  color: inherit;
+  text-align: left;
+  z-index: 9;
+  width: 22em;
+  display: none;
+}
+.tooltiptext.FF_resume p,
+.tooltiptext.BookComm p{
+  color: #fff;
+}
+.showFF_resume:hover .tooltiptext.FF_resume,
+.showBookComm:hover .tooltiptext.BookComm{
+  display: block;
+}
+.tooltiptext.FF_resume .table tbody tr td{
+  padding: 8px !important;
+  font-size: 1.3em;
+  font-weight: 600;
+}
+.tooltiptext.FF_resume span.Pendiente {
+  color: red;
+}
+.showBookComm{
+  cursor: pointer;
+  padding: 2px;
+}
+.BookComm.tooltiptext {
+  color: #fff;
+  padding: 11px;
+  background-color: #333;
+  font-size: 1em;
+}
+
+.th-w125{
+  min-width: 125px;
+}
+
+
+select.status.form-control.minimal {
+  padding: 0;
+}
+.fix-col-data{
+  min-width: 150px;
+}
+.table.table-data tbody td{
+  text-align: center;
+}
+.td-b1{
+  padding: 10px 5px!important;
+  text-align: left !important;
+}
+.td-date{
+  width: 20%!important
+}
+.p-rel{
+  position: relative;
+}
+.getImagesCustomer.a{
+  border: none; background-color:transparent!important; color: lightgray; padding: 0;
+}
+.getImagesCustomer.b{
+  border: none; background-color: transparent!important; color:black; padding: 0;
+}
+
+button.btn.changeStatus,
+button.btn.changeRoom {
+  max-width: 80px;
+  min-width: 80px;
+  overflow: hidden;
+  padding-left: 2px;
+  border: solid 1px #292929;
+  background-color: transparent;
+  color: #000;
+}
+
+.btn.btnChangeRoom,
+.btn.btnChangeStatus {
+  display: block;
+  width: 70%;
+  margin: 1px auto;
+}
+.btn.btnChangeRoom.active,
+.btn.btnChangeStatus.active {
+  background-color: #a2a0a0;
+  color: #fff;
+}
+
+.update-book.r{
+  color: red;
+}
+#modalChangeBook .modal-dialog {
+  margin-top: 4em;
+}
+.minimal {
+  padding: 5px 7px !important;
+}
+.minimal span{
+  font-size: 12px;
+}
+
+div.dataTables_length {
+  float: right !important;
+}
+.table-icon,.table-icon-row{
+  padding: 0;
+  margin-right: 5px !important;
+  margin-bottom: 6px;
+}
+.table-icon,
+.table-icon-row{
+  width: 80px;
+}
+.table-icon-row .fas.col-xs-4{
+  margin: 5px 0;
+}
+
+
+.table-icon-row i.fa.fa-coffee.col-xs-4 {
+    margin-top: 5px;
+}
+
+@media only screen and (max-width: 991px){
+  button.btn.changeStatus,
+  button.btn.changeRoom {
+    max-width: 105px;
+    min-width: 105px;
+    margin: 0 7px;
+  }
+  select#schedule,
+  select#scheduleOut {
+    width: 3em !important;
+    height: 2em;
+  }
+
+  .fix-col-data{
+    width:120px;overflow-x: scroll;
+    white-space: nowrap;
+  }
+  .tooltip-2 {
+    position: relative !important;
+  }
+  .btn-tabs{
+    min-width: 515px;
+  }
+  .dataTables_length{
+    display: none;
+  }
+
+  .cargar_calend.btn-large{
+    display: block;
+    margin: 6em auto;
+  }
+  .title-year-selector{    
+    margin-top: -14px;
+    font-weight: 800;
+  }
+}
+@media only screen and (max-width: 560px){
+  .table-icon-row{
+    margin-left: 8px !important;
+  }
+}
+#TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G{
+  width: 100%!important;
+}
+.panel-mobile, .table-responsive.content-calendar{
+  margin-bottom: 0px;
+}
+.btn-cons{
+  min-width: auto!important;
+}
+.note-editor, .note-editable{
+  min-height: 500px!important;
+}
+.dropdown-toggle > i{
+  font-size: 10px!important;
+}
+
+.radio-style:checked + .radio-style-3-label:before{
+  background: #1ABC9C!important;
+  color: white!important;
+}
+.black {
+  color: black!important;
+}
+#content-book-response .back .heading-block.nobottomborder.nobottommargin{
+  background-color: #d68282;
+  padding: 18px;
+  text-align: center;
+}
+#content-book-response .back .backBooking{
+  background-color: #dc5656;
+  padding: 1em;
+  border: none;
+  color: #fff;
+  font-size: 1.2em;
+  font-weight: 800;
+  border-radius: 7px;
+}
+
+#content-book-response .back .backBooking .icon-angle-right{
+  display: none;
+}
+@media only screen and (max-width: 767px){
+  .not-padding-mobile{
+    padding: 0!important;
+  }
+  .daterangepicker{
+    top: 5%!important
+  }
+}
+.StripeElement {
+  background-color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+.stripe-price{
+  background-color: white!important;
+  padding: 8px 12px!important;
+  border-radius: 4px!important;
+  border: 1px solid transparent!important;
+  box-shadow: 0 1px 3px 0 #e6ebf1!important;
+  -webkit-transition: box-shadow 150ms ease!important;
+  transition: box-shadow 150ms ease!important;
+}
+.content-calendar .td-calendar{
+  border:1px solid grey;width: 24px; height: 20px;
+}
+.content-calendar .no-event{
+  border:1px solid grey;width: 24px; height: 20px;
+}
+.content-calendar .ev-doble{
+  border:1px solid grey;width: 24px; height: 20px;
+}
+.content-calendar .start{
+  width: 45%;float: right; cursor: pointer;
+}
+.content-calendar .end{
+  width: 45%;float: left; cursor: pointer;
+}
+.content-calendar .total{
+  width: 100%;height: 100%; cursor: pointer;
+}
+.content-calendar .td-month{
+  border:1px solid black;width: 24px; height: 20px;font-size: 10px;padding: 5px!important;
+  text-align: center;
+  min-width: 25px;
+}
+.table.table-striped tbody tr.Reservado.medium-paid td {
+  background-color: #22b122 !important;
+}
+.table.table-striped tbody tr.Reservado.paid td {
+  background-color: #51e851 !important;
+}
+.table.table-striped tbody tr.Reservado td {
+    background-color: #c4ffc6 !important;
+}
+span.pay-icon {
+    font-weight: 600;
+    color: gray;
+    font-size: 1.5em;
+}
+span.pay-icon.medium-paid {
+    color: #00b500;
+}
+span.pay-icon.paid {
+    color: #005400;
+}
+.fa-unlock{
+  color: #2f8000;
+  cursor: pointer;
+}
+i.fa.fa-lock.openSafetyBox {
+    color: #afafaf;
+    cursor: pointer;
+}
+.table#table_partee {
+    margin-bottom: 5em !important;
+}
+#table_partee .tooltiptext.comment{
+    top: -13px;
+    left: 0;
+    font-size: 13px;
+    width: 415px;
+}

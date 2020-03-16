@@ -600,6 +600,13 @@ class BookController extends AppController
         
         $priceBook = $book->room->getPVP($book->start, $book->finish, $book->park)-$book->promociones;
 
+        $email_notif = '';
+        $send_notif = '';
+        if ($book->customer_id ){
+          $email_notif = $book->customer->email_notif ? $book->customer->email_notif : $book->customer->email;
+          $send_notif = $book->customer->send_notif ? 'checked' : '';
+        }
+        
         return view('backend/planning/update'.$updateBlade, [
             'book'         => $book,
             'low_profit'   => $low_profit,
@@ -614,7 +621,9 @@ class BookController extends AppController
             'mobile'       => new Mobile(),
             'hasFiance'    => $hasFiance,
             'stripe'       => StripeController::$stripe,
-            'priceBook'    => $priceBook
+            'priceBook'    => $priceBook,
+            'email_notif'  => $email_notif,
+            'send_notif'   => $send_notif,
         ]);
     }
 
@@ -2721,6 +2730,34 @@ class BookController extends AppController
       
       return response()->json(['status'=>'ok']);
       
+    }
+    
+     /**
+     * Change the data to notific
+     * @param Request $request
+     * @return string
+     */
+    function changeMailNotif(Request $request){
+        $bookingID = $request->input('booking', null);
+        if ($bookingID){
+          $booking = Book::find($bookingID);
+          if ($booking->customer_id>1){
+            $booking->customer->email_notif = $request->input('email_notif', null);
+            $booking->customer->send_notif = ($request->input('send_notif')=='true') ? 1:0;
+
+            $booking->customer->save();
+            return response()->json([
+                'title' => 'OK',
+                'status' => 'success',
+                'response' => 'Datos de contacto cambiados',
+            ]);
+          }
+        }
+        return response()->json([
+                  'title' => 'Error',
+                  'status' => 'warning',
+                  'response' => 'Algo ha salido mal',
+              ]);
     }
     
 }

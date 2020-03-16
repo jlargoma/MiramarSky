@@ -49,6 +49,7 @@ class Settings extends Model
           'second_payment_confirm'            =>'Confirmación del 2º pago',
           'Forfait_email_payment_request'     =>'Solicitud de pago Forfaits',
           'Forfait_email_confirmation_payment'=>'Confirmación pago Forfait',
+          'payment_receipt'                   =>'Mail de recibos de pagos',
           'book_email_buzon'                  =>'Envío de datos del Buzón',
           'fianza_request_deferred'           =>'Envío Fianza',
           'fianza_confirm_deferred'           =>'Confirmación de Fianza',

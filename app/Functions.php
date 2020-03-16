@@ -366,3 +366,13 @@ function moneda($mount,$cero=true){
   return '--';
   
 }
+function getUsrRole(){
+  global $uRole;
+  
+  if (isset($uRole) && !empty($uRole)) {
+    return $uRole;
+  }
+  
+  $uRole = Auth::user()->role;
+  return $uRole;
+}

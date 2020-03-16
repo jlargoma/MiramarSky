@@ -148,7 +148,7 @@ $isMobile = $mobile->isMobile();
                           <tr class="text-center contab-ch contab-ch">
                           @if($isMobile)
                           <td class="text-left static" >
-                                <i class="fas fa-plus-circle toggle-contab" data-id="{{$ch}}"></i>{{$channels[$ch]}}
+                                <i class="fas fa-plus-circle toggle-contab" data-id="{{$ch}}"></i>{{$data2['channel']}}
                                 <span class="ocup">% Ocup.</span>
                               </td>
                               <th class="text-center first-col" style="padding-right:13px !important;padding-left: 135px!important">  

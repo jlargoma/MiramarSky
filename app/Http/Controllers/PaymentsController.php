@@ -6,9 +6,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use \Carbon\Carbon;
+use App\Traits\BookEmailsStatus;
 
 class PaymentsController extends AppController
 {
+  use BookEmailsStatus;
     /**
      * Display a listing of the resource.
      *
@@ -32,26 +34,16 @@ class PaymentsController extends AppController
     {
         $payment = new \App\Payments();
         
-        $date = Carbon::createFromFormat('d/m/Y' ,$request->date);
+        $date =  Carbon::createFromFormat('d-m-Y', $request->date)->format('Y-m-d');
         $payment->book_id = $request->id;
         $payment->datePayment = $date;
         $payment->import = $request->importe;
         $payment->comment = $request->comment;
         $payment->type = $request->type;
 
-        if ($request->type == 1 || $request->type == 0) {
-
-            $data['concept'] = 'COBRO METALICO';
-            $data['date'] = $date->copy()->format('Y-m-d');
-            $data['import'] = $request->importe;
-            $data['comment'] = $request->comment;
-            $data['typePayment'] = $request->type;
-            $data['type'] = 0;
-
-            LiquidacionController::addCashbox($data);
-        }elseif($request->type == 2 || $request->type == 3){
-             $data['concept'] = ( $request->type == 3 )? 'COBRO BANCO JAIME':'COBRO BANCO JORGE';
-            $data['date'] = $date->copy()->format('Y-m-d');
+       if($request->type == 2 || $request->type == 3){
+            $data['concept'] = ( $request->type == 3 )? 'COBRO BANCO JAIME':'COBRO BANCO JORGE';
+            $data['date'] = $date;
             $data['import'] = $request->importe;
             $data['comment'] = $request->comment;
             $data['typePayment'] = $request->type;
@@ -60,7 +52,29 @@ class PaymentsController extends AppController
             LiquidacionController::addBank($data);
         }
 
-        if ($payment->save()) {
+      
+        $saved = $payment->save();
+        
+        //Send PAyment Notification
+        if ($saved && $request->importe>0){
+          
+          
+          $book = \App\Book::find($request->id);
+          
+          if (in_array($book->type_book, [1,9,11,99])){
+            $book->type_book = 2;
+            $book->save();
+          }
+          
+          if ($book->customer->send_notif){
+            $subject = translateSubject('RECIBO PAGO RESERVA',$book->customer->country);
+            $subject .= ' '. $book->customer->name;
+            $this->sendEmail_confirmCobros($book,$subject,floatval($request->importe),$book->customer->email_notif);
+          }
+        }
+ 
+
+        if ($saved) {
             return 'cobro guardado';
         }
             

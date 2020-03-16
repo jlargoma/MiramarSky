@@ -616,7 +616,7 @@ table.table-prices {
     
 }
 .table.table-striped tbody tr.Pagada-la-señal td{
-    background-color: #77f377 !important;
+    background-color: rgb(61, 202, 61) !important;
 }
 
 .table.table-striped tbody tr.Blocked-ical td,
@@ -642,6 +642,10 @@ table.table-prices {
 /* Hide scrollbar for IE and Edge */
 .table-resumen td.static {
   -ms-overflow-style: none;
+}
+
+i.fa.fa-unlock.openSafetyBox {
+    color: green;
 }
 
 @media (min-width: 768px){

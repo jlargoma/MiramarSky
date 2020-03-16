@@ -1,0 +1,343 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 21, 2020, 10:37:17 AM
+    Author     : cremonapg
+*/
+
+.pgn-wrapper[data-position$='-right'] {
+  right: 82% !important;
+}
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+#overlay {
+  position: absolute;
+  left: 0;
+  opacity: .1;
+  background-color: blue;
+  height: 35px;
+  width: 100%;
+}
+
+.StripeElement {
+  background-color: white;
+  padding: 8px 12px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+.stripe-price {
+  background-color: white !important;
+  padding: 8px 12px !important;
+  border-radius: 4px !important;
+  border: 1px solid transparent !important;
+  box-shadow: 0 1px 3px 0 #e6ebf1 !important;
+  -webkit-transition: box-shadow 150ms ease !important;
+  transition: box-shadow 150ms ease !important;
+}
+button.partee-cp {
+  position: relative;
+  background-color: #fff;
+  color: #10cfbd;
+  font-size: 2.52em;
+  border: none;
+}
+button.partee-cp:hover {
+  /*background-color: #ff5a5f;*/
+  color:#00d8c4;
+}
+.tooltip .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 15%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #929292 transparent transparent transparent;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+button.partee-cp .tooltip.show{
+  display: block;
+  opacity: 1;
+  width: 100%;
+  top: -3em;
+  left: 0;
+}
+.tooltiptext {
+  position: absolute;
+  font-size: 11px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.42);
+  padding: 2px 5px;
+  width: 10em;
+  border-radius: 7px;
+}
+span#loadchatbox {
+  float: right;
+  font-size: 0.75em;
+  color: #daeffd;
+  cursor: pointer;
+}
+.partee-icon .pf-icon {
+  float: left;
+  width: 50%;
+  text-align: center;
+  display: block;
+  font-size: 20px;
+}
+.partee-icon .policeman{
+  display: block;
+  float: left;
+  width: 50%;
+  background-repeat: no-repeat;
+  height: 2.3em;
+  margin-top: 00;
+}
+.tooltiptext.FF_resume{
+  color: inherit;
+  text-align: left;
+  z-index: 9;
+  width: 22em;
+  display: none;
+}
+.showFF_resume:hover .tooltiptext.FF_resume{
+  display: block;
+}
+.tooltiptext.FF_resume .table tbody tr td{
+  padding: 8px !important;
+  font-size: 1.3em;
+  font-weight: 600;
+}
+.tooltiptext.FF_resume span.Pendiente {
+  color: red;
+}
+.tooltiptext.FF_resume p{
+  color: #fff;
+}
+#changeRealPrice{
+  cursor: pointer;
+}
+#updateForm{
+  overflow: auto;
+}
+.extras_tit span{
+  background-color: yellow;
+  padding: 7px;
+  border-radius: 3px;
+  color: #000;
+}
+.payment-resume{
+  display: none;
+}
+
+
+.icon-lst {
+  font-size: 2em !important;
+  float: left;
+  margin: 8px 5px;
+  min-height: 1.5em !important;
+}
+
+.icon-lst.partee-icon {
+    width: 3em;
+}
+.icon-lst a,
+.icon-lst img {
+  width: 100%;
+}
+.icon-lst.partee-icon .policeman {
+    margin-top: -1px;
+}
+
+@media (min-width: 600px){
+  .table-responsive {
+    overflow: inherit;
+}
+}
+
+@media (max-width: 518px){
+
+
+  .payment-resume{
+    display: block;
+  }
+  .mobile-right{
+    float: right;
+  }
+  #updateForm .padding-block{
+    padding: 0px;
+  }
+  #updateForm .row-mobile{
+    padding: 0;
+    clear: both;
+    width: 100%;
+    overflow: auto;
+  }
+  #updateForm .row-mobile label{
+    float: left;
+    width: 30%;
+    padding: 5px 0px;
+    text-align: left;
+  }
+  #updateForm .row-mobile input,
+  #updateForm .row-mobile .input_dates,
+  #updateForm .row-mobile select{
+    float: left;
+    width: 60% !important;
+  }
+  #updateForm .input_dates input{
+    width: 100% !important;
+  }
+  #updateForm select{
+    margin-bottom: 1em;
+  }
+  .content-guardar .btn{
+    float: left;
+    width: 30%;
+    margin: 0;
+  }
+
+  .content-guardar .status.form-control{
+    float: left;
+    width: 60%;
+    margin-left: 4%;
+  }
+  .mobil-p0{
+    padding: 0;
+  }
+  #updateForm .boxtotales {
+    width: 33% !important;
+    padding: 3px;
+  }
+  #updateForm .boxtotales:last-child {
+    width: 66% !important;
+    min-height: 88px;
+  }
+  #updateForm .boxtotales label,
+  #updateForm .boxtotales input{
+    width: 100% !important;
+    padding: 0;
+    margin: 0;
+    min-height: 41px;
+    font-size: 16px;
+    text-align: center;
+  }
+  .calculos .col-xs-3{
+    min-height: 62px;
+    border: 1px solid #fff;
+  }
+
+  .mobile-fixed {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9;
+    background-color: #f9ff00;
+    padding: 7px;
+    left: 0;
+    box-shadow: 0px 2px 14px #000;
+  }
+  .mobile-fixed h4{
+    font-size: 18px;
+    line-height: 1.25;
+  }
+  .mobile-fixed h5{
+    font-size: 14px;
+  }
+}
+  .extras{
+    clear: both;
+    border: 2px solid #000;
+    padding: 2em 1em 1em;
+    position: relative;
+  }  
+  .extras_tit{
+    position: absolute;
+    top: -31px;
+    padding: 13px;
+    background-color: #fff;
+    left: 7px;
+    z-index: 2;
+    font-size: 1.7em;
+    cursor: pointer;
+  }
+  .input-price label{
+        position: absolute;
+    right: 8px;
+    width: 19px;
+    top: 1px;
+    padding-top: 6px;
+    height: 33px;
+    background-color: #efefef;
+    font-size: 20px;
+    font-weight: 400;
+  }
+  .extras_item.newItem.row {
+    margin-top: 1em;
+}
+.extras_item.row {
+    margin-bottom: 7px;
+}
+#extra_total{
+  font-weight: 600;
+}
+.extra-cost{
+  padding-top: 1px;
+    font-size: 1.5em;
+}
+#sendNotifPayment {
+  background-color: #daeffd;
+  padding: 11px 0 0 0;
+}
+#sendNotifPayment .checkbox,
+#sendNotifPayment input#send_notif{
+  float: left;
+}
+#sendNotifPayment .checkbox{
+  width: 15%;
+  margin: 0 2% 10px 2%;
+}
+#sendNotifPayment #email_notif{
+  float: left;
+  width: 70%;
+}
+.btn.btn-success.cobrar {
+  width: 67%;
+  min-height: 49px;
+  margin-top: 3px;
+}
+ input#send_notif {
+    width: 21px;
+    margin: 2px 1px 1px 5px;
+}
