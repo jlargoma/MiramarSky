@@ -192,26 +192,42 @@ class PaylandsController extends AppController
         \App\BookLogs::saveLogStatus($bookOrder->book_id,null,$bookOrder->cli_email,"Pago de $amount ($key_token)");
         $book = \App\Book::find($bookOrder->book_id);
         if ($book){
+          
+           //temporalmente no envíe los mails
+          $book->customer->send_mails = FALSE;
+          $book->customer->save();
           $this->payBook($bookOrder->book_id, $bookOrder->amount);
+          $book->customer->send_mails = 1;
+          $book->customer->save();
           
           //BEGIN: check if is a final payment
-          $totalPayment = 0;
-          $payments     = \App\Payments::where('book_id', $book->id)->get();
-          if (count($payments) > 0)
-          {
-              foreach ($payments as $key => $pay)
-              {
-                  $totalPayment += $pay->import;
-              }
-          }
-          $pendiente         = ($book->total_price - $totalPayment);
-          if ($pendiente<=0){
-            $subject = translateSubject('Confirmación de Pago',$book->customer->country);
+         
 
-            $subject .= ' '.env('APP_NAME').' '.$book->customer->name;
-            $this->sendEmail_confirmSecondPayBook($book,$subject,$totalPayment);
+          if ($book->customer->send_notif){
+            $subject = translateSubject('RECIBO PAGO RESERVA',$book->customer->country);
+            $subject .= ' '. $book->customer->name;
+            $this->sendEmail_confirmCobros($book,$subject,floatval($amount),$book->customer->email_notif);
+//            dd($book->customer);
+          }else {
+            //BEGIN: check if is a final payment
+            $totalPayment = 0;
+            $payments     = \App\Payments::where('book_id', $book->id)->get();
+            if (count($payments) > 0)
+            {
+                foreach ($payments as $key => $pay)
+                {
+                    $totalPayment += $pay->import;
+                }
+            }
+            $pendiente         = ($book->total_price - $totalPayment);
+            if ($pendiente<=0){
+              $subject = translateSubject('Confirmación de Pago',$book->customer->country);
+
+              $subject .= ' '.env('APP_NAME').' '.$book->customer->name;
+              $this->sendEmail_confirmSecondPayBook($book,$subject,$totalPayment);
+            }
+            //END: check if is a final payment
           }
-          //END: check if is a final payment
         }
          
       }
