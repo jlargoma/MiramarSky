@@ -110,29 +110,43 @@ class SettingsController extends AppController
     }
 
     /**
-     * Get messages page
+   * Get messages page
+   */
+  public function messages($lng = 'es',$key=null) {
+    //get all emial's options
+    $settings = Settings::getKeysTxtMails($lng);
+    /**
+     * INSERT INTO settings(`name`,`key`,`content`,value,site_id) SELECT `name`,`key`,`content`,value,'3' as site_id FROM `settings`  WHERE `key` in ("new_request_rva","reservation_state_changed_reserv","reservation_state_changed_confirm","reservation_state_changed_cancel","reserva-propietario","second_payment_reminder","second_payment_confirm","Forfait_email_payment_request","Forfait_email_confirmation_payment","fianza_request_deferred","fianza_confirm_deferred","SMS_forfait","SMS_fianza","SMS_Partee_msg","SMS_Partee_upload_dni")
      */
-    public function messages($lng='es')
-    {
-        //get all emial's options
-        $settings = Settings::getKeysTxtMails($lng);
-        //get from DB all messages
-        $keysValue = Settings::whereIn('key', array_keys($settings))->get();
-        $data      = [];
-        if ($keysValue)
-        {
-            foreach ($keysValue as $item)
-            {
-                $data[$item->key] = $item->content;
-            }
-        }
-
-        return view('backend/settings/txt-email', [
-            'settings' => $settings,
-            'data'     => $data,
-            'lng'         => $lng
-        ]);
+    //get from DB all messages
+    $keysValue = Settings::whereIn('key', array_keys($settings))->get();
+    $data = [];
+    if ($keysValue) {
+      foreach ($keysValue as $item) {
+        $data[$item->key] = $item->content;
+      }
     }
+    
+    $url_sp = '/admin/settings_msgs/es';
+    $url_en = '/admin/settings_msgs/en';
+    if ($key){
+      $url_en .= '/'.$key.'_en';
+      $rest = substr($key, -3);
+      if ($rest == '_en'){
+        $url_sp .= '/'.substr($key,0, (strlen($key)-3));
+      } else {
+        $url_sp .= '/'.$key;
+      }
+    }
+    return view('backend/settings/txt-email', [
+        'settings' => $settings,
+        'data' => $data,
+        'lng' => $lng,
+        'key' => $key,
+        'url_en' => $url_en,
+        'url_sp' => $url_sp,
+    ]);
+  }
 
     /**
      * Save the email template setting
@@ -171,29 +185,26 @@ class SettingsController extends AppController
 
             }
             
-            if ($key == 'reservation_state_changed_reserv'){
-              
-              $key = 'reservation_state_changed_reserv_ota';
-              $value  = $request->input($key, null);
-              $Object = Settings::where('key', $key)->first();
+            $reKey = null;
+            if ($key == 'reservation_state_changed_reserv') $reKey = 'reservation_state_changed_reserv_ota';
+            if($key == 'reservation_state_changed_reserv_en') $reKey = 'reservation_state_changed_reserv_ota_en';
+            if ($reKey){
+              $value = $request->input($reKey, null);
+              $Object = Settings::where('key', $reKey)->first();
+              if ($Object) {
 
-              if ($Object)
-              {
+                $Object->content = $value;
+                $Object->save();
+              } else {
 
-                  $Object->content = $value;
-                  $Object->save();
-
-              } else
-              {
-
-                  $Object          = new Settings();
-                  $Object->key     = $key;
-                  $Object->name    = $settings[$key];
-                  $Object->value   = 0;
-                  $Object->content = $value;
-                  $Object->save();
-
+                $Object = new Settings();
+                $Object->key = $reKey;
+                $Object->name = $settings[$reKey];
+                $Object->value = 0;
+                $Object->content = $value;
+                $Object->save();
               }
+
             }
         }
         return back()->with('status', 'Setting updated!');
