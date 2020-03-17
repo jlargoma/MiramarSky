@@ -209,8 +209,9 @@ class RouterActionsController extends AppController {
             ->paginate(25);
     return view('backend.invoices._table', ['books' => $books,]);
   }
-
-  function gastos_delete($id) {
+  
+  function gastos_delete(Request $request) {
+    $id = $request->input('id');
     if (\App\Expenses::find($id)->delete()) {
       return 'ok';
     } else {
