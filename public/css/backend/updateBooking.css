@@ -166,11 +166,12 @@ span#loadchatbox {
   font-size: 2em !important;
   float: left;
   margin: 8px 5px;
-  min-height: 1.5em !important;
+  min-height: 2.5em !important;
 }
 
 .icon-lst.partee-icon {
-    width: 3em;
+  width: 4em;
+  margin: 9px 0;
 }
 .icon-lst a,
 .icon-lst img {
@@ -178,6 +179,10 @@ span#loadchatbox {
 }
 .icon-lst.partee-icon .policeman {
     margin-top: -1px;
+}
+
+.icon-lst.encuesta{
+  font-size: 1em !important;
 }
 
 @media (min-width: 600px){

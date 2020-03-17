@@ -19,7 +19,7 @@ trait BookEmailsStatus
      */
     public function sendEmailChangeStatus($book, $subject, $status)
     {
-      if (!$book->customer->email || trim($book->customer->email) == '') return;
+      if ($book->customer->send_mails == false || !$book->customer->email || trim($book->customer->email) == '') return;
         $cachedRepository  = new CachedRepository();
         $otaAgencies = [1,4];
         if ($status == 1){
