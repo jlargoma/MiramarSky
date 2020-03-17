@@ -329,14 +329,14 @@ $isMobile = $mobile->isMobile();
             $('#tableItems').html('');
             $('#totalMounth').html(response.totalMounth);
             $.each((response.respo_list), function(index, val) {
-              var row = '<tr><td>' + val.date + '</td>';
-              row += '<td>' + val.concept + '</td>';
-              row += '<td>' + val.type + '</td>';
-              row += '<td>' + val.typePayment + '</td>';
-              row += '<td class="editable">' + val.import+ '</td>';
+              var row = '<tr data-id="' + val.id + '"><td>' + val.date + '</td>';
+              row += '<td class="editable" data-type="concept">' + val.concept + '</td>';
+              row += '<td class="editable selects" data-type="type" data-current="'+ val.type_v +'" >' + val.type + '</td>';
+              row += '<td class="editable selects" data-type="payment" data-current="'+ val.typePayment_v +'" >' + val.typePayment + '</td>';
+              row += '<td class="editable" data-type="price">' + val.import+ '</td>';
               row += '<td>' + val.aptos + '</td>';
               row += '<td><button data-id="' + val.id + '" type="button" class="del_expense btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>';
-              row += '<td>' + val.comment + '</td>';
+              row += '<td class="editable" data-type="comm">' + val.comment + '</td>';
               $('#tableItems').append(row);
             });
           } else{
@@ -396,6 +396,119 @@ $isMobile = $mobile->isMobile();
 
 $("#tableItems").on('click','tr',function(){
    $(this).addClass('selected').siblings().removeClass('selected');    
+});
+
+
+$(document).ready(function () {
+  const hTable = $('#tableItems');
+     
+     
+      function edit (currentElement,type) {
+        switch(type){
+          case 'price':
+             var input = $('<input>', {type: "number",class: type})
+            .val(currentElement.html())
+            currentElement.data('value',currentElement.html());
+            currentElement.html(input);
+            input.focus(); 
+          break;
+          case 'type':
+            var select = $('<select>', {class:' form-control'});
+            select.data('t','type');
+            <?php
+                foreach ($gType as $k=>$v){
+                  echo "var option = $('<option></option>');
+                              option.attr('value', '$k');
+                              option.text('$v');
+                              select.append(option);";
+                }
+            ?>
+            currentElement.data('value',currentElement.html());
+            select.val(currentElement.data('current'));
+            currentElement.html(select);
+          break;
+          case 'payment':
+            var select = $('<select>', {class:' form-control'});
+            select.data('t','payment');
+            <?php
+                foreach ($typePayment as $k=>$v){
+                  echo "var option = $('<option></option>');
+                              option.attr('value', '$k');
+                              option.text('$v');
+                              select.append(option);";
+                }
+            ?>
+            currentElement.data('value',currentElement.html());
+            select.val(currentElement.data('current'));
+            currentElement.html(select);
+          break;
+          default:
+             var input = $('<input>', {type: "text",class: type})
+            .val(currentElement.html())
+            currentElement.data('value',currentElement.html());
+            currentElement.html(input);
+            input.focus(); 
+          break;
+        }
+     
+      }
+      hTable.on('click','.editable', function () {
+        var that = $(this);
+        if (!that.hasClass('tSelect')){
+          clearAll();
+          that.data('val',that.text());
+          that.addClass('tSelect')
+          var type = $(this).data('type');
+          edit($(this),type);
+        }
+      });
+      
+
+      hTable.on('keyup','.tSelect',function (e) {
+        if (e.keyCode == 13) {
+          var id = $(this).closest('tr').data('id');
+          var input = $(this).find('input');
+
+          updValues(id,input.attr('class'),input.val(),$(this));
+        } else {
+          hTable.find('.tSelect').find('input').val($(this).find('input').val());
+        }
+      });
+      
+      hTable.on('change','.selects',function (e) {
+          var id = $(this).closest('tr').data('id');
+          var input = $(this).find('select');
+          updValues(id,input.data('t'),input.val(),$(this),$(this).find('option:selected').text());
+      });
+      
+      var clearAll= function(){
+         hTable.find('.tSelect').each(function() {
+            $(this).text($(this).data('value')).removeClass('tSelect');
+          });
+        }
+        
+      var updValues = function(id,type,value,obj,text=null){
+        var url = "/admin/gastos/update";
+        $.ajax({
+          type: "POST",
+          method : "POST",
+          url: url,
+          data: {_token: "{{ csrf_token() }}",id: id, val: value,type:type},
+          success: function (response)
+          {
+            if (response == 'ok') {
+              clearAll();
+              window.show_notif('OK','success','Registro Actualizado');
+              if (text) obj.text(text);
+              else  obj.text(value);
+            } else {
+              window.show_notif('Error','danger','Registro NO Actualizado');
+            }
+          }
+        });
+    
+      }
+        
 });
 
     
