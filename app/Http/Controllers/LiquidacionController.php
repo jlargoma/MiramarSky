@@ -656,7 +656,7 @@ class LiquidacionController extends AppController {
     }
   }
 
-  public function updateGasto(Request $request, $id) {
+  public function updateGasto(Request $request) {
     $gasto = \App\Expenses::find($id);
     $gasto->concept = $request->concept;
     $gasto->typePayment = $request->typePayment;

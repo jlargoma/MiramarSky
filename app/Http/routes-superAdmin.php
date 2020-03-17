@@ -251,7 +251,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::post('/gastos/create', 'LiquidacionController@gastoCreate');
   Route::get('/gastos/getTableGastos', 'LiquidacionController@getTableGastos');
   Route::post('/gastos/gastosLst', 'LiquidacionController@getTableGastos');
-  Route::get('/gastos/update/{id}', 'LiquidacionController@updateGasto');
+  Route::post('/gastos/update', 'LiquidacionController@updateGasto');
   Route::get('/gastos/getHojaGastosByRoom/{year?}/{id}', 'LiquidacionController@getHojaGastosByRoom');
   Route::get('/gastos/containerTableExpensesByRoom/{year?}/{id}', 'LiquidacionController@getTableExpensesByRoom');
   Route::post('/gastos/del','RouterActionsController@gastos_delete');

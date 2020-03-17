@@ -398,6 +398,74 @@ $("#tableItems").on('click','tr',function(){
    $(this).addClass('selected').siblings().removeClass('selected');    
 });
 
+
+$(document).ready(function () {
+  const hTable = $('#tableItems');
+     
+     
+      function edit (currentElement) {
+        var input = $('<input>', {type: "number"})
+          .val(currentElement.html())
+        currentElement.html(input)
+        input.focus(); 
+      }
+
+      hTable.on('click','.editable', function () {
+        var that = $(this);
+        
+        /*** Edit info  ****/
+          clearAll();
+          that.data('val',that.text());
+          that.addClass('tSelect')
+          edit($(this));
+      });
+
+      hTable.on('keyup','.tSelect',function (e) {
+        if (e.keyCode == 13) {
+          var data = new Array();
+          var value = 0;
+          hTable.find('.tSelect').each(function() {
+            value = $(this).find('input').val();
+            data.push($(this).data('id'));
+            $(this).text(value).removeClass('tSelect');
+          });
+          updValues(data,value);
+        } else {
+          hTable.find('.tSelect').find('input').val($(this).find('input').val());
+        }
+      });
+      
+      var clearAll= function(){
+         hTable.find('.tSelect').each(function() {
+            var value = $(this).find('input').val();
+            $(this).text(value).removeClass('tSelect');
+          });
+        }
+        
+      var updValues = function(data,value,type){
+        var url = "/admin/gastos/update";
+        $.ajax({
+          type: "POST",
+          method : "POST",
+          url: url,
+          data: {_token: "{{ csrf_token() }}",items: data, val: value,type:type},
+          success: function (response)
+          {
+            if (response.status == 'OK') {
+              hTable.find('.tSelect').each(function() {
+                $(this).text(value).removeClass('tSelect');
+              });
+            } else {
+//              $('#error').text(data.msg).show();
+            }
+            console.log(data.msg); // show response from the php script.
+          }
+        });
+    
+      }
+        
+});
+
     
     </script>
 @endsection
