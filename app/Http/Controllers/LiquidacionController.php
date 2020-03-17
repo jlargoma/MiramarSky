@@ -656,16 +656,46 @@ class LiquidacionController extends AppController {
     }
   }
 
-  public function updateGasto(Request $request, $id) {
+  public function updateGasto(Request $request) {
+    
+    $id = $request->input('id');
+    $type = $request->input('type');
+    $val = $request->input('val');
     $gasto = \App\Expenses::find($id);
-    $gasto->concept = $request->concept;
-    $gasto->typePayment = $request->typePayment;
-    $gasto->type = $request->type;
-    $gasto->comment = $request->comment;
-
-    if ($gasto->save()) {
-      return "OK";
+    if ($gasto){
+      $save = false;
+      switch ($type){
+        case 'price':
+          $gasto->import = $val;
+          $save = true;
+          break;
+        case 'comm':
+          $gasto->comment = $val;
+          $save = true;
+          break;
+        case 'concept':
+          $gasto->concept = $val;
+          $save = true;
+          break;
+        case 'type':
+          $gasto->type = $val;
+          $save = true;
+          break;
+        case 'payment':
+          $gasto->typePayment = $val;
+          $save = true;
+          break;
+      }
+      
+      if ($save){
+        if ($gasto->save()) {
+          return "ok";
+        }
+      }
     }
+
+    return 'error';
+ 
   }
 
   public function getTableGastos(Request $request, $isAjax = true) {
@@ -725,7 +755,9 @@ class LiquidacionController extends AppController {
             'concept'=> $item->concept,
             'date'=> convertDateToShow_text($item->date),
             'typePayment'=> isset($typePayment[$item->typePayment]) ? $typePayment[$item->typePayment] : '--',
+            'typePayment_v'=> $item->typePayment,
             'type'=> isset($gType[$item->type]) ? $gType[$item->type] : '--',
+            'type_v'=> $item->type,
             'comment'=> $item->comment,
             'import'=> $item->import,
             'aptos' => (count($lstAptos)>0) ? implode(', ', $lstAptos) : 'TODOS',
