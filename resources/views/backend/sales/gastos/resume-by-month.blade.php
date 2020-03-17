@@ -16,10 +16,9 @@
           @foreach($gastos as $k=>$item)
           <tr>
             <td class="static">{{$gType[$k]}}</td>
-            <?php $auxClass = ' class="first-col" '; ?>
-            @foreach($item as $month=>$val)
-            <td {{$auxClass}} >{{moneda($val,false)}}</td>
-            <?php $auxClass = ''; ?>
+            <td class="first-col" >{{moneda($item[0],false)}}</td>
+            @foreach($lstMonths as $k=>$val)
+            <td>{{moneda($item[$k],false)}}</td>
             @endforeach
           </tr>
           @endforeach

@@ -38,7 +38,6 @@
             <td class="first-col" >{{moneda($item[0],false)}}</td>
             @foreach($lstMonths as $month=>$val)
             <td>{{moneda($item[$val['m']],false)}}</td>
-            <?php $auxClass = ''; ?>
             @endforeach
           </tr>
           @endforeach
