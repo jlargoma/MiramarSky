@@ -931,6 +931,7 @@ class LiquidacionController extends AppController {
         'gType' => $gType,
         'current' => $current,
         'totalYear' => $totalYear,
+        'typePayment' => \App\Expenses::getTypeCobro()
     ]);
     
   }
