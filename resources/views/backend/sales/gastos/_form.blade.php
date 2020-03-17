@@ -28,8 +28,9 @@
     <div class="col-lg-4  col-md-6 col-xs-12">
       <label for="pay_for">Met de pago</label>
       <select class="js-select2 form-control" id="type_payment" name="type_payment" style="width: 100%;" data-placeholder="Seleccione una" required>
-        <option value="0"> CASH </option>
-        <option value="2"> TPV </option>
+        @foreach($typePayment as $k=>$v)
+        <option value="{{$k}}">{{$v}}</option>
+        @endforeach
       </select>
     </div>
     <div class="col-lg-4 col-md-6 col-xs-12">

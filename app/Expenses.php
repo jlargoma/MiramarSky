@@ -21,4 +21,17 @@ class Expenses extends Model
       'VARIOS' => 'VARIOS',
     ];
   }
+  
+  //Para poner nombre al tipo de cobro//
+  static function getTypeCobro($typePayment=NULL) {
+    $array = [
+        0 => "Tarjeta visa",//"Metalico Jorge",
+        2 => "CASH",// "Metalico Jaime",
+        3 => "Banco",//"Banco Jorge",
+    ];
+
+    if (!is_null($typePayment)) return $typePayment = $array[$typePayment];
+    
+    return $array;
+  }
 }

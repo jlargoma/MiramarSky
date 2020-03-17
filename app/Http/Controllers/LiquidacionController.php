@@ -633,6 +633,7 @@ class LiquidacionController extends AppController {
         'totalYear' => $totalYear,
         'total_year_amount' => $totalYearAmount,
         'yearMonths' => $yearMonths,
+        'typePayment' => \App\Expenses::getTypeCobro()
     ]);
   }
 
@@ -701,7 +702,7 @@ class LiquidacionController extends AppController {
         'respo_list' => [],
     ];
     $totalMounth = 0;
-    $typePayment = Book::getTypeCobro();
+    $typePayment = \App\Expenses::getTypeCobro();
     if ($gastos){
       $respo_list = array();
       foreach ($gastos as $item){
