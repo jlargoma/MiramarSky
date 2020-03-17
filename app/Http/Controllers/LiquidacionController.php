@@ -623,9 +623,6 @@ class LiquidacionController extends AppController {
     }
     
    
-    
-    
-   
     return view('backend/sales/gastos/index', [
         'year' => $year,
         'lstMonths' => $lstMonths,
@@ -654,7 +651,7 @@ class LiquidacionController extends AppController {
     }
 
     if ($gasto->save()) {
-      return "OK";
+      return "ok";
     }
   }
 
