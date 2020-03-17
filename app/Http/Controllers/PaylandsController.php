@@ -194,7 +194,7 @@ class PaylandsController extends AppController
         if ($book){
           
            //temporalmente no envíe los mails
-          $book->customer->send_mails = FALSE;
+          $book->customer->send_mails = false;
           $book->customer->save();
           $this->payBook($bookOrder->book_id, $bookOrder->amount);
           $book->customer->send_mails = 1;
@@ -207,8 +207,9 @@ class PaylandsController extends AppController
             $subject = translateSubject('RECIBO PAGO RESERVA',$book->customer->country);
             $subject .= ' '. $book->customer->name;
             $this->sendEmail_confirmCobros($book,$subject,floatval($amount),$book->customer->email_notif);
-//            dd($book->customer);
-          }else {
+
+          } else {
+            
             //BEGIN: check if is a final payment
             $totalPayment = 0;
             $payments     = \App\Payments::where('book_id', $book->id)->get();
