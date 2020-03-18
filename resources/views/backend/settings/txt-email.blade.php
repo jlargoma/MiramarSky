@@ -39,9 +39,10 @@ setlocale(LC_TIME, "es_ES");
 @section('content')
 <div class="container-fluid padding-25 sm-padding-10">
   <div class="row">
-    <div class="col-md-12 text-center">
+    <div class="col-md-6 text-center">
       <h2 class="font-w800">CONFIGURACIONES - TEXTOS</h2>
-      <div>
+    </div>
+    <div class="col-md-6 text-center">
         <?php if ($lng == 'es'): ?>
           <button class="btn btn-md btn-primary active"  disabled>Español</button>
         <?php else: ?>
@@ -67,7 +68,7 @@ setlocale(LC_TIME, "es_ES");
           @endforeach
         </ul>
       </div>
-      <div class="col-md-10">
+      <div class="col-md-6">
         @foreach($settings as $k=>$v)
           <?php 
           if ($k == 'reservation_state_changed_reserv_ota') {continue;} 
@@ -113,10 +114,10 @@ setlocale(LC_TIME, "es_ES");
             <button class="btn btn-primary m-t-20">Guardar</button>
           </form>
         @endforeach
+      </div>
+      <div class="col-md-4">
       <div class="infomsg">
         <h2>Variables</h2>
-        <div class="row">
-          <div class="col-md-6">
             Nombre:<b>{customer_name}</b> <br>
             Teléfono:<b><a href="tel:{customer_phone}">{customer_phone}</a></b> <br>
             Apartamento: <b>{room}  {room_type}</b><br>
@@ -131,8 +132,6 @@ setlocale(LC_TIME, "es_ES");
             Precio total:<b>{total_price} €</b><br>
             Tipo de habitación:<b>{room_type}</b><br>
             Nombre habitación:<b>{room_name}</b><br>
-          </div>
-          <div class="col-md-6">
             <b>Pago de la señal {percent}% del total = {mount_percent} €.</b><br>
 
             % restante de tu reserva (Recordatorio 2º pago):<b>{pend_percent}</b><br>

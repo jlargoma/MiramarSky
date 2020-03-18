@@ -13,6 +13,7 @@ class Contents extends Model
   static function getKeyLst(){
     return [
       'edificio' => 'El edificio - Home',  
+      'edificio_page' => 'El edificio - Página',  
       'services' => 'Servicios - Home',  
       'meta_descripcion' => 'Meta Descripción',  
       'footer' => 'Pie de página',  
@@ -37,15 +38,24 @@ class Contents extends Model
         return [
           'title'=>['Título','string',null],  
           'content_1'=>['Primer texto','ckeditor',null],  
-          'imagen_1'=>['Primer Imagen','file',null],  
-          'imagen_1_mobile'=>['Primer Imagen Mobil','file',null],  
+          'imagen_1'=>['Primer Imagen (recomendado: 393*390 px)','file',null],  
+          'imagen_1_mobile'=>['Primer Imagen Mobil (andcho recomendado: 580px)','file',null],  
           'video_1'=>['Primer Video (andcho recomendado: 470px)','video',null],  
           'title_2'=>['Segundo Título','string',null],  
           'content_2'=>['Segundo texto','ckeditor',null],  
-          'imagen_2'=>['Segunda Imagen','file',null],  
-          'imagen_2_mobile'=>['Segunda Imagen Mobil','file',null],  
+          'imagen_2'=>['Segunda Imagen (recomendado: 393*390 px)','file',null],  
+//          'imagen_2_mobile'=>['Segunda Imagen Mobil','file',null],  
           'video_2'=>['Segundo Video (andcho recomendado: 470px)','video',null],  
         ];
+        break;
+      case 'edificio_page':
+        $aux = [
+          'title'=>['Título','string',null],  
+          'content_1'=>['Primer texto','ckeditor',null],  
+          'content_2'=>['Segundo texto','ckeditor',null],  
+        ];
+        for($i=0;$i<7;$i++) $aux['imagen_'.$i] = ['Imagen (555*604 px)','file',null];
+        return $aux;
         break;
       case 'services':
         return [
@@ -72,8 +82,8 @@ class Contents extends Model
         return [
           'title_1'=>['Título','string',null],  
           'content_1'=>['Primer texto','ckeditor',null],  
-          'imagen_1'=>['Primer Imagen','file',null],  
-          'imagen_1_mobile'=>['Primer Imagen Mobil','file',null],  
+          'imagen_1'=>['Primer Imagen (recomendado 1665*700 px)','file',null],  
+          'imagen_1_mobile'=>['Primer Imagen Mobil  (recomendado 425x620 px)','file',null],  
           'title_2'=>['Segundo Título','string',null],  
           'content_2'=>['Segundo texto','ckeditor',null],  
           'imagen_2'=>['Segunda Imagen','file',null],  
@@ -95,7 +105,7 @@ class Contents extends Model
         break;
         case 'footer':
           return [
-            'imagen'=>['Imagen de fondo','file',null],  
+            'imagen'=>['Imagen de fondo (recomendado: 1665*570 px)','file',null],  
           ];
         break;
         case 'fianza':
@@ -143,7 +153,7 @@ class Contents extends Model
         'title'=>['Título de la sección','string',null],  
         'content'=>['Texto principal','ckeditor',null],  
         'content_1'=>['Primer contenido','ckeditor',null],  
-        'content_1_img'=>['Primer imagen','file',null],  
+        'content_1_img'=>['Primer imagen (recomendado 700*465 px)','file',null],  
         'content_2'=>['Segundo contenido','ckeditor',null],  
         'content_2_img'=>['Segundo imagen','file',null],  
         'content_3'=>['tercer contenido','ckeditor',null],  
@@ -165,7 +175,8 @@ class Contents extends Model
     $result = array();
     if ($key && isset($lst[$key])){
       $fields = self::getKeyContent($key);
-      $oContent = Contents::where('key',$key)->get();
+      $site_id = config('app.site_id');
+      $oContent = Contents::where('key',$key)->where('site_id',$site_id)->get();
       if ($oContent){
         foreach ($oContent as $cont){
           if (isset($fields[$cont->field])){
