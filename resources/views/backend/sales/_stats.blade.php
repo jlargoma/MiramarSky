@@ -30,10 +30,12 @@
     border:1px solid #e8e8e8;
     background: white;
   }
+  .indicadores label{
+    display: block;
+  }
 </style>
 
 <?php 
-//$dataStats = \App\http\Controllers\LiquidacionController::getSalesByYear(); 
 $pending = ($vendido-$cobrado);
 if ($pending<0) $pending = 0;
 ?>
@@ -80,7 +82,54 @@ if ($pending<0) $pending = 0;
   </div>
 </div>
 <div class="col-lg-3 col-md-6 col-xs-12 mb-1em">
+  <strong class="text-left mY-1em block"> Indicadores de ocupación</strong>
+<div class="row text-center indicadores">
+  <div class="col-xs-6 bordered">
+    <label>Total Reservas</label>
+    <b>{{$t_book}}</b>
+  </div>
+  <div class="col-xs-6 bordered">
+      <label>Nº Inquilinos</label>
+      <b><?php echo $dataResume['num-pax'] ?></b>
+  </div>
+  <div class="col-xs-6 bordered">
+      <label>Total vnts temp</label>
+      <b>{{moneda($dataResume['total_price'])}}</b>
+  </div>
+  <div class="col-xs-6 bordered">
+      <label>Ing neto reservas</label>
+      <b>{{moneda($dataResume['beneficio'])}}</b>
+  </div>
+  <div class="col-xs-6 bordered">
+      <label>% benef reservas</label>
 
+      <?php
+      $totoalDiv = ($dataResume["total_price"] == 0) ? 1 : $dataResume["total_price"];
+      $benef = round(($dataResume["beneficio"] / $totoalDiv ) * 100, 2);
+      ?>
+      <b><?php echo $benef ?>%</b>
+  </div>
+  <div class="col-xs-6 bordered">
+    <label>Venta propia</label>
+    <b><?php echo round($dataResume['propios']) ?>%</b>
+  </div>
+  <div class="col-xs-6 bordered">
+    <label>Venta agencia</label>
+    <b><?php echo round($dataResume['agencia']) ?>%</b>
+  </div>
+  <div class="col-xs-6 bordered">
+    <label>Estancia media</label>
+    <b><?php echo round($dataResume['estancia-media']) ?></b>
+  </div>
+  <div class="col-xs-6 bordered">
+    <label>Total Noches</label>
+    <b><?php echo $dataResume['days-ocupation'] + $dataResume['dias-propios'] ?></b>
+  </div>
+  <div class="col-xs-6 bordered">
+      <label>Dias totales temp</label>
+      <b>{{$dataResume['total-days-season']}}</b>
+  </div>
+  </div>
 </div>
 
 @if($ffData && !$isMobile)
