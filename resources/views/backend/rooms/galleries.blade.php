@@ -198,6 +198,9 @@ $mobile = new Mobile();
             <h2 class="text-center">
               Subida de archivos
             </h2>
+             <div class="text-center">
+              <small class="text-danger">Recomendado 1024*680 px</small>
+            </div>
           </div>
           <div class="container-xs-height full-height">
             <div class="row-xs-height">
