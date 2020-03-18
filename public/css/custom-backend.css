@@ -364,6 +364,10 @@ input#dateRangefilter {
 .mt-1em{
   margin-top: 1em;
 }
+.mY-1em{
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
 @media only screen and (min-width: 426px) {
   .show-mobile{
     display: none;

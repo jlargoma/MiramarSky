@@ -409,6 +409,30 @@ class LiquidacionController extends AppController {
     $endYear = $data['endYear'];
     $diff = $startYear->diffInMonths($endYear) + 1;
     
+    
+    /* INDICADORES DE LA TEMPORADA */
+    
+    $countDiasPropios = \App\Book::where('start', '>', $startYear)
+                  ->where('finish', '<', $endYear)
+                  ->whereIn('type_book', [7,8])
+                  ->sum('nigths');
+    
+    
+    $dataResume = [
+        'days-ocupation' => 0,
+        'total-days-season' => \App\SeasonDays::first()->numDays,
+        'num-pax' => 0,
+        'estancia-media' => 0,
+        'pax-media' => 0,
+        'precio-dia-media' => 0,
+        'dias-propios' => $countDiasPropios,
+        'agencia' => 0,
+        'propios' => 0,
+        'total_price' =>0,
+        'beneficio' =>0,
+    ];
+
+        
     $cobrado = $metalico = $banco = $vendido = 0;
     foreach ($books as $key => $book) {
       $date = date('ym', strtotime($book->start));
@@ -432,7 +456,26 @@ class LiquidacionController extends AppController {
       $sales_rooms[$book->room_id][$date] += $book->total_price;
       $vendido += $book->total_price;
       
+      $dataResume['total_price'] += $book->total_price;
+      $dataResume['beneficio']   += $book->profit;
+      
+      /* Dias ocupados */
+      $dataResume['days-ocupation'] += $book->nigths;
+
+      /* Nº inquilinos */
+      $dataResume['num-pax'] += $book->pax;
+
+
+      if ($book->agency != 0) {
+        $dataResume['agencia'] ++;
+      } else {
+        $dataResume['propios'] ++;
+      }
     }
+    $totBooks = count($books);
+    $dataResume['agencia'] = ($dataResume['agencia'] / $totBooks) * 100;
+    $dataResume['propios'] = ($dataResume['propios'] / $totBooks) * 100;
+    $dataResume['estancia-media'] = ($dataResume['days-ocupation'] / $totBooks);
     //First chart PVP by months
     $dataChartMonths = [];
     
@@ -454,6 +497,8 @@ class LiquidacionController extends AppController {
     if ($months_obj){
       $months_ff = $months_obj['months_obj'];
     }
+    
+    
     
      /// BEGIN: Disponibilidad
     $book = new \App\Book();
@@ -509,6 +554,8 @@ class LiquidacionController extends AppController {
         'ffData'=>$ffData,
         'months_ff' => $months_ff,
         'ch_monthOcupPercent' => $ch_monthOcupPercent,
+        't_book' => $totBooks,
+        'dataResume' => $dataResume,
         ]);
   }
 
