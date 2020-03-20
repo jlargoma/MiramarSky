@@ -175,8 +175,7 @@ class Contents extends Model
     $result = array();
     if ($key && isset($lst[$key])){
       $fields = self::getKeyContent($key);
-      $site_id = config('app.site_id');
-      $oContent = Contents::where('key',$key)->where('site_id',$site_id)->get();
+      $oContent = Contents::where('key',$key)->get();
       if ($oContent){
         foreach ($oContent as $cont){
           if (isset($fields[$cont->field])){
