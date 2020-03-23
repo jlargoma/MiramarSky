@@ -186,16 +186,9 @@
 
                                 <?php echo $book->room->nameRoom ?>
                             </td>
-                            <td class="text-center">
-                                <?php
-                                    $start = Carbon::createFromFormat('Y-m-d',$book->start);
-                                    echo $start->formatLocalized('%d %b');
-                                ?> -
-                                <?php
-                                    $finish = Carbon::createFromFormat('Y-m-d',$book->finish);
-                                    echo $finish->formatLocalized('%d %b');
-                                ?>
-                            </td>
+                                        
+                            <td class="text-center" data-order="{{$book->start}}">{{convertDateToShow_text($book->start)}} - {{convertDateToShow_text($book->finish)}}</td>
+
                             <td class="text-center">
                                 <?php echo $book->nigths ?>
                             </td>

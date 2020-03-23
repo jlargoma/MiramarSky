@@ -301,8 +301,10 @@
 													<td class="text-center">
 						                                <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
 				                                        	<img src="/pages/oferta.png" style="width: 40px;" title="<?php echo $book->book_owned_comments ?>">
-						                                   
-						                                    
+						                                <?php else: ?>
+                                                                                <?php if (!empty($book->book_owned_comments)): ?>
+                                                                                <span class="fa fa-comment" title="<?php echo $book->book_owned_comments ?>"></span>
+						                                <?php endif ?>
 						                                <?php endif ?>
 						                            </td>
 												</tr>
