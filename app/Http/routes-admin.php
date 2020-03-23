@@ -9,6 +9,11 @@ Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionist
   Route::post('admin/limpiezasUpd/','LiquidacionController@upd_limpiezas');
   Route::post('admin/limpiezas/pdf','LiquidacionController@export_pdf_limpiezas');
 
+   //Estadísticas XML
+  Route::post('admin/INE', 'INEController@sendData')->name('INE.sendEncuesta');
+  Route::get('admin/show-INE', 'INEController@index');
+  Route::post('admin/show-INE', 'INEController@showData');
+  Route::get('admin/download-INE/{type}/{range}/{force}', 'INEController@download');
   
   Route::get('admin/createFianza/{id}', 'BookController@createFianza');
   //PARTEE

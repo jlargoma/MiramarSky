@@ -748,4 +748,281 @@ class ZodomusController extends Controller {
     dd($books);
   }
 
+
+      /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  function calendSite($site = 1,$month=null,$year=null) {
+
+    $zConfig = new ZConfig();
+    $aptos = configZodomusAptos();
+//    $aptosBySite = getAptosBySite($site);
+
+    //Armo el calendario
+    if(!$month) $month = date('m');
+    if(!$year) $year = date('Y');
+    
+    $days = [];
+    $dateTime = strtotime("$year-$month-01");
+    $current = getMonthsSpanish($month).' '.$year;
+    $start = date('Y-m-d',$dateTime);
+    
+    
+    $day = 24*60*60;
+    $dateTime -= $day;
+    for($i=0;$i<35;$i++){
+      $dateTime += $day;
+      
+      $days[date('Y-m-d',$dateTime)] = [
+          'day' => date('d',$dateTime),
+          'w' => date('w',$dateTime),
+          'month' => date('n',$dateTime),
+          'monthText' => getMonthsSpanish(date('n',$dateTime)),
+          'rooms' => []
+      ];
+    }
+    $finish = date('Y-m-d',$dateTime);
+    
+    $aMonth = [];
+    $count = 0;
+    $aux = true;
+    foreach ($days as $k=>$day){
+      $count++;
+      if ($month != $day['month'] && $aux){
+        $aux = false;
+        $aMonth[] = ['colspan'=>$count-1,'text'=>getMonthsSpanish($month)];
+        $count = 1;
+      } elseif($count>6){
+        $aMonth[] = ['colspan'=>$count,'text'=>getMonthsSpanish($month)];
+        $count = 0;
+      }
+    }
+    if ($count>0)   $aMonth[] = ['colspan'=>$count,'text'=>getMonthsSpanish($day['month'])];
+    //END: Armo el calendario
+    
+    
+    // listo los Channels Group del sitio
+    $rooms = [];
+    foreach ($aptos as $k => $item) {
+//      if (in_array($k,$aptosBySite)){
+      if (true){
+        $rooms[$k] = [
+            'tit' => $item->name,
+            'price_booking' => $zConfig->priceByChannel(0,1,$k,1),
+            'price_expedia' => $zConfig->priceByChannel(0,2,$k,1),
+            'price_airbnb'  => $zConfig->priceByChannel(0,3,$k,1),
+        ];
+      }
+    }
+    //END: listo los Channels Group del sitio
+    
+    
+
+    //Cargo la disponibilidad y precios por día
+    foreach ($rooms as $k=>$v){
+      $rooms[$k]['data'] = $this->getPriceDay_group($k,$start,$finish);
+    }
+    $dw = listDaysSpanish(true);
+//    $price_booking = $zConfig->priceByChannel(0,1,$room);
+//    $price_expedia = $zConfig->priceByChannel(0,2,$room);
+//    $price_airbnb = $zConfig->priceByChannel(0,3,$room);
+    return view('backend/zodomus/cal-sites', [
+        'rooms' => $rooms,
+        'site' => $site,
+        'dw' => $dw,
+        'days' => $days,
+        'month' => $month,
+        'year' => $year,
+        'aMonth' => $aMonth,
+        'current' => $current,
+        'prev' => date('m/Y',strtotime('-1 month'.$start)),
+        'next' => date('m/Y',strtotime('+1 month'.$start)),
+    ]);
+  
+  }
+  
+  function getPriceDay_group($ch,$start,$end){
+    // public function listBy_room(Request $request, $apto) {
+    $prices = [];
+    $zConfig = new ZConfig();
+    $room = Rooms::where('channel_group',$ch)->first();
+    if (!$room)   return null;
+    $defaults = $room->defaultCostPrice($start, $end, $room->pax);
+    $priceDay = $defaults['priceDay'];
+    $min = [];
+    $oPrice = DailyPrices::where('channel_group', $ch)
+            ->where('date', '>=', $start)
+            ->where('date', '<=', $end)
+            ->get();
+    if ($oPrice) {
+      foreach ($oPrice as $p) {
+        if ($p->price) $priceDay[$p->date] = $p->price;
+        $min[$p->date] = $p->min_estancia;
+      }
+    }
+    $priceLst = [];
+    $redDays = [];
+    foreach ($priceDay as $d => $p) {
+      $min_estancia = isset($min[$d]) ? $min[$d] : 0;
+      $priceLst[$d] = [
+          $p,
+          $min_estancia,
+          ceil($zConfig->priceByChannel($p,1,$ch)),
+          ceil($zConfig->priceByChannel($p,2,$ch)),
+          ceil($zConfig->priceByChannel($p,3,$ch)),
+        ];
+    }
+    $book = new \App\Book();
+    $availibility = $book->getAvailibilityBy_channel($ch, $start, $end,true);
+    
+    return [
+        'priceLst' => $priceLst,
+        'avail'=>$availibility[0],
+        't_rooms'=>$availibility[1]
+    ];
+      
+  }
+  
+  /**
+   * Update Price or Min by cal-2
+   * @param Request $request
+   * @return type
+   */
+  function calendSiteUpd(Request $request){
+  
+  
+  $items = $request->input('items');
+  $val = $request->input('val');
+  $type = $request->input('type');
+  $lst = array();
+  $lstAllDays = array();
+  
+  if (!$val || $val<0)
+    return response()->json(['status'=>'error','msg'=>'Debe seleccionar el valor a modificar']);
+      
+  if (!$type)
+    return response()->json(['status'=>'error','msg'=>'Error de tipo de datos']);
+      
+  if (!$items || count($items)<1)
+    return response()->json(['status'=>'error','msg'=>'Error de datos']);
+      
+      
+  if ($items){
+    foreach ($items as $v){
+      $aux = explode('@',$v);
+      if (!isset($lst[$aux[0]])) $lst[$aux[0]] = array();
+      if (!isset($lstAllDays[$aux[0]])) $lstAllDays[$aux[0]] = array();
+       $lst[$aux[0]][] = strtotime($aux[1]);
+       $lstAllDays[$aux[0]][] = $aux[1];
+       
+    }
+  }
+  
+  $day = 24*60*60;
+  $lstRangeDay = [];
+  if ($lst){
+    foreach ($lst as $k=>$v){
+      $lstRangeDay[$k] = [];    
+      $start = $startDate = $endDate = null;
+      $aux = [];
+      sort($v);
+      foreach ($v as $k2=>$v2){
+        
+        if ($start){
+          if ($v2 == $start+$day){
+            $start = $v2;
+            $endDate = date('Y-m-d',$v2);
+           
+          } else {
+            $aux[] = [$startDate,$endDate];
+            $start = $v2;
+            $startDate = date('Y-m-d',$v2);
+            $endDate = date('Y-m-d',$v2);
+          }
+        } else {
+          $start = $v2;
+          $startDate = date('Y-m-d',$v2);
+          $endDate = date('Y-m-d',$v2);
+        }
+        
+      }
+      if ($endDate){
+        $aux[] = [$startDate,$endDate];
+      }
+      
+      
+      $lstRangeDay[$k] = $aux;
+    }
+  }
+  
+  
+  
+  //save registers
+  $uID = Auth::user()->id;
+    
+  foreach ($lstAllDays as $k=>$v){
+    $oPrice = DailyPrices::where('channel_group', $k)
+              ->whereIn('date', $v)
+              ->get();
+    if ($oPrice){
+      foreach ($oPrice as $p){
+        if (($key = array_search($p->date, $v)) !== false) {
+          unset($v[$key]);
+          
+          if ($type == 'price') $p->price = floatval ($val);
+          if ($type == 'minDay') $p->min_estancia = intval ($val);
+          $p->user_id = $uID;
+          $p->save();
+        }
+      }
+    }
+    
+    if (count($v)>0){
+      foreach ($v as $d){
+        $p = new DailyPrices();
+        $p->date = $d;
+        $p->channel_group = $k;
+        if ($type == 'price') $p->price = floatval ($val);
+        if ($type == 'minDay') $p->min_estancia = intval ($val);
+        $p->user_id = $uID;
+        $p->save();
+      }
+    }
+    
+  }
+   
+   
+  
+  $weekDays = "sun|mon|tue|wed|thu|fri|sat";
+  $min_estancia = $price = null;
+  if ($type == 'price') $price = floatval ($val);
+  if ($type == 'minDay') $min_estancia = intval ($val);
+   
+  foreach ($lstRangeDay as $k=>$v){
+    foreach ($v as $k1=>$v1){
+       $insert = [
+           'price'=>$price,
+           'minimumStay'=>$min_estancia,
+           'weekDays'=>$weekDays,
+           'channel_group'=>$k,
+           'date_start'=>$v1[0],
+           'date_end'=>$v1[1],
+           'sent'=>0,
+       ];
+       $response = $this->sendPricesZodomus($insert);
+       if ($response) {
+         return response()->json(['status'=>'error','msg'=>'Channel Manager: '.$response]);
+       }
+    }
+  }
+ 
+  return response()->json(['status'=>'OK','msg'=>'datos cargados']);
+ 
+  }
+  
+  
+  
+  
 }
