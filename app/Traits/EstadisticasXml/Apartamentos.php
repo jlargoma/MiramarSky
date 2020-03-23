@@ -102,8 +102,8 @@ trait Apartamentos {
     $obj['CABECERA']['FECHA_REFERENCIA']['MES'] = $month;
     $obj['CABECERA']['FECHA_REFERENCIA']['ANYO'] = $year;
     $obj['CABECERA']['DIAS_ABIERTO_MES_REFERENCIA'] = $days;
-    $obj['CABECERA']['RAZON_SOCIAL'] = 'RIAD PUERTAS DEL ALBAICIN SL';
-    $obj['CABECERA']['NOMBRE_ESTABLECIMIENTO'] = "RIAD PUERTAS DEL ALBAICIN";
+    $obj['CABECERA']['RAZON_SOCIAL'] = 'MIRAMAR SKI SL';
+    $obj['CABECERA']['NOMBRE_ESTABLECIMIENTO'] = "MIRAMAR SKI";
     $obj['CABECERA']['CIF_NIF'] = 'B19591205';
     $obj['CABECERA']['DIRECCION'] = 'CUESTA SAN GREGORIO No 11';
     $obj['CABECERA']['CODIGO_POSTAL'] = '18004';
@@ -378,7 +378,7 @@ trait Apartamentos {
           'EMAIL' => 'jlargo@mksport.es',
       ],
       'EMPRESA_GESTORA' =>[
-        'RAZON_SOCIAL'=>'RIAD PUERTAS DEL ALBAICIN SL',
+        'RAZON_SOCIAL'=>'MIRAMAR SKI SL',
         'DIRECCION'=>'Cuesta de San Gregorio 11',
         'CODIGO_POSTAL'=>18004,
         'MUNICIPIO'=>'Granada',
