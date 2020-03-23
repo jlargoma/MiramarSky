@@ -232,6 +232,10 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista'], 'pre
   Route::get('/channel-manager/price/precios/list/{apto}','ZodomusController@listBy_room')->name('channel.price.cal.list');
   Route::get('/channel-manager/list/{apto}','ZodomusController@listBy_apto')->name('channel.cal.list');
   Route::get('/channel-manager/config', 'ZodomusController@generate_config');
+  
+  Route::get('/channel-manager/price-site/{site?}/{month?}/{year?}','ZodomusController@calendSite')->name('channel.price.site');
+  Route::post('/channel-manager/upd-price-site/','ZodomusController@calendSiteUpd')->name('channel.price.site.upd');
+  
   Route::get('/channel-manager/ZODOMUS', 'ZodomusController@zodomusTest');
   Route::get('/channel-manager/index', 'ZodomusController@index')->name('channel.index');
   Route::get('/channel-manager/forceImport', 'ZodomusController@forceImport')->name('channel.forceImport');

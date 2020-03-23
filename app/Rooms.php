@@ -299,7 +299,7 @@ class Rooms extends Model
           $extra_pax =  $this->price_extra_pax*($pax-$this->minOcu);
         }
         foreach ($oPrice as $p) {
-          if (isset($priceDay[$p->date]))
+          if (isset($priceDay[$p->date])  && $p->price)
             $priceDay[$p->date] = $p->price+$extra_pax;
         }
       }

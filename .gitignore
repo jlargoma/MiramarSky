@@ -4,6 +4,8 @@
 /public/actividades
 /public/contratos
 /public/page-cache
+/public/estadisticas-xml
+/public/estadisticas-xml/*
 /public/img/miramarski/contents/*
 public/img/miramarski/apartamentos/*
 Homestead.yaml
