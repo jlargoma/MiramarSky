@@ -72,18 +72,18 @@ class Config{
      * @return type
      */
     public function processPriceRates($params,$channel_group) {
-      
-      $channelId = $params['channelId'];
-      $price = $params['prices']['price'];
-      $priceSingle = isset($params['prices']['priceSingle']) ? $params['prices']['priceSingle'] : 0;
-      
-      $price = $this->priceByChannel($price,$channelId,$channel_group);
-      $priceSingle = $this->priceByChannel($priceSingle,$channelId,$channel_group);
-              
-      $params['prices']['price'] = ceil($price);
-      if (isset($params['prices']['priceSingle']))
-        $params['prices']['priceSingle'] = ceil($priceSingle);
-      
+      if (isset($params['prices'])){
+        $channelId = $params['channelId'];
+        $price = $params['prices']['price'];
+        $priceSingle = isset($params['prices']['priceSingle']) ? $params['prices']['priceSingle'] : 0;
+
+        $price = $this->priceByChannel($price,$channelId,$channel_group);
+        $priceSingle = $this->priceByChannel($priceSingle,$channelId,$channel_group);
+
+        $params['prices']['price'] = ceil($price);
+        if (isset($params['prices']['priceSingle']))
+          $params['prices']['priceSingle'] = ceil($priceSingle);
+      }
       return $params;
       
     }
