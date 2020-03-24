@@ -98,12 +98,12 @@ class PaymentsProController extends AppController {
         $summary['totalPVP'] += $book->total_price;
       }
 
-
-      $gastos = \App\Expenses::where('date', '>=', $startYear)
-              ->Where('date', '<=', $endYear)
-              ->Where('PayFor', 'LIKE', '%' . $room->id . '%')
-              ->orderBy('date', 'DESC')
-              ->get();
+      $gastos = \App\Expenses::getListByRoom($startYear->format('Y-m-d'),$endYear->format('Y-m-d'),$room->id);
+//      $gastos = \App\Expenses::where('date', '>=', $startYear)
+//              ->Where('date', '<=', $endYear)
+//              ->Where('PayFor', 'LIKE', '%' . $room->id . '%')
+//              ->orderBy('date', 'DESC')
+//              ->get();
 
       if (count($gastos) > 0) {
 
@@ -172,84 +172,64 @@ class PaymentsProController extends AppController {
    */
   public function update($id, $month = "", Request $request) {
     $typePayment = new \App\Paymentspro();
-    $total = 0;
-    $banco = 0;
-    $metalico = 0;
-
+    $total = $apto = $park = $lujo = $deuda = $pagado = 0;
     $room = \App\Rooms::find($id);
 
     $date = empty($month) ? Carbon::now() : Carbon::createFromFormat('Y', $month);
 
-    $start = new Carbon('first day of September');
-    $start = $date->format('n') >= 9 ? $start : $start->subYear();
-
-    // $payments = \App\Paymentspro::where('room_id',$id)
-    //                             ->where('datePayment','>',$start->copy())
-    //                             ->where('datePayment','<',$start->copy()->addYear())
-    //                             ->get();
-    $gastos = \App\Expenses::where('date', '>=', $start->copy()->format('Y-m-d'))
-            ->Where('date', '<=', $start->copy()->addYear()->format('Y-m-d'))
-            ->Where('PayFor', 'LIKE', '%' . $room->id . '%')
-            ->orderBy('date', 'DESC')
-            ->get();
-
-
-    $pagado = 0;
-    $metalico = 0;
-    $banco = 0;
+    $year = self::getActiveYear();
+    $startYear = new Carbon($year->start_date);
+    $endYear = new Carbon($year->end_date);
+    
+    $roomID = $room->id;
+    $gastos = \App\Expenses::getListByRoom($startYear->format('Y-m-d'),$endYear->format('Y-m-d'),$roomID);
+    $types = \App\Expenses::getTypes();
+    $typePay = \App\Expenses::getTypeCobro();
+            
+    $lstGastos = [];
+    $lstByPayment = [];
+    foreach ($typePay as $k=>$v){
+      $lstByPayment[$k] = 0;
+    }
+    
+    
+    
     foreach ($gastos as $payment) {
-      if ($payment->typePayment == 1 || $payment->typePayment == 2) {
-        $divisor = 0;
-        if (preg_match('/,/', $payment->PayFor)) {
-          $aux = explode(',', $payment->PayFor);
-          for ($i = 0; $i < count($aux); $i++) {
-            if (!empty($aux[$i])) {
-              $divisor++;
-            }
-          }
-        } else {
-          $divisor = 1;
-        }
-        $metalico += ($payment->import / $divisor);
-      } else {
-        $divisor = 0;
-        if (preg_match('/,/', $payment->PayFor)) {
-          $aux = explode(',', $payment->PayFor);
-          for ($i = 0; $i < count($aux); $i++) {
-            if (!empty($aux[$i])) {
-              $divisor++;
-            }
-          }
-        } else {
-          $divisor = 1;
-        }
-        $banco += ($payment->import / $divisor);
-      }
-
+      $aux = [
+          'type_payment' => isset($typePay[$payment->typePayment]) ? $typePay[$payment->typePayment] : '--',
+          'date' => convertDateToShow($payment->date),
+          'type' => isset($types[$payment->type]) ? $types[$payment->type] : $payment->type,
+          'comment' => $payment->comment,
+          'import' => 0,
+          'ID' => $payment->is,
+      ];
+      
       $divisor = 0;
       if (preg_match('/,/', $payment->PayFor)) {
-        $aux = explode(',', $payment->PayFor);
-        for ($i = 0; $i < count($aux); $i++) {
-          if (!empty($aux[$i])) {
+        $aux2 = explode(',', $payment->PayFor);
+        for ($i = 0; $i < count($aux2); $i++) {
+          if (!empty($aux2[$i])) {
             $divisor++;
           }
         }
       } else {
         $divisor = 1;
       }
-
-      $pagado += ($payment->import / $divisor);
+      $aux['import'] = round($payment->import / $divisor,2);
+      $lstGastos[] = $aux;
+      
+      if (isset($lstByPayment[$payment->typePayment])){
+        $lstByPayment[$payment->typePayment] += $aux['import'];
+      }
+      
+      $pagado += $aux['import'];
     }
-    $total = 0;
-    $apto = 0;
-    $park = 0;
-    $lujo = 0;
 
-
+    
     $books = \App\Book::whereIn('type_book', [2])
             ->where('room_id', $room->id)
-            ->where('start', '>=', $start->copy()->format('Y-m-d'))
-            ->where('start', '<=', $start->copy()->addYear()->format('Y-m-d'))
+            ->where('start', '>=', $startYear->format('Y-m-d'))
+            ->Where('start', '<=', $endYear->format('Y-m-d'))
             ->orderBy('start', 'ASC')
             ->get();
 
@@ -273,15 +253,15 @@ class PaymentsProController extends AppController {
 
 
     return view('backend/paymentspro/_form', [
+        'lstGastos' => $lstGastos,
+        'lstByPayment' => $lstByPayment,
         'room' => $room,
-        'payments' => $gastos,
         'debt' => $request->debt,
         'total' => $total,
         'deuda' => $deuda,
-        'typePayment' => $typePayment,
-        'metalico' => $metalico,
-        'banco' => $banco,
-        'pagado' => $pagado,
+        'typePayment' => $typePay,
+        'pagoProp' => $pagado,
+        'gType' => $types,
     ]);
   }
 
@@ -563,7 +543,7 @@ class PaymentsProController extends AppController {
         $roomLujo[] = $room->id;
       }
       $roomsIDs[] = $room->id;
-      $lstRooms[$room->id] = ucfirst($room->user->name).' ('.$room->nameRoom.')';
+      $lstRooms[$room->id] = ucfirst($room->name).' ('.$room->nameRoom.')';
     }
     
     
