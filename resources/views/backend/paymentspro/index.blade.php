@@ -554,7 +554,7 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
 				<div class="container-xs-height full-height">
 					<div class="row-xs-height">
 						<div class="modal-body contentExpencesByRoom">
-							@include('backend.sales.gastos._expensesByRoom', ['gastos' => $gastos, 'room' => 'all',
+							@include('backend.paymentspro.gastos._expensesByRoom', ['gastos' => $gastos, 'room' => 'all',
 							'year' => $year])
 						</div>
 					</div>
