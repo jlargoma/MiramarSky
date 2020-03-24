@@ -93,6 +93,14 @@ if ($pending<0) $pending = 0;
       <b><?php echo $dataResume['num-pax'] ?></b>
   </div>
   <div class="col-xs-6 bordered">
+    <label>Total Noches</label>
+    <b><?php echo $dataResume['days-ocupation'] + $dataResume['dias-propios'] ?></b>
+  </div>
+  <div class="col-xs-6 bordered">
+    <label>Estancia media</label>
+    <b><?php echo round($dataResume['estancia-media']) ?></b>
+  </div>  
+  <div class="col-xs-6 bordered">
       <label>Total vnts temp</label>
       <b>{{moneda($dataResume['total_price'])}}</b>
   </div>
@@ -110,24 +118,16 @@ if ($pending<0) $pending = 0;
       <b><?php echo $benef ?>%</b>
   </div>
   <div class="col-xs-6 bordered">
+      <label>Dias totales temp</label>
+      <b>{{$dataResume['total-days-season']}}</b>
+  </div>
+    <div class="col-xs-6 bordered">
     <label>Venta propia</label>
     <b><?php echo round($dataResume['propios']) ?>%</b>
   </div>
   <div class="col-xs-6 bordered">
     <label>Venta agencia</label>
     <b><?php echo round($dataResume['agencia']) ?>%</b>
-  </div>
-  <div class="col-xs-6 bordered">
-    <label>Estancia media</label>
-    <b><?php echo round($dataResume['estancia-media']) ?></b>
-  </div>
-  <div class="col-xs-6 bordered">
-    <label>Total Noches</label>
-    <b><?php echo $dataResume['days-ocupation'] + $dataResume['dias-propios'] ?></b>
-  </div>
-  <div class="col-xs-6 bordered">
-      <label>Dias totales temp</label>
-      <b>{{$dataResume['total-days-season']}}</b>
   </div>
   </div>
 </div>

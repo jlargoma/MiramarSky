@@ -2537,8 +2537,10 @@ class LiquidacionController extends AppController {
                         'customer',
                         'payments',
                         'room.type'
-                    ])->whereYear('start','=', $year->year);
-
+                    ])->where('start', '>=', $startYear)
+            ->where('start', '<=', $endYear);
+            
+            
     if (is_array($customerIDs) && count($customerIDs)){
       $qry_books->whereIn('customer_id', $customerIDs);
     }
@@ -2605,7 +2607,7 @@ class LiquidacionController extends AppController {
 
     $totBooks = (count($books) > 0) ? count($books) : 1;
     $diasPropios = \App\Book::where('start', '>=', $startYear)
-                    ->where('finish', '<=', $endYear)
+                    ->where('start', '<=', $endYear)
                     ->whereIn('type_book', [
                         7,
                         8
