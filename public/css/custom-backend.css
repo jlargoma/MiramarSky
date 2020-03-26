@@ -368,6 +368,21 @@ input#dateRangefilter {
   margin-top: 1em;
   margin-bottom: 1em;
 }
+
+.table .static-2 {
+    position: absolute;
+    background-color: white;
+    border-right: 1px solid #efefef;
+    z-index: 9;
+    padding: 5px 0 0 14px !important;
+    text-align: left;
+    overflow-y: hidden;
+    min-height: 26px;
+    white-space: nowrap;
+    width: 6em;
+    left: 11.43em;
+}
+
 @media only screen and (min-width: 426px) {
   .show-mobile{
     display: none;

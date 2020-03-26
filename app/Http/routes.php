@@ -199,6 +199,11 @@
         'as' => 'import-iCalendar',
         'uses' => 'ICalendarController@getIcalendar'
     ])->where('aptoID', '[0-9]+');
+    
+    
+    Route::get('/list-expenses', function(){
+      App\Expenses::getTypesOrderned();
+    });
 
 //    Route::get('/ical/importFromUrl', function () {
 //      \Artisan::call('ical:import');

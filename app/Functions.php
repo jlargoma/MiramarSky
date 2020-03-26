@@ -74,13 +74,16 @@ function assetNew($uri){
 
 
 
-function lstMonths($startYear,$endYear,$format='ym'){
+function lstMonths($startYear,$endYear,$format='ym',$name=false){
   $diff = $startYear->diffInMonths($endYear) + 1;
   $lstMonths = [];
   if (is_numeric($diff) && $diff>0){
     $aux = strtotime($startYear);
     while ($diff>0){
-      $lstMonths[date($format,$aux)] =['m' => date('n',$aux), 'y' => date('y',$aux)];
+      if ($name)
+        $lstMonths[date($format,$aux)] =['m' => date('n',$aux), 'y' => date('y',$aux),'name'=> getMonthsSpanish(date('n',$aux))];
+      else
+        $lstMonths[date($format,$aux)] =['m' => date('n',$aux), 'y' => date('y',$aux)];
       $aux = strtotime("+1 month", $aux);
       $diff--;
     }
