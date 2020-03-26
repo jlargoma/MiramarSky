@@ -70,6 +70,22 @@ $isMobile = $mobile->isMobile();
         padding: 6px;
         border: none;
     }
+    
+    .table th.static-2 {
+      height: 42px;
+      background-color: #51b1f7;
+      padding: 10px !important;
+      margin: 5px auto;
+      border-right: none;
+    }
+    .table.table-resumen .first-col {
+        padding-left: 265px !important;
+    }
+    .table.table-resumen th.static,
+    .table.table-resumen td.static {
+        width: 11em;
+    }
+      
   </style>
 @endsection
 
@@ -286,17 +302,17 @@ $isMobile = $mobile->isMobile();
   new Chart(document.getElementById("chart_1"), {
     type: 'pie',
     data: {
-      labels: [<?php foreach($gastos as $k=>$item) echo '"' . $gType[$k] . '",'; ?>],
+      labels: [<?php foreach($listGasto_g as $k=>$item) echo '"' . $gTypeGroup[$k] . '",'; ?>],
       datasets: [{
           backgroundColor: [
           <?php 
           $auxStart = 455;
-          foreach($gastos as $k=>$item){
+          foreach($listGasto_g as $k=>$item){
             $auxStart +=50;
             echo '"#' . dechex($auxStart) . '",';
           } ?>
           ],
-          data: [<?php foreach($gastos as $k=>$item) echo "'" .round($item[0]). "',"; ?>]
+          data: [<?php foreach($listGasto_g as $k=>$item) echo "'" .round($item[0]). "',"; ?>]
         }]
     },
     options: {

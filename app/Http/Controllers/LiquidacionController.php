@@ -428,10 +428,20 @@ class LiquidacionController extends AppController {
                     ->orderBy('date', 'DESC')->get();
 
     $gType = \App\Expenses::getTypes();
-    $listGasto = array();
+    $gTypeGroup = \App\Expenses::getTypesGroup();
+    $gTypeGroup_g = $gTypeGroup['groups'];
+    
+    $listGastos = array();
+    $listGastos_g = array();
+    if ($gTypeGroup_g){
+      foreach ($gTypeGroup_g as $k=>$v){
+        $listGastos_g[$v] = $months_empty;
+      }
+      $listGastos_g['otros'] = $months_empty;
+    }
     if ($gType){
       foreach ($gType as $k=>$v){
-        $listGasto[$k] = $months_empty;
+        $listGastos[$k] = $months_empty;
       }
     }
     $totalYearAmount = 0;
@@ -442,16 +452,23 @@ class LiquidacionController extends AppController {
         $totalYearAmount += $g->import;
         $yearMonths[$year->year][$month] += $g->import;
         
-        if (isset($listGasto[$g->type])){
-          $listGasto[$g->type][$month] += $g->import;
-          $listGasto[$g->type][0] += $g->import;
+        $gTipe = isset($gTypeGroup_g[$g->type]) ? $gTypeGroup_g[$g->type] : 'otros';
+        
+        if (isset($listGastos_g[$gTipe])){
+          $listGastos_g[$gTipe][$month] += $g->import;
+          $listGastos_g[$gTipe][0] += $g->import;
+        }
+        
+        if (isset($listGastos[$g->type])){
+          $listGastos[$g->type][$month] += $g->import;
+          $listGastos[$g->type][0] += $g->import;
         }
       }
     }
     $totalYear=[$year->year=>$totalYearAmount];
               
               
-
+//dd($listGastos,$listGastos_g);
 
     
     $auxYear = ($year->year)-1;
@@ -504,7 +521,7 @@ class LiquidacionController extends AppController {
      //First chart PVP by months
     $dataChartMonths = [];
     foreach ($lstMonths as $k=>$v){
-      $val = isset($listGasto[$k]) ? $listGasto[$k] : 0;
+      $val = isset($listGastos[$k]) ? $listGastos[$k] : 0;
       $dataChartMonths[getMonthsSpanish($v['m'])] = $val;
     }
     
@@ -514,7 +531,9 @@ class LiquidacionController extends AppController {
         'lstMonths' => $lstMonths,
         'dataChartMonths' => $dataChartMonths,
         'gType' => $gType,
-        'gastos' => $listGasto,
+        'gTypeGroup' => $gTypeGroup['names'],
+        'listGasto_g' => $listGastos_g,
+        'gastos' => $listGastos,
         'current' => $current,
         'totalYear' => $totalYear,
         'total_year_amount' => $totalYearAmount,
@@ -1095,161 +1114,152 @@ class LiquidacionController extends AppController {
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
     $diff = $startYear->diffInMonths($endYear) + 1;
-    $books = \App\Book::where_type_book_sales()->where('start', '>', $startYear)->where('start', '<=', $endYear)->get();
-    /* INGRESOS */
-    $arrayTotales = [
-        'totales' => 0,
-        'meses' => []
+    $lstMonths = lstMonths($startYear,$endYear,'ym',true);
+    $ingresos = [];
+    $lstT_ing = [
+        'ff' => 0,
+        'ventas' => 0,
     ];
-
-    $arrayExpensesPending = [
-        'PAGO PROPIETARIO' => [],
-        'AGENCIAS' => [],
-        'STRIPE' => [],
-        'LIMPIEZA' => [],
-        'LAVANDERIA' => []
-    ];
-
-    for ($i = 1; $i <= $diff; $i++) {
-      $arrayTotales['meses'][$i] = 0;
-
-      $arrayExpensesPending['PAGO PROPIETARIO'][$i] = 0;
-      $arrayExpensesPending['AGENCIAS'][$i] = 0;
-      $arrayExpensesPending["STRIPE"][$i] = 0;
-
-      $arrayExpensesPending['LIMPIEZA'][$i] = 0;
-      $arrayExpensesPending['LAVANDERIA'][$i] = 0;
+    
+    
+    $emptyMonths = [];
+    foreach ($lstMonths as $k=>$m){
+      $emptyMonths[$k] = 0;
     }
+    $tIngByMonth = $emptyMonths;
+    $tGastByMonth = $emptyMonths;
+    
+    
+    
+    $aExpensesPending = [
+        'prop_pay' => 0,
+        'agencias' => 0,
+        'comision_tpv' => 0,
+        'limpieza' => 0,
+        'lavanderia' => 0
+        ];
+    
 
-    foreach ($books as $book) {
-      $fecha = Carbon::createFromFormat('Y-m-d', $book->start);
-      $arrayTotales['meses'][$fecha->copy()->format('n')] += $book->total_price;
-      $arrayTotales['totales'] += $book->total_price;
-
-
-      $arrayExpensesPending['PAGO PROPIETARIO'][$fecha->copy()
-                      ->format('n')] += ($book->cost_apto + $book->cost_park + $book->cost_lujo);
-      $arrayExpensesPending['AGENCIAS'][$fecha->copy()->format('n')] += $book->PVPAgencia;
-      if (count($book->pago) > 0) {
-        foreach ($book->pago as $key => $pay) {
-          if ($pay->comment == 'Pago desde stripe') {
-            // $arrayExpensesPending["STRIPE"][$fecha->copy()->format('n')] += ((1.4 * $book->total_price)/100)+0.25;
-            $arrayExpensesPending["STRIPE"][$fecha->copy()
-                            ->format('n')] += (((1.4 * $pay->import) / 100) + 0.25);
-          } elseif($pay->comment == 'Pago desde Payland'){
-             $arrayExpensesPending["STRIPE"][$fecha->copy()
-                            ->format('n')] +=  paylandCost($pay->import);
-          }
-        }
+    /*************************************************************************/
+    
+    $books = \App\Book::where_type_book_sales(true)->with('payments')
+            ->where('start', '>=', $startYear)
+            ->where('start', '<=', $endYear)->get();
+    $aux = $emptyMonths;
+    foreach ($books as $key => $book) {
+      $aExpensesPending['prop_pay'] += ($book->cost_apto + $book->cost_park + $book->cost_lujo);
+      $aExpensesPending['agencias'] += $book->PVPAgencia;
+   
+      $aExpensesPending['limpieza'] += ($book->cost_limp - 10);
+      $aExpensesPending['lavanderia'] += 10;
+    
+      $m = date('ym', strtotime($book->start));
+      $value = 0;
+    
+      foreach ($book->payments as $pay) {
+        $value += $pay->import;
+        if ($pay->type ==2 || $pay->type ==3)
+           $aExpensesPending['comision_tpv'] += paylandCost($pay->import);
       }
-
-
-      $arrayExpensesPending['LIMPIEZA'][$fecha->copy()->format('n')] += ($book->cost_limp - 10);
-      $arrayExpensesPending['LAVANDERIA'][$fecha->copy()->format('n')] += 10;
-
-      //
+      
+      if (isset($aux[$m])) $aux[$m] += $value;
+      if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $value;
+      $lstT_ing['ventas'] += $value;
     }
-    $arrayIncomes = array();
-    $conceptIncomes = [
-        'INGRESOS EXTRAORDINARIOS',
-        'RAPPEL CLOSES',
-        'RAPPEL FORFAITS',
-        'RAPPEL ALQUILER MATERIAL'
-    ];
 
-    foreach ($conceptIncomes as $typeIncome) {
-      for ($i = 1; $i <= $diff; $i++) {
-        $arrayIncomes[$typeIncome][$i] = 0;
-      }
+    $ingresos['ventas'] = $aux;
+      /*************************************************************************/
+    $allForfaits = \App\Models\Forfaits\ForfaitsOrders::where('status','!=',1)
+            ->where('created_at', '>=', $startYear)->where('created_at', '<=', $endYear)->get();
+    
+    $aux = $emptyMonths;
+   
+    foreach ($allForfaits as $ff){
+      $m = date('ym', strtotime($ff->created_at));
+      if (isset($aux[$m])) $aux[$m] += $ff->total;
+      if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $ff->total;
+      $lstT_ing['ff'] += $ff->total;
     }
-    foreach ($conceptIncomes as $typeIncome) {
-      $incomes = \App\Incomes::where('concept', $typeIncome)->where('date', '>', $startYear)
-                      ->where('date', '<=', $endYear)->get();
-
-      if (count($incomes) > 0) {
-
-        foreach ($incomes as $key => $income) {
-          $fecha = Carbon::createFromFormat('Y-m-d', $income->date);
-          $arrayIncomes[$typeIncome][$fecha->copy()->format('n')] += $income->import;
-        }
-      } else {
-        for ($i = 1; $i <= $diff; $i++) {
-          $arrayIncomes[$typeIncome][$i] = 0;
-        }
-      }
+    $ingresos['ff'] = $aux;
+    
+       
+    /*************************************************************************/
+    
+    $ingrType = \App\Incomes::getTypes();
+    foreach ($ingrType as $k=>$t){
+      $ingresos[$k] = $emptyMonths;
+      $lstT_ing[$k] = 0;
     }
-    /* FIN INGRESOS */
-
-
-    $conceptExpenses = [
-        'PAGO PROPIETARIO',
-        'AGENCIAS',
-        'STRIPE',
-        'SERVICIOS PROF INDEPENDIENTES',
-        'VARIOS',
-        'REGALO BIENVENIDA',
-        'LAVANDERIA',
-        'LIMPIEZA',
-        'EQUIPAMIENTO VIVIENDA',
-        'DECORACION',
-        'MENAJE',
-        'SABANAS Y TOALLAS',
-        'IMPUESTOS',
-        'GASTOS BANCARIOS',
-        'MARKETING Y PUBLICIDAD',
-        'REPARACION Y CONSERVACION',
-        'SUELDOS Y SALARIOS',
-        'SEG SOCIALES',
-        'MENSAJERIA',
-        'COMISIONES COMERCIALES'
-    ];
-
-    /* GASTOS */
-    for ($i = 1; $i <= 12; $i++) {
-      for ($j = 0; $j < count($conceptExpenses); $j++) {
-        $arrayExpenses[$conceptExpenses[$j]][$i] = 0;
+    $ingresos['others'] = $emptyMonths;
+    $lstT_ing['others'] = 0;
+    $incomesLst = \App\Incomes::where('date', '>=', $startYear)->Where('date', '<=', $endYear)->get();
+    if ($incomesLst){
+      foreach ($incomesLst as $item){
+        $m = date('ym', strtotime($item->date));
+        $concept = isset($ingrType[$item->concept]) ? $item->concept : 'others';
+        $ingresos[$concept][$m] += $item->import;
+        if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $item->import;
+        $lstT_ing[$concept] += $item->import;
       }
     }
-
-
-    $gastos = \App\Expenses::where('date', '>', $startYear)
+    
+    $ingrType['ff'] = 'FORFAITS';
+    $ingrType['ventas'] = 'VENTAS';
+    $ingrType['others'] = 'OTROS INGRESOS';
+    
+    
+    /*************************************************************************/
+    /******       GASTOS                        ***********/
+    $gastos = \App\Expenses::where('date', '>=', $startYear)
                     ->Where('date', '<=', $endYear)
-                    ->where('concept', 'NOT LIKE', '%LIMPIEZA RESERVA PROPIETARIO.%')
                     ->orderBy('date', 'DESC')->get();
 
-    foreach ($gastos as $key => $gasto) {
-
-      $fecha = Carbon::createFromFormat('Y-m-d', $gasto->date);
-      if (!isset($arrayExpenses[$gasto->type])) {
-        for ($i = 1; $i <= $diff; $i++) {
-          $arrayExpenses[$gasto->type][$i] = 0;
+    $lstT_gast = [];
+    $listGastos = [];
+    
+    $gType = \App\Expenses::getTypes();
+    if ($gType){
+      foreach ($gType as $k=>$v){
+        $listGastos[$k] = $emptyMonths;
+        $lstT_gast[$k] = 0;
+      }
+    }
+    if ($gastos){
+      foreach ($gastos as $g){
+        $m = date('ym', strtotime($g->date));
+        if (isset($listGastos[$g->type])){
+          $listGastos[$g->type][$m] += $g->import;
+          $lstT_gast[$g->type] += $g->import;
+          if (isset($tGastByMonth[$m])) $tGastByMonth[$m] += $g->import;
         }
       }
-
-      $arrayExpenses[$gasto->type][$fecha->copy()->format('n')] += $gasto->import;
+    }
+    
+    foreach ($gType as $k=>$v){
+      if (isset($aExpensesPending[$k])){
+        $aExpensesPending[$k] -= $lstT_gast[$k];
+      } else {
+        $aExpensesPending[$k] = 0;
+      }
     }
 
-    // for ($i=1; $i <= 12; $i++) {
-    //     $arrayExpenses['PAGO PROPIETARIO'][$i] += $arrayExpensesPending['PAGO PROPIETARIO'][$i];
-    //     $arrayExpenses['AGENCIAS'][$i] += $arrayExpensesPending['AGENCIAS'][$i];
-    //     $arrayExpenses['STRIPE'][$i] += $arrayExpensesPending['STRIPE'][$i];
-    //     $arrayExpenses['LIMPIEZA'][$i] += $arrayExpensesPending['LIMPIEZA'][$i];
-    //     $arrayExpenses['LAVANDERIA'][$i] += $arrayExpensesPending['LAVANDERIA'][$i];
-    // }
-
-    /* FIN GASTOS */
-
-    // echo "<pre>";
-    // print_r($arrayExpenses);
-    // die();
-
+   
     return view('backend/sales/perdidas_ganancias', [
-        'arrayTotales' => $arrayTotales,
-        'arrayIncomes' => $arrayIncomes,
-        'arrayExpenses' => $arrayExpenses,
+        'lstT_ing' => $lstT_ing,
+        'totalIngr' => array_sum($lstT_ing),
+        'lstT_gast' => $lstT_gast,
+        'totalGasto' => array_sum($lstT_gast),
+        'totalPending' => array_sum($aExpensesPending),
+        'ingresos' => $ingresos,
+        'listGasto' => $listGastos,
+        'aExpensesPending' => $aExpensesPending,
         'diff' => $diff,
+        'lstMonths' => $lstMonths,
         'year' => $year,
-        'arrayExpensesPending' => $arrayExpensesPending,
+        'tGastByMonth' => $tGastByMonth,
+        'tIngByMonth' => $tIngByMonth,
+        'ingrType' => $ingrType,
+        'gastoType' => $gType,
     ]);
   }
 
