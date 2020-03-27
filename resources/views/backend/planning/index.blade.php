@@ -1232,12 +1232,32 @@ $('body').on('click','.deleteBook',function(event) {
       
       ///////////////////////////////////////////////
 
-    setTimeout(
-      function () {
-        var tutiempo_script = document.createElement('script');
-        tutiempo_script.setAttribute('src', "https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G");
-        document.body.appendChild(tutiempo_script);
-      }, 700);
+      setTimeout(
+        function () {
+          var tutiempo_script = document.createElement('script');
+          tutiempo_script.setAttribute('src', "https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G");
+          document.body.appendChild(tutiempo_script);
+        }, 700);
+      
+      $('body').on('click','.send_encuesta',function(event) {
+        var id = $(this).data('id');
+        var that = $(this);
+        if (!confirm('Enviar encuesta por mail?')) {
+          return ;
+        }
+        $('#loadigPage').show('slow');
+        
+        $.get('/admin/sendEncuesta/'+id, function(data) {
+              if (data == 'ok') {
+                window.show_notif('OK','success','Encuesta enviada');
+                that.addClass('disabled')
+                that.prop('disabled', true);
+              } else {
+                window.show_notif('Error','danger',data);
+              }
+              $('#loadigPage').hide('slow');
+          });
+      });
  });
 
     </script>

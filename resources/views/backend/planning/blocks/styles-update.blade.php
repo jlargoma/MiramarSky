@@ -178,6 +178,26 @@
         }
       }
   
+  
+   $('body').on('click','.send_encuesta',function(event) {
+        var id = $(this).data('id');
+        var that = $(this);
+        if (!confirm('Enviar encuesta por mail?')) {
+          return ;
+        }
+        $('#loadigPage').show('slow');
+        
+        $.get('/admin/sendEncuesta/'+id, function(data) {
+              if (data == 'ok') {
+                window.show_notif('OK','success','Encuesta enviada');
+                that.addClass('disabled')
+                that.prop('disabled', true);
+              } else {
+                window.show_notif('Error','danger',data);
+              }
+              $('#loadigPage').hide('slow');
+          });
+      });
     });
   
   </script>

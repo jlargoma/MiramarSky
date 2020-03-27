@@ -115,6 +115,9 @@
                         <a href="whatsapp://send?text=<?php echo $text; ?>" data-action="share/whatsapp/share" class="btn btn-success btn-sm" data-original-title="Enviar encuesta de satisfacción" data-toggle="tooltip">
                             <i class="fa fa-whatsapp" aria-hidden="true"></i>
                         </a>
+                       <button class="btn btn-primary send_encuesta" type="button" data-id="{{$book->id}}" title="Enviar encuesta mail">
+                           <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                        </button>
                     </td>
                     <?php endif ?>
                 </tr>

@@ -2,6 +2,8 @@
 
 Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista']], function () {
   
+  Route::get('admin/sendEncuesta/{id?}', 'BookController@sendEncuesta')->name('sendEncuesta');
+    
   //LIMPIEZA
   Route::get('admin/limpieza', 'LimpiezaController@index');
   Route::get('admin/limpiezas/{year?}','LiquidacionController@limpiezas');

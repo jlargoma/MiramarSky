@@ -379,3 +379,12 @@ function getUsrRole(){
   $uRole = Auth::user()->role;
   return $uRole;
 }
+
+ function convertDateTimeToShow_text($datetime,$year = false){
+    $datetime= trim($datetime);
+    if ($datetime){
+      $time = strtotime($datetime);
+      return date('d',$time).' '.getMonthsSpanish(date('n',$time)).', '.date('y H:i',$time)."hrs";
+    }
+    return null;
+  }
