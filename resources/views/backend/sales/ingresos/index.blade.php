@@ -69,6 +69,20 @@ $isMobile = $mobile->isMobile();
       margin-top: 1px;
       padding: 5px 9px !important;
     }
+    .table th.static-2 {
+      height: 42px;
+      background-color: #51b1f7;
+      padding: 10px !important;
+      margin: 5px auto;
+      border-right: none;
+    }
+    .table.table-resumen .first-col {
+        padding-left: 265px !important;
+    }
+    .table.table-resumen th.static,
+    .table.table-resumen td.static {
+        width: 11em;
+    }
   </style>
 @endsection
 

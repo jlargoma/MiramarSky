@@ -11,6 +11,8 @@ class Incomes extends Model
       return [
           'extr' => 'EXTRAORDINARIOS',
           'rappel_closes' => 'RAPPEL CLOSES',
+          'rappel_forfaits' => 'RAPPEL FORFAITS',
+          'rappel_alq_material' => 'RAPPEL ALQUILER MATERIAL',
           'others' => 'OTROS',
       ];
     }

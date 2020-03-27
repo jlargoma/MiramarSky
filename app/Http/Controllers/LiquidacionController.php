@@ -1141,7 +1141,6 @@ class LiquidacionController extends AppController {
     
 
     /*************************************************************************/
-    
     $books = \App\Book::where_type_book_sales(true)->with('payments')
             ->where('start', '>=', $startYear)
             ->where('start', '<=', $endYear)->get();
@@ -1161,25 +1160,26 @@ class LiquidacionController extends AppController {
         if ($pay->type ==2 || $pay->type ==3)
            $aExpensesPending['comision_tpv'] += paylandCost($pay->import);
       }
-      
       if (isset($aux[$m])) $aux[$m] += $value;
       if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $value;
       $lstT_ing['ventas'] += $value;
     }
-
     $ingresos['ventas'] = $aux;
       /*************************************************************************/
-    $allForfaits = \App\Models\Forfaits\ForfaitsOrders::where('status','!=',1)
-            ->where('created_at', '>=', $startYear)->where('created_at', '<=', $endYear)->get();
-    
-    $aux = $emptyMonths;
-   
+    $allForfaits = ForfaitsOrderPayments::where('paid',1)->where('created_at', '>=', $startYear)
+            ->where('created_at', '<=', $endYear)->get();
+  
     foreach ($allForfaits as $ff){
       $m = date('ym', strtotime($ff->created_at));
-      if (isset($aux[$m])) $aux[$m] += $ff->total;
-      if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $ff->total;
-      $lstT_ing['ff'] += $ff->total;
+      $value = $ff->amount/100;
+      if (isset($aux[$m])) $aux[$m] += $value;
+      if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $value;
+      $lstT_ing['ff'] += $value;
     }
+    
+    
+    
+    
     $ingresos['ff'] = $aux;
     
        
