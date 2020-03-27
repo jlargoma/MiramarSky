@@ -601,4 +601,42 @@ trait BookEmailsStatus
 
         return $sended;
     }
+    
+    
+     
+    /**
+     *
+     * @param type $book
+     * @param type $subject
+     */
+    public function sendEmail_Encuesta($book, $subject)
+    {
+      if (!$book->customer->email || trim($book->customer->email) == '') return false;
+        $mailClientContent = $this->getMailData($book, 'send_encuesta');
+        
+        $linkG = 'https://www.google.com/search?sxsrf=ALeKk01I274_tkiAimCZMu39266psYDjpg%3A1585320803146&ei=YxN-XoG_CJ2l5OUPuLmp4AE&hotel_occupancy=&q=Apartamentos+en+Sierra+Nevada+-+Zona+Baja+Con+Piscina.&oq=Apartamentos+en+Sierra+Nevada+-+Zona+Baja+Con+Piscina.&gs_lcp=CgZwc3ktYWIQAzIGCAAQFhAeOgQIIxAnUIleWImCAWDxhwFoAHAAeACAAXmIAbEEkgEDMS40mAEAoAEBoAECqgEHZ3dzLXdpeg&sclient=psy-ab&ved=0ahUKEwjB_M2a9LroAhWdErkGHbhcChwQ4dUDCAs&uact=5';
+        $link = '<a href="'.$linkG.'" title="Cargar opinión"><img src="'.url('/img/g_store.jpg').'" width="80px" height="80px"></a>';
+        $email = $book->customer->email;
+        
+                
+        $mailClientContent = str_replace('{url_encuesta}', 'https://www.apartamentosierranevada.net/encuesta-satisfaccion/' . base64_encode($book->id), $mailClientContent);
+        $mailClientContent = str_replace('{google_link}', $link, $mailClientContent);
+        $mailClientContent = $this->clearVars($mailClientContent);
+        
+        setlocale(LC_TIME, "ES");
+        setlocale(LC_TIME, "es_ES");
+        $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $mailClientContent,
+            'title'       => $subject
+        ], function ($message) use ($email, $subject) {
+            $message->from(env('MAIL_FROM'));
+            $message->to($email);
+            $message->subject($subject);
+            $message->replyTo(env('MAIL_FROM'));
+        });
+        
+        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'second_encuesta',$subject,$mailClientContent);
+
+        return $sended;
+    }
 }

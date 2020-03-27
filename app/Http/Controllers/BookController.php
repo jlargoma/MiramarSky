@@ -2761,4 +2761,15 @@ class BookController extends AppController
               ]);
     }
     
+  function sendEncuesta($bookID) {
+    $book = Book::find($bookID);
+    if (!$book->customer->email || trim($book->customer->email) == ''){
+      return 'El cliente no posee un emial cargado.';
+    }
+    
+    if ($this->sendEmail_Encuesta($book,"DANOS 5' Y TE INVITAMOS A DESAYUNAR"))
+      return 'ok';
+    
+    return 'Encuesta no enviada';
+  }
 }

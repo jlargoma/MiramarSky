@@ -119,10 +119,10 @@ span#loadchatbox {
 .partee-icon .policeman{
   display: block;
   float: left;
-  width: 50%;
+  width: 38px;
   background-repeat: no-repeat;
   height: 2.3em;
-  margin-top: 00;
+  margin-top: 1px !important;
 }
 .tooltiptext.FF_resume{
   color: inherit;
@@ -184,6 +184,23 @@ span#loadchatbox {
 .icon-lst.encuesta{
   font-size: 1em !important;
 }
+
+.icon-lst a, .icon-lst img {
+    width: 100%;
+    max-width: 40px;
+    margin-top: 2px;
+}
+
+.icon-lst span{
+  font-size: 11px;
+  display: block;
+  
+}
+.icon-lst  i.fa.fa-phone.text-success {
+    font-size: 34px;
+    padding-top: 7px;
+}
+    
 
 @media (min-width: 600px){
   .table-responsive {

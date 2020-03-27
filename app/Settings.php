@@ -57,7 +57,8 @@ class Settings extends Model
           'SMS_forfait'                        =>'SMS Forfait',
           'SMS_fianza'                        =>'SMS Fianza',
           'SMS_Partee_msg'                    =>'Mensaje Partee (enviar por plataforma de terceros)',
-          'SMS_Partee_upload_dni'             =>'SMS Partee (subir dni para el control diario de huéspedes)'
+          'SMS_Partee_upload_dni'             =>'SMS Partee (subir dni para el control diario de huéspedes)',
+          'send_encuesta'                     =>'Mail de Encuestas'
       ];
       if ($lng && $lng != 'es'){
         $lstNew = [];
