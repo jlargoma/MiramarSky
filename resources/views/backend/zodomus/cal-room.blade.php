@@ -48,7 +48,15 @@
 <div class="container-fluid padding-25 sm-padding-10">
   <div class="row">
     <div class="col-md-7">
-      <h3>Listado de Precios:</h3>
+      <div class="row">
+        <div class="col-xs-12 col-md-6">
+          <h3>Listado de Precios:</h3>
+        </div>
+        <div class="col-xs-12 col-md-6">
+          <button class="btn btn-md btn-primary active"  disabled>UNITARIA</button>
+          <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.site')}}">EDIFICIO</a>
+        </div>
+      </div>
       <div class="row">
         <div class="form-material pt-1 col-xs-12 col-md-6">
           <label class="hidden-mobile">Apartamento</label>
