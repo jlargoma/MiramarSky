@@ -59,7 +59,7 @@
     Contenido de la encuesta / Periodo <?php echo $m.'-'.$y; ?>
   </h2>
   <div class="row">
-    <div class="col-md-6 text-center">
+    <div class="col-md-8 text-center">
       <form method="POST" action="">
         <input type="hidden" id="type" name="type" value="miramarski">
         {{csrf_field()}}
@@ -73,6 +73,7 @@
         <div class="col-md-3">
           <br>
           <button class="btn btn-primary">Cargar</button>
+          <a href="{{$dwnl_url}}" class="btn btn-default">Descargar</a>
         </div>
       </div>
       <div class="row">
@@ -92,31 +93,7 @@
       </div>
         </form>
     </div>
-    <div class="col-md-6">
-      <form method="post" action="{{route('INE.sendEncuesta')}}">
-        {{csrf_field()}}
-        <input type="hidden" value="<?php echo $type;?>" name="type">
-        <input type="hidden" value="{{$start}}" name="start">
-        <input type="hidden" value="{{$finish}}" name="finish">
-          
-        <input type="hidden" value="<?php echo base64_encode(json_encode($force));?>" name="force">
-        <div class="row">
-          <div class="col-md-5">
-            <label>Número de Orden</label>
-            <input type="text" value="" name="NumeroOrden" class="form-control">
-          </div>
-          <div class="col-md-4">
-            <label>Código de Control</label>
-            <input type="text" value="" name="CodigoControl" class="form-control  col-md-3">
-          </div>
-          <div class="col-md-3">
-            <br>
-            <button class="btn btn-primary">Enviar</button>
-            <a href="{{$dwnl_url}}" class="btn btn-default">Descargar</a>
-          </div>
-        </div>
-      </form>
-    </div>
+    
   </div>
   @if($encuesta)
   <br/>
@@ -282,6 +259,7 @@
         <thead>
         <tr>
           <td class="text-left">Habitación</td>
+          <td >Total</td>
           <?php foreach ($dias as $d) echo '<td>'.$d.'</td>'; ?>
         </tr>
         </thead>
@@ -291,6 +269,7 @@
             ?>
           <tr>
             <td class="text-left">{{$movApartTit[$k]}}</td>
+            <td>{{array_sum($m)}}</td>
             <?php foreach ($m as $m2) echo '<td>'.$m2.'</td>'; ?>
           </tr>
             <?php
