@@ -7,11 +7,7 @@
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/selectable-table-plugin@latest/selectable.table.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<!--<script src="path/to/selectable.min.js"></script>-->
-<script src="/vendors/selectable/selectable.table.js"></script>
-
 @endsection
 
 @section('content')
@@ -19,89 +15,98 @@
   <div class="row">
     <div class="col-md-12">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-4 col-xs-12">
           <h3>Listado de Precios:</h3>
         </div>
-        <div class="col-md-6">
-         
+        <div class="col-xs-12 col-md-4">
+          <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.cal')}}">UNITARIA</a>
+          <button class="btn btn-md btn-primary active"  disabled>EDIFICIO</button>
+        </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-xs-12"></div>
+        <div class="col-md-6 col-xs-12">
+          <div class="select-month">
+            <a href="/admin/channel-manager/price-site/1/{{$prev}}"><i class="fa fa-arrow-left"></i> </a>
+              <span>{{$current}}</span>
+            <a href="/admin/channel-manager/price-site/1/{{$next}}"><i class="fa fa-arrow-right"></i> </a>
+          </div>
+        </div>
+        <div class="col-md-3 col-xs-12">
+          <div class="col-xs-6">
+            <label style="font-size: 1.15em;font-weight: 800;text-align: right;">Seleccionar Columna: </label>
+          </div>
+          <div class="col-xs-6">
+            <select id="sel_by_column" class="form-control">
+              <option value="1">Precios</option>
+              <option value="2">Min. Ocupación</option>
+            </select>
+          </div>
         </div>
       </div>
       
                                                                                                                  
-      <a href="/admin/channel-manager/price-site/1/{{$prev}}"><i class="fa fa-arrow-circle-left"></i> </a>
-      <span>{{$current}}</span>
-      <a href="/admin/channel-manager/price-site/1/{{$next}}"><i class="fa fa-arrow-circle-right"></i> </a>
-      <div class="table-responsive">
+      <div class="table-responsive table-resumen-content">
         <table class="table table-resumen" id="table_prices">
-        <tr>
-          <td class="static white">&nbsp;</td>
-          <td class="first-col">&nbsp;</td>
-          @foreach($aMonth as $k=>$item)
-          <td class="month" colspan="{{$item['colspan']}}">{{$item['text']}}</td>
-          @endforeach
-        </tr>
-        <tr>
-          <td class="static white">&nbsp;</td>
-          <td class="first-col">&nbsp;</td>
-          @foreach($days as $k=>$day)
-          <td class="day w">{{$dw[$day['w']]}}</td>
-          @endforeach
-        </tr>
-        <tr>
-          <td class="static white">&nbsp;</td>
-          <td class="first-col">&nbsp;</td>
-          @foreach($days as $k=>$day)
-          <td class="day">{{$day['day']}}</td>
-          @endforeach
-        </tr>
+          <thead>
+            <tr>
+              <th class=" white">&nbsp;</th>
+              @foreach($aMonth as $k=>$item)
+              <th class="month" colspan="{{$item['colspan']}}">{{$item['text']}}</th>
+              @endforeach
+            </tr>
+            <tr>
+              <th class=" white">&nbsp;</th>
+              @foreach($days as $k=>$day)
+              <th class="day w select_column" data-day="{{$k}}">{{$dw[$day['w']]}}<br>{{$day['day']}}</th>
+              @endforeach
+            </tr>
+          </thead>
+          <tbody>
         @foreach($rooms as $kRoom=>$item)
         <tr class="room-name">
-          <td  class="room-name static static-header" colspan="16" >
-            <div class="row">
-              <div class="col-md-7">
-                {{$item['tit']}}
-              </div>
-              <div class="col-md-5">
-                <table class="table-prices">
-                  <tr>
-                     <td><span class="price-booking">{{$item['price_booking']}}</span></td>
-                     <td><span class="price-airbnb">{{$item['price_airbnb']}}</span></td>
-                     <td><span class="price-expedia">{{$item['price_expedia']}}</span></td>
-                   </tr>
-                 </table>
-              </div>
+          <td  class="room-name static static-header" colspan="9" >
+            <div class="col-2">
+              <h3 class="white">{{$item['tit']}}</h3>
+            </div>
+            <div class="col-2">
+              <table class="table-prices">
+                <tr>
+                   <td><span class="price-booking">{{$item['price_booking']}}</span></td>
+                   <td><span class="price-airbnb">{{$item['price_airbnb']}}</span></td>
+                   <td><span class="price-expedia">{{$item['price_expedia']}}</span></td>
+                 </tr>
+               </table>
             </div>
           </td>
           <td colspan="{{count($days)+1}}"></td>
         </tr>
 
         <tr>
-          <th class="static">Precio €</th>
-          <td class="first-col">&nbsp;</td>
+          <th>Precio €</th>
           <?php $priceLst = $item['data']['priceLst']; ?>
           @foreach($days as $k=>$day)
             @if(isset($priceLst[$k]))
-              <td class="day tPriceEdit" data-id="{{$kRoom.'@'.$k}}">{{$priceLst[$k][0]}}</td>
+              <td class="day tPriceEdit price_{{$k}}" data-id="{{$kRoom.'@'.$k}}">{{$priceLst[$k][0]}}</td>
             @else
-              <td class="day tPriceEdit" data-id="{{$kRoom.'@'.$k}}">-</td>
+              <td class="day tPriceEdit price_{{$k}}" data-id="{{$kRoom.'@'.$k}}">-</td>
             @endif
           @endforeach
         </tr>
         <tr>
-          <th class="static">Min. Ocup.</th>
-          <td class="first-col">&nbsp;</td>
+          <th>Min. Ocup.</th>
           <?php $priceLst = $item['data']['priceLst']; ?>
           @foreach($days as $k=>$day)
             @if(isset($priceLst[$k]))
-              <td class="day tMinEdit" data-id="{{$kRoom.'@'.$k}}">{{$priceLst[$k][1]}}</td>
+              <td class="day tMinEdit min_st_{{$k}}" data-id="{{$kRoom.'@'.$k}}">{{$priceLst[$k][1]}}</td>
             @else
-              <td class="day tPriceEdit" data-id="{{$kRoom.'@'.$k}}">-</td>
+              <td class="day tPriceEdit  min_st_{{$k}}" data-id="{{$kRoom.'@'.$k}}">-</td>
             @endif
           @endforeach
         </tr>
         <tr>
-          <th class="static">Disponibilidad</th>
-          <td class="first-col">&nbsp;</td>
+          <th>Disponibilidad</th>
            <?php 
            $avail = $item['data']['avail']; 
            $t_rooms = $item['data']['t_rooms'];
@@ -111,13 +116,13 @@
           @endforeach
         </tr>
         <tr>
-          <th class="static">Reservado</th>
-          <td class="first-col">&nbsp;</td>
+          <th>Reservado</th>
           @foreach($days as $k=>$day)
           <td class="day">{{$t_rooms-$avail[$k]}}</td>
           @endforeach
         </tr>
         @endforeach
+        </tbody>
       </table>
       </div>
       <div class="calendar-blok">
@@ -142,12 +147,29 @@ $(document).ready(function () {
      
      
       function edit (currentElement) {
-        var input = $('<input>', {type: "number"})
+        var input = $('<input>', {class: "only-numbers"})
           .val(currentElement.html())
         currentElement.html(input)
         input.focus(); 
       }
 
+      $('#table_prices').find('thead').find('th').click( function () {
+        var that = $(this);
+        console.log(that);
+        if (that.hasClass('select_column')){
+          var date = that.data('day');
+          var type = $('#sel_by_column').val();
+//          var type = $("input[name='sel_by_column']:checked").val();
+          console.log(type);
+          if (type == 1){
+            $('.tPriceEdit.price_'+date).trigger('click');
+          }
+          if (type == 2){
+            $('.tMinEdit.min_st_'+date).trigger('click');
+          }
+          
+        }
+      });
       hTable.find('td').click( function () {
         var that = $(this);
         /*** Edit prices       ****/
@@ -231,13 +253,33 @@ $(document).ready(function () {
       }
         
         
+        
     $('#select_site').on('change', function(){
      location.href = '/admin/channel-manager/price-site/'+$(this).val()+'/{{$month}}/{{$year}}';
     });
         
+    $("#table_prices").on('keydown','.only-numbers',function (e) {
+      console.log(e.keyCode);
+      // Allow: backspace, delete, tab, escape, enter and .
+      if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 188,109]) !== -1 ||
+              // Allow: home, end, left, right, down, up
+                      (e.keyCode >= 35 && e.keyCode <= 40)) {
+        // let it happen, don't do anything
+        return;
+      }
+      // Ensure that it is a number and stop the keypress
+      if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+      }
+    });
 });
 </script>
 <style>
+  .select-month{
+    font-size: 2em;
+    font-weight: 800;
+    text-align: center;
+  }
   td.static {
     min-width: 12em;
     border: none !important;
@@ -314,13 +356,19 @@ $(document).ready(function () {
 
   
   #table_prices.table-resumen tr.room-name {
-    height: 5em;
+    height: 65px;
   }
 
+  #table_prices.table-resumen tr.room-name .name{
+    font-size: 1.7em;
+    padding: 13px;
+  }
+    
+    
   #table_prices.table-resumen tr.room-name td {
    background-color: #2b5d9b !important;
     color: #fff;
-    min-height: 58px;
+    min-height: 65px;
     border: none !important;
     min-width: 6em;
     width: 19em;
@@ -330,7 +378,7 @@ $(document).ready(function () {
     text-align: left;
   }
   
-  #table_prices.table-resumen tr.room-name td .col-md-7 {
+  #table_prices.table-resumen tr.room-name td .col-md-8 {
     min-width: 4em;
     margin-top: 10px;
     padding-left: 7px;
@@ -338,7 +386,47 @@ $(document).ready(function () {
   }
   
   td.room-name.static.static-header {
-    width: 76em !important;
+    width: 57em !important;
+}
+
+.table-responsive input{
+  width: 55px;
+}
+.table-resumen-content{
+  max-height: 50em;
+  position: relative;
+  overflow: scroll;
+}
+table#table_prices .col-2{
+  width: 48%;
+  float: left;
+}
+table#table_prices  thead th {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  top: 0;
+  background: #2b5d9b;
+  color: #FFF;
+  z-index: 10;
+  text-align: center;
+}
+
+table#table_prices  tbody th {
+  position: -webkit-sticky; /* for Safari */
+  position: sticky;
+  left: 0;
+  background: #FFF;
+  border-right: 1px solid #CCC;
+  text-align: center;
+}
+.select_column{
+  cursor: pointer;
+}
+.day.tPriceEdit{
+    cursor: pointer;
+    min-width: 65px;
+    font-weight: 800;
+    color: #000;
 }
 
 </style>

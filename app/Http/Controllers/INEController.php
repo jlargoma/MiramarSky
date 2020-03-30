@@ -147,7 +147,8 @@ class INEController  extends AppController{
     $this->start = $request->input('start');
     $this->finish = $request->input('finish');
     
-    
+    $this->m = date('m',strtotime($this->start));
+    $this->y = date('Y',strtotime($this->start));
     
     $encuesta = null;
     $this->force = ['p_n_remun'=>null,'p_remun_fijo'=>null,'p_remun_eventual'=>null,];

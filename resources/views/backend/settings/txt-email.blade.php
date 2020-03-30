@@ -82,7 +82,12 @@ setlocale(LC_TIME, "es_ES");
             <?php
             $content = isset($data[$k]) ? trim($data[$k]) : '';
             $ckeditor = true;
-            if ($k == 'SMS_Partee_msg' || $k == 'SMS_Partee_upload_dni' || $k == 'SMS_Partee_upload_dni_en' || $k == 'SMS_Partee_msg_en' || $k == 'SMS_fianza' || $k == 'SMS_fianza_en' || $k == 'SMS_forfait' || $k == 'SMS_forfait_en' || $k == 'SMS_buzon' || $k == 'SMS_buzon_en'
+            if ($k == 'SMS_Partee_msg' || $k == 'SMS_Partee_upload_dni' 
+              || $k == 'SMS_Partee_upload_dni_en' || $k == 'SMS_Partee_msg_en' 
+              || $k == 'SMS_fianza' || $k == 'SMS_fianza_en' 
+              || $k == 'SMS_forfait' || $k == 'SMS_forfait_en' 
+              || $k == 'SMS_buzon' || $k == 'SMS_buzon_en'
+              || $k == 'send_encuesta_subject' || $k == 'send_encuesta_subject_en'
             )
               $ckeditor = false;
             ?>
@@ -147,6 +152,7 @@ setlocale(LC_TIME, "es_ES");
             Clave Buzón/Caja:<b>{buzon_key}</b> <br>
             Color Buzón:<b>{buzon_color}</b> <br>
             Caja Buzón:<b>{buzon_caja}</b> <br>
+            Google Encuesta:<b>{google_link}</b> <br>
           </div>
         </div>
       </div>

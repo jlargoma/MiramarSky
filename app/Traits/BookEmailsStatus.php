@@ -614,6 +614,8 @@ trait BookEmailsStatus
       if (!$book->customer->email || trim($book->customer->email) == '') return false;
         $mailClientContent = $this->getMailData($book, 'send_encuesta');
         
+        $subject = $this->getMailData($book, 'send_encuesta_subject');
+        
         $linkG = 'https://www.google.com/search?sxsrf=ALeKk01I274_tkiAimCZMu39266psYDjpg%3A1585320803146&ei=YxN-XoG_CJ2l5OUPuLmp4AE&hotel_occupancy=&q=Apartamentos+en+Sierra+Nevada+-+Zona+Baja+Con+Piscina.&oq=Apartamentos+en+Sierra+Nevada+-+Zona+Baja+Con+Piscina.&gs_lcp=CgZwc3ktYWIQAzIGCAAQFhAeOgQIIxAnUIleWImCAWDxhwFoAHAAeACAAXmIAbEEkgEDMS40mAEAoAEBoAECqgEHZ3dzLXdpeg&sclient=psy-ab&ved=0ahUKEwjB_M2a9LroAhWdErkGHbhcChwQ4dUDCAs&uact=5';
         $link = '<a href="'.$linkG.'" title="Cargar opinión"><img src="'.url('/img/g_store.jpg').'" width="80px" height="80px"></a>';
         $email = $book->customer->email;

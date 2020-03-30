@@ -766,7 +766,7 @@ class ZodomusController extends Controller {
     
     $days = [];
     $dateTime = strtotime("$year-$month-01");
-    $current = getMonthsSpanish($month).' '.$year;
+    $current = getMonthsSpanish($month,false).' '.$year;
     $start = date('Y-m-d',$dateTime);
     
     

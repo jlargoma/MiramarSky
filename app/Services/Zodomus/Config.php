@@ -91,7 +91,10 @@ class Config{
     
     public function priceByChannel($price,$channelId=null,$room=null,$text=false) {
       
-      if (!$price || !is_numeric($price)) return null;
+      if (!$price || !is_numeric($price)){
+        if ($text) $price = 1;
+        else return null;
+      }
       $priceText = '';
       //Parking
       if ($room == '7J' || $room == '9F'){

@@ -133,7 +133,7 @@ trait Hoteles {
       $match2 = [['finish','>=', $start ],['finish','<=', $finish ]];
       $match3 = [['start','<', $start ],['finish','>', $finish ]];
       
-      $books = Book::where_type_book_reserved()
+      $books = Book::where_type_book_sales()
             ->where(function ($query) use ($match1,$match2,$match3) {
               $query->where($match1)
                       ->orWhere($match2)

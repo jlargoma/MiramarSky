@@ -124,15 +124,12 @@
 
  
     <?php if ($uRole == "admin" || $uRole == "subadmin" || $uRole == "recepcionista"): ?>
-    <li class="{{ $pathRequest == 'admin/channel-manager' ? 'active' : '' }}">
-        <a href="{{ url('/admin/channel-manager') }}" class="detailed">Zodomus</a>
+    <li class="{{  (preg_match('/\/channel-manager/i',$pathRequest))  ? 'active' : '' }}">
+      <a href="{{ url('/admin/channel-manager') }}" class="detailed">Zodomus</a>
     </li>
 <?php endif ?>
     
 <?php if ($uRole == "admin" ): ?>
-    <li class="{{  (preg_match('/\/price-site/i',$pathRequest))  ? 'active' : '' }}">
-      <a href="{{ url('/admin/channel-manager/price-site') }}" class="detailed">Calendario Otas</a>
-    </li>
     <li class="{{  (preg_match('/\/show-INE/i',$pathRequest))  ? 'active' : '' }}">
         <a href="{{ url('/admin/show-INE') }}" class="detailed">Estad. INE</a>
     </li>
