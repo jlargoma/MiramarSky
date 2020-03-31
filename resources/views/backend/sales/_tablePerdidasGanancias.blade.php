@@ -43,7 +43,7 @@
         <th>BENEFICIO BRUTO</th>
         <th class="text-center">{{moneda($totalIngr-$totalGasto)}}</th>
         <th class="light-blue text-center">{{moneda($totalIngr+$totalPendingIngr-$totalGasto-$totalPendingGasto)}}</th>
-        @foreach($lstMonths as $k_month=>$v)<th class="text-center"> {{moneda(($tIngByMonth[$k_month]-$tGastByMonth[$k_month]),false)}}</th> @endforeach
+        @foreach($lstMonths as $k_month=>$v)<th class="text-center"> {{moneda(($tIngByMonth[$k_month]-$tGastByMonth[$k_month]))}}</th> @endforeach
       </tr>
       <tr>
         <td>
@@ -67,8 +67,8 @@
       <tr class="pyg_beneficio">
         <th>BENEF NETO</th>
         <th class="text-center">{{moneda($totalIngr-$totalGasto-$lstT_gast['impuestos'])}}</th>
-        <th class="light-blue text-center">{{moneda($totalIngr+$totalPendingIngr-$totalGasto-$totalPendingGasto-$totalPendingImp)}}</th>
-        @foreach($lstMonths as $k_month=>$v)<th class="text-center"> {{moneda(($tIngByMonth[$k_month]-$tGastByMonth[$k_month]-$impuestos[$k_month]),false)}}</th> @endforeach
+        <th class="light-blue text-center">{{moneda($ingr_bruto+$totalPendingIngr-$totalPendingGasto-$totalPendingImp)}}</th>
+        @foreach($lstMonths as $k_month=>$v)<th class="text-center"> {{moneda(($tIngByMonth[$k_month]-$tGastByMonth[$k_month]-$impuestos[$k_month]))}}</th> @endforeach
       </tr>
     </tbody>
   </table>
