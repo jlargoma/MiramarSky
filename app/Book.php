@@ -874,8 +874,8 @@ class Book extends Model {
    * 
    * @return Object Query
    */
-  static function where_type_book_sales() {
-    
+  static function where_type_book_sales($reservado_stripe=false) {
+    if ($reservado_stripe) return self::whereIn('type_book', [1, 2, 7, 8]);
     //Pagada-la-señal / Reserva Propietario / ATIPICAS
                 
     return self::whereIn('type_book', [2, 7, 8]);

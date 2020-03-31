@@ -142,12 +142,12 @@ $isMobile = $mobile->isMobile();
             </th>
             
             <th class="text-center bg-complete text-white">%</th>
-            @foreach($lstMonths as $k => $month)
+            @foreach($lstMonths as $kmonth => $month)
             <th class="text-center bg-complete text-white">
               {{getMonthsSpanish($month['m'])}}<br/>
               <?php
-              if (isset($t_room_month[$month['m']]) && $t_room_month[$month['m']]>1){
-                echo number_format( $t_room_month[$month['m']], 0, ',', '.' ).'€';
+              if (isset($t_room_month[$kmonth]) && $t_room_month[$kmonth]>1){
+                echo number_format( $t_room_month[$kmonth], 0, ',', '.' ).'€';
               } else {
                 echo '--';
               }
@@ -182,10 +182,9 @@ $isMobile = $mobile->isMobile();
                 ?>
                 {{round($percent)}}%
               </td>
-          @foreach($lstMonths as $k => $month)
+          @foreach($lstMonths as $k_month => $month)
             <th class="text-center">
               <?php
-              $k_month = $month['m'];
               if (isset($data2['months'][$k_month]) && $data2['months'][$k_month]>1){
                 echo moneda($data2['months'][$k_month]);
               } else {
@@ -229,12 +228,11 @@ $isMobile = $mobile->isMobile();
                 echo round($percent).'%';
                 ?>
               </td>
-          @foreach($lstMonths as $k => $month)
+          @foreach($lstMonths as $k_month2 => $month2)
             <th class="text-center">
               <?php
-              $k_month = $month['m'];
-              if (isset($sales_rooms[$roomID]) && isset($sales_rooms[$roomID][$k_month]) && $sales_rooms[$roomID][$k_month]>1){
-                echo moneda( $sales_rooms[$roomID][$k_month]);
+              if (isset($sales_rooms[$roomID]) && isset($sales_rooms[$roomID][$k_month2]) && $sales_rooms[$roomID][$k_month2]>1){
+                echo moneda( $sales_rooms[$roomID][$k_month2]);
               } else {
                 echo '--';
               }
@@ -266,7 +264,7 @@ $isMobile = $mobile->isMobile();
   </div>
 </div>
 </div>
-    
+<?php var_dump($dataChartMonths); ?>
 @endsection
 
 <!---->
