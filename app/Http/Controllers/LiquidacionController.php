@@ -1262,12 +1262,13 @@ class LiquidacionController extends AppController {
 //    ( T ingr * 0.21 ) - ( TGasto *0.21 )
 
     /*****************************************************************/
-   
+    $totalIngr = array_sum($lstT_ing);
+    $totalGasto = array_sum($lstT_gast);
     return view('backend/sales/perdidas_ganancias', [
         'lstT_ing' => $lstT_ing,
-        'totalIngr' => array_sum($lstT_ing),
+        'totalIngr' => $totalIngr,
         'lstT_gast' => $lstT_gast,
-        'totalGasto' => array_sum($lstT_gast),
+        'totalGasto' => $totalGasto,
         'totalPendingGasto' => array_sum($aExpensesPending),
         'totalPendingIngr' => array_sum($aIngrPending),
         'totalPendingImp' => $totalPendingImp,
@@ -1284,6 +1285,7 @@ class LiquidacionController extends AppController {
         'tIngByMonth' => $tIngByMonth,
         'ingrType' => $ingrType,
         'gastoType' => $gType,
+        'ingr_bruto' => $totalIngr-$totalGasto-$lstT_gast['impuestos'],
     ]);
   }
 
