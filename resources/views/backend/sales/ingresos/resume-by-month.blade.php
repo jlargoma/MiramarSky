@@ -42,7 +42,7 @@
             <td class="static-2 nowrap" >{{moneda($item[0],false)}}</td>
             <?php $first = TRUE; ?>
             @foreach($lstMonths as $month=>$val)
-            <td class="nowrap @if($first) first-col @endif">{{moneda($item[$val['m']],false)}}</td>
+            <td class="nowrap @if($first) first-col @endif">{{moneda($item[$month],false)}}</td>
             <?php $first = FALSE; ?>
             @endforeach
           </tr>

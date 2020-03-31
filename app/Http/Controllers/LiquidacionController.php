@@ -151,7 +151,8 @@ class LiquidacionController extends AppController {
     
     
     $months_empty = array();
-    for($i=0;$i<13;$i++) $months_empty[$i] = 0;
+    $months_empty[0] = 0;
+    foreach ($lstMonths as $k=>$v) $months_empty[$k] = 0;
     
         
     $aptos = configZodomusAptos();
@@ -179,7 +180,7 @@ class LiquidacionController extends AppController {
     }
     $sales_rooms = [];
     foreach ($books as $key => $book) {
-      $date = date('n', strtotime($book->start));
+      $date = date('ym', strtotime($book->start));
       $value = $book->total_price;
       if (!isset($sales_rooms[$book->room_id])) $sales_rooms[$book->room_id] = [];
       if (!isset($sales_rooms[$book->room_id][$date])) $sales_rooms[$book->room_id][$date] = 0;
@@ -290,9 +291,9 @@ class LiquidacionController extends AppController {
  
       //Rooom info
       $value = $book->total_price;
-      if (!isset($sales_rooms[$book->room_id])) $sales_rooms[$book->room_id] = [];
-      if (!isset($sales_rooms[$book->room_id][$date])) $sales_rooms[$book->room_id][$date] = 0;
-      $sales_rooms[$book->room_id][$date] += $book->total_price;
+//      if (!isset($sales_rooms[$book->room_id])) $sales_rooms[$book->room_id] = [];
+//      if (!isset($sales_rooms[$book->room_id][$date])) $sales_rooms[$book->room_id][$date] = 0;
+//      $sales_rooms[$book->room_id][$date] += $book->total_price;
       $vendido += $book->total_price;
       
       $dataResume['total_price'] += $book->total_price;
@@ -319,16 +320,11 @@ class LiquidacionController extends AppController {
     $dataChartMonths = [];
     
     foreach ($lstMonths as $k=>$v){
-      $val = isset($t_room_month[$v['m']]) ? $t_room_month[$v['m']] : 0;
+      $val = isset($t_room_month[$k]) ? $t_room_month[$k] : 0;
       $dataChartMonths[getMonthsSpanish($v['m'])] = $val;
     }
     
-    $ffData = null;
-    if (env('APP_APPLICATION') != "riad"){
-      $ffData = $this->getFF_Data($startYear,$endYear);
-    }
-    
-    
+    $ffData = $this->getFF_Data($startYear,$endYear);
     $months_ff = null;
     $cachedRepository  = new \App\Repositories\CachedRepository();
     $ForfaitsItemController = new \App\Http\Controllers\ForfaitsItemController($cachedRepository);
@@ -344,9 +340,8 @@ class LiquidacionController extends AppController {
     $ch_monthOcup = array();
     $ch_monthOcupPercent = array();
     $monthsDays = $months_empty;
-    foreach ($monthsDays as $m=>$d){
-      if ($m>0)
-      $monthsDays[$m] = cal_days_in_month(CAL_GREGORIAN, $m, $year->year);
+    foreach ($lstMonths as $k=>$v){
+      $monthsDays[$k] = cal_days_in_month(CAL_GREGORIAN, $v['m'],$v['y']);
     }
     foreach ($channels as $ch=>$d){
       $ch_monthOcup[$ch] = $months_empty;
@@ -355,7 +350,7 @@ class LiquidacionController extends AppController {
       
       foreach ($availibility[0] as $day=>$used){
         if ($used>0){
-         $ch_monthOcup[$ch][date('n', strtotime($day))] += $used;
+         $ch_monthOcup[$ch][date('ym', strtotime($day))] += $used;
         }
       }
       foreach ($ch_monthOcup[$ch] as $k=>$avail){
@@ -716,7 +711,7 @@ class LiquidacionController extends AppController {
     $incomesLst = \App\Incomes::where('date', '>=', $startYear)->Where('date', '<=', $endYear)->get();
     if ($incomesLst){
       foreach ($incomesLst as $item){
-        $date = date('n', strtotime($item->date));
+        $date = date('ym', strtotime($item->date));
         $concept = isset($ingrType[$item->concept]) ? $item->concept : 'others';
         if (!isset($ingrMonths[$concept][$date])) $ingrMonths[$concept][$date] = 0;
         $ingrMonths[$concept][$date] += $item->import;
@@ -1148,6 +1143,9 @@ class LiquidacionController extends AppController {
         ];
     
 
+    $aIngrPending = [
+        'ventas' => 0,
+        ];
     /*************************************************************************/
     $books = \App\Book::where_type_book_sales(true)->with('payments')
             ->where('start', '>=', $startYear)
@@ -1171,32 +1169,20 @@ class LiquidacionController extends AppController {
       if (isset($aux[$m])) $aux[$m] += $value;
       if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $value;
       $lstT_ing['ventas'] += $value;
+      
+      if ($book->total_price-$value>0)
+        $aIngrPending['ventas'] += $book->total_price-$value;
     }
     $ingresos['ventas'] = $aux;
-      /*************************************************************************/
-    $allForfaits = ForfaitsOrderPayments::where('paid',1)->where('created_at', '>=', $startYear)
-            ->where('created_at', '<=', $endYear)->get();
-  
-    foreach ($allForfaits as $ff){
-      $m = date('ym', strtotime($ff->created_at));
-      $value = $ff->amount/100;
-      if (isset($aux[$m])) $aux[$m] += $value;
-      if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $value;
-      $lstT_ing['ff'] += $value;
-    }
     
     
-    
-    
-    $ingresos['ff'] = $aux;
-    
-       
     /*************************************************************************/
     
     $ingrType = \App\Incomes::getTypes();
     foreach ($ingrType as $k=>$t){
       $ingresos[$k] = $emptyMonths;
       $lstT_ing[$k] = 0;
+      $aIngrPending[$k] = 0;
     }
     $ingresos['others'] = $emptyMonths;
     $lstT_ing['others'] = 0;
@@ -1238,7 +1224,7 @@ class LiquidacionController extends AppController {
         if (isset($listGastos[$g->type])){
           $listGastos[$g->type][$m] += $g->import;
           $lstT_gast[$g->type] += $g->import;
-          if (isset($tGastByMonth[$m])) $tGastByMonth[$m] += $g->import;
+          if (isset($tGastByMonth[$m]) && $g->type != 'impuestos') $tGastByMonth[$m] += $g->import;
         }
       }
     }
@@ -1251,16 +1237,21 @@ class LiquidacionController extends AppController {
       }
     }
 
+    $impuestos = $listGastos['impuestos'];
+    unset($listGastos['impuestos']);
    
     return view('backend/sales/perdidas_ganancias', [
         'lstT_ing' => $lstT_ing,
         'totalIngr' => array_sum($lstT_ing),
         'lstT_gast' => $lstT_gast,
         'totalGasto' => array_sum($lstT_gast),
-        'totalPending' => array_sum($aExpensesPending),
+        'totalPendingGasto' => array_sum($aExpensesPending),
+        'totalPendingIngr' => array_sum($aIngrPending),
         'ingresos' => $ingresos,
         'listGasto' => $listGastos,
+        'impuestos' => $impuestos,
         'aExpensesPending' => $aExpensesPending,
+        'aIngrPending' => $aIngrPending,
         'diff' => $diff,
         'lstMonths' => $lstMonths,
         'year' => $year,

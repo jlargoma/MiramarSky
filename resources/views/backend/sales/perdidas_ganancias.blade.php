@@ -115,13 +115,13 @@ setlocale(LC_TIME, "es_ES");
           </div>
         </div>
         <div class="col-md-3 m-b-10">
-          <div class="box-resumen" style="background-color: #909090">
+          <div class="box-resumen " style="background-color: #3b4752">
             <h5 class="no-margin p-b-5 text-white ">
               <b>BALANCE</b>
             </h5>
-            {{moneda($totalIngr-$totalGasto-$totalPending)}}
+            {{moneda($totalIngr+$totalPendingIngr-$totalGasto-$totalPendingGasto)}}
             
-            <?php if (($totalIngr-$totalGasto-$totalPending) > 0 ): ?>
+            <?php if (($totalIngr+$totalPendingIngr-$totalGasto-$totalPendingGasto) > 0 ): ?>
                     <i class="fa fa-arrow-up text-success result"></i>
             <?php else: ?>
                     <i class="fa fa-arrow-down text-danger result"></i>
