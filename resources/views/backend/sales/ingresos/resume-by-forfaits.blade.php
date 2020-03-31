@@ -30,7 +30,7 @@ $rappel_alq_material = isset($ingrMonths['rappel_alq_material']) ? round($ingrMo
         <tbody>
           <tr>
             <td class="static">Forfaits</td>
-            <td class="first-col"><?php echo number_format($t_forfaits, 0, ',', '.') ?> €</td>
+            <td class="first-col nowrap"><?php echo number_format($t_forfaits, 0, ',', '.') ?> €</td>
             <td>
               @if($t_forfaits>0)
               {{round($rappel_forfaits/$t_forfaits*100)}}
@@ -45,7 +45,7 @@ $rappel_alq_material = isset($ingrMonths['rappel_alq_material']) ? round($ingrMo
           </tr>
           <tr>
             <td class="static">Materiales</td>
-            <td class="first-col"><?php echo number_format($t_equipos, 0, ',', '.') ?> €</td>
+            <td class="first-col nowrap"><?php echo number_format($t_equipos, 0, ',', '.') ?> €</td>
             <td>
               @if($t_equipos>0)
               {{round($rappel_alq_material/$t_equipos*100)}}
@@ -60,7 +60,7 @@ $rappel_alq_material = isset($ingrMonths['rappel_alq_material']) ? round($ingrMo
           </tr>
           <tr>
             <td class="static">Clases</td>
-            <td class="first-col"><?php echo number_format($t_clases, 0, ',', '.') ?> €</td>
+            <td class="first-col nowrap"><?php echo number_format($t_clases, 0, ',', '.') ?> €</td>
             <td>
               @if($t_clases>0)
               {{round($rappel_clases/$t_clases*100)}}
@@ -75,7 +75,7 @@ $rappel_alq_material = isset($ingrMonths['rappel_alq_material']) ? round($ingrMo
           </tr>
           <tr>
             <td class="static">Otros</td>
-            <td class="first-col"><?php echo number_format($t_otros, 0, ',', '.') ?> €</td>
+            <td class="first-col nowrap"><?php echo number_format($t_otros, 0, ',', '.') ?> €</td>
             <td></td>
             @foreach($months_ff as $item)
             <td><?php echo number_format($item['data']['otros'], 0, ',', '.'); ?>€</td>
