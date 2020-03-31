@@ -161,15 +161,13 @@ $isMobile = $mobile->isMobile();
       @foreach($chRooms as $ch => $data2)
           <tr class="text-center contab-ch contab-ch">
           @if($isMobile)
-          <td class="text-left static" >
+          <td class="text-left static nowrap" >
                 <i class="fas fa-plus-circle toggle-contab" data-id="{{$ch}}"></i>{{$data2['channel']}}
-                <span class="ocup">% Ocup.</span>
               </td>
               <th class="text-center first-col" style="padding-right:13px !important;padding-left: 135px!important">  
           @else
-              <td class="text-left" style="width: 130px;">  
+              <td class="text-left nowrap" style="width: 130px;">  
                 <i class="fas fa-plus-circle toggle-contab" data-id="{{$ch}}"></i>{{$data2['channel']}}
-                <span class="ocup">% Ocup.</span>
               </td>
               <th class="text-center ">  
           @endif
@@ -205,7 +203,7 @@ $isMobile = $mobile->isMobile();
            @foreach($data2['rooms'] as $roomID => $name)
           <tr class="text-center contab-room contab-room-{{$ch}} tr-close">
           @if($isMobile)
-              <td class="text-left static">
+              <td class="text-left static nowrap">
                 {!!$name!!}
               </td>
               <th class="text-center first-col" style="padding-right:13px !important;padding-left: 135px!important">  

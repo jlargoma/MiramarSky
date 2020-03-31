@@ -6,7 +6,7 @@
         <thead>
           <tr class="resume-head">
             <th class="static">Concepto</th>
-            <th class="static-2">Total</th>
+            <th class="static-2 nowrap">Total</th>
             <?php $first = TRUE; ?>
             @foreach($lstMonths as $k => $month)
             <th @if($first) class="first-col" @endif>{{getMonthsSpanish($month['m'])}}</th>
@@ -18,7 +18,7 @@
           <tr>
            
             <td class="static">Aptos</td>
-            <td class="static-2" > {{moneda( $t_all_rooms,false)}}</td>
+            <td class="static-2 nowrap" > {{moneda( $t_all_rooms,false)}}</td>
             <?php $first = TRUE; ?>
             @foreach($lstMonths as $k => $month)
             <td class="nowrap @if($first) first-col @endif">
@@ -39,7 +39,7 @@
           @foreach($ingrMonths as $k=>$item)
           <tr>
             <td class="static">{{$ingrType[$k]}}</td>
-            <td class="static-2" >{{moneda($item[0],false)}}</td>
+            <td class="static-2 nowrap" >{{moneda($item[0],false)}}</td>
             <?php $first = TRUE; ?>
             @foreach($lstMonths as $month=>$val)
             <td class="nowrap @if($first) first-col @endif">{{moneda($item[$val['m']],false)}}</td>
