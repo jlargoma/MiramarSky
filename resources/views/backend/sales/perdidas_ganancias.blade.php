@@ -101,9 +101,9 @@ setlocale(LC_TIME, "es_ES");
           </div>
         </div>
         <div class="col-md-3 m-b-10">
-          <div class="box-resumen" style="background-color: #48b0f7">
+          <div class="box-resumen" style="background-color: #2c5d9b">
             <h5 class="no-margin p-b-5 text-white ">
-              <b>RESULTADO</b>
+              <b>BENEFICIO BRUTO</b>
             </h5>
             {{moneda($totalIngr-$totalGasto)}}
             
@@ -115,9 +115,9 @@ setlocale(LC_TIME, "es_ES");
           </div>
         </div>
         <div class="col-md-3 m-b-10">
-          <div class="box-resumen " style="background-color: #3b4752">
+          <div class="box-resumen light-blue" >
             <h5 class="no-margin p-b-5 text-white ">
-              <b>BALANCE</b>
+              <b>BENEFICIO NETO</b>
             </h5>
             {{moneda($totalIngr+$totalPendingIngr-$totalGasto-$totalPendingGasto)}}
             
@@ -188,6 +188,9 @@ setlocale(LC_TIME, "es_ES");
     color: #FFF;
     font-weight: 800;
     min-height: 5em;
+  }
+  .light-blue{
+    background-color: #48b0f7
   }
 </style>
 @endsection

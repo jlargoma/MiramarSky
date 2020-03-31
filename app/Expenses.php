@@ -35,6 +35,28 @@ class Expenses extends Model
     ];
   }
   
+  
+  static function getTypesImp(){
+    return [
+        'agencias' => 'AGENCIAS',
+        'alquiler' => 'ALQUILER INMUEBLES',
+        'amenities' => 'AMENITIES',
+        'comisiones' => 'COMISIONES COMERCIALES',
+        'comision_tpv' => 'COMSION TPV',
+        'equip_deco' => 'EQUIPACION Y DECORACION',
+        'bancario' => 'GASTOS BANCARIOS',
+        'representacion' => 'GASTOS REPRESENTACION',
+        'lavanderia' => 'LAVANDERIA',
+        'limpieza' => 'LIMPIEZA',
+        'publicidad' => 'MARKETING Y PUBLICIDAD',
+        'mensaje' => 'MENSAJERIA',
+        'serv_prof' => 'SERVICIOS PROF INDEPENDIENTES',
+        'suministros' => 'SUMINISTROS',
+        'sabana_toalla' => 'TEXTIL Y MENAJE',
+        'varios' => 'VARIOS',
+    ];
+  }
+  
   static function getTypesGroup(){
     return [
             'names'=> [

@@ -1237,8 +1237,31 @@ class LiquidacionController extends AppController {
       }
     }
 
+    /*****************************************************************/
+    
     $impuestos = $listGastos['impuestos'];
     unset($listGastos['impuestos']);
+    
+    $impEstimado = [];
+    
+    $gTypesImp = \App\Expenses::getTypesImp();
+    if ($gTypesImp){
+      foreach ($lstMonths as $k_m=>$m){
+        $impuestoM = 0;
+        foreach ($gTypesImp as $k_t=>$v){
+          $impuestoM += $listGastos[$k_t][$k_m];
+        }
+        
+        $impEstimado[$k_m] = ($tIngByMonth[$k_m]* 0.21 ) - ($impuestoM*0.21);
+        
+      }
+      
+    }
+      
+    $totalPendingImp = array_sum($impEstimado)-$lstT_gast['impuestos'];
+//    ( T ingr * 0.21 ) - ( TGasto *0.21 )
+
+    /*****************************************************************/
    
     return view('backend/sales/perdidas_ganancias', [
         'lstT_ing' => $lstT_ing,
@@ -1247,9 +1270,11 @@ class LiquidacionController extends AppController {
         'totalGasto' => array_sum($lstT_gast),
         'totalPendingGasto' => array_sum($aExpensesPending),
         'totalPendingIngr' => array_sum($aIngrPending),
+        'totalPendingImp' => $totalPendingImp,
         'ingresos' => $ingresos,
         'listGasto' => $listGastos,
         'impuestos' => $impuestos,
+        'impEstimado' => $impEstimado,
         'aExpensesPending' => $aExpensesPending,
         'aIngrPending' => $aIngrPending,
         'diff' => $diff,
