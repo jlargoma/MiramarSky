@@ -1,5 +1,10 @@
 <?php
 $t_forfaits = $t_equipos = $t_clases = $t_otros = 0;
+
+$rappel_clases = isset($ingrMonths['rappel_closes']) ? round($ingrMonths['rappel_closes'][0]) : 0;
+$rappel_forfaits = isset($ingrMonths['rappel_forfaits']) ? round($ingrMonths['rappel_forfaits'][0]) : 0;
+$rappel_alq_material = isset($ingrMonths['rappel_alq_material']) ? round($ingrMonths['rappel_alq_material'][0]) : 0;
+
 ?>
 <div class="row">
   <div class="col-md-8 col-xs-12">
@@ -10,6 +15,7 @@ $t_forfaits = $t_equipos = $t_clases = $t_otros = 0;
           <tr class="resume-head">
             <th class="static">Concepto</th>
             <th class="first-col">Total</th>
+            <th >%</th>
             @foreach($months_ff as $item)
             <th>{{$item['name']}} {{$item['year']}}</th>
             <?php
@@ -25,6 +31,14 @@ $t_forfaits = $t_equipos = $t_clases = $t_otros = 0;
           <tr>
             <td class="static">Forfaits</td>
             <td class="first-col"><?php echo number_format($t_forfaits, 0, ',', '.') ?> €</td>
+            <td>
+              @if($t_forfaits>0)
+              {{round($rappel_forfaits/$t_forfaits*100)}}
+              @else
+              0
+              @endif
+              %
+            </td>
             @foreach($months_ff as $item)
             <td><?php echo number_format($item['data']['forfaits'], 0, ',', '.'); ?>€</td>
             @endforeach
@@ -32,6 +46,14 @@ $t_forfaits = $t_equipos = $t_clases = $t_otros = 0;
           <tr>
             <td class="static">Materiales</td>
             <td class="first-col"><?php echo number_format($t_equipos, 0, ',', '.') ?> €</td>
+            <td>
+              @if($t_equipos>0)
+              {{round($rappel_alq_material/$t_equipos*100)}}
+              @else
+              0
+              @endif
+              %
+            </td>
             @foreach($months_ff as $item)
             <td><?php echo number_format($item['data']['equipos'], 0, ',', '.'); ?>€</td>
             @endforeach
@@ -39,6 +61,14 @@ $t_forfaits = $t_equipos = $t_clases = $t_otros = 0;
           <tr>
             <td class="static">Clases</td>
             <td class="first-col"><?php echo number_format($t_clases, 0, ',', '.') ?> €</td>
+            <td>
+              @if($t_clases>0)
+              {{round($rappel_clases/$t_clases*100)}}
+              @else
+              0
+              @endif
+              %
+            </td>
             @foreach($months_ff as $item)
             <td><?php echo number_format($item['data']['clases'], 0, ',', '.'); ?>€</td>
             @endforeach
@@ -46,6 +76,7 @@ $t_forfaits = $t_equipos = $t_clases = $t_otros = 0;
           <tr>
             <td class="static">Otros</td>
             <td class="first-col"><?php echo number_format($t_otros, 0, ',', '.') ?> €</td>
+            <td></td>
             @foreach($months_ff as $item)
             <td><?php echo number_format($item['data']['otros'], 0, ',', '.'); ?>€</td>
             @endforeach
