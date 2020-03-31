@@ -723,61 +723,83 @@ class BookController extends AppController
                
               }
             }
+           
+            
 
+            if ($book->type_book !== 8){
             
             
-            
-            $book->type_park  = $request->input('parking');
-            $book->agency     = $request->input('agency');
-            $book->PVPAgencia = $request->input('agencia') ? : 0;
+              $book->type_park  = $request->input('parking');
+              $book->agency     = $request->input('agency');
+              $book->PVPAgencia = $request->input('agencia') ? : 0;
 
-            $book->type_luxury = $request->input('type_luxury');
-            if ($computedData){
-              $book->sup_lujo    = intval($computedData->totales->lujo);
-              $book->cost_lujo   = $computedData->costes->lujo;
-            }
-            
-            $book->total_price = $request->input('total'); // This can be modified in frontend
-            if ($request->input('costApto'))   $book->cost_apto  = $request->input('costApto');
-            if ($request->input('cost'))  $book->cost_total = $request->input('cost');
-            //Parking NO o Gratis
-            if ($book->type_park == 2 || $book->type_park == 3) $book->cost_park = 0;
-            if ($request->input('costParking'))  $book->cost_park  = $request->input('costParking');
-            
-            if ($request->input('beneficio')) $book->total_ben = $request->input('beneficio');
-            else { //A subadmin has change the PVP
-              if ($book->cost_total>0){
-                $profit = $book->total_price-$book->cost_total;
-                $book->total_ben = $profit;
+              $book->type_luxury = $request->input('type_luxury');
+              if ($computedData){
+                $book->sup_lujo    = intval($computedData->totales->lujo);
+                $book->cost_lujo   = $computedData->costes->lujo;
               }
-            }
-              
-            if(!$IS_agente){  
-              $book->extra     = $request->input('extra');
 
-              $book->extraPrice  = Rooms::GIFT_PRICE;
-              $book->extraCost   = Rooms::GIFT_COST;
-              $book->schedule    = $request->input('schedule');
-              $book->scheduleOut = $request->input('scheduleOut');
-              $book->promociones = ($request->input('promociones')) ? $request->input('promociones') : 0;
+              $book->total_price = $request->input('total'); // This can be modified in frontend
+              if ($request->input('costApto'))   $book->cost_apto  = $request->input('costApto');
+              if ($request->input('cost'))  $book->cost_total = $request->input('cost');
+              //Parking NO o Gratis
+              if ($book->type_park == 2 || $book->type_park == 3) $book->cost_park = 0;
+              if ($request->input('costParking'))  $book->cost_park  = $request->input('costParking');
 
-              $book->has_ff_discount = $request->input('has_ff_discount',0);
-              if (!$book->has_ff_discount && $book->ff_status == 4){
-                $book->ff_status = 0;
-              } else {
-                if ($book->has_ff_discount && $book->ff_status == 0){
-                  $book->ff_status = 4;
+              if ($request->input('beneficio')) $book->total_ben = $request->input('beneficio');
+              else { //A subadmin has change the PVP
+                if ($book->cost_total>0){
+                  $profit = $book->total_price-$book->cost_total;
+                  $book->total_ben = $profit;
                 }
               }
-              $book->ff_discount = $request->input('ff_discount',0);
-              if ($computedData){
-                $book->real_price  = $computedData->calculated->real_price; // This cannot be modified in frontend
+
+              if(!$IS_agente){  
+                $book->extra     = $request->input('extra');
+
+                $book->extraPrice  = Rooms::GIFT_PRICE;
+                $book->extraCost   = Rooms::GIFT_COST;
+                $book->schedule    = $request->input('schedule');
+                $book->scheduleOut = $request->input('scheduleOut');
+                $book->promociones = ($request->input('promociones')) ? $request->input('promociones') : 0;
+
+                $book->has_ff_discount = $request->input('has_ff_discount',0);
+                if (!$book->has_ff_discount && $book->ff_status == 4){
+                  $book->ff_status = 0;
+                } else {
+                  if ($book->has_ff_discount && $book->ff_status == 0){
+                    $book->ff_status = 4;
+                  }
+                }
+                $book->ff_discount = $request->input('ff_discount',0);
+                if ($computedData){
+                  $book->real_price  = $computedData->calculated->real_price; // This cannot be modified in frontend
+                }
+                $book->inc_percent = $book->profit_percentage;
+                $book->ben_jorge   = $book->getJorgeProfit();
+                $book->ben_jaime   = $book->getJaimeProfit();
               }
-              $book->inc_percent = $book->profit_percentage;
-              $book->ben_jorge   = $book->getJorgeProfit();
-              $book->ben_jaime   = $book->getJaimeProfit();
-            }
 //            $book->external_id  = $request->input('external_id');
+            }
+            if ($book->type_book == 8){
+                $book->sup_limp    = 0;
+                $book->cost_limp   = 0;
+                $book->sup_park    = 0;
+                $book->cost_park   = 0;
+                $book->sup_lujo    = 0;
+                $book->cost_lujo   = 0;
+                $book->cost_apto   = 0;
+                $book->cost_total  = 0;
+                $book->total_price = 0;
+                $book->real_price  = 0;
+                $book->total_ben   = 0;
+
+                $book->inc_percent = 0;
+                $book->ben_jorge   = 0;
+                $book->ben_jaime   = 0;
+
+            }
+            
             if ($book->save())
             {
                
@@ -1208,229 +1230,55 @@ class BookController extends AppController
         ]);
     }
 
-    public function delete($id)
-    {
+  public function delete($id) {
 
-        try
-        {
-            $book = \App\Book::find($id);
-            if (count($book->pago) > 0){
-               return [
-                    'status'   => 'danger',
-                    'title'    => 'Error:',
-                    'response' => "La Reserva posee cargos asociados."
-                ];
-            }
-            foreach ($book->notifications as $key => $notification)
-            {
-                $notification->delete();
-            }
-
-
-            if (count($book->pago) > 0)
-            {
-                foreach ($book->pago as $index => $pago)
-                {
-                    $book->comment .= "\n Antiguos cobros: \n Fecha: " . $pago->datePayment . ", Importe: " . $pago->import . "\n Tipo de pago: " . $pago->type;
-
-                    if ($pago->type == 0 || $pago->type == 1)
-                    {
-                        $move = \App\Cashbox::where('date', $pago->datePayment)->where('import', $pago->import)
-                                            ->first();
-                        if ($move)
-                        {
-                            $move->delete();
-                        }
-
-                    } elseif ($pago->type == 2 || $pago->type == 3)
-                    {
-                        $move = \App\Bank::where('date', $pago->datePayment)->where('import', $pago->import)->first();
-                        if ($move)
-                        {
-                            $move->delete();
-                        }
-                    }
-
-
-                    $pago->delete();
-                }
-            }
-
-            if ($book->type_book == 7 || $book->type_book == 8)
-            {
-                $expenseLimp = \App\Expenses::where('date', $book->finish)
-                    // ->where('import', $book->total_price)
-                                            ->where('concept', "LIMPIEZA RESERVA PROPIETARIO. " . $book->room->nameRoom);
-
-                if ($expenseLimp->count() > 0)
-                {
-                    $expenseLimp->first()->delete();
-                }
-
-            }
-
-
-            $book->type_book = 0;
-
-            if ($book->save())
-            {
-                return [
-                    'status'   => 'success',
-                    'title'    => 'OK',
-                    'response' => "Reserva enviada a eliminadas"
-                ];
-
-            }
-
-
-        } catch (Exception $e)
-        {
-
-            return [
-                'status'   => 'danger',
-                'title'    => 'Error',
-                'response' => "No se ha podido borrar la reserva error: " . $e->message()
-            ];
-
+    try {
+      $book = Book::find($id);
+      if (count($book->pago) > 0) {
+        $total = 0;
+        foreach ($book->pago as $index => $pago){
+          $total += $pago->import;
         }
+        if ($total>0){
+          return [
+              'status' => 'danger',
+              'title' => 'Error:',
+              'response' => "La Reserva posee cargos asociados."
+          ];
+        }
+      }
+      foreach ($book->notifications as $key => $notification) {
+        $notification->delete();
+      }
 
+      if ($book->type_book == 7 || $book->type_book == 8) {
+        $expenseLimp = \App\Expenses::where('date', $book->finish)
+                ->where('concept', "LIMPIEZA RESERVA PROPIETARIO. " . $book->room->nameRoom);
+
+        if ($expenseLimp->count() > 0) {
+          $expenseLimp->first()->delete();
+        }
+      }
+
+
+      $book->type_book = 0;
+
+      if ($book->save()) {
+        return [
+            'status' => 'success',
+            'title' => 'OK',
+            'response' => "Reserva enviada a eliminadas"
+        ];
+      }
+    } catch (Exception $e) {
+
+      return [
+          'status' => 'danger',
+          'title' => 'Error',
+          'response' => "No se ha podido borrar la reserva error: " . $e->message()
+      ];
     }
-
-    /* FUNCION DUPLICADA DE HOMECONTROLLER PARA CALCULAR LA RESERVA DESDE EL ADMIN */
-    /*static function getTotalBook(Request $request)
-    {
-
-        $aux = str_replace('Abr', 'Apr', $request->input('fechas'));
-
-        $date = explode('-', $aux);
-
-        $start     = Carbon::createFromFormat('d M, y', trim($date[0]));
-        $finish    = Carbon::createFromFormat('d M, y', trim($date[1]));
-        $countDays = $finish->diffInDays($start);
-
-        if ($request->input('apto') == '2dorm' && $request->input('luxury') == 'si')
-        {
-            $roomAssigned = 115;
-            $typeApto     = "2 DORM Lujo";
-            $limp         = (int) \App\Extras::find(1)->price;
-        } elseif ($request->input('apto') == '2dorm' && $request->input('luxury') == 'no')
-        {
-            $roomAssigned = 122;
-            $typeApto     = "2 DORM estandar";
-            $limp         = (int) \App\Extras::find(1)->price;
-        } elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'si')
-        {
-            $roomAssigned = 138;
-            $limp         = (int) \App\Extras::find(2)->price;
-            $typeApto     = "Estudio Lujo";
-
-        } elseif ($request->input('apto') == 'estudio' && $request->input('luxury') == 'no')
-        {
-            $roomAssigned = 110;
-            $typeApto     = "Estudio estandar";
-            $limp         = (int) \App\Extras::find(2)->price;
-        } elseif ($request->input('apto') == 'chlt' && $request->input('luxury') == 'no')
-        {
-            $roomAssigned = 144;
-            $typeApto     = "CHALET los pinos";
-            $limp         = (int) \App\Extras::find(1)->price;
-        } elseif (($request->input('apto') == '3dorm' && $request->input('luxury') == 'si') || $request->input('apto') == '3dorm' && $request->input('luxury') == 'no')
-        {
-            // Rooms para grandes capacidades
-            if ($request->input('quantity') >= 8 && $request->input('quantity') <= 10)
-            {
-                $roomAssigned = 153;
-            } else
-            {
-                $roomAssigned = 149;
-            }
-
-            $typeApto = "3 DORM Lujo";
-            $limp     = (int) \App\Extras::find(3)->price;
-        }
-
-
-        $paxPerRoom = \App\Rooms::getPaxRooms($request->input('quantity'), $roomAssigned);
-
-        $pax = $request->input('quantity');
-
-        if ($paxPerRoom > $request->input('quantity'))
-        {
-            $pax = $paxPerRoom;
-        }
-
-        $price   = 0;
-        $auxDate = $start->copy();
-        for ($i = 1; $i <= $countDays; $i++)
-        {
-
-            $seasonActive = \App\Seasons::getSeasonType($auxDate->copy()->format('Y-m-d'));
-            if ($seasonActive == null)
-            {
-                $seasonActive = 0;
-            }
-            $prices = \App\Prices::where('season', $seasonActive)
-                                 ->where('occupation', $pax)->get();
-
-            foreach ($prices as $precio)
-            {
-                $price = $price + $precio->price;
-            }
-            $auxDate->addDay();
-        }
-
-        if ($request->input('parking') == 'si')
-        {
-            $priceParking = 20 * $countDays;
-            $parking      = 1;
-        } else
-        {
-            $priceParking = 0;
-            $parking      = 2;
-        }
-
-        if ($typeApto == "3 DORM Lujo")
-        {
-            if ($roomAssigned == 153 || $roomAssigned = 149)
-                $priceParking = $priceParking * 2;
-            else
-                $priceParking = $priceParking * 3;
-        }
-
-        if ($request->input('luxury') == 'si')
-        {
-            $luxury = 50;
-        } else
-        {
-            $luxury = 0;
-        }
-
-        $total = $price + $priceParking + $limp + $luxury;
-
-        if ($seasonActive != 0)
-        {
-            return view('backend.bookStatus.response', [
-                'id_apto'      => $roomAssigned,
-                'pax'          => $pax,
-                'nigths'       => $countDays,
-                'apto'         => $typeApto,
-                'name'         => $request->input('name'),
-                'phone'        => $request->input('phone'),
-                'email'        => $request->input('email'),
-                'start'        => $start,
-                'finish'       => $finish,
-                'parking'      => $parking,
-                'priceParking' => $priceParking,
-                'luxury'       => $luxury,
-                'total'        => $total,
-            ]);
-
-        } else
-        {
-            return view('backend.bookStatus.bookError');
-        }
-    }*/
-
+  }
     public function searchByName(Request $request)
     {
         if ($request->searchString == '')
