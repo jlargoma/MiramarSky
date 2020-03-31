@@ -185,7 +185,7 @@ $isMobile = $mobile->isMobile();
     $.ajax({
         url: '/admin/caja/cajaLst',
         type:'POST',
-        data: {year:year, month:month, '_token':"{{csrf_token()}}"},
+        data: {year:year, month:month,page:'{{$page}}', '_token':"{{csrf_token()}}"},
         success: function(response){
           if (response.status === 'true'){
 

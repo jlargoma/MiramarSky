@@ -1,3 +1,9 @@
+<?php 
+$s_pt = null;
+if(isset($page)){
+  $s_pt = ($page =='banco') ? 3 : 2;
+}
+?>
 <form action="{{ url('/admin/gastos/create') }}" method="post"  id="formNewExpense">
   <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
   <input type="hidden" name="asig_rooms"  id="asig_rooms" value="">
@@ -29,7 +35,7 @@
       <label for="pay_for">Met de pago</label>
       <select class="js-select2 form-control" id="type_payment" name="type_payment" style="width: 100%;" data-placeholder="Seleccione una" required>
         @foreach($typePayment as $k=>$v)
-        <option value="{{$k}}">{{$v}}</option>
+        <option value="{{$k}}" <?php echo ($s_pt == $k) ? 'selected' : ''; ?>>{{$v}}</option>
         @endforeach
       </select>
     </div>

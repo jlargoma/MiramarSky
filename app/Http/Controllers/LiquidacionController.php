@@ -821,6 +821,7 @@ class LiquidacionController extends AppController {
     for($i=0;$i<13;$i++) $months_empty[$i] = 0;
     
     $gastos = \App\Expenses::where('date', '>=', $year->start_date)
+            ->where('typePayment',2)
             ->where('date', '<=', $year->end_date)->sum('import');
     $incomesLst = \App\Incomes::where('date', '>=', $year->start_date)
             ->where('date', '<=', $year->end_date)->sum('import');
@@ -836,11 +837,42 @@ class LiquidacionController extends AppController {
         'gType' => $gType,
         'current' => $current,
         'totalYear' => $totalYear,
+        'page' => 'caja',
         'typePayment' => \App\Expenses::getTypeCobro()
     ]);
     
   }
   
+  public function bank() {
+    $year = $this->getActiveYear();
+    $startYear = new Carbon($year->start_date);
+    $endYear = new Carbon($year->end_date);
+    $lstMonths = lstMonths($startYear,$endYear);
+    $ingrType = \App\Incomes::getTypes();
+    $gType = \App\Expenses::getTypes();
+    
+    $months_empty = array();
+    for($i=0;$i<13;$i++) $months_empty[$i] = 0;
+    
+    $gastos = \App\Expenses::where('date', '>=', $year->start_date)
+            ->where('typePayment','!=',2)
+            ->where('date', '<=', $year->end_date)->sum('import');
+    $totalYear = $gastos;
+
+    $current = ($year->year-2000).',0';
+    
+    return view('backend/sales/caja/index', [
+        'year' => $year,
+        'lstMonths' => $lstMonths,
+        'ingrType' => $ingrType,
+        'gType' => $gType,
+        'current' => $current,
+        'totalYear' => $totalYear,
+        'page' => 'banco',
+        'typePayment' => \App\Expenses::getTypeCobro()
+    ]);
+    
+  }
   /**
    * Get the Caja by month-years to ajax table
    * 
@@ -850,6 +882,7 @@ class LiquidacionController extends AppController {
   
   public function getTableCaja(Request $request, $isAjax = true) {
 
+    $page = $request->input('page', null);
     $year = $request->input('year', null);
     $month = $request->input('month', null);
     if (!$year) {
@@ -858,6 +891,9 @@ class LiquidacionController extends AppController {
     $total = 0;
     if ($year<100) $year = '20'.$year;
     
+    
+    
+
     $oRooms = \App\Rooms::all();
     $aptos = [];
     foreach ($oRooms as $r){
@@ -871,6 +907,16 @@ class LiquidacionController extends AppController {
       $oYear = \App\Years::where('year', $year)->first();
       $qry = \App\Expenses::where('date', '>=', $oYear->start_date)->Where('date', '<=', $oYear->end_date);
     }
+    
+    if(isset($page)){
+      if($page =='banco'){
+        $qry->whereIn('typePayment',[1,3]);
+      } else {
+        $qry->where('typePayment',2);
+      }
+      
+    }
+    
     
     $gastos = $qry->orderBy('date')->get();
     $gType = \App\Expenses::getTypes();
@@ -910,11 +956,7 @@ class LiquidacionController extends AppController {
             'aptos' => (count($lstAptos)>0) ? implode(', ', $lstAptos) : 'TODOS',
         ];
       }
-     
-     
     }
-    
-    
     if ($month) {
       $qry = \App\Incomes::whereYear('date','=', $year);
       $qry->whereMonth('date','=', $month);
@@ -924,25 +966,27 @@ class LiquidacionController extends AppController {
     }
     
    
-    $oIngr = $qry->orderBy('date')->get();
-    
-    if ($oIngr){
-     
-      foreach ($oIngr as $item){
-        $total += $item->import;
-        
-        if (!isset($respo_list[strtotime($item->date)])) $respo_list[strtotime($item->date)] = [];
-        
-        $respo_list[strtotime($item->date)][] = [
-            'id'=> $item->id,
-            'concept'=> isset($ingrType[$item->concept]) ? $ingrType[$item->concept] : $item->concept,
-            'date'=> convertDateToShow_text($item->date),
-            'type'=> isset($ingrType[$item->type]) ? $ingrType[$item->type] : '--',
-            'debe'=> $item->import,
-            'haber'=> '--',
-            'comment'=> '',
-            'aptos'=> '',
-        ];
+    if($page !=='banco'){
+      $oIngr = $qry->orderBy('date')->get();
+
+      if ($oIngr){
+
+        foreach ($oIngr as $item){
+          $total += $item->import;
+
+          if (!isset($respo_list[strtotime($item->date)])) $respo_list[strtotime($item->date)] = [];
+
+          $respo_list[strtotime($item->date)][] = [
+              'id'=> $item->id,
+              'concept'=> isset($ingrType[$item->concept]) ? $ingrType[$item->concept] : $item->concept,
+              'date'=> convertDateToShow_text($item->date),
+              'type'=> isset($ingrType[$item->type]) ? $ingrType[$item->type] : '--',
+              'debe'=> $item->import,
+              'haber'=> '--',
+              'comment'=> '',
+              'aptos'=> '',
+          ];
+        }
       }
     }
     
@@ -1022,43 +1066,7 @@ class LiquidacionController extends AppController {
     }
   }
 
-  public function bank() {
-    
-    if (env('APP_APPLICATION') == "riad" ){
-      return view('backend.sales.bank.after-bank'); 
-    }
-   
-    $year = $this->getActiveYear();
-    $startYear = new Carbon($year->start_date);
-    $endYear = new Carbon($year->end_date);
-
-    $saldoInicial = \App\Bank::where('concept', 'SALDO INICIAL')->where('typePayment', 3)->first();
-
-    $bankItems = \App\Bank::whereIn('typePayment', [2, 0, 3])
-            ->where('date', '>=', $startYear)
-            ->where('date', '<=', $endYear)
-            ->orderBy('date', 'ASC')
-            ->get();
-
-    //Totals
-    $totals = 0; //$saldoInicial->import; 
-    foreach ($bankItems as $key => $cash):
-      if ($cash->type == 1):
-        $totals -= $cash->import;
-      endif;
-      if ($cash->type == 0):
-        $totals += $cash->import;
-      endif;
-    endforeach;
-
-    
-    return view('backend.sales.bank.bank', [
-        'year' => $year,
-        'totals' => $totals,
-        'bankItems' => $bankItems,
-        'saldoInicial' => $saldoInicial,
-    ]);
-  }
+  
 
   public function getTableMovesBank($year, $type) {
     if (empty($year)) {
@@ -2578,7 +2586,8 @@ class LiquidacionController extends AppController {
       $totales["total"] += $book->total_price;
       $totales["costeApto"] += $book->cost_apto;
       $totales["costePark"] += $book->cost_park;
-      if ($book->room->luxury == 1) {
+//      if ($book->room->luxury == 1) {
+      if ($book->type_luxury == 1 || $book->type_luxury == 3 || $book->type_luxury == 4) {
         $costTotal = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia;
         $totales["costeLujo"] += $book->cost_lujo;
         $totales["coste"] += $costTotal;

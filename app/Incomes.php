@@ -10,9 +10,9 @@ class Incomes extends Model
      static function getTypes(){
       return [
           'extr' => 'EXTRAORDINARIOS',
-          'rappel_closes' => 'RAPPEL CLOSES',
+          'rappel_closes' => 'RAPPEL CLASES',
           'rappel_forfaits' => 'RAPPEL FORFAITS',
-          'rappel_alq_material' => 'RAPPEL ALQUILER MATERIAL',
+          'rappel_alq_material' => 'RAPPEL ALQ MATERIAL',
           'others' => 'OTROS',
       ];
     }
