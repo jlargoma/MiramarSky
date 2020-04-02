@@ -192,12 +192,10 @@ trait Apartamentos {
           $SUPLETORIAS = intval($pax-$b->room->minOcu);
           
           //Tipo de tarifa
+          $tipoTarifa = 'direct';
+          $nigths = 0;
           if ($b->agency > 0){
-            $adr[$typeRoom]['agency'] += $b->total_price;
-            $adr[$typeRoom]['c_agency'] += $b->nigths;
-          } else {
-            $adr[$typeRoom]['direct'] += $b->total_price;
-            $adr[$typeRoom]['c_direct'] += $b->nigths;
+            $tipoTarifa = 'agency'; 
           }
 
          
@@ -213,9 +211,18 @@ trait Apartamentos {
               
             }
             
+            if (isset($aLstDays[$day])){
+              $nigths++;
+            }
+            
             $startAux+=$oneDay;
           }
       
+          if ($nigths > 0){
+            $adr[$typeRoom]['c_'.$tipoTarifa] += $nigths;
+            $adr[$typeRoom][$tipoTarifa] +=  ($b->nigths>0) ? ($b->total_price/$b->nigths)*$nigths : 0;
+//          $auxTemp[$tipoTarifa][] = '<a href="/admin/reservas/update/'.$b->id.'" tarjet="_blak">ir</a>  '.round($b->total_price/$b->nigths);
+          }
       
           if (isset($list_recidencias[$country][$b->start])){
             $list_recidencias[$country][$b->start]['in'] += $pax;
@@ -226,7 +233,13 @@ trait Apartamentos {
         }
       }
       
-     
+//echo 'Agencia:<br/>'; 
+//echo implode('<br/>', $auxTemp['agency']);
+//echo '<br/>'.array_sum($auxTemp['agency']) .'<br/>'.array_sum($auxTemp['agency']) / count($auxTemp['agency']);
+//echo '<br/><br/><br/>';
+//echo 'Directo:<br/>'; 
+//echo implode('<br/>', $auxTemp['direct']);
+//echo '<br/>'.array_sum($auxTemp['direct']) / count($auxTemp['direct']);
       
       $iso3Country =  $this->getCountries();
       $iso3Prov =  $this->getProvinces();
