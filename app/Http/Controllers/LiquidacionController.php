@@ -622,7 +622,7 @@ class LiquidacionController extends AppController {
     $oRooms = \App\Rooms::all();
     $aptos = [];
     foreach ($oRooms as $r){
-      $aptos[$r->id] = $r->name;
+      $aptos[$r->id] = $r->nameRoom;
     }
     
     $gastos = $qry->orderBy('date', 'DESC')->get();
@@ -660,7 +660,7 @@ class LiquidacionController extends AppController {
             'type_v'=> $item->type,
             'comment'=> $item->comment,
             'import'=> $item->import,
-            'aptos' => (count($lstAptos)>0) ? implode(', ', $lstAptos) : 'TODOS',
+            'aptos' => (count($lstAptos)>0) ? implode(', ', $lstAptos) : 'GENERICO',
         ];
         $totalMounth += $item->import;
       }
@@ -1285,7 +1285,7 @@ class LiquidacionController extends AppController {
         'tIngByMonth' => $tIngByMonth,
         'ingrType' => $ingrType,
         'gastoType' => $gType,
-        'ingr_bruto' => $totalIngr-$totalGasto-$lstT_gast['impuestos'],
+        'ingr_bruto' => $totalIngr-$totalGasto,
     ]);
   }
 
