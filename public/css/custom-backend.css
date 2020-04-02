@@ -383,6 +383,20 @@ input#dateRangefilter {
     left: 11.43em;
 }
 
+.btn-contabilidad{
+    float: left;
+    margin: 0 6px 1em;
+    min-width: 8em;
+}
+.btn-contabilidad a,
+.btn-contabilidad button{
+  width: 100%; 
+}
+.btn-contabilidad button.active{
+  background-color: #6600ff;
+  pointer-events: none
+}
+
 @media only screen and (min-width: 426px) {
   .show-mobile{
     display: none;

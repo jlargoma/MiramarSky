@@ -106,7 +106,7 @@ setlocale(LC_TIME, "es_ES");
               <b>BENEFICIO BRUTO</b>
             </h5>
             {{moneda($ingr_bruto)}}
-            <?php if (($totalIngr-$totalGasto) > 0 ): ?>
+            <?php if ($ingr_bruto > 0 ): ?>
                     <i class="fa fa-arrow-up text-success result"></i>
             <?php else: ?>
                     <i class="fa fa-arrow-down text-danger result"></i>
@@ -118,8 +118,8 @@ setlocale(LC_TIME, "es_ES");
             <h5 class="no-margin p-b-5 text-white ">
               <b>BENEFICIO NETO</b>
             </h5>
-            {{moneda($ingr_bruto+$totalPendingIngr-$totalPendingGasto-$totalPendingImp)}}
-            <?php if (($ingr_bruto+$totalPendingIngr-$totalPendingGasto-$totalPendingImp) > 0 ): ?>
+            {{moneda($ingr_bruto-$lstT_gast['impuestos'])}}
+            <?php if (($ingr_bruto-$lstT_gast['impuestos']) > 0 ): ?>
                     <i class="fa fa-arrow-up text-success result"></i>
             <?php else: ?>
                     <i class="fa fa-arrow-down text-danger result"></i>

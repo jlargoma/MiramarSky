@@ -20,6 +20,9 @@ if ($posicion > 0) {
       <a class="text-white btn btn-md btn-primary" href="{{url('/admin/contabilidad/')}}">Estadisticas</a>
     <?php endif ?>	
   </div>
+  <div class="btn-contabilidad">
+    <button id="booking_agency_details" class="btn btn-primary">Vtas X Agenc</button>
+  </div>
   
   <div class="btn-contabilidad">
     <?php if ($url == "gastos"): ?>
@@ -76,3 +79,5 @@ if ($posicion > 0) {
       <a class="text-white btn btn-md btn-primary" href="{{url('/admin/orders-payland')}}">PAYLAND</a>
     <?php endif ?>
   </div>
+
+@include('backend.sales._vtas-x-agencia')
