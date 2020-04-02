@@ -198,12 +198,10 @@ trait Hoteles {
           }
           
           //Tipo de tarifa
+          $tipoTarifa = 'direct';
+          $nigths = 0;
           if ($b->agency > 0){
-            $adr['agency'] += $b->total_price;
-            $adr['c_agency'] += $b->nigths;
-          } else {
-            $adr['direct'] += $b->total_price;
-            $adr['c_direct'] += $b->nigths;
+            $tipoTarifa = 'agency'; 
           }
 
           //tipo de habitación
@@ -220,9 +218,19 @@ trait Hoteles {
               if ($SUPLETORIAS>0) $roomsType[$day]['supl'] += $SUPLETORIAS; 
               
             }
+            
+            if (isset($aLstDays[$day])){
+              $nigths++;
+            }
+            
             $startAux+=$oneDay;
           }
       
+          if ($nigths > 0){
+            $adr['c_'.$tipoTarifa] += $nigths;
+            $adr[$tipoTarifa] += ($b->nigths>0) ? ($b->total_price/$b->nigths)*$nigths : 0;
+            $auxTemp[$tipoTarifa][] = (($b->total_price/$b->nigths)*$nigths).' €  / ' .$nigths.' / <a href="/admin/reservas/update/'.$b->id.'" tarjet="_blak">ir</a>';
+          }
       
           if (isset($list_recidencias[$country][$b->start])){
             $list_recidencias[$country][$b->start]['in'] += $pax;
@@ -283,7 +291,9 @@ trait Hoteles {
 
     /*******************************************/
     
-  
+    echo implode('<br/>', $auxTemp['agency']);
+    echo '<br/><br/><br/>';
+    echo implode('<br/>', $auxTemp['direct']);
     $ADR_AGENCIA_DE_VIAJE_ONLINE = 0;
     $ADR_INTERNET = 0;
     $PCTN_HABITACIONES_OCUPADAS_AGENCIA_ONLINE = 0;

@@ -152,9 +152,9 @@ class INEController  extends AppController{
     
     $encuesta = null;
     $this->force = ['p_n_remun'=>null,'p_remun_fijo'=>null,'p_remun_eventual'=>null,];
-    if ($request->input('p_n_remun')) $this->force['p_n_remun'] = $request->input('p_n_remun');
-    if ($request->input('p_remun_fijo')) $this->force['p_remun_fijo'] = $request->input('p_remun_fijo');
-    if ($request->input('p_remun_eventual')) $this->force['p_remun_eventual'] = $request->input('p_remun_eventual');
+    if ($request->input('p_n_remun') != null) $this->force['p_n_remun'] = $request->input('p_n_remun');
+    if ($request->input('p_remun_fijo') != null) $this->force['p_remun_fijo'] = $request->input('p_remun_fijo');
+    if ($request->input('p_remun_eventual')  != null) $this->force['p_remun_eventual'] = $request->input('p_remun_eventual');
     
     $dwnl_url = '/admin/download-INE/'.$type.'/';
     $dwnl_url .= base64_encode(json_encode([$this->start,$this->finish])).'/'.base64_encode(json_encode($this->force));
@@ -172,10 +172,13 @@ class INEController  extends AppController{
     $alojamientos = [];
     $dias = [];
     $first = true;
+    $index = null;
     foreach ($encuesta['ALOJAMIENTO']['RESIDENCIA'] as $k=>$v){
-      $lugar = $v['ID_PAIS'];
+      $lugar = $index = $v['ID_PAIS'];
+      
       if ($v['ID_PROVINCIA_ISLA'] && isset($prov[$v['ID_PROVINCIA_ISLA']])){
         $lugar = $prov[$v['ID_PROVINCIA_ISLA']].' (ESP)';
+        $index = '0 '.$lugar;
       }
       $mov = [];
       $t_entradas = 0;
@@ -187,7 +190,7 @@ class INEController  extends AppController{
       
       $first = false;
       
-      $alojamientos[] = [
+      $alojamientos[$index] = [
           'lugar'=>$lugar,
           't_entradas'=>$t_entradas,
           'mov'=>$mov,
@@ -195,6 +198,7 @@ class INEController  extends AppController{
       
     }
      
+    ksort($alojamientos);
     $movApart = null;
     $movApartTit = [];
     if(isset($encuesta['HABITACIONES'])){

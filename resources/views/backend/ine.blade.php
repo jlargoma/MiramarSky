@@ -76,22 +76,21 @@
           <a href="{{$dwnl_url}}" class="btn btn-default">Descargar</a>
         </div>
       </div>
-      <div class="row">
-        
-        <div class="col-md-2">
-          <label>PERSONAL <br>NO REMUNERADO</label>
-          <input type="text" class="form-control" id="p_n_remun" name="p_n_remun" value="{{$force['p_n_remun']}}">
-        </div>
-        <div class="col-md-2">
-          <label>Pers. REMUNERADO FIJO</label>
-          <input type="text" class="form-control" id="p_remun_fijo" name="p_remun_fijo" value="{{$force['p_remun_fijo']}}">
-        </div>
-        <div class="col-md-2">
-          <label>Pers. REMUNERADO EVENTUAL</label>
-          <input type="text" class="form-control" id="p_remun_eventual" name="p_remun_eventual" value="{{$force['p_remun_eventual']}}">
-        </div>
-      </div>
-        </form>
+      <table>
+        <tr>
+          <td class="text-left"><label>PERSONAL <br/>NO REMUNERADO</label></td>
+          <td><input type="text" class="form-control" id="p_n_remun" name="p_n_remun" value="{{$force['p_n_remun']}}" style="margin: 8px;"></td>
+        </tr>
+        <tr>
+          <td class="text-left"><label>PERSONAL <br/>REMUNERADO FIJO</label></td>
+          <td><input type="text" class="form-control" id="p_remun_fijo" name="p_remun_fijo" value="{{$force['p_remun_fijo']}}" style="margin: 8px;"></td>
+        </tr>
+        <tr>
+          <td class="text-left"><label>PERSONAL <br/>REMUNERADO EVENTUAL</label></td>
+          <td><input type="text" class="form-control" id="p_remun_eventual" name="p_remun_eventual" value="{{$force['p_remun_eventual']}}" style="margin: 8px;"></td>
+        </tr>
+      </table>
+      </form>
     </div>
     
   </div>

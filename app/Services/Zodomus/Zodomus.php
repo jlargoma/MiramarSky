@@ -411,6 +411,20 @@ class Zodomus{
     $customer->country	 = $rCustomer->countryCode;
     $customer->city	 = $rCustomer->city;
     $customer->zipCode	 = $rCustomer->zipCode;
+    
+    if ($customer->zipCode>0){
+      $customer->province = substr($customer->zipCode, 0,2);
+    } else {
+      if ($customer->country == 'es' || $customer->country == 'ES'){
+        if (trim($rCustomer->city) != ''){
+          $obj = \App\Provinces::where('province','LIKE', '%'.trim($rCustomer->city).'%')->first();
+          if ($obj) {
+            $customer->province = $obj->code;
+          }
+        }
+      }
+    }
+    
     $customer->save();
 
     $comment = $this->ZConfig->get_detailRate($reserv['rate_id']);
