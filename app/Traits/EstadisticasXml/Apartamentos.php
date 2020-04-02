@@ -122,7 +122,7 @@ trait Apartamentos {
       $match2 = [['finish','>=', $start ],['finish','<=', $finish ]];
       $match3 = [['start','<', $start ],['finish','>', $finish ]];
       
-      $books = Book::where_type_book_sales()
+      $books = Book::whereIn('type_book', [1,2])
             ->where(function ($query) use ($match1,$match2,$match3) {
               $query->where($match1)
                       ->orWhere($match2)
