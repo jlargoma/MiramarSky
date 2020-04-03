@@ -417,6 +417,12 @@ class LiquidacionController extends AppController {
         ($year->year)-1 => [],
         ($year->year) => $months_empty,
     ];
+    
+    $oRooms = \App\Rooms::where('state', 1)->orderBy('nameRoom', 'ASC')->get();
+    $aptos = [];
+    foreach ($oRooms as $r){
+      $aptos[$r->id] = $r->nameRoom;
+    }
      
     $gastos = \App\Expenses::where('date', '>=', $startYear)
                     ->Where('date', '<=', $endYear)
@@ -533,6 +539,7 @@ class LiquidacionController extends AppController {
         'totalYear' => $totalYear,
         'total_year_amount' => $totalYearAmount,
         'yearMonths' => $yearMonths,
+        'aptos' => $aptos,
         'typePayment' => \App\Expenses::getTypeCobro()
     ]);
   }
@@ -661,6 +668,7 @@ class LiquidacionController extends AppController {
             'comment'=> $item->comment,
             'import'=> $item->import,
             'aptos' => (count($lstAptos)>0) ? implode(', ', $lstAptos) : 'GENERICO',
+            'aptos_v' => (count($lstAptos)>0) ? implode(',', $lstAptos) : 'GENERICO',
         ];
         $totalMounth += $item->import;
       }
@@ -1152,7 +1160,7 @@ class LiquidacionController extends AppController {
             ->where('start', '<=', $endYear)->get();
     $aux = $emptyMonths;
     foreach ($books as $key => $book) {
-      $aExpensesPending['prop_pay'] += ($book->cost_apto + $book->cost_park + $book->cost_lujo);
+//      $aExpensesPending['prop_pay'] += ($book->cost_apto + $book->cost_park + $book->cost_lujo);
       $aExpensesPending['agencias'] += $book->PVPAgencia;
    
       $aExpensesPending['limpieza'] += ($book->cost_limp - 10);
@@ -1206,6 +1214,7 @@ class LiquidacionController extends AppController {
     /******       GASTOS                        ***********/
     $gastos = \App\Expenses::where('date', '>=', $startYear)
                     ->Where('date', '<=', $endYear)
+                    ->WhereNull('PayFor')
                     ->orderBy('date', 'DESC')->get();
 
     $lstT_gast = [];
@@ -1241,6 +1250,7 @@ class LiquidacionController extends AppController {
     
     $impuestos = $listGastos['impuestos'];
     unset($listGastos['impuestos']);
+    unset($listGastos['prop_pay']);
     
     $impEstimado = [];
     

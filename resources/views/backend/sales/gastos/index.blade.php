@@ -86,6 +86,17 @@ $isMobile = $mobile->isMobile();
         width: 11em;
     }
       
+    .table-responsive th select{
+      padding: 6px 11px;
+      background: transparent;
+      width: 80%;
+      font-weight: 800;
+      letter-spacing: 1.7px;
+      border-color: #fff;
+    }
+    .table-responsive th select option {
+     color: #008ff7;
+    }
   </style>
 @endsection
 
@@ -149,10 +160,33 @@ $isMobile = $mobile->isMobile();
             <thead >
               <th class="text-center bg-complete text-white col-md-1"">Fecha</th>
               <th class="text-center bg-complete text-white col-md-2">Concepto</th>
-              <th class="text-center bg-complete text-white col-md-2">Tipo</th>
-              <th class="text-center bg-complete text-white col-md-1">Método de pago</th>
+              <th class="text-center bg-complete text-white col-md-2">
+                <select id="s_type">
+                  <option value="-1">Tipo</option>
+                  @foreach($gType as $k=>$v)
+                  <option value="{{$k}}">{{$v}}</option>
+                  @endforeach
+                </select>
+                
+              </th>
+              <th class="text-center bg-complete text-white col-md-1">
+                <select id="s_payment">
+                  <option value="-1">Método de pago</option>
+                  @foreach($typePayment as $k=>$v)
+                  <option value="{{$k}}">{{$v}}</option>
+                  @endforeach
+                </select>
+              </th>
               <th class="text-center bg-complete text-white col-md-2">Importe</th>
-              <th class="text-center bg-complete text-white col-md-2">Aptos</th>
+              <th class="text-center bg-complete text-white col-md-2">
+                <select id="s_aptos">
+                  <option value="-1">Aptos</option>
+                  <option value="GENERICO">GENERICO</option>
+                  @foreach($aptos as $k=>$v)
+                  <option value="{{$v}}">{{$v}}</option>
+                  @endforeach
+                </select>
+                </th>
               <th class="text-center bg-complete text-white">#</th>
               <th class="text-center bg-complete text-white col-md-2">Comentario</th>
             </thead>
@@ -347,10 +381,10 @@ $isMobile = $mobile->isMobile();
             $.each((response.respo_list), function(index, val) {
               var row = '<tr data-id="' + val.id + '"><td>' + val.date + '</td>';
               row += '<td class="editable" data-type="concept">' + val.concept + '</td>';
-              row += '<td class="editable selects" data-type="type" data-current="'+ val.type_v +'" >' + val.type + '</td>';
-              row += '<td class="editable selects" data-type="payment" data-current="'+ val.typePayment_v +'" >' + val.typePayment + '</td>';
+              row += '<td class="editable selects stype" data-type="type" data-current="'+ val.type_v +'" >' + val.type + '</td>';
+              row += '<td class="editable selects spayment" data-type="payment" data-current="'+ val.typePayment_v +'" >' + val.typePayment + '</td>';
               row += '<td class="editable" data-type="price">' + val.import+ '</td>';
-              row += '<td>' + val.aptos + '</td>';
+              row += '<td class="sapto" data-current="'+ val.aptos_v +'" >' + val.aptos + '</td>';
               row += '<td><button data-id="' + val.id + '" type="button" class="del_expense btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>';
               row += '<td class="editable" data-type="comm">' + val.comment + '</td>';
               $('#tableItems').append(row);
@@ -524,6 +558,112 @@ $(document).ready(function () {
         });
     
       }
+      
+      
+      var filters = {
+        type : -1,
+        paym : -1,
+        apto : -1,
+      };
+      var filterTable = function(){
+        var all = false;
+        if (filters.type == -1 && filters.paym == -1 && filters.apto == -1 ){
+          all = true;
+        }
+        console.log(filters);
+        $('#tableItems tr').each(function(){
+          $(this).show();
+          if (!all){
+            //filter by type
+            if (filters.type != -1){
+              var cell = $(this).find('.stype');
+              if (cell.data('current') != filters.type){
+                cell.closest('tr').hide();
+                return; 
+              }
+            }
+            //filter by type payment
+            if (filters.paym != -1){
+              var cell = $(this).find('.spayment');
+              if (cell.data('current') != filters.paym){
+                cell.closest('tr').hide();
+                return; 
+              }
+            }
+             //filter by apto
+            if (filters.apto != -1){
+              var cell = $(this).find('.sapto');
+               var res = cell.data('current').split(",");
+              if (!res.includes(filters.apto)){
+                cell.closest('tr').hide();
+                return; 
+              }
+            }
+            
+          }
+        });
+      }
+      $('#s_type').on('change', function(){
+        var value = $(this).val();
+        filters.type = value;
+        filterTable();
+//        $('#tableItems tr').each(function(){
+//            console.log(value);
+//          if (value != '-1'){
+//            var type = $(this).find('.stype');
+//            console.log(type.data('current'));
+//            if (type.data('current') == value){
+//              type.closest('tr').show();
+//            } else {
+//              type.closest('tr').hide();
+//            }
+//          } else {
+//            $(this).show();
+//          }
+//        });
+      });
+      $('#s_payment').on('change', function(){
+        var value = $(this).val();
+        filters.paym = value;
+        filterTable();
+        
+        
+//        $('#tableItems tr').each(function(){
+//            console.log(value);
+//          if (value != '-1'){
+//            var type = $(this).find('.spayment');
+//            console.log(type.data('current'));
+//            if (type.data('current') == value){
+//              type.closest('tr').show();
+//            } else {
+//              type.closest('tr').hide();
+//            }
+//          } else {
+//            $(this).show();
+//          }
+//        });
+      });
+      $('#s_aptos').on('change', function(){
+        var value = $(this).val();
+        filters.apto = value;
+        filterTable();
+        
+//        $('#tableItems tr').each(function(){
+//            console.log(value);
+//          if (value != '-1'){
+//            var type = $(this).find('.sapto');
+//            var res = type.data('current').split(",");
+//            console.log(type.data('current'),res);
+//            if (res.includes(value) ){
+//              type.closest('tr').show();
+//            } else {
+//              type.closest('tr').hide();
+//            }
+//          } else {
+//            $(this).show();
+//          }
+//        });
+      });
         
 });
 
