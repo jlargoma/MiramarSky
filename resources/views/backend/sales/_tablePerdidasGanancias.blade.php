@@ -46,23 +46,9 @@
         @foreach($lstMonths as $k_month=>$v)<th class="text-center"> {{moneda(($tIngByMonth[$k_month]-$tGastByMonth[$k_month]))}}</th> @endforeach
       </tr>
       <tr>
-        <td>
-          IMPUESTOS<br/><small>(estimado)</small>
-        </td>
+        <td>IMPUESTOS</td>
         <td class="text-center">{{moneda($lstT_gast['impuestos'])}}</td>
         <td class="text-center">{{moneda($totalPendingImp)}}</td>
-        @foreach($lstMonths as $k_month=>$month) 
-          <td class="text-center">
-            {{moneda($impuestos[$k_month],false)}}<br/>
-            @if($impuestos[$k_month]>=$impEstimado[$k_month])
-            <span class="text-success">
-            @else
-            <span class="text-danger">
-            @endif
-              {{moneda($impEstimado[$k_month],false)}}
-              </span>
-          </td> 
-        @endforeach
       </tr>
       <tr class="pyg_beneficio">
         <th>BENEF NETO</th>
