@@ -24,48 +24,59 @@ class LiquidacionController extends AppController {
    * @return \Illuminate\Http\Response
    */
   public function index() {
-   $data = $this->getTableData();
+
+    $data = $this->getTableData();
+
+    $data['stripeCost'] = $this->getTPV($data['books']);
+    $data['total_stripeCost'] = array_sum($data['stripeCost']);
     if (Auth::user()->role == "subadmin"){
       return view('backend/sales/index-subadmin', $data);
     }
-   
-          
-          
-      return view('backend/sales/index', $data);
+
+    return view('backend/sales/index', $data);
   }
 
   public function getFF_Data($startYear,$endYear) {
     $allForfaits = Forfaits::where('status','!=',1)
             ->where('created_at', '>=', $startYear)->where('created_at', '<=', $endYear)->get();
       
-    $totalPrice = 0;
-    $forfaitsIDs = $ordersID = array();
+    $totalPrice = $forfaits = $totalToPay = $totalToPay = 0;
+    $forfaitsIDs = $ordersID = $common_ordersID = array();
     if ($allForfaits){
       foreach ($allForfaits as $forfait){
         $allOrders = $forfait->orders()->get();
         if ($allOrders){
-            foreach ($allOrders as $order){
-              if ($order->status == 0 || $order->status == 3){ 
-                continue; // cancel and open orders
-              }
-              $totalPrice += $order->total;
-              $ordersID[] = $order->id;
+          foreach ($allOrders as $order){
+            if ($order->status == 3){
+              continue; //ORder cancel
             }
+
+            if (!$order->quick_order){
+              $common_ordersID[] = $order->id;
+            }
+            $totalPrice += $order->total;
+            $ordersID[] = $order->id;
+          }
+        }
+        $forfaitsIDs[] = $forfait->id;
+      }
+      /*--------------------------------*/
+      if (count($ordersID)>0){
+        $totalPayment = ForfaitsOrderPayments::whereIn('order_id', $ordersID)->where('paid',1)->sum('amount');
+        if ($totalPayment>0){
+          $totalPayment = $totalPayment/100;
+        }
+        $totalPayment2 =  ForfaitsOrderPayments::whereIn('forfats_id', $forfaitsIDs)->where('paid',1)->sum('amount');
+
+        if ($totalPayment2>0){
+          $totalPayment += $totalPayment2/100;
         }
       }
+      $totalToPay = $totalPrice - $totalPayment;
+     //---------------------------------------------------------/ 
     }
     
-    $totalPayment =  ForfaitsOrderPayments::whereIn('order_id', $ordersID)->where('paid',1)->sum('amount');
-    if ($totalPayment>0){
-      $totalPayment = $totalPayment/100;
-    }
-    $totalPayment2 =  ForfaitsOrderPayments::whereIn('forfats_id', $forfaitsIDs)->where('paid',1)->sum('amount');
-
-    if ($totalPayment2>0){
-      $totalPayment += $totalPayment2/100;
-    }
-    $totalToPay = $totalPrice - $totalPayment;
-      
+    if ($totalToPay<0) $totalToPay = 0;
     return [
         'q'=>count($ordersID),
         'to_pay'=>$totalToPay,
@@ -273,7 +284,7 @@ class LiquidacionController extends AppController {
     ];
 
         
-    $cobrado = $metalico = $banco = $vendido = 0;
+    $cobrado = $metalico = $banco = $vendido = $vta_prop = 0;
     foreach ($books as $key => $book) {
       $date = date('ym', strtotime($book->start));
       
@@ -307,14 +318,16 @@ class LiquidacionController extends AppController {
 
 
       if ($book->agency != 0) {
-        $dataResume['agencia'] ++;
+        $dataResume['agencia']++;
       } else {
-        $dataResume['propios'] ++;
+        $dataResume['propios']++;
+        $vta_prop += $book->total_price;
       }
     }
     $totBooks = count($books);
-    $dataResume['agencia'] = ($dataResume['agencia'] / $totBooks) * 100;
-    $dataResume['propios'] = ($dataResume['propios'] / $totBooks) * 100;
+//    echo $vta_prop.' - '.$vendido;
+    $dataResume['agencia'] = ($vta_prop / $vendido) * 100;
+    $dataResume['propios'] = 100 - $dataResume['agencia'];
     $dataResume['estancia-media'] = ($dataResume['days-ocupation'] / $totBooks);
     //First chart PVP by months
     $dataChartMonths = [];
@@ -323,8 +336,9 @@ class LiquidacionController extends AppController {
       $val = isset($t_room_month[$k]) ? $t_room_month[$k] : 0;
       $dataChartMonths[getMonthsSpanish($v['m'])] = $val;
     }
-    
+    //*******************************************************************//
     $ffData = $this->getFF_Data($startYear,$endYear);
+//    dd($ffData);
     $months_ff = null;
     $cachedRepository  = new \App\Repositories\CachedRepository();
     $ForfaitsItemController = new \App\Http\Controllers\ForfaitsItemController($cachedRepository);
@@ -332,6 +346,7 @@ class LiquidacionController extends AppController {
     if ($months_obj){
       $months_ff = $months_obj['months_obj'];
     }
+    //*******************************************************************//
     
     
     
@@ -1651,7 +1666,8 @@ class LiquidacionController extends AppController {
       
     $data = $this->getTableData($arrayCustomersId,$agency,$roomID,$type);
      
-    
+    $data['stripeCost'] = $this->getTPV($data['books']);
+    $data['total_stripeCost'] = array_sum($data['stripeCost']);
              
     if (Auth::user()->role == "subadmin"){
       return view('backend/sales/_tableSummary-subadmin.blade', $data);
@@ -2436,7 +2452,7 @@ class LiquidacionController extends AppController {
             ];
       
       $totals = ['total' => 0,'reservations' => 0,'commissions' => 0];
-      $books = \App\Book::where_type_book_sales()->with('payments')
+      $books = \App\Book::where_type_book_sales(true)->with('payments')
             ->where('start', '>=', $start)
             ->where('start', '<=', $end)->get();
       if ($books){
@@ -2452,10 +2468,13 @@ class LiquidacionController extends AppController {
           case 7: $agency_name = 'c';  break;
           default :
           
-            if ($book->type_book == 99 || $book->is_fastpayment) // fastpayment
-                $agency_name = 'fp';
-            else
-              $agency_name = 'vd';
+            if ($book->agency>0) $agency_name = 'none';
+            else {
+              if ($book->type_book == 99 || $book->is_fastpayment) // fastpayment
+                  $agency_name = 'fp';
+              else
+                $agency_name = 'vd';
+            }
             
           break;
         }
@@ -2478,6 +2497,7 @@ class LiquidacionController extends AppController {
         }
         
       }
+      
       return  ['totals' => $totals,'data'=>$data];
     }
     
@@ -2495,7 +2515,8 @@ class LiquidacionController extends AppController {
                 'ab'   => 'AirBnb',
                 'jd'   => "Jaime Diaz",
                 'se'   => 'S.essence',
-                'c'   => 'Cerogrados',
+                'c'    => 'Cerogrados',
+                'none' => 'Otras',
             ],
             'totals' => []
         ];
@@ -2585,7 +2606,7 @@ class LiquidacionController extends AppController {
                         'room.type'
                     ])->where('start', '>=', $startYear)
             ->where('start', '<=', $endYear);
-            
+    
             
     if (is_array($customerIDs) && count($customerIDs)){
       $qry_books->whereIn('customer_id', $customerIDs);
@@ -2725,4 +2746,32 @@ class LiquidacionController extends AppController {
      
   }
 
+  function getTPV($books) {
+     $bIds = [];
+    if($books){
+      foreach ($books as $book){
+        if ($book->stripeCost < 1){
+          $bIds[] = $book->id;
+        }
+      }
+    }
+          
+    $payments = \App\BookOrders::where('paid',1)->whereIn('book_id',$bIds)
+            ->groupBy('book_id')->selectRaw('sum(amount) as sum, book_id')->pluck('sum','book_id');
+    $stripeCost = [];
+    if($books){
+      foreach ($books as $book){
+        $stripeCost[$book->id] = 0;
+        if ($book->stripeCost < 1){
+          if (isset($payments[$book->id])){
+            $stripeCost[$book->id] = paylandCost($payments[$book->id]/100);
+          }
+        } else {
+          $stripeCost[$book->id] = $book->stripeCost;
+        }
+      }
+    }
+    
+    return $stripeCost;
+  }
 }

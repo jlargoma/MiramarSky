@@ -136,7 +136,7 @@
                       Extras<br/><b><?php echo ($totales["obs"] > 0) ?  number_format($totales["obs"],0,',','.').'€' : '--'; ?></b>
                     </th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">
-                      TPV<br/><b><?php echo number_format($totales["stripe"],0,',','.') ?>€</b>
+                      TPV<br/><b>{{moneda($total_stripeCost,false)}}</b>
                     </th>
                 </thead>
                 <tbody >
@@ -211,7 +211,7 @@
                             </td>
                             <td class="text-center beneficio bi" style="border-left: 1px solid black;">
                                 <?php $profit = $book->profit?>
-	                            <?php $cost_total = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia + $book->stripeCost + $book->extraCost;?>
+	                            <?php $cost_total = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia + $book->extraCost;?>
 	                            <?php $total_price = $book->total_price?>
 	                            <?php $inc_percent = 0?>
 	                            <?php
@@ -272,12 +272,8 @@
                                 <input class="updateExtraCost <?php if($book->extraCost == 0){ echo 'alert-limp'; }?>" type="number" value="<?php echo round($book->extraCost); ?>" data-idBook="<?php echo $book->id; ?>"/>
                             </td>
                             <td class="text-center coste bf" style="border-left: 1px solid black;">
-                                <span data-toggle="tooltip" data-placement="top" data-original-title="{{ number_format($book->stripeCostRaw, 2,',','.') }} €">
-                                    <?php if ($book->stripeCost > 0): ?>
-                                        <?php echo number_format($book->stripeCost, 2,',','.') ?>€
-                                    <?php else: ?>
-                                        ----
-                                    <?php endif ?>
+                                <span data-toggle="tooltip" data-placement="top" data-original-title=" {{moneda($stripeCost[$book->id],false)}}">
+                                  {{moneda($stripeCost[$book->id],false)}}
                                 </span>
                             </td>
                         </tr>

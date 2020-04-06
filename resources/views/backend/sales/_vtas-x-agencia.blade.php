@@ -62,7 +62,7 @@ $('button#booking_agency_details').click(function(){
                   }
                   a--;
               });
-
+              agencyBookHTML += '<td style="background-color:#48b0f7;"></td>';
               agencyBookHTML += '</tr>';
 
               x++;
@@ -82,6 +82,7 @@ $('button#booking_agency_details').click(function(){
                   a--;
               }
               });
+              agencyBookHTML += '<td style="background-color:#48b0f7;"></td>';
               agencyBookHTML += '</tr>';
 
 
@@ -91,7 +92,8 @@ $('button#booking_agency_details').click(function(){
             bootbox.alert({
               message: agencyBookHTML,
               size: 'large',
-              backdrop: true
+              backdrop: true,
+              className: 'modal-responsive',
             });
           } else {
             bootbox.alert({
@@ -111,3 +113,13 @@ $('button#booking_agency_details').click(function(){
 
   });
 </script>
+
+<style>
+  .table.liq-agencia thead th,
+  .table.liq-agencia tr td{
+    white-space: nowrap;
+  }
+  .modal-responsive .modal-dialog.modal-lg{
+    min-width: 98%;
+  }
+</style>
