@@ -1251,14 +1251,14 @@ class BookController extends AppController
         $notification->delete();
       }
 
-      if ($book->type_book == 7 || $book->type_book == 8) {
-        $expenseLimp = \App\Expenses::where('date', $book->finish)
-                ->where('concept', "LIMPIEZA RESERVA PROPIETARIO. " . $book->room->nameRoom);
-
-        if ($expenseLimp->count() > 0) {
-          $expenseLimp->first()->delete();
-        }
-      }
+//      if ($book->type_book == 7 || $book->type_book == 8) {
+//        $expenseLimp = \App\Expenses::where('date', $book->finish)
+//                ->where('concept', "LIMPIEZA RESERVA PROPIETARIO. " . $book->room->nameRoom);
+//
+//        if ($expenseLimp->count() > 0) {
+//          $expenseLimp->first()->delete();
+//        }
+//      }
 
 
       $book->type_book = 0;

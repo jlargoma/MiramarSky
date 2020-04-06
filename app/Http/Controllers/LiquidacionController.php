@@ -1599,34 +1599,7 @@ class LiquidacionController extends AppController {
   }
 
   static function setExpenseLimpieza($status, $room_id, $date) {
-    $room = \App\Rooms::find($room_id);
-    $expenseLimp = 0;
-
-    if ($room->sizeApto == 1) {
-      $expenseLimp = 30;
-    } else if ($room->sizeApto == 2 || $room->sizeApto == 9) {
-      $expenseLimp = 50; //40;
-    } else if ($room->sizeApto == 3 || $room->sizeApto == 4) {
-      $expenseLimp = 100; //70;
-    }
-
-    if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$date)) {
-      $date = Carbon::createFromFormat('d/m/Y', $fecha)->format('Y-m-d');
-    }
-
-    $gasto = new \App\Expenses();
-    $gasto->concept = "LIMPIEZA RESERVA PROPIETARIO. " . $room->nameRoom;
-    $gasto->date = $date;
-    $gasto->import = $expenseLimp;
-    $gasto->typePayment = 3;
-    $gasto->type = 'LIMPIEZA';
-    $gasto->comment = " LIMPIEZA RESERVA PROPIETARIO. " . $room->nameRoom;
-    $gasto->PayFor = $room->id;
-    if ($gasto->save()) {
-      return true;
-    } else {
-      return false;
-    }
+    return false;
   }
 
  
