@@ -37,10 +37,11 @@ class LiquidacionController extends AppController {
   }
 
   public function getFF_Data($startYear,$endYear) {
+    
     $allForfaits = Forfaits::where('status','!=',1)
             ->where('created_at', '>=', $startYear)->where('created_at', '<=', $endYear)->get();
       
-    $totalPrice = $forfaits = $totalToPay = $totalToPay = 0;
+    $totalPrice = $forfaits = $totalToPay = $totalToPay = $totalPayment = 0;
     $forfaitsIDs = $ordersID = $common_ordersID = array();
     if ($allForfaits){
       foreach ($allForfaits as $forfait){
@@ -326,9 +327,13 @@ class LiquidacionController extends AppController {
     }
     $totBooks = count($books);
 //    echo $vta_prop.' - '.$vendido;
-    $dataResume['propios'] = ($vta_prop / $vendido) * 100;
-    $dataResume['agencia'] = 100 - $dataResume['propios'];
+    if ($vendido>0){
+      $dataResume['propios'] = ($vta_prop / $vendido) * 100;
+      $dataResume['agencia'] = 100 - $dataResume['propios'];
+    }
+    if ($totBooks>0){
     $dataResume['estancia-media'] = ($dataResume['days-ocupation'] / $totBooks);
+    }
     //First chart PVP by months
     $dataChartMonths = [];
     
@@ -1186,18 +1191,23 @@ class LiquidacionController extends AppController {
     
       foreach ($book->payments as $pay) {
         $value += $pay->import;
-        if ($pay->type ==2 || $pay->type ==3)
-           $aExpensesPending['comision_tpv'] += paylandCost($pay->import);
       }
       if (isset($aux[$m])) $aux[$m] += $value;
       if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $value;
       $lstT_ing['ventas'] += $value;
       
-      if ($book->total_price-$value>0)
-        $aIngrPending['ventas'] += $book->total_price-$value;
+      if ($book->total_price-$value>0){
+        if ($book->type_book != 7 && $book->type_book != 8){
+//          echo $book->id. ': pendiente '.($book->total_price-$value).'<br>';
+          $aIngrPending['ventas'] += $book->total_price-$value;
+        }
+      }
     }
     $ingresos['ventas'] = $aux;
     
+    
+    $stripeCost = $this->getTPV($books);
+    $aExpensesPending['comision_tpv'] = array_sum($stripeCost);
     
     /*************************************************************************/
     
@@ -2729,18 +2739,14 @@ class LiquidacionController extends AppController {
       }
     }
           
-    $payments = \App\BookOrders::where('paid',1)->whereIn('book_id',$bIds)
-            ->groupBy('book_id')->selectRaw('sum(amount) as sum, book_id')->pluck('sum','book_id');
+    $payments = \App\Payments::whereIn('type',[2,3])->whereIn('book_id',$bIds)
+            ->groupBy('book_id')->selectRaw('sum(import) as sum, book_id')->pluck('sum','book_id');
     $stripeCost = [];
     if($books){
       foreach ($books as $book){
         $stripeCost[$book->id] = 0;
-        if ($book->stripeCost < 1){
-          if (isset($payments[$book->id])){
-            $stripeCost[$book->id] = paylandCost($payments[$book->id]/100);
-          }
-        } else {
-          $stripeCost[$book->id] = $book->stripeCost;
+        if (isset($payments[$book->id])){
+          $stripeCost[$book->id] = paylandCost($payments[$book->id]);
         }
       }
     }
