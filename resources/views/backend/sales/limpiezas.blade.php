@@ -75,6 +75,7 @@ setlocale(LC_TIME, "es_ES");
       </div>
       <div class="col-md-12 col-xs-12" style="padding-right: 0;">
         <div class="month_select-box">
+          <div class="month_select" id="ms" data-month="" data-year="{{$year->year}}">Todos</div>
         @foreach($months_obj as $m)
         <div class="month_select" id="ms_{{$m['id']}}" data-month="{{$m['month']}}" data-year="{{$m['year']}}">{{$m['name']}} {{$m['year']}}</div>
         @endforeach
@@ -91,14 +92,6 @@ setlocale(LC_TIME, "es_ES");
             <th class ="text-center bg-complete text-white col-md-2">Limpieza<br><b id="t_limp"></b></th>
             <th class ="text-center bg-complete text-white col-md-2">Extras<br><b id="t_extr"></b></th>
             </thead>
-            <tbody >
-              <tr>
-                <td colspan="6"><strong>Monto Fijo Mensual</strong></td>
-                <td><input id="limp_fix" type="text" data-id="fix" class="form-control limpieza_upd"></td>
-                <td><input id="extr_fix" type="text" data-id="fix" class="form-control " readonly=""></td>
-                <td></td>
-              </tr>
-            </tbody>
             <tbody id="tableItems">
             </tbody>
           </table>
@@ -223,7 +216,7 @@ setlocale(LC_TIME, "es_ES");
         data: {year:year, month:month, '_token':"{{csrf_token()}}"},
         success: function(response){
           if (response.status === 'true'){
-
+            if (month<10) month ='0'+month;
             $('#ms_'+year+'_'+month).addClass('active');
 
             $('#t_limp').text(response.total_limp);
@@ -231,6 +224,19 @@ setlocale(LC_TIME, "es_ES");
             $('#limp_fix').val(response.month_cost);
             $('#monthly_extr').text(0);
             $('#tableItems').html('');
+            
+            
+            
+            $.each((response.month_cost), function(index, val) {
+              var row = '<tr><td colspan="6"><strong>'+val.concept+' '+val.date+'</strong></td>';
+              row += '<td class="text-center"><input id="limp_' + val.id + '" data-id="' + val.id + '" data-date="' + val.date + '" type="text" class="form-control limpieza_upd" value="' + val.import + '"></td>';
+              row += '<td class="text-center"></td>';
+              $('#tableItems').append(row);
+            });
+            
+            
+            
+            
             $.each((response.respo_list), function(index, val) {
               var row = '';
               if (val.agency){
@@ -268,11 +274,13 @@ setlocale(LC_TIME, "es_ES");
 
   $('#limpieza_table').on('change','.limpieza_upd', function(){
     var id = $(this).data('id');
+    var date = $(this).data('date');
     var row = $(this).closest('tr');
     var data = {
         'id':id,
         'year':limp_year,
         'month':limp_month,
+        'date':date,
         '_token':"{{csrf_token()}}",
         'limp_value': row.find('#limp_'+id).val(),
         'extr_value': row.find('#extr_'+id).val(),

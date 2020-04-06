@@ -259,19 +259,26 @@ class PaylandsController extends AppController
       
       
       
-       $year = $request->input('year',null);
+          $year = $request->input('year',null);
           $month = $request->input('month',null);
-          if (!$year || !$month){
-            return response()->json(['status'=>'wrong']);
-          }
-           // First day of a specific month
-          $d = new \DateTime($year.'-'.$month.'-01');
-          $d->modify('first day of this month');
-          $startDate = $d->format('YmdHi');
-           // First day of a specific month
-          $d = new \DateTime($year.'-'.$month.'-01');
-          $d->modify('last day of this month');
-          $endDate = $d->format('Ymd').'2359';
+          if ($year && $month){
+            // First day of a specific month
+            $d = new \DateTime($year.'-'.$month.'-01');
+            $d->modify('first day of this month');
+            $startDate = $d->format('YmdHi');
+             // First day of a specific month
+            $d = new \DateTime($year.'-'.$month.'-01');
+            $d->modify('last day of this month');
+            $endDate = $d->format('Ymd').'2359';
+          } else {
+            $year = $this->getActiveYear();
+            $d = str_replace('-','', $year->start_date);
+            $startDate = $d.'0000';
+            $d = str_replace('-','', $year->end_date);
+            $endDate = $d.'2359';
+          } 
+
+          
           $orderPayment = $this->getPaylandApiClient()->getOrders($startDate,$endDate);
            $respo_list = [];
           $total_month = 0;
@@ -315,6 +322,7 @@ class PaylandsController extends AppController
           $response = [
                 'status'     => 'true',
                 'total_month' => number_format($total_month, 2, ',', '.'),
+                'comision' => moneda(paylandCost($total_month)),
                 'respo_list' => array_reverse($respo_list),
             ];
           if ($isAjax){
@@ -336,9 +344,10 @@ class PaylandsController extends AppController
           
           $obj1  = $this->getMonthlyData($year);
           return view('backend/sales/payland', [
-              'year'=>$year,
-              'selected'=>$obj1['selected'],
-              'months_obj'=> $obj1['months_obj'],
+              'year'        => $year,
+              'selected'    => $obj1['selected'],
+              'selectedID'  => $obj1['selectedID'],
+              'months_obj'  => $obj1['months_obj'],
               'months_label'=> $obj1['months_label'],
               ]
 
@@ -376,6 +385,7 @@ class PaylandsController extends AppController
           }
           
           $orderPayment = $this->getPaylandApiClient()->getOrders($startDate,$endDate);
+          
           $count = [
                   'SUCCESS' => 0,
                   'REFUSED' => 0,
@@ -443,6 +453,7 @@ class PaylandsController extends AppController
                 'season' => number_format($totals['SUCCESS'], 2, ',', '.'),
                 'count' => $count,
                 'totals' => $totals,
+                'comision' => paylandCost($totals),
             ];
           
 
@@ -473,6 +484,7 @@ class PaylandsController extends AppController
           $aux = $startYear->format('n');
           $auxY = $startYear->format('y');
           $selected = null;
+          $selectedID = null;
           for ($i=0; $i<$diff;$i++){
             $c_month = $aux+$i;
             if ($c_month == 13){
@@ -484,6 +496,7 @@ class PaylandsController extends AppController
             
             if ($thisMonth == $c_month){
               $selected = "$auxY,$c_month";
+              $selectedID = $auxY.'_'.$c_month;
             }
             
             $months_lab .= "'".$arrayMonth[$c_month-1]."',";
@@ -511,6 +524,7 @@ class PaylandsController extends AppController
           return [
               'year'        => $year->year,
               'selected'    => $selected,
+              'selectedID'  => $selectedID,
               'months_obj'  => $months_obj,
               'months_label'=> $months_lab,
               ];

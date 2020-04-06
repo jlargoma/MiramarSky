@@ -38,7 +38,7 @@ class LiquidacionController extends AppController {
 
   public function getFF_Data($startYear,$endYear) {
     
-    $allForfaits = Forfaits::where('status','!=',1)
+    $allForfaits = Forfaits::whereIn('status',[2,3])
             ->where('created_at', '>=', $startYear)->where('created_at', '<=', $endYear)->get();
       
     $totalPrice = $forfaits = $totalToPay = $totalToPay = $totalPayment = 0;
@@ -2243,25 +2243,44 @@ class LiquidacionController extends AppController {
 
     $year = $request->input('year', null);
     $month = $request->input('month', null);
-    if (!$year || !$month) {
+    
+    $respo_list = [];
+    $month_cost = [];
+    $total_limp = 0; //start with the monthly cost
+    $total_extr = 0;
+    
+    if (!$year) {
       return response()->json(['status' => 'wrong']);
     }
-    // First day of a specific month
-    $d = new \DateTime($year . '-' . $month . '-01');
-    $d->modify('first day of this month');
-    $startYear = $d->format('Y-m-d');
-    // First day of a specific month
-    $d = new \DateTime($year . '-' . $month . '-01');
-    $d->modify('last day of this month');
-    $endYear = $d->format('Y-m-d');
-
-    $month_cost = 0;
-    $monthly = \App\Expenses::where('date', '=', $startYear)
-            ->where('type', 'LIMPIEZA')
-            ->where('concept', 'LIMPIEZA MENSUAL')
-            ->first();
+    if($month){
+      // First day of a specific month
+      $d = new \DateTime($year . '-' . $month . '-01');
+      $d->modify('first day of this month');
+      $startYear = $d->format('Y-m-d');
+      // First day of a specific month
+      $d = new \DateTime($year . '-' . $month . '-01');
+      $d->modify('last day of this month');
+      $endYear = $d->format('Y-m-d');
+    } else {
+      $oYear = \App\Years::where('year', $year)->first();
+      $startYear = $oYear->start_date;
+      $endYear = $oYear->end_date;
+    }
+    
+    $monthly = \App\Expenses::where('date', '>=', $startYear)
+                    ->where('date', '<=', $endYear)
+                    ->where('type', 'limpieza')
+                    ->orderBy('date', 'ASC')
+                    ->get();
     if ($monthly) {
-      $month_cost = $monthly->import;
+      foreach ($monthly as $k=>$v){
+        $month_cost[] = [
+            'id' => 'expenses_'.$v->id,
+            'concept'=>$v->concept,
+            'import'=>$v->import,
+            'date'=>date('Y-m', strtotime($v->date))
+          ];
+      }
     }
 
 
@@ -2270,9 +2289,7 @@ class LiquidacionController extends AppController {
                     ->orderBy('finish', 'ASC')->get();
 
 
-    $respo_list = [];
-    $total_limp = $month_cost; //start with the monthly cost
-    $total_extr = 0;
+    
 
     foreach ($lstBooks as $key => $book) {
       $agency = ($book->agency != 0) ? '/pages/' . strtolower($book->getAgency($book->agency)) . '.png' : null;
@@ -2304,7 +2321,7 @@ class LiquidacionController extends AppController {
           'apto' => $book->room->nameRoom,
           'check_in' => $start->formatLocalized('%d %b'),
           'check_out' => $finish->formatLocalized('%d %b'),
-          'nigths' => $book->nigths
+          'nigths' => $book->nigths,
       ];
 
       $total_limp += floatval($book->cost_limp);
@@ -2337,25 +2354,15 @@ class LiquidacionController extends AppController {
     $extr_value = $request->input('extr_value', null);
     $year = $request->input('year', null);
     $month = $request->input('month', null);
+    
 
     if ($id) {
-      if ($id == 'fix') {
-        $dateTime = new \DateTime($year . '-' . $month . '-01');
-        $date = $dateTime->format('Y-m-d');
-        $monthItem = \App\Expenses::where('date', '=', $date)
-                ->where('type', 'LIMPIEZA')
-                ->where('concept', 'LIMPIEZA MENSUAL')
-                ->first();
-
+      
+      if ( strpos($id, 'expenses_') !== FALSE) {
+        $date = $request->input('date', null);
+        $id = str_replace('expenses_', '', $id);
+        $monthItem = \App\Expenses::find($id);
         if ($monthItem) {
-          $monthItem->import = floatval($limp_value);
-          $monthItem->save();
-        } else {
-          $monthItem = new \App\Expenses();
-          $monthItem->type = 'LIMPIEZA';
-          $monthItem->concept = 'LIMPIEZA MENSUAL';
-          $monthItem->comment = 'LIMPIEZA MENSUAL';
-          $monthItem->date = $date;
           $monthItem->import = floatval($limp_value);
           $monthItem->save();
         }
