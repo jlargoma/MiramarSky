@@ -326,8 +326,8 @@ class LiquidacionController extends AppController {
     }
     $totBooks = count($books);
 //    echo $vta_prop.' - '.$vendido;
-    $dataResume['agencia'] = ($vta_prop / $vendido) * 100;
-    $dataResume['propios'] = 100 - $dataResume['agencia'];
+    $dataResume['propios'] = ($vta_prop / $vendido) * 100;
+    $dataResume['agencia'] = 100 - $dataResume['propios'];
     $dataResume['estancia-media'] = ($dataResume['days-ocupation'] / $totBooks);
     //First chart PVP by months
     $dataChartMonths = [];
