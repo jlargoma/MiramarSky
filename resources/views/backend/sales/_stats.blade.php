@@ -123,11 +123,11 @@ if ($pending<0) $pending = 0;
   </div>
     <div class="col-xs-6 bordered">
     <label>Venta propia</label>
-    <b><?php echo round($dataResume['propios']) ?>%</b>
+    <b><?php echo round($dataResume['propios'],2) ?>%</b>
   </div>
   <div class="col-xs-6 bordered">
     <label>Venta agencia</label>
-    <b><?php echo round($dataResume['agencia']) ?>%</b>
+    <b><?php echo round($dataResume['agencia'],2) ?>%</b>
   </div>
   </div>
 </div>

@@ -767,26 +767,26 @@ class Book extends Model {
   /**
    * @return mixed
    */
-  public function getStripeCostAttribute() {
-    $totalStripe = $this->payments->filter(function ($payment) {
-              return str_contains(strtolower($payment->comment), 'stripe');
-            })->sum('import');
-
-
-    return $totalStripe > 0 ? round(((1.4 * $totalStripe) / 100) + 0.25) : 0;
-  }
-
-  /**
-   * @return float|int
-   */
-  public function getStripeCostRawAttribute() {
-    $totalStripe = $this->payments->filter(function ($payment) {
-              return str_contains(strtolower($payment->comment), 'stripe');
-            })->sum('import');
-
-
-    return $totalStripe > 0 ? ((1.4 * $totalStripe) / 100) + 0.25 : 0;
-  }
+//  public function getStripeCostAttribute() {
+//    $totalStripe = $this->payments->filter(function ($payment) {
+//              return str_contains(strtolower($payment->comment), 'stripe');
+//            })->sum('import');
+//
+//
+//    return $totalStripe > 0 ? round(((1.4 * $totalStripe) / 100) + 0.25) : 0;
+//  }
+//
+//  /**
+//   * @return float|int
+//   */
+//  public function getStripeCostRawAttribute() {
+//    $totalStripe = $this->payments->filter(function ($payment) {
+//              return str_contains(strtolower($payment->comment), 'stripe');
+//            })->sum('import');
+//
+//
+//    return $totalStripe > 0 ? ((1.4 * $totalStripe) / 100) + 0.25 : 0;
+//  }
 
   /**
    * @return int

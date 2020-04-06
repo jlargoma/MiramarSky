@@ -527,7 +527,7 @@ trait ForfaitsPaymentsTraits {
                 $totals['material'] = $totals['material']+$material;
                 $totals['quick_order'] = $totals['quick_order']+$quick_order;
                 $totals['totalPayment'] = $totals['totalPayment']+$totalPayment;
-                if ($totalToPay>0)
+//                if ($totalToPay>0)
                 $totals['totalToPay'] = $totals['totalToPay']+$totalToPay;
           }
       }
@@ -556,7 +556,8 @@ trait ForfaitsPaymentsTraits {
       if ($booksCheckin>0 && $totalOrders>0){
         $ff_checkin = ceil(($totalOrders/$booksCheckin)*100);
       }
-                
+               
+      if ($totals['totalToPay']<0) $totals['totalToPay'] = 0;
       return view('backend.forfaits.orders', [
           'orders' => $lstOrders,
           'ff_mount' => $ff_mount,
