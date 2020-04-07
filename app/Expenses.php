@@ -155,4 +155,44 @@ class Expenses extends Model
     }
     die;
   }
+  
+  
+  static function delExpenseLimpieza($book_id) {
+    if ($book_id>0){
+      $obj = \App\Expenses::where('book_id',$book_id)->where('type','limpieza')->first();
+      if ($obj){
+        $obj->delete();
+      }
+    }
+  }
+  
+  static function setExpenseLimpieza($book_id,$room, $date,$amount=null) {
+    //UPDATE 
+    if ($book_id>0){
+      $obj = \App\Expenses::where('book_id',$book_id)->where('type','limpieza')->first();
+      if ($obj){
+        $obj->date = $date;
+        if ($obj->save()) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+    //create
+    $obj = new \App\Expenses();
+    $obj->concept = "LIMPIEZA RESERVA PROPIETARIO " . $room->nameRoom;
+    $obj->date = $date;
+    $obj->import = $amount;
+    $obj->typePayment = 3;
+    $obj->book_id = $book_id;
+    $obj->type = 'limpieza';
+    $obj->comment = "LIMPIEZA RESERVA PROPIETARIO " . $room->nameRoom;
+    $obj->PayFor = $room->id;
+    if ($obj->save()) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

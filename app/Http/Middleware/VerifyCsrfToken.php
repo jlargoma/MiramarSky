@@ -40,6 +40,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/admin/ingresos/upd',
         '/payments-save-dni/*',
         '/static-token',
-        '/zodomus-Webhook'
+        '/zodomus-Webhook',
+        '/admin/paymentspro/seeLiquidationProp'
     ];
 }

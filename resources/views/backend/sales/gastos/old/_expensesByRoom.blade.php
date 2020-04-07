@@ -5,7 +5,7 @@ setlocale( LC_TIME , "es_ES" );
 <div class="row bg-white">
 	<div class="container">
 		<div class="col-md-4 col-md-offset-1 col-xs-12">
-			<h2 class="text-center">HOJA DE GASTOS</h2>
+			<h2 class="text-center">HOJA DE GASTOS - Sales</h2>
 		</div>
 		<div class="col-md-2 col-xs-12" style="padding: 10px;">
 			<?php if ( $room == 'all'): ?>

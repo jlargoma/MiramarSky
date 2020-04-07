@@ -256,7 +256,7 @@ function getCloudfl($url){
   
 function paylandCost($val){
   if ($val>0)
-    return ((1.7 * $val) / 100);
+    return ((1.2 * $val) / 100);
   
   return 0;
 }
@@ -362,10 +362,10 @@ function configZodomusAptos(){
 function calcNights($start,$end) {
   return intval(ceil((strtotime($end)-strtotime($start))/(24*60*60)));
 }
-function moneda($mount,$cero=true){
-  if ($cero)  return number_format($mount, 0, ',', '.' ).' €';
+function moneda($mount,$cero=true,$decimals=0){
+  if ($cero)  return number_format($mount, $decimals, ',', '.' ).' €';
   
-  if ($mount>0) return number_format($mount, 0, ',', '.' ).' €';
+  if ($mount>0) return number_format($mount, $decimals, ',', '.' ).' €';
   return '--';
   
 }

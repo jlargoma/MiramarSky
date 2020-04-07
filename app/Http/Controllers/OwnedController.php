@@ -283,16 +283,10 @@ class OwnedController extends AppController {
     $book = new Book();
 
     if ($book->existDate($start, $finish, $room->id)) {
-
-
       $bloqueo = new \App\Customers();
       $bloqueo->user_id = Auth::user()->id;
       $bloqueo->name = 'Bloqueo ' . Auth::user()->name;
-
-
       $bloqueo->save();
-
-
       $book->user_id = Auth::user()->id;
       $book->customer_id = $bloqueo->id;
       $book->room_id = $room->id;
@@ -300,17 +294,11 @@ class OwnedController extends AppController {
       $book->finish = Carbon::CreateFromFormat('d/m/Y', $finish)->format('Y-m-d');
       $book->nigths = $diff;
       $book->type_book = 7;
-      $book->sup_limp = ($room->sizeApto == 1) ? 30 : 50;
-      $book->cost_limp = ($room->sizeApto == 1) ? 30 : 40;
-      $book->sup_park = 0;
-      $book->cost_park = 0;
-      $book->sup_lujo = 0;
-      $book->cost_lujo = 0;
-      $book->cost_apto = 0;
-      $book->cost_total = ($room->sizeApto == 1) ? 30 : 40;
-      $book->total_price = ($room->sizeApto == 1) ? 30 : 50;
-      $book->real_price = ($room->sizeApto == 1) ? 30 : 50;
+ 
+      $book->bookingProp($room);
+      
       $book->total_ben = $book->total_price - $book->cost_total;
+      
 
       if ($book->total_price>0)
         $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
@@ -318,9 +306,9 @@ class OwnedController extends AppController {
       $book->ben_jorge = $book->total_ben * $room->typeAptos->PercentJorge / 100;
       $book->ben_jaime = $book->total_ben * $room->typeAptos->PercentJaime / 100;
 
-      LiquidacionController::setExpenseLimpieza(7, $room->id, $finish);
 
       if ($book->save()) {
+        \App\Expenses::setExpenseLimpieza($book->id, $room, $finish,$book->cost_limp);
         $book->sendAvailibilityBy_dates($book->start,$book->finish);
         /* Cliente */
         Mail::send(['html' => 'backend.emails.bloqueoPropietario'], ['book' => $book], function ($message) use ($book) {

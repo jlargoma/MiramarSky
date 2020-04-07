@@ -256,7 +256,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/gastos/getTableGastos', 'LiquidacionController@getTableGastos');
   Route::post('/gastos/gastosLst', 'LiquidacionController@getTableGastos');
   Route::post('/gastos/update', 'LiquidacionController@updateGasto');
-  Route::get('/gastos/getHojaGastosByRoom/{year?}/{id}', 'LiquidacionController@getHojaGastosByRoom');
+  Route::get('/gastos/getHojaGastosByRoom/{year?}/{id}', 'PaymentsProController@getHojaGastosByRoom');
   Route::get('/gastos/containerTableExpensesByRoom/{year?}/{id}', 'LiquidacionController@getTableExpensesByRoom');
   Route::post('/gastos/del','RouterActionsController@gastos_delete');
   Route::get('/ingresos', 'LiquidacionController@ingresos');
@@ -294,6 +294,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/paymentspro/getLiquidationByMonth', 'PaymentsProController@getLiquidationByMonth');
   Route::get('/pagos-propietarios/get/historic_production/{room_id}', 'PaymentsProController@getHistoricProduction');
   Route::post('/pagos-propietarios', 'PaymentsProController@indexByDate');
+  Route::post('/paymentspro/seeLiquidationProp', 'PaymentsProController@seeLiquidationProp');
   
   
   Route::get('/ical/importFromUrl', function () {

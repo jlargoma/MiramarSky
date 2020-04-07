@@ -439,22 +439,10 @@ class BookController extends AppController
                         $book->ben_jorge   = 0;
                         $book->ben_jaime   = 0;
 
-                        /* Asiento automatico para reservas propietarios*/
-                        LiquidacionController::setExpenseLimpieza($book->type_book, $room->id, $date_finish);
-                        /* Asiento automatico */
                     }elseif ($book->type_book == 7){
-                        $book->sup_limp    = ($room->sizeApto == 1) ? 30 : 50;
-                        $book->cost_limp   = ($room->sizeApto == 1) ? 30 : 40;
-                        $book->sup_park    = 0;
-                        $book->cost_park   = 0;
-                        $book->sup_lujo    = 0;
-                        $book->cost_lujo   = 0;
-                        $book->cost_apto   = 0;
-                        $book->cost_total  = ($room->sizeApto == 1) ? 30 : 40;
-                        $book->total_price = ($room->sizeApto == 1) ? 30 : 50;
-                        $book->real_price  = ($room->sizeApto == 1) ? 30 : 50;
-                        $book->total_ben   = $book->total_price - $book->cost_total;
 
+                        $book->bookingProp($room);
+                        
                         if ($book->total_price>0)
                           $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
                         else $book->inc_percent = 0;
@@ -462,9 +450,7 @@ class BookController extends AppController
                         $book->ben_jorge   = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
                         $book->ben_jaime   = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
 
-                        /* Asiento automatico para reservas subcomunidad*/
-                        LiquidacionController::setExpenseLimpieza($book->type_book, $room->id, $date_finish);
-                        /* Asiento automatico */
+                      
                     }else{
                       $book->total_price = $request->input('total');
                       $book->cost_apto = ($request->input('costApto')) ? $request->input('costApto') : $room->getCostRoom($date_start,$date_finish,$book->pax);
@@ -701,17 +687,8 @@ class BookController extends AppController
               $book->book_owned_comments = ($request->input('book_owned_comments')) ? $request->input('book_owned_comments') : "";
             }
             
-            if ($book->type_book == 7)
-            {
-                $book->sup_park  = 0;
-                $book->sup_limp  = ($room->sizeApto == 1) ? 30 : 50;
-                $book->cost_limp = ($room->sizeApto == 1) ? 30 : 40;
-
-                $book->sup_lujo  = 0;
-                $book->cost_lujo = 0;
-
-                $book->real_price = ($room->sizeApto == 1) ? 30 : 50;
-            } else
+            if ($book->type_book == 7){$book->bookingProp($room);} 
+            else
             {
               if ($computedData){
                 $book->sup_park  = $computedData->totales->parking;
@@ -903,6 +880,14 @@ class BookController extends AppController
               $response = $book->changeBook($request->status, "", $book);
               if ($response['status'] == 'success' || $response['status'] ==  'warning'){
                 $book->sendAvailibilityBy_status();
+                if ($book->type_book == 7){
+                  /* Asiento automatico para reservas subcomunidad*/
+                  $book->bookingProp(\App\Rooms::find($book->room_id));
+                  $book->save();
+                } else {
+                  //Remove automatic expenses
+                  \App\Expenses::delExpenseLimpieza($book->id);
+                }
               }
               return $response;
                 
@@ -1251,14 +1236,9 @@ class BookController extends AppController
         $notification->delete();
       }
 
-//      if ($book->type_book == 7 || $book->type_book == 8) {
-//        $expenseLimp = \App\Expenses::where('date', $book->finish)
-//                ->where('concept', "LIMPIEZA RESERVA PROPIETARIO. " . $book->room->nameRoom);
-//
-//        if ($expenseLimp->count() > 0) {
-//          $expenseLimp->first()->delete();
-//        }
-//      }
+      if ($book->type_book == 7) {
+        \App\Expenses::delExpenseLimpieza($book->id);
+      }
 
 
       $book->type_book = 0;

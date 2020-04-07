@@ -99,12 +99,6 @@ class PaymentsProController extends AppController {
       }
 
       $gastos = \App\Expenses::getListByRoom($startYear->format('Y-m-d'),$endYear->format('Y-m-d'),$room->id);
-//      $gastos = \App\Expenses::where('date', '>=', $startYear)
-//              ->Where('date', '<=', $endYear)
-//              ->Where('PayFor', 'LIKE', '%' . $room->id . '%')
-//              ->orderBy('date', 'DESC')
-//              ->get();
-
       if (count($gastos) > 0) {
 
         foreach ($gastos as $gasto) {
@@ -132,6 +126,35 @@ class PaymentsProController extends AppController {
                     ->where('concept', 'NOT LIKE', '%LIMPIEZA RESERVA PROPIETARIO.%')
                     ->orderBy('date', 'DESC')->get();
         
+        
+   
+  /**********   COSTO DE LIMPIENZA  ******************/
+    $cost_limpByRoom = \App\Book::where('type_book', 7)
+              ->where('start', '>=', $startYear)
+              ->where('start', '<=', $endYear)->orderBy('start')->get();
+
+    $limp_prop = [];
+    $t_limpProp = 0;
+    if ($cost_limpByRoom){
+      $auxBookIds = [];
+      foreach ($cost_limpByRoom as $book) { 
+        $auxBookIds[] = $book->id;
+      }
+      
+      $auxExpenses = \App\Expenses::whereIn('book_id',$auxBookIds)->where('type','limpieza')->pluck('import','book_id');
+      foreach ($cost_limpByRoom as $book) {   
+        if (!isset($limp_prop[$book->room_id])) $limp_prop[$book->room_id] = [];
+        $limp_prop[$book->room_id][] = [
+            'id' => $book->id,
+            'cost' => $book->cost_limp,
+            'start' => convertDateToShow_text($book->start),
+            'finish' => convertDateToShow_text($book->finish),
+            'import' => isset($auxExpenses[$book->id]) ? $auxExpenses[$book->id] : 0,
+        ];
+        $t_limpProp += $book->cost_limp;
+      } 
+    }
+        
     return view('backend/paymentspro/index', [
         'year' => $year,
         'gastos' => $gastos,
@@ -139,7 +162,9 @@ class PaymentsProController extends AppController {
         'summary' => $summary,
         'rooms' => $rooms,
         'startYear' => $startYear,
-        'endYear' => $endYear
+        'endYear' => $endYear,
+        'limp_prop' => $limp_prop,
+        't_limpProp' => $t_limpProp
     ]);
   }
 
@@ -599,5 +624,114 @@ class PaymentsProController extends AppController {
     ]);
     
   }
+  
+   public function getHojaGastosByRoom($year = "", $id) {
+   
+    if (empty($year)) {
+      $year = self::getActiveYear();
+    } else {
+      $year = self::getYearData($year);
+    }
+    
+    $start = new Carbon($year->start_date);
+    $end = new Carbon($year->end_date);
+    
+    
+    if ($id != "all") {
+      $room = \App\Rooms::find($id);
+      $gastos = \App\Expenses::where('date', '>=', $start)
+                      ->Where('date', '<=', $end)
+                      ->Where('PayFor', 'LIKE', '%' . $id . '%')->orderBy('date', 'DESC')->get();
+    } else {
+      $room = "all";
+      $gastos = \App\Expenses::where('date', '>=', $start)
+                      ->Where('date', '<=', $end)->orderBy('date', 'DESC')->get();
+    }
+    
+    /**********   COSTO DE LIMPIENZA  ******************/
+    $cost_limpByRoom = \App\Book::where('type_book', 7)
+              ->where('room_id',$id)
+              ->where('start', '>=', $start)
+              ->where('start', '<=', $end)->orderBy('start')->get();
 
+    $limp_prop = [];
+    $t_limpProp = 0;
+    if ($cost_limpByRoom){
+      $auxBookIds = [];
+      foreach ($cost_limpByRoom as $book) { 
+        $auxBookIds[] = $book->id;
+      }
+      
+      $auxExpenses = \App\Expenses::whereIn('book_id',$auxBookIds)->where('type','limpieza')->pluck('import','book_id');
+      foreach ($cost_limpByRoom as $book) {   
+        if (!isset($limp_prop[$book->room_id])) $limp_prop[$book->room_id] = [];
+        $limp_prop[$book->room_id][] = [
+            'id' => $book->id,
+            'cost' => $book->cost_limp,
+            'start' => convertDateToShow_text($book->start),
+            'finish' => convertDateToShow_text($book->finish),
+            'import' => isset($auxExpenses[$book->id]) ? $auxExpenses[$book->id] : 0,
+        ];
+        $t_limpProp += $book->cost_limp;
+      } 
+    }
+
+    return view('backend.paymentspro.gastos._expensesByRoom', [
+        'gastos' => $gastos,
+        'room' => $room,
+        'year' => $start,
+        'limp_prop' => $limp_prop,
+        't_limpProp' => $t_limpProp,
+    ]);
+  }
+
+
+  /**
+   * copy the view of the Owner
+   */
+  function seeLiquidationProp(Request $req){
+    
+    $year = $this->getActiveYear();
+    $startYear = new Carbon($year->start_date);
+    $endYear = new Carbon($year->end_date);
+    
+    $id = $req->input('id');
+    $total = $apto = $park = $lujo = 0;
+    
+      $books = \App\Book::where('type_book',2)->where('room_id', $id)
+                  ->where('start', '>=', $startYear)
+                  ->where('start', '<=', $endYear)
+                  ->orderBy('start', 'ASC')->get();
+    
+     foreach ($books as $book) {
+        $apto += $book->cost_apto;
+        $park += $book->cost_park;
+        if ($book->room->luxury == 1) {
+          $lujo += $book->cost_lujo;
+        } else {
+          $lujo += 0;
+        }
+    }
+    $total += ($apto + $park + $lujo);
+    
+    
+    $gastos = \App\Expenses::where('date', '>=', $startYear)
+            ->where('date', '<=', $endYear)
+            ->where('PayFor', 'LIKE', '%' . $id . '%')
+            ->orderBy('date', 'ASC')
+            ->get();
+    $pagototal = 0;
+    foreach ($gastos as $pago) {
+      $pagototal += $pago->import;
+    }
+    
+    
+            
+    return view('backend.owned._liquidation', [
+        'total' => $total,
+        'pagos' => $gastos,
+        'pagototal' => $pagototal,
+        'mobile' => new Mobile(),
+    ]);
+  }
 }

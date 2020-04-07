@@ -216,7 +216,7 @@ setlocale(LC_TIME, "es_ES");
         data: {year:year, month:month, '_token':"{{csrf_token()}}"},
         success: function(response){
           if (response.status === 'true'){
-            if (month<10) month ='0'+month;
+            if (month<10) month ='0'+parseInt(month);
             $('#ms_'+year+'_'+month).addClass('active');
 
             $('#t_limp').text(response.total_limp);

@@ -90,13 +90,17 @@
 						<?php endforeach ?>
 					</select>
 				</div>
-				<div class="col-md-3 col-xs-12 push-20">
+				<div class="col-md-2 col-xs-12 push-20">
 					<label for="minOcu">% Min Benef</label>
 					<input type="number" name="profit_percent" class="form-control" value="<?php echo $room->profit_percent; ?>"/>
 				</div>
 				<div class="col-md-2 col-xs-12 push-20">
 					<label for="num_garage">Plz parking</label>
 					<input type="number" name="num_garage" class="form-control" value="<?php echo $room->num_garage;?>"/>
+				</div>
+                                <div class="col-md-2 col-xs-12 push-20">
+					<label for="limp_prop">Limp. Prop.</label>
+					<input type="number" name="limp_prop" class="form-control" value="<?php echo $room->limp_prop;?>"/>
 				</div>
 			</div>
 		</div>
