@@ -142,5 +142,35 @@ setlocale(LC_TIME, "es_ES");
             </table>
         </div>
     </div>
+    <div class="row">
+      <h4 style="    background-color: #51b1f7;
+    color: #fff;
+    padding: 5px;
+    margin-bottom: 0;">Total Limp. Prop.: {{moneda($t_limpProp)}}</h4>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th class="text-center">In</th>
+              <th class="text-center">Out</th>
+              <th class="text-center">Monto</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach($limp_prop as $room => $items)
+              @foreach($items as $item)
+              <tr>
+                <td class="text-center">{{$item['start']}}</td>
+                <td class="text-center">{{$item['finish']}}</td>
+                <td class="text-center">{{moneda($item['cost'],false)}}</td>
+              </tr>
+              @endforeach
+            @endforeach
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+  
 
 </div>

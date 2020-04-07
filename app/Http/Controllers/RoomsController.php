@@ -617,6 +617,7 @@ class RoomsController extends AppController {
     $room->profit_percent = ($request->input('profit_percent')) ? $request->input('profit_percent') : $room->profit_percent;
     $room->description = ($request->input('description')) ? $request->input('description') : $room->description;
     $room->num_garage = ($request->input('num_garage')) ? $request->input('num_garage') : $room->num_garage;
+    $room->limp_prop = ($request->input('limp_prop')) ? $request->input('limp_prop') : $room->limp_prop;
     $room->channel_group = $request->input('channel_group',null);
     $room->price_extra_pax = $request->input('price_extra_pax',null);
 

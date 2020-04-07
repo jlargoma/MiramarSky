@@ -1548,36 +1548,7 @@ class LiquidacionController extends AppController {
     ];
   }
 
-  public function getHojaGastosByRoom($year = "", $id) {
-   
-    if (empty($year)) {
-      $year = self::getActiveYear();
-    } else {
-      $year = self::getYearData($year);
-    }
-    
-    $start = new Carbon($year->start_date);
-    $end = new Carbon($year->end_date);
-    
-    
-    if ($id != "all") {
-      $room = \App\Rooms::find($id);
-      $gastos = \App\Expenses::where('date', '>=', $start)
-                      ->Where('date', '<=', $end)
-                      ->Where('PayFor', 'LIKE', '%' . $id . '%')->orderBy('date', 'DESC')->get();
-    } else {
-      $room = "all";
-      $gastos = \App\Expenses::where('date', '>=', $start)
-                      ->Where('date', '<=', $end)->orderBy('date', 'DESC')->get();
-    }
-
-    return view('backend.sales.gastos._expensesByRoom', [
-        'gastos' => $gastos,
-        'room' => $room,
-        'year' => $start
-    ]);
-  }
-
+ 
   public function getTableExpensesByRoom($year = "", $id) {
 
     if (empty($year)) {
@@ -1608,9 +1579,7 @@ class LiquidacionController extends AppController {
     ]);
   }
 
-  static function setExpenseLimpieza($status, $room_id, $date) {
-    return false;
-  }
+  
 
  
   public function searchByName(Request $request){

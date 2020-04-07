@@ -1508,4 +1508,20 @@ class Book extends Model {
       return $costBook;
   }
 
+  public function bookingProp($room) {
+    
+    $this->sup_park    = 0;
+    $this->cost_park   = 0;
+    $this->sup_lujo    = 0;
+    $this->cost_lujo   = 0;
+    $this->cost_apto   = 0;
+    $this->sup_limp  = ($room->sizeApto == 1) ? 30 : 50;
+    $this->cost_limp = is_null($room->limp_prop) ? 30 : $room->limp_prop;
+    $this->real_price = ($room->sizeApto == 1) ? 30 : 50;
+    $this->cost_total = ($room->sizeApto == 1) ? 30 : 40;
+    $this->total_price = $this->real_price;
+      
+    \App\Expenses::setExpenseLimpieza($this->id, $room, $this->finish,$this->cost_limp);
+                
+  }
 }
