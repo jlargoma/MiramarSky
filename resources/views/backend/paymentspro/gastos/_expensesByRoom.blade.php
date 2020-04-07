@@ -1,6 +1,8 @@
 <?php   use \Carbon\Carbon;
 setlocale( LC_TIME , "ES" );
 setlocale( LC_TIME , "es_ES" );
+
+$roomID = isset($room->id) ? $room->id : 'all';
 ?>
 <div class="row bg-white">
 	<div class="container">
@@ -8,31 +10,17 @@ setlocale( LC_TIME , "es_ES" );
 			<h2 class="text-center">HOJA DE GASTOS</h2>
 		</div>
 		<div class="col-md-2 col-xs-12" style="padding: 10px;">
-			<?php if ( $room == 'all'): ?>
-			<select class="form-control full-width minimal selectorRoom">
-					<option <?php if ( $room == 'all' ) {
-						echo "selected";
-					}?> value="all"> TODAS </option>
-				<?php foreach (\App\Rooms::where( 'state' , 1 )->orderBy( 'nameRoom')->get() as $roomX): ?>
-				<option value="<?php echo $roomX->id ?>" {{ $roomX->id == $room ? 'selected' : '' }} >
-	                        <?php echo $roomX->nameRoom  ?>
-	                    </option>
-				<?php endforeach ?>
-	            </select>
-			<?php else: ?>
-			<select class="form-control full-width minimal selectorRoom">
-					<option <?php if ( $room == 'all' ) {
-						echo "selected";
-					}?> value="all"> TODAS </option>
-				<?php foreach (\App\Rooms::where( 'state' , 1 )->orderBy( 'order' , 'ASC' )->get() as $roomX): ?>
-				<option value="<?php echo $roomX->id ?>" {{ $roomX->id == $room->id ? 'selected' : '' }} >
-	                        <?php echo $roomX->nameRoom  ?>
-	                    </option>
-				<?php endforeach ?>
-	            </select>
-			<?php endif ?>
-
-
+                  <?php 
+                  $rooms = \App\Rooms::where( 'state' , 1 )->orderBy( 'nameRoom')->get();
+                  ?>
+                  <select class="form-control full-width minimal selectorRoom">
+                      <option <?php if ( $roomID == 'all' ) { echo "selected";}?> value="all"> TODAS </option>
+                      <?php foreach ($rooms as $roomX): ?>
+                      <option value="<?php echo $roomX->id ?>" <?php echo ($roomX->id == $roomID) ? 'selected' : '';?> >
+                      <?php echo $roomX->nameRoom  ?>
+                      </option>
+                      <?php endforeach ?>
+                  </select>
 		</div>
 	</div>
 
