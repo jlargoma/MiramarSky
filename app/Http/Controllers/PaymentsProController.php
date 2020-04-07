@@ -643,17 +643,24 @@ class PaymentsProController extends AppController {
       $gastos = \App\Expenses::where('date', '>=', $start)
                       ->Where('date', '<=', $end)
                       ->Where('PayFor', 'LIKE', '%' . $id . '%')->orderBy('date', 'DESC')->get();
+         
+      $cost_limpByRoom = \App\Book::where('type_book', 7)
+              ->where('room_id',$id)
+              ->where('start', '>=', $start)
+              ->where('start', '<=', $end)->orderBy('start')->get();
+      
     } else {
       $room = "all";
       $gastos = \App\Expenses::where('date', '>=', $start)
                       ->Where('date', '<=', $end)->orderBy('date', 'DESC')->get();
+      
+      $cost_limpByRoom = \App\Book::where('type_book', 7)
+           ->where('start', '>=', $start)
+           ->where('start', '<=', $end)->orderBy('start')->get();
     }
     
     /**********   COSTO DE LIMPIENZA  ******************/
-    $cost_limpByRoom = \App\Book::where('type_book', 7)
-              ->where('room_id',$id)
-              ->where('start', '>=', $start)
-              ->where('start', '<=', $end)->orderBy('start')->get();
+ 
 
     $limp_prop = [];
     $t_limpProp = 0;
