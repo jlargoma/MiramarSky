@@ -171,11 +171,11 @@ setlocale(LC_TIME, "es_ES");
               </tr>
               <tr>
                 <td class="static">
-                  Comisión ({{moneda(paylandCost($total))}})
+                  Comisión ({{moneda(paylandCost($total),true,1)}})
                 </td>
                 <?php $class = 'class="first-col"'; ?>
                 @foreach($months_obj as $m)
-                <td {!!$class!!} >{{moneda(paylandCost($m['t_pvp']))}}</td>
+                <td {!!$class!!} >{{moneda(paylandCost($m['t_pvp']),true,1)}}</td>
                 <?php $class = ''; ?>
                 @endforeach
               </tr>

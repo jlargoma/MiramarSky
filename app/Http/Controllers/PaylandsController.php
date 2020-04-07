@@ -322,7 +322,7 @@ class PaylandsController extends AppController
           $response = [
                 'status'     => 'true',
                 'total_month' => moneda($total_month),
-                'comision' => moneda(paylandCost($total_month)),
+                'comision' => moneda(paylandCost($total_month),true,1),
                 'respo_list' => array_reverse($respo_list),
             ];
           if ($isAjax){
