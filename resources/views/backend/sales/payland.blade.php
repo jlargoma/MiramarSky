@@ -29,6 +29,16 @@ setlocale(LC_TIME, "es_ES");
   .table-responsive .table-resumen td.first-col{
     padding-left: 180px !important;
   }
+  
+  
+  .paginate span {
+    border: none !important;
+    font-weight: 800;
+  }
+  .paginate {
+      min-width: 225px;
+      text-align: center;
+  }
 </style>
 @endsection
 
@@ -55,7 +65,7 @@ setlocale(LC_TIME, "es_ES");
       <div class="row push-10">
         <div class="col-md-8">
           <h2 class="text-left font-w800">
-            Resumen liquidación: <span id="payland_month_2"></span> € 
+            Resumen liquidación: <span id="payland_month_2"></span> 
           </h2>
         </div>
         <div class="col-md-4 pull-right">
@@ -86,9 +96,11 @@ setlocale(LC_TIME, "es_ES");
           </table>
         </div>
         <div class="paginate">
-          <span id="payland_ant" class="action"> << </span>
-        <span id="payland_page"> 1 </span>
-        <span id="payland_sgt" class="action"> >> </span>
+          <span id="payland_first" class="action"> << </span>
+          <span id="payland_ant" class="action"><</span>
+          <span id="payland_page"> 1 </span>
+          <span id="payland_sgt" class="action">></span>
+          <span id="payland_last" class="action">>></span>
         </div>
       </div>
     </div>
@@ -108,17 +120,17 @@ setlocale(LC_TIME, "es_ES");
             <h3 ><span id="payland_season"></span>€</h3>
         </div>
         <div class="col-md-4 bordered text-center">
-          <h4 class="hint-text">Total de pagos</h4>
+          <h4 class="hint-text">Total de <br/>pagos</h4>
           <div class="p-l-20">
             <h3 ><span id="payland_total"></span></h3>
           </div>
         </div>
         <div class="col-md-4 bordered text-center">
-          <h4 class="hint-text">Promedio por pagos</h4>
+          <h4 class="hint-text">Promedio por <br/>pagos</h4>
             <h3 ><span id="payland_average"></span>€</h3>
         </div>
         <div class="col-md-4 bordered text-center">
-          <h4 class="hint-text">Comsión estimada</h4>
+          <h4 class="hint-text">Comsión <br/>estimada</h4>
             <h3 ><span id="payland_comision"></span>€</h3>
         </div>
       </div>
@@ -203,6 +215,9 @@ url: '/admin/getOrders-payland',
         $('#payland_month').text(response.total_month);
         $('#payland_month_2').text(response.total_month);
         $('#comision_resume').text(response.comision);
+        var totalPages = Math.ceil(response.respo_list.length/50);
+        $('#payland_last').data('val',totalPages);
+        
         var count = 0;
         $.each((response.respo_list), function(index, val) {
 
@@ -301,6 +316,20 @@ $('#ms_{{$selectedID}}').addClass('active');
     dataTable($(this).data('year'), $(this).data('month'));
   });
   
+  $('#payland_first').on('click', function(){
+    if (currentPage>1){
+      $('.payland_page'+currentPage).hide('150');
+      $('.payland_page1').show();
+      currentPage = 1;
+      $('#payland_page').text(currentPage);
+    }
+  });
+    $('#payland_last').on('click', function(){
+      $('.payland_page'+currentPage).hide('150');
+      currentPage = $(this).data('val');
+      $('.payland_page'+currentPage).show();
+      $('#payland_page').text(currentPage);
+  });
   $('#payland_ant').on('click', function(){
     if (currentPage>1){
       $('.payland_page'+currentPage).hide('150');

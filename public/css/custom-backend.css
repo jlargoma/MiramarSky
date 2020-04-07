@@ -681,6 +681,10 @@ i.fa.fa-unlock.openSafetyBox {
     color: green;
 }
 
+.month_select{
+  padding: 5px 0px;
+  margin: 5px 1px;
+}
 @media (min-width: 768px){
   #modalNewBook .modal-dialog {
     margin: 0 2%;

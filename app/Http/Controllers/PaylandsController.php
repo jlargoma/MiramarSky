@@ -321,7 +321,7 @@ class PaylandsController extends AppController
          
           $response = [
                 'status'     => 'true',
-                'total_month' => number_format($total_month, 2, ',', '.'),
+                'total_month' => moneda($total_month),
                 'comision' => moneda(paylandCost($total_month)),
                 'respo_list' => array_reverse($respo_list),
             ];
@@ -448,12 +448,12 @@ class PaylandsController extends AppController
         $response = [
                 'status'     => 'true',
                 'result' => $result,
-                'today' => number_format($totalToday, 2, ',', '.'),
-                'average' => number_format($average, 2, ',', '.'),
-                'season' => number_format($totals['SUCCESS'], 2, ',', '.'),
+                'today' => number_format($totalToday, 0, ',', '.'),
+                'average' => number_format($average, 0, ',', '.'),
+                'season' => number_format($totals['SUCCESS'], 0, ',', '.'),
                 'count' => $count,
                 'totals' => $totals,
-                'comision' => paylandCost($totals),
+                'comision' => number_format(paylandCost($totals['SUCCESS']), 0, ',', '.'),
             ];
           
 
