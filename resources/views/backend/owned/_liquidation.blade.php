@@ -23,14 +23,14 @@
 				</div>
 				<div class="col-md-3 not-padding" >
 					<div class="col-xs-12  bg-complete push-0">
-						<h5 class="text-left white">
+						<h5 class="text-center white">
 							Importe
 						</h5>
 					</div>
 				</div>
 				<div class="col-md-3 not-padding">
 					<div class="col-xs-12   bg-complete push-0">
-						<h5 class="text-left white">
+						<h5 class="text-center white">
 							Pendiente
 						</h5>
 					</div>

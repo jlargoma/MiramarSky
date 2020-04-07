@@ -160,9 +160,9 @@ setlocale(LC_TIME, "es_ES");
             @foreach($limp_prop as $room => $items)
               @foreach($items as $item)
               <tr>
-                <td class="text-center">{{$item['start']}}</td>
+                <td class="text-center"><a href="/admin/reservas/update/{{$item['id']}}" title="Ir a la reserva" target="_black">{{$item['start']}}</a></td>
                 <td class="text-center">{{$item['finish']}}</td>
-                <td class="text-center">{{moneda($item['cost'],false)}}</td>
+                <td class="text-center">{{moneda($item['import'],false)}}</td>
               </tr>
               @endforeach
             @endforeach

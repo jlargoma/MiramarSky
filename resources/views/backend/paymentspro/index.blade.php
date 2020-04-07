@@ -70,6 +70,14 @@ $isMobile = $mobile->isMobile()
     color: #48b0f7;
     text-decoration: underline;
   }
+  .seePropLiquidation{
+    color: blue;
+    cursor: pointer;
+  }
+  div#containerTableExpensesByRoom {
+    max-height: 900px;
+    overflow-y: scroll;
+}
 </style>
 
 <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
@@ -316,7 +324,7 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
                        data-target="#payments">
                       <?php echo (isset($room->user->name)) ? ucfirst($room->user->name): '-' ?> (<?php echo $room->nameRoom ?>)
                     </a>
-
+                <i class="fa fa-eye seePropLiquidation" data-id="{{$room->id}}"></i>
                   </td>
                    @if($isMobile)
                   <td class="text-center  costeApto bordes first-col" style="padding-right:13px !important;padding-left: 135px!important">   
@@ -581,6 +589,28 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
     </div>
   </div>
 </div>
+
+<div class="modal fade slide-up in" id="modalLiquidation" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <div class="modal-header">
+        <strong class="modal-title" style="font-size: 1.4em;">Liquidación</strong>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="row">
+      <div class="modal-body ">
+        
+      </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+<!-- /.modal-dialog -->
+</div>
 @endsection
 
 @section('scripts')
@@ -722,5 +752,11 @@ $('#costeByMonths').on('click', function(){
   $('#modalCosteByMonths').find('.modal-body').load('/admin/paymentspro/getLiquidationByMonth');
   $('#modalCosteByMonths').modal('show');   
 });
+
+$('.seePropLiquidation').on('click', function(){
+  $('#modalLiquidation').find('.modal-body').load('/admin/paymentspro/seeLiquidationProp',{id:$(this).data('id')});
+  $('#modalLiquidation').modal('show');   
+});
+
 </script>
 @endsection
