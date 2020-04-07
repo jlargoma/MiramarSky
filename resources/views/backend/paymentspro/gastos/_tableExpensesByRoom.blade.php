@@ -10,10 +10,10 @@ setlocale(LC_TIME, "es_ES");
             <table class="table table-striped">
                 <thead>
                     <th class="text-center bg-complete text-white">Fecha</th>
-                    <th class="text-center bg-complete text-white">Concepto</th>
+                    <th class="text-left bg-complete text-white">Concepto</th>
                     <th class="text-center bg-complete text-white">Importe</th>
                     <th class="text-center bg-complete text-white">Piso</th>
-                    <th class="text-center bg-complete text-white">Comentario</th>
+                    <th class="text-left bg-complete text-white">Comentario</th>
                     <th class="text-center bg-complete text-white">accion</th>
                 </thead>
                 <tbody>
@@ -21,11 +21,11 @@ setlocale(LC_TIME, "es_ES");
 	            <?php if (count( $gastos ) > 0): ?>
 	            <?php foreach ($gastos as $gasto): ?>
 	            <tr>
-                    <td class="text-center" style="padding: 5px 8px !important">
+                    <td class="text-center nowrap" style="padding: 5px 8px !important">
                         <?php $fecha = Carbon::createFromFormat( 'Y-m-d' , $gasto->date ) ?>
 	                    <?php echo $fecha->copy()->formatLocalized( '%d %b %y' ) ?>&nbsp;&nbsp;
                     </td>
-                    <td class="text-center" style="padding: 5px 8px !important">
+                    <td class="text-left" style="padding: 5px 8px !important">
                         <?php echo $gasto->concept ?>
                     </td>
 
@@ -52,7 +52,7 @@ setlocale(LC_TIME, "es_ES");
 		            <td class="text-center">
                                 <?php echo number_format( ($gasto->import / $divisor) , 2 , ',' , '.' ) ?>€
                             </td>
-                            <td class="text-center" style="padding: 5px 8px !important">
+                            <td class="text-left" style="padding: 5px 8px !important">
                             	<?php if ($gasto->PayFor != NULL ): ?>
                         			<?php $aux = explode( ',' , $gasto->PayFor ) ?>
                         			<?php if ( count( $aux ) > 1 ): ?>
@@ -73,7 +73,7 @@ setlocale(LC_TIME, "es_ES");
 	                            <?php endif ?>
 
                             </td>
-                            <td class="text-center" style="padding: 5px 8px !important">
+                            <td class="text-left" style="padding: 5px 8px !important">
                                 <?php echo $gasto->comment ?>
                             </td>
 	                        <td class="text-center" style="padding: 5px 8px !important">
