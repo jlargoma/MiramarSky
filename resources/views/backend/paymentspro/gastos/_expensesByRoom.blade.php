@@ -13,7 +13,7 @@ setlocale( LC_TIME , "es_ES" );
 					<option <?php if ( $room == 'all' ) {
 						echo "selected";
 					}?> value="all"> TODAS </option>
-				<?php foreach (\App\Rooms::where( 'state' , 1 )->orderBy( 'order' , 'ASC' )->get() as $roomX): ?>
+				<?php foreach (\App\Rooms::where( 'state' , 1 )->orderBy( 'nameRoom')->get() as $roomX): ?>
 				<option value="<?php echo $roomX->id ?>" {{ $roomX->id == $room ? 'selected' : '' }} >
 	                        <?php echo $roomX->nameRoom  ?>
 	                    </option>
