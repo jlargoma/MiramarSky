@@ -29,8 +29,8 @@ use \Carbon\Carbon; ?>
                 <thead >
                 <th class ="text-center bg-complete text-white">Fecha</th>
                 <th class ="text-center bg-complete text-white">Importe</th>
-                <th class ="text-center bg-complete text-white">Metodo</th>
-                <th class ="text-center bg-complete text-white">Concepto</th>
+                <th class ="text-left bg-complete text-white">Tipo</th>
+                <th class ="text-left bg-complete text-white">Concepto</th>
                 </thead>
                 <tbody>
                   <?php if (count($lstGastos) > 0): ?>
@@ -38,9 +38,9 @@ use \Carbon\Carbon; ?>
                       <tr id="payment-{{$payment['ID']}}">
                         <td class="text-center">{{$payment['date']}}</td>
                         <td class="text-center">{{moneda($payment['import'])}}</td>
-                        <td class="text-center">{{$payment['type_payment']}}</td>
-                        <td class="text-center">
-                          {{$payment['type']}}
+                        <td class="text-left">{{$payment['type']}}</td>
+                        <td class="text-left">
+                          {{$payment['concept']}}
                           @if (! empty($payment['comment']))
                           <span data-toggle="tooltip" data-placement="top" title="{{ $payment['comment'] }}"><i class="fa fa-comment"></i></button>
                             @endif

@@ -225,6 +225,7 @@ class PaymentsProController extends AppController {
           'date' => convertDateToShow($payment->date),
           'type' => isset($types[$payment->type]) ? $types[$payment->type] : $payment->type,
           'comment' => $payment->comment,
+          'concept' => $payment->concept,
           'import' => 0,
           'ID' => $payment->is,
       ];
