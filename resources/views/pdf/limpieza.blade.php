@@ -95,11 +95,14 @@
             </tr>
           </thead>
           <tbody >
+            @foreach($month_cost as $item)
             <tr>
-              <td colspan="6">Monto Fijo Mensual</td>
-              <td class="text-rigth">{{$month_cost}}</td>
+              <td colspan="6">{{$item['concept']}} ({{$item['date_text']}})</td>
+              <td class="text-rigth">{{moneda($item['import'])}}</td>
               <td></td>
             </tr>
+            @endforeach
+           
             @foreach($respo_list as $item)
             <tr>
               <td>{{$item['name']}}</td>
@@ -108,8 +111,8 @@
               <td class="text-center">{{$item['apto']}}</td>
               <td class="text-center">{{$item['check_in']}} - {{$item['check_out']}}</td>
               <td class="text-center">{{$item['nigths']}}</td>
-              <td class="text-rigth">{{$item['limp']}}</td>
-              <td class="text-rigth">{{$item['pax']}}</td>
+              <td class="text-rigth">{{moneda($item['limp'])}}</td>
+              <td class="text-rigth">{{moneda($item['pax'])}}</td>
             </tr>
             @endforeach
             <tr>
@@ -118,9 +121,9 @@
             <tr>
               <td colspan="6"><strong>Totales</strong></td>
               <td class="text-rigth">
-                &#8364;&nbsp; {{$total_limp}}
+                {{$total_limp}}
               </td>
-              <td class="text-rigth">&#8364;&nbsp; {{$total_extr}}</td>
+              <td class="text-rigth">{{$total_extr}}</td>
             </tr>
           </tbody>
         </table>
