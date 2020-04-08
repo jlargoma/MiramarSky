@@ -2247,8 +2247,10 @@ class LiquidacionController extends AppController {
             'id' => 'expenses_'.$v->id,
             'concept'=>$v->concept,
             'import'=>$v->import,
-            'date'=>date('Y-m', strtotime($v->date))
+            'date'=>date('Y-m', strtotime($v->date)),
+            'date_text'=> convertDateToShow_text($v->date,true)
           ];
+        $total_limp += $v->import;
       }
     }
 
@@ -2301,8 +2303,8 @@ class LiquidacionController extends AppController {
         'status' => 'true',
         'month_cost' => $month_cost,
         'respo_list' => $respo_list,
-        'total_limp' => $total_limp,
-        'total_extr' => $total_extr,
+        'total_limp' => moneda($total_limp),
+        'total_extr' => moneda($total_extr),
     ];
     if ($isAjax) {
       return response()->json($response);
@@ -2367,7 +2369,8 @@ class LiquidacionController extends AppController {
 
     $arrayMonth = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     $file_name = 'Costos-de-limpieza-' . $month . '-20' . $year;
-    if (isset($arrayMonth[$month - 1])) {
+    
+    if (is_numeric($month) && isset($arrayMonth[$month - 1])) {
       $title = $arrayMonth[$month - 1] . ' 20' . $year;
     } else {
       $title = ' 20' . $year;

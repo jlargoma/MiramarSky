@@ -228,7 +228,7 @@ setlocale(LC_TIME, "es_ES");
             
             
             $.each((response.month_cost), function(index, val) {
-              var row = '<tr><td colspan="6"><strong>'+val.concept+' '+val.date+'</strong></td>';
+              var row = '<tr><td colspan="6"><strong>'+val.concept+' ('+val.date_text+')</strong></td>';
               row += '<td class="text-center"><input id="limp_' + val.id + '" data-id="' + val.id + '" data-date="' + val.date + '" type="text" class="form-control limpieza_upd" value="' + val.import + '"></td>';
               row += '<td class="text-center"></td>';
               $('#tableItems').append(row);
