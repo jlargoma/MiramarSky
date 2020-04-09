@@ -49,7 +49,7 @@ $footerContent = $oContents->getContentByKey('footer');
 						SOBRE TU RESERVA
 					</h4>
 					<ul class="toggle-footer list-group bullet center" style="list-style: none;">
-						<li><a href="{{ url('/forfait')}}" target="_blank" >Gestión de forfait</a></li>
+						<li><a href="http://miramarski.com/forfait/" target="_blank" >Gestión de forfait</a></li>
 						<li><a href="{{url('/condiciones-generales')}}" >Condiciones Generales</a></li>
 						<li><a href="{{url('/preguntas-frecuentes')}}" >Preguntas Frecuentes</a></li>
 						<li><a href="{{ url('/ayudanos-a-mejorar') }}" >Ayudanos a Mejorar</a></li>
@@ -78,9 +78,9 @@ $footerContent = $oContents->getContentByKey('footer');
 					</h4>
 					<ul class="toggle-footer list-group bullet center" style="list-style: none;">
 
-						<li><a href="http://sierranevada.es/es/invierno/la-estaci%C3%B3n/parte-nieve/" ><i class="fa fa-snowflake-o" aria-hidden="true" style="color:#3F51B5"></i> Parte de nieve</a></li>
-						<li><a href="http://sierranevada.es/es/invierno/la-estaci%C3%B3n/en-pistas/plano-de-pistas/" ><i class="fa fa-map" aria-hidden="true" style="color:#3F51B5"></i> Mapa de la estación</a></li>
-						<li><a href="http://sierranevada.es/es/webcams/" ><i class="fa fa-video-camera" aria-hidden="true" style="color:#3F51B5"></i> Webcams</a></li>
+                                          <li><a href="https://sierranevada.es/es/invierno/la-estaci%C3%B3n/en-directo/parte-nieve/" rel="nofollow" target="_black" ><i class="fa fa-snowflake-o" aria-hidden="true" style="color:#3F51B5"></i> Parte de nieve</a></li>
+						<li><a href="https://sierranevada.es/es/invierno/en-pistas/" rel="nofollow" target="_black"><i class="fa fa-map" aria-hidden="true" style="color:#3F51B5"></i> Mapa de la estación</a></li>
+						<li><a href="https://sierranevada.es/es/invierno/la-estaci%C3%B3n/en-directo/parte-nieve/" rel="nofollow" target="_black"><i class="fa fa-video-camera" aria-hidden="true" style="color:#3F51B5"></i> Webcams</a></li>
 						<li><a href="{{url('/eres-propietario')}}" ></a></li>
 						<!-- <li><a href="#" >Preguntas frecuentes</a></li> -->
 					</ul>
