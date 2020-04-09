@@ -92,6 +92,7 @@ class CacheResponse
      */
     protected function aliasFilename($filename)
     {
+      if($filename=='create-cache') return 'pc__index__pc';
         return $filename ?: 'pc__index__pc';
     }
 

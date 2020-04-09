@@ -16,7 +16,7 @@
     Route::auth();
     
       Route::get('/', 'HomeController@index');
-//      Route::get('/', 'HomeController@index')->middleware('page-cache');
+      Route::get('create-cache', 'HomeController@index')->middleware('page-cache');
       
       Route::get('/404', function () {
          return view('404');
