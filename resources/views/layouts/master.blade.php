@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="es-ES">
     <head>
+       <?php noIndex(); ?>
       <?php
+      
       $oContents = new App\Contents();
       $meta_descripcion = $oContents->getContentByKey('meta_descripcion');
       ?>

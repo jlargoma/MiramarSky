@@ -388,3 +388,14 @@ function getUsrRole(){
     }
     return null;
   }
+  
+  function noIndex(){
+    $haystack = ['fotos','contacto','politica-privacidad','aviso-legal','politica-cookies','condiciones-contratacion'];
+    $pathRequest = Request::path(); 
+    if (in_array($pathRequest, $haystack)){
+      ?>
+      <meta name="robots" content="noindex">
+      <?php
+    }
+
+  }
