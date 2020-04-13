@@ -65,7 +65,8 @@ class PaymentsProController extends AppController {
 
 //      $booksByRoom = \App\Book::where_type_book_sales(true)->where('room_id', $room->id)
       $booksByRoom = \App\Book::where('room_id', $room->id)
-              ->where('type_book', 2)
+//              ->where('type_book', 2)
+              ->whereIn('type_book', [2, 7])
               ->where('start', '>=', $startYear)
               ->where('start', '<=', $endYear)
               ->get();
@@ -442,6 +443,7 @@ class PaymentsProController extends AppController {
 
     $start = $request->input('start',null);
     $finish = $request->input('end',null);
+    $download = $request->input('download',null);
 
     $total = 0;
     $apto = 0;
@@ -491,7 +493,7 @@ class PaymentsProController extends AppController {
       $pagototal += $pago->import;
     }
 
-    return view('backend/paymentspro/_liquidationByRoom', [
+    $data = [
         'books' => $books,
         'costeProp' => $request->costeProp,
         'apto' => $apto,
@@ -509,7 +511,25 @@ class PaymentsProController extends AppController {
         'pagos' => $pagos,
         'pagototal' => $pagototal,
         'pagototalProp' => 0,
-    ]);
+    ];
+    
+//    
+     
+     if ($download){
+       $file_name = 'Reservas';
+       if (is_object($room)){
+        $file_name = $room->name.' ('.$room->nameRoom.')';
+       }
+     
+//    return view('backend/paymentspro/_liquidationByRoom-pdf',$data);
+       // Send data to the view using loadView function of PDF facade
+    $pdf = \PDF::loadView('backend/paymentspro/_liquidationByRoom-pdf', $data);
+    // Finally, you can download the file using download function
+    return $pdf->download($file_name . '.pdf');
+     } else {
+        return view('backend/paymentspro/_liquidationByRoom',$data);
+     }
+    
   }
 
   public static function getHistoricProduction($room_id, Request $request) {
