@@ -1208,6 +1208,11 @@ class LiquidacionController extends AppController {
 
       /* Nº inquilinos */
       $summary['inquilinos'] += $book->pax;
+      
+      foreach ($book->payments as $pay) {
+        if ($pay->type ==2 || $pay->type ==3)
+           $aExpensesPending['comision_tpv'] += paylandCost($pay->import);
+      }
           
       if (isset($aux[$m])) $aux[$m] += $value;
       if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $value;

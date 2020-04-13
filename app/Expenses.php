@@ -82,6 +82,7 @@ class Expenses extends Model
                 'seg_social' => 'empleados',
                 'sueldos'    => 'empleados',
                 'suministros'=> 'suministros',
+                'excursion'=> 'otros',
             ]];
         
   }
@@ -139,6 +140,7 @@ class Expenses extends Model
       'alquiler'=>"ALQUILER INMUEBLES",
       'seguros'=>"PRIMAS SEGUROS", 
       'representacion'=>"GASTOS REPRESENTACION", 
+        'excursion' => 'PROVEEDORES EXCURSIÓN',
         
         
 //      'decoracion'=>"DECORACIóN", // DECORACION</option>
