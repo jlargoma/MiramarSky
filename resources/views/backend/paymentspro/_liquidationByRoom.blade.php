@@ -34,7 +34,7 @@ setlocale( LC_TIME , "es_ES" );
 					<h2 class="text-center font-w800">Listado de reservas</h2>
 				</div>
 				<?php if (!$mobile->isMobile()): ?>
-				<div class="col-xs-12" style="overflow-y: auto; max-height: 550px;">
+				<div class="col-xs-12" style="overflow-y: auto; min-height: 76vh;">
 						<table class="table no-footer ">
 							<thead>
 								<th class="text-center bg-complete text-white" style="width: 20%; padding: 4px 10px">Cliente</th>

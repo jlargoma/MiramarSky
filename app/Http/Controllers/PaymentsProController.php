@@ -685,7 +685,7 @@ class PaymentsProController extends AppController {
     return view('backend.paymentspro.gastos._expensesByRoom', [
         'gastos' => $gastos,
         'room' => $room,
-        'year' => $start,
+        'year' => $year,
         'limp_prop' => $limp_prop,
         't_limpProp' => $t_limpProp,
     ]);

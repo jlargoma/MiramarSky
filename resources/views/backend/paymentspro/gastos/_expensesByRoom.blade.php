@@ -31,18 +31,34 @@ $roomID = isset($room->id) ? $room->id : 'all';
 <script type="text/javascript">
 	$(document).ready(function () {
       $('.selectorRoom').change(function (event) {
-        $.get('/admin/gastos/getHojaGastosByRoom/' + {{ $year->year }} + '/' + $(this).val(), function (data) {
-
+        reloadExpencesContent({{ $year->year }},$(this).val());
+      });
+      
+      
+      var reloadExpencesContent = function(year,room){
+        $.get('/admin/gastos/getHojaGastosByRoom/' + year + '/' + room, function (data) {
           $('.contentExpencesByRoom').empty().append(data);
         });
-      });
-      $('.deleteExpenseByRoom').click(function (event) {
-        var id = $(this).attr('data-id');
-        var room = $(".selectorRoom").val();
-        var year = '{{ $year->year }}';
-        $.get('/admin/gastos/delete/' + id, function (data) {console.log(data)});
-        $('#containerTableExpensesByRoom').empty().load('/admin/gastos/containerTableExpensesByRoom/' + year + "/" + room);
-      });
+      }
+     
+      $('#containerTableExpensesByRoom').on('click','.del_expense', function(){
+      if (confirm('Eliminar el registro definitivamente?')){
+        var id = $(this).data('id');
+        var year = {{ $year->year }};
+        var room = "{{$roomID}}";
+        $.ajax({
+          url: '/admin/gastos/del',
+          type:'POST',
+          data: {id:id, '_token':"{{csrf_token()}}"},
+          success: function(response){
+            reloadExpencesContent(year,room);
+          }
+        });
+      }
     });
+    
+    });
+    
+    
 
 </script>

@@ -743,7 +743,7 @@ var idRoom = $(this).attr('data-id');
 var costeProp = $(this).attr('data-costeProp');
 var startDate = "{{$startYear}}";
 var endDate = "{{$endYear}}";
-$.get('/admin/paymentspro/getLiquidationByRoom', {idRoom: idRoom, date: date, costeProp: costeProp,start:startDate,end:endDate}, function (data) {
+$.get('/admin/paymentspro/getLiquidationByRoom', {idRoom: idRoom,costeProp: costeProp,start:startDate,end:endDate}, function (data) {
 $('.contentLiquidationByRoom').empty().append(data);
 });
 
