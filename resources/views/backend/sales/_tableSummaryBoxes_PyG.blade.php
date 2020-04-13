@@ -22,7 +22,7 @@
 
   <div class="sumary-pyg bordered">
     <label>Estancia media</label>
-    <h3 class="text-black font-w400 text-center">{{ceil($summary['noches']/$summary['total'])}}</h3>
+    <h3 class="text-black font-w400 text-center">{{round($summary['noches']/$summary['total'])}}</h3>
   </div>
   <div class="sumary-pyg bordered">
     <label>Total Noches</label>

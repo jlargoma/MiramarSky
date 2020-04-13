@@ -1214,7 +1214,7 @@ class LiquidacionController extends AppController {
       $lstT_ing['ventas'] += $value;
       
       if ($book->agency != 0) $vta_agenda++;
-        else $vta_prop++;
+//        else $vta_prop++;
 //      if ($book->total_price-$value>0){
 //        if ($book->type_book != 7 && $book->type_book != 8){
 ////          echo $book->id. ': pendiente '.($book->total_price-$value).'<br>';
@@ -1226,8 +1226,8 @@ class LiquidacionController extends AppController {
     $summary['total'] = $t_books;
     $summary['benef'] = round(($lstT_ing['ventas']-$tCosts)/$lstT_ing['ventas']*100,2);
     if($t_books>0){
-      $summary['vta_prop'] = round(($vta_prop / $t_books) * 100);
-      $summary['vta_agenda'] = $summary['vta_prop'] - $vta_agenda;    
+      $summary['vta_agenda'] = round(($vta_agenda / $t_books) * 100);
+      $summary['vta_prop'] = 100-$summary['vta_agenda'];    
     }
     
     
@@ -1274,8 +1274,6 @@ class LiquidacionController extends AppController {
     $ingrType['others'] = 'OTROS INGRESOS';
     
     
-
-//    dd($lstT_ing);
     /*************************************************************************/
     /******       GASTOS                        ***********/
     $gastos = \App\Expenses::where('date', '>=', $startYear)
