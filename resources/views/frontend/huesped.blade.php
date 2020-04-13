@@ -116,7 +116,7 @@
 
 					*Recuerda que al menos necesitan 48 horas de antelación para poder gestionártelo.<br><br>
 
-					*Rellena el formulario y se pondrán en contacto contigo para gestionar tu <a href="{{url ('/forfait') }}">petición</a>.<br><br>
+					*Rellena el formulario y se pondrán en contacto contigo para gestionar tu <a href="{{env('FF_PAGE')}}">petición</a>.<br><br>
 
 				</p>
 

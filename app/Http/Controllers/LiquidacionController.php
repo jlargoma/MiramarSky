@@ -282,6 +282,7 @@ class LiquidacionController extends AppController {
         'propios' => 0,
         'total_price' =>0,
         'beneficio' =>0,
+        'total_cost' =>0,
     ];
 
         
@@ -309,8 +310,7 @@ class LiquidacionController extends AppController {
       $vendido += $book->total_price;
       
       $dataResume['total_price'] += $book->total_price;
-      $dataResume['beneficio']   += $book->profit;
-      
+      $dataResume['total_cost'] += $book->get_costeTotal();
       /* Dias ocupados */
       $dataResume['days-ocupation'] += $book->nigths;
 
@@ -325,6 +325,8 @@ class LiquidacionController extends AppController {
         $vta_prop += $book->total_price;
       }
     }
+    
+    $dataResume['beneficio']   = $dataResume['total_price'] - $dataResume['total_cost'];
     $totBooks = count($books);
 //    echo $vta_prop.' - '.$vendido;
     if ($vendido>0){
@@ -1458,7 +1460,7 @@ class LiquidacionController extends AppController {
 
 
       foreach ($books as $key => $book) {
-        $total += ($book->cost_apto + $book->cost_park + $book->cost_lujo); //$book->total_price;
+        $total += $book->get_costeTotal();
       }
 
       $gastos = \App\Expenses::where('date', '>=',$startYear)
@@ -1482,7 +1484,7 @@ class LiquidacionController extends AppController {
               ->orderBy('start', 'ASC')->get();
       
       foreach ($books as $key => $book) {
-        $total += ($book->cost_apto + $book->cost_park + $book->cost_lujo); //$book->total_price;
+        $total += $book->get_costeTotal();
       }
 
       $gastos = \App\Expenses::where('date', '>=',$startYear)
@@ -1741,15 +1743,10 @@ class LiquidacionController extends AppController {
           $totales["total"] += $book->total_price;
           $totales["costeApto"] += $book->cost_apto;
           $totales["costePark"] += $book->cost_park;
-          if ($book->room->luxury == 1) {
-            $costTotal = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia;
+          $totales['coste'] += $book->get_costeTotal();
+          if ($book->type_luxury == 1 || $book->type_luxury == 3 || $book->type_luxury == 4) {
             $totales["costeLujo"] += $book->cost_lujo;
-            $totales["coste"] += $costTotal;
-          } else {
-            $costTotal = $book->cost_apto + $book->cost_park + 0 + $book->cost_limp + $book->PVPAgencia;
-            $totales["costeLujo"] += 0;
-            $totales["coste"] += $costTotal;
-          }
+          } 
 
           $totales["costeLimp"] += $book->cost_limp;
           $totales["costeAgencia"] += $book->PVPAgencia;
@@ -1885,15 +1882,11 @@ class LiquidacionController extends AppController {
         $totales["total"] += $book->total_price;
         $totales["costeApto"] += $book->cost_apto;
         $totales["costePark"] += $book->cost_park;
-        if ($book->room->luxury == 1) {
-          $costTotal = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia;
+        
+        $totales['coste'] += $book->get_costeTotal();
+        if ($book->type_luxury == 1 || $book->type_luxury == 3 || $book->type_luxury == 4) {
           $totales["costeLujo"] += $book->cost_lujo;
-          $totales["coste"] += $costTotal;
-        } else {
-          $costTotal = $book->cost_apto + $book->cost_park + 0 + $book->cost_limp + $book->PVPAgencia;
-          $totales["costeLujo"] += 0;
-          $totales["coste"] += $costTotal;
-        }
+        } 
 
         $totales["costeLimp"] += $book->cost_limp;
         $totales["costeAgencia"] += $book->PVPAgencia;
@@ -2597,16 +2590,11 @@ class LiquidacionController extends AppController {
       $totales["total"] += $book->total_price;
       $totales["costeApto"] += $book->cost_apto;
       $totales["costePark"] += $book->cost_park;
-//      if ($book->room->luxury == 1) {
+      
+      $totales['coste'] += $book->get_costeTotal();
       if ($book->type_luxury == 1 || $book->type_luxury == 3 || $book->type_luxury == 4) {
-        $costTotal = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia;
         $totales["costeLujo"] += $book->cost_lujo;
-        $totales["coste"] += $costTotal;
-      } else {
-        $costTotal = $book->cost_apto + $book->cost_park + 0 + $book->cost_limp + $book->PVPAgencia;
-        $totales["costeLujo"] += 0;
-        $totales["coste"] += $costTotal;
-      }
+      } 
 
       $totales["costeLimp"] += $book->cost_limp;
       $totales["costeAgencia"] += $book->PVPAgencia;
@@ -2617,7 +2605,7 @@ class LiquidacionController extends AppController {
       $totales["benJorge"] += $book->getJorgeProfit();
       $totales["benJaime"] += $book->getJaimeProfit();
       $totales["limpieza"] += $book->sup_limp;
-      $totales["beneficio"] += $book->profit;
+//      $totales["beneficio"] += $book->profit;
       $totales["stripe"] += $book->stripeCost;
       $totales["obs"] += $book->extraCost;
       $totales["pendiente"] += $book->pending;
@@ -2634,6 +2622,8 @@ class LiquidacionController extends AppController {
       $additionals[$book->id] = null;
     }
 
+    //Recalcular beneficio
+    $totales["beneficio"] = $totales["total"]-$totales["coste"];
 
     $totBooks = (count($books) > 0) ? count($books) : 1;
     $diasPropios = \App\Book::where('start', '>=', $startYear)

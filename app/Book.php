@@ -861,9 +861,10 @@ class Book extends Model {
    */
   public function get_costeTotal() {
 
-    $cost_total = $this->cost_apto + $this->cost_park + $this->cost_lujo + $this->cost_limp + $this->PVPAgencia + $this->stripeCost + $this->extraCost;
-    if ($this->room->luxury == 0 && $this->cost_lujo > 0) {
-      $cost_total = $this->cost_total - $this->cost_lujo;
+    if ($this->type_luxury == 1 || $this->type_luxury == 3 || $this->type_luxury == 4) {
+      $cost_total = $this->cost_apto + $this->cost_park + $this->cost_lujo + $this->cost_limp + $this->PVPAgencia;
+    } else {
+      $cost_total = $this->cost_apto + $this->cost_park + 0 + $this->cost_limp + $this->PVPAgencia;
     }
 
     return $cost_total;
