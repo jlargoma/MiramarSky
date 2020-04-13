@@ -34,7 +34,7 @@
       <tr>
         <td>{{$gastoType[$k]}}</td>
         <td class="text-center">{{moneda($lstT_gast[$k])}}</td>
-        <td class="text-center">{{moneda($aExpensesPending[$k])}}</td>
+        <td class="text-center">{{moneda($aExpensesPending[$k],false)}}</td>
         @foreach($lstMonths as $k_month=>$month) <td class="text-center">{{moneda($listGasto[$k][$k_month],false)}}</td> @endforeach
       </tr>
       @endforeach
