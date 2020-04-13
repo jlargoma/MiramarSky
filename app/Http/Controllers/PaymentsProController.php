@@ -63,6 +63,7 @@ class PaymentsProController extends AppController {
       $data[$room->id]['totales']['totalPVP'] = 0;
       $data[$room->id]['pagos'] = 0;
 
+//      $booksByRoom = \App\Book::where_type_book_sales(true)->where('room_id', $room->id)
       $booksByRoom = \App\Book::where('room_id', $room->id)
               ->where('type_book', 2)
               ->where('start', '>=', $startYear)
@@ -71,15 +72,13 @@ class PaymentsProController extends AppController {
 
       foreach ($booksByRoom as $book) {
 
-        if ($room->luxury == 1) {
+              
+        $costTotal = $book->get_costeTotal();
+        if ($book->type_luxury == 1 || $book->type_luxury == 3 || $book->type_luxury == 4) {
           $data[$book->room_id]['totales']['totalLujo'] += $book->cost_lujo;
-          $costTotal = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia;
-          $summary['totalLujo'] += $book->cost_lujo;
-        } else {
-          $data[$book->room_id]['totales']['totalLujo'] += 0;
-          $costTotal = $book->cost_apto + $book->cost_park + 0 + $book->cost_limp + $book->PVPAgencia;
-          $summary['totalLujo'] += 0;
-        }
+          $summary["totalLujo"] += $book->cost_lujo;
+        } 
+
         $data[$book->room_id]['totales']['totalLimp'] += $book->cost_limp;
         $data[$book->room_id]['totales']['totalAgencia'] += $book->PVPAgencia;
         $data[$book->room_id]['totales']['totalParking'] += $book->cost_park;
@@ -345,7 +344,7 @@ class PaymentsProController extends AppController {
 
     foreach ($books as $key => $book) {
       $totales["total"] += $book->total_price;
-      $totales["coste"] += ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp + $book->extraCost);
+      $totales["coste"] += $book->get_costeTotal();
       $totales["costeApto"] += $book->cost_apto;
       $totales["costePark"] += $book->cost_park;
       $totales["costeLujo"] += $book->cost_lujo;
@@ -359,7 +358,7 @@ class PaymentsProController extends AppController {
       $totales["benJaime"] += $book->ben_jaime;
       $totales["pendiente"] += $book->getPayment(4);
       $totales["limpieza"] += $book->sup_limp;
-      $totales["beneficio"] += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
+//      $totales["beneficio"] += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
 
       $totalStripep = 0;
       $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get();
@@ -372,6 +371,8 @@ class PaymentsProController extends AppController {
 
       $totales['obs'] += $book->extraCost;
     }
+    
+    $totales["beneficio"] = $totales["total"] - $totales["coste"];
     $totBooks = (count($books) > 0) ? count($books) : 1;
 
     $diasPropios = \App\Book::where('start', '>', $startYear)->where('finish', '<', $endYear)
@@ -585,10 +586,7 @@ class PaymentsProController extends AppController {
           
       
       $roomID = $book->room_id;
-      $costTotal = $book->cost_apto + $book->cost_park;
-      if (in_array($roomID, $roomLujo)) {
-         $costTotal += $book->cost_lujo;
-      }
+      $costTotal = $book->get_costeTotal();
       
       $date = date('ym', strtotime($book->start));
       if (!isset($roomLst[$roomID])) $roomLst[$roomID] = [$date=>$costTotal];
