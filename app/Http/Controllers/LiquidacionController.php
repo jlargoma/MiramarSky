@@ -260,7 +260,7 @@ class LiquidacionController extends AppController {
     $startYear = $data['startYear'];
     $endYear = $data['endYear'];
     $diff = $startYear->diffInMonths($endYear) + 1;
-    
+    $tBooks = count($books);
     
     /* INDICADORES DE LA TEMPORADA */
     
@@ -330,7 +330,8 @@ class LiquidacionController extends AppController {
     $totBooks = count($books);
 //    echo $vta_prop.' - '.$vendido;
     if ($vendido>0){
-      $dataResume['propios'] = ($vta_prop / $vendido) * 100;
+      
+      $dataResume['propios'] = ($dataResume['propios'] / $tBooks) * 100;
       $dataResume['agencia'] = 100 - $dataResume['propios'];
     }
     if ($totBooks>0){
@@ -1153,7 +1154,15 @@ class LiquidacionController extends AppController {
         'ff' => 0,
         'ventas' => 0,
     ];
-    
+    $summary = [
+      'total'=>0,
+      'inquilinos'=>0,
+      'noches'=>0,
+      'benef'=>0,
+      'vta_prop'=>0,
+      'vta_agenda'=>0,
+      'daysTemp'=>\App\SeasonDays::first()->numDays,//$startYear->diffInDays($endYear)
+    ];
     
     $emptyMonths = [];
     foreach ($lstMonths as $k=>$m){
@@ -1181,6 +1190,8 @@ class LiquidacionController extends AppController {
             ->where('start', '>=', $startYear)
             ->where('start', '<=', $endYear)->get();
     $aux = $emptyMonths;
+    $vta_agenda = $vta_prop = $tCosts = 0;
+    $t_books = count($books);
     foreach ($books as $key => $book) {
 //      $aExpensesPending['prop_pay'] += ($book->cost_apto + $book->cost_park + $book->cost_lujo);
       $aExpensesPending['agencias'] += $book->PVPAgencia;
@@ -1189,29 +1200,46 @@ class LiquidacionController extends AppController {
       $aExpensesPending['lavanderia'] += 10;
     
       $m = date('ym', strtotime($book->start));
-      $value = 0;
+      $value = $book->total_price;
+      $tCosts += $book->get_costeTotal();
     
-      foreach ($book->payments as $pay) {
-        $value += $pay->import;
-      }
+      /* Dias ocupados */
+      $summary['noches'] += $book->nigths;
+
+      /* Nº inquilinos */
+      $summary['inquilinos'] += $book->pax;
+          
       if (isset($aux[$m])) $aux[$m] += $value;
       if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $value;
       $lstT_ing['ventas'] += $value;
       
-      if ($book->total_price-$value>0){
-        if ($book->type_book != 7 && $book->type_book != 8){
-//          echo $book->id. ': pendiente '.($book->total_price-$value).'<br>';
-          $aIngrPending['ventas'] += $book->total_price-$value;
-        }
-      }
+      if ($book->agency != 0) $vta_agenda++;
+        else $vta_prop++;
+//      if ($book->total_price-$value>0){
+//        if ($book->type_book != 7 && $book->type_book != 8){
+////          echo $book->id. ': pendiente '.($book->total_price-$value).'<br>';
+//          $aIngrPending['ventas'] += $book->total_price-$value;
+//        }
+//      }
     }
+    
+    $summary['total'] = $t_books;
+    $summary['benef'] = round(($lstT_ing['ventas']-$tCosts)/$lstT_ing['ventas']*100,2);
+    if($t_books>0){
+      $summary['vta_prop'] = round(($vta_prop / $t_books) * 100);
+      $summary['vta_agenda'] = $summary['vta_prop'] - $vta_agenda;    
+    }
+    
+    
+    
+    
     $ingresos['ventas'] = $aux;
     
     
     $stripeCost = $this->getTPV($books);
     $aExpensesPending['comision_tpv'] = array_sum($stripeCost);
     
-    /*************************************************************************/
+ 
     
     $ingrType = \App\Incomes::getTypes();
     foreach ($ingrType as $k=>$t){
@@ -1219,6 +1247,16 @@ class LiquidacionController extends AppController {
       $lstT_ing[$k] = 0;
       $aIngrPending[$k] = 0;
     }
+     
+    /*************************************************************************/
+        
+    $auxFF = $this->getFF_Data($startYear, $endYear);
+    $ingresos['ff'] = $emptyMonths;
+    $ingrType['ff'] = 'FORFAITs';
+    $lstT_ing['ff'] = $auxFF['total'];
+    $aIngrPending['ff'] = 0;
+    /*************************************************************************/
+    
     $ingresos['others'] = $emptyMonths;
     $lstT_ing['others'] = 0;
     $incomesLst = \App\Incomes::where('date', '>=', $startYear)->Where('date', '<=', $endYear)->get();
@@ -1232,11 +1270,12 @@ class LiquidacionController extends AppController {
       }
     }
     
-    $ingrType['ff'] = 'FORFAITS';
     $ingrType['ventas'] = 'VENTAS';
     $ingrType['others'] = 'OTROS INGRESOS';
     
     
+
+//    dd($lstT_ing);
     /*************************************************************************/
     /******       GASTOS                        ***********/
     $gastos = \App\Expenses::where('date', '>=', $startYear)
@@ -1268,16 +1307,19 @@ class LiquidacionController extends AppController {
     foreach ($gType as $k=>$v){
       if (isset($aExpensesPending[$k])){
         $aExpensesPending[$k] -= $lstT_gast[$k];
+        if ($aExpensesPending[$k]<0) $aExpensesPending[$k] = 0;
       } else {
         $aExpensesPending[$k] = 0;
       }
     }
 
+    $aExpensesPending['excursion'] = $lstT_ing['ff']-$lstT_gast['excursion'];
     /*****************************************************************/
     
     $impuestos = $listGastos['impuestos'];
     unset($listGastos['impuestos']);
     unset($listGastos['prop_pay']);
+    unset($listGastos['comisiones']);
     
     $impEstimado = [];
     
@@ -1302,6 +1344,7 @@ class LiquidacionController extends AppController {
     $totalIngr = array_sum($lstT_ing);
     $totalGasto = array_sum($lstT_gast);
     return view('backend/sales/perdidas_ganancias', [
+        'summary' =>$summary,
         'lstT_ing' => $lstT_ing,
         'totalIngr' => $totalIngr,
         'lstT_gast' => $lstT_gast,

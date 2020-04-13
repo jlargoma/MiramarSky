@@ -127,6 +127,12 @@ setlocale(LC_TIME, "es_ES");
           </div>
         </div>
       </div>
+      
+      <div style="clear: both;"></div>
+        @include('backend.sales._tableSummaryBoxes_PyG')
+      
+      
+      
     </div>
   </div>
   <div class="row bg-white">
