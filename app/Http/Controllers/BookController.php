@@ -29,71 +29,41 @@ class BookController extends AppController
 {
     use BookEmailsStatus, BookCentroMensajeria,BookLogsTraits;
 
-
-    /**
+     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
+      
         $year      = $this->getActiveYear();
-        $startYear = new Carbon($year->start_date);
-        $endYear   = new Carbon($year->end_date);
-
+        $startYear = $year->start_date;
+        $endYear   = $year->end_date;
+        
         if (Auth::user()->role != "agente")
         {
-            $roomsAgents = \App\Rooms::all(['id'])->toArray();
-            $rooms       = \App\Rooms::orderBy('order')->get();
-            $types       = [
-                1,
-                3,
-                4,
-                5,
-                6,
-                10,
-                11,
-                98,
-                99
-            ];
-        } else
-        {
-            $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
-            $rooms       = \App\Rooms::whereIn('id', $roomsAgents)->orderBy('order')->get();
-            $types       = [1];
-        }
+          $rooms       = Rooms::orderBy('order')->get();
+          $types       = [1,3,4,5,6,10,11,98,99];
+          $booksQry = Book::where('start', '>=', $startYear)
+                  ->where('start', '<=', $endYear);
+                  
+            
+        } else {
+          $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
+          $rooms       = Rooms::whereIn('id', $roomsAgents)->orderBy('order')->get();
+          $types       = [1];
 
-        if (Auth::user()->role != "agente")
-        {
-            $booksCollection = \App\Book::where('start', '>=', $startYear)->where('start', '<=', $endYear)
-                                        ->whereIn('room_id', $roomsAgents)->orderBy('created_at', 'DESC')->get();
-        } else
-        {
-          if (!Auth::user()->agent){
-            return redirect('no-allowed');
-          }
-            $booksCollection = \App\Book::whereIn('room_id', $roomsAgents)
-                    ->where([
-                              [
-                                  'start',
-                                  '>=',
-                                  $startYear
-                              ],
-                              [
-                                  'start',
-                                  '<=',
-                                  $endYear
-                              ],
-                              [
-                                  'user_id',
-                                  Auth::user()->id
-                              ]
-                    ])->orWhere(function ($query) use ($roomsAgents, $types) {
-                                            $query->where('agency', Auth::user()->agent->agency_id)
-                                                  ->whereIn('room_id', $roomsAgents);
-                                        })->orderBy('created_at', 'DESC')->get();
+          if (!Auth::user()->agent)  return redirect('no-allowed');
+          
+          $booksQry = Book::whereIn('room_id', $roomsAgents)
+                  ->where([
+                            ['start','>=',$startYear],
+                            ['start','<=',$endYear],
+                            ['user_id',Auth::user()->id]
+                          ])
+                  ->orWhere('agency', Auth::user()->agent->agency_id);
         }
-
         
         $booksCount['pending'] = 0;
         $booksCount['special'] = 0;
@@ -102,43 +72,39 @@ class BookController extends AppController
         $booksCount['deletes'] = 0;
         $booksCount['checkin'] = 0;
         $booksCount['checkout']=0;
-                
-        $booksCount['pending'] = $booksCollection->where('type_book', 3)->count();
-
-        $booksCount['special']      = $booksCollection->whereIn('type_book', [
-            7,
-            8
-        ])->count();
-        $booksCount['confirmed']    = $booksCollection->where('type_book', 2)->count();
-        $booksCount['blocked-ical'] = $booksCollection->whereIn('type_book', [
-            11,
-            12
-        ])->where("enable", "=", "1")->count();
-        $booksCount['deletes']      = \App\Book::where('start', '>', $startYear)->where('finish', '<', $endYear)
-                                               ->where('type_book', 0)->where('comment', 'LIKE', '%Antiguos cobros%')
-                                               ->where("enable", "=", "1")->count();
-        $booksCount['checkin']      = $this->getCounters('checkin');
-        $booksCount['checkout']     = $this->getCounters('checkout');//$booksCount['confirmed'] - $booksCount['checkin'];
-
-        $books = $booksCollection->whereIn('type_book', $types);
-
-        $stripe           = StripeController::$stripe;
-        $stripedsPayments = \App\Payments::where('comment', 'LIKE', '%stripe%')
-                                         ->where('created_at', '>=', Carbon::today()->toDateString())->get();
-
-                $lastBooksPayment = \App\Payments::where('created_at', '>=', Carbon::today()->toDateString())
-		                                 ->count();
-        // Notificaciones de alertas booking
-        /*$notifications = \App\BookNotification::whereHas('book', function ($q) {
-            return $q->where('type_book', '<>', 3)
-                     ->orWhere('type_book', '<>', 5)
-                     ->orWhere('type_book', '<>', 6);
-        })->count();*/
-
-        $totalReserv = $books->where('type_book', 1)->count();
-        $amountReserv = $books->where('type_book', 1)->sum('total_price');
+        $query2 = clone $booksQry;
+        $booksCount['pending'] = $query2->where('type_book', 3)->count();
+        $query2 = clone $booksQry;
+        $booksCount['special'] = $query2->whereIn('type_book', [7,8])->count();
+        $query2 = clone $booksQry;
+        $booksCount['confirmed']    = $query2->where('type_book', 2)->count();
+        $query2 = clone $booksQry;
+        $booksCount['blocked-ical'] = $query2->whereIn('type_book', [11,12])->where("enable", "=", "1")->count();
+        $booksCount['deletes']      = Book::where('start', '>', $startYear)->where('finish', '<', $endYear)
+                                               ->where('type_book', 0)->where("enable", "=", "1")->count();
         
+        $booksCount['checkin']      = $this->getCounters('checkin');
+        $booksCount['checkout']     = $this->getCounters('checkout');
+
+        $books = $booksQry->whereIn('type_book', $types)->orderBy('created_at', 'DESC')->get();
+        $totalReserv = $booksQry->where('type_book', 1)->count();
+        $amountReserv = $booksQry->where('type_book', 1)->sum('total_price');
+        $stripe = null;
+       
+        $lastBooksPayment = \App\Payments::where('created_at', '>=', Carbon::today()->toDateString())
+		                                 ->count();
+       
         $mobile      = new Mobile();
+        
+        $alert_lowProfits = 0; //To the alert efect
+        $percentBenef     = DB::table('percent')->find(1)->percent;
+        $lowProfits       = $this->lowProfitAlert($startYear, $endYear, $percentBenef, $alert_lowProfits);
+
+        $ff_pendientes = Book::where('ff_status',4)->where('type_book','>',0)->count();
+        
+        $parteeToActive = $this->countPartte();
+        
+        
         $now         = Carbon::now();
         $booksAlarms = \App\Book::where('start', '>', $startYear)->where('finish', '<', $endYear)
                                 ->where('start', '>=', $now->format('Y-m-d'))->where('start', '<=', $now->copy()
@@ -172,29 +138,9 @@ class BookController extends AppController
                 if ($diff <= 15) $alarms[] = $book;
             }
         }
-
-        $alert_lowProfits = 0; //To the alert efect
-        $percentBenef     = DB::table('percent')->find(1)->percent;
-        $lowProfits       = $this->lowProfitAlert($startYear, $endYear, $percentBenef, $alert_lowProfits);
-
-        $ff_pendientes = Book::where('ff_status',4)->where('type_book','>',0)->count();
         
-        $parteeToActive = $this->countPartte();
-//        $parteeToActive = BookPartee::whereIn('status', ['HUESPEDES',"FINALIZADO"])->count();
-        $ff_mount = null;
-        if (!$mobile->isMobile()){
-          if (env('APP_APPLICATION') == "apartamentosierranevada.net" && Auth::user()->role == "admin"){
-            $cachedRepository  = new CachedRepository();
-            $ForfaitsItemController = new \App\Http\Controllers\ForfaitsItemController($cachedRepository);
-            $balance = $ForfaitsItemController->getBalance();
-            $ff_mount = 0;
-            if (isset($balance->success) && $balance->success ){
-              $ff_mount = $balance->data->total;
-            }
-          }
-        }
         
-     //BEGIN: Processed data
+        //BEGIN: Processed data
         $bookOverbooking = null;
         $overbooking = [];
         $oData = \App\ProcessedData::where('key','overbooking')->get();
@@ -207,14 +153,18 @@ class BookController extends AppController
         }
         //END: Processed data
         
-		return view(
-			'backend/planning/index',
-			compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
-			        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits',
-                                'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment','ff_pendientes','ff_mount','totalReserv','amountReserv','overbooking')
+        $ff_mount = null;
+
+       
+         
+        return view('backend/planning/index',
+                compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
+                        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits',
+                        'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment',
+                        'ff_pendientes','ff_mount','totalReserv','amountReserv','overbooking')
 		);
     }
-    
+
     private function countPartte() {
       $today = Carbon::now();
       return Book::Join('book_partees','book.id','=','book_id')
@@ -228,11 +178,7 @@ class BookController extends AppController
     {
 
         $booksAlarms = \App\Book::where('start', '>', $startYear)->where('finish', '<', $endYear)
-                                ->whereIn('type_book', [
-                                    2,
-                                    7,
-                                    8
-                                ])->orderBy('start', 'ASC')->get();
+                                ->whereIn('type_book', [2,7,8])->orderBy('start', 'ASC')->get();
 
         $alarms = array();
 
@@ -277,6 +223,7 @@ class BookController extends AppController
 
         $date_start  = $request->input('start',null);
         $date_finish  = $request->input('finish',null);
+        if (!$date_start || !$date_finish ) die('error');
         // 4 es el extra correspondiente a el obsequio
         $extraPrice = \App\Extras::find(4)->price;
         $extraCost  = \App\Extras::find(4)->cost;
@@ -302,20 +249,23 @@ class BookController extends AppController
         $book->type_book     = ($request->input('status')) ? $request->input('status') : 3;
         $book->pax           = $request->input('pax',0);
         $book->real_pax      = $request->input('pax',0);
-        $book->nigths        = $request->input('nigths',0);
         $book->agency        = $request->input('agency',0);
         $book->PVPAgencia    = ($request->input('agencia')) ? $request->input('agencia') : 0;
         $book->is_fastpayment = ($book->type_book == 99 ) ? 1:0;
         $book->extraPrice = $extraPrice;
         $book->extraCost  = $extraCost;
+        $nigths = calcNights($book->start, $book->finish );
+        $book->nigths        = $nigths;
                 
         $room = \App\Rooms::find($request->input('newroom'));
+        
+        if (!$room) die('error');
         $costes = $room->priceLimpieza($room->sizeApto);
         $book->sup_limp  = $costes['price_limp'];
         $book->cost_limp = $costes['cost_limp'];
         //parking        
-        $book->sup_park  = $this->getPricePark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
-        $book->cost_park = $this->getCostPark($request->input('parking'), $request->input('nigths')) * $room->num_garage;
+        $book->sup_park  = $this->getPricePark($request->input('parking'), $nigths) * $room->num_garage;
+        $book->cost_park = $this->getCostPark($request->input('parking'), $nigths) * $room->num_garage;
         $book->type_park = $request->input('parking', 0);
         //suplemento de lujo
         $book->type_luxury = $request->input('type_luxury', 0);
@@ -325,7 +275,7 @@ class BookController extends AppController
         $subTotalCost = $book->cost_limp+$book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
         $book->real_price  = $room->getPVP($date_start, $date_finish,$book->pax) + $book->sup_park + $book->sup_lujo + $book->sup_limp;
         
-        
+    
         //from widget
         if ($request->input('from')) {
           
@@ -347,14 +297,6 @@ class BookController extends AppController
 
             $book->total_price = $book->real_price;
             $book->total_ben = $book->total_price - $book->cost_total;
-            //Porcentaje de beneficio
-            if ($book->total_price > 0)
-              $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
-            else
-              $book->inc_percent = 0;
-
-            $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
-            $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
             $book->promociones = 0;
 
             if ($book->save()) {
@@ -403,25 +345,18 @@ class BookController extends AppController
           }
         } else {
             $isReservable = 0;
-            
             if (in_array($book->type_book, $book->get_type_book_reserved())){
-                if ($book->availDate($date_start, $date_finish, $request->input('newroom')))
-                {
-                    $isReservable = 1;
-                }
+              if ($book->availDate($date_start, $date_finish, $request->input('newroom')))
+                $isReservable = 1;
             } else { $isReservable = 1; }
 
-            if ($isReservable == 1)
-            {
+            if ($isReservable == 1){
 
                 //createacion del cliente
                 $customer->user_id = (Auth::check()) ? Auth::user()->id : 23;
-                if ($customer->save())
-                {
-
+                if ($customer->save()){
                   $book->user_id             = $customer->user_id;
                   $book->customer_id         = $customer->id;
-
                   if ($book->type_book == 8){
                         $book->sup_limp    = 0;
                         $book->cost_limp   = 0;
@@ -434,23 +369,8 @@ class BookController extends AppController
                         $book->total_price = 0;
                         $book->real_price  = 0;
                         $book->total_ben   = 0;
-
-                        $book->inc_percent = 0;
-                        $book->ben_jorge   = 0;
-                        $book->ben_jaime   = 0;
-
                     }elseif ($book->type_book == 7){
-
                         $book->bookingProp($room);
-                        
-                        if ($book->total_price>0)
-                          $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
-                        else $book->inc_percent = 0;
-                        
-                        $book->ben_jorge   = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
-                        $book->ben_jaime   = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
-
-                      
                     }else{
                       $book->total_price = $request->input('total');
                       $book->cost_apto = ($request->input('costApto')) ? $request->input('costApto') : $room->getCostRoom($date_start,$date_finish,$book->pax);
@@ -462,13 +382,7 @@ class BookController extends AppController
                         $book->has_ff_discount = 1;
                         $book->real_price  -=  $request->input('discount');
                       }
-
                       $book->total_ben = intval($book->total_price) - intval($book->cost_total);
-                      $book->ben_jorge   = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
-                      $book->ben_jaime   = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
-                      
-                      if ($book->total_price>0)  $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
-                        else $book->inc_percent = 0;
                     }
                     
                     $book->schedule    = ($request->input('schedule')) ? $request->input('schedule') : 0;
@@ -510,8 +424,7 @@ class BookController extends AppController
 
     }
 
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
       
       $updateBlade = '';
       $hasVisa = false;
@@ -522,7 +435,7 @@ class BookController extends AppController
           $book  = \App\Book::with('payments')->find($id);
           $rooms = \App\Rooms::orderBy('order')->get();
           if ( $oUser->role == "admin" || $oUser->role == "subadmin"){
-          $oVisa = DB::table('book_visa')
+            $oVisa = DB::table('book_visa')
                     ->where('book_id',$book->id)
                     ->first();
             if ($oVisa){
@@ -571,17 +484,14 @@ class BookController extends AppController
          * Check low_profit alert
          */
         $low_profit   = false;
-        $inc_percent  = $book->get_inc_percent();
+        $inc_percent  = round($book->get_inc_percent());
         $percentBenef = DB::table('percent')->find(1)->percent;
 
-        if (round($inc_percent) <= $percentBenef)
-        {
-            if (!$book->has_low_profit)
-            {
-                $low_profit = true;
-            }
-        }
-
+        $book->cost_total = $book->get_costeTotal();
+        $book->inc_percent = $inc_percent;
+        $book->total_ben = round(intval($book->total_price) - $book->cost_total,2);
+        if ($inc_percent <= $percentBenef && !$book->has_low_profit)
+          $low_profit = true;
         //END: Check low_profit alert
         
         $priceBook = $book->room->getPVP($book->start, $book->finish, $book->park)-$book->promociones;
@@ -614,39 +524,23 @@ class BookController extends AppController
     }
 
     //Funcion para actualizar la reserva
-    public function saveUpdate(Request $request, $id)
-    {
-      
-      $IS_agente= false;
-      if ( Auth::user()->role != "agente"){
-        $book = Book::find($id);
-      } else {
-         
+    public function saveUpdate(Request $request, $id){
+      $IS_agente = false;
+      if ( Auth::user()->role == "agente"){
          return [
                 'status'   => 'warning',
                 'title'    => 'Cuidado',
                 'response' => "No puedes hacer cambios en la reserva"
             ];
-         
-          $IS_agente= true;
-          $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
-          $rooms       = \App\Rooms::whereIn('id', $roomsAgents)->orderBy('order')->get();
-          $types       = [1];
-          
-          $book = Book::with('payments')
-                  ->whereIn('type_book',$types)
-                  ->whereIn('room_id', $roomsAgents)
-                  ->find($id);
        }
 
+       $book = Book::find($id);
        if (!$book){
          return [
                 'status'   => 'danger',
                 'title'    => 'ERROR',
                 'response' => "RESERVA NO ENCONTRADA"
             ];
-         
-         return redirect('404');
        }
        
         $computedData = json_decode($request->input('computed_data'));
@@ -668,8 +562,7 @@ class BookController extends AppController
             $OldRoom   = $book->room_id;
             $oldStart  = $book->start;
             $oldFinish = $book->finish;
-            
-            
+
             $room = \App\Rooms::find($request->input('newroom'));
 
             $book->user_id     = Auth::user()->id;
@@ -682,10 +575,8 @@ class BookController extends AppController
             $book->book_comments       = ltrim($request->input('book_comments'));
             $book->pax                 = $request->input('pax');
             $book->real_pax            = $request->input('real_pax');
-            $book->nigths              = $request->input('nigths');
-            if(!$IS_agente){
-              $book->book_owned_comments = ($request->input('book_owned_comments')) ? $request->input('book_owned_comments') : "";
-            }
+            $book->nigths              = calcNights($book->start, $book->finish );
+            $book->book_owned_comments = ($request->input('book_owned_comments')) ? $request->input('book_owned_comments') : "";
             
             if ($book->type_book == 7){$book->bookingProp($room);} 
             else
@@ -694,22 +585,14 @@ class BookController extends AppController
                 $book->sup_park  = $computedData->totales->parking;
                 $book->sup_limp  = $computedData->totales->limp;
                 $book->cost_limp = $computedData->costes->limp;
-
-                
                 $book->real_price = $computedData->calculated->real_price;
-               
               }
             }
-           
-            
 
             if ($book->type_book !== 8){
-            
-            
               $book->type_park  = $request->input('parking');
               $book->agency     = $request->input('agency');
               $book->PVPAgencia = $request->input('agencia') ? : 0;
-
               $book->type_luxury = $request->input('type_luxury');
               if ($computedData){
                 $book->sup_lujo    = intval($computedData->totales->lujo);
@@ -717,20 +600,10 @@ class BookController extends AppController
               }
 
               $book->total_price = $request->input('total'); // This can be modified in frontend
-              if ($request->input('costApto'))   $book->cost_apto  = $request->input('costApto');
-              if ($request->input('cost'))  $book->cost_total = $request->input('cost');
+              if ($request->input('costApto'))   $book->cost_apto = $request->input('costApto');
               //Parking NO o Gratis
               if ($book->type_park == 2 || $book->type_park == 3) $book->cost_park = 0;
               if ($request->input('costParking'))  $book->cost_park  = $request->input('costParking');
-
-              if ($request->input('beneficio')) $book->total_ben = $request->input('beneficio');
-              else { //A subadmin has change the PVP
-                if ($book->cost_total>0){
-                  $profit = $book->total_price-$book->cost_total;
-                  $book->total_ben = $profit;
-                }
-              }
-
               if(!$IS_agente){  
                 $book->extra     = $request->input('extra');
 
@@ -752,11 +625,7 @@ class BookController extends AppController
                 if ($computedData){
                   $book->real_price  = $computedData->calculated->real_price; // This cannot be modified in frontend
                 }
-                $book->inc_percent = $book->profit_percentage;
-                $book->ben_jorge   = $book->getJorgeProfit();
-                $book->ben_jaime   = $book->getJaimeProfit();
               }
-//            $book->external_id  = $request->input('external_id');
             }
             if ($book->type_book == 8){
                 $book->sup_limp    = 0;
@@ -796,8 +665,6 @@ class BookController extends AppController
                     } else {
                       $book->sendAvailibilityBy_dates($date1,$date2);
                     }
-
-
                   } else {
                     if ($OldRoom != $book->room_id){
                       $book->sendAvailibilityBy_Rooms($OldRoom);
@@ -806,27 +673,27 @@ class BookController extends AppController
               }
               
               
-                if ($book->room->isAssingToBooking())
-                {
+              if ($book->room->isAssingToBooking())
+              {
 
-                    $isAssigned = \App\BookNotification::where('book_id', $book->id)->get();
+                  $isAssigned = \App\BookNotification::where('book_id', $book->id)->get();
 
-                    if (count($isAssigned) == 0)
-                    {
-                        $notification          = new \App\BookNotification();
-                        $notification->book_id = $book->id;
-                        $notification->save();
-                    }
-                } else
-                {
-                    $deleted = \App\BookNotification::where('book_id', $book->id)->delete();
-                }
+                  if (count($isAssigned) == 0)
+                  {
+                      $notification          = new \App\BookNotification();
+                      $notification->book_id = $book->id;
+                      $notification->save();
+                  }
+              } else
+              {
+                  $deleted = \App\BookNotification::where('book_id', $book->id)->delete();
+              }
 
-                return [
-                    'status'   => 'success',
-                    'title'    => 'OK',
-                    'response' => "ACTUALIZACION CORRECTA"
-                ];
+              return [
+                  'status'   => 'success',
+                  'title'    => 'OK',
+                  'response' => "ACTUALIZACION CORRECTA"
+              ];
             }
         } else
         {
@@ -839,109 +706,54 @@ class BookController extends AppController
         }
     }
 
-    public function changeStatusBook(Request $request, $id)
-    {
-        if (isset($request->status) && !empty($request->status))
-        {
+  /**
+   * Change Status or Rooms
+   * @param Request $request
+   * @param type $id
+   * @return type
+   */
+  public function changeBook(Request $request, $id){
+  
+      if (isset($request->room) && !empty($request->room)){
 
-            $book   = \App\Book::find($id);
-            $start  = Carbon::createFromFormat('Y-m-d', $book->start);
-            $finish = Carbon::createFromFormat('Y-m-d', $book->finish);
+          $book = \App\Book::find($id);
+          $oldRoom = $book->room_id;
+          $isReservable = 0;
+          if (in_array($book->type_book, $book->get_type_book_reserved())){
+            if (book::availDate($book->start, $book->finish, $request->room,$book->id)){
+               $isReservable = 1;
+            } else return ['status' => 'danger', 'title' => 'Error', 'response' => 'Habitación No disponible','changed'=>false];
+          } else  $isReservable = 1;
 
-            $isReservable = 0;
+          if ($isReservable){
+            $book->room_id = $request->room;
+            $book->save();
+            $book->sendAvailibilityBy_Rooms($oldRoom);
+            return ['status' => 'success', 'title' => 'OK', 'response' => 'Habitación modificada','changed'=>false];
+          }
 
-            if (in_array($request->status, [
-                1,
-                2,
-                4,
-                5,
-                7,
-                8
-            ]))
-            {
+          return ['status' => 'danger', 'title' => 'Error', 'response' => 'Habitación no modificada','changed'=>false];
 
-                if ($book->existDateOverrride($start->format('d/m/Y'), $finish->format('d/m/Y'), $book->room_id, $id))
-                {
-                    $isReservable = 1;
-                }
+      }
 
-            } else
-            {
-                $isReservable = 1;
-            }
+      if (isset($request->status) && !empty($request->status)){
+        
+          $book = Book::find($id);
+          $oldStatus = $book->type_book;
+          $response = $book->changeBook($request->status, "", $book);
+          if ($response['changed']){
+              $book->sendAvailibilityBy_status();
+          }
+          return $response;
 
-
-            if ($isReservable == 1)
-            {
-
-              $oldStatus = $book->type_book;
-              $typeBooksReserv =$book->typeBooksReserv;
-
-              $response = $book->changeBook($request->status, "", $book);
-              if ($response['status'] == 'success' || $response['status'] ==  'warning'){
-                $book->sendAvailibilityBy_status();
-                if ($book->type_book == 7){
-                  /* Asiento automatico para reservas subcomunidad*/
-                  $book->bookingProp(\App\Rooms::find($book->room_id));
-                  $book->save();
-                } else {
-                  //Remove automatic expenses
-                  \App\Expenses::delExpenseLimpieza($book->id);
-                }
-              }
-              return $response;
-                
-            } else
-            {
-
-                return [
-                    'status'   => 'danger',
-                    'title'    => 'Peligro',
-                    'response' => "No puedes cambiar el estado"
-                ];
-            }
-
-        }
-    }
-
-    public function changeBook(Request $request, $id)
-    {
-
-        if (isset($request->room) && !empty($request->room))
-        {
-
-            $book = \App\Book::find($id);
-            $oldRoom = $book->room_id;
-            
-            $response =  $book->changeBook("", $request->room, $book);
-            if ($response['status'] == 'success' || $response['status'] ==  'warning'){
-              $book->sendAvailibilityBy_Rooms($oldRoom);
-            }
-            return $response;
-            
-        }
-
-        if (isset($request->status) && !empty($request->status))
-        {
-
-            $book = Book::find($id);
-            $oldStatus = $book->type_book;
-            $typeBooksReserv =$book->typeBooksReserv;
-            
-            $response = $book->changeBook($request->status, "", $book);
-            if ($response['status'] == 'success' || $response['status'] ==  'warning'){
-                $book->sendAvailibilityBy_status();
-            }
-            return $response;
-
-        } else
-        {
-            return [
-                'status'   => 'danger',
-                'title'    => 'Error',
-                'response' => 'No hay datos para cambiar, por favor intentalo de nuevo'
-            ];
-        }
+      } else {
+        
+          return [
+              'status'   => 'danger',
+              'title'    => 'Error',
+              'response' => 'No hay datos para cambiar, por favor intentalo de nuevo'
+          ];
+      }
     }
 
     /**
@@ -1052,40 +864,6 @@ class BookController extends AppController
         return $costLuxury;
     }
 
-    public function getCostBook($start, $finish, $pax, $room)
-    {
-        $start     = Carbon::createFromFormat('d/m/Y', $start);
-        $finish    = Carbon::createFromFormat('d/m/Y', $finish);
-        $countDays = $finish->diffInDays($start);
-
-        $paxPerRoom = Rooms::getPaxRooms($pax, $room);
-
-        if ($paxPerRoom > $pax)
-        {
-            $pax = $paxPerRoom;
-        }
-        $costBook = 0;
-        $counter  = $start->copy();
-        for ($i = 1; $i <= $countDays; $i++)
-        {
-            $date = $counter->copy()->format('Y-m-d');
-
-            $seasonActive = Seasons::getSeasonType($date);
-            $costs        = Prices::getCostsFromSeason($seasonActive, $pax);
-
-            //            $seasonActive = $this->cachedRepository->getSeasonType($date);
-            //            $costs        = $this->cachedRepository->getCostsFromSeason($seasonActive, $pax);
-
-            foreach ($costs as $precio)
-            {
-                $costBook = $costBook + $precio['cost'];
-            }
-
-            $counter->addDay();
-        }
-        return $costBook;
-    }
-
     //Funcion para coger la reserva mobil
     public function tabReserva($id)
     {
@@ -1100,8 +878,7 @@ class BookController extends AppController
         $payments = \App\Payments::where('book_id', $id)->get();
         $pending  = 0;
 
-        foreach ($payments as $payment)
-        {
+        foreach ($payments as $payment){
             $pending += $payment->import;
         }
 
@@ -1122,8 +899,7 @@ class BookController extends AppController
         $payment->import      = $request->import;
         $payment->type        = $request->tipo;
 
-        if ($payment->save())
-        {
+        if ($payment->save()){
             return redirect()->action('BookController@index');
         }
 
@@ -1132,16 +908,14 @@ class BookController extends AppController
     // Funcion para elminar cobro
     public function deleteCobro($id)
     {
-        $payment = \App\Payments::find($id);
-
-        if ($payment->delete())
-        {
-            return redirect()->back();
+      $payment = \App\Payments::find($id);
+      if ($payment->delete()){
+          return redirect()->back();
         }
 
     }
 
-    //Funcion para gguardar Fianza
+    //Funcion para guardar Fianza
     public function saveFianza(Request $request)
     {
         $fianza = new \App\Bail();
@@ -1152,8 +926,7 @@ class BookController extends AppController
         $fianza->comment_in = $request->comentario;
         $fianza->type       = $request->tipo;
 
-        if ($fianza->save())
-        {
+        if ($fianza->save()){
             return redirect()->action('BookController@index');
         }
 
@@ -1161,48 +934,24 @@ class BookController extends AppController
 
     public function emails($id)
     {
-        $book = \App\Book::find($id);
-
-        return view('backend.emails.comprobar-fechas', ['book' => $book]);
-
-        Mail::send('backend.emails.jaime', ['book' => $book], function ($message) use ($book) {
-            $message->from('reservas@apartamentosierranevada.net');
-
-            $message->to($book->customer->email);
-            $message->subject('Correo a Jaime');
-        });
-
-        $book->send = 1;
-        $book->save();
-
+      $book = \App\Book::find($id);
+      return view('backend.emails.comprobar-fechas', ['book' => $book]);
     }
 
-    public function sendEmail(Request $request)
-    {
-
+    public function sendEmail(Request $request){
         $book = \App\Book::find($request->input('id'));
         if ($book){
           Mail::send('backend.emails.contestadoAdvanced', ['body' => nl2br($request->input('textEmail')),], function ($message) use ($book) {
               $message->from('reservas@apartamentosierranevada.net');
-
               $message->to($book->customer->email);
               $message->subject('Disponibilidad para tu reserva');
           });
-
           \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'sendEmailDisp','Disponibilidad para tu reserva',$request->input('textEmail'));
-
           // $book->send = 1;
           $book->type_book = 5;
-          if ($book->save())
-          {
-              return 1;
-          } else
-          {
-              return 0;
-          }
+          if ($book->save())  return 1;
         }
         return 0;
-
     }
 
     public function ansbyemail($id)
@@ -1216,12 +965,12 @@ class BookController extends AppController
     }
 
   public function delete($id) {
-
     try {
       $book = Book::find($id);
-      if (count($book->pago) > 0) {
+      $payments = $book->payments;
+      if (count($payments) > 0) {
         $total = 0;
-        foreach ($book->pago as $index => $pago){
+        foreach ($payments as $index => $pago){
           $total += $pago->import;
         }
         if ($total>0){
@@ -1259,12 +1008,10 @@ class BookController extends AppController
       ];
     }
   }
-    public function searchByName(Request $request)
-    {
+    
+  public function searchByName(Request $request){
         if ($request->searchString == '')
-        {
             return response()->json('', JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
-        }
 
         $year     = $this->getActiveYear();
         $dateFrom = new Carbon($year->start_date);
@@ -1283,8 +1030,7 @@ class BookController extends AppController
                           ->orderBy('start', 'ASC')->get();
 
         $payments = [];
-        foreach ($books as $book)
-        {
+        foreach ($books as $book){
             $payments[$book->id] = $book->payments->pluck('import')->sum();
         }
 
@@ -1292,33 +1038,6 @@ class BookController extends AppController
             'books'   => $books,
             'payment' => $payments
         ]);
-
-    }
-
-    public function changeCostes()
-    {
-        $books = \App\Book::all();
-
-
-        foreach ($books as $book)
-        {
-
-
-            if ($book->room->typeAptos->id == 1 || $book->room->typeAptos->id == 3)
-            {
-
-                $book->cost_total = $book->cost_limp + $book->cost_park + $book->cost_lujo + $book->extraCost;
-                $book->total_ben  = $book->total_price - $book->cost_total;
-                $book->cost_apto  = 0;
-
-
-            }
-            $book->ben_jorge = $book->total_ben * $book->room->typeAptos->PercentJorge / 100;
-            $book->ben_jaime = $book->total_ben * $book->room->typeAptos->PercentJaime / 100;
-
-            $book->save();
-        }
-
 
     }
 
@@ -1340,18 +1059,7 @@ class BookController extends AppController
         {
             $roomsAgents = \App\Rooms::all(['id'])->toArray();
             $rooms       = \App\Rooms::orderBy('order')->get();
-//            $rooms       = \App\Rooms::where('state', '=', 1)->get();
-            $types       = [
-                1,
-                3,
-                4,
-                5,
-                6,
-                10,
-                11,
-                98,
-                99
-            ];
+            $types       = [1,3,4,5,6,10,11,98,99];
         } else
         {
             $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
@@ -1483,18 +1191,11 @@ class BookController extends AppController
         $booksAux = array();
         foreach (\App\Payments::orderBy('id', 'DESC')->get() as $key => $payment)
         {
-            if (!in_array($payment->book_id, $booksAux))
-            {
-                $booksAux[] = $payment->book_id;
-            }
-            if (count($booksAux) == 10)
-            {
-                break;
-            }
+            if (!in_array($payment->book_id, $booksAux))  $booksAux[] = $payment->book_id;
+            if (count($booksAux) == 10) break;
         }
         $books = array();
-        for ($i = 0; $i < count($booksAux); $i++)
-        {
+        for ($i = 0; $i < count($booksAux); $i++){
             $books[] = \App\Book::find($booksAux[$i]);
         }
 
@@ -1502,187 +1203,12 @@ class BookController extends AppController
 
     }
 
-    public function getCalendarBooking(Request $request)
-    {
-        $mobile      = new Mobile();
-        $arrayMonths = array();
-        $arrayDays   = array();
-        if (empty($year))
-        {
-            $date = Carbon::now();
-        } else
-        {
-            $year = Carbon::createFromFormat('Y', $year);
-            $date = $year->copy();
-
-        }
-        $firstDayOfTheYear = new Carbon('first day of September ' . $date->copy()->format('Y'));
-        $rooms             = \App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get();
-        $typesRoom         = [
-            '2dorm-lujo'   => [
-                'total'  => 0,
-                'name'   => '2DL',
-                'months' => []
-            ],
-            'estudio'      => [
-                'total'  => 0,
-                'name'   => 'EST',
-                'months' => []
-            ],
-            '2dorm-stand'  => [
-                'total'  => 0,
-                'name'   => '2DS',
-                'months' => []
-            ],
-            'chalet'       => [
-                'total'  => 0,
-                'name'   => 'CHL',
-                'months' => []
-            ],
-            '10pers-stand' => [
-                'total'  => 0,
-                'name'   => '3DS',
-                'months' => []
-            ],
-
-            '12pers-stand' => [
-                'total'  => 0,
-                'name'   => '4DS',
-                'months' => []
-            ]
-        ];
-        $book              = new \App\Book();
-        $auxDate           = $firstDayOfTheYear->copy();
-        foreach ($rooms as $key => $room)
-        {
-            if ($room->luxury == 1 && $room->sizeApto == 2)
-            {
-                $typesRoom['2dorm-lujo']['total'] += 1;
-            }
-
-            if ($room->luxury == 1 && $room->sizeApto == 1)
-            {
-                $typesRoom['estudio']['total'] += 1;
-            }
-
-            if ($room->luxury == 0 && $room->sizeApto == 9){
-               $typesRoom['chalet']['total'] += 1;
-            }
-            if ($room->luxury == 0 && $room->sizeApto == 2)
-            {
-                $typesRoom['2dorm-stand']['total'] += 1;
-            }
-
-            if ($room->luxury == 0 && $room->sizeApto == 1)
-            {
-                $typesRoom['estudio']['total'] += 1;
-            }
-
-
-            if ($room->luxury == 0 && $room->sizeApto == 3)
-            {
-                $typesRoom['10pers-stand']['total'] += 1;
-            }
-
-            if ($room->luxury == 0 && $room->sizeApto == 4)
-            {
-                $typesRoom['12pers-stand']['total'] += 1;
-            }
-        }
-
-        for ($i = 1; $i <= 12; $i++)
-        {
-            $startMonth = $auxDate->copy()->startOfMonth();
-            $day        = $startMonth;
-
-            $arrayMonths[$auxDate->copy()->format('n')] = $day->copy()->format('t');
-            for ($j = 1; $j <= $day->copy()->format('t'); $j++)
-            {
-                $arrayDays[$auxDate->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
-                foreach ($typesRoom as $key => $room)
-                {
-                    $typesRoom[$key]['months'][$day->copy()->format('n')][$day->copy()
-                                                                              ->format('j')] = $typesRoom[$key]['total'];
-                }
-
-                $day = $day->copy()->addDay();
-            }
-            $auxDate->addMonth();
-        }
-
-        $dateX = $date->copy();
-
-        $reservas = \App\Book::whereIn('type_book', [
-            1,
-            2,
-            4,
-            7
-        ])->where('start', '>=', $firstDayOfTheYear->copy())->where('finish', '<=', $firstDayOfTheYear->copy()
-                                                                                                      ->addYear())
-                             ->get();
-
-        foreach ($reservas as $reserva)
-        {
-            $room = \App\Rooms::find($reserva->room_id);
-
-            $start  = Carbon::createFromFormat('Y-m-d', $reserva->start);
-            $finish = Carbon::createFromFormat('Y-m-d', $reserva->finish);
-            $diff   = $start->diffInDays($finish);
-            $dia    = Carbon::createFromFormat('Y-m-d', $reserva->start);
-            for ($i = 1; $i <= $diff; $i++)
-            {
-                if ($room->luxury == 1 && $room->sizeApto == 2)
-                {
-                    $typesRoom['2dorm-lujo']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-                }
-                if ($room->luxury == 1 && $room->sizeApto == 1)
-                {
-                    $typesRoom['estudio']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-                }
-                if ($room->sizeApto == 9){
-                  $typesRoom['chalet']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-                }
-                if ($room->luxury == 0 && $room->sizeApto == 2)
-                {
-                  $typesRoom['2dorm-stand']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-                }
-                if ($room->luxury == 0 && $room->sizeApto == 1)
-                {
-                    $typesRoom['estudio']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-                }
-                if ($room->luxury == 1 && $room->sizeApto == 3)
-                {
-                    $typesRoom['10pers-lujo']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-                }
-                if ($room->luxury == 0 && $room->sizeApto == 3)
-                {
-                    $typesRoom['10pers-stand']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-                }
-                if ($room->luxury == 1 && $room->sizeApto == 4)
-                {
-                    $typesRoom['12pers-lujo']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-                }
-                if ($room->luxury == 0 && $room->sizeApto == 4)
-                {
-                    $typesRoom['12pers-stand']['months'][$dia->copy()->format('n')][$dia->copy()->format('j')] -= 1;
-                }
-
-                $dia->addDay();
-            }
-        }
-        $days = $arrayDays;
-
-        return view('backend.planning._calendarToBooking', compact('days', 'dateX', 'arrayMonths', 'mobile', 'typesRoom'));
-    }
-
     function getAlertsBooking(Request $request)
     {
         return view('backend.planning._tableAlertBooking', compact('days', 'dateX', 'arrayMonths', 'mobile'));
     }
 
-    public function getCalendarMobileView($month=null)
-    {
-
+    public function getCalendarMobileView($month=null){
         $mes           = [];
         $arrayReservas = [];
         $arrayMonths   = [];
@@ -1693,11 +1219,6 @@ class BookController extends AppController
 
         $type_book_not = [0,3,6,12,99];
         $uRole = Auth::user()->role;
-//        if ($uRole == "agente" || $uRole == "limpieza"){
-//            $type_book_not[] = 8;
-//        }
-        
-        
         $mobile = new Mobile();
         $isMobile = $mobile->isMobile();
         if (!$month){
@@ -1734,9 +1255,8 @@ class BookController extends AppController
             }
         }
         
-//        dd($arrayReservas);
-
         $firstDayOfTheYear = $startAux->copy();
+        $dayWeek = ["D","L","M","X","J","V", "S"];
         for ($i = 1; $i < 4; $i++)
         {
 
@@ -1750,8 +1270,7 @@ class BookController extends AppController
             for ($j = 1; $j <= $day->copy()->format('t'); $j++)
             {
 
-                $arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = \App\Book::getDayWeek($day->copy()
-                                                                                                    ->format('w'));
+                $arrayDays[$firstDayOfTheYear->copy()->format('n')][$j] = $dayWeek[$day->copy()->format('w')];
                 $day                                                    = $day->copy()->addDay();
 
             }
@@ -1759,10 +1278,6 @@ class BookController extends AppController
             $firstDayOfTheYear->addMonth();
 
         }
-
-        //unset($arrayMonths[6]);
-        //unset($arrayMonths[7]);
-        //unset($arrayMonths[8]);
 
         if (Auth::user()->role != "agente")
         {
@@ -1777,15 +1292,9 @@ class BookController extends AppController
         }
         $days = $arrayDays;
 
-        
-
-//ob_start("ob_html_compress");
-  $buffer = ob_html_compress(view('backend.planning.calendar.content', compact('arrayBooks', 'arrayMonths', 'arrayTotales', 'rooms', 'roomscalendar', 'arrayReservas', 'mes', 'date', 'extras', 'days', 'startYear', 'endYear','currentM','startAux')));
-//  $buffer = ob_get_contents();
-//ob_end_flush();
-//echo $buffer; die;
- return view('backend.planning.calendar.index',['content'=>$buffer]);
-        return $buffer;
+      $buffer = ob_html_compress(view('backend.planning.calendar.content', compact('arrayBooks', 'arrayMonths', 'arrayTotales', 'rooms', 'roomscalendar', 'arrayReservas', 'mes', 'date', 'extras', 'days', 'startYear', 'endYear','currentM','startAux')));
+      return view('backend.planning.calendar.index',['content'=>$buffer]);
+      
     }
 
     static function getCounters($type)
@@ -1837,8 +1346,6 @@ class BookController extends AppController
                 $dateX      = Carbon::now();
                 $booksCount = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))->where('finish', '<', $year->end_date)
                                   ->where('type_book', 2)->orderBy('finish', 'ASC')->count();
-//                $booksCount = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $dateX)
-//                                       ->where('type_book', 2)->count();
                 break;
             case 'eliminadas':
                 $dateX      = Carbon::now();
@@ -1971,73 +1478,24 @@ class BookController extends AppController
         return view('backend/planning/_fianza', compact('book', 'hasFiance', 'stripe'));
     }
 
-    public function checkSecondPay()
-    {
-
-      return;
-        $daysToCheck = \App\DaysSecondPay::find(1)->days;
-        /* Esta funcion tiene una cron asosciada que se ejecuta los dia 1 y 15 de cada mes, es decir cad 2 semanas */
-        $date  = Carbon::now();
-        $books = \App\Book::where('start', '>=', $date->copy())->where('finish', '<=', $date->copy()
-                                                                                            ->addDays($daysToCheck))
-                          ->where('type_book', 2)->where('send', 0)->orderBy('created_at', 'DESC')->get();
-
-
-        foreach ($books as $key => $book)
-        {
-            if ($book->send == 0)
-            {
-                if (!empty($book->customer->email) && $book->id == 3908)
-                {
-                    $book->send = 1;
-                    $book->save();
-                    $this->sendEmail_secondPayBook($book, 'Recordatorio de pago Apto. de lujo Miramarski - ' . $book->customer->name);
-                    if ($sended = 1)
-                    {
-                        echo json_encode([
-                                             'status'   => 'success',
-                                             'title'    => 'OK',
-                                             'response' => "Recordatorios enviados correctamente"
-                                         ]);
-                        echo "<br><br>";
-                    } else
-                    {
-                        echo json_encode([
-                                             'status'   => 'danger',
-                                             'title'    => 'Error',
-                                             'response' => "El email no se ha enviado, por favor intentalo de nuevo"
-                                         ]);
-                        echo "<br><br>";
-                    }
-                } else
-                {
-                    $book->send = 1;
-                    $book->save();
-                }
-            }
-
-        }
-
-    }
-
-    public function getAllDataToBook(Request $request)
-    {
+    public function getAllDataToBook(Request $request){
+        $data = ['costes'=>[],'totales'=>[],'calculated'=>[]];
         $room = \App\Rooms::with('extra')->find($request->room);
-
-        if ($request->book_id)
-        {
-            $book = Book::find($request->book_id);
+        if (!$room){
+          return null;
         }
-
-       
-        
+        if ($request->book_id){
+          $book = Book::find($request->book_id);
+          if ($book){
+            $paymentTPV = $book->getPayment(2);
+            if ($paymentTPV>0){
+              $data['costes']['tpv'] = paylandCost($paymentTPV);
+            }
+          }
+        }
         $promotion = $request->promotion ? floatval($request->promotion) : 0;
-
-        
         $start  = $request->start;
         $finish = $request->finish;
-        
-        
         $data['costes']['parking']   = $this->getCostPark($request->park, $request->noches) * $room->num_garage;
         $data['costes']['book']      = $room->getCostRoom($start, $finish, $request->park)-$promotion;
         $data['costes']['lujo']      = $this->getCostLujo($request->lujo);
@@ -2063,24 +1521,14 @@ class BookController extends AppController
         {
             $totalPrice                    = $request->total_price;
             $data['aux']['price_modified'] = $totalPrice;
-        } else
-        {
-            // Otherwise if the request has a book and book exists
-            if (isset($book))
-            {
-                // If the price has been modified in DB already
-                if ($book->total_price != $book->real_price)
-                {
-                    $totalPrice                    = $book->total_price;
-                    $data['aux']['price_modified'] = $totalPrice;
-                } else
-                {
-                    $totalPrice = array_sum($data['totales']);
-                }
-            } else
-            {
-                $totalPrice = array_sum($data['totales']);
-            }
+        } else {
+          $totalPrice = array_sum($data['totales']);
+          // Otherwise if the request has a book and book exists
+          if (isset($book) && $book->total_price != $book->real_price){
+            // If the price has been modified in DB already
+            $totalPrice                    = $book->total_price;
+            $data['aux']['price_modified'] = $totalPrice;
+          }
         }
         $totalPrice = ($totalPrice == 0) ? $data['totales']['book'] : $totalPrice;
 
@@ -2099,32 +1547,17 @@ class BookController extends AppController
     public function saveComment(Request $request, $idBook, $type)
     {
         $book = \App\Book::find($idBook);
-
         switch ($type)
         {
-            case '1':
-                $book->comment = $request->value;
+            case '1': $book->comment = $request->value;
                 break;
-
-            case '2':
-                $book->book_comments = $request->value;
+            case '2': $book->book_comments = $request->value;
                 break;
-
-            case '3':
-                $book->book_owned_comments = $request->value;
+            case '3': $book->book_owned_comments = $request->value;
                 break;
         }
-
-        if ($book->save())
-        {
-            return [
-                'status'   => 'success',
-                'title'    => 'OK',
-                'response' => "Comentarios guardados"
-            ];
-        };
-
-
+        $book->save();
+        return ['status'   => 'success','title'    => 'OK','response' => "Comentarios guardados" ];
     }
 
     public static function getBookFFData(Request $request, $request_id)
@@ -2186,48 +1619,11 @@ class BookController extends AppController
         }
     }
 
-    public function demoFormIntegration(Request $request)
-    {
-        $minMax = \App\Rooms::where('state', 1)->selectRaw('min(minOcu) as min, max(maxOcu) as max')->first();
-        return view('backend.form_demo', ['minMax' => $minMax]);
-    }
-
-    public function apiCheckBook(Request $request)
-    {
-        $rooms   = [];
-        $auxDate = explode('-', $request->input('result')['dates']);
-        $start   = Carbon::createFromFormat('d M, y', trim($auxDate[0]));
-        $finish  = Carbon::createFromFormat('d M, y', trim($auxDate[1]));
-        $name    = $request->input('result')['name'];
-        $email   = $request->input('result')['email'];
-        $phone   = $request->input('result')['phone'];
-        $dni     = $request->input('result')['dni'];
-        $pax     = $request->input('result')['pax'];
-
-        $roomsWithPax = \App\Rooms::where('state', 1)->where('minOcu', '<=', $pax)->where('maxOcu', '>=', $pax)->get();
-        foreach ($roomsWithPax as $index => $roomsWithPax)
-        {
-            if (\App\Book::existDate($start->copy()->format('d/m/Y'), $finish->copy()
-                                                                             ->format('d/m/Y'), $roomsWithPax->id)) $rooms[] = $roomsWithPax;
-        }
-
-        $instantPayment = (\App\Settings::where('key', 'instant_payment')
-                                        ->first()) ? \App\Settings::where('key', 'instant_payment')
-                                                                  ->first()->value : false;
-
-        return view('backend.api.response-book-request', [
-            'rooms'          => $rooms,
-            'start'          => $start,
-            'finish'         => $finish,
-            'pax'            => $pax,
-            'name'           => $name,
-            'email'          => $email,
-            'phone'          => $phone,
-            'dni'            => $dni,
-            'instantPayment' => $instantPayment,
-        ]);
-    }
-
+    /**
+     * Get Booking from CALCULAR RESERVAS
+     * @param Request $request
+     * @return type
+     */
     public function getTotalBook(Request $request)
     {
 
@@ -2498,6 +1894,7 @@ class BookController extends AppController
     function getIntercambio(){
       return view('backend.planning._bookIntercambio');
     }
+    
     function getIntercambioSearch($block,$search){
       
       if (trim($search) == '') return '';
@@ -2523,11 +1920,11 @@ class BookController extends AppController
           $books = \App\Book::whereIn('customer_id', $customerIds)->where('start', '>=', $dateFrom)
                         ->where('start', '<=', $dateTo)->where('type_book', '!=', 9)->where('type_book', '!=', 0)
                         ->orderBy('start', 'ASC')->get();
-//          dd($books[0]->customer->name);
         }
       }
       return view('backend.planning.listados._bookIntercambio',['block'=>$block,'books'   => $books,'book'=>null]);
     }
+    
     function intercambioChange(Request $request){
       
       $book_1 = $request->input('book_1',null);

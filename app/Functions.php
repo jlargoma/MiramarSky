@@ -256,7 +256,7 @@ function getCloudfl($url){
   
 function paylandCost($val){
   if ($val>0)
-    return ((1.2 * $val) / 100);
+    return round((1.2 * $val) / 100,2);
   
   return 0;
 }

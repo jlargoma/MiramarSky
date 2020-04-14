@@ -196,12 +196,10 @@
                                 <input class="updatePVP" type="number" step="0.01" value="<?php echo round($book->total_price);?>" data-idBook="<?php echo $book->id; ?>"/>
                             </td>
                             <td class="text-center coste banco" style="border-left: 1px solid black;">
-                              <?php $aux = $book->getPayment(2) + $book->getPayment(3); ?>
-                              <?php echo ($aux == 0)? '---' : number_format($aux,0,',','.').' €'; ?>
+                              {{moneda($books_payments[$book->id]['banco'],false)}}
                             </td>
                             <td class="text-center coste caja" style="border-left: 1px solid black;">
-                              <?php $aux = $book->getPayment(0) + $book->getPayment(1); ?>
-                              <?php echo ($aux == 0)? '---' : number_format($aux,0,',','.').' €'; ?>
+                               {{moneda($books_payments[$book->id]['caja'],false)}}
                             </td>
                             <td class="text-center coste pagos pendiente red <?php if($book->pending > 0){ echo
                             'alert-limp'; }?>" style="border-left: 1px solid black;" >
@@ -210,20 +208,7 @@
 
                             </td>
                             <td class="text-center beneficio bi" style="border-left: 1px solid black;">
-                                <?php $profit = $book->profit?>
-	                            <?php $cost_total = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia + $book->extraCost;?>
-	                            <?php $total_price = $book->total_price?>
-	                            <?php $inc_percent = 0?>
-	                            <?php
-                                    if($book->room->luxury == 0 && $book->cost_lujo > 0) {
-	                            	    $profit     = $book->profit - $book->cost_lujo;
-	                                    $cost_total = $book->cost_total - $book->cost_lujo;
-	                                    $total_price = ( $book->total_price - $book->sup_lujo );
-                                    }
-                                    if ($total_price != 0)
-                                        $inc_percent = ($profit/ $total_price )*100;
-                                ?>
-                                <?php echo number_format($profit,0,',','.') ?> €</b>
+                               {{moneda($book->total_ben)}}
                             </td>
                             <?php if(round($book->inc_percent) <= $percentBenef && round($book->inc_percent) > 0): ?>
                                 <?php $classDanger = "background-color: #f8d053!important; color:black!important;" ?>
@@ -233,10 +218,10 @@
                                 <?php $classDanger = "" ?>
                             <?php endif; ?>
                             <td class="text-center beneficio bf " style="border-left: 1px solid black; <?php echo $classDanger ?>">
-	                            <?php echo number_format($inc_percent,0)."%" ?>
+	                            <?php echo $book->inc_percent."%" ?>
                             </td>
                             <td class="text-center coste bi " style="border-left: 1px solid black;">
-                                {{$cost_total}}
+                                {{$book->cost_total}}
                             </td>
                             <td class="text-center coste" style="border-left: 1px solid black;">
                                 <input class="updateCostApto" type="number" value="<?php echo round($book->cost_apto); ?>" data-idBook="<?php echo $book->id; ?>"/>
@@ -329,21 +314,25 @@ $(document).ready(function() {
 		var id = $(this).attr('data-idBook');
 		var limp = $(this).val();
 		$.get( "/admin/sales/updateLimpBook/"+id+"/"+limp).done(function( data ) {
-
+                  if (data != 'OK') alert('Ups, no se ha guardado su cambio');
 		});
  	});
 
   	$('.updateExtraCost').change(function(){
     	var id = $(this).attr('data-idBook');
     	var extraCost = $(this).val();
-    	$.get( "/admin/sales/updateExtraCost/"+id+"/"+extraCost).done(function( data ) {console.log(data)});
+    	$.get( "/admin/sales/updateExtraCost/"+id+"/"+extraCost).done(function( data ) {
+          if (data != 'OK') alert('Ups, no se ha guardado su cambio');
+        });
     });
 
 
 	$('.updateCostApto').change(function(){
     	var id = $(this).attr('data-idBook');
     	var costApto = $(this).val();
-    	$.get( "/admin/sales/updateCostApto/"+id+"/"+costApto).done(function( data ) {console.log(data)});
+    	$.get( "/admin/sales/updateCostApto/"+id+"/"+costApto).done(function( data ) {
+          if (data != 'OK') alert('Ups, no se ha guardado su cambio');
+        });
 
     });
 
