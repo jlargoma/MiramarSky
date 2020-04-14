@@ -312,8 +312,7 @@ $mobile = new Mobile();
   <?php if (Auth::user()->role == "admin"): ?>
                 <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #99D9EA;">
                   <label class="font-w800 text-white" for="">COSTE TOTAL</label>
-                  <input type="number" step='0.01' class="form-control cost m-t-10 m-b-10 white"
-                         name="cost" value="<?php echo $book->cost_total ?>">
+                  <input  readonly="" class="form-control cost m-t-10 m-b-10 white" value="{{$book->cost_total}}">
                 </div>
                 <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #91cf81;">
                   <label class="font-w800 text-white" for="">COSTE APTO</label>
@@ -328,10 +327,8 @@ $mobile = new Mobile();
                 <div class="col-md-3 col-xs-12 text-center boxtotales not-padding"
                      style="background: #ff7f27;">
                   <label class="font-w800 text-white" for="">BENEFICIO</label>
-                  <input type="number" step='0.01'
-                         class="form-control text-left beneficio m-t-10 m-b-10 white" name="beneficio"
-                         value="<?php echo $book->total_ben ?>">
-                  <div class="beneficio-text font-w400 font-s18 white"><?php echo number_format($book->inc_percent, 0) . "%" ?></div>
+                  <input class="form-control beneficio m-t-10 m-b-10 white" value="{{$book->total_ben}}" readonly="">
+                  <div class="beneficio-text font-w400 font-s18 white">{{$book->inc_percent}}%</div>
                 </div>
   <?php endif ?>
 

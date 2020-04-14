@@ -272,17 +272,16 @@ class OwnedController extends AppController {
 
     $date = explode('-', $aux);
 
-    $start = Carbon::createFromFormat('d M, y', trim($date[0]))->format('d/m/Y');
-    $finish = Carbon::createFromFormat('d M, y', trim($date[1]))->format('d/m/Y');
-
-    $diff = Carbon::createFromFormat('d M, y', trim($date[1]))
-            ->diffInDays(Carbon::createFromFormat('d M, y', trim($date[0])));
-
+    $start = Carbon::createFromFormat('d M, y', trim($date[0]));
+    $finish = Carbon::createFromFormat('d M, y', trim($date[1]));
+    $diff = $start->diffInDays($finish);
+    $startDate = $start->format('Y-m-d');
+    $finishDate = $finish->format('Y-m-d');
     $room = \App\Rooms::find($request->input('room'));
 
     $book = new Book();
 
-    if ($book->existDate($start, $finish, $room->id)) {
+    if (Book::availDate($startDate, $finishDate, $room->id)) {
       $bloqueo = new \App\Customers();
       $bloqueo->user_id = Auth::user()->id;
       $bloqueo->name = 'Bloqueo ' . Auth::user()->name;
@@ -290,8 +289,8 @@ class OwnedController extends AppController {
       $book->user_id = Auth::user()->id;
       $book->customer_id = $bloqueo->id;
       $book->room_id = $room->id;
-      $book->start = Carbon::CreateFromFormat('d/m/Y', $start)->format('Y-m-d');
-      $book->finish = Carbon::CreateFromFormat('d/m/Y', $finish)->format('Y-m-d');
+      $book->start = $startDate;
+      $book->finish = $finishDate;
       $book->nigths = $diff;
       $book->type_book = 7;
  

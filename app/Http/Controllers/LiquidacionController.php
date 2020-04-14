@@ -1800,8 +1800,6 @@ class LiquidacionController extends AppController {
           $totales["bancoJaime"] += $book->getPayment(3);
           $totales["jorge"] += $book->getPayment(0);
           $totales["jaime"] += $book->getPayment(1);
-          $totales["benJorge"] += $book->getJorgeProfit();
-          $totales["benJaime"] += $book->getJaimeProfit();
           $totales["limpieza"] += $book->sup_limp;
           $totales["beneficio"] += $book->profit;
           $totales["stripe"] += $book->stripeCost;
