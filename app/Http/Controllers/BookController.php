@@ -489,7 +489,7 @@ class BookController extends AppController
 
         $book->cost_total = $book->get_costeTotal();
         $book->inc_percent = $inc_percent;
-        $book->total_ben = $book->total_price - $book->cost_total;
+        $book->total_ben = round(intval($book->total_price) - $book->cost_total,2);
         if ($inc_percent <= $percentBenef && !$book->has_low_profit)
           $low_profit = true;
         //END: Check low_profit alert
@@ -967,9 +967,10 @@ class BookController extends AppController
   public function delete($id) {
     try {
       $book = Book::find($id);
-      if (count($book->pago) > 0) {
+      $payments = $book->payments;
+      if (count($payments) > 0) {
         $total = 0;
-        foreach ($book->pago as $index => $pago){
+        foreach ($payments as $index => $pago){
           $total += $pago->import;
         }
         if ($total>0){

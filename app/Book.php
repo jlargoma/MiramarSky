@@ -59,6 +59,10 @@ class Book extends Model {
   public function payments() {
     return $this->hasMany(Payments::class);
   }
+  
+  public function notifications() {
+    return $this->hasMany('\App\BookNotification', 'book_id', 'id');
+  }
 
   public function partee() {
     return $this->hasOne(BookPartee::class)->first();
@@ -450,13 +454,13 @@ class Book extends Model {
   
   static function getMonthSum($field,$filter,$date1,$date2) {
     
-    $typeBooks = '(2, 7, 8)';
+    $typeBooks = '(2,8)';
   
     return DB::select('SELECT new_date, SUM('.$field.') as total '
             . ' FROM ('
             . '        SELECT '.$field.',DATE_FORMAT('.$filter.', "%m-%y") new_date '
             . '        FROM book'
-            . '        WHERE type_book IN '.$typeBooks
+            . '        WHERE type_book = 2 '
             . '        AND '.$filter.' >= "'.$date1.'" '
             . '        AND '.$filter.' <= "'.$date2.'" '
             . '      ) AS temp_1 '
@@ -866,4 +870,8 @@ class Book extends Model {
   
   function getJorgeProfit(){return 0;}
   function getJaimeProfit(){return 0;}
+  
+  public function SafetyBox() {
+    return $this->hasOne(\App\BookSafetyBox::class)->first();
+  }
 }

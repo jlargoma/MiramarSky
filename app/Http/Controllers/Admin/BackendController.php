@@ -300,10 +300,10 @@ class BackendController extends AppController
 
             $book->save();
 
-            if ( count( $book->pago ) > 0){
+            if ( count( $book->payments ) > 0){
 
 
-	            foreach ( $book->pago as $pago ) {
+	            foreach ( $book->payments as $pago ) {
 
 		            $pago->import = $book->total_price;
 		            $pago->save();

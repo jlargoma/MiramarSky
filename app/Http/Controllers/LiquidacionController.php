@@ -2105,8 +2105,6 @@ class LiquidacionController extends AppController {
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
     
-
-    
     // calculate total by month: limp and extra
     $dates = getArrayMonth($startYear,$endYear);
     $t_month = [];
@@ -2137,21 +2135,6 @@ class LiquidacionController extends AppController {
         if (isset($t_month[$item->new_date])){
           $t_month[$item->new_date]['limp'] = $item->total;
           $totalCostBooks += $item->total;
-        }
-      }
-    }
-    
-    $monthlyFix = \App\Expenses::select('import',DB::raw('DATE_FORMAT(date, "%m-%y") new_date'))
-            ->where('date', '>=', $startYear)
-            ->where('date', '<=', $endYear)
-            ->where('type', 'LIMPIEZA')
-            ->where('concept', 'LIMPIEZA MENSUAL')
-            ->get();
-    if (count($monthlyFix)) {
-      foreach ($monthlyFix as $m){
-        if (isset($t_month[$m->new_date])){
-          $t_month[$m->new_date]['limp'] += $m->import;
-          $totalCostBooks += $m->import;
         }
       }
     }
@@ -2198,8 +2181,8 @@ class LiquidacionController extends AppController {
     
     $monthlyCost = \App\Book::getMonthSum('cost_limp','finish',$startYear,$endYear);
     foreach ($monthlyCost as $item) {
-      $cMonth = intval(substr($item->new_date,0,2));
-      $lstMonthlyCost[$cMonth] = floatval($item->total);
+//      $cMonth = intval(substr($item->new_date,0,2));
+      $lstMonthlyCost[$item->new_date] = floatval($item->total);
     }
 
     //Prepare objets to JS Chars
@@ -2215,11 +2198,12 @@ class LiquidacionController extends AppController {
         $selected = $d['y'].','.$d['m'];
       }
 
+      $id = $d['m'] . '-' . $d['y'];
       $months_lab .= "'" . $arrayMonth[$d['m'] - 1] . "',";
-      if (!isset($lstMonthlyCost[$d['m']])) {
+      if (!isset($lstMonthlyCost[$id])) {
         $months_val[] = 0;
       } else {
-        $months_val[] = $lstMonthlyCost[$d['m']];
+        $months_val[] = $lstMonthlyCost[$id];
       }
       //Only to the Months select
       $months_obj[] = [
@@ -2273,32 +2257,10 @@ class LiquidacionController extends AppController {
       $endYear = $oYear->end_date;
     }
     
-    $monthly = \App\Expenses::where('date', '>=', $startYear)
-                    ->where('date', '<=', $endYear)
-                    ->where('type', 'limpieza')
-                    ->orderBy('date', 'ASC')
-                    ->get();
-    if ($monthly) {
-      foreach ($monthly as $k=>$v){
-        $month_cost[] = [
-            'id' => 'expenses_'.$v->id,
-            'concept'=>$v->concept,
-            'import'=>$v->import,
-            'date'=>date('Y-m', strtotime($v->date)),
-            'date_text'=> convertDateToShow_text($v->date,true)
-          ];
-        $total_limp += $v->import;
-      }
-    }
-
-
-    $lstBooks = \App\Book::where_type_book_sales()->where('finish', '>=', $startYear)
+    $lstBooks = \App\Book::where('finish', '>=', $startYear)
                     ->where('finish', '<=', $endYear)
+                    ->where('type_book', 2)
                     ->orderBy('finish', 'ASC')->get();
-
-
-    
-
     foreach ($lstBooks as $key => $book) {
       $agency = ($book->agency != 0) ? '/pages/' . strtolower($book->getAgency($book->agency)) . '.png' : null;
       $type_book = null;
@@ -2627,6 +2589,7 @@ class LiquidacionController extends AppController {
     $percentBenef = DB::table('percent')->find(1)->percent;
     $lowProfits = [];
 
+    $payments = [];
     $additionals = [];
     foreach ($books as $key => $book) {
 
@@ -2634,8 +2597,15 @@ class LiquidacionController extends AppController {
       $totales["total"] += $book->total_price;
       $totales["costeApto"] += $book->cost_apto;
       $totales["costePark"] += $book->cost_park;
-      
-      $totales['coste'] += $book->get_costeTotal();
+      $book->cost_total = $book->get_costeTotal();
+      $book->total_ben = $book->total_price - $book->cost_total;
+      $book->inc_percent = round($book->get_inc_percent(),2);
+      $payments[$book->id] = [
+          'banco'=>$book->getPayment(2) + $book->getPayment(3),
+          'caja'=>$book->getPayment(0) + $book->getPayment(1),
+              ];
+      $book->pending = $book->total_price - array_sum($payments[$book->id]);
+      $totales['coste'] += $book->cost_total;
       if ($book->type_luxury == 1 || $book->type_luxury == 3 || $book->type_luxury == 4) {
         $totales["costeLujo"] += $book->cost_lujo;
       } 
@@ -2646,8 +2616,6 @@ class LiquidacionController extends AppController {
       $totales["bancoJaime"] += $book->getPayment(3);
       $totales["jorge"] += $book->getPayment(0);
       $totales["jaime"] += $book->getPayment(1);
-      $totales["benJorge"] += $book->getJorgeProfit();
-      $totales["benJaime"] += $book->getJaimeProfit();
       $totales["limpieza"] += $book->sup_limp;
 //      $totales["beneficio"] += $book->profit;
       $totales["stripe"] += $book->stripeCost;
@@ -2731,6 +2699,7 @@ class LiquidacionController extends AppController {
     
      return [
           'books' => $books,
+          'books_payments' => $payments,
           'lowProfits' => $lowProfits,
           'alert_lowProfits' => $alert_lowProfits,
           'percentBenef' => $percentBenef,
