@@ -174,7 +174,19 @@
             </div>
           </div>
         </div>
+        
+            <div class="row">
+              <div class="col-md-8">
+                <h2 class="text-left"> Indicadores de ocupación</h2>
+              </div>
+              <div class="col-md-4 text-right">
+                <label style="width: 100%; padding-right: 4em;">Benef critico</label>
+                <span style="float: right;font-size: 2em;">%</span>
+                <input class="form-control font-w400 text-center percentBenef" value="<?php echo $percentBenef ?>" /> 
+              </div>
+            </div>
         <div class="row">
+          @include('backend.sales._tableSummaryBoxes')
             <div class="liquidationSummary">
                 @include('backend.sales._tableSummary', ['totales' => $totales, 'books' => $books, 'year' => $year])
             </div>

@@ -81,9 +81,7 @@ class PdfController extends AppController
 				$totales["costeApto"]    += $book->cost_apto;
 				$totales["costePark"]    += $book->cost_park;
                                 $totales['coste'] += $book->get_costeTotal();
-                                if ($book->type_luxury == 1 || $book->type_luxury == 3 || $book->type_luxury == 4) {
-                                  $totales["costeLujo"] += $book->cost_lujo;
-                                } 
+                                $totales["costeLujo"] += $book->get_costLujo();
 				$totales["costeLimp"]    += $book->cost_limp;
 				$totales["costeAgencia"] += $book->PVPAgencia;
 				$totales["bancoJorge"]   += $book->getPayment(2);

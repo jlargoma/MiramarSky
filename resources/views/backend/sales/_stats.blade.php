@@ -86,48 +86,43 @@ if ($pending<0) $pending = 0;
 <div class="row text-center indicadores">
   <div class="col-xs-6 bordered">
     <label>Total Reservas</label>
-    <b>{{$t_book}}</b>
+    <b>{{$summary['total']}}</b>
   </div>
   <div class="col-xs-6 bordered">
       <label>Nº Inquilinos</label>
-      <b><?php echo $dataResume['num-pax'] ?></b>
+      <b>{{$summary['pax']}}</b>
   </div>
   <div class="col-xs-6 bordered">
     <label>Total Noches</label>
-    <b><?php echo $dataResume['days-ocupation'] + $dataResume['dias-propios'] ?></b>
+    <b>{{$summary['nights']}}</b>
   </div>
   <div class="col-xs-6 bordered">
     <label>Estancia media</label>
-    <b><?php echo round($dataResume['estancia-media']) ?></b>
+    <b>{{$summary['nights-media']}}</b>
   </div>  
   <div class="col-xs-6 bordered">
-      <label>Total vnts temp</label>
-      <b>{{moneda($dataResume['total_price'])}}</b>
+    <label>RVAS<br/><br/></label>
+      <b>{{moneda($summary['total_pvp'])}}</b>
   </div>
   <div class="col-xs-6 bordered">
-      <label>Ing neto reservas</label>
-      <b>{{moneda($dataResume['beneficio'])}}</b>
+      <label>RTDO ESTIM x RVAS</label>
+      <b>{{moneda($summary['benef'])}}</b>
   </div>
   <div class="col-xs-6 bordered">
       <label>% benef reservas</label>
-
-      <?php
-      $totoalDiv = ($dataResume["total_price"] == 0) ? 1 : $dataResume["total_price"];
-      $benef = round(($dataResume["beneficio"] / $totoalDiv ) * 100, 2);
-      ?>
-      <b><?php echo $benef ?>%</b>
+      <b>{{$summary['benef_inc']}}%</b>
   </div>
   <div class="col-xs-6 bordered">
       <label>Dias totales temp</label>
-      <b>{{$dataResume['total-days-season']}}</b>
+      <b>{{$summary['daysTemp']}}</b>
   </div>
     <div class="col-xs-6 bordered">
     <label>Venta propia</label>
-    <b><?php echo round($dataResume['propios'],2) ?>%</b>
+    <b>{{$summary['vta_prop']}}%</b>
   </div>
   <div class="col-xs-6 bordered">
     <label>Venta agencia</label>
-    <b><?php echo round($dataResume['agencia'],2) ?>%</b>
+    <b>{{$summary['vta_agency']}}%</b>
   </div>
   </div>
 </div>

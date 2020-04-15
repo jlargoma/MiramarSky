@@ -78,6 +78,10 @@ $isMobile = $mobile->isMobile()
     max-height: 900px;
     overflow-y: scroll;
 }
+tr.table-summary td{
+  text-align: center;
+  white-space: nowrap;
+}
 </style>
 
 <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
@@ -231,6 +235,46 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
                 <span class="text-danger font-w800">
                   <b><?php echo number_format($pendiente, 0, ',', '.') ?>€</b>
                 </span>
+              </td>
+            </tr>
+            <tr class="table-summary">
+              <td class="text-center costeApto bordes" style="background: #89cfff;">
+                <b>{{moneda($summary_liq['costes']['prop_pay'])}}</b>
+              </td>
+              <td  style="padding: 8px;background: #89cfff;">
+                 <b>{{moneda($summary_liq['total_pvp'])}}</b>
+              </td>
+              <td class="costeApto bordes">
+                 <b>{{moneda($summary_liq['total_cost'])}}</b>
+              </td>
+              <td >
+                 <b>{{moneda($summary_liq['totals']['apto'])}}</b>
+              </td>
+              <td >
+                {{moneda($summary_liq['totals']['park'])}}
+              </td>
+              <td >
+                {{moneda($summary_liq['totals']['lujo'])}}
+              </td>
+              <td >
+                {{moneda($summary_liq['totals']['agency'])}}
+              </td>
+              <td >
+                {{moneda($summary_liq['totals']['limp'])}}
+              </td>
+              <td >
+                <b class="<?php echo ($summary_liq['benef'] > 0) ? 'text-success' : 'text-danger';?> font-w800">{{moneda($summary_liq['benef'])}}</b>
+              </td>
+              <td >
+                {{$summary_liq['benef_inc']}}%
+              </td>
+              <td >
+                {{moneda($summary_liq['prop_payment'])}}
+              </td>
+              <td class="text-center pendiente bordes" style="padding: 8px;">
+                 <b class="text-danger font-w800">
+                   {{moneda($summary_liq['costes']['prop_pay']-$summary_liq['prop_payment'])}}
+                 </b>
               </td>
             </tr>
           </tbody>
