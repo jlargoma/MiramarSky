@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use \Carbon\Carbon;
 use App\Classes\Mobile;
 
-class PaymentsProController extends AppController {
+class PaymentsProController_1 extends AppController {
 
   /**
    * Display a listing of the resource.
@@ -35,7 +35,6 @@ class PaymentsProController extends AppController {
     }
     return $this->index();
   }
-  
   private  function getItems($year,$startYear,$endYear) {
     $rooms = \App\Rooms::orderBy('order', 'ASC')->get();
 
@@ -65,9 +64,10 @@ class PaymentsProController extends AppController {
       $data[$room->id]['pagos'] = 0;
       $data[$room->id]['coste_prop'] = 0;
 
-//      $booksByRoom = \App\Book::where_type_book_prop(true)->where('room_id', $room->id)
-      $booksByRoom = \App\Book::where_type_book_prop()
-              ->where('room_id', $room->id)
+//      $booksByRoom = \App\Book::where_type_book_sales(true)->where('room_id', $room->id)
+      $booksByRoom = \App\Book::where('room_id', $room->id)
+//              ->where('type_book', 2)
+              ->whereIn('type_book', [2, 7])
               ->where('start', '>=', $startYear)
               ->where('start', '<=', $endYear)
               ->get();
@@ -122,10 +122,9 @@ class PaymentsProController extends AppController {
       }
     }
     
-
-    $gastos = \App\Expenses::where('date', '>=', $startYear)
+        $gastos = \App\Expenses::where('date', '>=', $startYear)
                     ->Where('date', '<=', $endYear)
-                    ->whereNull('book_id')
+                    ->where('concept', 'NOT LIKE', '%LIMPIEZA RESERVA PROPIETARIO.%')
                     ->orderBy('date', 'DESC')->get();
         
         
@@ -301,40 +300,140 @@ class PaymentsProController extends AppController {
   }
 
   public function getBooksByRoom($idRoom, Request $request) {
-    
+    $totales = [
+        "total" => 0,
+        "coste" => 0,
+        "bancoJorge" => 0,
+        "bancoJaime" => 0,
+        "jorge" => 0,
+        "jaime" => 0,
+        "costeApto" => 0,
+        "costePark" => 0,
+        "costeLujo" => 0,
+        "costeLimp" => 0,
+        "costeAgencia" => 0,
+        "benJorge" => 0,
+        "benJaime" => 0,
+        "pendiente" => 0,
+        "limpieza" => 0,
+        "beneficio" => 0,
+        "stripe" => 0,
+        "obs" => 0,
+    ];
+
     $year = self::getActiveYear();
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
     $startDate = $request->input('start',null);
     $endDate = $request->input('end',null);
 
-    $nameRoom = 'Apartamentos';
     if ($idRoom == "all") {
-      $books = \App\Book::where_type_book_prop()->where('start', '>=', $startDate)
+      $books = \App\Book::where_type_book_sales()->where('start', '>=', $startDate)
               ->where('start', '<=', $endDate)
               ->orderBy('start', 'ASC')
               ->get();
     } else {
-      $books = \App\Book::where_type_book_prop()->where('start', '>=', $startDate)
+      $books = \App\Book::where_type_book_sales()->where('start', '>=', $startDate)
               ->where('start', '<=', $endDate)
               ->where('room_id', $idRoom)
               ->orderBy('start', 'ASC')
               ->get();
-      
-      $oRoom = \App\Rooms::find($idRoom);
-      $nameRoom = $oRoom->name;
+    }
+
+
+    foreach ($books as $key => $book) {
+      $totales["total"] += $book->total_price;
+      $totales["coste"] += $book->get_costeTotal();
+      $totales["costeApto"] += $book->cost_apto;
+      $totales["costePark"] += $book->cost_park;
+      $totales["costeLujo"] += $book->cost_lujo;
+      $totales["costeLimp"] += $book->cost_limp;
+      $totales["costeAgencia"] += $book->PVPAgencia;
+      $totales["bancoJorge"] += $book->getPayment(2);
+      $totales["bancoJaime"] += $book->getPayment(3);
+      $totales["jorge"] += $book->getPayment(0);
+      $totales["jaime"] += $book->getPayment(1);
+      $totales["benJorge"] += $book->ben_jorge;
+      $totales["benJaime"] += $book->ben_jaime;
+      $totales["pendiente"] += $book->getPayment(4);
+      $totales["limpieza"] += $book->sup_limp;
+//      $totales["beneficio"] += ($book->total_price - ($book->cost_apto + $book->cost_park + $book->cost_lujo + $book->PVPAgencia + $book->cost_limp));
+
+      $totalStripep = 0;
+      $stripePayment = \App\Payments::where('book_id', $book->id)->where('comment', 'LIKE', '%stripe%')->get();
+      foreach ($stripePayment as $key => $stripe):
+        $totalStripep += $stripe->import;
+      endforeach;
+      if ($totalStripep > 0):
+        $totales["stripe"] += ((1.4 * $totalStripep) / 100) + 0.25;
+      endif;
+
+      $totales['obs'] += $book->extraCost;
     }
     
-    $oLiq = new \App\Liquidacion();
-    $summary = $oLiq->get_summary($books);
-
+    $totales["beneficio"] = $totales["total"] - $totales["coste"];
     $totBooks = (count($books) > 0) ? count($books) : 1;
 
+    $diasPropios = \App\Book::where('start', '>', $startYear)->where('finish', '<', $endYear)
+                    ->whereIn('type_book', [
+                        7,
+                        8
+                    ])->orderBy('created_at', 'DESC')->get();
+    $countDiasPropios = 0;
+    foreach ($diasPropios as $key => $book) {
+      $start = Carbon::createFromFormat('Y-m-d', $book->start);
+      $finish = Carbon::createFromFormat('Y-m-d', $book->finish);
+      $countDays = $start->diffInDays($finish);
+
+      $countDiasPropios += $countDays;
+    }
+    $data = [
+        'days-ocupation' => 0,
+        'total-days-season' => \App\SeasonDays::first()->numDays,
+        'num-pax' => 0,
+        'estancia-media' => 0,
+        'pax-media' => 0,
+        'precio-dia-media' => 0,
+        'dias-propios' => $countDiasPropios,
+        'agencia' => 0,
+        'propios' => 0,
+    ];
+
+    foreach ($books as $key => $book) {
+
+      $start = Carbon::createFromFormat('Y-m-d', $book->start);
+      $finish = Carbon::createFromFormat('Y-m-d', $book->finish);
+      $countDays = $start->diffInDays($finish);
+
+      /* Dias ocupados */
+      $data['days-ocupation'] += $countDays;
+
+      /* Nº inquilinos */
+      $data['num-pax'] += $book->pax;
+
+
+      if ($book->agency != 0) {
+        $data['agencia'] ++;
+      } else {
+        $data['propios'] ++;
+      }
+    }
+
+    $data['agencia'] = ($data['agencia'] / $totBooks) * 100;
+    $data['propios'] = ($data['propios'] / $totBooks) * 100;
+
+    /* Estancia media */
+    $data['estancia-media'] = ($data['days-ocupation'] / $totBooks);
+
+    /* Inquilinos media */
+    $data['pax-media'] = ($data['num-pax'] / $totBooks);
+
+
     return view('backend/paymentspro/_tableBooksByRoom', [
-        'summary' => $summary,
         'books' => $books,
         'mobile' => new Mobile(),
-        'nameRoom' => $nameRoom,
+        'totales' => $totales,
+        'data' => $data,
     ]);
   }
 
@@ -351,14 +450,14 @@ class PaymentsProController extends AppController {
 
     if ($request->idRoom != 'all') {
       $room = \App\Rooms::find($request->idRoom);
-      $books = \App\Book::where_type_book_prop()->where('room_id', $room->id)
+      $books = \App\Book::where_type_book_sales()->where('room_id', $room->id)
               ->where('start', '>=', $start)
               ->where('finish', '<=', $finish)
               ->orderBy('start', 'ASC')
               ->get();
     } else {
       $room = "all";
-      $books = \App\Book::where_type_book_prop()->where('start', '>=', $start)
+      $books = \App\Book::where_type_book_sales()->where('start', '>=', $start)
               ->where('finish', '<=', $finish)
               ->orderBy('start', 'ASC')
               ->get();

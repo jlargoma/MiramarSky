@@ -239,6 +239,9 @@ class Book extends Model {
                 
     return self::whereIn('type_book', [2, 7, 8]);
   }
+  static function where_type_book_prop() {
+    return self::whereIn('type_book', [2, 7]);
+  }
   /**
    * Get object Book that has status 2,7,8
    * 

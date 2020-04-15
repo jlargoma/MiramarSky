@@ -39,7 +39,7 @@ class Liquidacion
      * @return type
      */
     public function summaryTemp() {
-      return $this->get_summary(Book::getBy_temporada());
+      return $this->get_summary(Book::getBy_temporada(),true);
     }
 
     /**
@@ -47,7 +47,7 @@ class Liquidacion
      * @param type $books
      * @return type
      */
-    public function get_summary($books) {
+    public function get_summary($books,$temporada=false) {
       $t_pax = $t_nights = $t_pvp = $t_cost = $vta_agency = 0;
       $t_books = count($books);
       
@@ -83,14 +83,18 @@ class Liquidacion
        // AMENITIES (cta pyg)  + TPV (cta pyg) + LAVANDERIA (cta pyg) 
        // + LIMPIEZA (cta pyg) +REPARACION Y CONSERVACION (cta pyg)
       
-      $expensesPay = $this->getExpensesPayments();
       $expensesEstimate = $this->getExpensesEstimation($books);
       $t_cost = $cost_prop;
-      //Utilizo el mayor entre lo estimado y lo pagado
-      $costes = [];
-      foreach ($expensesPay as $type=>$val){
-        if( $expensesEstimate[$type] > $val) $costes[$type] = $expensesEstimate[$type];
-        else $costes[$type] =  $val;
+      if ($temporada){
+        $expensesPay = $this->getExpensesPayments();
+        //Utilizo el mayor entre lo estimado y lo pagado
+        $costes = [];
+        foreach ($expensesPay as $type=>$val){
+          if( $expensesEstimate[$type] > $val) $costes[$type] = $expensesEstimate[$type];
+          else $costes[$type] =  $val;
+        }
+      } else {
+        $costes = $expensesEstimate;
       }
        /*****    COSTOS                ********/
       /***************************************/
@@ -125,7 +129,7 @@ class Liquidacion
         $summary['vta_prop'] = 100-$summary['vta_agency'];    
       }
      
-//dd($summary);
+//      var_dump($summary);
 
       return $summary;
     }
