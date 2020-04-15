@@ -63,7 +63,7 @@ setlocale(LC_TIME, "es_ES");
   <div class="row bg-white">
     <div class="col-md-12 col-xs-12">
 
-      <div class="col-md-3 col-md-offset-3 col-xs-12">
+      <div class="col-md-6  col-xs-12">
         <h2 class="text-center">PERDIDAS Y GANANCIAS</h2>
       </div>
       <div class="col-md-2 col-xs-12 sm-padding-10" style="padding: 10px">
@@ -129,7 +129,7 @@ setlocale(LC_TIME, "es_ES");
       </div>
       
       <div style="clear: both;"></div>
-        @include('backend.sales._tableSummaryBoxes_PyG')
+        @include('backend.sales._tableSummaryBoxes',['hide'=>['rvas','bnf','t_day_1']])
       
       
       

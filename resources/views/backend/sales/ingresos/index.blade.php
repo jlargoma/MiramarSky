@@ -264,7 +264,6 @@ $isMobile = $mobile->isMobile();
   </div>
 </div>
 </div>
-<?php var_dump($dataChartMonths); ?>
 @endsection
 
 <!---->

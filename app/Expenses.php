@@ -106,14 +106,12 @@ class Expenses extends Model
             ->Where('PayFor', 'LIKE', '%' . $roomID. '%')       
             ->orderBy('date', 'DESC')
             ->get();
-            
-//    return self::where('date', '>=', $start)
-//            ->Where('date', '<=', $end)
-//            ->Where(function ($query2) use ($roomID) {
-//              $query2->WhereNull('PayFor')->orWhere('PayFor', 'LIKE', '%' . $roomID. '%');
-//            })          
-//            ->orderBy('date', 'DESC')
-//            ->get();
+  }
+  static function getTotalPaymentToProp($start,$end){
+    return self::where('date', '>=', $start)
+            ->Where('date', '<=', $end)
+            ->WhereNotNull('PayFor')       
+            ->sum('import');
   }
   
   static function getTypesOrderned(){
@@ -198,5 +196,18 @@ class Expenses extends Model
     } else {
       return false;
     }
+  }
+  
+  
+  static function getExpensesBooks(){
+    return [
+        'prop_pay'      => 0,
+        'agencias'      => 0,
+        'comision_tpv'  => 0,
+        'limpieza'      => 0,
+        'lavanderia'    => 0,
+        'amenities'     => 0,
+        'mantenimiento' => 0,
+      ];
   }
 }

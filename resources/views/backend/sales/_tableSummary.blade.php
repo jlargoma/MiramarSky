@@ -44,18 +44,7 @@
 </style>
 
     
-    <div class="row">
-      <div class="col-md-8">
-        <h2 class="text-left"> Indicadores de ocupación</h2>
-      </div>
-      <div class="col-md-4 text-right">
-        <label style="width: 100%; padding-right: 4em;">Benef critico</label>
-        <span style="float: right;font-size: 2em;">%</span>
-        <input class="form-control font-w400 text-center percentBenef" value="<?php echo $percentBenef ?>" /> 
-      </div>
-    </div>
-      
-      @include('backend.sales._tableSummaryBoxes', ['totales' => $totales, 'books' => $books, 'data' => $data, 'year'=> $year])
+  
       
       <div >
         <div class="row push-10">
@@ -78,22 +67,12 @@
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">
                       BANCO<br/>
                       <b>
-                        <?php $aux = $totales["bancoJorge"] + $totales["bancoJaime"]; ?>
-			<?php if ($aux == 0): ?>
-                        ----
-                        <?php else: ?>
-                        <?php echo number_format($aux,0,',','.') ?> €
-                        <?php endif ?>
+                        {{moneda($totales["banco"])}}
                       </b>
                     </th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">CAJA<br/>
                       <b>
-                        <?php $aux = $totales["jorge"] + $totales["jaime"]; ?>
-			<?php if ($aux == 0): ?>
-                        ----
-                        <?php else: ?>
-                        <?php echo number_format($aux,0,',','.') ?> €
-                        <?php endif ?>
+                       {{moneda($totales["caja"])}}
                       </b>
                     </th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">
@@ -133,7 +112,7 @@
                       Agencia<br/><b><?php echo number_format($totales["costeAgencia"],0,',','.') ?>€</b>
                     </th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">
-                      Extras<br/><b><?php echo ($totales["obs"] > 0) ?  number_format($totales["obs"],0,',','.').'€' : '--'; ?></b>
+                      AMENITIES<br/><b><?php echo ($totales["obs"] > 0) ?  number_format($totales["obs"],0,',','.').'€' : '--'; ?></b>
                     </th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">
                       TPV<br/><b>{{moneda($total_stripeCost,false)}}</b>

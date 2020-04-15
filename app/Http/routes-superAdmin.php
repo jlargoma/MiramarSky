@@ -221,8 +221,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista'], 'pre
   Route::post('/getOrders-payland', 'PaylandsController@getOrders');
   Route::get('/get-summary-payland', 'PaylandsController@getSummary');
   
-  Route::post('/limpiezasUpd/','LiquidacionController@upd_limpiezas');
-  
+
     // ZODOMUS  
   Route::get('/channel-manager/disponibilidad/{apto}/{start}/{end}','ZodomusController@listDisponibilidad');
   Route::get('/channel-manager/price/{apto?}','ZodomusController@calendRoom')->name('channel.price.cal');

@@ -95,11 +95,13 @@ setlocale(LC_TIME, "es_ES");
     </table>
   </div>
 </div>
-<?php if ($room == "all"): ?>
-  <?php $data = \App\Http\Controllers\LiquidacionController::getSalesByYearByRoomGeneral("", "all") ?>
-<?php else: ?>
-  <?php $data = \App\Http\Controllers\LiquidacionController::getSalesByYearByRoomGeneral("", $room->id) ?>
-<?php endif ?>
+<?php 
+if ($room == "all"):
+  $data = \App\Liquidacion::getSalesByYearByRoomGeneral("all");
+else:
+  $data = \App\Liquidacion::getSalesByYearByRoomGeneral($room->id);
+endif;
+?>
 
 <div class="col-md-4 col-xs-12">
   <div class="row">
@@ -129,15 +131,16 @@ setlocale(LC_TIME, "es_ES");
       <table class="table table-striped">
         <thead>
           <tr>
-            <th class="text-center bg-success text-white">Metalico</th>
-            <th class="text-center"
-                style="color: #000;"><?php echo number_format($data['metalico'], 2, ',', '.') ?>
-              €</th>
+            <th class="text-center bg-success text-white">Cash</th>
+            <th class="text-center" style="color: #000;">{{moneda($data['metalico'])}}</th>
           </tr>
           <tr>
             <th class="text-center bg-success text-white">Banco</th>
-            <th class="text-center"
-                style="color: #000;"><?php echo number_format($data['banco'], 2, ',', '.') ?>€</th>
+            <th class="text-center" style="color: #000;">{{moneda($data['banco'])}}</th>
+          </tr>
+          <tr>
+            <th class="text-center bg-success text-white">Tarjeta</th>
+            <th class="text-center" style="color: #000;">{{moneda($data['tarjeta'])}}</th>
           </tr>
         </thead>
       </table>

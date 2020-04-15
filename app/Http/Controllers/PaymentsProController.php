@@ -75,10 +75,9 @@ class PaymentsProController extends AppController {
 
               
         $costTotal = $book->get_costeTotal();
-        if ($book->type_luxury == 1 || $book->type_luxury == 3 || $book->type_luxury == 4) {
-          $data[$book->room_id]['totales']['totalLujo'] += $book->cost_lujo;
-          $summary["totalLujo"] += $book->cost_lujo;
-        } 
+        $lujo = $book->get_costLujo();
+        $data[$book->room_id]['totales']['totalLujo'] += $lujo;
+        $summary["totalLujo"] += $lujo;
 
         $data[$book->room_id]['totales']['totalLimp'] += $book->cost_limp;
         $data[$book->room_id]['totales']['totalAgencia'] += $book->PVPAgencia;
@@ -154,12 +153,18 @@ class PaymentsProController extends AppController {
         $t_limpProp += $book->cost_limp;
       } 
     }
-        
+      
+    
+    
+    $oLiq = new \App\Liquidacion();
+    $summary_liq = $oLiq->summaryTemp();
+    
     return view('backend/paymentspro/index', [
         'year' => $year,
         'gastos' => $gastos,
         'data' => $data,
         'summary' => $summary,
+        'summary_liq' => $summary_liq,
         'rooms' => $rooms,
         'startYear' => $startYear,
         'endYear' => $endYear,

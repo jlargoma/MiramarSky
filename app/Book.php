@@ -164,14 +164,23 @@ class Book extends Model {
    * @return int $cost_total
    */
   public function get_costeTotal() {
-    $cost_total = $this->cost_apto + $this->cost_park + $this->cost_limp + $this->PVPAgencia + $this->extraCost;
-    if ($this->type_luxury == 1 || $this->type_luxury == 3 || $this->type_luxury == 4) {
-      $cost_total += $this->cost_lujo;
-    }
-    
+    $cost_total = $this->get_costProp() + $this->cost_limp + $this->PVPAgencia + $this->extraCost;
     $paymentTPV = $this->getPayment(2);
     if ($paymentTPV>0) $cost_total += paylandCost($paymentTPV);
     return $cost_total;
+  }
+  
+  function get_costProp(){
+    $cost = $this->cost_apto +  $this->cost_park;
+    $cost += $this->get_costLujo();
+    return $cost;
+  }
+  
+  function get_costLujo(){
+    if ($this->type_luxury == 1 || $this->type_luxury == 3 || $this->type_luxury == 4) {
+      return $this->cost_lujo;
+    }
+    return 0;
   }
   
   /**
@@ -873,5 +882,12 @@ class Book extends Model {
   
   public function SafetyBox() {
     return $this->hasOne(\App\BookSafetyBox::class)->first();
+  }
+  
+  static function getBy_temporada(){
+    $activeYear = Years::getActive();
+    return Book::where_type_book_sales()
+            ->where('start', '>=', $activeYear->start_date)
+            ->where('start', '<=', $activeYear->end_date)->get();
   }
 }

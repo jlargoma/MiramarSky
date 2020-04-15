@@ -6,10 +6,11 @@ Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionist
     
   //LIMPIEZA
   Route::get('admin/limpieza', 'LimpiezaController@index');
-  Route::get('admin/limpiezas/{year?}','LiquidacionController@limpiezas');
-  Route::post('admin/limpiezasLst/','LiquidacionController@get_limpiezas');
-  Route::post('admin/limpiezasUpd/','LiquidacionController@upd_limpiezas');
-  Route::post('admin/limpiezas/pdf','LiquidacionController@export_pdf_limpiezas');
+  Route::get('admin/limpiezas/{year?}','LimpiezaController@limpiezas');
+  Route::post('admin/limpiezasLst/','LimpiezaController@get_limpiezas');
+  Route::post('admin/limpiezasUpd/','LimpiezaController@upd_limpiezas');
+  Route::post('admin/limpiezas/pdf','LimpiezaController@export_pdf_limpiezas');
+  Route::post('admin/limpiezasUpd/','LimpiezaController@upd_limpiezas');
 
    //Estadísticas XML
   Route::post('admin/INE', 'INEController@sendData')->name('INE.sendEncuesta');

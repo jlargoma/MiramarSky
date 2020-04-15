@@ -369,6 +369,7 @@ class BookController extends AppController
                         $book->total_price = 0;
                         $book->real_price  = 0;
                         $book->total_ben   = 0;
+                        $book->extraCost   = 0;
                     }elseif ($book->type_book == 7){
                         $book->bookingProp($room);
                     }else{
@@ -639,6 +640,7 @@ class BookController extends AppController
                 $book->total_price = 0;
                 $book->real_price  = 0;
                 $book->total_ben   = 0;
+                $book->extraCost   = 0;
 
                 $book->inc_percent = 0;
                 $book->ben_jorge   = 0;
