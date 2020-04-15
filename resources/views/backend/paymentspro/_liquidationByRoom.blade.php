@@ -17,7 +17,7 @@ setlocale( LC_TIME , "es_ES" );
 <div class="row">
 	<?php if ($room != 'all'): ?>
 	<h2 class="text-center font-w800" style="margin-top: 0;">
-			<?php echo strtoupper( $room->user->name ) ?> (<?php echo $room->nameRoom ?>)
+			<?php echo isset($room->user->name) ? strtoupper( $room->user->name ) :''; ?> (<?php echo $room->nameRoom ?>)
 		</h2>
 	<?php else: ?>
 	<h2 class="text-center font-w800" style="margin-top: 0;">

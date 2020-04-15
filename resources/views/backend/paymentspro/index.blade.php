@@ -180,63 +180,6 @@ use \Carbon\Carbon; ?>
             </tr>
           </thead>
           <tbody>
-            <tr> 
-              <td class="text-center costeApto bordes" style="background: #89cfff;">
-<?php $costeProp = $summary['totalApto'] + $summary['totalParking'] + $summary['totalLujo'] ?>
-                <b><?php echo number_format($costeProp, 0, ',', '.') ?>€</b>
-              </td>
-              <td class="text-center" style="padding: 8px;background: #89cfff;">
-                <b><?php echo number_format($summary['totalPVP'], 0, ',', '.') ?>€</b>
-              </td>
-              <td class="text-center costeApto bordes">
-                <b><?php echo number_format($summary['totalCost'], 0, ',', '.') ?>€</b>
-              </td>
-              <td class="text-center">
-                <b><?php echo number_format($summary['totalApto'], 0, ',', '.') ?>€</b>
-              </td>
-              <td class="text-center" style="padding: 8px;">
-<?php echo number_format($summary['totalParking'], 0, ',', '.') ?>€
-              </td>
-              <td class="text-center" style="padding: 8px;">
-<?php echo number_format($summary['totalLujo'], 0, ',', '.') ?>€
-              </td>
-              <td class="text-center" style="padding: 8px;">
-<?php echo number_format($summary['totalAgencia'], 0, ',', '.') ?>€
-              </td>
-              <td class="text-center" style="padding: 8px;">
-                <?php echo number_format($summary['totalLimp'], 0, ',', '.') ?>€
-              </td>
-              <td class="text-center" style="padding: 8px;">
-                <?php $beneficio = $summary['totalPVP'] - $summary['totalCost']; ?>
-                <?php if ($beneficio > 0): ?>
-                  <span class="text-success font-w800"><?php echo number_format($beneficio, 0, ',', '.') ?>€</span>
-<?php else: ?>
-                  <span class="text-danger font-w800"><?php echo number_format($beneficio, 0, ',', '.') ?>€</span>
-                <?php endif ?>
-
-              </td>
-              <td class="text-center" style="padding: 8px;">
-<?php $summary['totalPVP'] = ($summary['totalPVP'] == 0) ? 1 :
-        $summary['totalPVP'];
-?>
-<?php $benPercentage = ($beneficio / $summary['totalPVP']) * 100; ?>
-                <?php echo number_format($benPercentage, 0, ',', '.') ?>%
-              </td>
-              <td class="text-center" style="padding: 8px;">
-                <?php echo number_format($summary['pagos'], 0, ',', '.') ?> €
-              </td>
-              <td class="text-center pendiente bordes" style="padding: 8px;">
-<?php
-$summaryCostPropTot = $summary['totalApto'] +
-        $summary['totalParking'] +
-        $summary['totalLujo'];
-$pendiente = $summaryCostPropTot - $summary['pagos'];
-?>
-                <span class="text-danger font-w800">
-                  <b><?php echo number_format($pendiente, 0, ',', '.') ?>€</b>
-                </span>
-              </td>
-            </tr>
             <tr class="table-summary">
               <td class="text-center costeApto bordes" style="background: #89cfff;">
                 <b>{{moneda($summary_liq['costes']['prop_pay'])}}</b>
@@ -375,15 +318,9 @@ $pendiente = $summaryCostPropTot - $summary['pagos'];
               @else
               <td class="text-left costeApto bordes ">
               @endif
-                    <button class="btn-transparent liquidationByRoom" data-id="<?php echo $room->id ?>" data-costeProp="<?php echo $costPropTot; ?>" data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer; font-weight: 600" title="Liquidación de <?php echo $room->nameRoom ?>">
-    <?php if ($costPropTot != 0): ?>
-      <?php echo number_format($costPropTot, 0, ',', '.'); ?>€
-    <?php else: ?>
-                        -----
-    <?php endif ?>
+                    <button class="btn-transparent liquidationByRoom nowrap" data-id="<?php echo $room->id ?>" data-costeProp="{{moneda($data[$room->id]['coste_prop'])}}" data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer; font-weight: 600" title="Liquidación de <?php echo $room->nameRoom ?>">
+                      {{moneda($data[$room->id]['coste_prop'])}}
                     </button>
-
-
                   </td>
                   <td class="text-center"  style="padding: 10px 5px ; background: #89cfff;">
 
