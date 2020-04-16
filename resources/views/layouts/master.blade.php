@@ -43,7 +43,7 @@
 
   gtag('config', 'UA-66225892-1');
 </script>
-
+<link rel="stylesheet" href="{{ getCloudfl(assetV ('/css/frontend.css'))}}" type="text/css"/>   
 </head>
 
 <body class="stretched not-dark" data-loader="5">
@@ -60,7 +60,7 @@
     <script  src="https://code.jquery.com/jquery-2.1.4.min.js"
   integrity="sha256-8WqyJLuWKRBVhxXIL1jBDD7SDxU936oZkCnxQbWwJVw="
   crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{{ getCloudfl(assetV ('/css/frontend.css'))}}" type="text/css"/>   
+    
    
     @include('layouts._generalScriptsFront')
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>

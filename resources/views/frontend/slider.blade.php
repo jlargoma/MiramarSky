@@ -7,8 +7,21 @@ $sliderHome = $oContents->getContentByKey('slider_home',true);
 div#carouselHome {
     height: 70em !important;
 }
+.carousel-item{
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+.img-ccarousel{
+  visibility: hidden;
+   
+}
   </style>
 
+  
+  
+   
+    
   
 <div id="carouselHome" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
@@ -16,12 +29,8 @@ div#carouselHome {
   $first = 'active';
   for($i=1; $i<4; $i++): ?>
      @if($sliderHome['imagen_'.$i])
-    <div class="carousel-item {{$first}}">
-      @if($first)
-      <img class="img-responsive" src="{{getCloudfl($sliderHome['imagen_'.$i])}}" alt="Slider" >
-      @else
-      <img class="img-responsive loadJS" data-src="{{getCloudfl($sliderHome['imagen_'.$i])}}" src="/img/firts-min.png" alt="Slider" >
-      @endif
+     <div class="carousel-item {{$first}}" style="background-image: url('{{getCloudfl($sliderHome['imagen_'.$i])}}');">
+
       <div class="carousel-caption" @if(!$first) style="display:none;" @endif>
           <div class="slider-text-1">
           <h2 class="cp-title2">{{$sliderHome['title_'.$i]}}</h2>
