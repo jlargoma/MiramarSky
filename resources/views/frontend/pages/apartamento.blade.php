@@ -51,6 +51,16 @@
   .flex-control-nav.flex-control-paging{
     display: none;
   }
+  
+  .lSAction .lSNext:before, .lSAction .lSPrev:before {
+    width: 37px;
+    display: block;
+    color: #232323;
+    border-radius: 11px;
+    font-size: 40px;
+    background-color: #eaeaea;
+    height: 60px;
+}
 </style>
 
 @section('metadescription') {{ $aptoHeading }} en Sierra Nevada @endsection
