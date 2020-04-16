@@ -102,7 +102,7 @@
 
 				Si hemos conseguido que nos des tu confianza no vamos a defraudarte, sabemos lo importante que son tus días de ocio, aceptamos la responsabilidad. <br><br>
 
-				Además de tu apartamento, ponemos a tu disposición una serie de servicios opcionales para intentar hacer tu estancia más agradable: <b>Descuentos en Forfait, cursillos de esquí, alquiler de material... puedes contratarlos en este link:</b> <a href="{{ url('/forfait') }}">Forfaits</a><br><br>
+				Además de tu apartamento, ponemos a tu disposición una serie de servicios opcionales para intentar hacer tu estancia más agradable: <b>Descuentos en Forfait, cursillos de esquí, alquiler de material... puedes contratarlos en este link:</b> <a href="{{ env('FF_PAGE') }}">Forfaits</a><br><br>
 
 				Gracias por confiarnos tus vacaciones,  haremos todo lo posible para que pases unos días agradables. <br><br>
 

@@ -81,7 +81,7 @@
           <a href="{{ route('web.edificio') }}"><div>El Edificio</div></a></li>
         </li>
         <li>
-          <a href="/actividades/"><div>¿Qué hacer en sierra nevada?</div></a></li>
+          <a href="/actividades"><div>¿Qué hacer en sierra nevada?</div></a></li>
         </li>
 
         <li >

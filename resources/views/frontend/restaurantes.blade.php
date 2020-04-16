@@ -93,7 +93,7 @@ $content = $oContents->getContentByKey('resto');
     <div class="text-center shadow p-3">
       {!! $content['content_2']!!}
     </div>
-    <div class="text-center">Para ver el listado completo de bares y restaurantes de Sierra Nevada haz <a href="https://www.apartamentosierranevada.net/actividades/sin-categoria/conoce-los-mejores-restaurantes-en-sierra-nevada.html">clic aquí</a></div>
+    <div class="text-center">Para ver el listado completo de bares y restaurantes de Sierra Nevada haz <a href="/actividades/restaurantes/conoce-los-mejores-restaurantes-en-sierra-nevada.html">clic aquí</a></div>
   </div>
 </section>
 @endsection
