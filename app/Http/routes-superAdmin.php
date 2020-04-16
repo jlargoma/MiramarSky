@@ -25,7 +25,7 @@ Route::group(['middleware' => 'authAdmin'], function () {
 
   // Clientes
   Route::get('admin/clientes', 'CustomersController@index');
-  Route::get('/admin/galleries','RoomsController@galleries');
+  Route::get('/admin/galleries/{id?}','RoomsController@galleries');
 // Prices
   Route::get('admin/precios','PricesController@index');
   Route::get('admin/precios/update','PricesController@update');
