@@ -24,5 +24,5 @@
 
   El edificio Miramarski <b><u>está a pie de Pistas</u></b>,  sales esquiando desde el propio edificio sin tener que coger ningún remonte. Se encuentran situados en la zona baja de la estación, <b> a 5 minutos andando de Pradollano (  plaza de Andalucía)</b>, zona donde se encuentran todos los restaurantes y tiendas de la estación.<br><br>
 
-  Queremos ayudarte con todos los detalles de tu viaje, por eso nos ocupamos de gestionar <a href="{{ url('/forfait')}}"><b><u> tus Forfaits, cursillos de esquí y alquiler de material para nuestros clientes</u></b></a>
+  Queremos ayudarte con todos los detalles de tu viaje, por eso nos ocupamos de gestionar <a href="{{ env('FF_PAGE')}}"><b><u> tus Forfaits, cursillos de esquí y alquiler de material para nuestros clientes</u></b></a>
 </p>
