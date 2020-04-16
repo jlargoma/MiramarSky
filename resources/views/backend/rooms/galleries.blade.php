@@ -56,6 +56,7 @@ $mobile = new Mobile();
     @endif
   <div class="clearfix"></div>
   <div class="row">
+    <div class="col-xs-12">
     <button type="button" class="btn btn-success btn-sm newAptoText" data-toggle="modal" data-target="#modalTexts" title="Agregar aptos">
       <i class="fa fa-plus-circle" aria-hidden="true"></i>Agregar Apto
     </button> 
@@ -65,7 +66,8 @@ $mobile = new Mobile();
     <button type="button" class="btn btn-success btn-sm uploadHeaderDefault" data-toggle="modal" data-target="#modalHeaders" data-id="-1" title="Subir cabecera aptos">
       <i class="fa fa-upload" aria-hidden="true"></i> Cabeceras <b>Default</b>
     </button> 
-    <div class="col-xs-12 content-table-rooms">
+    </div>
+    <div class="col-md-7 content-table-rooms">
       <table class="table table-condensed table-striped">
         <thead>
           <tr>
@@ -81,9 +83,9 @@ $mobile = new Mobile();
             <tr>
               <td class="text-left" >{{$item->title}}</td>
               <td class="text-center" >
-                <button type="button" class="btn btn-success btn-sm editAptoText" data-toggle="modal" data-target="#modalTexts" data-id="{{$item->id}}" title="Editar textos aptos">
+                <a type="button" href="/admin/galleries/{{$item->id}}" class="btn btn-success btn-sm editAptoText" title="Editar textos aptos">
                   <i class="fa fa-pencil" aria-hidden="true"></i>
-                </button>                    
+                </a>                    
               </td>
               <td class="text-center" >
                 <button type="button" class="btn btn-success btn-sm uploadFile" data-toggle="modal" data-target="#modalFiles" data-id="{{$item->id}}" title="Subir imagenes aptos">
@@ -105,11 +107,76 @@ $mobile = new Mobile();
         </tbody>
       </table>
     </div>
+    <div class="col-md-5">
+      @if($obj)
+        <div class="block">
+          <div class="block-header">
+            <h2 class="text-center">Descripción Apto</h2>
+          </div>
+          <div class="container-xs-height full-height" id="content_apto">
+              <form enctype="multipart/form-data" action="{{ url('/admin/aptos/edit-descript') }}" method="POST">
+                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                <input type="hidden" name="room" id="room"  value="{{$obj->id}}">
+                <div class="form-group col-md-12">
+                  <label for="Nombre">*Nombre</label>
+                  <input type="text" class="form-control" id="item_nombre" name="item_nombre" placeholder="Nombre del Apto" maxlength="40" required value="{{$obj->title}}">
+                </div>
+                
+                <div class="form-group col-md-12">
+                  <label for="Nombre">*URL Slug</label>
+                  <input type="text" class="form-control" id="item_name" name="item_name" placeholder="URL del Apto" required value="{{$obj->name}}">
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="Estado">Estado</label>
+                  <select id="item_status" name="item_status" class="form-control">
+                    <option value="1" @if($obj->status == 1) selected @endif>Publicado</option>
+                    <option value="0" @if($obj->status == 0) selected @endif>No Publicado</option>
+                  </select>
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="Nombre">Descripción</label>
+                  <textarea class="ckeditor" name="apto_descript" id="apto_descript" rows="10" cols="80">{{$obj->description}}</textarea>
+                </div>
+                <div class="form-group col-md-12">
+                  <input type="submit" value="Enviar" class="btn btn-primary" />
+                </div>
+              </form>
+          </div>
+        </div>
+      @endif
+    </div>
   </div>
 </div>
 
 
 
+<div class="modal fade slide-up in" id="modalHeaders" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xs">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <div class="block">
+          <div class="block-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
+            </button>
+            <h2 class="text-center">
+              Subida de Imágenes de cabeceras
+            </h2>
+          </div>
+          <div class="container-xs-height full-height">
+            <div class="row-xs-height">
+              <div class="modal-body col-xs-height col-middle text-center   ">
+                <div class="upload-body">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
 <div class="modal fade slide-up in" id="modalTexts" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-xs">
     <div class="modal-content-wrapper">
@@ -144,7 +211,7 @@ $mobile = new Mobile();
                 </div>
                 <div class="form-group col-md-12">
                   <label for="Nombre">Descripción</label>
-                  <textarea class="" name="apto_descript" id="apto_descript" rows="10" cols="80"></textarea>
+                  <textarea class="ckeditor" name="apto_descript" id="apto_descript" rows="10"></textarea>
                 </div>
                 <div class="form-group col-md-12">
                   <input type="submit" value="Enviar" class="btn btn-primary" />
@@ -158,35 +225,6 @@ $mobile = new Mobile();
   </div>
   <!-- /.modal-dialog -->
 </div>
-
-<div class="modal fade slide-up in" id="modalHeaders" tabindex="-1" role="dialog" aria-hidden="true">
-  <div class="modal-dialog modal-xs">
-    <div class="modal-content-wrapper">
-      <div class="modal-content">
-        <div class="block">
-          <div class="block-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
-            </button>
-            <h2 class="text-center">
-              Subida de Imágenes de cabeceras
-            </h2>
-          </div>
-          <div class="container-xs-height full-height">
-            <div class="row-xs-height">
-              <div class="modal-body col-xs-height col-middle text-center   ">
-                <div class="upload-body">
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-  <!-- /.modal-dialog -->
-</div>
-
 <div class="modal fade slide-up in" id="modalFiles" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-xs">
     <div class="modal-content-wrapper">
@@ -251,21 +289,6 @@ $(document).ready(function () {
   });
   
   
-  CKEDITOR.replace('apto_descript',
-          {
-            toolbar:
-                    [
-            { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
-            { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
-            { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv',
-                '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ] },
-            { name: 'links', items : [ 'Link','Unlink','Anchor' ] },
-            '/',
-            { name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
-            { name: 'colors', items : [ 'TextColor','BGColor' ] },
-            { name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }
-                    ]
-          });
 
  
   $('#send_apto_descript').click(function (event) {
@@ -277,9 +300,6 @@ $(document).ready(function () {
     $('#room').val('');
     $('#item_nombre').val('');
     $('#item_name').val('');
-    CKEDITOR.instances.apto_descript.setData('', function () {
-      this.checkDirty();
-    });
   });
   $('.editAptoText').click(function (event) {
     var id = $(this).data('id');
@@ -303,18 +323,6 @@ $(document).ready(function () {
     });
   });
 
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
   
 });
 </script>

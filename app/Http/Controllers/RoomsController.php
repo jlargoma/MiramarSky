@@ -56,9 +56,14 @@ class RoomsController extends AppController {
    *
    * @return \Illuminate\Http\Response
    */
-  public function galleries() {
+  public function galleries($id=null) {
     $rooms = \App\RoomsType::all();
-    return view('backend/rooms/galleries', ['rooms'=> $rooms]);
+    
+    $obj = null;
+    if ($id){
+      $obj = \App\RoomsType::find($id);
+    }
+    return view('backend/rooms/galleries', ['rooms'=> $rooms,'obj'=> $obj]);
   }
 
   /**
