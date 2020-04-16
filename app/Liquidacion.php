@@ -84,6 +84,7 @@ class Liquidacion
        // + LIMPIEZA (cta pyg) +REPARACION Y CONSERVACION (cta pyg)
       
       $expensesEstimate = $this->getExpensesEstimation($books);
+      $expensesEstimate = $this->filterEstimates($expensesEstimate);
       $t_cost = $cost_prop;
       if ($temporada){
         $expensesPay = $this->getExpensesPayments();
@@ -215,6 +216,23 @@ class Liquidacion
 
     $stripeCost = $this->getTPV($books);
     $aExpensesPending['comision_tpv'] = array_sum($stripeCost);
+ 
+      
+    return $aExpensesPending;
+  }
+  
+  private function filterEstimates($aExpensesPending) {
+       
+    
+    $oData = \App\ProcessedData::findOrCreate('PyG_Hide');
+    if ($oData){
+      $PyG_Hide = json_decode($oData->content,true);
+      if ($PyG_Hide && is_array($PyG_Hide)){
+        foreach ($PyG_Hide as $k){
+          if(isset($aExpensesPending[$k])) $aExpensesPending[$k] = 0;
+        }
+      }
+    }
     return $aExpensesPending;
   }
   
