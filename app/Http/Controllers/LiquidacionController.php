@@ -190,7 +190,7 @@ class LiquidacionController extends AppController {
   }
 
   
-   public function perdidasGanancias() {
+  public function perdidasGanancias() {
      
     $oLiq = new Liquidacion();
     $year = $this->getActiveYear();
@@ -209,6 +209,7 @@ class LiquidacionController extends AppController {
     }
     $tIngByMonth = $emptyMonths;
     $tGastByMonth = $emptyMonths;
+    $totalPendingGasto = 0;
     $aIngrPending = [
         'ventas' => 0,
         ];
@@ -304,6 +305,25 @@ class LiquidacionController extends AppController {
     }
 
     $aExpensesPending['excursion'] = $lstT_ing['ff']-$lstT_gast['excursion'];
+    $aExpensesPendingOrig = $aExpensesPending;
+    
+    $oData = \App\ProcessedData::findOrCreate('PyG_Hide');
+    if ($oData){
+      $PyG_Hide = json_decode($oData->content,true);
+      if ($PyG_Hide && is_array($PyG_Hide)){
+        foreach ($PyG_Hide as $k){
+          if(isset($aExpensesPending[$k])){
+            $aExpensesPending[$k] = 'N/A';
+          }
+        }
+      }
+    }
+      
+    foreach ($aExpensesPending as $k=>$v){
+      if ($v != 'N/A') $totalPendingGasto += intval($v);
+    }
+    
+    
     /*****************************************************************/
     
     $impuestos = $listGastos['impuestos'];
@@ -345,7 +365,7 @@ class LiquidacionController extends AppController {
         'totalIngr' => $totalIngr,
         'lstT_gast' => $lstT_gast,
         'totalGasto' => $totalGasto,
-        'totalPendingGasto' => array_sum($aExpensesPending),
+        'totalPendingGasto' => $totalPendingGasto,
         'totalPendingIngr' => array_sum($aIngrPending),
         'totalPendingImp' => $totalPendingImp,
         'ingresos' => $ingresos,
@@ -353,6 +373,7 @@ class LiquidacionController extends AppController {
         'impuestos' => $impuestos,
         'impEstimado' => $impEstimado,
         'aExpensesPending' => $aExpensesPending,
+        'aExpensesPendingOrig' => $aExpensesPendingOrig,
         'aIngrPending' => $aIngrPending,
         'diff' => $diff,
         'lstMonths' => $lstMonths,
@@ -366,6 +387,40 @@ class LiquidacionController extends AppController {
   }
 
   
+  public function perdidasGananciasShowHide(Request $request) {
+    
+    $key   = $request->input('key');
+    $value = $request->input('input');
+    
+    
+    $oData = \App\ProcessedData::findOrCreate('PyG_Hide');
+    if ($oData) $PyG_Hide = json_decode($oData->content,true);
+      
+    if (!$PyG_Hide) $PyG_Hide = [];
+    
+    if ($value == 'hide'){
+      if (!in_array($key, $PyG_Hide)){
+        $PyG_Hide[] = $key;
+        $oData->content = json_encode($PyG_Hide);
+        $oData->save();
+        return 'OK';
+      }
+    }
+    
+    if ($value == 'show'){
+      if (in_array($key, $PyG_Hide)){
+        if (($key_array = array_search($key, $PyG_Hide)) !== false) {
+            unset($PyG_Hide[$key_array]);
+          $oData->content = json_encode($PyG_Hide);
+          $oData->save();
+          return 'OK';
+        }
+      }
+    }
+    
+    return 'error';
+    
+  }
   /*************************************************************************/
   /************       GASTOS                                        ********/
      public function gastos($current=null) {

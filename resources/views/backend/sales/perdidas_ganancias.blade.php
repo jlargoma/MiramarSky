@@ -180,6 +180,68 @@ setlocale(LC_TIME, "es_ES");
           data: data,
   });
 
+
+$(document).ready(function () {
+  const hTable = $('#tableItems');
+
+  function edit (currentElement,key) {
+    var select = $('<select>', {class:' form-control selects'});
+    select.data('key', key);
+    var option = $('<option></option>');
+    option.attr('value', 'hide');
+    option.text('N/A');
+    select.append(option);
+
+    var option = $('<option></option>');
+    option.attr('value', 'show');
+    option.text(currentElement.data('val'));
+    select.append(option);
+
+    currentElement.data('value',currentElement.html());
+    select.val(currentElement.data('current'));
+    currentElement.html(select);
+  }
+
+  hTable.on('click','.editable', function () {
+    var that = $(this);
+    if (!that.hasClass('tSelect')){
+      clearAll();
+      that.addClass('tSelect')
+
+      var key = $(this).data('key');
+      edit($(this),key);
+    }
+  });
+
+
+  hTable.on('change','.selects',function (e) {
+
+      var key = $(this).closest('td').data('key');
+      var input = $(this).val();
+
+      var url = "/admin/perdidas-ganancias/show-hide";
+      $.ajax({
+      type: "POST",
+      method : "POST",
+      url: url,
+      data: {_token: "{{ csrf_token() }}",key: key, input: input},
+      success: function (response)
+      {
+        if (response == 'OK') {
+          location.reload();
+        } else {
+          clearAll();
+          window.show_notif('Error','danger','Registro NO Actualizado');
+        }
+      }
+    });
+  });
+  var clearAll= function(){
+    hTable.find('.tSelect').each(function() {
+       $(this).text($(this).data('value')).removeClass('tSelect');
+     });
+   }
+});
 </script>
 <style>
   .fa.result{
