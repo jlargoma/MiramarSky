@@ -1,5 +1,5 @@
 <div class="table-responsive">
-  <table class="table perdidas_ganancias">
+  <table class="table perdidas_ganancias" id="tableItems">
     <thead>
       <tr>
         <th></th>
@@ -34,7 +34,13 @@
       <tr>
         <td>{{$gastoType[$k]}}</td>
         <td class="text-center">{{moneda($lstT_gast[$k])}}</td>
-        <td class="text-center">{{moneda($aExpensesPending[$k],false)}}</td>
+        <td class="text-center editable" data-key="{{$k}}" data-val="{{moneda($aExpensesPendingOrig[$k],false)}}">
+          @if($aExpensesPending[$k] === "N/A")
+          N/A
+          @else
+          {{moneda($aExpensesPending[$k],false)}}
+          @endif
+        </td>
         @foreach($lstMonths as $k_month=>$month) <td class="text-center">{{moneda($listGasto[$k][$k_month],false)}}</td> @endforeach
       </tr>
       @endforeach
