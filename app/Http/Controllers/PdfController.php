@@ -31,6 +31,7 @@ class PdfController extends AppController
 
 	public function pdfPropietario( $id, $year = "" )
 	{
+          die('no work');
 		$room = \App\Rooms::find($id);
 		$totales = [
 			"total"        => 0,
@@ -76,26 +77,26 @@ class PdfController extends AppController
 
 		foreach ($books as $key => $book) {
 
-			if($book->type_book != 7 && $book->type_book != 8){
-				$totales["total"]        += $book->total_price;
-				$totales["costeApto"]    += $book->cost_apto;
-				$totales["costePark"]    += $book->cost_park;
-                                $totales['coste'] += $book->get_costeTotal();
-                                $totales["costeLujo"] += $book->get_costLujo();
-				$totales["costeLimp"]    += $book->cost_limp;
-				$totales["costeAgencia"] += $book->PVPAgencia;
-				$totales["bancoJorge"]   += $book->getPayment(2);
-				$totales["bancoJaime"]   += $book->getPayment(3);
-				$totales["jorge"]        += $book->getPayment(0);
-				$totales["jaime"]        += $book->getPayment(1);
-				$totales["benJorge"]     += $book->getJorgeProfit();
-				$totales["benJaime"]     += $book->getJaimeProfit();
-				$totales["limpieza"]     += $book->sup_limp;
-				$totales["beneficio"]    += $book->profit;
-				$totales["stripe"]       += $book->stripeCost;
-				$totales["obs"]          += $book->extraCost;
-				$totales["pendiente"]    += $book->pending;
-			}
+			
+                  $tCost = $book->get_costeTotal();
+                  $totales["total"]        += $book->total_price;
+                  $totales["costeApto"]    += $book->cost_apto;
+                  $totales["costePark"]    += $book->cost_park;
+                  $totales['coste']        += $tCost;
+                  $totales["costeLujo"]    += $book->get_costLujo();
+                  $totales["costeLimp"]    += $book->cost_limp;
+                  $totales["costeAgencia"] += $book->PVPAgencia;
+                  $totales["bancoJorge"]   += $book->getPayment(2);
+                  $totales["bancoJaime"]   += $book->getPayment(3);
+                  $totales["jorge"]        += $book->getPayment(0);
+                  $totales["jaime"]        += $book->getPayment(1);
+                  $totales["benJorge"]     += $book->getJorgeProfit();
+                  $totales["benJaime"]     += $book->getJaimeProfit();
+                  $totales["limpieza"]     += $book->sup_limp;
+                  $totales["beneficio"]    += $book->total_price-$tCost;
+                  $totales["stripe"]       += $book->stripeCost;
+                  $totales["obs"]          += $book->extraCost;
+                  $totales["pendiente"]    += $book->pending;
 		}
 
 		$pagos = \App\Expenses::where('date', '>=', $date->copy()->format('Y-m-d'))

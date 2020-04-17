@@ -90,7 +90,7 @@
                     <?php $total_price = $book->total_price?>
                     <?php $profit = $total_price-$cost_total;?>
                     <?php $inc_percent = $book->get_inc_percent()?>
-                    {{$book->profit}}
+                    {{$profit}}
                 </td>
 
                 <td class="text-center beneficio bf ">
