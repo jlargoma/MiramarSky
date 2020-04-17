@@ -1,7 +1,7 @@
 @extends('layouts.admin-master')
 
 @section('title') Liquidacion @endsection
-
+<?php die('Liquidacion mobile'); ?>
 @section('externalScripts') 
 	
 	<link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet" type="text/css" />

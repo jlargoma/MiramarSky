@@ -75,17 +75,7 @@ setlocale( LC_TIME , "es_ES" );
 											?>
 										</td>
 										<td class="text-center total" style="padding: 8px; ">
-											<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-												<?php $cost = ($book->cost_apto + $book->cost_park + $book->cost_lujo) ?>
-												<?php if ($cost > 0 ): ?>
-													<?php echo number_format( $cost , 0 , ',' , '.' ) ?>€
-												<?php else: ?>
-											        ---€
-												<?php endif ?>
-											<?php else: ?>
-												---€
-											<?php endif ?>
-
+											{{moneda($book->get_costProp(),false,2)}}
 										</td>
 										<td class="text-center" style="padding: 8px; ">
 
@@ -112,20 +102,9 @@ setlocale( LC_TIME , "es_ES" );
 											<?php endif ?>
 										</td>
 										<?php if ($room != 'all'): ?>
-											<?php if ($room->luxury == 1): ?>
-												<td class="text-center" style="padding: 8px; ">
-													<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-														<?php $auxLuxury = $book->cost_lujo ?>
-														<?php if ($auxLuxury > 0): ?>
-															<?php echo $auxLuxury ?>€
-														<?php else: ?>
-														    ---€
-														<?php endif ?>
-													<?php else: ?>
-														---€
-													<?php endif ?>
-												</td>
-											<?php endif ?>
+                                                                                  <td class="text-center" style="padding: 8px; ">
+                                                                                    {{moneda($book->get_costLujo(),false,2)}}
+                                                                                  </td>
 										<?php endif ?>
 										<?php if (!empty( $book->book_owned_comments ) && $book->promociones != 0): ?>
 											<td class="text-center" style="padding: 8px; ">
@@ -174,17 +153,7 @@ setlocale( LC_TIME , "es_ES" );
 											?>
 										</td>
 										<td class="text-center total" style="padding: 8px; ">
-											<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-											<?php $cost = ($book->cost_apto + $book->cost_park + $book->cost_lujo) ?>
-											<?php if ($cost > 0 ): ?>
-											<?php echo number_format( $cost , 0 , ',' , '.' ) ?>€
-											<?php else: ?>
-											                                                    ---€
-											<?php endif ?>
-											<?php else: ?>
-											                                                    ---€
-											<?php endif ?>
-
+                                                                                  {{moneda($book->get_costProp(),false,2)}}
 										</td>
 										<td class="text-center" style="padding: 8px; ">
 
@@ -210,19 +179,10 @@ setlocale( LC_TIME , "es_ES" );
 											                                                               ---€
 											<?php endif ?>
 										</td>
-									@if ($room != 'all' && $room->luxury == 1)
-										<td class="text-center" style="padding: 8px; ">
-												<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-											<?php $auxLuxury = $book->cost_lujo ?>
-											<?php if ($auxLuxury > 0): ?>
-											<?php echo $auxLuxury ?>€
-											<?php else: ?>
-												                    ---€
-											<?php endif ?>
-											<?php else: ?>
-												                    ---€
-											<?php endif ?>
-											</td>
+									@if ($room != 'all')
+									 <td class="text-center" style="padding: 8px; ">
+                                                                                    {{moneda($book->get_costLujo(),false,2)}}
+                                                                                  </td>
 									@endif
 									<?php if (!empty( $book->book_owned_comments )): ?>
 									<td class="text-center" style="padding: 8px; ">

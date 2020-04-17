@@ -209,17 +209,7 @@
                                 <input class="updateCostPark" type="number" value="<?php echo round($book->cost_park); ?>" data-idBook="<?php echo $book->id; ?>"/>
                             </td>
                             <td class="text-center coste"  style="border-left: 1px solid black;">
-                                <?php if ($book->room->luxury == 1): ?>
-
-                                    <?php if ( $book->cost_lujo > 0): ?>
-                                        <?php echo number_format($book->cost_lujo,0,',','.')?> €
-                                    <?php else: ?>
-                                        ----
-                                    <?php endif ?>
-                                <?php else: ?>
-                                    ----
-                                <?php endif;?>
-
+                              {{moneda($book->get_costLujo())}}
                             </td>
                             <td class="text-center coste <?php if($book->cost_limp == 0){ echo 'alert-limp'; }?>" style="border-left: 1px solid black;">
                                 <input class="updateLimp <?php if($book->cost_limp == 0){ echo 'alert-limp'; }?>" type="number" step="0.01" value="<?php echo $book->cost_limp; ?>" data-idBook="<?php echo $book->id; ?>"/>

@@ -59,7 +59,7 @@ class OwnedController extends AppController {
             ->orderBy('start', 'ASC')
             ->get();
 
-    $books = Book::whereIn('type_book', [2, 7])->where('room_id', $room->id)
+    $books = Book::where_type_book_prop()->where('room_id', $room->id)
                     ->where('start', '>=', $startYear)
                     ->where('start', '<=', $endYear)
                     ->orderBy('start', 'ASC')->get();
@@ -106,16 +106,9 @@ class OwnedController extends AppController {
     }
 
     foreach ($books as $book) {
-
-      if ($book->type_book != 7 && $book->type_book != 8 && $book->type_book != 9) {
         $apto += $book->cost_apto;
         $park += $book->cost_park;
-        if ($book->room->luxury == 1) {
-          $lujo += $book->cost_lujo;
-        } else {
-          $lujo += 0;
-        }
-      }
+        $lujo += $book->get_costLujo();
     }
     $total += ($apto + $park + $lujo);
 
@@ -140,7 +133,7 @@ class OwnedController extends AppController {
 
           if (!isset($ingrs[$cMonth])) $ingrs[$cMonth] = 0;
           if (!isset($clients[$cMonth])) $clients[$cMonth] = 0;
-          $ingrs[$cMonth] += $book->cost_apto+$book->cost_park+$book->cost_lujo;
+          $ingrs[$cMonth] += $book->get_costProp();//+$book->cost_park+$book->cost_lujo;
           $clients[$cMonth] += $book->pax;
         }
       }
@@ -164,39 +157,7 @@ class OwnedController extends AppController {
     $estadisticas['clientes']['label'] = implode(',', $estadisticas['clientes']['label']);
     $estadisticas['clientes']['val'] = implode(',', $estadisticas['clientes']['val']);
     
-    
-    /* a revisar
-    $dateStadistic = Carbon::createFromFormat('Y-m-d', $year->start_date);
-
-    for ($i = $dateStadistic->copy()->format('n'); $i < 21; $i++) {
-      if ($i > 12) {
-        $x = $dateStadistic->copy()->format('n');
-      } else {
-        $x = $i;
-      }
-      $ingresos = 0;
-      $clientes = 0;
-
-      $bookStadistic = Book::whereIn('type_book', [2])
-              ->where('room_id', $room->id)
-              ->whereYear('start', '=', $dateStadistic->copy()->format('Y'))
-              ->whereMonth('start', '=', $dateStadistic->copy()->format('m'))
-              ->get();
-
-      if (count($bookStadistic) > 0) {
-        foreach ($bookStadistic as $key => $book) {
-          $ingresos += $book->cost_total;
-          $clientes += $book->pax;
-        }
-      }
-
-      $estadisticas['ingresos'][$x] = round($ingresos);
-      $estadisticas['clientes'][$x] = round($clientes);
-
-
-      $dateStadistic->addMonth();
-    }*/
-
+   
     return view('backend.owned.index', [
         'user' => \App\User::find(Auth::user()->id),
         'room' => $room,
@@ -296,12 +257,8 @@ class OwnedController extends AppController {
  
       $book->bookingProp($room);
       
-      $book->total_ben = $book->total_price - $book->cost_total;
-      
-
-      if ($book->total_price>0)
-        $book->inc_percent = round(($book->total_ben / $book->total_price) * 100, 2);
-      else $book->inc_percent = 0;
+      $book->total_ben = $book->total_price - $book->get_costeTotal();
+      $book->inc_percent = $book->get_inc_percent();
       $book->ben_jorge = $book->total_ben * $room->typeAptos->PercentJorge / 100;
       $book->ben_jaime = $book->total_ben * $room->typeAptos->PercentJaime / 100;
 
@@ -344,7 +301,7 @@ class OwnedController extends AppController {
     $endYear   = new Carbon($year->end_date);
 
     //Pagada-la-señal y reserva-prop
-    $books = Book::where('room_id', $room->id)->whereIn('type_book',[2, 7])
+    $books = Book::where_type_book_prop()->where('room_id', $room->id)
             ->where('start', '>=', $startYear)->where('start', '<=', $endYear)->orderBy('start', 'ASC')
             ->get();
 

@@ -86,22 +86,11 @@
 
                 </td>
                 <td class="text-center beneficio bi">
-                    {{$book->profit}}
-                    <?php $profit = $book->profit?>
-                    <?php $cost_total = $book->cost_apto + $book->cost_park + $book->cost_lujo + $book->cost_limp + $book->PVPAgencia + $book->stripeCost + $book->extraCost;?>
+                    <?php $cost_total = $book->get_costeTotal();?>
                     <?php $total_price = $book->total_price?>
-                    <?php $inc_percent = 0?>
-                    <?php
-                        if($book->room->luxury == 0 && $book->cost_lujo > 0) {
-                            $profit     = $book->profit - $book->cost_lujo;
-                            $cost_total = $book->cost_apto + $book->cost_park + $book->cost_limp + $book->PVPAgencia + $book->stripeCost + $book->extraCost;
-                            $total_price = ( $book->total_price - $book->sup_lujo );
-                        }
-                        if ($total_price != 0)
-                            $inc_percent = ($profit/ $total_price )*100;
-                    ?>
-
-                    
+                    <?php $profit = $total_price-$cost_total;?>
+                    <?php $inc_percent = $book->get_inc_percent()?>
+                    {{$book->profit}}
                 </td>
 
                 <td class="text-center beneficio bf ">
@@ -118,17 +107,7 @@
 
                 </td>
                 <td class="text-center coste" >
-                    <?php if ($book->room->luxury == 1): ?>
-
-                        <?php if ( $book->cost_lujo > 0): ?>
-                            {{$book->cost_lujo}}
-                        <?php else: ?>
-                            0
-                        <?php endif ?>
-                    <?php else: ?>
-                        0
-                    <?php endif;?>
-
+                    {{($book->get_costLujo())}}
                 </td>
                 <td class="text-center coste">
                     {{$book->cost_limp}}

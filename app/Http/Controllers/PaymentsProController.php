@@ -367,18 +367,13 @@ class PaymentsProController extends AppController {
 
     foreach ($books as $book) {
 
-      if ($book->type_book != 7 && $book->type_book != 8 && $book->type_book != 9) {
+      $total += $book->get_costProp();
 
-        $apto += $book->cost_apto;
-        $park += $book->cost_park;
-        if ($book->room->luxury == 1) {
-          $lujo += $book->cost_lujo;
-        } else {
-          $lujo += 0;
-        }
-      }
+      $apto += $book->cost_apto;
+      $park += $book->cost_park;
+      $lujo += $book->get_costLujo();
     }
-    $total += ($apto + $park + $lujo);
+//    $total += ($apto + $park + $lujo);
     $roomID = isset($room->id) ? $room->id : -1;
     $pagos = \App\Expenses::where('date', '>=', $start)
             ->where('date', '<=', $finish)
@@ -629,15 +624,9 @@ class PaymentsProController extends AppController {
                   ->orderBy('start', 'ASC')->get();
     
      foreach ($books as $book) {
-        $apto += $book->cost_apto;
-        $park += $book->cost_park;
-        if ($book->room->luxury == 1) {
-          $lujo += $book->cost_lujo;
-        } else {
-          $lujo += 0;
-        }
+         $total += $book->get_costProp();
     }
-    $total += ($apto + $park + $lujo);
+//    $total += ($apto + $park + $lujo);
     
     
     $gastos = \App\Expenses::where('date', '>=', $startYear)

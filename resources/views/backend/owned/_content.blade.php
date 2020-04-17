@@ -250,17 +250,7 @@
 														?> 
 													</td>
 													<td class="text-center total" style="padding: 8px; ">
-														<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-															<?php $cost = ($book->cost_apto + $book->cost_park + $book->cost_lujo) ?>
-															<?php if ($cost > 0 ): ?>
-																<?php echo number_format($cost,0,',','.') ?>€
-															<?php else: ?>
-																---€	
-															<?php endif ?>
-														<?php else: ?>
-															---€
-														<?php endif ?>
-														
+														{{moneda($book->get_costProp())}}
 													</td>
 													<td class="text-center" style="padding: 8px; ">
 
@@ -606,16 +596,7 @@
 											?> 
 										</td>
 										<td class="text-center">
-										<?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-											<?php $cost = ($book->cost_apto + $book->cost_park + $book->cost_lujo) ?>
-											<?php if ($cost > 0 ): ?>
-												<b><?php echo number_format($cost,0,',','.') ?>€</b>
-											<?php else: ?>
-												---€	
-											<?php endif ?>
-										<?php else: ?>
-											---€
-										<?php endif ?>
+										{{moneda($book->get_costProp())}}
 										</td>
 										<td class="text-center">
 											<?php if ($book->cost_apto > 0): ?>

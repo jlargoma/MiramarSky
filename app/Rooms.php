@@ -196,7 +196,7 @@ class Rooms extends Model
         foreach ($books as $key => $book) {
           $date = date('n', strtotime($book->start));
           if (!isset($aux[$date])) $aux[$date] = 0;
-          $aux[$date] += ($book->cost_apto + $book->cost_park + $book->cost_lujo);
+          $aux[$date] += $book->get_costProp();
         }
       }
       

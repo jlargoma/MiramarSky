@@ -89,17 +89,7 @@
 						  ?>
 					  </td>
 					  <td class="text-center total" style="text-align: center">
-						  <?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-							  <?php $cost = ($book->cost_apto + $book->cost_park + $book->cost_lujo) ?>
-							  <?php if ($cost > 0 ): ?>
-								  <?php echo number_format($cost,0,',','.') ?>€
-							  <?php else: ?>
-								  ---€
-							  <?php endif ?>
-						  <?php else: ?>
-							  ---€
-						  <?php endif ?>
-
+						{{moneda($book->get_costProp(),false,2)}}
 					  </td>
 					  <td class="text-center"  style="text-align: center">
 
@@ -125,20 +115,9 @@
 							  ---€
 						  <?php endif ?>
 					  </td>
-					  <?php if ($room->luxury == 1): ?>
-						  <td class="text-center" style="text-align: center">
-							  <?php if ($book->type_book != 7 && $book->type_book != 8 ): ?>
-								  <?php $auxLuxury = $book->cost_lujo ?>
-								  <?php if ($auxLuxury > 0): ?>
-									  <?php echo $auxLuxury ?>€
-								  <?php else: ?>
-									  ---€
-								  <?php endif ?>
-							  <?php else: ?>
-								  ---€
-							  <?php endif ?>
-						  </td>
-					  <?php endif ?>
+					  <td class="text-center" style="padding: 8px; ">
+                                            {{moneda($book->get_costLujo(),false,2)}}
+                                          </td>
 					  <td class="text-center" style="text-align: center">
 						  <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
 							 <span style="color:red">OFERTA</span>
