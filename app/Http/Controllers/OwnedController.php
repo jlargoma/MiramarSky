@@ -84,6 +84,15 @@ class OwnedController extends AppController {
 
     $aux = Carbon::createFromFormat('Y-m-d', $year->start_date);
 
+    $dayweek = [
+        1 => "L",
+        2 => "M",
+        3 => "X",
+        4 => "J",
+        5 => "V",
+        6 => "S",
+        0 => "D"
+    ];
     for ($i = 1; $i <= $diff; $i++) {
 
       $startMonth = $aux->copy()->startOfMonth();
@@ -97,7 +106,7 @@ class OwnedController extends AppController {
 
       for ($j = 1; $j <= $day->copy()->format('t'); $j++) {
 
-        $arrayDays[$aux->copy()->format('n')][$j] = $book->getDayWeek($day->copy()->format('w'));
+        $arrayDays[$aux->copy()->format('n')][$j] = $dayweek[$day->copy()->format('w')];
 
         $day = $day->copy()->addDay();
       }
