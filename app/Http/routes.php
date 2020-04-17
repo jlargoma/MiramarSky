@@ -123,7 +123,7 @@
 
     //PDFÂ´s
     Route::get('admin/pdf/pdf-reserva/{id}', 'PdfController@invoice');
-    Route::get('admin/pdf/descarga-excel-propietario/{id}', 'PdfController@pdfPropietario');
+//    Route::get('admin/pdf/descarga-excel-propietario/{id}', 'PdfController@pdfPropietario');
     Route::get('/importPaymenCashBank', 'Admin\BackendController@migrationCashBank');
     Route::get('/insertDNIS', 'Admin\BackendController@insertDNIS');
 //    Route::get('/refreshBloqueos', 'Admin\BackendController@refreshBloqueos');

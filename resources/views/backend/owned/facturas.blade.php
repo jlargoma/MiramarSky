@@ -79,7 +79,7 @@
                                 <?php echo ucfirst($book->customer->DNI) ?>
 							</td>
 	                        <td class="text-center font-s16">
-								<?php $costeProp = $book->cost_apto + $book->cost_park + $book->cost_lujo?>
+								<?php $costeProp = $book->get_costProp()?>
 	                            <b><?php echo number_format(($costeProp/2), 2, ',','.') ?>€</b>
 	                        </td>
 	                        <td class="text-center font-s16">

@@ -466,9 +466,9 @@ class Zodomus{
     $book->type_park = 1;
 
     $book->cost_apto = $room->getCostRoom($book->start,$book->finish,$book->pax);
-    $extraCost  = \App\Extras::find(4)->cost;
+    $book->extraCost  = \App\Extras::find(4)->cost;
     
-    $book->cost_total = $book->cost_apto + $book->cost_limp + $book->cost_park + $book->cost_lujo + $book->PVPAgencia+$extraCost;
+    $book->cost_total = $book->get_costeTotal();
     
     //save
     $book->save();
@@ -519,9 +519,9 @@ class Zodomus{
     $book->type_park = 1;
 
     $book->cost_apto = $room->getCostRoom($book->start,$book->finish,$book->pax);
-    $extraCost  = \App\Extras::find(4)->cost;
+    $book->extraCost  = \App\Extras::find(4)->cost;
     
-    $book->cost_total = $book->cost_apto + $book->cost_limp + $book->cost_park + $book->cost_lujo + $book->PVPAgencia+$extraCost;
+    $book->cost_total = $book->get_costeTotal();
     
     //save
     $book->save();

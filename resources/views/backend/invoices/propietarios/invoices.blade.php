@@ -97,7 +97,7 @@ setlocale(LC_TIME, "es_ES");
                                                         </td>
                                                         <td>
                                                             <?php if( $forProps == 1 || isset($forProps) ):?>
-                                                                <?php $costeProp = $book->cost_apto + $book->cost_park + $book->cost_lujo?>
+                                                                <?php $costeProp = $book->get_costProp()?>
                                                                 <b><?php echo number_format(($costeProp/2), 2, ',','.') ?>€</b>
                                                             <?php else: ?>
                                                                 <b><?php echo number_format($book->total_price, 2, ',','.') ?>€</b>
@@ -121,7 +121,7 @@ setlocale(LC_TIME, "es_ES");
                                                             <label>TOTAL:</label>
                                                             <span class="pull-right">
                                                                 <?php if( $forProps == 1 || isset($forProps) ):?>
-                                                                    <?php $costeProp = $book->cost_apto + $book->cost_park + $book->cost_lujo?>
+                                                                    <?php $costeProp = $book->get_costProp()?>
                                                                     <b><?php echo number_format(($costeProp/2), 2, ',','.') ?>€</b>
                                                                 <?php else: ?>
                                                                     <b><?php echo number_format($book->total_price, 2, ',','.') ?>€</b>

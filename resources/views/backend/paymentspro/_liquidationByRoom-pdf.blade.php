@@ -100,12 +100,7 @@ setlocale(LC_TIME, "es_ES");
                   <td class="text-center">{{convertDateToShow_text($book->start,true)}}</td>
                   <td class="text-center">{{convertDateToShow_text($book->finish,true)}}</td>
                   <td class="text-center total">
-                    <?php 
-                    $cost = 0;
-                    if ($book->type_book != 7 && $book->type_book != 8)
-                      $cost = ($book->cost_apto + $book->cost_park + $book->cost_lujo) 
-                    ?>
-                    {{moneda($cost,false,2)}}
+                    {{moneda($book->get_costProp(),false,2)}}
                   </td>
                   <td class="text-center">
                     <?php 
@@ -124,15 +119,11 @@ setlocale(LC_TIME, "es_ES");
                   </td>
                   <?php 
                     if ($room != 'all'):
-                      if ($room->luxury == 1 && $book->type_book != 7 && $book->type_book != 8):
-                        if ($this->type_luxury == 1 || $this->type_luxury == 3 || $this->type_luxury == 4):
-                          ?>
+                  ?>
                           <td class="text-center">
-                          {{moneda($book->cost_lujo,false,2)}}
+                          {{moneda($book->get_costLujo(),false,2)}}
                           </td>
                         <?php
-                        endif;
-                      endif;
                     endif;
                   ?>
                   <?php if (!empty($book->book_owned_comments) && $book->promociones != 0): ?>

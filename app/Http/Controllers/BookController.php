@@ -272,7 +272,6 @@ class BookController extends AppController
         $book->sup_lujo    = $this->getPriceLujo($request->input('type_luxury'));
         $book->cost_lujo   = $this->getCostLujo($request->input('type_luxury'));
 
-        $subTotalCost = $book->cost_limp+$book->cost_park + $book->cost_lujo + $book->PVPAgencia + $extraCost;
         $book->real_price  = $room->getPVP($date_start, $date_finish,$book->pax) + $book->sup_park + $book->sup_lujo + $book->sup_limp;
         
     
@@ -285,7 +284,7 @@ class BookController extends AppController
             $book->user_id = (Auth::check()) ? Auth::user()->id : 1;
             $book->customer_id = $customer->id;
             $book->cost_apto = $room->getCostRoom($date_start, $date_finish, $book->pax);
-            $book->cost_total = $book->cost_apto + $subTotalCost;
+            $book->cost_total = $book->get_costeTotal();
 
             if ($request->input('priceDiscount') == "yes" || $request->input('price-discount') == "yes") {
               $discount = \App\Settings::getKeyValue('discount_books');
