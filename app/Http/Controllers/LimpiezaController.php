@@ -27,7 +27,7 @@ class LimpiezaController extends AppController {
             ->where('start', '<=', $now->copy()->addYear())
             ->orderBy('start', 'ASC')
             ->get();
-    $books = $booksCollection->whereIn('type_book', [2]);
+    $books = $booksCollection->whereIn('type_book', [2,7]);
 
     $payment = array();
     $payment = null;
@@ -206,7 +206,7 @@ class LimpiezaController extends AppController {
 
     $lstBooks = \App\Book::where('finish', '>=', $startYear)
                     ->where('finish', '<=', $endYear)
-                    ->where('type_book', 2)
+                    ->whereIn('type_book', [2,7])
                     ->orderBy('finish', 'ASC')->get();
     foreach ($lstBooks as $key => $book) {
       $agency = ($book->agency != 0) ? '/pages/' . strtolower($book->getAgency($book->agency)) . '.png' : null;

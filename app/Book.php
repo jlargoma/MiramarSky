@@ -466,13 +466,13 @@ class Book extends Model {
   
   static function getMonthSum($field,$filter,$date1,$date2) {
     
-    $typeBooks = '(2,8)';
+    $typeBooks = '(2,7,8)';
   
     return DB::select('SELECT new_date, SUM('.$field.') as total '
             . ' FROM ('
             . '        SELECT '.$field.',DATE_FORMAT('.$filter.', "%m-%y") new_date '
             . '        FROM book'
-            . '        WHERE type_book = 2 '
+            . '        WHERE type_book IN '.$typeBooks
             . '        AND '.$filter.' >= "'.$date1.'" '
             . '        AND '.$filter.' <= "'.$date2.'" '
             . '      ) AS temp_1 '
