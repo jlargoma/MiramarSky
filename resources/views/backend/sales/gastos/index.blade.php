@@ -378,8 +378,9 @@ $isMobile = $mobile->isMobile();
             $('#ms_'+year+'_'+month).addClass('active');
             $('#tableItems').html('');
             $('#totalMounth').html(response.totalMounth);
+            $('#totalMounth').data('orig',response.totalMounth);
             $.each((response.respo_list), function(index, val) {
-              var row = '<tr data-id="' + val.id + '"><td>' + val.date + '</td>';
+              var row = '<tr data-id="' + val.id + '" data-import="' + val.import+ '"><td>' + val.date + '</td>';
               row += '<td class="editable" data-type="concept">' + val.concept + '</td>';
               row += '<td class="editable selects stype" data-type="type" data-current="'+ val.type_v +'" >' + val.type + '</td>';
               row += '<td class="editable selects spayment" data-type="payment" data-current="'+ val.typePayment_v +'" >' + val.typePayment + '</td>';
@@ -559,7 +560,6 @@ $(document).ready(function () {
     
       }
       
-      
       var filters = {
         type : -1,
         paym : -1,
@@ -570,7 +570,7 @@ $(document).ready(function () {
         if (filters.type == -1 && filters.paym == -1 && filters.apto == -1 ){
           all = true;
         }
-        console.log(filters);
+        var total = 0;
         $('#tableItems tr').each(function(){
           $(this).show();
           if (!all){
@@ -599,9 +599,11 @@ $(document).ready(function () {
                 return; 
               }
             }
-            
+            total += parseInt($(this).data('import'));
           }
         });
+        if (all)   $('#totalMounth').text($('#totalMounth').data('orig'));
+        else $('#totalMounth').text(window.formatterEuro.format(total));
       }
       $('#s_type').on('change', function(){
         var value = $(this).val();
@@ -626,43 +628,25 @@ $(document).ready(function () {
         var value = $(this).val();
         filters.paym = value;
         filterTable();
-        
-        
-//        $('#tableItems tr').each(function(){
-//            console.log(value);
-//          if (value != '-1'){
-//            var type = $(this).find('.spayment');
-//            console.log(type.data('current'));
-//            if (type.data('current') == value){
-//              type.closest('tr').show();
-//            } else {
-//              type.closest('tr').hide();
-//            }
-//          } else {
-//            $(this).show();
-//          }
-//        });
+
       });
       $('#s_aptos').on('change', function(){
         var value = $(this).val();
         filters.apto = value;
         filterTable();
-        
-//        $('#tableItems tr').each(function(){
-//            console.log(value);
-//          if (value != '-1'){
-//            var type = $(this).find('.sapto');
-//            var res = type.data('current').split(",");
-//            console.log(type.data('current'),res);
-//            if (res.includes(value) ){
-//              type.closest('tr').show();
-//            } else {
-//              type.closest('tr').hide();
-//            }
-//          } else {
-//            $(this).show();
-//          }
-//        });
+
+      });
+      
+      $('.month_select').on('click', function(){
+        $('#s_aptos').val(-1);
+        $('#s_payment').val(-1);
+        $('#s_type').val(-1);
+        filters = {
+          type : -1,
+          paym : -1,
+          apto : -1,
+        };
+//        filterTable();
       });
         
 });

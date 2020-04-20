@@ -41,6 +41,14 @@ $(document).ready(function() {
 
     return [year, month, day].join('-');
   }
+  
+  window["formatterEuro"] =  new Intl.NumberFormat('de-DE', {
+        style: 'currency',
+        currency: 'EUR',
+        minimumFractionDigits: 0
+     })
+  
+  
     $('.only-numbers').keydown(function (e) {
       console.log(e.keyCode);
       // Allow: backspace, delete, tab, escape, enter and .
