@@ -20,7 +20,15 @@
         <td>{{$ingrType[$k]}}</td>
         <td class="text-center">{{moneda($lstT_ing[$k])}}</td>
         <td class="text-center">{{moneda($aIngrPending[$k])}}</td>
-        @foreach($lstMonths as $k_month=>$month) <td class="text-center">{{moneda($ingresos[$k][$k_month],false)}}</td> @endforeach
+        @foreach($lstMonths as $k_month=>$month) 
+        @if($k == 'ventas' || $k == 'ff')
+          <td class="text-center" >
+        @else
+          <td class="text-center editable_ingr" data-key="{{$k}}" data-month="{{$k_month}}" data-val="{{moneda($ingresos[$k][$k_month],false)}}">
+        @endif
+          {{moneda($ingresos[$k][$k_month],false)}}
+        </td> 
+        @endforeach
       </tr>
       @endforeach
       

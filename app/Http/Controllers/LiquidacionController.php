@@ -421,6 +421,35 @@ class LiquidacionController extends AppController {
     return 'error';
     
   }
+  public function perdidasGananciasUpdIngr(Request $request) {
+    
+    $key     = $request->input('key');
+    $value   = floatVal($request->input('input'));
+    $month   = $request->input('month');
+    $date_y  = '20'.$month[0].$month[1];
+    $date_m  = intval($month[2].$month[3]);
+    
+    if ($value<0) return 'error';
+    
+    $obj = \App\Incomes::where('year',$date_y)
+            ->where('month',$date_m)
+            ->where('concept',$key)->first();
+    if ($obj){
+      $obj->import = ($value);
+      if ($obj->save())  return 'OK';
+    } else {
+      $obj = new \App\Incomes();
+      $obj->import  = ($value);
+      $obj->concept = $key;
+      $obj->year    = $date_y;
+      $obj->month   = $date_m;
+      $obj->date    = $date_y.'-'.$date_m.'-01';
+      if ($obj->save())  return 'OK';
+    }
+   
+    return 'error';
+    
+  }
   /*************************************************************************/
   /************       GASTOS                                        ********/
      public function gastos($current=null) {
@@ -825,17 +854,28 @@ class LiquidacionController extends AppController {
     public function ingresosCreate(Request $request) {
     $date =  $request->input('fecha');
     $aDate = explode('/', $date);
-    $month = isset($aDate[1]) ? $aDate[1] : null;
+    $month = isset($aDate[1]) ? intval($aDate[1]) : null;
     $year  = isset($aDate[2]) ? $aDate[2] : null;
     $concept = $request->input('concept');
-    $import = $request->input('import',null);
+    $import = floatval($request->input('import',null));
+    
+    
     if ($month && $import){
-        $ingreso = new \App\Incomes();
-        $ingreso->month = intval($month);
-        $ingreso->year  = $year;
-        $ingreso->concept  = $concept;
-        $ingreso->date = Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
-        $ingreso->import = $import;
+        $ingreso = \App\Incomes::where('month',$month)
+              ->where('year',$year)
+              ->where('concept',$concept)
+              ->first();
+        
+        if ($ingreso){
+          $ingreso->import = $ingreso->import+$import;
+        } else {
+          $ingreso = new \App\Incomes();
+          $ingreso->month = intval($month);
+          $ingreso->year  = $year;
+          $ingreso->concept  = $concept;
+          $ingreso->date = Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+          $ingreso->import = $import;
+        }
       
       if ($ingreso->save()) {
         return redirect()->back();

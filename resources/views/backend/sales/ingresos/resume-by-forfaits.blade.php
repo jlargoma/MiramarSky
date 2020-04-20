@@ -1,7 +1,7 @@
 <?php
 $t_forfaits = $t_equipos = $t_clases = $t_otros = 0;
 
-$rappel_clases = isset($ingrMonths['rappel_closes']) ? round($ingrMonths['rappel_closes'][0]) : 0;
+$rappel_clases = isset($ingrMonths['rappel_clases']) ? round($ingrMonths['rappel_clases'][0]) : 0;
 $rappel_forfaits = isset($ingrMonths['rappel_forfaits']) ? round($ingrMonths['rappel_forfaits'][0]) : 0;
 $rappel_alq_material = isset($ingrMonths['rappel_alq_material']) ? round($ingrMonths['rappel_alq_material'][0]) : 0;
 

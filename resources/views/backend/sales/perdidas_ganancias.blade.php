@@ -201,6 +201,14 @@ $(document).ready(function () {
     select.val(currentElement.data('current'));
     currentElement.html(select);
   }
+  
+  function editInput (currentElement) {
+    var key = currentElement.data('key');
+    var c_val = currentElement.data('val').replace( /[^\d|^.]/g , '' );
+    var input = $('<input>', {type: "text",class: 'inputIngr'}).val(c_val)
+    currentElement.html(input);
+    input.focus(); 
+  }
 
   hTable.on('click','.editable', function () {
     var that = $(this);
@@ -211,9 +219,54 @@ $(document).ready(function () {
       var key = $(this).data('key');
       edit($(this),key);
     }
+    
+  });
+  
+  hTable.on('click','.editable_ingr', function () {
+    var that = $(this);
+    if (!that.hasClass('tSelect')){
+      clearAll();
+      that.addClass('tSelect')
+      editInput($(this));
+    }
   });
 
 
+  hTable.on('keyup','.inputIngr',function (e) {
+     
+    if (e.keyCode == 13) {
+      var obj = $(this).closest('td');
+      var key  = obj.data('key');
+      var month  = obj.data('month');
+      var input = $(this).val();
+           
+      var url = "/admin/perdidas-ganancias/upd-ingr";
+      $.ajax({
+        type: "POST",
+        method : "POST",
+        url: url,
+        data: {_token: "{{ csrf_token() }}",key: key,month:month, input: input},
+        success: function (response)
+        {
+          if (response == 'OK') {
+            location.reload();
+          } else {
+            clearAll();
+            window.show_notif('Error','danger','Registro NO Actualizado');
+          }
+        }
+      });
+    
+      console.log(key,month,input);
+
+
+    } else {
+      $(this).val($(this).val().replace( /[^\d|^.]/g , '' ));
+      e.preventDefault();
+      return false;
+    }
+  });
+  
   hTable.on('change','.selects',function (e) {
 
       var key = $(this).closest('td').data('key');
@@ -238,8 +291,12 @@ $(document).ready(function () {
   });
   var clearAll= function(){
     hTable.find('.tSelect').each(function() {
-       $(this).text($(this).data('value')).removeClass('tSelect');
+//      $(this).html(
+console.log($(this).data('val'),$(this));
+       $(this).html($(this).data('val')).removeClass('tSelect');
+//       $(this).html($(this).data('value')).removeClass('tSelect');
      });
+     
    }
 });
 </script>
@@ -257,6 +314,12 @@ $(document).ready(function () {
   }
   .light-blue{
     background-color: #48b0f7
+  }
+  input.inputIngr {
+    width: 7em;
+    padding: 4px 5px;
+    border: none;
+    background-color: #e4e4e4;
   }
 </style>
 @endsection
