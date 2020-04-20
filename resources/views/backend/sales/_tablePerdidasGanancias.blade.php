@@ -42,13 +42,15 @@
       <tr>
         <td>{{$gastoType[$k]}}</td>
         <td class="text-center">{{moneda($lstT_gast[$k])}}</td>
-        <td class="text-center editable" data-key="{{$k}}" data-val="{{moneda($aExpensesPendingOrig[$k],false)}}">
-          @if($aExpensesPending[$k] === "N/A")
+        @if($aExpensesPending[$k] === "N/A")
+        <td class="text-center editable" data-current="0" data-key="{{$k}}" data-val="{{moneda($aExpensesPendingOrig[$k],false)}}">
           N/A
-          @else
-          {{moneda($aExpensesPending[$k],false)}}
-          @endif
         </td>
+        @else
+        <td class="text-center editable" data-current="1" data-key="{{$k}}" data-val="{{moneda($aExpensesPendingOrig[$k],false)}}">
+          {{moneda($aExpensesPending[$k],false)}}
+        </td>
+          @endif
         @foreach($lstMonths as $k_month=>$month) <td class="text-center">{{moneda($listGasto[$k][$k_month],false)}}</td> @endforeach
       </tr>
       @endforeach
