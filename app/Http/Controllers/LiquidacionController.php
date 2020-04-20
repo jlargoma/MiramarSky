@@ -271,7 +271,8 @@ class LiquidacionController extends AppController {
     /******       GASTOS                        ***********/
     $gastos = \App\Expenses::where('date', '>=', $startYear)
                     ->Where('date', '<=', $endYear)
-//                    ->WhereNull('PayFor')
+                    ->WhereNull('PayFor')
+                    ->Where('type','!=','prop_pay')
                     ->orderBy('date', 'DESC')->get();
 
     $lstT_gast = [];
@@ -294,6 +295,25 @@ class LiquidacionController extends AppController {
         }
       }
     }
+    
+    /***
+     * Payment prop van con los gastos específicos
+     */
+    $gastos = \App\Expenses::where('date', '>=', $startYear)
+                    ->Where('date', '<=', $endYear)
+                    ->Where('type','=','prop_pay')
+                    ->orderBy('date', 'DESC')->get();
+    if ($gastos){
+      foreach ($gastos as $g){
+        $m = date('ym', strtotime($g->date));
+        if (isset($listGastos[$g->type])){
+          $listGastos[$g->type][$m] += $g->import;
+          $lstT_gast[$g->type] += $g->import;
+          if (isset($tGastByMonth[$m])) $tGastByMonth[$m] += $g->import;
+        }
+      }
+    }
+    
     
     foreach ($gType as $k=>$v){
       if (isset($aExpensesPending[$k])){

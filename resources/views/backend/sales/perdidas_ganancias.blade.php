@@ -186,6 +186,9 @@ $(document).ready(function () {
 
   function edit (currentElement,key) {
     var select = $('<select>', {class:' form-control selects'});
+    var current = currentElement.data('current');
+    
+    
     select.data('key', key);
     var option = $('<option></option>');
     option.attr('value', 'hide');
@@ -198,7 +201,11 @@ $(document).ready(function () {
     select.append(option);
 
     currentElement.data('value',currentElement.html());
-    select.val(currentElement.data('current'));
+//    select.val(currentElement.data('current'));
+    
+    if (current == 0) select.val('hide');
+    else select.val('show');
+      
     currentElement.html(select);
   }
   
@@ -321,5 +328,12 @@ console.log($(this).data('val'),$(this));
     border: none;
     background-color: #e4e4e4;
   }
+  .editable.tSelect select.form-control.selects {
+    width: 7em;
+    padding: 0 5px;
+    margin: 0;
+    display: block;
+    margin: 0 auto;
+}
 </style>
 @endsection

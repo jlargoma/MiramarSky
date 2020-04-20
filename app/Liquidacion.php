@@ -253,11 +253,25 @@ class Liquidacion
     $gastos = \App\Expenses::where('date', '>=', $activeYear->start_date)
                     ->Where('date', '<=', $activeYear->end_date)
                     ->WhereIn('type',array_keys($aExpensesPayment))
+                    ->WhereNull('PayFor')
+                    ->Where('type','!=','prop_pay')
                     ->orderBy('date', 'DESC')->get();
     
     foreach ($gastos as $g) {
       $aExpensesPayment[$g->type] += $g->import;
     }
+    
+    // Payment prop van con los gastos específicos
+    $gastos = \App\Expenses::where('date', '>=', $activeYear->start_date)
+                    ->Where('date', '<=', $activeYear->end_date)
+                    ->Where('type','=','prop_pay')
+                    ->orderBy('date', 'DESC')->get();
+    if ($gastos){
+      foreach ($gastos as $g) {
+        $aExpensesPayment[$g->type] += $g->import;
+      }
+    }
+    
     return $aExpensesPayment;
   }
 
