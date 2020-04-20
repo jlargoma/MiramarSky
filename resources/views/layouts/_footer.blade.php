@@ -9,6 +9,9 @@ $footerContent = $oContents->getContentByKey('footer');
     background-image: url('{{getCloudfl($footerContent["imagen"])}}') !important;
   }
 }
+.grecaptcha-badge {
+    visibility: hidden;
+}
 </style>
 <footer id="footer" >	
   <!-- Copyrights
