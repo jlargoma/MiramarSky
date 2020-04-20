@@ -20,16 +20,14 @@ div#carouselHome {
 
   
   
-   
-    
-  
+   <!--style="background-image: url('');"-->
 <div id="carouselHome" class="carousel slide" data-ride="carousel">
   <div class="carousel-inner">
   <?php 
   $first = 'active';
   for($i=1; $i<4; $i++): ?>
      @if($sliderHome['imagen_'.$i])
-     <div class="carousel-item {{$first}}" style="background-image: url('{{getCloudfl($sliderHome['imagen_'.$i])}}');">
+     <div class="carousel-item {{$first}}" data-img="url('{{getCloudfl($sliderHome['imagen_'.$i])}}')" data-img2="url('{{getCloudfl($sliderHome['imagen_'.$i.'_mobile'])}}')">
 
       <div class="carousel-caption" @if(!$first) style="display:none;" @endif>
           <div class="slider-text-1">
