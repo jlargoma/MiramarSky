@@ -1,5 +1,5 @@
 <?php 
-$s_pt = null;
+$s_pt = 3;
 if(isset($page)){
   $s_pt = ($page =='banco') ? 3 : 2;
 }

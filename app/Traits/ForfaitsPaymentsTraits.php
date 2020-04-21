@@ -1259,10 +1259,14 @@ trait ForfaitsPaymentsTraits {
       
     $token = $req->header('token-ff');
     $client = $req->header('client');
+    
+    if (!$amount || $amount==0){
+      return response()->json(['status' => 'error']);
+    }
     if (!$this->checkUserAdmin($token,$client)) return die('404');
     
     
-    if ($amount && $amount>0){
+    
       
       $oForfait = Forfaits::getByKey($key);
       if (!$oForfait) {
@@ -1278,6 +1282,9 @@ trait ForfaitsPaymentsTraits {
       $order->type = $p_type;
       $order->total = $amount;
       $order->quick_order = 1;
+      if ($amount && $amount<0){
+        $order->status = 2;
+      }
       $order->save();
       $bookingID = $oForfait->book_id;
       $book = Book::find($bookingID);
@@ -1286,7 +1293,19 @@ trait ForfaitsPaymentsTraits {
       } else {
         $cli_email = $oForfait->email;
       }
-
+      
+      
+      /////////////////////
+      $orderLst = $oForfait->orders()->get();
+      if ($orderLst){
+        foreach ($orderLst as $item){
+          $orders[] = ['id'=>$item->id,'total'=>$item->total,'status'=>$item->status];
+        }          
+      }
+      $this->listOrders = $orders;
+      /////////////////////
+          
+      if ($amount && $amount>0){
         // craete the payment
         $description = 'Pago por orden de Forfaits';
         $token = md5('linktopay'.$bookingID.'-'.time().'-'.$order->id);
@@ -1312,13 +1331,7 @@ trait ForfaitsPaymentsTraits {
             $book->save();
           }
 
-          $orderLst = $oForfait->orders()->get();
-          if ($orderLst){
-            foreach ($orderLst as $item){
-              $orders[] = ['id'=>$item->id,'total'=>$item->total,'status'=>$item->status];
-            }          
-          }
-          $this->listOrders = $orders;
+         
         }
     
 
@@ -1354,6 +1367,12 @@ trait ForfaitsPaymentsTraits {
         }
       
     
+    } else {
+      return response()->json([
+              'status' => 'ok',
+              'url' => '',
+              'orders_list'=>$this->listOrders
+                  ]);
     }
 
     return response()->json(['status' => 'error']);
