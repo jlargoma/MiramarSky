@@ -261,7 +261,7 @@ $(document).ready(function () {
   
   function editInput (currentElement) {
     var key = currentElement.data('key');
-    var c_val = currentElement.data('val').replace( /[^\d|^.]/g , '' );
+    var c_val = currentElement.data('val').replace( /[^\d]/g , '' );
     var input = $('<input>', {type: "text",class: 'inputIngr'}).val(c_val)
     currentElement.html(input);
     input.focus(); 

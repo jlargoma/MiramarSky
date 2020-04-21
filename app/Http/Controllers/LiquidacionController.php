@@ -888,7 +888,8 @@ class LiquidacionController extends AppController {
     }
     return 'error';
   }
-    public function ingresosCreate(Request $request) {
+    
+  public function ingresosCreate(Request $request) {
     $date =  $request->input('fecha');
     $aDate = explode('/', $date);
     $month = isset($aDate[1]) ? intval($aDate[1]) : null;
