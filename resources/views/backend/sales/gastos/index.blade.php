@@ -599,7 +599,7 @@ $(document).ready(function () {
                 return; 
               }
             }
-            total += parseInt($(this).data('import'));
+            total += parseFloat($(this).data('import'));
           }
         });
         if (all)   $('#totalMounth').text($('#totalMounth').data('orig'));

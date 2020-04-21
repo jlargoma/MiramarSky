@@ -198,7 +198,7 @@ class LiquidacionController extends AppController {
     $endYear = new Carbon($year->end_date);
     $diff = $startYear->diffInMonths($endYear) + 1;
     $lstMonths = lstMonths($startYear,$endYear,'ym',true);
-    $ingresos = [];
+    $ingresos = ['ventas'=>0,'ff'=>0];
     $lstT_ing = [
         'ff' => 0,
         'ventas' => 0,
@@ -469,6 +469,23 @@ class LiquidacionController extends AppController {
    
     return 'error';
     
+  }
+  
+  public function perdidasGananciasShowDetail($key) {
+    
+    $year = \App\Years::getActive();
+    $typePayment = \App\Expenses::getTypeCobro();
+    $qry = \App\Expenses::where('date', '>=', $year->start_date)
+            ->Where('date', '<=', $year->end_date)
+            ->Where('type',$key)->orderBy('date', 'DESC');
+            
+            
+    if ($key != 'prop_pay')
+      $qry->WhereNull('PayFor');
+    
+    $expense = $qry->orderBy('date', 'DESC')->get();
+    $total = $qry->sum('import');
+    return view('backend.sales.gastos._details',['items'=>$expense,'total'=>$total,'typePayment'=>$typePayment]);
   }
   /*************************************************************************/
   /************       GASTOS                                        ********/

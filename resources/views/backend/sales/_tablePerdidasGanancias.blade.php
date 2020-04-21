@@ -40,7 +40,7 @@
       </tr>
       @foreach($listGasto as $k=>$v)
       <tr>
-        <td>{{$gastoType[$k]}}</td>
+        <td class="open_detail" data-key="{{$k}}">{{$gastoType[$k]}}</td>
         <td class="text-center">{{moneda($lstT_gast[$k])}}</td>
         @if($aExpensesPending[$k] === "N/A")
         <td class="text-center editable" data-current="0" data-key="{{$k}}" data-val="{{moneda($aExpensesPendingOrig[$k],false)}}">

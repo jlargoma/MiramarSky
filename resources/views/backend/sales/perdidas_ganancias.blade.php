@@ -55,6 +55,43 @@ setlocale(LC_TIME, "es_ES");
       font-size: 15px;
     }
   }
+  
+  div#modalShowDetail .modal-content {
+    min-width: 62vw;
+  }
+  .fa.result{
+    font-size: 1.13em
+  }
+  .box-resumen{
+    background-color: #a94442;
+    padding: 5px 26px;
+    font-size: 2em;
+    color: #FFF;
+    font-weight: 800;
+    min-height: 5em;
+  }
+  .light-blue{
+    background-color: #48b0f7
+  }
+  input.inputIngr {
+    width: 7em;
+    padding: 4px 5px;
+    border: none;
+    background-color: #e4e4e4;
+  }
+  .editable.tSelect select.form-control.selects {
+    width: 7em;
+    padding: 0 5px;
+    margin: 0;
+    display: block;
+    margin: 0 auto;
+  }
+  td.open_detail {
+    cursor: pointer;
+  }
+  td.open_detail:hover {
+    color: #295d9b;
+  }
 </style>
 @endsection
 
@@ -145,6 +182,19 @@ setlocale(LC_TIME, "es_ES");
   </div>
 </div>
 
+<div class="modal fade" id="modalShowDetail" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong class="modal-title modalChangeBookTit" style="font-size: 1.4em;">Detalle del Gasto</strong>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body"></div>
+    </div>
+  </div>
+</div>
 @endsection	
 
 
@@ -305,35 +355,20 @@ console.log($(this).data('val'),$(this));
      });
      
    }
+   
+   
+   
+   $('#tableItems').on('click','.open_detail', function(){
+     
+    var id = $(this).data('key');
+    var tit = $(this).text();
+    $.get('/admin/perdidas-ganancias/show-detail/'+id, function(data) {
+      
+      $('#modalShowDetail').find('.modalChangeBookTit').text(tit);
+      $('#modalShowDetail').modal('show'); 
+      $('#modalShowDetail').find('.modal-body').empty().append(data);
+    });
+   });
 });
 </script>
-<style>
-  .fa.result{
-    font-size: 1.13em
-  }
-  .box-resumen{
-    background-color: #a94442;
-    padding: 5px 26px;
-    font-size: 2em;
-    color: #FFF;
-    font-weight: 800;
-    min-height: 5em;
-  }
-  .light-blue{
-    background-color: #48b0f7
-  }
-  input.inputIngr {
-    width: 7em;
-    padding: 4px 5px;
-    border: none;
-    background-color: #e4e4e4;
-  }
-  .editable.tSelect select.form-control.selects {
-    width: 7em;
-    padding: 0 5px;
-    margin: 0;
-    display: block;
-    margin: 0 auto;
-}
-</style>
 @endsection
