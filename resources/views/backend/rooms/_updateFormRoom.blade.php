@@ -110,6 +110,14 @@
 				<textarea class="form-control" name="description" rows="7"><?php echo $room->description; ?></textarea>
 			</div>
 		</div>
+                <div class="form-group col-md-12">
+                  <label for="Nombre">SEO: Meta-title</label>
+                  <input type="text" class="form-control" id="meta_title" name="meta_title" placeholder="SEO: Meta-title" required value="{{$room->meta_title}}">
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="Nombre">SEO: Meta-Descripción</label>
+                  <textarea class="form-control" name="meta_descript" rows="6" id="meta_descript">{{$room->meta_descript}}</textarea>
+                </div>
 		<div class="col-xs-12 text-center push-20">
 			<button class="btn btn-success btn-cons" type="submit">
                 <span class="bold">GUARDAR</span>

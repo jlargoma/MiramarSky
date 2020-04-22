@@ -1,7 +1,5 @@
 @extends('layouts.master')
 
-@section('title') Apartamentosierranevada.net - contacto @endsection
-
 <?php
 if (!isset($oContents)) $oContents = new App\Contents();
 $contactoContent = $oContents->getContentByKey('contacto');

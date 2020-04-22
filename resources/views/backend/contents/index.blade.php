@@ -27,6 +27,9 @@ setlocale(LC_TIME, "es_ES"); ?>
     margin-bottom: 7px;
     display: block;
   }
+  h4 {
+    border-bottom: 1px solid #c3c3c3;
+}
   </style>
 @endsection
 
@@ -58,6 +61,13 @@ setlocale(LC_TIME, "es_ES"); ?>
       <form method="POST" action="{{route('contents.upd',$current)}}" enctype="multipart/form-data">
         <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
          @foreach($fields as $k=>$v)
+         <?php 
+         if($v[1] == 'title'){
+           echo '<h4>'.$v[0].'</h4>';
+           continue;
+         }
+          
+         ?>
          <div class="form-material pt-1">
          <label>{{$v[0]}}</label>
          <?php 

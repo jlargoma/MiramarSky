@@ -1,4 +1,6 @@
 @extends('layouts.master_onlybody')
+
+@section('styles')
 <script src="{{asset('/frontend/js/modernizr.custom.js')}}"></script>
 
 <style type="text/css">
@@ -109,8 +111,10 @@ h2.subtit {
   }
   }
 </style>
-@section('metadescription') {{ $aptoHeading }} en Sierra Nevada @endsection
-@section('title') {{ $aptoHeading }} en Sierra Nevada @endsection
+@endsection
+
+@section('title') {!! $room->meta_title !!} @endsection
+@section('metadescription') {!! $room->meta_descript !!} @endsection
 
 @section('content')
 <section class="page-title apartamento fotos centered">

@@ -1,7 +1,4 @@
 @extends('layouts.master')
-
-@section('title') Alquiler apartamento Sierra Nevada @endsection
-
 @section('content')
 @include('frontend.slider')
 <section id="content" style="padding: 0;    clear: both;">
@@ -139,7 +136,7 @@
 <script type="text/javascript">
   $(document).ready(function() {
     var w_screen = $(window).width();
-    console.log(w_screen);
+//    console.log(w_screen);
     $('.carousel-item').each(function( index ) {
       var img = $( this ).data('img');
       if (w_screen<481) var img = $( this ).data('img2');

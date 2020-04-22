@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="es-ES">
     <head>
-       <?php noIndex(); ?>
+      <?php noIndex(); ?>
       <?php
       
       $oContents = new App\Contents();
-      $meta_descripcion = $oContents->getContentByKey('meta_descripcion');
+      $oSEO = $oContents->getSEOContentByPath(Request::path());
+      
+      
       ?>
-        <meta name="description" content="{{$meta_descripcion['text']}}">
+        <title>@yield('title',$oSEO[0])</title>
+        <meta name="description" content="@yield('metadescription',$oSEO[1])">
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="keywords" content="Alquiler apartamento Sierra Nevada;edificio miramarski; a pie de pista; apartamentos capacidad 6 / 8 personas; estudios capacidad 4 /5 personas; zona baja;piscina climatizada;gimansio;parking cubierto; a 5 minutos  de la plaza de Andalucia">
@@ -32,7 +35,7 @@
         <meta name="theme-color" content="#ffffff">
 
         
-        <title>@yield('title')</title>
+        
 
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-66225892-1"></script>
@@ -43,7 +46,8 @@
 
   gtag('config', 'UA-66225892-1');
 </script>
-<link rel="stylesheet" href="{{ getCloudfl(assetV ('/css/frontend.css'))}}" type="text/css"/>   
+<link rel="stylesheet" href="{{ getCloudfl(assetV ('/css/frontend.css'))}}" type="text/css"/> 
+@yield('styles')
 </head>
 
 <body class="stretched not-dark" data-loader="5">

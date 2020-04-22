@@ -1,4 +1,5 @@
 @extends('layouts.master')
+@section('styles')
 <script src="{{asset('/frontend/js/modernizr.custom.js')}}"></script>
 
 <style type="text/css">
@@ -62,9 +63,9 @@
     height: 60px;
 }
 </style>
-
-@section('metadescription') {{ $aptoHeading }} en Sierra Nevada @endsection
-@section('title') {{ $aptoHeading }} en Sierra Nevada @endsection
+@endsection
+@section('metadescription') {{ $meta_descript }} @endsection
+@section('title') {{ $meta_tit }} @endsection
 
 @section('content')
 

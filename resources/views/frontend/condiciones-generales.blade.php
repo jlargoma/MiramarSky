@@ -1,8 +1,5 @@
 @extends('layouts.master')
 
-@section('metadescription') Condiciones generales - apartamentosierranevada.net @endsection
-@section('title')  Condiciones generales - apartamentosierranevada.net @endsection
-
 @section('content')
 
 <meta name="description" content="Consultar Condiciones generales para el alquiler apartamento sierra nevada,condiciones de cancelación, check in y out" />

@@ -1,92 +1,4 @@
 @extends('layouts.master')
-
-
-
-<style type="text/css">
-
-  .lSNext::before{
-    content: ">";
-    width: 0px;
-    display: block;
-    color: #fff;
-    font-size: 4em;
-    margin-left: -10px;
-    margin-right: 0;
-  }
-  .lSPrev::before{
-    content: "<";
-    width: 0px;
-    display: block;
-    color: #fff;
-    font-size: 4em;
-    margin-right: -10px;
-  }
-
-  label{
-    color: white!important
-  }
-  #content-form-book {
-    padding: 40px 15px;
-  }
-  .content-colmun{
-    margin-top: 1em;
-  }
-  .btn_reservar{
-    margin-bottom: 4em;
-  }
-  .apartamento {
-    background-image: url('{{ $photoHeader }}') !important;
-  }
-  .btn_reservar .menu-booking-apt img{
-    width: 15em;
-    min-width: auto;
-    margin-right: 7em;
-  }
-  @media (max-width: 818px){
-    .apartamento h1{
-      padding-top: 2em;
-    }
-  }
-  @media (max-width: 768px){
-    .apartamento h1{
-      padding-top: 2em;
-    }
-    .container-mobile{
-      padding: 0!important
-    }
-    .container-image-box img{
-      height: 180px!important;
-    }
-
-    #content-form-book {
-      padding: 0px 0 40px 0
-    }
-    .daterangepicker {
-      position: fixed!important;
-      top: 15%!important;
-    }
-    .img{
-      max-height: 530px;
-    }
-    .button.button-desc.button-3d{
-      background-color: #4cb53f!important;
-    }
-
-    .img.img-slider-apto{
-      height: 250px!important;
-    }
-  }
-  .flex-control-nav.flex-control-paging{
-    display: none;
-  }
-  .lSSlideOuter .lSPager.lSGallery li {
-    max-height: 60px !important;
-  }
-</style>
-
-@section('metadescription') {{ $aptoHeading }} en Sierra Nevada @endsection
-@section('title') {{ $aptoHeading }} en Sierra Nevada @endsection
-
 @section('content')
 
 <section class="page-title apartamento centered">
@@ -199,4 +111,95 @@
 
 @section('scripts')
 <script src="{{ assetV('/frontend/vendor/lightslider-master/src/js/lightslider.js')}}"></script>
+<style type="text/css">
+
+  .lSNext::before{
+    content: ">";
+    width: 0px;
+    display: block;
+    color: #fff;
+    font-size: 4em;
+    margin-left: -10px;
+    margin-right: 0;
+  }
+  .lSPrev::before{
+    content: "<";
+    width: 0px;
+    display: block;
+    color: #fff;
+    font-size: 4em;
+    margin-right: -10px;
+  }
+
+  label{
+    color: white!important
+  }
+  #content-form-book {
+    padding: 40px 15px;
+  }
+  .content-colmun{
+    margin-top: 1em;
+  }
+  .btn_reservar{
+    margin-bottom: 4em;
+  }
+  .apartamento {
+    background-image: url('{{ $photoHeader }}') !important;
+  }
+  .btn_reservar .menu-booking-apt img{
+    width: 15em;
+    min-width: auto;
+    margin-right: 7em;
+  }
+  @media (max-width: 818px){
+    .apartamento h1{
+      padding-top: 2em;
+    }
+  }
+  @media (max-width: 768px){
+    .apartamento h1{
+      padding-top: 2em;
+    }
+    .container-mobile{
+      padding: 0!important
+    }
+    .container-image-box img{
+      height: 180px!important;
+    }
+
+    #content-form-book {
+      padding: 0px 0 40px 0
+    }
+    .daterangepicker {
+      position: fixed!important;
+      top: 15%!important;
+    }
+    .img{
+      max-height: 530px;
+    }
+    .button.button-desc.button-3d{
+      background-color: #4cb53f!important;
+    }
+
+    .img.img-slider-apto{
+      height: 250px!important;
+    }
+  }
+  .flex-control-nav.flex-control-paging{
+    display: none;
+  }
+  .lSSlideOuter .lSPager.lSGallery li {
+    max-height: 60px !important;
+  }
+  
+    .lSAction .lSNext:before, .lSAction .lSPrev:before {
+    width: 37px;
+    display: block;
+    color: #232323;
+    border-radius: 11px;
+    font-size: 40px;
+    background-color: #eaeaea;
+    height: 60px;
+}
+</style>
 @endsection

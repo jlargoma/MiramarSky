@@ -1,10 +1,4 @@
 @extends('layouts.master')
-
-@section('metadescription') ¿Eres Propietario y quieres alquilar tu apartamento? - apartamentosierranevada.net @endsection
-@section('title')  ¿Eres Propietario y quieres alquilar tu apartamento? - apartamentosierranevada.net @endsection
-
-
-
 @section('content')
 
 <meta name="description" content="Información de Interes para los propietarios de apartamentos o Estudios en el  Edificio Miramaski de Sierra Nevada, como aumentar la rentabilidad de tu propiedad" />

@@ -1,8 +1,4 @@
 @extends('layouts.master')
-
-@section('metadescription') Condiciones generales - apartamentosierranevada.net @endsection
-@section('title')  Condiciones generales - apartamentosierranevada.net @endsection
-
 @section('content')
 
 <?php

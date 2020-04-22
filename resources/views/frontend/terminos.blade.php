@@ -1,8 +1,5 @@
 @extends('layouts.master')
 
-@section('metadescription') Términos y condiciones - apartamentosierranevada.net @endsection
-@section('title')  Términos y condiciones - apartamentosierranevada.net @endsection
-
 @section('content')
 	<style type="text/css">
 		#primary-menu ul li  a{

@@ -1,8 +1,4 @@
 @extends('layouts.master')
-
-@section('metadescription') Aviso Legal - apartamentosierranevada.net @endsection
-@section('title')  Aviso Legal - apartamentosierranevada.net @endsection
-
 @section('content')
 <style type="text/css">
 	#primary-menu ul li  a{
