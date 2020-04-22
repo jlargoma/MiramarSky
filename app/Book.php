@@ -177,6 +177,9 @@ class Book extends Model {
   }
   
   function get_costLujo(){
+//    if ($this->room){
+//      if ($this->room->luxury != 1) return 0;
+//    }
     if ($this->type_luxury == 1 || $this->type_luxury == 3 || $this->type_luxury == 4) {
       return $this->cost_lujo;
     }

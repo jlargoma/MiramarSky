@@ -138,6 +138,14 @@ $mobile = new Mobile();
                   <textarea class="ckeditor" name="apto_descript" id="apto_descript" rows="10" cols="80">{{$obj->description}}</textarea>
                 </div>
                 <div class="form-group col-md-12">
+                  <label for="Nombre">SEO: Meta-title</label>
+                  <input type="text" class="form-control" id="meta_title" name="meta_title" placeholder="SEO: Meta-title" required value="{{$obj->meta_title}}">
+                </div>
+                <div class="form-group col-md-12">
+                  <label for="Nombre">SEO: Meta-Descripción</label>
+                  <textarea class="form-control" name="meta_descript" rows="6" id="meta_descript">{{$obj->meta_descript}}</textarea>
+                </div>
+                <div class="form-group col-md-12">
                   <input type="submit" value="Enviar" class="btn btn-primary" />
                 </div>
               </form>

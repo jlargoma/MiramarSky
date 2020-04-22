@@ -158,6 +158,9 @@ class HomeController extends AppController
               'room'     => $room,
               'aptos'    => $aptos,
               'url'      => $url,
+              'meta_tit' => $room->meta_title,
+              'meta_descript' => $room->meta_descript,
+              'url'      => $url,
             ]);
             
           }

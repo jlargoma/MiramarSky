@@ -1,8 +1,4 @@
 @extends('layouts.master')
-
-@section('metadescription') Huesped - apartamentosierranevada.net @endsection
-@section('title')  Huesped - apartamentosierranevada.net @endsection
-
 @section('content')
 	<style type="text/css">
 		#primary-menu ul li  a{

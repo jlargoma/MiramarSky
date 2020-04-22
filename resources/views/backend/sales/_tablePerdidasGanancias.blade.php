@@ -62,7 +62,7 @@
         @foreach($lstMonths as $k_month=>$v)<th class="text-center"> {{moneda(($tIngByMonth[$k_month]-$tGastByMonth[$k_month]))}}</th> @endforeach
       </tr>
       <tr>
-        <td>IMPUESTOS</td>
+        <td class="open_detail" data-key="impuestos">IMPUESTOS</td>
         <td class="text-center">{{moneda($lstT_gast['impuestos'])}}</td>
         <td class="text-center">{{moneda($totalPendingImp)}}</td>
       </tr>

@@ -626,6 +626,9 @@ class RoomsController extends AppController {
     $room->channel_group = $request->input('channel_group',null);
     $room->price_extra_pax = $request->input('price_extra_pax',null);
 
+    $room->meta_title = $request->input('meta_title', null);
+    $room->meta_descript = $request->input('meta_descript', null);
+      
     if ($room->save()) {
       return redirect()->action('RoomsController@index');
     }
@@ -1041,6 +1044,8 @@ class RoomsController extends AppController {
       $room->status = $item_status;
       $room->description = $request->input('apto_descript', null);
       $room->name = $this->clearTitle($name); 
+      $room->meta_title = $request->input('meta_title', null);
+      $room->meta_descript = $request->input('meta_descript', null);
       $room->save();
       return redirect()->back()->with('success', 'Registro Guardado');  
       
@@ -1050,6 +1055,8 @@ class RoomsController extends AppController {
       $room->status = $item_status;
       $room->name = $this->clearTitle($name); 
       $room->description = $request->input('apto_descript', null);
+      $room->meta_title = $request->input('meta_title', null);
+      $room->meta_descript = $request->input('meta_descript', null);
       $room->save();
       return redirect()->back()->with('success', 'Registro Guardado'); 
     }

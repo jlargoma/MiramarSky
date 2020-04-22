@@ -1,4 +1,6 @@
 @extends('layouts.master')
+
+@section('styles')
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/radio-checkbox.css')}}" type="text/css" />
 
@@ -64,6 +66,8 @@
     line-height: 1.8;
     margin: 0;
 }</style>
+
+@endsection
 @section('metadescription') {{ $aptoTitle }} en Sierra Nevada @endsection
 @section('title') {{ $aptoTitle }} en Sierra Nevada @endsection
 

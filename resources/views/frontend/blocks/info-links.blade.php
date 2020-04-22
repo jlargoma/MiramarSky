@@ -21,7 +21,7 @@
             <img class="loadJS" src="/img/firts-min.png" data-src="{{ getCloudfl('/frontend/images/home/icon-forfait-2.png')}}" style="width: 90px;min-width: auto;">
           </div>
           <div class="single-content">
-            <div class="title">Vendedores de forfait <br>soficiales</div>
+            <div class="title">Vendedores de forfait <br>oficiales</div>
           </div>
           </a>
         </div>

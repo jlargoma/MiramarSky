@@ -12,6 +12,7 @@ class Contents extends Model
   
   static function getKeyLst(){
     return [
+      'SEO' => 'SEO',  
       'edificio' => 'El edificio - Home',  
       'edificio_page' => 'El edificio - Página',  
       'services' => 'Servicios - Home',  
@@ -34,6 +35,9 @@ class Contents extends Model
   
   static function getKeyContent($key){
     switch ($key){
+      case 'SEO':
+          return self::getSeoItems();
+      break;
       case 'edificio':
         return [
           'title'=>['Título','string',null],  
@@ -204,4 +208,50 @@ class Contents extends Model
     
     return $result;
   }
+  
+  static function getSeoItems() {
+    $pages = [
+        'home'=>'Inicio',
+        'eres-propietario'=>'Eres Propietario?',
+        'politica-cookies'=>'Politica de cookies',
+        'ayudanos-a-mejorar'=>'Ayudanos a mejorar',
+        'grupos'=>'Grupos',
+        'condiciones-contratacion'=>'Condiciones de Contratacion',
+        'condiciones-generales'=>'Condiciones Generales',
+        'terminos-condiciones'=>'Términos y condiciones',
+        'restaurantes'=>'Restaurantes',
+        'quienes-somos'=>'Quienes somos',
+        'contacto'=>'Contacto',
+        'edificio-miramarski-sierra-nevada'=>'El edificio',
+        'preguntas-frecuentes'=>'Preguntas frecuentes',
+        'aviso-legal'=>'Aviso legal',
+        'politica-privacidad'=>'Politica de privacidad',
+        'buzon'=>'Buzón',
+        'huesped'=>'Huesped',
+        ];
+    
+    $return = [];
+    foreach ($pages as $p=>$name){
+      $return['_'.$p] = [$name,'title',null];
+      $return['tit_'.$p] = ['Título de la página','string',null];
+      $return['descript_'.$p] = ['Descriptción de la página','textarea',null];
+    }
+    return $return;
+  }
+  
+  public function getSEOContentByPath($pathRequest) {
+    $oSEO = $this->getContentByKey('SEO',false);
+    
+    if (empty($pathRequest) || $pathRequest == 'create-cache' || $pathRequest == 'create-cache')
+      $pathRequest = 'home';
+    
+    $tit = isset($oSEO['tit_'.$pathRequest]) ? trim($oSEO['tit_'.$pathRequest]) : 'Alquiler apartamento Sierra Nevada';
+    $descr = isset($oSEO['descript_'.$pathRequest]) ? trim($oSEO['descript_'.$pathRequest]) : '';
+    
+    return [$tit,$descr];
+  }
 }
+
+
+
+

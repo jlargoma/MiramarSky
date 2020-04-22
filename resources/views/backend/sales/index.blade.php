@@ -2,6 +2,7 @@
     use \Carbon\Carbon;
     use \App\Classes\Mobile;
     $mobile = new Mobile();
+    $isMobile = $mobile->isMobile();
 ?>
 @extends('layouts.admin-master')
 
@@ -119,7 +120,7 @@
           <h2>Liquidación por reservas {{ $year->year }} - {{ $year->year + 1 }}</h2>
         </div>
        <div class="col-md-1 show-mobile mb-1em " >
-                @include('backend.years._selector', ['minimal' => true])
+          @if($isMobile)  @include('backend.years._selector', ['minimal' => true]) @endif
             </div>
         <div class="row push-10">
             <div class="col-md-4">
@@ -152,7 +153,7 @@
               <h2>Liquidación por reservas</h2>
             </div>
             <div class="col-md-4 mt-1em">
-              @include('backend.years._selector', ['minimal' => true])
+              @if(!$isMobile)  @include('backend.years._selector', ['minimal' => true]) @endif
             </div>
           </div>
           <div class="col-md-4 mt-1em">

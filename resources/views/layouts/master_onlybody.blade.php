@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
 <head>
-   <?php noIndex(); ?>
+      <?php noIndex(); ?>
       <?php
-      $oContents = new App\Contents();
-      $meta_descripcion = $oContents->getContentByKey('meta_descripcion');
+        $oContents = new App\Contents();
+        $oSEO = $oContents->getSEOContentByPath(Request::path());
       ?>
-        <meta name="description" content="{{$meta_descripcion['text']}}">
-        
+        <title>@yield('title',$oSEO[0])</title>
+        <meta name="description" content="@yield('metadescription',$oSEO[1])">
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
         
         <link rel="apple-touch-icon" sizes="57x57" href="{{ assetV('/img/miramarski/favicon/apple-icon-57x57.png') }}">
@@ -33,7 +33,6 @@
 	
 	<!-- Document Title
 	============================================= -->
-	<title>@yield('title')</title>
 	<style type="text/css">
 		#contact-form input{
 			color: white!important;
@@ -56,6 +55,7 @@
 		}
 	</style>
 	@yield('css')
+        @yield('styles')
 		<script type="text/javascript" src="{{ assetV('/frontend/js/jquery.js') }}"></script>
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-66225892-1"></script>

@@ -1,9 +1,4 @@
 @extends('layouts.master')
-
-@section('metadescription') Grupos - apartamentosierranevada.net @endsection
-@section('title')  Grupos - apartamentosierranevada.net @endsection
-
-
 @section('content')
 <meta name="description" content="Contacto para la Cotizacion de grupos esquí en Sierra nevada, te ofrecemos precios especiales, ofertas descuento de forfaits para grupos" />
 

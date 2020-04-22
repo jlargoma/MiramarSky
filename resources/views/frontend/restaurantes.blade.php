@@ -1,7 +1,5 @@
 @extends('layouts.master')
 
-@section('metadescription')Restaurantes en Sierra Nevada @endsection
-@section('title') Restaurantes en Sierra Nevada @endsection
 <?php
 if (!isset($oContents))
   $oContents = new App\Contents();
