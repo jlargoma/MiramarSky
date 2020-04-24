@@ -1,5 +1,8 @@
 @extends('layouts.master')
 
+@section('metadescription') Politica de cookies - apartamentosierranevada.net @endsection
+@section('title')  Politica de cookies - apartamentosierranevada.net @endsection
+
 @section('content')
 	<style type="text/css">
 		#primary-menu ul li  a{

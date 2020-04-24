@@ -66,6 +66,10 @@ setlocale(LC_TIME, "es_ES"); ?>
            echo '<h4>'.$v[0].'</h4>';
            continue;
          }
+         if($v[1] == 'title_url'){
+           echo '<h4><a href="'.$v[3].'" target="_back">'.$v[0].'</a></h4>';
+           continue;
+         }
           
          ?>
          <div class="form-material pt-1">

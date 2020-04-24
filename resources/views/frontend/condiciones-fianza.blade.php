@@ -1,4 +1,8 @@
 @extends('layouts.master')
+
+@section('metadescription') Condiciones de Fianzas - apartamentosierranevada.net @endsection
+@section('title')  Condiciones de Fianzas  - apartamentosierranevada.net @endsection
+
 @section('content')
 
 <?php

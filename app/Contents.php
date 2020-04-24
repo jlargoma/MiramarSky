@@ -210,13 +210,14 @@ class Contents extends Model
   }
   
   static function getSeoItems() {
+    
     $pages = [
         'home'=>'Inicio',
         'eres-propietario'=>'Eres Propietario?',
-        'politica-cookies'=>'Politica de cookies',
+//        'politica-cookies'=>'Politica de cookies',
         'ayudanos-a-mejorar'=>'Ayudanos a mejorar',
         'grupos'=>'Grupos',
-        'condiciones-contratacion'=>'Condiciones de Contratacion',
+//        'condiciones-contratacion'=>'Condiciones de Contratacion',
         'condiciones-generales'=>'Condiciones Generales',
         'terminos-condiciones'=>'Términos y condiciones',
         'restaurantes'=>'Restaurantes',
@@ -224,15 +225,15 @@ class Contents extends Model
         'contacto'=>'Contacto',
         'edificio-miramarski-sierra-nevada'=>'El edificio',
         'preguntas-frecuentes'=>'Preguntas frecuentes',
-        'aviso-legal'=>'Aviso legal',
-        'politica-privacidad'=>'Politica de privacidad',
+//        'aviso-legal'=>'Aviso legal',
+//        'politica-privacidad'=>'Politica de privacidad',
         'buzon'=>'Buzón',
         'huesped'=>'Huesped',
         ];
     
     $return = [];
     foreach ($pages as $p=>$name){
-      $return['_'.$p] = [$name,'title',null];
+      $return['_'.$p] = [$name,'title_url',null,'/'.$p];
       $return['tit_'.$p] = ['Título de la página','string',null];
       $return['descript_'.$p] = ['Descriptción de la página','textarea',null];
     }
