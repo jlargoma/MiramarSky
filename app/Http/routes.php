@@ -16,6 +16,7 @@
     Route::auth();
     
       Route::get('/', 'HomeController@index');
+      Route::get('/home', 'HomeController@index');
       Route::get('create-cache', 'HomeController@index')->middleware('page-cache');
       
       Route::get('/404', function () {
