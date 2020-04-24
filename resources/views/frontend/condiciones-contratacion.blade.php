@@ -1,4 +1,8 @@
 @extends('layouts.master')
+
+@section('metadescription') Condiciones de contratación - apartamentosierranevada.net @endsection
+@section('title')  Condiciones de contratación - apartamentosierranevada.net @endsection
+
 @section('content')
 
     <style type="text/css">
