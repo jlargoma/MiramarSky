@@ -39,7 +39,7 @@
           </tr>
           <tr>
             <td colspan="2">PAGO A PROVEEDORES</td>
-            <td >{{moneda($lstT_gast['excursion'] + $aExpensesPending['excursion'])}}</td>
+            <td >{{moneda($lstT_gast['excursion'] + floatval($aExpensesPending['excursion']))}}</td>
           </tr>
           <tr ><td colspan="3"><hr></td></tr>
           <tr>

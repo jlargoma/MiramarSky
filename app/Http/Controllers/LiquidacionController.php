@@ -277,7 +277,7 @@ class LiquidacionController extends AppController {
             ];
     $tGastos_operativos = 0;
     foreach ($gastos_operativos as $k)
-      $tGastos_operativos += $data['lstT_gast'][$k] + $data['aExpensesPending'][$k];
+      $tGastos_operativos += $data['lstT_gast'][$k] + floatval ($data['aExpensesPending'][$k]);
 
     if ($tGastos_operativos>0){
       $gasto_operativo_baseImp = $tGastos_operativos/1.1;
