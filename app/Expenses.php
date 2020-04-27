@@ -11,6 +11,7 @@ class Expenses extends Model
   static function getTypes(){
     return [
         'prop_pay' => 'PAGO PROPIETARIOS',
+        'excursion' => 'PROVEEDORES EXCURSIÓN',
         'agencias' => 'AGENCIAS',
         'amenities' => 'AMENITIES (EXTRAS)',
         'comision_tpv' => 'COMSION TPV',
@@ -20,7 +21,6 @@ class Expenses extends Model
         'sueldos' => 'SUELDOS Y SALARIOS',
         'seg_social' => 'SEG SOCIALES',
         'serv_prof' => 'SERVICIOS PROF INDEPENDIENTES',
-        'excursion' => 'PROVEEDORES EXCURSIÓN',
         'alquiler' => 'ALQUILER INMUEBLES',
         'seguros' => 'PRIMAS SEGUROS',
         'suministros' => 'SUMINISTROS',
@@ -31,7 +31,7 @@ class Expenses extends Model
         'publicidad' => 'MARKETING Y PUBLICIDAD',
         'mensaje' => 'MENSAJERIA',
         'varios' => 'VARIOS',
-        'impuestos' => 'IMPUESTOS',
+//        'impuestos' => 'IMPUESTOS',
 //        'comisiones' => 'COMISIONES COMERCIALES',
     ];
   }

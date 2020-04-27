@@ -167,12 +167,13 @@ setlocale(LC_TIME, "es_ES");
       
       <div style="clear: both;"></div>
         @include('backend.sales._tableSummaryBoxes',['hide'=>['rvas','bnf','t_day_1']])
-      
-      
-      
+        
     </div>
   </div>
   <div class="row bg-white">
+    <div class="col-md-12 col-xs-12">
+      @include('backend.sales.pyg_funcional._funcional')
+    </div>
     <div class="col-md-12 col-xs-12">
       <div class="row table-responsive" style="border: 0px!important">
         @include('backend.sales._tablePerdidasGanancias')
@@ -261,7 +262,7 @@ $(document).ready(function () {
   
   function editInput (currentElement) {
     var key = currentElement.data('key');
-    var c_val = currentElement.data('val').replace( /[^\d|\-]/g , '' );
+    var c_val = currentElement.data('val').replace( /[^\d|^-]/g , '' );
     var input = $('<input>', {type: "text",class: 'inputIngr'}).val(c_val)
     currentElement.html(input);
     input.focus(); 
@@ -318,7 +319,7 @@ $(document).ready(function () {
 
 
     } else {
-      $(this).val($(this).val().replace( /[^\d|^.|\-]/g , '' ));
+      $(this).val($(this).val().replace( /[^\d|^.|^-]/g , '' ));
       e.preventDefault();
       return false;
     }
@@ -349,7 +350,7 @@ $(document).ready(function () {
   var clearAll= function(){
     hTable.find('.tSelect').each(function() {
 //      $(this).html(
-console.log($(this).data('val'),$(this));
+//console.log($(this).data('val'),$(this));
        $(this).html($(this).data('val')).removeClass('tSelect');
 //       $(this).html($(this).data('value')).removeClass('tSelect');
      });

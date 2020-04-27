@@ -46,11 +46,12 @@
 <link rel="stylesheet" href="{{ getCloudfl(assetV ('/css/frontend.css'))}}" type="text/css"/> 
 @yield('styles')
 
-<!-- Hotjar Tracking Code for https://www.riadpuertasdelalbaicin.com/ -->
+
+<!-- Hotjar Tracking Code for www.apartamentosierranevada.net -->
 <script>
     (function(h,o,t,j,a,r){
         h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:1784631,hjsv:6};
+        h._hjSettings={hjid:1784324,hjsv:6};
         a=o.getElementsByTagName('head')[0];
         r=o.createElement('script');r.async=1;
         r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;

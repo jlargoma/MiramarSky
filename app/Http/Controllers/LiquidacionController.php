@@ -191,6 +191,127 @@ class LiquidacionController extends AppController {
 
   
   public function perdidasGanancias() {
+    return view('backend/sales/perdidas_ganancias',$this->get_perdidasGanancias());
+  }
+  public function perdidasGananciasFuncional() {
+    $data = $this->get_perdidasGanancias();
+    
+//        dd($data);
+    $expensesToDel = [
+      "sueldos",
+      "seg_social",
+      "serv_prof",
+      "alquiler",
+      "seguros",
+      "suministros",
+      "equip_deco",
+      "sabana_toalla",
+      "bancario",
+      "representacion",
+      "publicidad",
+      "mensaje",
+      "varios",
+    ];
+    
+    
+
+    foreach ($expensesToDel as $k){
+      if(isset($data['lstT_gast'][$k])){
+        unset($data['lstT_gast'][$k]);
+        unset($data['gastoType'][$k]);
+        unset($data['listGasto'][$k]);
+        unset($data['aExpensesPending'][$k]);
+      }
+    }
+    
+    
+    
+    $tGastByMonth = [];
+    foreach ($data['tGastByMonth'] as $k=>$v){
+      $tGastByMonth[$k] = 0;
+    }
+    
+    foreach ($data['listGasto'] as $k=>$months){
+      foreach ($months as $m=>$v){
+        if(isset($tGastByMonth[$m])) $tGastByMonth[$m] +=$v;
+      }
+    }
+    
+    $data['tGastByMonth'] = $tGastByMonth;
+    
+    $data['totalGasto'] = array_sum($data['lstT_gast']);
+    $data['ingr_bruto'] = $data['totalIngr']-$data['totalGasto'];
+    
+    
+    /*****************************************************************/
+    /******   FORMULAS EXCEL                          ***************/
+    //INGRESOS POR VENTAS DE RESERVAS
+//    dd($data);
+//    $vtas_reserva = $data['lstT_ing']['ventas'];
+//    $pago_prop    = $data['lstT_gast']['prop_pay'];
+    $ingr_reservas = $data['lstT_ing']['ventas']-$data['lstT_gast']['prop_pay'];
+    $ing_baseImp   = ($ingr_reservas>0) ? $ingr_reservas/1.21 : 0;
+    $ing_iva       = $ing_baseImp*0.21;
+    
+    //INGRESOS POR VENTAS DE FORFAITS
+    $ing_ff_baseImp   = ($data['lstT_ing']['ff']>0) ? $data['lstT_ing']['ff']/1.1 : 0;
+    $ing_ff_iva       = ($ing_ff_baseImp>0) ? $ing_ff_baseImp*0.1 : 0;
+    $ing_comision_baseImp   = ($data['lstT_ing']['rappel_forfaits']>0) ? $data['lstT_ing']['rappel_forfaits']/1.21 : 0;
+    $ing_comision_iva       = ($ing_comision_baseImp>0) ? $ing_comision_baseImp*0.21 : 0;
+    
+    //TOTAL GASTOS PROV FORFAITS/CLASES
+    $gasto_ff_baseImp = ($data['lstT_gast']['excursion']>0) ? $data['lstT_gast']['excursion']/1.1 : 0;
+    $gasto_ff_iva     = ($gasto_ff_baseImp>0) ? $gasto_ff_baseImp*0.1 : 0;
+    
+    $tPayProp = $data['lstT_gast']['prop_pay']+$data['aExpensesPending']['prop_pay'];
+    
+    
+    $gasto_operativo_baseImp = $gasto_operativo_iva = 0;
+    $gastos_operativos = [
+              "agencias",
+              "amenities",
+              "comision_tpv",
+              "lavanderia",
+              "limpieza",
+              "mantenimiento"
+            ];
+    $tGastos_operativos = 0;
+    foreach ($gastos_operativos as $k)
+      $tGastos_operativos += $data['lstT_gast'][$k] + $data['aExpensesPending'][$k];
+
+    if ($tGastos_operativos>0){
+      $gasto_operativo_baseImp = $tGastos_operativos/1.1;
+      $gasto_operativo_iva     = $gasto_operativo_baseImp*0.1;
+    }
+    
+    
+    $data['ingr_reservas'] = $ingr_reservas;
+    $data['ing_baseImp'] = $ing_baseImp;
+    $data['ing_iva'] = $ing_iva;
+    $data['ing_ff_baseImp'] = $ing_ff_baseImp;
+    $data['ing_ff_iva'] = $ing_ff_iva;
+    $data['ing_comision_baseImp'] = $ing_comision_baseImp;
+    $data['ing_comision_iva'] = $ing_comision_iva;
+    $data['gasto_ff_baseImp'] = $gasto_ff_baseImp;
+    $data['gasto_ff_iva'] = $gasto_ff_iva;
+    $data['gasto_operativo_baseImp'] = $gasto_operativo_baseImp;
+    $data['gasto_operativo_iva'] = $gasto_operativo_iva;
+    $data['tPayProp'] = $tPayProp;
+    
+    $data['tIngr_base']   = $ing_baseImp+$ing_ff_baseImp+$ing_comision_baseImp;
+    $data['tIngr_imp']    = $ing_iva+$ing_ff_iva+$ing_comision_iva;
+    $data['tGastos_base'] = $gasto_ff_baseImp+$gasto_operativo_baseImp;
+    $data['tGastos_imp']  = $gasto_ff_iva+$gasto_operativo_iva;
+            
+    /******   FORMULAS EXCEL                          ***************/
+    /***************************************************************/
+    
+    
+    return view('backend/sales/pyg_funcional/perdidas_ganancias',$data);
+  }
+  
+  
+  public function get_perdidasGanancias() {
      
     $oLiq = new Liquidacion();
     $year = $this->getActiveYear();
@@ -346,28 +467,34 @@ class LiquidacionController extends AppController {
     
     /*****************************************************************/
     
-    $impuestos = $listGastos['impuestos'];
-    unset($listGastos['impuestos']);
+    $expenses_fix = \App\Expenses::where('date', '=', $startYear)
+                    ->WhereIn('type',['impuestos','iva'])
+                    ->orderBy('date', 'DESC')->pluck('import','type')->toArray();
+    
+    if (!isset($expenses_fix['impuestos'])) $expenses_fix['impuestos'] = 0;
+    if (!isset($expenses_fix['iva']))       $expenses_fix['iva'] = 0;
+ 
+//    $impuestos = $listGastos['impuestos'];
 //    unset($listGastos['prop_pay']);
     unset($listGastos['comisiones']);
-    
-    $impEstimado = [];
-    
-    $gTypesImp = \App\Expenses::getTypesImp();
-    if ($gTypesImp){
-      foreach ($lstMonths as $k_m=>$m){
-        $impuestoM = 0;
-        foreach ($gTypesImp as $k_t=>$v){
-          $impuestoM += $listGastos[$k_t][$k_m];
-        }
-        
-        $impEstimado[$k_m] = ($tIngByMonth[$k_m]* 0.21 ) - ($impuestoM*0.21);
-        
-      }
-      
-    }
-      
-    $totalPendingImp = array_sum($impEstimado)-$lstT_gast['impuestos'];
+    $totalPendingImp = 0;
+//    $impEstimado = [];
+//    
+//    $gTypesImp = \App\Expenses::getTypesImp();
+//    if ($gTypesImp){
+//      foreach ($lstMonths as $k_m=>$m){
+//        $impuestoM = 0;
+//        foreach ($gTypesImp as $k_t=>$v){
+//          $impuestoM += $listGastos[$k_t][$k_m];
+//        }
+//        
+//        $impEstimado[$k_m] = ($tIngByMonth[$k_m]* 0.21 ) - ($impuestoM*0.21);
+//        
+//      }
+//      
+//    }
+//      
+//    $totalPendingImp = array_sum($impEstimado)-$lstT_gast['impuestos'];
 //    ( T ingr * 0.21 ) - ( TGasto *0.21 )
 
     /*****************************************************************/
@@ -379,7 +506,7 @@ class LiquidacionController extends AppController {
   
     
     
-    return view('backend/sales/perdidas_ganancias', [
+    return ([
         'summary' =>$summary,
         'lstT_ing' => $lstT_ing,
         'totalIngr' => $totalIngr,
@@ -390,8 +517,6 @@ class LiquidacionController extends AppController {
         'totalPendingImp' => $totalPendingImp,
         'ingresos' => $ingresos,
         'listGasto' => $listGastos,
-        'impuestos' => $impuestos,
-        'impEstimado' => $impEstimado,
         'aExpensesPending' => $aExpensesPending,
         'aExpensesPendingOrig' => $aExpensesPendingOrig,
         'aIngrPending' => $aIngrPending,
@@ -402,6 +527,8 @@ class LiquidacionController extends AppController {
         'tIngByMonth' => $tIngByMonth,
         'ingrType' => $ingrType,
         'gastoType' => $gType,
+        'expenses_fix' => $expenses_fix,
+        'tExpenses_fix' => array_sum($expenses_fix),
         'ingr_bruto' => $totalIngr-$totalGasto,
     ]);
   }
@@ -446,10 +573,29 @@ class LiquidacionController extends AppController {
     $key     = $request->input('key');
     $value   = floatVal($request->input('input'));
     $month   = $request->input('month');
+    
+    
+//    if ($value<0) return 'error';
+    
+    /* BEGIN: Save impuestos and IVA */
+    if ($key == 'impuestos' || $key == 'iva'){
+      $year = \App\Years::getActive();
+      $expenses_fix = \App\Expenses::where('date', '=', $year->start_date)
+                    ->Where('type',$key)->first();
+      if (!$expenses_fix){
+        $expenses_fix = new \App\Expenses();
+        $expenses_fix->date = $year->start_date;
+        $expenses_fix->type = $key;
+      }
+      
+      $expenses_fix->import = $value;
+      if ($expenses_fix->save())  return 'OK';
+       return 'error';
+    }
+    /* END: Save impuestos and IVA */
+    
     $date_y  = '20'.$month[0].$month[1];
     $date_m  = intval($month[2].$month[3]);
-    
-    if ($value<0) return 'error';
     
     $obj = \App\Incomes::where('year',$date_y)
             ->where('month',$date_m)
