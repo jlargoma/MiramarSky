@@ -3,11 +3,8 @@
     <head>
       <?php noIndex(); ?>
       <?php
-      
       $oContents = new App\Contents();
       $oSEO = $oContents->getSEOContentByPath(Request::path());
-      
-      
       ?>
         <title>@yield('title',$oSEO[0])</title>
         <meta name="description" content="@yield('metadescription',$oSEO[1])">
@@ -48,6 +45,19 @@
 </script>
 <link rel="stylesheet" href="{{ getCloudfl(assetV ('/css/frontend.css'))}}" type="text/css"/> 
 @yield('styles')
+
+<!-- Hotjar Tracking Code for https://www.riadpuertasdelalbaicin.com/ -->
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:1784631,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+
 </head>
 
 <body class="stretched not-dark" data-loader="5">
