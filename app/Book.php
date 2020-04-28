@@ -395,7 +395,7 @@ class Book extends Model {
       $costes = $oRoom->priceLimpieza($oRoom->sizeApto);
       $return['price_limp'] = $costes['price_limp'];
 
-      $return['parking'] = Http\Controllers\BookController::getPricePark($this->type_park,$this->nigths) * $room->num_garage;
+      $return['parking'] = Http\Controllers\BookController::getPricePark($this->type_park,$this->nigths) * $oRoom->num_garage;
       $return['price_lux'] = Http\Controllers\BookController::getPriceLujo($this->type_luxury);
 
       $return['price_total'] =  $return['pvp']+ $return['parking']+ $return['price_lux']+ $return['price_limp'];
@@ -598,6 +598,18 @@ class Book extends Model {
         }
 
         $end = $d;
+        
+        $WubookAvailDays[] = [
+          'channel_group' => $room->channel_group,
+          'date'          => $d,
+          'avail'         => $v
+        ];
+         
+      }
+      
+      //save the new availibility
+      if (count($WubookAvailDays)){
+        \App\WobookAvails::insert($WubookAvailDays);
       }
 
       $resultLst[] = [

@@ -20,8 +20,8 @@ class WubookController extends AppController {
   public function index() {
     
     $WuBook = new WuBook();
-    $WuBook->conect();
-    $WuBook->fetch_rooms();
+//    $WuBook->conect();
+//    $WuBook->fetch_rooms();
 //    $rooms = $WuBook->getRoomsEquivalent(null);
 //    dd($rooms);
 //    $url = 'https://admin.riadpuertasdelalbaicin.com/wubook-Webhook';
@@ -56,7 +56,7 @@ class WubookController extends AppController {
 //    $WuBook->fetch_booking();
     
     
-    $WuBook->disconect();
+//    $WuBook->disconect();
   }
   
   /**
@@ -157,14 +157,14 @@ class WubookController extends AppController {
   public function createAvails() {
     // ver la función sendAvailibility book
     
-//    $start = date('Y-m-d');
+    $start = date('Y-m-d');
 ////    $start = '2020-04-16';
-//    $end = '2020-07-30';
+    $end = '2020-12-30';
 //    $site = 1;
      
     $WuBook = new WuBook();
     //get the channels from the Site
-    $channels = Rooms::where('site_id',$site)->groupBy('channel_group')->pluck('channel_group')->toArray();
+    $channels = Rooms::groupBy('channel_group')->pluck('channel_group')->toArray();
   
     $book = new \App\Book();
     //Get the Channel -> Wubook rooms ID
@@ -219,25 +219,21 @@ class WubookController extends AppController {
     }
 
     $WuBook = new WuBook();
-    $SiteChannels = $this->getSiteChannels();
+    
+    $lstChannels = $this->getChannels();
     $roomdays = [];
-    $delDaySite = [1=>[],2=>[]];
-    foreach ($SiteChannels as $site=>$channels){
-      if (count($channels)>0){ //the Site has channels
-        
-        $rIDs = $WuBook->getRoomsEquivalent($channels);
-        if (count($rIDs)){ //the channels has a WuBook's room
-          $roomdaysAux = [];
-          foreach ($rIDs as $ch=>$rid){
-            if (isset($items[$ch]))
-              $roomdaysAux[] = ['id'=> $rid, 'days'=> $items[$ch]];
-            if (isset($delIDs[$ch]))
-              $delDaySite[$site] = array_merge ($delDaySite[$site],$delIDs[$ch]);
+    $delDay = [];
+    if (count($lstChannels)>0){ //the Site has channels
+
+      $rIDs = $WuBook->getRoomsEquivalent($lstChannels);
+      if (count($rIDs)){ //the channels has a WuBook's room
+        foreach ($rIDs as $ch=>$rid){
+          if (isset($items[$ch]))
+            $roomdays[] = ['id'=> $rid, 'days'=> $items[$ch]];
+          if (isset($delIDs[$ch])){
+            foreach ($delIDs[$ch] as $d) $delDay[] = $d;
           }
-          
-          if (count($roomdaysAux)>0){
-            $roomdays[$site] = $roomdaysAux;
-          }
+            
         }
       }
     }
@@ -245,11 +241,9 @@ class WubookController extends AppController {
     if (count($roomdays)>0){
     
       $WuBook->conect();
-      foreach ($roomdays as $site=>$items){
-        if ($WuBook->set_Closes($site,$items)){
-          //delete the aux table data
-          WobookAvails::whereIn('id',$delIDs)->delete();
-        }
+      if ($WuBook->set_Closes($roomdays)){
+        //delete the aux table data
+        WobookAvails::whereIn('id',$delIDs)->delete();
       }
       $WuBook->disconect();
       
@@ -316,17 +310,8 @@ class WubookController extends AppController {
   }
   
 
-  private function getSiteChannels() {
-    $getRooms = \App\Rooms::where('state',1)->groupBy('channel_group')->pluck('site_id','channel_group')->toArray();
-    $channelsSite = [1=>[],2=>[]];
-    if ($getRooms){
-      foreach ($getRooms as $ch=>$site){
-        if (isset($channelsSite[$site])){
-          $channelsSite[$site][] = $ch;
-        }
-      }
-    }
-    return $channelsSite;
+  private function getChannels() {
+    return \App\Rooms::where('state',1)->groupBy('channel_group')->pluck('channel_group')->toArray();
   }
 
 }

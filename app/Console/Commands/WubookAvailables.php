@@ -6,7 +6,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Log;
 use Illuminate\Support\Facades\DB;
-use App\WubookQueues;
+use App\WobookAvails;
 use App\Book;
 use App\Services\Wubook\WuBook;
 
@@ -57,96 +57,67 @@ class WubookAvailables extends Command
     }
     
     private function check_and_send(){
-      $items = WubookQueues::where('sent',0)->get();
-      $roomIDs = [];
-      $roomKs = [];
-      $start = $finish = null;
-      foreach ($items as $item){
-        $roomIDs[$item->rId_wubook] = $item->id_room;
-        if (!$start || $start>$item->date_start) $start = $item->date_start;
-        if (!$finish || $finish<$item->date_end) $finish = $item->date_end;
-        
-        
-      }
-      
-      /** @toDo Si es un Apto de grupos, agrego los Aptos asociados */
-      
-      $booksReserv = Book::get_type_book_reserved();
-      $rooms = [];
-      $oneDay = 24*60*60;
-      //find availibility
-      $bookings = Book::whereIn('room_id',$roomIDs)
-              ->where('start','>=',$start)
-              ->where('finish','<=',$finish)
-              ->get();
-      
-      if ($bookings){
-        foreach ($bookings as $b){
-          if(!isset($rooms[$b->room_id])) $rooms[$b->room_id] = [];
-
-          $avail = 0;
-          if (in_array($b->type_book,$booksReserv)) $avail = 1;
-          $date = strtotime($b->start);
-          $date_end = strtotime($b->finish);
-          while ($date<=$date_end){
-            $rooms[$b->room_id][$date] = $avail;
-            $date +=$oneDay;
-          }
+       //clear before dates
+    WobookAvails::where('date','<',date('Y-m-d'))->delete();
+    
+    $list = WobookAvails::orderBy('id','desc')->get();
+    $items = [];
+    $delIDs = [];
+    $already = [];
+    if ($list){
+      foreach ($list as $v){
+        if (!in_array($v->channel_group.$v->date,$already)){
+          $already[] = $v->channel_group.$v->date;
+          if (!isset($items[$v->channel_group])) $items[$v->channel_group] = [];
+          $items[$v->channel_group][] = [
+            'avail'=> $v->avail,
+            'date'=> convertDateToShow($v->date,true)
+            ];
         }
-      }
-     
-//      ['id'=> 433743, 'days'=> [['avail'=> 1], ['avail'=> 1], ['avail'=> 1]]],
-      $data = [];
-      if ($rooms){
-        foreach ($rooms as $k=>$values){
-          
-          $aux = [$k];
-          $aux_time = strtotime($start);
-          $aux_timeEnd = strtotime($finish);
-           var_dump($values);
-          foreach ($values as $time=>$avail){
-            while($aux_time<$time){
-              $aux[date('d/m',$aux_time)] = '';//[];
-              $aux_time +=$oneDay;
-            }
-//            echo var_dump($time); die;
-            $aux[date('d/m',$time)] = $avail;//[];
-//            $aux[$aux_time] = ['avail'=> $avail];
-            $aux_time +=$oneDay;
-            
-          }
-          
-//          while($aux_time<=$aux_timeEnd){
-//            $aux[date('d/m',$aux_time)] = '';//[];
-//            $aux_time +=$oneDay;
-//          }
-//          dd($aux,$start,$finish);
-           var_dump($aux); 
-          $rId_wubook = array_search($k,$roomIDs);
-          $data[] =  ['id'=> $k, 'days'=> $aux];
-     
-        }
+        if (!isset($delIDs[$v->channel_group])) $delIDs[$v->channel_group] = [];
+        $delIDs[$v->channel_group][] = $v->id;
       }
       
-      die;
-      
-      foreach ($data as $d){
-        var_dump($d['days']);
-//        echo $d['id'].' -> '.count($d['days']).'<br/>';
-      }
-      die;
-      $wubook = new WuBook();
-      $wubook->set_Closes($start,$data);
-      var_dump($data); die;
-
-      
-      
-      
-      
-      
-      
-      
-      dd($rooms);
     }
+
+    $WuBook = new WuBook();
+    //Get the Channel -> Wubook rooms ID
+
+    $lstChannels = $this->getChannels();
+    
+    $roomdays = [];
+    $delDay = [];
+    if (count($lstChannels)>0){ //the Site has channels
+
+      $rIDs = $WuBook->getRoomsEquivalent($lstChannels);
+      if (count($rIDs)){ //the channels has a WuBook's room
+        foreach ($rIDs as $ch=>$rid){
+          if (isset($items[$ch]))
+            $roomdays[] = ['id'=> $rid, 'days'=> $items[$ch]];
+          if (isset($delIDs[$ch])){
+            foreach ($delIDs[$ch] as $d) $delDay[] = $d;
+          }
+            
+        }
+      }
+    }
+//    dd($roomdays,$delDay);
+    if (count($roomdays)>0){
+      $WuBook->conect();
+      if ($WuBook->set_Closes($roomdays)){
+        //delete the aux table data
+        WobookAvails::whereIn('id',$delIDs)->delete();
+      }
+      $WuBook->disconect();
+      
+    }
+    /*************************************************/
+    
+    }
+    
+    
+  private function getChannels() {
+    return \App\Rooms::where('state',1)->groupBy('channel_group')->pluck('channel_group')->toArray();
+  }
 
 }

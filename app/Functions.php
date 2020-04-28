@@ -207,12 +207,13 @@ function getCloudfl($url){
   return $CDN_URL.$url;
 }
 
-  function convertDateToShow($date){
+  function convertDateToShow($date,$yearsComplete=false){
     $date= trim($date);
     if ($date){
       
       $aux = explode('-',$date);
       if (is_array($aux) && count($aux)==3){
+        if ($yearsComplete) return $aux[2].'/'.$aux[1].'/'.$aux[0];
         return $aux[2].'/'.$aux[1].'/'.($aux[0]-2000);
       }
     }

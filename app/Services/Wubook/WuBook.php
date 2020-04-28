@@ -20,7 +20,7 @@ class WuBook{
     public function __construct()
     {
       $this->iCode = 1578438122;
-      $this->token = "5143371168.4680";
+      $this->token = "5808490848.6474";
       $this->price_plan = 153130;
       $this->WBConfig = new WBConfig();
     }
@@ -45,6 +45,7 @@ class WuBook{
     }
     
     public function conect(){
+      return ;
       $params = array(
           'JL136',
           'umi2f7nh',
@@ -53,13 +54,14 @@ class WuBook{
       $aResponse = $this->call('acquire_token', $params);
       if ($aResponse){
         $this->token = strval($aResponse->string);
-//        dd($this->token);
+        dd($this->token);
         return true; 
       } 
       return false;
     }
     
     public function disconect(){
+       return ;
 //      return FALSE; 
       if ($this->token){
         $aResponse = $this->call('release_token', array($this->token));
@@ -160,7 +162,7 @@ class WuBook{
      * @param type $rCode
      * @return boolean
      */
-    public function set_Closes($site,$roomdays) {
+    public function set_Closes($roomdays) {
       if ($this->token){
 //        $roomdays= [
 //          ['id'=> 433743, 'days'=> [['avail'=> 1,'date'=>'27/11/2016']],
@@ -233,24 +235,7 @@ class WuBook{
 //          "_int_433743" => [100, 101, 102],
 //          "_int_433742" => [200, 201, 202],
 //        ];
-//       dd($prices);
-//       $prices= [
-//          "_int_432613" => [160, 160, 160],
-//        ];
-       
-              /*["_int_432614"]=>
-
-
-    ["_int_432613"]=>
-    array(3) {
-      [0]=>
-      int(160)
-      [1]=>
-      int(160)
-      [2]=>
-      int(160)
-    }
-    }*/ 
+ 
           
         $param = [
             $this->token,
@@ -336,7 +321,7 @@ class WuBook{
         
 //        include_once public_path('/tests/WuBook-booking.php');
 //        $aResponse = json_decode($bookings);
-        
+//        
         $reserv = $this->processData($aResponse);
         if ($reserv){
           $this->channels = $this->WBConfig->roomsEquivalent();
@@ -378,7 +363,7 @@ class WuBook{
       $start  = convertDateToDB($data['date_arrival']);
       $finish = convertDateToDB($data['date_departure']);
       
-      $roomGroup = isset($this->channels[$data['rooms']]) ? $this->channels[$data['rooms']] : 'ROSASJ';
+      $roomGroup = isset($this->channels[$data['rooms']]) ? $this->channels[$data['rooms']] : 'DDE';
       $room = new \App\Rooms();
       $roomID = $room->calculateRoomToFastPayment($roomGroup, $start, $finish);
       if ($roomID<0){
@@ -452,17 +437,29 @@ class WuBook{
       $book->save();
 
 
-      $totales = $book->getPriceBook($book->start,$book->finish,$roomID);
+       //costes
+      $room = \App\Rooms::find($roomID);
+      $costes = $room->priceLimpieza($room->sizeApto);
+      $book->cost_limp = isset($costes['cost_limp']) ? $costes['cost_limp'] : 0;
 
-      $book->cost_apto  = $totales['cost'];
-      $book->extraPrice = $totales['extra_fixed'];
-      $book->extraCost  = $totales['cost_extra_fixed'];
-      $book->sup_limp   = $totales['limp'];
-      $book->cost_limp  = $totales['cost_limp'];
+
+      $book->cost_lujo = 0;
+      if ($room->luxury == 1){
+        $book->type_luxury = 1;
+        $book->cost_lujo = \App\Settings::priceLujo();
+      }
+
+
+      $book->cost_park = (\App\Settings::priceParking()*$nights) * $room->num_garage;
+      $book->type_park = 1;
+
+      $book->cost_apto = $room->getCostRoom($book->start,$book->finish,$book->pax);
+      $book->extraCost  = \App\Extras::find(4)->cost;
+
       $book->cost_total = $book->get_costeTotal();
-      $book->real_price  = $totales['pvp'] + $book->sup_limp + $book->extraPrice;
-      $book->save();
 
+      $book->save();
+      
       return $book->id;
       
      
