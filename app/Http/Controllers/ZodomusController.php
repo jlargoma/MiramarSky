@@ -374,7 +374,7 @@ class ZodomusController extends Controller {
     ///admin/channel-manager/config
 //    $condif = configZodomusAptos(); dd($condif); die;
     $confFile = \Illuminate\Support\Facades\File::get(storage_path('app/config/zodomus.php'));
-  eval($confFile);
+//  eval($confFile);
   }
   
   
@@ -459,31 +459,41 @@ class ZodomusController extends Controller {
     
      
       $Zodomus =  new \App\Services\Zodomus\Zodomus();
-      $apto = 2092950; 
+      $apto = 51813430; 
       $return = null;
       
-//            $return = $Zodomus->activateChannels($apto);
-//      $return = $Zodomus->getRates($apto);   
-//      $rooms = [];
-//      for($i=1;$i<4;$i++){
-//        $rooms[$apto][] = [
-//              "roomId" => "20929500$i",
-//              "roomName" => "test$i",
-//              "quantity" => 1,
-//              "status" => 1,
-//              "rates" => [2092950991,2092950992,2092950993],
-//                  ];
-//      }
-//      foreach ($rooms as $apto => $r){
-//        $roomToAt = [
-//              "channelId" =>  1,
-//              "propertyId" => $apto,
-//              "rooms" => $r
-//            ];
-//        $return = $Zodomus->activateRoom($roomToAt);
-//        var_dump($return); die;
-//      }
+      $rooms = [];
+      $aptosLst = configZodomusAptos();
+      foreach ($aptosLst as $k=>$v){
+        foreach ($v->rooms as $j){
+          if($j->channel == 2){
+//            $rooms[] =  ["roomId" => $j->roomID,"roomName" => $j->name,"rates" => [$j->rateID],"quantity" => 10,"status" => 1];
+//          echo'['.$j->roomID.','.$j->rateID.','.$k.']<br>';
+          }
+          
+        }
+      }
+      die;
+      
+      //sendRatesGroup($rateId,$roomID,$channel_group)
+//       $return = $Zodomus->activateRoom($roomToAt);
 //    $return = $Zodomus->checkProperty($apto);
+      
+      
+      $ratesRooms = [
+          [231940162,'286355412A','DDE'],
+          [231940164,'286355419A','DDL'],
+          [231940097,'286355357A','EstS'],
+          [231940160,'286355407A','EstL'],
+          [231940170,'286355432A','7J'],
+          [231940174,'286355437A','9F'],
+          [231940167,'286355427A','10I'],
+      ];
+      foreach ($ratesRooms as $r){
+        $return = $Zodomus->sendRatesGroup($apto,$r[1],$r[0],$r[2]);
+      }
+      
+//     $return = $Zodomus->getRates($apto);
 //    $return = $Zodomus->createTestReserv($apto);
     if ($return){
         var_dump($return); die;
