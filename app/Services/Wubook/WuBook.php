@@ -45,7 +45,7 @@ class WuBook{
     }
     
     public function conect(){
-      return ;
+//      return ;
       $params = array(
           'JL136',
           'umi2f7nh',
@@ -54,14 +54,13 @@ class WuBook{
       $aResponse = $this->call('acquire_token', $params);
       if ($aResponse){
         $this->token = strval($aResponse->string);
-        dd($this->token);
+//        dd($this->token);
         return true; 
       } 
       return false;
     }
     
     public function disconect(){
-       return ;
 //      return FALSE; 
       if ($this->token){
         $aResponse = $this->call('release_token', array($this->token));
