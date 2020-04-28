@@ -96,7 +96,6 @@ class WubookController extends AppController {
         foreach ($pricesCh as $d=>$p){
           $aux[] = intval($p);
         }
-        var_dump($aux);
         $prices['_int_'.$rid] = $aux;
       }
     
