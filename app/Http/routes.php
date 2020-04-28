@@ -35,7 +35,8 @@
     
 
     Route::post('zodomus-Webhook','ZodomusController@webHook');
-  
+    Route::post('wubook-Webhook', 'WubookController@webHook');
+    
     Route::get('/partee-checkHuespedes', function () {
         $partee = new \App\Services\ParteeService();
         $partee->conect();

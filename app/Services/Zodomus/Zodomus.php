@@ -561,10 +561,10 @@ class Zodomus{
   
       $priceDay = $minDay = [];
       $startTime = time();
-      $finsh =  strtotime('+4 month');
+      $finsh =  strtotime('2021-07-01');
       $day = 24*60*60;
       while ($startTime<$finsh){
-        $priceDay[date('Y-m-d',$startTime)] = 700;
+        $priceDay[date('Y-m-d',$startTime)] = 999;
         $startTime += $day;
       }
       $oPrice = \App\DailyPrices::where('channel_group',$channel_group)
@@ -578,7 +578,7 @@ class Zodomus{
           $priceDay[$p->date] = $p->price;
         }
       }
-      
+     
       $d1 = date('Y-m-d');
       $d2 = null;
       $to_send = [];
@@ -603,7 +603,16 @@ class Zodomus{
         
       }
       
+      if ($d2!=$d1){
+          $to_send[] =  [
+              "dateFrom" => $d1,
+              "dateTo" => $d2,
+              "prices" =>   [ "price" => $precio ],
+              
+          ];
+        }
       
+       
      $weekDays = [ 
       "sun"=>true,
       "mon"=>true,
@@ -615,6 +624,7 @@ class Zodomus{
         
         
       foreach ($to_send as $v){
+        if ($v['prices']['price'] == 999) continue;
          $param = [
                 "channelId" =>  2,
                 "propertyId" => $apto,
@@ -631,13 +641,13 @@ class Zodomus{
               ];
          
               $errorMsg = $this->setRates($param,$channel_group);
-              var_dump($this->response);
+              var_dump($this->response,$param);
               if ($errorMsg){
                 return $errorMsg;
               }
       }
   
-      
+      dd($apto,$rateId,$roomID,$channel_group,$to_send);
       
   }
 }
