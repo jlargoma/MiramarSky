@@ -462,4 +462,40 @@ class Rooms extends Model
     return $return;
   }
   
+  
+  
+  
+  public function calculateRoomToFastPayment($apto, $start, $finish,$roomID = null) {
+
+    $roomSelected = null;
+      
+    $qry = \App\Rooms::where('channel_group', $apto)
+                    ->where('state', 1);
+        
+    if ($roomID) $qry->where('id',$roomID);
+
+    $allRoomsBySize = $qry->orderBy('fast_payment','DESC')
+            ->orderBy('order_fast_payment', 'ASC')->get();
+
+    foreach ($allRoomsBySize as $room) {
+      $room_id = $room->id;
+      if (\App\Book::availDate($start, $finish, $room_id)) {
+        return $room_id;
+      }
+    }
+
+    //search simple Rooms to Booking
+    $oRoomsGroup = \App\Rooms::select('id')
+                    ->where('channel_group', $apto)
+                    ->where('state', 1)
+                    ->orderBy('fast_payment', 'ASC')
+                    ->orderBy('order_fast_payment', 'ASC')->first();
+    if ($oRoomsGroup) {
+      return $oRoomsGroup->id;
+      return ['isFastPayment' => false, 'id' => $oRoomsGroup->id];
+    }
+
+    return -1;
+//    return ['isFastPayment' => false, 'id' => -1];
+  }
 }

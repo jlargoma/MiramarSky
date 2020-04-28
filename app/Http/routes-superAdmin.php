@@ -243,6 +243,14 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista'], 'pre
   Route::post('/channel-manager/send-avail/{apto}', 'ZodomusController@sendAvail')->name('channel.sendAvail');
   Route::get('/channel-manager', 'ZodomusController@calendRoom')->name('channel');
   
+  
+  // WUBOOK
+  Route::get('/Wubook', 'WubookController@index');
+  Route::post('/Wubook/sendPrices', 'WubookController@sendPricesGroup')->name('Wubook.sendPrices');
+  Route::get('/Wubook/createAvails', 'WubookController@createAvails')->name('Wubook.createAvails');
+  Route::get('/Wubook/sendAvails', 'WubookController@sendAvails')->name('Wubook.sendAvails');
+  Route::get('/Wubook/processHook', 'WubookController@processHook')->name('Wubook.processHook');
+  
   Route::get('/liquidacion', 'LiquidacionController@index');
     Route::get('/liquidacion-apartamentos', 'LiquidacionController@apto');
   Route::get('/liquidacion/export/excel', 'LiquidacionController@exportExcel');

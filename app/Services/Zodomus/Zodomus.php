@@ -149,7 +149,7 @@ class Zodomus{
     public function checkProperty($apto) {
 //      echo '"propertyId"=> "2798863"<br>';
       $params = [
-        "channelId"=> 1,
+        "channelId"=> 2,
         "propertyId"=> $apto,
       ];
       $this->call('property-check','POST',$params);
@@ -211,7 +211,7 @@ class Zodomus{
     
     public function getRates($apto) {
       $params = [
-        "channelId"=> 1,
+        "channelId"=> 2,
         "propertyId"=> $apto,
       ];
       $this->call('room-rates','GET',$params);
@@ -225,8 +225,8 @@ class Zodomus{
      */
     public function setRates($params,$channel_group=null) {
       $params = $this->ZConfig->processPriceRates($params,$channel_group);
-//      var_dump($params);
       $this->call('rates','POST',$params);
+//      var_dump($this->response);
       if (isset($this->response->status)){
         if (isset($this->response->status->returnCode)){
           if ($this->response->status->returnCode == 200){
@@ -527,5 +527,127 @@ class Zodomus{
     $book->save();
             
     return $book->id;
+  }
+  
+  
+  /*************************************************************/
+  /*************    AUX FUNCTIONS             ******************/
+  /*************************************************************/
+  
+  function createNewProperties(){
+     $rooms = [];
+      $aptosLst = configZodomusAptos();
+      foreach ($aptosLst as $k=>$v){
+        foreach ($v->rooms as $j){
+          if($j->channel == 2){
+            $rooms[] =  ["roomId" => $j->roomID,"roomName" => $j->name,"rates" => [$j->rateID],"quantity" => 10,"status" => 1];
+          }
+          
+        }
+      }
+//      dd($rooms);
+      
+      
+      $roomToAt = [
+             "channelId" => 2,
+             "propertyId" => $apto,
+             "rooms" => $rooms
+           ];
+//    $return = $Zodomus->activateRoom($roomToAt);
+  }
+  
+  function sendRatesGroup($apto,$rateId,$roomID,$channel_group){
+//      $channel_group = 'ROSASJ';
+  
+      $priceDay = $minDay = [];
+      $startTime = time();
+      $finsh =  strtotime('2021-07-01');
+      $day = 24*60*60;
+      while ($startTime<$finsh){
+        $priceDay[date('Y-m-d',$startTime)] = 999;
+        $startTime += $day;
+      }
+      $oPrice = \App\DailyPrices::where('channel_group',$channel_group)
+                ->where('date','>=',date('Y-m-d'))
+                ->where('date','<=',date('Y-m-d',$finsh))
+                ->get();
+    
+    
+      foreach ($oPrice as $p){
+        if (isset($priceDay[$p->date])){
+          $priceDay[$p->date] = $p->price;
+        }
+      }
+     
+      $d1 = date('Y-m-d');
+      $d2 = null;
+      $to_send = [];
+      $precio = null;
+      foreach ($priceDay as $d=>$p){
+        $d2 = $d;
+        if (is_null($precio)) $precio = $p;
+        if (is_null($d1))  $d1 = $d;
+        
+        
+        if ($p!=$precio){
+          $to_send[] =  [
+              "dateFrom" => $d1,
+              "dateTo" => $d2,
+              "prices" =>   [ "price" => $precio ],
+              
+          ];
+          $d1 = $d;
+          $precio = $p;
+        }
+        
+        
+      }
+      
+      if ($d2!=$d1){
+          $to_send[] =  [
+              "dateFrom" => $d1,
+              "dateTo" => $d2,
+              "prices" =>   [ "price" => $precio ],
+              
+          ];
+        }
+      
+       
+     $weekDays = [ 
+      "sun"=>true,
+      "mon"=>true,
+      "tue"=>true,
+      "wed"=>true,
+      "thu"=>true,
+      "fri"=>true,
+      "sat"=>true];
+        
+        
+      foreach ($to_send as $v){
+        if ($v['prices']['price'] == 999) continue;
+         $param = [
+                "channelId" =>  2,
+                "propertyId" => $apto,
+                "roomId" =>  $roomID,
+                "dateFrom" => $v['dateFrom'],
+                "dateTo" => $v['dateTo'],
+                "currencyCode" =>  "EUR",
+                "rateId" =>  $rateId,
+                "weekDays" => $weekDays,
+                "prices" =>  $v['prices'],
+                "closed" =>  0,
+                "minimumStay" => 1,
+                "minimumStayArrival" => 1,
+              ];
+         
+              $errorMsg = $this->setRates($param,$channel_group);
+              var_dump($this->response,$param);
+              if ($errorMsg){
+                return $errorMsg;
+              }
+      }
+  
+      dd($apto,$rateId,$roomID,$channel_group,$to_send);
+      
   }
 }

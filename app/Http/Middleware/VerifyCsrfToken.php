@@ -41,6 +41,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/payments-save-dni/*',
         '/static-token',
         '/zodomus-Webhook',
+        '/wubook-Webhook',
         '/admin/paymentspro/seeLiquidationProp'
     ];
 }
