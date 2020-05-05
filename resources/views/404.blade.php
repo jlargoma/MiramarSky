@@ -1,38 +1,43 @@
 <!DOCTYPE html>
 <html class="no-focus" lang="en"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8">
 
-        <title>Error 404</title>
-        <meta name="robots" content="noindex, nofollow">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Error 404 - {{env('APP_SITE')}}</title>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <style>
+      h1 {
+    font-size: 7em;
+    color: #6d6d6d;
+    font-family: serif;
+    font-style: oblique;
+}
+h2 {
+    color: #4c4c4c;
+    margin-bottom: 3em;
+}
+a.site-name{
+    font-size: 2em;
+    font-style: italic;
+    text-decoration: none;
+}
+    </style>
+  </head>
+  <body>
+    <!-- Error Content -->
+    <div class="container">
+      <div style="width: 80%; margin: 3em auto; text-align: center;">
+        <a href="/" title="Ir al inicio" class="site-name">{{env('APP_SITE')}}</a>
+        <!-- Error Titles -->
+        <h1>404</h1>
+        <h2>Ups!! La url ingresada no existe en nuestro sistema.</h2>
+        <!-- END Error Titles -->
+        <a href="/" title="Ir al inicio">Volver al Inicio</a><br/>
+      </div>
+    </div>
+    <!-- END Error Content -->
 
-        <!-- Stylesheets -->
-        <!-- Web fonts -->
-        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7COpen+Sans:300,400,400italic,600,700">
-
-        <link href="/assets/plugins/pace/pace-theme-flash.css" rel="stylesheet" type="text/css" />
-        <link href="/assets/plugins/bootstrapv3/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="/assets/plugins/bootstrap3-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" type="text/css" />
-        <link href="/assets/plugins/bootstrap-tag/bootstrap-tagsinput.css" rel="stylesheet" type="text/css" />
-        <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
-        <link href="/assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css" rel="stylesheet" type="text/css" media="screen">
-        <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> 
-    </head>
-    <body>
-        <!-- Error Content -->
-        <div class="content bg-white text-center pulldown overflow-hidden">
-            <div class="row">
-                <div class="col-sm-6 col-sm-offset-3">
-                    <!-- Error Titles -->
-                    <h1 class="font-s128 font-w300 text-modern animated zoomInDown">404</h1>
-                    <h2 class="h3 font-w300 push-50 animated fadeInUp">Uuppss!! Tenemos un problemilla con nuestro servidor...</h2>
-                    <!-- END Error Titles -->
-                </div>
-            </div>
-        </div>
-        <!-- END Error Content -->
-
-        <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
-    </body>
+    <!-- OneUI Core JS: jQuery, Bootstrap, slimScroll, scrollLock, Appear, CountTo, Placeholder, Cookie and App.js -->
+  </body>
 </html>
