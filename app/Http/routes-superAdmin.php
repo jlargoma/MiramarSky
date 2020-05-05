@@ -59,7 +59,7 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::post('admin/perdidas-ganancias/show-hide','LiquidacionController@perdidasGananciasShowHide');
   Route::post('admin/perdidas-ganancias/upd-ingr','LiquidacionController@perdidasGananciasUpdIngr');
 
-  Route::get('admin/perdidas-ganancias-funcional/{year?}','LiquidacionController@perdidasGananciasFuncional');
+//  Route::get('admin/perdidas-ganancias-funcional/{year?}','LiquidacionController@perdidasGananciasFuncional');
   //Facturas
   Route::get('admin/facturas/', 'InvoicesController@index');
 
@@ -293,6 +293,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   
   
 
+  Route::get('/perdidas-ganancias-funcional/{year?}','LiquidacionController@perdidasGananciasFuncional');
   
   // Pagos-Propietarios
   Route::get('/pagos-propietarios', 'PaymentsProController@index');
