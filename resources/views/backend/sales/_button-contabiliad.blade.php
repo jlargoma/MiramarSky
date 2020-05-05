@@ -64,6 +64,15 @@ if ($posicion > 0) {
       <a class="text-white btn btn-md btn-primary" href="{{url('/admin/perdidas-ganancias/')}}">CTA P &amp; G</a>
     <?php endif ?>
   </div>
+  <?php elseif (Auth::user()->role == "subadmin"):  ?>
+  <div class="btn-contabilidad">
+    <?php if ($url == "perdidas-ganancias-funcional"): ?>
+      <button class="btn btn-md text-white active"  disabled>CTA P &amp; G</button>
+
+    <?php else: ?>
+      <a class="text-white btn btn-md btn-primary" href="{{url('/admin/perdidas-ganancias-funcional')}}">CTA P &amp; G</a>
+    <?php endif ?>
+  </div>
   <?php endif ?>
   <div class="btn-contabilidad">
     <?php if ($url == "limpiezas"): ?>

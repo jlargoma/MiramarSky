@@ -24,7 +24,7 @@ class WubookController extends AppController {
 //    $WuBook->fetch_rooms();
 //    $rooms = $WuBook->getRoomsEquivalent(null);
 //    dd($rooms);
-//    $url = 'https://admin.riadpuertasdelalbaicin.com/wubook-Webhook';
+//    $url = 'https://apartamentosierranevada.net/wubook-Webhook';
 //    $WuBook->pushURL($url, 1);
 //    foreach ($rooms as $ch=>$lcode){
 //      $WuBook->pushURL($lcode, $url, 1);
@@ -56,7 +56,7 @@ class WubookController extends AppController {
 //    $WuBook->fetch_booking();
     
     
-//    $WuBook->disconect();
+    $WuBook->disconect();
   }
   
   /**
@@ -236,13 +236,12 @@ class WubookController extends AppController {
         }
       }
     }
-    
     if (count($roomdays)>0){
     
       $WuBook->conect();
       if ($WuBook->set_Closes($roomdays)){
         //delete the aux table data
-        WobookAvails::whereIn('id',$delIDs)->delete();
+        WobookAvails::whereIn('id',$delDay)->delete();
       }
       $WuBook->disconect();
       
