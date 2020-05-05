@@ -167,15 +167,16 @@ setlocale(LC_TIME, "es_ES");
       
       <div style="clear: both;"></div>
         @include('backend.sales._tableSummaryBoxes',['hide'=>['rvas','bnf','t_day_1']])
-      
-      
-      
+        
     </div>
   </div>
   <div class="row bg-white">
     <div class="col-md-12 col-xs-12">
+      @include('backend.sales.perdidas_ganancias._funcional')
+    </div>
+    <div class="col-md-12 col-xs-12">
       <div class="row table-responsive" style="border: 0px!important">
-        @include('backend.sales._tablePerdidasGanancias')
+        @include('backend.sales.perdidas_ganancias._table')
       </div>
     </div>
 
@@ -232,8 +233,56 @@ setlocale(LC_TIME, "es_ES");
 
 
 $(document).ready(function () {
+ 
+  @if(isset($repartoTemp_fix))
+  /** edit benef*/
+  var saveBenef = function(val){
+   var url = "/admin/perdidas-ganancias/upd-benef";
+      $.ajax({
+        type: "POST",
+        method : "POST",
+        url: url,
+        data: {_token: "{{ csrf_token() }}", input: val},
+        success: function (response)
+        {
+          if (response == 'OK') {
+            location.reload();
+          } else {
+            clearAll();
+            window.show_notif('Error','danger','Registro NO Actualizado');
+          }
+        }
+      });
+    }
+  $('#benefJaime').on('keyup', function (e) {
+    var c_val = $(this).val().replace( /[^\d]/g , '' );
+    if(c_val>100) c_val = 100;
+    if (e.keyCode == 13) {
+      var benef_jorge = 100-c_val;
+      saveBenef(benef_jorge);
+    } else {
+       $(this).val(c_val);
+      e.preventDefault();
+      return false;
+    }
+  });
+  
+  $('#benefJorge').on('keyup', function (e) {
+    var c_val = $(this).val().replace( /[^\d]/g , '' );
+    if(c_val>100) c_val = 100;
+    if (e.keyCode == 13) {
+      saveBenef(c_val);
+    } else {
+      $(this).val(c_val);
+      e.preventDefault();
+      return false;
+    }
+  });
+  
+  @endif
+  
+  
   const hTable = $('#tableItems');
-
   function edit (currentElement,key) {
     var select = $('<select>', {class:' form-control selects'});
     var current = currentElement.data('current');
@@ -261,7 +310,7 @@ $(document).ready(function () {
   
   function editInput (currentElement) {
     var key = currentElement.data('key');
-    var c_val = currentElement.data('val').replace( /[^\d|\-]/g , '' );
+    var c_val = currentElement.data('val').replace( /[^\d|^-]/g , '' );
     var input = $('<input>', {type: "text",class: 'inputIngr'}).val(c_val)
     currentElement.html(input);
     input.focus(); 
@@ -318,7 +367,7 @@ $(document).ready(function () {
 
 
     } else {
-      $(this).val($(this).val().replace( /[^\d|^.|\-]/g , '' ));
+      $(this).val($(this).val().replace( /[^\d|^.|^-]/g , '' ));
       e.preventDefault();
       return false;
     }
@@ -349,7 +398,7 @@ $(document).ready(function () {
   var clearAll= function(){
     hTable.find('.tSelect').each(function() {
 //      $(this).html(
-console.log($(this).data('val'),$(this));
+//console.log($(this).data('val'),$(this));
        $(this).html($(this).data('val')).removeClass('tSelect');
 //       $(this).html($(this).data('value')).removeClass('tSelect');
      });

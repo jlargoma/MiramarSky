@@ -191,7 +191,38 @@ class LiquidacionController extends AppController {
 
   
   public function perdidasGanancias() {
-    return view('backend/sales/perdidas_ganancias',$this->get_perdidasGanancias());
+    $data = $this->get_perdidasGanancias();
+    $data = $this->perdidasGanaciasExcels($data);
+    
+    
+    
+    $benefJorge = \App\Settings::getKeyValue('benf_jorge');
+    if ($benefJorge == null) $benefJorge = 100;
+    $benefJaime = 100-$benefJorge;
+    
+    $benefJorge_perc = $benefJorge/100;
+    $benefJaime_perc = $benefJaime/100;
+    
+    
+    $data['repartoTemp_fix']=$data['ingr_reservas']+$data['otros_ingr']-
+            ($data['gasto_operativo_baseImp']+$data['gasto_operativo_iva']);
+    //O29-J30-N23
+    $data['repartoTemp_fix_iva1'] = $data['ing_iva']-$data['gasto_ff_iva']-99;
+    $data['repartoTemp_fix_iva2'] = 8000;
+    
+    $repartoTemp_total1 = $data['repartoTemp_fix']-$data['repartoTemp_fix_iva1'];
+    $repartoTemp_total2 = $data['repartoTemp_fix']-$data['repartoTemp_fix_iva2'];
+    
+    $data['repartoTemp_jorge1'] = $repartoTemp_total1*$benefJorge_perc;
+    $data['repartoTemp_jaime1'] = $repartoTemp_total1*$benefJaime_perc;
+    
+    $data['repartoTemp_jorge2'] = $repartoTemp_total2*$benefJorge_perc;
+    $data['repartoTemp_jaime2'] = $repartoTemp_total2*$benefJaime_perc;
+    $data['benefJaime'] = $benefJaime;
+    $data['benefJorge'] = $benefJorge;
+    
+    
+    return view('backend/sales/perdidas_ganancias/index',$data);
   }
   public function perdidasGananciasFuncional() {
     $data = $this->get_perdidasGanancias();
@@ -224,90 +255,12 @@ class LiquidacionController extends AppController {
       }
     }
     
+    $data = $this->perdidasGanaciasExcels($data);
+    
+  
     
     
-    $tGastByMonth = [];
-    foreach ($data['tGastByMonth'] as $k=>$v){
-      $tGastByMonth[$k] = 0;
-    }
-    
-    foreach ($data['listGasto'] as $k=>$months){
-      foreach ($months as $m=>$v){
-        if(isset($tGastByMonth[$m])) $tGastByMonth[$m] +=$v;
-      }
-    }
-    
-    $data['tGastByMonth'] = $tGastByMonth;
-    
-    $data['totalGasto'] = array_sum($data['lstT_gast']);
-    $data['ingr_bruto'] = $data['totalIngr']-$data['totalGasto'];
-    
-    
-    /*****************************************************************/
-    /******   FORMULAS EXCEL                          ***************/
-    //INGRESOS POR VENTAS DE RESERVAS
-//    dd($data);
-//    $vtas_reserva = $data['lstT_ing']['ventas'];
-//    $pago_prop    = $data['lstT_gast']['prop_pay'];
-    $ingr_reservas = $data['lstT_ing']['ventas']-$data['lstT_gast']['prop_pay'];
-    $ing_baseImp   = ($ingr_reservas>0) ? $ingr_reservas/1.21 : 0;
-    $ing_iva       = $ing_baseImp*0.21;
-    
-    //INGRESOS POR VENTAS DE FORFAITS
-    $ing_ff_baseImp   = ($data['lstT_ing']['ff']>0) ? $data['lstT_ing']['ff']/1.1 : 0;
-    $ing_ff_iva       = ($ing_ff_baseImp>0) ? $ing_ff_baseImp*0.1 : 0;
-    $ing_comision_baseImp   = ($data['lstT_ing']['rappel_forfaits']>0) ? $data['lstT_ing']['rappel_forfaits']/1.21 : 0;
-    $ing_comision_iva       = ($ing_comision_baseImp>0) ? $ing_comision_baseImp*0.21 : 0;
-    
-    //TOTAL GASTOS PROV FORFAITS/CLASES
-    $gasto_ff_baseImp = ($data['lstT_gast']['excursion']>0) ? $data['lstT_gast']['excursion']/1.1 : 0;
-    $gasto_ff_iva     = ($gasto_ff_baseImp>0) ? $gasto_ff_baseImp*0.1 : 0;
-    
-    $tPayProp = $data['lstT_gast']['prop_pay']+$data['aExpensesPending']['prop_pay'];
-    
-    
-    $gasto_operativo_baseImp = $gasto_operativo_iva = 0;
-    $gastos_operativos = [
-              "agencias",
-              "amenities",
-              "comision_tpv",
-              "lavanderia",
-              "limpieza",
-              "mantenimiento"
-            ];
-    $tGastos_operativos = 0;
-    foreach ($gastos_operativos as $k)
-      $tGastos_operativos += $data['lstT_gast'][$k] + floatval ($data['aExpensesPending'][$k]);
-
-    if ($tGastos_operativos>0){
-      $gasto_operativo_baseImp = $tGastos_operativos/1.1;
-      $gasto_operativo_iva     = $gasto_operativo_baseImp*0.1;
-    }
-    
-    
-    $data['ingr_reservas'] = $ingr_reservas;
-    $data['ing_baseImp'] = $ing_baseImp;
-    $data['ing_iva'] = $ing_iva;
-    $data['ing_ff_baseImp'] = $ing_ff_baseImp;
-    $data['ing_ff_iva'] = $ing_ff_iva;
-    $data['ing_comision_baseImp'] = $ing_comision_baseImp;
-    $data['ing_comision_iva'] = $ing_comision_iva;
-    $data['gasto_ff_baseImp'] = $gasto_ff_baseImp;
-    $data['gasto_ff_iva'] = $gasto_ff_iva;
-    $data['gasto_operativo_baseImp'] = $gasto_operativo_baseImp;
-    $data['gasto_operativo_iva'] = $gasto_operativo_iva;
-    $data['tPayProp'] = $tPayProp;
-    
-    $data['tIngr_base']   = $ing_baseImp+$ing_ff_baseImp+$ing_comision_baseImp;
-    $data['tIngr_imp']    = $ing_iva+$ing_ff_iva+$ing_comision_iva;
-    $data['tGastos_base'] = $gasto_ff_baseImp+$gasto_operativo_baseImp;
-    $data['tGastos_imp']  = $gasto_ff_iva+$gasto_operativo_iva;
-            
-    /******   FORMULAS EXCEL                          ***************/
-    /***************************************************************/
-    
-    
-    return view('backend/sales/pyg_funcional/perdidas_ganancias',$data);
+    return view('backend/sales/perdidas_ganancias/index',$data);
   }
   
   
@@ -533,7 +486,124 @@ class LiquidacionController extends AppController {
     ]);
   }
 
-  
+  private function perdidasGanaciasExcels($data) {
+      $tGastByMonth = [];
+    foreach ($data['tGastByMonth'] as $k=>$v){
+      $tGastByMonth[$k] = 0;
+    }
+    
+    foreach ($data['listGasto'] as $k=>$months){
+      foreach ($months as $m=>$v){
+        if(isset($tGastByMonth[$m])) $tGastByMonth[$m] +=$v;
+      }
+    }
+    
+    $data['tGastByMonth'] = $tGastByMonth;
+    
+    $data['totalGasto'] = array_sum($data['lstT_gast']);
+    $data['ingr_bruto'] = $data['totalIngr']-$data['totalGasto'];
+    
+    
+    /*****************************************************************/
+    /******   FORMULAS EXCEL                          ***************/
+    //INGRESOS POR VENTAS DE RESERVAS
+//    dd($data);
+//    $vtas_reserva = $data['lstT_ing']['ventas'];
+//    $pago_prop    = $data['lstT_gast']['prop_pay'];
+    $ingr_reservas = $data['lstT_ing']['ventas']-$data['lstT_gast']['prop_pay'];
+    $ing_baseImp   = ($ingr_reservas>0) ? $ingr_reservas*0.79 : 0;
+    $ing_iva       = $ingr_reservas-$ing_baseImp;
+    
+    
+    
+    $vtas_alojamiento = $data['lstT_ing']['ventas'];
+    $vtas_alojamiento_base = $ing_baseImp+$data['lstT_gast']['prop_pay'];
+    $vtas_alojamiento_iva  = $ing_iva;
+    
+    //EXTRAORDINARIOS + RAPPEL CLASES + RAPPEL FORFAITS
+    $data['otros_ingr'] = $data['lstT_ing']['extr']
+            +$data['lstT_ing']['rappel_clases']
+            +$data['lstT_ing']['rappel_forfaits']
+            +$data['lstT_ing']['rappel_alq_material']
+            +$data['lstT_ing']['others'];
+    $data['otros_ingr_base'] = $data['otros_ingr']*0.79;
+    $data['otros_ingr_iva'] = $data['otros_ingr']-$data['otros_ingr_base'];
+    
+    
+    
+    
+    //INGRESOS POR VENTAS DE FORFAITS
+    $ing_ff_baseImp   = ($data['lstT_ing']['ff']>0) ? $data['lstT_ing']['ff']/1.1 : 0;
+    $ing_ff_iva       = ($ing_ff_baseImp>0) ? $ing_ff_baseImp*0.1 : 0;
+    $ing_comision_baseImp   = ($data['lstT_ing']['rappel_forfaits']>0) ? $data['lstT_ing']['rappel_forfaits']/1.21 : 0;
+    $ing_comision_iva       = ($ing_comision_baseImp>0) ? $ing_comision_baseImp*0.21 : 0;
+    
+    //TOTAL GASTOS PROV FORFAITS/CLASES
+    
+    $gasto_ff = $data['lstT_gast']['excursion'] + floatval ($data['aExpensesPending']['excursion']);
+    $gasto_ff_baseImp = $gasto_ff*0.9;
+    $gasto_ff_iva     = $gasto_ff-$gasto_ff_baseImp;
+    
+    $tPayProp = $data['lstT_gast']['prop_pay']+$data['aExpensesPending']['prop_pay'];
+    
+    
+    $gasto_operativo_baseImp = $gasto_operativo_iva = 0;
+    $gastos_operativos = [
+              "agencias",
+              "amenities",
+              "comision_tpv",
+              "lavanderia",
+              "limpieza",
+              "mantenimiento"
+            ];
+    $tGastos_operativos = 0;
+    foreach ($gastos_operativos as $k)
+      $tGastos_operativos += $data['lstT_gast'][$k] + floatval ($data['aExpensesPending'][$k]);
+
+    if ($tGastos_operativos>0){
+      $gasto_operativo_baseImp = $tGastos_operativos/1.1;
+      $gasto_operativo_iva     = $gasto_operativo_baseImp*0.1;
+    }
+    
+    
+    $data['ingr_reservas'] = $ingr_reservas;
+    $data['ing_baseImp'] = $ing_baseImp;
+    $data['ing_iva'] = $ing_iva;
+    $data['ing_ff_baseImp'] = $ing_ff_baseImp;
+    $data['ing_ff_iva'] = $ing_ff_iva;
+    $data['ing_comision_baseImp'] = $ing_comision_baseImp;
+    $data['ing_comision_iva'] = $ing_comision_iva;
+    $data['gasto_ff'] = $gasto_ff;
+    $data['gasto_ff_baseImp'] = $gasto_ff_baseImp;
+    $data['gasto_ff_iva'] = $gasto_ff_iva;
+    $data['gasto_operativo_baseImp'] = $gasto_operativo_baseImp;
+    $data['gasto_operativo_iva'] = $gasto_operativo_iva;
+    $data['tPayProp'] = $tPayProp;
+    
+    $data['tIngr_base']   = $ing_baseImp+$ing_ff_baseImp+$ing_comision_baseImp;
+    $data['tIngr_imp']    = $ing_iva+$ing_ff_iva+$ing_comision_iva;
+    $data['tGastos_base'] = $gasto_ff_baseImp+$gasto_operativo_baseImp;
+    $data['tGastos_imp']  = $gasto_ff_iva+$gasto_operativo_iva;
+    
+    $data['vtas_alojamiento']  = $vtas_alojamiento;
+    $data['vtas_alojamiento_base']  = $vtas_alojamiento_base;
+    $data['vtas_alojamiento_iva']  = $vtas_alojamiento_iva;
+            
+    
+    
+    
+    $data['t_ingrTabl_base']  = $vtas_alojamiento_base+$ing_ff_baseImp+$data['otros_ingr_base'];
+    $data['t_ingrTabl_iva']   = $vtas_alojamiento_iva+$ing_ff_iva+$data['otros_ingr_iva'];
+    $data['t_gastoTabl_base'] = $tPayProp+$gasto_ff_baseImp+$gasto_operativo_baseImp;
+    $data['t_gastoTabl_iva']  = $gasto_ff_iva+$gasto_operativo_iva;
+ 
+    
+    
+    
+    /******   FORMULAS EXCEL                          ***************/
+    /***************************************************************/
+    return $data;
+  }
   public function perdidasGananciasShowHide(Request $request) {
     
     $key   = $request->input('key');
@@ -568,6 +638,23 @@ class LiquidacionController extends AppController {
     return 'error';
     
   }
+  
+  public function perdidasGananciasUpdBenef(Request $request) {
+    $value   = floatVal($request->input('input'));
+    
+    $benefJorge = \App\Settings::where('key','benf_jorge')->first();
+    if (!$benefJorge){
+      $benefJorge = new \App\Settings();
+      $benefJorge->key = 'benf_jorge';
+      $benefJorge->name = '% Benf Jorge';
+    }
+        
+    $benefJorge->value = $value;
+
+    if ($benefJorge->save()) return 'OK';
+    return 'error';
+  }
+  
   public function perdidasGananciasUpdIngr(Request $request) {
     
     $key     = $request->input('key');

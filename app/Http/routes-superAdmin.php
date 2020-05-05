@@ -58,6 +58,7 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::get('admin/perdidas-ganancias/show-detail/{key}','LiquidacionController@perdidasGananciasShowDetail');
   Route::post('admin/perdidas-ganancias/show-hide','LiquidacionController@perdidasGananciasShowHide');
   Route::post('admin/perdidas-ganancias/upd-ingr','LiquidacionController@perdidasGananciasUpdIngr');
+  Route::post('admin/perdidas-ganancias/upd-benef','LiquidacionController@perdidasGananciasUpdBenef');
 
 //  Route::get('admin/perdidas-ganancias-funcional/{year?}','LiquidacionController@perdidasGananciasFuncional');
   //Facturas
