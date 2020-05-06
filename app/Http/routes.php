@@ -206,6 +206,11 @@
     Route::get('/list-expenses', function(){
       App\Expenses::getTypesOrderned();
     });
+    
+    
+    Route::get('forfait', function () {
+        return redirect('https://miramarski.com/forfait/');
+    });
 
 //    Route::get('/ical/importFromUrl', function () {
 //      \Artisan::call('ical:import');

@@ -235,6 +235,62 @@ setlocale(LC_TIME, "es_ES");
 $(document).ready(function () {
  
   @if(isset($repartoTemp_fix))
+    /** edit iva*/
+         
+  $('#iva_soportado').on('keyup', function (e) {
+    var c_val = $(this).val().replace( /[^\d|^-]/g , '' );
+    if (e.keyCode == 13) {
+      saveIVA();
+    } else {
+      $(this).val(c_val);
+       var total = parseInt($('#iva_jorge').val())+parseInt($('#iva_soportado').val());
+      $('#resultIVA_modif').text(window.formatterEuro.format(total));
+      $('#message_iva').addClass('alert alert-warning').text('Recuerde dar ENTER para guardar');
+      
+      e.preventDefault();
+      return false;
+    }
+  });
+$('#iva_jorge').on('keyup', function (e) {
+    var c_val = $(this).val().replace( /[^\d|^-]/g , '' );
+    if (e.keyCode == 13) {
+      saveIVA();
+    } else {
+      $(this).val(c_val);
+      var total = parseInt($('#iva_jorge').val())+parseInt($('#iva_soportado').val());
+      $('#resultIVA_modif').text(window.formatterEuro.format(total));
+      $('#message_iva').addClass('alert alert-warning').text('Recuerde dar ENTER para guardar');
+      e.preventDefault();
+      return false;
+    }
+  });
+  
+ 
+  var saveIVA = function(val){
+    var url = "/admin/perdidas-ganancias/upd-iva";
+    var _data = {
+      soportado: parseInt($('#iva_soportado').val()),
+      jorge: parseInt($('#iva_jorge').val()),
+      temporada: {{$year->year}},
+      _token: "{{ csrf_token() }}"
+    }
+    
+      $.ajax({
+        type: "POST",
+        method : "POST",
+        url: url,
+        data: _data,
+        success: function (response)
+        {
+          if (response == 'OK') {
+            location.reload();
+          } else {
+            clearAll();
+            window.show_notif('Error','danger','Registro NO Actualizado');
+          }
+        }
+      });
+    }
   /** edit benef*/
   var saveBenef = function(val){
    var url = "/admin/perdidas-ganancias/upd-benef";
