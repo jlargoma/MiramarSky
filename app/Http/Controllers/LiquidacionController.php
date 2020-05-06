@@ -191,36 +191,37 @@ class LiquidacionController extends AppController {
 
   
   public function perdidasGanancias() {
-    $data = $this->get_perdidasGanancias();
-    $data = $this->perdidasGanaciasExcels($data);
-    
-    
-    
-    $benefJorge = \App\Settings::getKeyValue('benf_jorge');
-    if ($benefJorge == null) $benefJorge = 100;
-    $benefJaime = 100-$benefJorge;
-    
-    $benefJorge_perc = $benefJorge/100;
-    $benefJaime_perc = $benefJaime/100;
-    
-    
-    $data['repartoTemp_fix']=$data['ingr_reservas']+$data['otros_ingr']-
-            ($data['gasto_operativo_baseImp']+$data['gasto_operativo_iva']);
-    //O29-J30-N23
-    $data['repartoTemp_fix_iva1'] = $data['ing_iva']-$data['gasto_ff_iva']-99;
-    $data['repartoTemp_fix_iva2'] = 8000;
-    
-    $repartoTemp_total1 = $data['repartoTemp_fix']-$data['repartoTemp_fix_iva1'];
-    $repartoTemp_total2 = $data['repartoTemp_fix']-$data['repartoTemp_fix_iva2'];
-    
-    $data['repartoTemp_jorge1'] = $repartoTemp_total1*$benefJorge_perc;
-    $data['repartoTemp_jaime1'] = $repartoTemp_total1*$benefJaime_perc;
-    
-    $data['repartoTemp_jorge2'] = $repartoTemp_total2*$benefJorge_perc;
-    $data['repartoTemp_jaime2'] = $repartoTemp_total2*$benefJaime_perc;
-    $data['benefJaime'] = $benefJaime;
-    $data['benefJorge'] = $benefJorge;
-    
+    $cUser = Auth::user();
+    // Sólo lo puede ver jorge
+    if ($cUser->email != "jlargo@mksport.es"){
+      return $this->perdidasGananciasFuncional();
+    }
+      
+      $data = $this->get_perdidasGanancias();
+      $data = $this->perdidasGanaciasExcels($data);
+      $benefJorge = \App\Settings::getKeyValue('benf_jorge');
+      if ($benefJorge == null) $benefJorge = 100;
+      $benefJaime = 100-$benefJorge;
+
+      $benefJorge_perc = $benefJorge/100;
+      $benefJaime_perc = $benefJaime/100;
+
+      $data['repartoTemp_fix']=$data['ingr_reservas']+$data['otros_ingr']-
+              ($data['gasto_operativo_baseImp']+$data['gasto_operativo_iva']);
+      //O29-J30-N23
+      $data['repartoTemp_fix_iva1'] = $data['ing_iva']-$data['gasto_ff_iva']-$data['iva_soportado'];
+      $data['repartoTemp_fix_iva2'] = $data['resultIVA_modif'];
+
+      $repartoTemp_total1 = $data['repartoTemp_fix']-$data['repartoTemp_fix_iva1'];
+      $repartoTemp_total2 = $data['repartoTemp_fix']-$data['repartoTemp_fix_iva2'];
+
+      $data['repartoTemp_jorge1'] = $repartoTemp_total1*$benefJorge_perc;
+      $data['repartoTemp_jaime1'] = $repartoTemp_total1*$benefJaime_perc;
+
+      $data['repartoTemp_jorge2'] = $repartoTemp_total2*$benefJorge_perc;
+      $data['repartoTemp_jaime2'] = $repartoTemp_total2*$benefJaime_perc;
+      $data['benefJaime'] = $benefJaime;
+      $data['benefJorge'] = $benefJorge;
     
     return view('backend/sales/perdidas_ganancias/index',$data);
   }
@@ -504,6 +505,15 @@ class LiquidacionController extends AppController {
     $data['ingr_bruto'] = $data['totalIngr']-$data['totalGasto'];
     
     
+    $iva_jorge = 0;
+    $iva_soportado = 0;
+    $ivaTemp = \App\Settings::getKeyValue('IVA_'.$data['year']->year);
+    if ($ivaTemp){
+      $ivaTemp = json_decode($ivaTemp);
+      $iva_soportado = $ivaTemp[0];
+      $iva_jorge     = $ivaTemp[1];
+    }
+    $resultIVA_modif = $iva_jorge+$iva_soportado;
     /*****************************************************************/
     /******   FORMULAS EXCEL                          ***************/
     //INGRESOS POR VENTAS DE RESERVAS
@@ -560,10 +570,9 @@ class LiquidacionController extends AppController {
     foreach ($gastos_operativos as $k)
       $tGastos_operativos += $data['lstT_gast'][$k] + floatval ($data['aExpensesPending'][$k]);
 
-    if ($tGastos_operativos>0){
-      $gasto_operativo_baseImp = $tGastos_operativos/1.1;
-      $gasto_operativo_iva     = $gasto_operativo_baseImp*0.1;
-    }
+    
+    $gasto_operativo_iva     = $resultIVA_modif;
+    $gasto_operativo_baseImp = $tGastos_operativos-$gasto_operativo_iva;
     
     
     $data['ingr_reservas'] = $ingr_reservas;
@@ -584,6 +593,11 @@ class LiquidacionController extends AppController {
     $data['tIngr_imp']    = $ing_iva+$ing_ff_iva+$ing_comision_iva;
     $data['tGastos_base'] = $gasto_ff_baseImp+$gasto_operativo_baseImp;
     $data['tGastos_imp']  = $gasto_ff_iva+$gasto_operativo_iva;
+    
+    
+    $data['iva_jorge'] = $iva_jorge;
+    $data['iva_soportado'] = $iva_soportado;
+    $data['resultIVA_modif'] = $resultIVA_modif;
     
     $data['vtas_alojamiento']  = $vtas_alojamiento;
     $data['vtas_alojamiento_base']  = $vtas_alojamiento_base;
@@ -637,6 +651,24 @@ class LiquidacionController extends AppController {
     
     return 'error';
     
+  }
+  
+  public function perdidasGananciasUpdIVA(Request $request) {
+    $soportado   = floatVal($request->input('soportado'));
+    $jorge       = floatVal($request->input('jorge'));
+    $temporada   = floatVal($request->input('temporada'));
+    
+    $key = 'IVA_'.$temporada;
+    $objt = \App\Settings::where('key',$key)->first();
+    if (!$objt){
+      $objt = new \App\Settings();
+      $objt->key = $key;
+      $objt->name = 'IVAs tempo. '.$key;
+    }
+        
+    $objt->value = json_encode(['0'=>$soportado,'1'=>$jorge]);
+    if ($objt->save()) return 'OK';
+    return 'error';
   }
   
   public function perdidasGananciasUpdBenef(Request $request) {
