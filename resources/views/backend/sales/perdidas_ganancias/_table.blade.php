@@ -59,7 +59,10 @@
         <th>EBITDA</th>
         <th class="text-center">{{moneda($totalIngr-$totalGasto)}}</th>
         <th class="light-blue text-center">{{moneda($totalIngr+$totalPendingIngr-$totalGasto-$totalPendingGasto)}}</th>
-        @foreach($lstMonths as $k_month=>$v)<th class="text-center"> {{moneda(($tIngByMonth[$k_month]-$tGastByMonth[$k_month]))}}</th> @endforeach
+        @foreach($lstMonths as $k_month=>$v)
+        <?php $aux = ($tIngByMonth[$k_month]-$tGastByMonth[$k_month]); ?>
+        <th class="text-center <?php if ($aux <0 ) echo 'text-danger'; ?> "> {{moneda($aux)}}</th> 
+        @endforeach
       </tr>
       <tr>
         <td class="open_detail" data-key="iva">IVA A PAGAR</td>
@@ -77,7 +80,10 @@
         <th>BENEFICIO OPERATIVO</th>
         <th class="text-center">{{moneda($totalIngr-$totalGasto-$tExpenses_fix)}}</th>
         <th class="light-blue text-center">{{moneda($ingr_bruto+$totalPendingIngr-$totalPendingGasto-$totalPendingImp)}}</th>
-        @foreach($lstMonths as $k_month=>$v)<th class="text-center"> {{moneda(($tIngByMonth[$k_month]-$tGastByMonth[$k_month]))}}</th> @endforeach
+        @foreach($lstMonths as $k_month=>$v)
+        <?php $aux = ($tIngByMonth[$k_month]-$tGastByMonth[$k_month]); ?>
+        <th class="text-center <?php if ($aux <0 ) echo 'text-danger'; ?> "> {{moneda($aux)}}</th> 
+        @endforeach
       </tr>
     </tbody>
   </table>
