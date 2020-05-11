@@ -61,7 +61,7 @@
         <th class="light-blue text-center">{{moneda($totalIngr+$totalPendingIngr-$totalGasto-$totalPendingGasto)}}</th>
         @foreach($lstMonths as $k_month=>$v)
         <?php $aux = ($tIngByMonth[$k_month]-$tGastByMonth[$k_month]); ?>
-        <th class="text-center <?php if ($aux <0 ) echo 'text-danger'; ?> "> {{moneda($aux)}}</th> 
+        <th class="text-center <?php if ($aux <0 ) echo 'result-danger'; ?> "> {{moneda($aux)}}</th> 
         @endforeach
       </tr>
       <tr>
@@ -82,7 +82,7 @@
         <th class="light-blue text-center">{{moneda($ingr_bruto+$totalPendingIngr-$totalPendingGasto-$totalPendingImp)}}</th>
         @foreach($lstMonths as $k_month=>$v)
         <?php $aux = ($tIngByMonth[$k_month]-$tGastByMonth[$k_month]); ?>
-        <th class="text-center <?php if ($aux <0 ) echo 'text-danger'; ?> "> {{moneda($aux)}}</th> 
+        <th class="text-center <?php if ($aux <0 ) echo 'result-danger'; ?> "> {{moneda($aux)}}</th> 
         @endforeach
       </tr>
     </tbody>
@@ -117,6 +117,10 @@
   }
   .perdidas_ganancias .pendientes{
     background-color: #48b0f7;
+  }
+  
+  .result-danger{
+    background-color: #c1413d;
   }
   
   </style>

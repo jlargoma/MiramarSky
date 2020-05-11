@@ -209,7 +209,8 @@ class LiquidacionController extends AppController {
       $data['repartoTemp_fix']=$data['ingr_reservas']+$data['otros_ingr']-
               ($data['gasto_operativo_baseImp']+$data['gasto_operativo_iva']);
       //O29-J30-N23
-      $data['repartoTemp_fix_iva1'] = $data['ing_iva']-$data['gasto_ff_iva']-$data['iva_soportado'];
+//      dd($data['t_ingrTabl_iva'],$data['gasto_ff_iva'],$data['iva_soportado']);
+      $data['repartoTemp_fix_iva1'] = $data['t_ingrTabl_iva']-$data['gasto_ff_iva']-$data['iva_soportado'];
       $data['repartoTemp_fix_iva2'] = $data['resultIVA_modif'];
 
       $repartoTemp_total1 = $data['repartoTemp_fix']-$data['repartoTemp_fix_iva1'];
@@ -499,6 +500,7 @@ class LiquidacionController extends AppController {
       }
     }
     
+    $tPayProp = $data['lstT_gast']['prop_pay']+$data['aExpensesPending']['prop_pay'];
     $data['tGastByMonth'] = $tGastByMonth;
     
     $data['totalGasto'] = array_sum($data['lstT_gast']);
@@ -519,15 +521,13 @@ class LiquidacionController extends AppController {
     //INGRESOS POR VENTAS DE RESERVAS
 //    dd($data);
 //    $vtas_reserva = $data['lstT_ing']['ventas'];
-//    $pago_prop    = $data['lstT_gast']['prop_pay'];
-    $ingr_reservas = $data['lstT_ing']['ventas']-$data['lstT_gast']['prop_pay'];
-    $ing_baseImp   = ($ingr_reservas>0) ? $ingr_reservas*0.79 : 0;
+    $ingr_reservas = $data['lstT_ing']['ventas']-$tPayProp;
+    $ing_baseImp   = $ingr_reservas/1.21;
     $ing_iva       = $ingr_reservas-$ing_baseImp;
     
     
-    
     $vtas_alojamiento = $data['lstT_ing']['ventas'];
-    $vtas_alojamiento_base = $ing_baseImp+$data['lstT_gast']['prop_pay'];
+    $vtas_alojamiento_base = $ing_baseImp+$tPayProp;
     $vtas_alojamiento_iva  = $ing_iva;
     
     //EXTRAORDINARIOS + RAPPEL CLASES + RAPPEL FORFAITS
@@ -536,26 +536,24 @@ class LiquidacionController extends AppController {
             +$data['lstT_ing']['rappel_forfaits']
             +$data['lstT_ing']['rappel_alq_material']
             +$data['lstT_ing']['others'];
-    $data['otros_ingr_base'] = $data['otros_ingr']*0.79;
-    $data['otros_ingr_iva'] = $data['otros_ingr']-$data['otros_ingr_base'];
+    $data['otros_ingr_base'] = $data['otros_ingr']/1.21;
+    $data['otros_ingr_iva']  = $data['otros_ingr']-$data['otros_ingr_base'];
     
     
     
     
     //INGRESOS POR VENTAS DE FORFAITS
     $ing_ff_baseImp   = ($data['lstT_ing']['ff']>0) ? $data['lstT_ing']['ff']/1.1 : 0;
-    $ing_ff_iva       = ($ing_ff_baseImp>0) ? $ing_ff_baseImp*0.1 : 0;
+    $ing_ff_iva       = ($ing_ff_baseImp>0) ? $ing_ff_baseImp/1.1 : 0;
     $ing_comision_baseImp   = ($data['lstT_ing']['rappel_forfaits']>0) ? $data['lstT_ing']['rappel_forfaits']/1.21 : 0;
-    $ing_comision_iva       = ($ing_comision_baseImp>0) ? $ing_comision_baseImp*0.21 : 0;
+    $ing_comision_iva       = ($ing_comision_baseImp>0) ? $ing_comision_baseImp/1.21 : 0;
     
     //TOTAL GASTOS PROV FORFAITS/CLASES
     
     $gasto_ff = $data['lstT_gast']['excursion'] + floatval ($data['aExpensesPending']['excursion']);
-    $gasto_ff_baseImp = $gasto_ff*0.9;
+    $gasto_ff_baseImp = $gasto_ff/1.1;
     $gasto_ff_iva     = $gasto_ff-$gasto_ff_baseImp;
-    
-    $tPayProp = $data['lstT_gast']['prop_pay']+$data['aExpensesPending']['prop_pay'];
-    
+       
     
     $gasto_operativo_baseImp = $gasto_operativo_iva = 0;
     $gastos_operativos = [
