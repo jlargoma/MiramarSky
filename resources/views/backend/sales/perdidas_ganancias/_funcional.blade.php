@@ -80,7 +80,7 @@
         </div>
         </div>
         <div class="row iva-2">
-        <div class="col-xs-7">ARREGLO JORGE</div>
+        <div class="col-xs-7">ARQUEO</div>
         <div class="col-xs-5">
           <input type="text" id="iva_jorge" value="{{$iva_jorge}}">
           <span>€</span>
@@ -264,7 +264,8 @@
     color: #000;
   }
   
-  .tabla-funcional-resultados table{
+  .tabla-funcional-resultados table,
+  .modal-body .row.tabla-funcional{
     width: 80%;
     margin: 1em auto;
   }

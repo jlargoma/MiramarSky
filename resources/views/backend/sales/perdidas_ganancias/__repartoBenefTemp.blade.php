@@ -106,7 +106,7 @@
         <th>IVA A PAGAR</th>
         <th>{{moneda($repartoTemp_fix_iva1)}}</th>
         <td class="empty"></td>
-        <th>IVA A PAGAR</th>
+        <th>IVA A PAGAR C/ARQUEO</th>
         <th>{{moneda($repartoTemp_fix_iva2)}}</th>
       </tr>
       <tr>
