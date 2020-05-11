@@ -107,7 +107,7 @@
       <tr class="border">
         <th></th>
         <th>BASE IMP</th>
-        <th colspan="2">IVA REPERCIDO</th>
+        <th colspan="2">IVA SOPORTADO</th>
         <th>TOTAL</th>
       </tr>
       <tr class="border">
