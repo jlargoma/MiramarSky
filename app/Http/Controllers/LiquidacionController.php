@@ -544,7 +544,7 @@ class LiquidacionController extends AppController {
     
     //INGRESOS POR VENTAS DE FORFAITS
     $ing_ff_baseImp   = ($data['lstT_ing']['ff']>0) ? $data['lstT_ing']['ff']/1.1 : 0;
-    $ing_ff_iva       = ($ing_ff_baseImp>0) ? $ing_ff_baseImp/1.1 : 0;
+    $ing_ff_iva       = $data['lstT_ing']['ff']-$ing_ff_baseImp;
     $ing_comision_baseImp   = ($data['lstT_ing']['rappel_forfaits']>0) ? $data['lstT_ing']['rappel_forfaits']/1.21 : 0;
     $ing_comision_iva       = ($ing_comision_baseImp>0) ? $ing_comision_baseImp/1.21 : 0;
     
