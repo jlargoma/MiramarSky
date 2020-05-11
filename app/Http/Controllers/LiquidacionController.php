@@ -569,7 +569,7 @@ class LiquidacionController extends AppController {
       $tGastos_operativos += $data['lstT_gast'][$k] + floatval ($data['aExpensesPending'][$k]);
 
     
-    $gasto_operativo_iva     = $resultIVA_modif;
+    $gasto_operativo_iva     = $iva_soportado;
     $gasto_operativo_baseImp = $tGastos_operativos-$gasto_operativo_iva;
     
     

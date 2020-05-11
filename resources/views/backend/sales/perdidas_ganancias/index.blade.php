@@ -140,23 +140,11 @@ setlocale(LC_TIME, "es_ES");
         <div class="col-md-3 m-b-10">
           <div class="box-resumen" style="background-color: #2c5d9b">
             <h5 class="no-margin p-b-5 text-white ">
-              <b>BENEFICIO BRUTO</b>
+              <b>RTDO OPERTIVO BRUTO</b>
             </h5>
+            <?php $ingr_bruto = $ingr_reservas-$tGastos_operativos+$otros_ingr; ?>
             {{moneda($ingr_bruto)}}
             <?php if ($ingr_bruto > 0 ): ?>
-                    <i class="fa fa-arrow-up text-success result"></i>
-            <?php else: ?>
-                    <i class="fa fa-arrow-down text-danger result"></i>
-            <?php endif ?>
-          </div>
-        </div>
-        <div class="col-md-3 m-b-10">
-          <div class="box-resumen light-blue" >
-            <h5 class="no-margin p-b-5 text-white ">
-              <b>BENEFICIO NETO</b>
-            </h5>
-            {{moneda($ingr_bruto-$tExpenses_fix)}}
-            <?php if (($ingr_bruto-$tExpenses_fix) > 0 ): ?>
                     <i class="fa fa-arrow-up text-success result"></i>
             <?php else: ?>
                     <i class="fa fa-arrow-down text-danger result"></i>
