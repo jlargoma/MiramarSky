@@ -1,4 +1,42 @@
 <div class="row tabla-funcional">
+  <div class="col-md-4 resultado">
+    <div class="row">
+      <div class="col-md-6">
+        <table>
+          <tr>
+            <td>RTDO VENTA ALOJAMIENTOS</td>
+            <td>{{moneda($ingr_reservas-$tGastos_operativos)}}</td>
+          </tr>
+          <tr class="white border">
+            <td>VTA INTERMEDIACION INMOB</td>
+            <td>{{moneda($ingr_reservas)}}</td>
+          </tr>
+          <tr class="white border">
+            <td>GASTOS OPERATIVOS</td>
+            <td >{{moneda($tGastos_operativos)}}</td>
+          </tr>
+        </table>
+      </div>
+      <div class="col-md-6">
+        <table>
+          <tr>
+            <td>OTROS INGRESOS</td>
+            <td>{{moneda($otros_ingr)}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 resultado">
+    <table>
+          <tr>
+            <th>RTDO OPERTIVO BRUTO</th>
+            <th>{{moneda($ingr_reservas-$tGastos_operativos+$otros_ingr)}}</th>
+          </tr>
+        </table>
+  </div>
+</div>
+<div class="row tabla-funcional">
   <div class="col-md-4 ingresos">
     <h5>TOTAL VENTAS POR ALOJAMIENTO</h5>
      <table>
@@ -129,7 +167,7 @@
          <td >{{moneda($gasto_operativo_baseImp)}}</td>
         <td >21%</td>
         <td >{{moneda($gasto_operativo_iva)}}</td>
-        <td >{{moneda($gasto_operativo_baseImp+$gasto_operativo_iva)}}</td>
+        <td >{{moneda($tGastos_operativos)}}</td>
       </tr>
       <tr class="border">
         <th>Total</th>

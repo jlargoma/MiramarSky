@@ -8,6 +8,40 @@
         </button>
       </div>
       <div class="modal-body">
+        <div class="row tabla-funcional ">
+          <div class="col-md-4 resultado">
+            <table>
+              <tr>
+                <th>RTDO VENTA ALOJAMIENTOS</th>
+                <th>{{moneda($ingr_reservas-$tGastos_operativos)}}</th>
+              </tr>
+              <tr class="white border">
+                <td>VTA INTERMEDIACION INMOB</td>
+                <td>{{moneda($ingr_reservas)}}</td>
+              </tr>
+              <tr class="white border">
+                <td>GASTOS OPERATIVOS</td>
+                <td >{{moneda($tGastos_operativos)}}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-md-4 resultado">
+            <table>
+              <tr>
+                <th>OTROS INGRESOS</th>
+                <th>{{moneda($otros_ingr)}}</th>
+              </tr>
+            </table>
+          </div>
+          <div class="col-md-4 resultado">
+            <table>
+              <tr>
+                <th>RTDO OPERTIVO BRUTO</th>
+                <th>{{moneda($ingr_reservas-$tGastos_operativos+$otros_ingr)}}</th>
+              </tr>
+            </table>
+          </div>
+        </div>
         <div class="table-responsive tabla-funcional-resultados">
   <div class="">
     <table>

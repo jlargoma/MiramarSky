@@ -585,6 +585,7 @@ class LiquidacionController extends AppController {
     $data['gasto_ff_iva'] = $gasto_ff_iva;
     $data['gasto_operativo_baseImp'] = $gasto_operativo_baseImp;
     $data['gasto_operativo_iva'] = $gasto_operativo_iva;
+    $data['tGastos_operativos'] = $tGastos_operativos;
     $data['tPayProp'] = $tPayProp;
     
     $data['tIngr_base']   = $ing_baseImp+$ing_ff_baseImp+$ing_comision_baseImp;
