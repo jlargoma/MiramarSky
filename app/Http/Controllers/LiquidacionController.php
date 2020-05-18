@@ -211,7 +211,7 @@ class LiquidacionController extends AppController {
       //O29-J30-N23
 //      dd($data['t_ingrTabl_iva'],$data['gasto_ff_iva'],$data['iva_soportado']);
       $data['repartoTemp_fix_iva1'] = $data['t_ingrTabl_iva']-$data['gasto_ff_iva']-$data['iva_soportado'];
-      $data['repartoTemp_fix_iva2'] = $data['resultIVA_modif'];
+      $data['repartoTemp_fix_iva2'] = $data['repartoTemp_fix_iva1']-$data['iva_jorge'];
 
       $repartoTemp_total1 = $data['repartoTemp_fix']-$data['repartoTemp_fix_iva1'];
       $repartoTemp_total2 = $data['repartoTemp_fix']-$data['repartoTemp_fix_iva2'];
@@ -373,20 +373,19 @@ class LiquidacionController extends AppController {
     }
     
     /***
-     * Payment prop van con los gastos específicos
+     * Payment prop van todos los gastos específicos
      */
     $gastos = \App\Expenses::where('date', '>=', $startYear)
                     ->Where('date', '<=', $endYear)
-                    ->Where('type','=','prop_pay')
+                    ->WhereNotNull('PayFor')
                     ->orderBy('date', 'DESC')->get();
+//                    ->Where('type','=','prop_pay')
     if ($gastos){
       foreach ($gastos as $g){
         $m = date('ym', strtotime($g->date));
-        if (isset($listGastos[$g->type])){
-          $listGastos[$g->type][$m] += $g->import;
-          $lstT_gast[$g->type] += $g->import;
-          if (isset($tGastByMonth[$m])) $tGastByMonth[$m] += $g->import;
-        }
+        $listGastos['prop_pay'][$m] += $g->import;
+        $lstT_gast['prop_pay'] += $g->import;
+        if (isset($tGastByMonth[$m])) $tGastByMonth[$m] += $g->import;
       }
     }
     
@@ -1049,7 +1048,7 @@ class LiquidacionController extends AppController {
   /************       GASTOS                                        ********/
   /*************************************************************************/
   /************       INGRESOS                                     ********/
-      public function ingresos() {
+  public function ingresos() {
       $data = $this->prepareTables();
       $months_empty = $data['months_empty'];
       $lstMonths = $data['lstMonths'];
@@ -1762,5 +1761,30 @@ class LiquidacionController extends AppController {
   }
   
   
+  
+  
+  public function exportExcel(Request $request) {
+    
+    
+    
+    $oLiq = new Liquidacion();
+    $data = $this->getTableData();
+    $data['summary'] = $oLiq->summaryTemp();
+    $data['stripeCost'] = $oLiq->getTPV($data['books']);
+    
+    $year = $data['year']->year;
+    
+//    return view('backend.sales._tableExcelExport', $data);
+    
+    Excel::create('Liquidacion ' . $year, function ($excel) use ($data) {
+
+      $excel->sheet('Liquidacion', function ($sheet) use ($data) {
+
+        $sheet->loadView('backend.sales._tableExcelExport',$data);
+      });
+    })->download('xlsx');
+    
+    dd($data);
+  }
   
 }

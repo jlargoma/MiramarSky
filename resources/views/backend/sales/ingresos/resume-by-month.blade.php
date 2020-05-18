@@ -23,8 +23,8 @@
             @foreach($lstMonths as $k => $month)
             <td class="nowrap @if($first) first-col @endif">
               <?php
-              if (isset($t_room_month[$month['m']]) && $t_room_month[$month['m']]>1){
-                echo moneda($t_room_month[$month['m']],false);
+              if (isset($t_room_month[$k]) && $t_room_month[$k]>1){
+                echo moneda($t_room_month[$k],false);
               } else {
                 echo '--';
               }
