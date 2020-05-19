@@ -148,6 +148,7 @@ class Liquidacion
             ->where('created_at', '>=', $startYear)->where('created_at', '<=', $endYear)->get();
       
     $totalPrice = $forfaits = $totalToPay = $totalToPay = $totalPayment = 0;
+    $totalFFExpress = $totalClassesMat = 0;
     $forfaitsIDs = $ordersID = $common_ordersID = array();
     if ($allForfaits){
       foreach ($allForfaits as $forfait){
@@ -172,11 +173,13 @@ class Liquidacion
         $totalPayment = ForfaitsOrderPayments::whereIn('order_id', $ordersID)->where('paid',1)->sum('amount');
         if ($totalPayment>0){
           $totalPayment = $totalPayment/100;
+          $totalClassesMat += $totalPayment;
         }
         $totalPayment2 =  ForfaitsOrderPayments::whereIn('forfats_id', $forfaitsIDs)->where('paid',1)->sum('amount');
 
         if ($totalPayment2>0){
           $totalPayment += $totalPayment2/100;
+          $totalFFExpress += round($totalPayment2/100,2);
         }
       }
       $totalToPay = $totalPrice - $totalPayment;
@@ -188,7 +191,9 @@ class Liquidacion
         'q'=>count($ordersID),
         'to_pay'=>$totalToPay,
         'total'=>$totalPrice,
-        'pay'=>$totalPayment
+        'pay'=>$totalPayment,
+        'totalFFExpress'=>$totalFFExpress,
+        'totalClassesMat'=>$totalClassesMat,
     ];
       
   }

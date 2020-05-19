@@ -118,11 +118,18 @@
         <td >{{moneda($vtas_alojamiento)}}</td>
       </tr>
       <tr class="border">
-        <td >VTAS FORFAITS / CLASES</td>
-        <td >{{moneda($ing_ff_baseImp)}}</td>
+        <td >VTAS FORFAITS </td>
+        <td >{{moneda($_ff_FFExpress_baseImp)}}</td>
         <td >10%</td>
-        <td >{{moneda($ing_ff_iva)}}</td>
-        <td >{{moneda($ing_ff_baseImp+$ing_ff_iva)}}</td>
+        <td >{{moneda($_ff_FFExpress_iva)}}</td>
+        <td >{{moneda($_ff_FFExpress_iva+$_ff_FFExpress_baseImp)}}</td>
+      </tr>
+      <tr class="border">
+        <td >VTAS CLASES/OTROS</td>
+        <td >{{moneda($_ff_ClassesMat_baseImp)}}</td>
+        <td >21%</td>
+        <td >{{moneda($_ff_ClassesMat_iva)}}</td>
+        <td >{{moneda($_ff_ClassesMat_iva+$_ff_ClassesMat_baseImp)}}</td>
       </tr>
       <tr class="border">
         <td >OTROS INGRESOS</td>
@@ -155,12 +162,20 @@
         <td >0 €</td>
         <td >{{moneda($tPayProp)}}</td>
       </tr>
+     
       <tr class="border">
-        <td >PROVEEDOR EXCURSIONES</td>
-        <td >{{moneda($gasto_ff_baseImp)}}</td>
+        <td >PROV FORFAITS </td>
+        <td >{{moneda($_ff_FFExpress_baseImp)}}</td>
         <td >10%</td>
-        <td >{{moneda($gasto_ff_iva)}}</td>
-        <td >{{moneda($gasto_ff_baseImp+$gasto_ff_iva)}}</td>
+        <td >{{moneda($_ff_FFExpress_iva)}}</td>
+        <td >{{moneda($_ff_FFExpress_iva+$_ff_FFExpress_baseImp)}}</td>
+      </tr>
+      <tr class="border">
+        <td >PROV CLASES/OTROS</td>
+        <td >{{moneda($_ff_ClassesMat_baseImp)}}</td>
+        <td >21%</td>
+        <td >{{moneda($_ff_ClassesMat_iva)}}</td>
+        <td >{{moneda($_ff_ClassesMat_iva+$_ff_ClassesMat_baseImp)}}</td>
       </tr>
       <tr class="border">
         <td >GASTOS OPERATIVOS</td>
