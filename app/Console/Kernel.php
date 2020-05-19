@@ -46,7 +46,7 @@ class Kernel extends ConsoleKernel
          $schedule->command('partee:sendAlert')->dailyAt('21:00')->timezone('Europe/Madrid');
          $schedule->command('secondPay:sendEmails')->dailyAt('7:00')->timezone('Europe/Madrid');
          $schedule->command('FFSeasson:get')->dailyAt('4:00')->timezone('Europe/Madrid');
-         $schedule->command('monthLimpieza:create')->monthlyOn(1, '5:00')->timezone('Europe/Madrid');
+//         $schedule->command('monthLimpieza:create')->monthlyOn(1, '5:00')->timezone('Europe/Madrid');
          $schedule->command('ical:import')->everyTenMinutes();
 //         $schedule->command('zodomus:import')->everyTenMinutes();
          $schedule->command('zodomus:importAll')->hourly();

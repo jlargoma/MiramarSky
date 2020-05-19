@@ -323,6 +323,8 @@ class LiquidacionController extends AppController {
     $ingresos['ff'] = $emptyMonths;
     $ingrType['ff'] = 'FORFAITs';
     $lstT_ing['ff'] = $auxFF['total'];
+    $lstT_ing['ff_FFExpress'] = $auxFF['totalFFExpress'];
+    $lstT_ing['ff_ClassesMat'] = $auxFF['totalClassesMat'];
     $aIngrPending['ff'] = 0;
     /*************************************************************************/
     
@@ -544,15 +546,24 @@ class LiquidacionController extends AppController {
     //INGRESOS POR VENTAS DE FORFAITS
     $ing_ff_baseImp   = ($data['lstT_ing']['ff']>0) ? $data['lstT_ing']['ff']/1.1 : 0;
     $ing_ff_iva       = $data['lstT_ing']['ff']-$ing_ff_baseImp;
+    
+    $_ff_FFExpress_baseImp   = ($data['lstT_ing']['ff_FFExpress']>0) ? $data['lstT_ing']['ff_FFExpress']/1.1 : 0;
+    $_ff_FFExpress_iva       = $data['lstT_ing']['ff_FFExpress']-$_ff_FFExpress_baseImp;
+    $_ff_ClassesMat_baseImp  = ($data['lstT_ing']['ff_ClassesMat']>0) ? $data['lstT_ing']['ff_ClassesMat']/1.21 : 0;
+    $_ff_ClassesMat_iva      = $data['lstT_ing']['ff_ClassesMat']-$_ff_ClassesMat_baseImp;
+    
     $ing_comision_baseImp   = ($data['lstT_ing']['rappel_forfaits']>0) ? $data['lstT_ing']['rappel_forfaits']/1.21 : 0;
     $ing_comision_iva       = ($ing_comision_baseImp>0) ? $ing_comision_baseImp/1.21 : 0;
     
     //TOTAL GASTOS PROV FORFAITS/CLASES
     
-    $gasto_ff = $data['lstT_gast']['excursion'] + floatval ($data['aExpensesPending']['excursion']);
-    $gasto_ff_baseImp = $gasto_ff/1.1;
-    $gasto_ff_iva     = $gasto_ff-$gasto_ff_baseImp;
-       
+    $gasto_ff = $data['lstT_ing']['ff_FFExpress']+$data['lstT_ing']['ff_ClassesMat'];
+    $gasto_ff_baseImp = $_ff_ClassesMat_baseImp+$_ff_FFExpress_baseImp;
+    $gasto_ff_iva     = $_ff_FFExpress_iva+$_ff_ClassesMat_iva;
+//    $gasto_ff = $data['lstT_gast']['excursion'] + floatval ($data['aExpensesPending']['excursion']);
+//    $gasto_ff_baseImp = $gasto_ff/1.1;
+//    $gasto_ff_iva     = $gasto_ff-$gasto_ff_baseImp;
+    
     
     $gasto_operativo_baseImp = $gasto_operativo_iva = 0;
     $gastos_operativos = [
@@ -577,6 +588,11 @@ class LiquidacionController extends AppController {
     $data['ing_iva'] = $ing_iva;
     $data['ing_ff_baseImp'] = $ing_ff_baseImp;
     $data['ing_ff_iva'] = $ing_ff_iva;
+    $data['_ff_FFExpress_baseImp'] = $_ff_FFExpress_baseImp;
+    $data['_ff_FFExpress_iva'] = $_ff_FFExpress_iva;
+    $data['_ff_ClassesMat_baseImp'] = $_ff_ClassesMat_baseImp;
+    $data['_ff_ClassesMat_iva'] = $_ff_ClassesMat_iva;
+    
     $data['ing_comision_baseImp'] = $ing_comision_baseImp;
     $data['ing_comision_iva'] = $ing_comision_iva;
     $data['gasto_ff'] = $gasto_ff;

@@ -58,7 +58,7 @@
       <tr class="pyg_beneficio">
         <th>EBITDA</th>
         <th class="text-center">{{moneda($totalIngr-$totalGasto)}}</th>
-        <th class="light-blue text-center">{{moneda($totalIngr+$totalPendingIngr-$totalGasto-$totalPendingGasto)}}</th>
+        <th class="text-center"></th>
         @foreach($lstMonths as $k_month=>$v)
         <?php $aux = ($tIngByMonth[$k_month]-$tGastByMonth[$k_month]); ?>
         <th class="text-center <?php if ($aux <0 ) echo 'result-danger'; ?> "> {{moneda($aux)}}</th> 
@@ -79,7 +79,7 @@
       <tr class="pyg_beneficio">
         <th>BENEFICIO OPERATIVO</th>
         <th class="text-center">{{moneda($totalIngr-$totalGasto-$tExpenses_fix)}}</th>
-        <th class="light-blue text-center">{{moneda($ingr_bruto+$totalPendingIngr-$totalPendingGasto-$totalPendingImp)}}</th>
+        <th class="text-center"></th>
         @foreach($lstMonths as $k_month=>$v)
         <?php $aux = ($tIngByMonth[$k_month]-$tGastByMonth[$k_month]); ?>
         <th class="text-center <?php if ($aux <0 ) echo 'result-danger'; ?> "> {{moneda($aux)}}</th> 
