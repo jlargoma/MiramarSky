@@ -82,7 +82,7 @@ class PricesSeason extends Command
       $items = ProcessedData::where('key','SendToWubook')->limit(15)->get();
 
       if (count($items)>0){
-//        $WuBook->conect();
+        $WuBook->conect();
         foreach ($items as $item){
           $data = json_decode($item->content,true);
           $response = $WuBook->set_Prices($data['start'],$data['prices']);
@@ -92,7 +92,7 @@ class PricesSeason extends Command
             $item->save();
           }
         }
-//        $WuBook->disconect();
+        $WuBook->disconect();
       }
     }
     

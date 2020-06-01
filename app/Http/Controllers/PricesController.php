@@ -190,6 +190,9 @@ class PricesController extends AppController {
     $store->save();
     
     $prepareDefaultPrices = new prepareDefaultPrices($year->start_date,$year->end_date);
+    if ($prepareDefaultPrices->error){
+      return back()->with('sent_error',$prepareDefaultPrices->error);
+    }
     $prepareDefaultPrices->process();
     
     return back()->with('sent','Precios cargados para ser enviados');

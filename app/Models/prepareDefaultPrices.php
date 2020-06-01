@@ -22,8 +22,17 @@ class prepareDefaultPrices {
   private $specialSegment;
   private $zData;
   private $wData;
+  public $error;
 
   public function __construct($start,$end){
+    
+    $this->error = null;
+    $today = date('Y-m-d');
+    if ($today>$start) $start = $today;
+    if ($end<=$start){
+      $this->error = 'Las fechas deben se mayor';
+      return false;
+    }
     $this->startDate = $start;
     $this->endDate = $end;
     $aux = configZodomusAptos();

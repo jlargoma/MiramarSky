@@ -94,8 +94,11 @@
   <div class="col-md-12">
     <form action="{{route('precios.prepare-crom')}}" method="post">
       @if (\Session::has('sent'))
-    <p class="alert alert-success">{!! \Session::get('sent') !!}</p>
-    @endif
+      <p class="alert alert-success">{!! \Session::get('sent') !!}</p>
+      @endif
+      @if (\Session::has('sent_error'))
+      <p class="alert alert-error">{!! \Session::get('sent_error') !!}</p>
+      @endif
       <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
       <button class="btn btn-success" title="{{$sendDataInfo}}">Enviar precios a OTAs</button>
     </form>
