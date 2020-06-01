@@ -48,10 +48,6 @@
     <li class="{{  (preg_match('/\/propietario/i',$pathRequest))  ? 'active' : '' }}">
       <a href="{{ url('admin/propietario/8D') }}" class="detailed">Area Propietario</a>
     </li>
-    <li class="{{ $pathRequest == 'admin/precios' ? 'active' : '' }}">
-      <a href="{{ url('admin/precios') }}" class="detailed">Precios y temporadas</a>
-    </li>
-
     <li class="{{ $pathRequest == 'admin/usuarios' ? 'active' : '' }}">
       <a href="{{ url('admin/usuarios') }}"  class="detailed">Usuarios</a>
     </li>
@@ -124,8 +120,8 @@
 
  
     <?php if ($uRole == "admin" || $uRole == "subadmin" || $uRole == "recepcionista"): ?>
-    <li class="{{  (preg_match('/\/channel-manager/i',$pathRequest))  ? 'active' : '' }}">
-      <a href="{{ url('/admin/channel-manager') }}" class="detailed">Zodomus</a>
+    <li class="{{  (preg_match('/\/channel-manager/i',$pathRequest) || $pathRequest == 'admin/precios')  ? 'active' : '' }}">
+        <a href="{{ url('/admin/precios') }}" class="detailed">CHANNEL</a>
     </li>
 <?php endif ?>
     
