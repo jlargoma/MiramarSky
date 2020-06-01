@@ -16,4 +16,16 @@ class Prices extends Model
                 ->where('occupation', $pax)->get()->toArray();
     }
 
+     // Put this in any model and use
+    public static function findOrCreate($pax,$seasson)
+    {
+        $obj = static::where('occupation', $pax)->where('season', $seasson)->first();
+        if ($obj) return $obj;
+
+        $obj = new static;
+        $obj->occupation = $pax;
+        $obj->season = $seasson;
+        $obj->save();
+        return $obj;
+    }
 }

@@ -27,14 +27,14 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::get('admin/clientes', 'CustomersController@index');
   Route::get('/admin/galleries/{id?}','RoomsController@galleries');
 // Prices
-  Route::get('admin/precios','PricesController@index');
+  Route::get('admin/precios','PricesController@index')->name('precios.base');
   Route::get('admin/precios/update','PricesController@update');
   Route::get('admin/precios/updateExtra','PricesController@updateExtra');
   Route::post('admin/precios/create','PricesController@create');
   Route::get('admin/precios/delete/{id}','PricesController@delete');
   Route::get('admin/precios/deleteExtra/{id}','PricesController@delete');
   Route::post('admin/precios/createExtras','PricesController@createExtras');
-
+  Route::post('admin/precios/prepare-crom','PricesController@prepareYearPricesAndMinStay')->name('precios.prepare-crom');
   // Prices
 
   // seasons

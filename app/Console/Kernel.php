@@ -30,6 +30,7 @@ class Kernel extends ConsoleKernel
         Commands\ProcessData::class,
         Commands\WubookAvailables::class,
         Commands\WubookGetBookings::class,
+        Commands\PricesSeason::class,
     ];
 
     /**

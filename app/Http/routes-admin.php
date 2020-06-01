@@ -122,6 +122,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
   //YEARS
   Route::post('/years/change', 'YearsController@changeActiveYear')->name('years.change');
   Route::post('/years/change/months', 'YearsController@changeMonthActiveYear')->name('years.change.month');
+  Route::get('/years/get', 'YearsController@getYear')->name('years.get');
   //SETTINGS
   Route::post('/settings/createUpdate', 'SettingsController@createUpdateSetting')->name('settings.createUpdate');
   //PAYMENTS
