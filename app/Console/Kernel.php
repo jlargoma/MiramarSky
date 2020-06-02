@@ -51,6 +51,7 @@ class Kernel extends ConsoleKernel
          $schedule->command('ical:import')->everyTenMinutes();
 //         $schedule->command('zodomus:import')->everyTenMinutes();
          $schedule->command('zodomus:importAll')->hourly();
+         $schedule->command('OTAs:sendPricesSeason')->everyMinute();
          $schedule->command('ProcessData:all')->everyFiveMinutes();
 //         $schedule->command('mails:read')->everyThirtyMinutes();
          $schedule->command('forfait:sendReminder')->dailyAt('8:00')->timezone('Europe/Madrid');

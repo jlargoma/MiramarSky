@@ -172,27 +172,28 @@ class prepareDefaultPrices {
     
     foreach ($to_send as $v){
       foreach ($zAptos as $room){
-        
-        $param = [
-                "channelId" =>  $room->channel,
-                "propertyId" => $room->propID,
-                "roomId" =>  $room->roomID,
-                "dateFrom" => $v['dateFrom'],
-                "dateTo" => $v['dateTo'],
-                "currencyCode" =>  "EUR",
-                "rateId" =>  $room->rateID,
-                "weekDays" => $weekDays,
-                "prices" =>  $v['prices'],
-                "closed" =>  0,
-                "minimumStay" => 1,
-                "minimumStayArrival" => 1,
-              ];
+        if ($room->roomID>0){
+          $param = [
+                  "channelId" =>  $room->channel,
+                  "propertyId" => $room->propID,
+                  "roomId" =>  $room->roomID,
+                  "dateFrom" => $v['dateFrom'],
+                  "dateTo" => $v['dateTo'],
+                  "currencyCode" =>  "EUR",
+                  "rateId" =>  $room->rateID,
+                  "weekDays" => $weekDays,
+                  "prices" =>  $v['prices'],
+                  "closed" =>  0,
+                  "minimumStay" => 1,
+                  "minimumStayArrival" => 1,
+                ];
 
-        $datas[] = [
-          'key'=>'SendToZoodomus',
-          'name'=>$nameProcess,
-          'content'=> json_encode([$param,$chGroup])
-        ];
+          $datas[] = [
+            'key'=>'SendToZoodomus',
+            'name'=>$nameProcess,
+            'content'=> json_encode([$param,$chGroup])
+          ];
+        }
       }
 
     }

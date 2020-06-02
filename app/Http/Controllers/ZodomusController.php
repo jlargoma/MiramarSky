@@ -514,14 +514,25 @@ class ZodomusController extends Controller {
     $startTime = (convertDateToDB($date[0]));
     $endTime = (convertDateToDB($date[1]));
     
-    
-    $room = Rooms::where('channel_group',$apto)->first();
-    if ($room){
+    if ($apto == 'all'){
+      $aptos = configZodomusAptos();
       $book = new \App\Book();
-      $book->sendAvailibility($room->id,$startTime,$endTime);
+      foreach ($aptos as $ch=>$v){
+        $room = Rooms::where('channel_group',$ch)->first();
+        if ($room){
+            $book->sendAvailibility($room->id,$startTime,$endTime);
+        }
+      }
       return back()->with(['success'=>'Disponibilidad enviada']);
     } else {
-      return back()->withErrors(['No posee apartamentos asignados']);
+      $room = Rooms::where('channel_group',$apto)->first();
+      if ($room){
+        $book = new \App\Book();
+        $book->sendAvailibility($room->id,$startTime,$endTime);
+        return back()->with(['success'=>'Disponibilidad enviada']);
+      } else {
+        return back()->withErrors(['No posee apartamentos asignados']);
+      }
     }
     
   }

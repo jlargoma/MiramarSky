@@ -64,6 +64,37 @@
           @endforeach
         </div>
       </div>
+      
+      <div class="row">
+        <div class="form-material pt-1 col-xs-12">
+          <div class="block-otas">
+            <h2 class="mobile-tit">Enviar a todos</h2>
+            <div class="row">
+              <div class="col-md-6">
+              </div>
+              <div class="col-md-6">
+                <h3>Enviar disponibilidad:</h3>
+                <form method="POST" action="{{route('channel.sendAvail','all')}}" id="channelForm">
+                  <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+                  <div class="row">
+                    <div class="col-md-3 col-xs-5 pt-1"><label>Rango de Fechas</label></div>
+                    <div class="col-md-6 col-xs-7">
+                      <input type="text" class="form-control daterange1" id="date_range" name="date_range" value="">
+                    </div>
+                    <div class="col-md-3 col-xs-7">
+                      <button class="btn btn-primary" 
+                              onclick="return confirm('Confirmar que desea enviar al Channel Manager la disponibilidad actual de los Aptos asociados a la OTA seleccionada?');">
+                        Enviar
+                      </button>
+                    </div>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
