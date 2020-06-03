@@ -83,9 +83,11 @@
           <button class="btn btn-md btn-primary active"  disabled>PRECIO BASE X TEMP</button>
           <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.cal')}}">UNITARIA</a>
           <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.site')}}">EDIFICIO</a>
+          
         </div>
-        <div class="col-md-4">
-           @include('backend.years._selector', ['minimal' => true])
+        <div class="col-md-4 row">
+          <div class="col-md-6">@include('backend.years._selector', ['minimal' => true])</div>
+          <div class="col-md-6">@include('backend.zodomus.sendToWubook')</div>
         </div>
       </div>
     </div>

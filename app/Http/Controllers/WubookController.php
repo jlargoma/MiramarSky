@@ -65,14 +65,14 @@ class WubookController extends AppController {
    * @return type
    */
   public function sendPricesGroup(Request $request) {
-    $month = $request->input('month',null);
-    $year  = $request->input('year',null);
-
-
-    $dateTime = strtotime("$year-$month-01");
-    $start    = date('Y-m-d',$dateTime);
+    $sentUPD_wubook = \App\ProcessedData::findOrCreate('sentUPD_wubook');
+    $dates = json_decode($sentUPD_wubook->content);
+    if (!$dates){
+      return redirect()->back()->withErrors(['No hay registros que enviar']);
+    }
+    $start    = $dates->start;
     $today    = date('Y-m-d');
-    $end      = date("Y-m-d", strtotime('+1 month',$dateTime));
+    $end      = $dates->finish;
    
     
     if ($today>$end) 
@@ -108,6 +108,9 @@ class WubookController extends AppController {
       $response = $WuBook->set_Prices($start,$prices);
 
       $WuBook->disconect();
+      
+      $sentUPD_wubook->content = null;
+      $sentUPD_wubook->save();
       
     } else {
       return redirect()->back()->withErrors(['Los precios no están asociados a WuBook']);

@@ -54,6 +54,7 @@ class ProcessData extends Command
     public function handle()
     {
        $this->check_overbooking();
+       $this->check_customPricesWubook();
     }
     
     private function check_overbooking(){
@@ -109,4 +110,16 @@ class ProcessData extends Command
       
     }
 
+    function check_customPricesWubook(){
+      
+      $sentUPD_wubook = \App\ProcessedData::findOrCreate('sentUPD_wubook');
+      $dates = json_decode($sentUPD_wubook->content);
+      if ($dates){
+        $sendPrices = new \App\Models\prepareDefaultPrices($dates->start,$dates->finish);
+        $sendPrices->process_justWubook();
+        $sentUPD_wubook->content = null;
+        $sentUPD_wubook->save();
+      }
+      
+    }
 }

@@ -264,8 +264,8 @@ class ZodomusController extends Controller {
       $startTimeAux += $day;
     }
 
-    
-    
+    \App\ProcessedData::savePriceUPD_toWubook(date('Y-m-d',$startTime),date('Y-m-d',$endTime));
+  
     
     $insert = [
         'price'=>$price,
@@ -1013,8 +1013,21 @@ class ZodomusController extends Controller {
     }
     
   }
-   
-   
+
+  //BEGIN: imforma los precios cambiados para Wubook
+  $min_day = $max_day = null;
+  foreach ($lstAllDays as $k=>$v){
+    foreach ($v as $day){
+      if (!$min_day){
+        $min_day = $max_day = $day;
+      } else {
+        if ($min_day>$day) $min_day = $day;
+        if ($max_day<$day) $max_day = $day;
+      }
+    }
+  }
+  \App\ProcessedData::savePriceUPD_toWubook($min_day,$max_day);
+  //END: imforma los precios cambiados para Wubook
   
   $weekDays = "sun|mon|tue|wed|thu|fri|sat";
   $min_estancia = $price = null;

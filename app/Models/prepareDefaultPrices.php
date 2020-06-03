@@ -45,12 +45,11 @@ class prepareDefaultPrices {
     $this->zData = $aptoOtas;
     $WuBook = new \App\Services\Wubook\WuBook();
     $this->wData  = $WuBook->getRoomsEquivalent($channels);
-    
   }
 
   public function process() {
     
-    $this->getSpecialSegments();
+//    $this->getSpecialSegments();
     //obtengo todos los aptos
     if (true){
       foreach ($this->zData as $chGroup=>$v){
@@ -66,6 +65,20 @@ class prepareDefaultPrices {
       }
       $this->saveQueriesToSendWubook();
     }
+  }
+  
+   public function process_justWubook() {
+    
+    //obtengo todos los aptos
+      foreach ($this->wData as $chGroup=>$v){
+        $this->dailyPrices = [];
+        $oRoom = \App\Rooms::where('channel_group',$chGroup)->first();
+        if ($oRoom){
+          $this->dailyPrice($oRoom);
+          $this->prepareQueriesToSendWubook($chGroup);
+        } 
+      }
+      $this->saveQueriesToSendWubook();
   }
   
   private function dailyPrice($oRoom){

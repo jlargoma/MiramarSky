@@ -23,16 +23,14 @@
           <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.cal')}}">UNITARIA</a>
           <button class="btn btn-md btn-primary active"  disabled>EDIFICIO</button>
         </div>
+        <div class="col-xs-12 col-md-2"></div>
+        <div class="col-xs-12 col-md-2">
+          @include('backend.zodomus.sendToWubook')
+        </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-3 col-xs-12">
-          <form action="{{route('Wubook.sendPrices')}}" method="POST">
-            <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
-            <input type="hidden" value="{{$month}}" name="month">
-            <input type="hidden" value="{{$year}}" name="year">
-            <button class="btn btn-primary">Enviar Precios a WuBook</button>
-          </form>
         </div>
         <div class="col-md-6 col-xs-12">
           <div class="select-month">
