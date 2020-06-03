@@ -79,6 +79,7 @@
               <td><span class="price-booking">{{$price_booking}}</span></td>
               <td><span class="price-airbnb">{{$price_airbnb}}</span></td>
               <td><span class="price-expedia">{{$price_expedia}}</span></td>
+              <td><span class="price-google">{{$price_google}}</span></td>
               <td><span class="disp-layout">Disponib</span></td>
             </tr>
           </table>

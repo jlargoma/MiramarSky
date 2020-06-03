@@ -182,6 +182,7 @@ class ZodomusController extends Controller {
     $price_booking = $zConfig->priceByChannel(0,1,$room,true);
     $price_expedia = $zConfig->priceByChannel(0,2,$room,true);
     $price_airbnb = $zConfig->priceByChannel(0,3,$room,true);
+    $price_google = $zConfig->priceByChannel(0,99,$room,true);
     return view('backend/zodomus/cal-room', [
         'rooms' => $rooms,
         'room' => $room,
@@ -189,6 +190,7 @@ class ZodomusController extends Controller {
         'price_booking' => $price_booking,
         'price_expedia' => $price_expedia,
         'price_airbnb' => $price_airbnb,
+        'price_google' => $price_google,
     ]);
   }
 
@@ -330,6 +332,7 @@ class ZodomusController extends Controller {
         $priceBooking = ceil($zConfig->priceByChannel($p,1,$apto));
         $priceExpedia = ceil($zConfig->priceByChannel($p,2));
         $priceAirbnb = ceil($zConfig->priceByChannel($p,3));
+        $priceGoogle = ceil($zConfig->priceByChannel($p,99));
         $min_estancia = isset($min[$d]) ? $min[$d] : 0;
         
         
@@ -338,7 +341,7 @@ class ZodomusController extends Controller {
             . '<tr><td colspan="2" class="main">'.$p.' €</td></tr>'
             . '<tr><td colspan="2" class="min-estanc">'.$min_estancia.' dias</td></tr>'
             . '<tr><td><span class="price-booking">'.$priceBooking.'</span></td><td><span class="price-airbnb">'.$priceAirbnb.'</span></td></tr>'
-            . '<tr><td><span class="price-expedia">'.$priceExpedia.'</span></td><td>0</td></tr>'
+            . '<tr><td><span class="price-expedia">'.$priceExpedia.'</span></td><td><span class="price-google">'.$priceGoogle.'</span></td></tr>'
             . '</table>',
             "start" => $d,
             'classNames' => 'prices',
@@ -834,6 +837,7 @@ class ZodomusController extends Controller {
             'price_booking' => $zConfig->priceByChannel(0,1,$k,1),
             'price_expedia' => $zConfig->priceByChannel(0,2,$k,1),
             'price_airbnb'  => $zConfig->priceByChannel(0,3,$k,1),
+            'price_google'  => $zConfig->priceByChannel(0,99,$k,1),
         ];
       }
     }

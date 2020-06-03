@@ -97,12 +97,14 @@ class Config{
       }
       $priceText = '';
       //Parking
-      if ($room == '7J' || $room == '9F'){
-        $price += 40; 
-        $priceText = '(PVP+40€)';
-      } else {
-        $price += 20; 
-        $priceText = '(PVP+20€)';
+      if ($channelId <3){
+        if ($room == '7J' || $room == '9F'){
+          $price += 40; 
+          $priceText = '(PVP+40€)';
+        } else {
+          $price += 20; 
+          $priceText = '(PVP+20€)';
+        }
       }
       
       switch ($channelId){
@@ -124,8 +126,13 @@ class Config{
           break;
         case 3:
         case "3": //airbnb,
-          $price = $price+($price*0.15);
-          $priceText .= '+15%';
+          $price = $price+($price*0.05);
+          $priceText = '+5%';
+          break;
+        case 99:
+        case "99": //google,
+          $price = $price+($price*0.12);
+          $priceText = '+12%';
           break;
       }
       

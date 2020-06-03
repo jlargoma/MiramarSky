@@ -72,7 +72,7 @@
           <tbody>
         @foreach($rooms as $kRoom=>$item)
         <tr class="room-name">
-          <td  class="room-name static static-header" colspan="9" >
+          <td  class="room-name static static-header" colspan="15" >
             <div class="col-2">
               <h3 class="white">{{$item['tit']}}</h3>
             </div>
@@ -82,6 +82,7 @@
                    <td><span class="price-booking">{{$item['price_booking']}}</span></td>
                    <td><span class="price-airbnb">{{$item['price_airbnb']}}</span></td>
                    <td><span class="price-expedia">{{$item['price_expedia']}}</span></td>
+                   <td><span class="price-google">{{$item['price_google']}}</span></td>
                  </tr>
                </table>
             </div>
@@ -434,6 +435,8 @@ table#table_prices  tbody th {
     font-weight: 800;
     color: #000;
 }
-
+.table-prices td span {
+    padding: 0 2em 0 0;
+}
 </style>
 @endsection
