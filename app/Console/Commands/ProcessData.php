@@ -115,7 +115,12 @@ class ProcessData extends Command
       $sentUPD_wubook = \App\ProcessedData::findOrCreate('sentUPD_wubook');
       $dates = json_decode($sentUPD_wubook->content);
       if ($dates){
-        $sendPrices = new \App\Models\prepareDefaultPrices($dates->start,$dates->finish);
+        
+        //increment  1 DAY
+        $finish = date('Y-m-d', strtotime('+1 day', strtotime($dates->finish)));
+        
+        $sendPrices = new \App\Models\prepareDefaultPrices($dates->start,$finish);
+        
         $sendPrices->process_justWubook();
         $sentUPD_wubook->content = null;
         $sentUPD_wubook->save();

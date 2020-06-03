@@ -614,9 +614,17 @@ a.prices:hover{
   height: 12px;
   margin-top: 3px;
   margin-left: 2px;
-
 }
-
+.price-google:before{
+  content: '';
+  background:url('/pages/google.png'); 
+  background-size: contain;
+  float: left;
+  width: 12px;
+  height: 12px;
+  margin-top: 3px;
+  margin-left: 2px;
+}
 .price-airbnb:before{
   content: '';
   background:url('/pages/airbnb.png'); 
