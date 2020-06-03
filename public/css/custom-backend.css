@@ -685,6 +685,9 @@ i.fa.fa-unlock.openSafetyBox {
   padding: 5px 0px;
   margin: 5px 1px;
 }
+.inline-block {
+    display: inline-block;
+}
 @media (min-width: 768px){
   #modalNewBook .modal-dialog {
     margin: 0 2%;

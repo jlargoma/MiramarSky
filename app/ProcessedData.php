@@ -33,5 +33,37 @@ class ProcessedData extends Model{
       $obj->save();
       return $obj;
   }
+  public static function emptyContent($k)
+  {
+      $obj = static::where('key',$k)->first();
+      if ($obj){
+        if ($obj->content == null) return true;
+        return false;
+      }
+      return true;
+  }
+  
+  public static function savePriceUPD_toWubook($start,$finish)
+  {
+    $obj = self::where('key', 'sentUPD_wubook')->first();
+    if (!$obj) {
+      $obj = new self;
+      $obj->key = 'sentUPD_wubook';
+      $obj->name = 'DateRange to send prices to wubook';
+    }
+
+    $content = json_decode($obj->content);
+    if (!$content) {
+      $content = (object) [
+                  'start' => $start,
+                  'finish' => $finish,
+      ];
+    } else {
+      if ($content->start > $start) $content->start = $start;
+      if ($content->finish < $finish) $content->finish = $finish;
+    }
+    $obj->content = json_encode($content);
+    $obj->save();
+  }
 
 }
