@@ -56,6 +56,7 @@ class Kernel extends HttpKernel
         'authSubAdmin' => \App\Http\Middleware\RoleSubAdmin::class,
         'role' => \App\Http\Middleware\CheckRole::class,
         'cors' => \App\Http\Middleware\Cors::class,
+        'apiControl' => \App\Http\Middleware\ApiControl::class,
         \Cuatao\LaravelHtmlCaching\Http\Middleware\ResponseHtmlCachingBeforeMiddleware::class,
         \Cuatao\LaravelHtmlCaching\Http\Middleware\ResponseHtmlCachingAfterMiddleware::class,
     ];

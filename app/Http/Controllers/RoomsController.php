@@ -1133,6 +1133,54 @@ class RoomsController extends AppController {
     if ($roomUpdate->save()){return 1;} else { return 0;}
   }
 
+  function getRoomsType(){
+    $aptos = configZodomusAptos();
+    $ch_group = [];
+    foreach ($aptos as $k=>$v){
+      $ch_group[$k]= $v->name;
+      $minPax[$k]  = 0;
+      $maxPax[$k]  = 0;
+      $slug[$k]    = '';
+    }
+    
+    
+    $rooms = \App\RoomsType::all();
+    foreach ($rooms as $r){
+      $ch = $r->channel_group;
+      if (isset($minPax[$ch])) $minPax[$ch] = $r->min_pax;
+      if (isset($maxPax[$ch])) $maxPax[$ch] = $r->max_pax;
+      if (isset($slug[$ch])) $slug[$ch] = $r->name;
+//      dd($r);
+    }
+//    dd($minPax,$maxPax);
+    
+    return view('backend.rooms.tableRoomsTypes', compact('ch_group','minPax','maxPax','slug'));
+  }
+
+  public function updRoomsType(Request $request){
+    $id   = $request->input('id');
+    $type = $request->input('type');
+    $val  = $request->input('val');
+    
+    $oObj = \App\RoomsType::where('channel_group',$id)->first();
+    if (!$oObj){
+      $oObj = new \App\RoomsType();
+      $oObj->channel_group = $id;
+    }
+    
+    switch($type){
+      case 'minPax': $oObj->min_pax = intval($val); break;
+      case 'maxPax': $oObj->max_pax = intval($val); break;
+      case 'slug':   $oObj->name = ($val); break;
+    }
+      
+
+    if ($oObj->save()) return 'OK';
+    return 'Registro no encontrado';
+    
+  }
+
+  
   //http://miramarski.virtual/fixNameImages
 //  public function fixNameImages() {
 //    $rooms = Rooms::all();
