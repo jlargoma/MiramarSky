@@ -203,8 +203,8 @@ class ZodomusController extends Controller {
     if (!$date_range)
       return response()->json(['status'=>'error','msg'=>'Debe seleccionar al menos una fecha de inicio']);
     
-    if (!$price || $price<0)
-      return response()->json(['status'=>'error','msg'=>'Debe seleccionar el precio']);
+    if ((!$price || $price<0) && (!$min_estancia || $min_estancia<0) )
+      return response()->json(['status'=>'error','msg'=>'Debe seleccionar el precio o estancia mínima']);
 
     $date = explode(' - ', $date_range);
     
@@ -258,15 +258,20 @@ class ZodomusController extends Controller {
           $oPrice->channel_group = $apto;
           $oPrice->date = date('Y-m-d',$startTimeAux);
         }
-        $oPrice->price = $price;
-        $oPrice->min_estancia = $min_estancia;
+        if($price && $price>0) $oPrice->price = $price;
+        if($min_estancia && $min_estancia>0) $oPrice->min_estancia = $min_estancia;
         $oPrice->user_id = $uID;
         $oPrice->save();
       }
       $startTimeAux += $day;
     }
 
-    \App\ProcessedData::savePriceUPD_toWubook(date('Y-m-d',$startTime),date('Y-m-d',$endTime));
+    if($price && $price<0){
+      \App\ProcessedData::savePriceUPD_toWubook(date('Y-m-d',$startTime),date('Y-m-d',$endTime));
+    } else {
+      /**
+       * @ToDo enviar Min. estancia a WuBook*/
+    }
   
     
     $insert = [
@@ -411,6 +416,10 @@ class ZodomusController extends Controller {
     $minimumStay = null;
     if ($data['minimumStay']>0) $minimumStay = $data['minimumStay'];
     
+    //min Advance Res
+    $price = null;
+    if ($data['price']>0) $price = $data['price'];
+    
     
     $oZodomus = new Zodomus();
     $channel_group = $data['channel_group'];
@@ -430,12 +439,12 @@ class ZodomusController extends Controller {
                 "currencyCode" =>  "EUR",
                 "rateId" =>  $room->rateID,
                 "weekDays" => $weekDays,
-                "prices" =>   [
-                  "price" => $data['price'].""
-                ],
                 "closed" =>  0,//"0=false , 1=true, (optional restrition)",
               ];
 
+              if ($price){
+                $param['prices'] = ["price" => $data['price'].""];
+              }
               if ($minimumStay){
       //          "minimumStay" => '2D',// "4D = four days; 4D4H = four days and four hours, (optional restrition)",
                 $param['minimumStay'] = $minimumStay;

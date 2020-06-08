@@ -94,15 +94,15 @@
   </div>
   @if (Auth::user()->email == "jlargo@mksport.es")
   <div class="col-md-12">
-    <form action="{{route('precios.prepare-crom')}}" method="post">
-      @if (\Session::has('sent'))
-      <p class="alert alert-success">{!! \Session::get('sent') !!}</p>
-      @endif
-      @if (\Session::has('sent_error'))
-      <p class="alert alert-error">{!! \Session::get('sent_error') !!}</p>
-      @endif
+    <form action="{{route('precios.prepare-cron')}}" method="post">
       <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
       <button class="btn btn-success" title="{{$sendDataInfo}}">Enviar precios a OTAs</button>
+    </form>
+  </div>
+  <div class="col-md-12">
+    <form action="{{route('precios.prepare-cron-minStay')}}" method="post">
+      <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+      <button class="btn btn-success" title="{{$sendDataInfo}}">Enviar Estadías Mínimas a OTAs</button>
     </form>
   </div>
   @endif

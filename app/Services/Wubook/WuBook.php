@@ -257,6 +257,40 @@ class WuBook{
       return FALSE; 
     }
     
+     /**
+     * check and apply Closes by dates
+     * 
+     * @param type $rCode
+     * @return boolean
+     */
+    public function set_Restrictions($dfrom='2029-01-28',$min_stay) {
+      
+      if ($this->token){
+       $dfromTime = strtotime($dfrom);
+       
+//        values= {
+//          '1': [ {'min_stay': 3}, {}, {'max_stay': 4}],
+//          '2': [ {'closed': 1}, {}, {'max_stay': 2}],
+//        }
+ 
+          
+        $param = [
+            $this->token,
+            $this->iCode,
+            date('d/m/Y',$dfromTime),
+            $min_stay
+        ];
+//        var_dump($param);
+      
+        $aResponse = $this->call('rplan_get_rplan_values',$param);
+        if ($aResponse){
+          if ($aResponse->string == 'Ok'){
+            return true;
+          }
+        }
+      }
+      return FALSE; 
+    }
     
      /**
      * fetch_bookings by dates

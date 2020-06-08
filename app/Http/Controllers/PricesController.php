@@ -189,9 +189,9 @@ class PricesController extends AppController {
     }
   }
   
-    /*******************************************/
   /*******************************************/
-  public function prepareYearPricesAndMinStay(Request $request) {
+  /*******************************************/
+  public function prepareYearPrices(Request $request) {
     $year = $this->getActiveYear();
     $cUser = \Illuminate\Support\Facades\Auth::user();
     // Sólo lo puede ver jorge
@@ -211,6 +211,31 @@ class PricesController extends AppController {
       return back()->with('sent_error',$prepareDefaultPrices->error);
     }
     $prepareDefaultPrices->process();
+    
+    return back()->with('sent','Precios cargados para ser enviados');
+  }
+  
+  public function prepareYearMinStay(Request $request) {
+    $year = $this->getActiveYear();
+    $cUser = \Illuminate\Support\Facades\Auth::user();
+    // Sólo lo puede ver jorge
+//    if ($cUser->email != "jlargo@mksport.es"){
+//      return redirect('no-allowed');
+//    }
+//    
+    $store = \App\ProcessedData::findOrCreate('sed_minStaySeason_'.$year->id);
+    $store->content = json_encode([
+        'u' =>$cUser->email,
+        'ip'=>getUserIpAddr()
+    ]);
+    $store->save();
+    
+    $prepareMinStay = new \App\Models\PrepareMinStay($year->start_date,$year->end_date);
+    if ($prepareMinStay->error){
+      return back()->withErrors([$prepareMinStay->error]);
+    }
+//    $prepareMinStay->process();
+    $prepareMinStay->process_justWubook();
     
     return back()->with('sent','Precios cargados para ser enviados');
   }

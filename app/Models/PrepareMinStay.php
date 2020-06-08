@@ -13,15 +13,14 @@ namespace App\Models;
  *
  * @author cremonapg
  */
-class prepareDefaultPrices {
+class PrepareMinStay {
   
   private $startDate;
   private $endDate;
-  private $dailyPrices;
-  private $roomsPrices;
-  private $specialSegment;
+  private $dailyMinStay;
   private $zData;
   private $wData;
+  private $roomsMinStay;
   public $error;
 
   public function __construct($start,$end){
@@ -33,6 +32,8 @@ class prepareDefaultPrices {
       $this->error = 'Las fecha de inicio debe se mayor a la de final.';
       return false;
     }
+    $start = '2020-07-07';
+    $end = '2020-07-17';
     $this->startDate = $start;
     $this->endDate = $end;
     $aux = configZodomusAptos();
@@ -45,19 +46,20 @@ class prepareDefaultPrices {
     $this->zData = $aptoOtas;
     $WuBook = new \App\Services\Wubook\WuBook();
     $this->wData  = $WuBook->getRoomsEquivalent($channels);
+    $this->getSpecialSegments();
   }
 
   public function process() {
     
-//    $this->getSpecialSegments();
+    
     //obtengo todos los aptos
     if (true){
       foreach ($this->zData as $chGroup=>$v){
-        $this->dailyPrices = [];
+        $this->dailyMinStay = [];
         $oRoom = \App\Rooms::where('channel_group',$chGroup)->first();
        
         if ($oRoom){
-          $this->dailyPrice($oRoom);
+          $this->dailyMinStay($oRoom);
           $this->generateQueriesToSendZodomus($chGroup);
           $this->prepareQueriesToSendWubook($chGroup);
         } 
@@ -74,31 +76,39 @@ class prepareDefaultPrices {
         $this->dailyPrices = [];
         $oRoom = \App\Rooms::where('channel_group',$chGroup)->first();
         if ($oRoom){
-          $this->dailyPrice($oRoom);
+          $this->dailyMinStay($oRoom);
           $this->prepareQueriesToSendWubook($chGroup);
         } 
       }
       $this->saveQueriesToSendWubook();
   }
   
-  private function dailyPrice($oRoom){
-    
-    $defaults = $oRoom->defaultCostPrice( $this->startDate, $this->endDate,$oRoom->minOcu);
-    $priceDay = $defaults['priceDay'];
+  private function dailyMinStay($oRoom){
+ 
+    $startTime = strtotime($this->startDate);
+    $endTime = strtotime($this->endDate);
+    $aDays = [];
+    $day = 24*60*60;
+    while ($startTime<$endTime){
+      $aux = date('Y-m-d',$startTime);
+      $md = isset($this->specialSegment[$aux]) ? $this->specialSegment[$aux] : 0;
+      $aDays[$aux] = $md;
+      $startTime += $day;
+    }
+      
     $oPrice = \App\DailyPrices::where('channel_group',$oRoom->channel_group)
                 ->where('date','>=',$this->startDate)
                 ->where('date','<=',$this->endDate)
                 ->get();
    
-    
     if ($oPrice) {
         foreach ($oPrice as $p) {
-          if (isset($priceDay[$p->date]) && $p->price)
-            $priceDay[$p->date] = $p->price;
+          if (isset($aDays[$p->date]) && $p->min_estancia)
+            $aDays[$p->date] = $p->min_estancia;
         }
       }
-      
-    $this->dailyPrices = $priceDay;
+
+    $this->dailyMinStay = $aDays;
   }
   /*******************************************/
   
@@ -108,7 +118,6 @@ class prepareDefaultPrices {
                 ->get();
     $ssDays = [];
     $day = 24*60*60;
-    
     if ($oSS){
       foreach ($oSS as $item){
         
@@ -123,49 +132,41 @@ class prepareDefaultPrices {
     }
     $this->specialSegment = $ssDays;
   }
-  function prepareSpecialSegments(){
-    
-    
-//    $this->dailyPrices
-//    $this->specialSegment = $ssDays;
-  }
   /*******************************************/
   function generateQueriesToSendZodomus($chGroup){
     $d1 = $this->startDate;
     $d2 = $this->endDate;
     $to_send = [];
-    $precio = null;
+    $min_stay = null;
    
     if (!isset($this->zData[$chGroup])) return null;
     $zAptos = $this->zData[$chGroup];
     
     
-    foreach ($this->dailyPrices as $d=>$p){
+    foreach ($this->dailyMinStay as $d=>$v){
       $d2 = $d;
-      if (is_null($precio)) $precio = $p;
+      if (is_null($min_stay)) $min_stay = $v;
       if (is_null($d1))  $d1 = $d;
 
 
-      if ($p!=$precio){
+      if ($v!=$min_stay){
         $to_send[] =  [
             "dateFrom" => $d1,
             "dateTo" => $d2,
-            "prices" =>   [ "price" => $precio ],
+            "minimumStay" =>  $min_stay,
 
         ];
         $d1 = $d;
-        $precio = $p;
+        $min_stay = $v;
       }
 
 
     }
-      
     if ($d2!=$d1){
        $to_send[] =  [
            "dateFrom" => $d1,
            "dateTo" => $d2,
-           "prices" =>   [ "price" => $precio ],
-
+           "minimumStay" =>  $min_stay,
        ];
      }
       
@@ -195,14 +196,14 @@ class prepareDefaultPrices {
                   "currencyCode" =>  "EUR",
                   "rateId" =>  $room->rateID,
                   "weekDays" => $weekDays,
-                  "prices" =>  $v['prices'],
+                  "prices" =>  null,
                   "closed" =>  0,
-                  "minimumStay" => 1,
-                  "minimumStayArrival" => 1,
+                  "minimumStay" => $v['minimumStay'],
+                  "minimumStayArrival" => $v['minimumStay'],
                 ];
 
           $datas[] = [
-            'key'=>'SendToZoodomus',
+            'key'=>'SendToZoodomus_minStay',
             'name'=>$nameProcess,
             'content'=> json_encode([$param,$chGroup])
           ];
@@ -210,7 +211,7 @@ class prepareDefaultPrices {
       }
 
     }
-    \App\ProcessedData::where('key','SendToZoodomus')
+    \App\ProcessedData::where('key','SendToZoodomus_minStay')
             ->where('name',$nameProcess)->delete();
     
     \App\ProcessedData::insert($datas);
@@ -227,22 +228,23 @@ class prepareDefaultPrices {
     
     if (!isset($this->wData[$chGroup])) return null;
     $rid = $this->wData[$chGroup];
-    $prices = [];
-    foreach ($this->dailyPrices as $v)  $prices[] = $v;
+    $MinStay = [];
+    foreach ($this->dailyMinStay as $v) {
+      $MinStay[] = ['min_stay'=>$v,'min_stay_arrival'=>$v];
+    }
     
-    $this->roomsPrices['_int_'.$rid] = $prices;
+    $this->roomsMinStay['_int_'.$rid] = $MinStay;
 
   }
   
   function saveQueriesToSendWubook(){
-    
     $nameProcess = $this->startDate.'_'.$this->endDate;
     $datas[] = [
-      'key'=>'SendToWubook',
+      'key'=>'SendToWubook_minStay',
       'name'=>$nameProcess,
       'content'=> json_encode([
           'start'=>$this->startDate,
-          'prices'=>$this->roomsPrices,
+          'min_stay'=>$this->roomsMinStay,
               ])
     ];
     \App\ProcessedData::where('key','SendToWubook')
