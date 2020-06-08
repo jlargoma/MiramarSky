@@ -32,8 +32,8 @@ class PrepareMinStay {
       $this->error = 'Las fecha de inicio debe se mayor a la de final.';
       return false;
     }
-    $start = '2020-07-07';
-    $end = '2020-07-17';
+    $start = '2020-12-07';
+    $end = '2020-12-17';
     $this->startDate = $start;
     $this->endDate = $end;
     $aux = configZodomusAptos();
@@ -63,7 +63,6 @@ class PrepareMinStay {
           $this->generateQueriesToSendZodomus($chGroup);
           $this->prepareQueriesToSendWubook($chGroup);
         } 
-//        $this->prepareSpecialSegments();
       }
       $this->saveQueriesToSendWubook();
     }
@@ -196,7 +195,6 @@ class PrepareMinStay {
                   "currencyCode" =>  "EUR",
                   "rateId" =>  $room->rateID,
                   "weekDays" => $weekDays,
-                  "prices" =>  null,
                   "closed" =>  0,
                   "minimumStay" => $v['minimumStay'],
                   "minimumStayArrival" => $v['minimumStay'],

@@ -33,11 +33,6 @@
                   <?php endif ?>
                 </td>
                 <td class="text-center" style="padding: 12px 20px!important">
-                  <button class="btn btn-primary btn-sm updateSegment" type="button"
-                          data-toggle="modal" data-target="#segment"
-                          data-id="<?php echo $segment->id ?>">
-                    <i class="fa fa-edit"></i>
-                  </button>
                   <form 
                     action="{{url('/admin/specialSegments/delete/'.$segment->id )}}" 
                     method="post" 

@@ -61,10 +61,19 @@ class PricesController extends AppController {
     $sendDataInfo = 'No ha sido enviado aún';
     if ($sentData->content){
       $sentData->content = json_decode($sentData->content);
-      
       $sendDataInfo = 'Enviado el '. convertDateTimeToShow_text($sentData->updated_at);
       $sendDataInfo .= "\n".'Por '.$sentData->content->u;
     }
+    
+    $sentData = \App\ProcessedData::findOrCreate('send_minStaySeason_'.$year->id);
+    $sendDataInfo_minStay = 'No ha sido enviado aún';
+    if ($sentData->content){
+      $sentData->content = json_decode($sentData->content);
+      $sendDataInfo_minStay = 'Enviado el '. convertDateTimeToShow_text($sentData->updated_at);
+      $sendDataInfo_minStay .= "\n".'Por '.$sentData->content->u;
+    }
+    
+    
     
     $SpecialSegment = \App\SpecialSegment::where('start','>=',$startYear)
                 ->where('finish','<=',$endYear)
@@ -86,6 +95,7 @@ class PricesController extends AppController {
         'ch_group' => $ch_group,
         'allPrices' => $allPrices,
         'sendDataInfo' => $sendDataInfo,
+        'sendDataInfo_minStay' => $sendDataInfo_minStay,
         'specialSegments' => $SpecialSegment,
         'priceExtrPax' => $priceExtrPax,
         'settingsBooks' => $oSetting->settingsForBooks(),
@@ -223,7 +233,7 @@ class PricesController extends AppController {
 //      return redirect('no-allowed');
 //    }
 //    
-    $store = \App\ProcessedData::findOrCreate('sed_minStaySeason_'.$year->id);
+    $store = \App\ProcessedData::findOrCreate('send_minStaySeason_'.$year->id);
     $store->content = json_encode([
         'u' =>$cUser->email,
         'ip'=>getUserIpAddr()
@@ -234,8 +244,8 @@ class PricesController extends AppController {
     if ($prepareMinStay->error){
       return back()->withErrors([$prepareMinStay->error]);
     }
-//    $prepareMinStay->process();
-    $prepareMinStay->process_justWubook();
+    $prepareMinStay->process();
+//    $prepareMinStay->process_justWubook();
     
     return back()->with('sent','Precios cargados para ser enviados');
   }

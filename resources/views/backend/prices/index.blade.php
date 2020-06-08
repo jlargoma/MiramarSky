@@ -102,7 +102,7 @@
   <div class="col-md-12">
     <form action="{{route('precios.prepare-cron-minStay')}}" method="post">
       <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
-      <button class="btn btn-success" title="{{$sendDataInfo}}">Enviar Estadías Mínimas a OTAs</button>
+      <button class="btn btn-success" title="{{$sendDataInfo_minStay}}">Enviar Estadías Mínimas a OTAs</button>
     </form>
   </div>
   @endif
