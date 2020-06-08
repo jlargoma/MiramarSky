@@ -1,12 +1,18 @@
  <?php 
-        $specials = ['parking_book_cost',
-        'parking_book_price',
-        'luxury_book_cost',
-        'luxury_book_price'];
+        $specials = [
+            'parking_book_cost',
+            'parking_book_price',
+            'luxury_book_cost',
+            'luxury_book_price',
+            'breakfast_book_cost',
+            'breakfast_book_price',
+            ];
         $parking_book_cost  = ['id'=>null,'value'=>'','key'=>''];
         $parking_book_price = ['id'=>null,'value'=>'','key'=>''];
         $luxury_book_cost   = ['id'=>null,'value'=>'','key'=>''];
         $luxury_book_price  = ['id'=>null,'value'=>'','key'=>''];
+        $breakfast_book_cost   = ['id'=>null,'value'=>'','key'=>''];
+        $breakfast_book_price  = ['id'=>null,'value'=>'','key'=>''];
         $settingS = \App\Settings::whereIn('key', $specials)->get();
         if ($settingS){
           foreach ($settingS as $s){
@@ -60,6 +66,23 @@
                    data-code="{{ $parking_book_cost['key'] }}" 
                    data-id="{{ $parking_book_cost['key'] }}" placeholder="introduce un valor"
                    value="{{ $parking_book_cost['value'] }}" >
+          </td>
+        </tr>
+         <tr>
+          <td class="py-1">
+            <b>Desayuno</b>
+          </td>
+           <td class="text-center">
+            <input class="setting-editable form-control" type="number" step="0.01"
+                   data-code="{{ $breakfast_book_price['key'] }}" 
+                   data-id="{{ $breakfast_book_price['key'] }}" placeholder="introduce un valor"
+                   value="{{ $breakfast_book_price['value'] }}" >
+          </td>
+           <td class="text-center">
+            <input class="setting-editable form-control" type="number" step="0.01"
+                   data-code="{{ $breakfast_book_cost['key'] }}" 
+                   data-id="{{ $breakfast_book_cost['key'] }}" placeholder="introduce un valor"
+                   value="{{ $breakfast_book_cost['value'] }}" >
           </td>
         </tr>
       </tbody>

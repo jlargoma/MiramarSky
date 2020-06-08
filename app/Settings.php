@@ -19,6 +19,8 @@ class Settings extends Model
     const LUXURY_COST_SETTING_CODE    = "luxury_book_cost";
     const LUXURY_PVP_SETTING_CODE     = "luxury_book_price";
     const DISCOUNT_BOOKS_SETTING_CODE = "discount_books";
+    const BREAKFAST_COST_SETTING_CODE = "breakfast_book_cost";
+    const BREAKFAST_PVP_SETTING_CODE  = "breakfast_book_price";
 
 
     private $settingsForBooks = [
@@ -26,6 +28,8 @@ class Settings extends Model
         self::PARK_PVP_SETTING_CODE    => 'PVP Sup Park',
         self::LUXURY_COST_SETTING_CODE => 'Cost Sup Lujo',
         self::LUXURY_PVP_SETTING_CODE  => 'PVP Sup Lujo',
+        self::BREAKFAST_COST_SETTING_CODE   => 'Cost Desayuno',
+        self::BREAKFAST_PVP_SETTING_CODE    => 'PVP Desayuno',
         self::DISCOUNT_BOOKS_SETTING_CODE  => 'Descuento directo sobre las reservas ',
         //'book_instant_payment',
     ];

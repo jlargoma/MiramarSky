@@ -71,6 +71,11 @@
         <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nuevo Apto.</span>
       </button>
     </div>
+    <div class="col-md-1 col-xs-4 push-20 m-l-15">
+      <button class="btn btn-success btnRoomsTypes" type="button" data-toggle="modal" data-target="#modalRoomTypes">
+        <span class="bold">Widget de Habitaciones</span>
+      </button>
+    </div>
 
     <div class="clearfix"></div>
     <div class="row">
@@ -213,6 +218,30 @@
   <!-- /.modal-dialog -->
 </div>
 
+  <div class="modal fade slide-up in" id="modalRoomTypes" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        <div class="block">
+          <div class="block-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
+            </button>
+            <h2 class="text-center"> Widget Habitaciones</h2>
+          </div>
+          <div class="container-xs-height full-height">
+            <div class="row-xs-height">
+              <div class="modal-body">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+  
 <div class="modal fade slide-up in" id="modalNewTypeApto" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content-wrapper">
@@ -540,6 +569,25 @@ $(document).ready(function () {
     });
   });
 
+  $('body').on('click','.btnRoomsTypes',function (event) {
+    $('#modalRoomTypes .modal-body').empty().load('/admin/aptos/rooms-type');
+  });
+
+  $('#modalRoomTypes').on('change','.editable',function (event) {
+    var data = {  
+      id: $(this).data('id'),
+      type: $(this).data('type'),
+      val: $(this).val(),
+      _token: "{{csrf_token()}}"
+    };
+    $.post('/admin/aptos/rooms-type', data, function(resp) {
+      if (resp == 'OK') {
+        window.show_notif('Registro modificado','success','');
+      } else {
+        window.show_notif(resp,'danger','');
+      }
+    });
+  });
 });
 </script>
 @endsection

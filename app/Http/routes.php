@@ -173,6 +173,7 @@
     include_once 'routes-forfaits.php';
     include_once 'routes-admin.php';
     include_once 'routes-superAdmin.php';
+    include_once 'routes-api.php';
 //    include_once 'new.php';
 
     Route::get('/admin', function () {

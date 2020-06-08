@@ -99,6 +99,8 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin/aptos',], function
   Route::get('/edit-descript/{id}', 'RoomsController@editDescript');
   Route::post('/edit-room-descript', 'RoomsController@updRoomDescript');
   Route::post('/edit-descript', 'RoomsController@updDescript');
+  Route::get('/rooms-type', 'RoomsController@getRoomsType');
+  Route::post('/rooms-type', 'RoomsController@updRoomsType');
 });
 
 
