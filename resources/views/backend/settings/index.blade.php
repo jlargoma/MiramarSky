@@ -42,6 +42,8 @@
         </div>
       </div>
       </div>
+      
+      
     </div>
     <div class="col-md-4">
       @include('backend.settings.blocks.general-settings')
@@ -49,18 +51,13 @@
     <div class="col-md-4">
       @include('backend.settings.blocks.stripe-pagos')
     </div>
-    <div class="col-md-4">
-      @include('backend.settings.blocks.settings-reservas')
-    </div>
-    <div class="col-md-4">
-      @include('backend.settings.blocks.extras')
-    </div>
-    <div class="col-md-4">
+    <div class="col-md-6">
       @include('backend.settings.blocks.agentes')
     </div>
     <div class="col-md-4">
-      @include('backend.settings.blocks.dias-min')
+      
     </div>
+    
   </div>
     <div class="modal fade slide-up in" id="segment" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -278,17 +275,7 @@
 
         });
 
-        $('.extra-editable').change(function (event) {
-          var id = $(this).attr('data-id');
-          var extraprice = $('.extra-price-' + id).val();
-          var extracost = $('.extra-cost-' + id).val();
-
-          $.get('precios/updateExtra', {id: id, extraprice: extraprice, extracost: extracost}, function (data) {
-            // alert(data);
-            window.location.reload();
-          });
-
-        });
+       
 
         $('.updateSegment').click(function (event) {
           var id = $(this).attr('data-id');

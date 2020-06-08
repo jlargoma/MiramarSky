@@ -44,8 +44,6 @@ class SendFFAdmin extends Command {
    * @return mixed
    */
   public function handle() {
-    if (env('APP_APPLICATION') == 'riad')
-      return;
     $this->checkInStatus();
   }
 

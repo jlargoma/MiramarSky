@@ -178,7 +178,7 @@ function translateSubject($text,$lng='es'){
 }
 
 function getUrlToPay($token){
-  if (env('APP_APPLICATION') == "riad" || env('APP_APPLICATION') == "miramarLocal"){
+  if (env('APP_APPLICATION') == "miramarLocal"){
     $urlPay = route('front.payments',$token);
   } else {
     $urlPay = 'https://miramarski.com/payments-forms?t='.$token;

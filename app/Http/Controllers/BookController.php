@@ -21,6 +21,7 @@ use App\Traits\BookEmailsStatus;
 use App\Traits\BookCentroMensajeria;
 use App\Traits\BookLogsTraits;
 use App\BookPartee;
+use App\Settings;
 
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
@@ -287,7 +288,7 @@ class BookController extends AppController
             $book->cost_total = $book->get_costeTotal();
 
             if ($request->input('priceDiscount') == "yes" || $request->input('price-discount') == "yes") {
-              $discount = \App\Settings::getKeyValue('discount_books');
+              $discount = Settings::getKeyValue('discount_books');
               $book->real_price -= $discount;
               $book->ff_status = 4;
               $book->has_ff_discount = 1;
@@ -376,7 +377,7 @@ class BookController extends AppController
                       $book->cost_apto = ($request->input('costApto')) ? $request->input('costApto') : $room->getCostRoom($date_start,$date_finish,$book->pax);
                       $book->cost_total = ($request->input('cost')) ? $request->input('cost') : $book->cost_apto + $subTotalCost;
                       if (isset($request->priceDiscount) && $request->input('priceDiscount') == "yes"){
-                        $discount = \App\Settings::getKeyValue('discount_books');
+                        $discount = Settings::getKeyValue('discount_books');
                         $book->ff_status = 4;
                         $book->ff_discount = $discount;
                         $book->has_ff_discount = 1;
@@ -766,7 +767,7 @@ class BookController extends AppController
     public static function getPricePark($typePark, $nights)
     {
         $priceParking   = 0;
-        $parkPvpSetting = \App\Settings::where('key', SettingsController::PARK_PVP_SETTING_CODE)->first();
+        $parkPvpSetting = Settings::where('key', Settings::PARK_PVP_SETTING_CODE)->first();
         if (!$parkPvpSetting) return 0;
         if ($nights<1) return 0;
         switch ($typePark)
@@ -789,7 +790,7 @@ class BookController extends AppController
     public function getCostPark($typePark, $nights)
     {
         $costParking     = 0;
-        $parkCostSetting = \App\Settings::where('key', SettingsController::PARK_COST_SETTING_CODE)->first();
+        $parkCostSetting = Settings::where('key', Settings::PARK_COST_SETTING_CODE)->first();
         if (!$parkCostSetting) return 0;
         if ($nights<1) return 0;
         switch ($typePark)
@@ -815,7 +816,7 @@ class BookController extends AppController
       if ($typeLuxury == 0 || $typeLuxury == 2 || $typeLuxury == 3) return 0;
       
         $priceLuxury      = 0;
-        $luxuryPvpSetting = \App\Settings::where('key', SettingsController::LUXURY_PVP_SETTING_CODE)->first();
+        $luxuryPvpSetting = Settings::where('key', Settings::LUXURY_PVP_SETTING_CODE)->first();
         if (!$luxuryPvpSetting) return 0;
 
         switch ($typeLuxury)
@@ -845,7 +846,7 @@ class BookController extends AppController
       if ($typeLuxury == 0 || $typeLuxury == 2 || $typeLuxury == 3) return 0;
       
         $costLuxury        = 0;
-        $luxuryCostSetting = \App\Settings::where('key', SettingsController::LUXURY_COST_SETTING_CODE)->first();
+        $luxuryCostSetting = Settings::where('key', Settings::LUXURY_COST_SETTING_CODE)->first();
         if (!$luxuryCostSetting) return 0;
 
         switch ($typeLuxury)
@@ -1693,7 +1694,7 @@ class BookController extends AppController
           
           $dni     = $request->input('dni');
           $address = $request->input('address');
-          $setting = \App\Settings::where('key', 'discount_books')->first();
+          $setting = Settings::where('key', 'discount_books')->first();
             return view('backend.bookStatus.response', [
                 'id_apto'      => $roomID,
                 'isFastPayment' => $roomAssigned['isFastPayment'],

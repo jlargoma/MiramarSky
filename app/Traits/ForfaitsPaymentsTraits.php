@@ -149,7 +149,7 @@ trait ForfaitsPaymentsTraits {
         $payment = ForfaitsOrderPaymentLinks::where('token',$token)->first();
         if ($payment){
         
-          if (env('APP_APPLICATION') == "riad" || env('APP_APPLICATION') == "miramarLocal"){
+          if (env('APP_APPLICATION') == "miramarLocal"){
             $urlPay = route('front.payments.forfaits',$token);
           } else {
             $urlPay = 'https://miramarski.com/payments-forms-forfaits?t='.$token;
@@ -927,7 +927,7 @@ trait ForfaitsPaymentsTraits {
             $payment = ForfaitsOrderPaymentLinks::where('order_id',$oID)->first();
             if ($payment){
 
-              if (env('APP_APPLICATION') == "riad" || env('APP_APPLICATION') == "miramarLocal"){
+              if (env('APP_APPLICATION') == "miramarLocal"){
                 $urlPay = route('front.payments.forfaits',$payment->token);
               } else {
                 $urlPay = 'https://miramarski.com/payments-forms-forfaits?t='.$payment->token;
@@ -935,7 +935,7 @@ trait ForfaitsPaymentsTraits {
               $amount = $payment->amount;
             }
           } else {
-            if (env('APP_APPLICATION') == "riad" || env('APP_APPLICATION') == "miramarLocal"){
+            if (env('APP_APPLICATION') == "miramarLocal"){
               $urlPay = route('front.payments.forfaits.all',$key);
             } else {
               $urlPay = 'https://miramarski.com/payments-forms-forfaits?f='.md5(time()).'&t='.$key;
@@ -1035,7 +1035,7 @@ trait ForfaitsPaymentsTraits {
           $payment = ForfaitsOrderPaymentLinks::where('order_id',$oID)->first();
           if ($payment){
         
-            if (env('APP_APPLICATION') == "riad" || env('APP_APPLICATION') == "miramarLocal"){
+            if (env('APP_APPLICATION') == "miramarLocal"){
               $urlPay = route('front.payments.forfaits',$payment->token);
             } else {
               $urlPay = 'https://miramarski.com/payments-forms-forfaits?t='.$payment->token;
@@ -1337,7 +1337,7 @@ trait ForfaitsPaymentsTraits {
 
         if ($typePayment == 'link'){
           
-          if (env('APP_APPLICATION') == "riad" || env('APP_APPLICATION') == "miramarLocal"){
+          if (env('APP_APPLICATION') == "miramarLocal"){
             $urlPay = route('front.payments.forfaits',$token);
           } else {
             $urlPay = 'https://miramarski.com/payments-forms-forfaits?t='.$token;

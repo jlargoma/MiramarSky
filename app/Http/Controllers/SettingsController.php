@@ -9,24 +9,7 @@ use Illuminate\Http\Response;
 
 class SettingsController extends AppController
 {
-    /*
-     * key basics to get price of book and pay it
-     * */
-    const PARK_COST_SETTING_CODE      = "parking_book_cost";
-    const PARK_PVP_SETTING_CODE       = "parking_book_price";
-    const LUXURY_COST_SETTING_CODE    = "luxury_book_cost";
-    const LUXURY_PVP_SETTING_CODE     = "luxury_book_price";
-    const DISCOUNT_BOOKS_SETTING_CODE = "discount_books";
-
-
-    private $settingsForBooks = [
-        self::PARK_COST_SETTING_CODE   => 'Cost Sup Park',
-        self::PARK_PVP_SETTING_CODE    => 'PVP Sup Park',
-        self::LUXURY_COST_SETTING_CODE => 'Cost Sup Lujo',
-        self::LUXURY_PVP_SETTING_CODE  => 'PVP Sup Lujo',
-        self::DISCOUNT_BOOKS_SETTING_CODE  => 'Descuento directo sobre las reservas ',
-        //'book_instant_payment',
-    ];
+    
 
     public function index()
     {
@@ -49,8 +32,6 @@ class SettingsController extends AppController
 
         return view('backend/settings/index', [
             'general'         => $generalKeys,
-            'extras'          => \App\Extras::all(),
-            'settingsBooks'   => $this->settingsForBooks,
             'agentsRooms'     => \App\AgentsRooms::all(),
             'specialSegments' => \App\SpecialSegment::orderBy('start', 'ASC')->get(),
             'year'            => $this->getActiveYear(),
@@ -85,21 +66,18 @@ class SettingsController extends AppController
     {
         $code         = $request->input('code');
         $value        = $request->input('value');
-        $issetSetting = \App\Settings::where('key', $code)->first();
+        $oSetting = \App\Settings::where('key', $code)->first();
 
-        if ($issetSetting)
-        {
-            $setting = $issetSetting;
-        } else
-        {
-            $setting = new \App\Settings();
+        if (!$oSetting){
+          $oSetting = new \App\Settings();
         }
 
-        $setting->name  = $this->settingsForBooks[$code];
-        $setting->key   = $code;
-        $setting->value = $value;
+        $settingsForBooks = $oSetting->settingsForBooks();
+        $oSetting->name  = $settingsForBooks[$code];
+        $oSetting->key   = $code;
+        $oSetting->value = $value;
 
-        if ($setting->save()) return new Response(\GuzzleHttp\json_encode([
+        if ($oSetting->save()) return new Response(\GuzzleHttp\json_encode([
                                                                               'status'  => 'OK',
                                                                               'message' => 'Datos Guardados correctamente',
                                                                           ]), 200); else
@@ -233,4 +211,20 @@ class SettingsController extends AppController
         }
         return back()->with('success-gral', 'Setting updated!');
     }
+    
+     
+    public function updExtraPaxPrice(Request $request) {
+    
+      $price = $request->input('price');
+
+      $obj = Settings::where('key', 'price_extr_pax')->first();
+      if (!$obj){
+        $obj = new Settings();
+        $obj->key =  'price_extr_pax';
+      }
+      $obj->value = intval($price);
+      $obj->save();
+      return redirect()->back()->with('success','Precio por PAX estras guardado.');
+    }
+    
 }

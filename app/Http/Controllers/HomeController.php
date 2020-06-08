@@ -23,9 +23,7 @@ class HomeController extends AppController
      */
     public function index(Request $request)
     {
-      if (env('APP_APPLICATION') == 'riad'){
-        return redirect()->route('dashboard.planning');
-      }
+     
         /* Detectamos el tipo de dispositivo*/
       
       global $mobile,$is_mobile;

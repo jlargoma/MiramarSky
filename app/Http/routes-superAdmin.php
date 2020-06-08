@@ -34,6 +34,8 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::get('admin/precios/delete/{id}','PricesController@delete');
   Route::get('admin/precios/deleteExtra/{id}','PricesController@delete');
   Route::post('admin/precios/createExtras','PricesController@createExtras');
+  Route::delete('admin/precios/createExtras','PricesController@delteExtraPrices')->name('precios.extr_price.del');
+  
   Route::post('admin/precios/prepare-crom','PricesController@prepareYearPricesAndMinStay')->name('precios.prepare-crom');
   // Prices
 
@@ -121,7 +123,7 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
   Route::get('/apartamentos/new', 'RoomsController@newRoom');
   Route::get('/apartamentos/new-type', 'RoomsController@newTypeRoom');
   Route::get('/apartamentos/new-size', 'RoomsController@newSizeRoom');
-  Route::get('/apartamentos/update', 'RoomsController@update');
+  Route::post('/apartamentos/update', 'RoomsController@update');
   Route::get('/apartamentos/update-type', 'RoomsController@updateType');
   Route::get('/apartamentos/update-name', 'RoomsController@updateName');
   Route::get('/apartamentos/update-nameRoom', 'RoomsController@updateNameRoom');
