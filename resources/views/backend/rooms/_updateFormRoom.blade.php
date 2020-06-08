@@ -54,10 +54,10 @@
 				<label for="maxOcu">Ocu. Max</label>
 				<input type="number" name="maxOcu" class="form-control" value="<?php echo $room->maxOcu; ?>"/>
 			</div>
-			<div class="col-md-2 col-xs-4 push-20">
+<!--			<div class="col-md-2 col-xs-4 push-20">
 				<label for="price_extra_pax">Extra Pax €</label>
 				<input type="number" name="price_extra_pax" class="form-control" value="<?php echo $room->price_extra_pax; ?>"/>
-			</div>
+			</div>-->
 			
 		</div>
 		<div class="">

@@ -239,11 +239,6 @@ trait BookEmailsStatus
             'link_forfait'               => '',
         );
         
-        if (env('APP_APPLICATION') == 'riad'){
-          $dataContent['room'] = $data->room->nameRoom;
-        }
-        
-        
         $orderFF = \App\Models\Forfaits\Forfaits::getByBook($data->id);
         if ($orderFF){
           $dataContent['link_forfait'] = env('FF_PAGE').encriptID($orderFF->id).'-'. getKeyControl($orderFF->id);

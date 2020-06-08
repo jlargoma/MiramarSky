@@ -120,9 +120,13 @@
     <div class="clearfix"></div>
     <div class="row">
       <div class="col-md-6">
+        @include('backend.prices.blocks.extr-paxs')
+        @include('backend.prices.blocks.extras')
       </div>
       <div class="col-md-6">
+        @include('backend.prices.blocks.settings-reservas')
     @include('backend.prices.blocks.dias-min')
+    
       </div>
     </div>
     
@@ -206,7 +210,59 @@
       
       
       /********************************************************/
+        $('.setting-editable').change(function () {
+          var code = $(this).attr('data-code');
+          var value = $(this).val();
+          $.post("{{ route('settings.createUpdate') }}", {code: code, value: value}).done(function (data) {
+            var response = jQuery.parseJSON(data);
+            window.show_notif(response.status, 'success', response.message)
+          }).fail(function (data) {
+            var response = jQuery.parseJSON(data);
+            window.show_notif(response.status, 'danger', response.message)
+          });
+        });
+        
+        $('.extra-editable').change(function (event) {
+          var id = $(this).attr('data-id');
+          var extraprice = $('.extra-price-' + id).val();
+          var extracost = $('.extra-cost-' + id).val();
 
+          $.get('precios/updateExtra', {id: id, extraprice: extraprice, extracost: extracost}, function (data) {
+            // alert(data);
+            window.location.reload();
+          });
+
+        });
+        
+        $('.deleteSegment').click(function (event) {
+          
+          if (confirm('Eliminar el Extra '+$(this).data('name')+'?')){
+            var data = {
+              id: $(this).data('id'),
+              _token: "{{csrf_token()}}"
+            };
+            
+            var elemet = $(this).closest('tr');
+            
+            $.ajax({
+                url: "{{route('precios.extr_price.del')}}",
+                data: data,
+                type: 'DELETE',
+                success: function(result) {
+                  if (result == 'OK'){
+                    window.show_notif('OK','success','Registro Eliminado.');
+                    elemet.remove(); 
+                  } else{
+                    window.show_notif('ERROR','danger','Registro no encontrado');
+                  }
+                },
+                error: function(e){
+                  console.log(e);
+                  window.show_notif('ERROR','danger','Error de sistema');
+                }
+            });
+          }
+        });
       
   });
 </script>

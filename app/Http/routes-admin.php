@@ -125,6 +125,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
   Route::get('/years/get', 'YearsController@getYear')->name('years.get');
   //SETTINGS
   Route::post('/settings/createUpdate', 'SettingsController@createUpdateSetting')->name('settings.createUpdate');
+  Route::post('settings/updExtraPaxPrice','SettingsController@updExtraPaxPrice')->name('settings.extr_pax_price');
   //PAYMENTS
 //  Route::post('/', 'SettingsController@createUpdateSetting')->name('settings.createUpdate');
   Route::get('/links-payland', 'PaylandsController@link');

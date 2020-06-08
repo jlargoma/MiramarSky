@@ -66,10 +66,13 @@ class PricesController extends AppController {
       $sendDataInfo .= "\n".'Por '.$sentData->content->u;
     }
     
-     $SpecialSegment = \App\SpecialSegment::where('start','>=',$startYear)
+    $SpecialSegment = \App\SpecialSegment::where('start','>=',$startYear)
                 ->where('finish','<=',$endYear)
                 ->get();
             
+    $oSetting = new \App\Settings();
+    $priceExtrPax = \App\Settings::getKeyValue('price_extr_pax');
+     
     return view('backend/prices/index', [
         'seasons' => $oSeasonType,
         'newseasons' => $oSeasonType,
@@ -84,6 +87,9 @@ class PricesController extends AppController {
         'allPrices' => $allPrices,
         'sendDataInfo' => $sendDataInfo,
         'specialSegments' => $SpecialSegment,
+        'priceExtrPax' => $priceExtrPax,
+        'settingsBooks' => $oSetting->settingsForBooks(),
+        'extras'          => \App\Extras::all(),
     ]);
   }
 
@@ -126,6 +132,17 @@ class PricesController extends AppController {
     }
   }
 
+  public function delteExtraPrices(Request $request) {
+
+      $id = $request->input('id');
+      $extra = \App\Extras::find($id);
+      if ($extra->id == $id){
+        $extra->deleted = 1;
+        if ($extra->save()) return "OK";
+      }
+      return 'Extra no encontrado';
+  }
+  
    /**
    * Update the specified resource in storage.
    *

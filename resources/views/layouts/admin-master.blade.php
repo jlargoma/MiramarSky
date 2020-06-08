@@ -51,33 +51,12 @@
         use App\Classes\Mobile;
         $mobile = new Mobile();
         ?>
-            <style>
-        <?php if (env('APP_APPLICATION') == "riad"): ?>
-               .showOnlyRiad{
-                 visibility:visible;
-               }
-               .hiddenOnlyRiad{
-                visibility:hidden;
-                display: none !important;
-               }
-            <?php else:?>
-              .showOnlyRiad{
-                 visibility:hidden;
-               }
-            <?php endif; ?>
-        </style>
     </head>
     <body class="fixed-header   windows desktop pace-done sidebar-visible menu-pin" style="padding-top:0px!important">
             <nav class="navbar navbar-inverse" role="navigation" style="<?php if (env('APP_APPLICATION') == "riad"): ?>background-color: #6d5cae!important; <?php else:?> background-color: #295d9b!important;<?php endif; ?>">
-            <?php if (env('APP_APPLICATION') == "riad"): ?>
-                <a class="navbar-brand" href="{{ route('dashboard.planning') }}" style="max-width: 155px;">
-                    <img src="{{ assetV('img/riad/logo_riad_b.png') }}" alt="" style="width: 100%">
-                </a>
-            <?php else:?>
                 <a class="navbar-brand" href="{{ route('dashboard.planning') }}" style="max-width: 155px;">
                     <img src="{{ assetV('img/miramarski/logo_miramar.png') }}" alt="" style="width: 100%;     margin-top: -5px;">
                 </a>
-            <?php endif; ?>
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -102,7 +81,12 @@
         </nav>
         <div class="page-container ">
             <div class="page-content-wrapper ">
-
+                @if($errors->any())
+                  <p class="alert alert-danger">{{$errors->first()}}</p>
+                @endif
+                @if (\Session::has('success'))
+                  <p class="alert alert-success">{!! \Session::get('success') !!}</p>
+                @endif
                 <div class="content sm-gutter " style="padding-left: 0px!important;padding-top: 0px!important;">
                     @yield('content')
                 </div>

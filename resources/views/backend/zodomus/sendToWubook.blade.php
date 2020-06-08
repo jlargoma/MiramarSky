@@ -8,11 +8,5 @@
   @else
     <button class="btn btn-primary" disabled>Enviar Precios a WuBook</button>
   @endif
-  @if($errors->any())
-  <p class="alert alert-danger">{{$errors->first()}}</p>
-  @endif
-  @if (\Session::has('success'))
-  <p class="alert alert-success">{!! \Session::get('success') !!}</p>
-  @endif
 </div>
  @endif

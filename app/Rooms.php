@@ -296,7 +296,9 @@ class Rooms extends Model
     if ($oPrice) {
         $extra_pax = 0;
         if (($pax>$this->minOcu)){
-          $extra_pax =  $this->price_extra_pax*($pax-$this->minOcu);
+          $priceExtrPax = \App\Settings::getKeyValue('price_extr_pax');
+          if ($priceExtrPax)  $extra_pax = $priceExtrPax*($pax-$this->minOcu);
+//          $extra_pax =  $this->price_extra_pax*($pax-$this->minOcu);
         }
         foreach ($oPrice as $p) {
           if (isset($priceDay[$p->date])  && $p->price)
@@ -323,10 +325,8 @@ class Rooms extends Model
       $oExtra = \App\Extras::find(3);
     }
     
-    if (env('APP_APPLICATION') != "riad"){
-      if ($this->id == 165 || $this->id == 122){
-        $oExtra = \App\Extras::find(6);
-      }
+    if ($this->id == 165 || $this->id == 122){
+      $oExtra = \App\Extras::find(6);
     }
     
     if ($oExtra){
@@ -412,7 +412,8 @@ class Rooms extends Model
       $extra_pax = 0;
       $pricePax = $this->minOcu;
       if (($pax>$pricePax)){
-        $extra_pax =  $this->price_extra_pax*($pax-$pricePax);
+        $priceExtrPax = \App\Settings::getKeyValue('price_extr_pax');
+        if ($priceExtrPax)  $extra_pax =  $priceExtrPax*($pax-$pricePax);
       }
         
       $priceList = [];

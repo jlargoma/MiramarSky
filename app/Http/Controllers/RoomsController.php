@@ -143,14 +143,14 @@ class RoomsController extends AppController {
     $id = $request->input('id');
     $roomUpdate = Rooms::find($id);
 
-    $roomUpdate->luxury = $request->input('luxury');
     $roomUpdate->minOcu = $request->input('minOcu');
     $roomUpdate->maxOcu = $request->input('maxOcu');
 
 
     if ($roomUpdate->save()) {
-      echo "Cambiada!!";
+      return 'OK';
     }
+    return 'ERROR';
   }
 
   public function updateType(Request $request) {
@@ -247,21 +247,23 @@ class RoomsController extends AppController {
     $room = Rooms::find($request->id);
     $state = $request->input('state');
     $room->state = intval($state);
+    $room->luxury = $request->input('luxury');
    
     if ($room->save()) {
       return 1;
     }
+    return 0;
     
-    $book = \App\Book::where('room_id', '=', $request->id)->where('start', '>', '2017-09-01')->get();
-
-    if (count($book) > 0) {
-      return 0;
-    } else {
-      $room->state = $request->state;
-      if ($room->save()) {
-        return 1;
-      }
-    }
+//    $book = \App\Book::where('room_id', '=', $request->id)->where('start', '>', '2017-09-01')->get();
+//
+//    if (count($book) > 0) {
+//      return 0;
+//    } else {
+//      $room->state = $request->state;
+//      if ($room->save()) {
+//        return 1;
+//      }
+//    }
   }
 
   public static function getPaxPerRooms($roomId) {

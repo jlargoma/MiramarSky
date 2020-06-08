@@ -11,11 +11,33 @@ class Settings extends Model
         'value'
     ];
     
+    /*
+     * key basics to get price of book and pay it
+     * */
+    const PARK_COST_SETTING_CODE      = "parking_book_cost";
+    const PARK_PVP_SETTING_CODE       = "parking_book_price";
+    const LUXURY_COST_SETTING_CODE    = "luxury_book_cost";
+    const LUXURY_PVP_SETTING_CODE     = "luxury_book_price";
+    const DISCOUNT_BOOKS_SETTING_CODE = "discount_books";
+
+
+    private $settingsForBooks = [
+        self::PARK_COST_SETTING_CODE   => 'Cost Sup Park',
+        self::PARK_PVP_SETTING_CODE    => 'PVP Sup Park',
+        self::LUXURY_COST_SETTING_CODE => 'Cost Sup Lujo',
+        self::LUXURY_PVP_SETTING_CODE  => 'PVP Sup Lujo',
+        self::DISCOUNT_BOOKS_SETTING_CODE  => 'Descuento directo sobre las reservas ',
+        //'book_instant_payment',
+    ];
+    
     static function getKeysSettingsGen() {
       return [
           'partee_apartament'   => array('label' => 'Partee: ID Apartamento','val'=>null),
           'send_sms_days'       => array('label' => 'Enviar SMS Partee a % días del CheckIn','val'=>null),
       ];
+    }
+    public function settingsForBooks() {
+      return $this->settingsForBooks;
     }
     
     static function getKeyValue($key){     
