@@ -31,6 +31,7 @@ class Kernel extends ConsoleKernel
         Commands\WubookAvailables::class,
         Commands\WubookGetBookings::class,
         Commands\PricesSeason::class,
+        Commands\MinStaySeason::class,
     ];
 
     /**
@@ -52,6 +53,7 @@ class Kernel extends ConsoleKernel
 //         $schedule->command('zodomus:import')->everyTenMinutes();
          $schedule->command('zodomus:importAll')->hourly();
          $schedule->command('OTAs:sendPricesSeason')->everyMinute();
+//         $schedule->command('OTAs:MinStaySeason')->everyMinute();
          $schedule->command('ProcessData:all')->everyFiveMinutes();
 //         $schedule->command('mails:read')->everyThirtyMinutes();
          $schedule->command('forfait:sendReminder')->dailyAt('8:00')->timezone('Europe/Madrid');

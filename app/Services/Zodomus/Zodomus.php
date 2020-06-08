@@ -226,7 +226,7 @@ class Zodomus{
     public function setRates($params,$channel_group=null) {
       $params = $this->ZConfig->processPriceRates($params,$channel_group);
       $this->call('rates','POST',$params);
-//      var_dump($this->response);
+      
       if (isset($this->response->status)){
         if (isset($this->response->status->returnCode)){
           if ($this->response->status->returnCode == 200){

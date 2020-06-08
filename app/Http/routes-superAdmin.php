@@ -36,7 +36,8 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::post('admin/precios/createExtras','PricesController@createExtras');
   Route::delete('admin/precios/createExtras','PricesController@delteExtraPrices')->name('precios.extr_price.del');
   
-  Route::post('admin/precios/prepare-crom','PricesController@prepareYearPricesAndMinStay')->name('precios.prepare-crom');
+  Route::post('admin/precios/prepare-crom','PricesController@prepareYearPrices')->name('precios.prepare-cron');
+  Route::post('admin/precios/prepare-crom-minStay','PricesController@prepareYearMinStay')->name('precios.prepare-cron-minStay');
   // Prices
 
   // seasons
