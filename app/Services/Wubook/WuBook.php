@@ -13,6 +13,7 @@ class WuBook{
     public $responseCode;
     public $channels;
     private $price_plan;
+    private $rplan;
     protected   $token;
     protected   $iCode;
     protected   $WBConfig;
@@ -22,6 +23,7 @@ class WuBook{
       $this->iCode = 1578438122;
       $this->token = "5808490848.6474";
       $this->price_plan = 153130;
+      $this->rplan = 76427;
       $this->WBConfig = new WBConfig();
     }
     
@@ -277,12 +279,13 @@ class WuBook{
         $param = [
             $this->token,
             $this->iCode,
+            $this->rplan,
             date('d/m/Y',$dfromTime),
             $min_stay
         ];
 //        var_dump($param);
       
-        $aResponse = $this->call('rplan_get_rplan_values',$param);
+        $aResponse = $this->call('rplan_update_rplan_values',$param);
         if ($aResponse){
           if ($aResponse->string == 'Ok'){
             return true;

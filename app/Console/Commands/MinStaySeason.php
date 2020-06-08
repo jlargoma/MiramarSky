@@ -86,6 +86,7 @@ class MinStaySeason extends Command
         foreach ($items as $item){
           $data = json_decode($item->content,true);
           $response = $WuBook->set_Restrictions($data['start'],$data['min_stay']);
+          
           if ($response) { $item->delete();}
           else {
             $item->key = 'SendToWubook_minStay-error';

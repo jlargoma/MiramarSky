@@ -112,7 +112,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
   Route::post('/specialSegments/create', 'SpecialSegmentController@create');
   Route::get('/specialSegments/update/{id?}', 'SpecialSegmentController@update');
   Route::post('/specialSegments/update/{id?}', 'SpecialSegmentController@update');
-  Route::get('/specialSegments/delete/{id?}', 'SpecialSegmentController@delete');
+  Route::post('/specialSegments/delete/{id?}', 'SpecialSegmentController@delete');
   Route::get('/stripe-connect/{id}/acceptStripeConnect', 'StripeConnectController@acceptStripe');
   Route::get('/stripe-connect', 'StripeConnectController@index');
   Route::post('/stripe-connect/create-account-stripe-connect', 'StripeConnectController@createAccountStripeConnect');
