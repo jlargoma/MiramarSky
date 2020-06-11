@@ -23,6 +23,10 @@
         color: white;
 
     }
+    .Verano {
+      background-color: #51b1f778;
+      color: #444444;
+    }
 
     .sub {
         background-color: orange;
@@ -793,6 +797,7 @@ use \Carbon\Carbon;
     <div class="Alta col-md-2 text-center col-xs-2 text-white m-l-5">ALTA</div>
     <div class="Media col-md-2 text-center col-xs-2 text-white m-l-5">MEDIA</div>
     <div class="Baja col-md-2 text-center col-xs-2 text-white m-l-5">BAJA</div>
+    <div class="Verano col-md-2 text-center col-xs-2  m-l-5">Verano</div>
 </div>
 
 <div style="clear: both;"></div>
@@ -856,6 +861,9 @@ use \Carbon\Carbon;
                                                 break;
                                             case 4:
                                                 $status = "Premium";
+                                                break;
+                                            case 5:
+                                                $status = "Verano";
                                                 break;
                                             default:
                                                 $status = "";

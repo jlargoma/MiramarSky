@@ -245,7 +245,7 @@ class PrepareMinStay {
           'min_stay'=>$this->roomsMinStay,
               ])
     ];
-    \App\ProcessedData::where('key','SendToWubook')
+    \App\ProcessedData::where('key','SendToWubook_minStay')
             ->where('name',$nameProcess)->delete();
     
     \App\ProcessedData::insert($datas);

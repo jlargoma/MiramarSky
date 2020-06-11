@@ -96,7 +96,7 @@
     </li>
 <?php endif ?>
     
-<?php if ($uRole == "admin" || $uRole == "limpieza" || $uRole == "subadmin" || $uRole == "recepcionista"): ?>
+<?php if ($uRole == "admin" || $uRole == "subadmin" || $uRole == "recepcionista"): ?>
     <li class="{{ $pathRequest == 'admin/limpiezas' ? 'active' : '' }}">
         <a href="{{ url('admin/limpiezas/') }}" class="detailed">Limpiezas</a>
     </li>

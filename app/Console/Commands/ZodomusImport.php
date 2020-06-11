@@ -116,6 +116,14 @@ class ZodomusImport extends Command {
                       }
                     }
                   }
+                  if (isset($Zroom->priceDetailsExtra)){
+                    foreach ($Zroom->priceDetailsExtra as $pExtr){
+                      if ($pExtr->type == "guest" && $pExtr->included == 'no'){
+                        $totalPrice += round($pExtr->amount,2);
+                      }
+                    }
+                  }
+            
                   $roomReservationId = $room->roomReservationId;
                   
                   $rateId = isset($Zroom->prices[0]) ? $Zroom->prices[0]->rateId : 0;

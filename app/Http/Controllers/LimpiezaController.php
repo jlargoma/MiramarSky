@@ -9,34 +9,36 @@ use App\Http\Requests;
 
 class LimpiezaController extends AppController {
 
-  public function index(Request $request, $year = "") {
-    if (empty($year)) {
-      $date = Carbon::now();
-      if ($date->copy()->format('n') >= 6) {
-        $date = new Carbon('first day of June ' . $date->copy()->format('Y'));
-      } else {
-        $date = new Carbon('first day of June ' . $date->copy()->subYear()->format('Y'));
-      }
-    } else {
-      $year = Carbon::createFromFormat('Y', $year);
-      $date = $year->copy();
-    }
+   public function index(Request $request, $year = "") {
+    
     $now = Carbon::now();
+    $start = $now->copy()->subDays(3);
+    $finish = $now->copy()->addMonth(3);
+    
     $rooms = \App\Rooms::all();
-    $booksCollection = \App\Book::where('start', '>=', $now->copy()->subDays(3))
-            ->where('start', '<=', $now->copy()->addYear())
-            ->orderBy('start', 'ASC')
-            ->get();
-    $books = $booksCollection->whereIn('type_book', [2,7]);
+    $checkin = \App\Book::where('start', '>=', $start)->where('start', '<=', $finish)
+                ->with('room','customer')
+                ->whereIn('type_book',[1,2])->orderBy('start', 'ASC')->get();
+        
+    
+    
+    $checkout = \App\Book::where('finish', '>=', $start)
+                ->where('finish', '<', $finish)->where('type_book', 2)
+                ->with('room','customer')
+                ->orderBy('finish', 'ASC')->get();
+        
 
-    $payment = array();
-    $payment = null;
+    $isMobile = config('app.is_mobile');
+    $uRole = getUsrRole();
 
+      
     return view('backend.limpieza.index', [
         'mobile' => new Mobile(),
-        'books' => $books,
+        'checkin' => $checkin,
+        'checkout' => $checkout,
         'rooms' => $rooms,
-        'payment' => $payment,
+        'isMobile' => $isMobile,
+        'uRole' => $uRole,
     ]);
   }
 
