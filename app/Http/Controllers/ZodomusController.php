@@ -469,10 +469,38 @@ class ZodomusController extends Controller {
    */
   function zodomusTest(){
     
-     
-      $Zodomus =  new \App\Services\Zodomus\Zodomus();
-      $apto = 51813430; 
-      $return = null;
+     return null;
+      $oZodomus =  new \App\Services\Zodomus\Zodomus();
+//      $apto = 2092950; 
+//      $return = $Zodomus->sendRatesGroup($apto,10084311,209295006,'EstL',1);
+      
+        $param = [
+                "channelId" =>  1,
+                "propertyId" => 1542253,
+                "reservationId" =>  3537637317,
+              ];
+    
+      $reservation = $oZodomus->getBooking($param);
+      dd($reservation);    
+      
+       $rooms = [
+        [ "roomId" => 209295006,
+        "roomName" => "ESTUDIOS LUJO",
+        "status" => 1,
+        "quantity" =>10,
+        "rates" => [10084311]
+        ],
+        ];
+      $roomToAt = [
+        "channelId" => 1,
+        "propertyId" => $apto,
+        "rooms" =>  $rooms
+      ];
+//      $return = $Zodomus->activateRoom($roomToAt);
+//      
+      
+  dd($return);
+      
       
       $rooms = [];
       $aptosLst = configZodomusAptos();
@@ -698,6 +726,13 @@ class ZodomusController extends Controller {
               foreach ($room->priceDetails as $priceDetails){
                 if ($totalPrice < $priceDetails->total){
                   $totalPrice = $priceDetails->total;
+                }
+              }
+            }
+            if (isset($room->priceDetailsExtra)){
+              foreach ($room->priceDetailsExtra as $pExtr){
+                if ($pExtr->type == "guest" && $pExtr->included == 'no'){
+                  $totalPrice += round($pExtr->amount,2);
                 }
               }
             }

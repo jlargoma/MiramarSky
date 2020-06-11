@@ -60,7 +60,7 @@ class PricesSeason extends Command
     private function check_and_send_zodumos(){
       
       $oZodomus = new Zodomus();
-      $items = ProcessedData::where('key','SendToZoodomus')->limit(45)->get();
+      $items = ProcessedData::where('key','SendToZoodomus')->limit(15)->get();
       if ($items){
         foreach ($items as $item){
           $data = json_decode($item->content,true);

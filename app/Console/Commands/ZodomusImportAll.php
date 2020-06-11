@@ -202,6 +202,13 @@ class ZodomusImportAll extends Command {
                 }
               }
             }
+            if (isset($room->priceDetailsExtra)){
+              foreach ($room->priceDetailsExtra as $pExtr){
+                if ($pExtr->type == "guest" && $pExtr->included == 'no'){
+                  $totalPrice += round($pExtr->amount,2);
+                }
+              }
+            }
             
             $rateId   = isset($room->prices[0]) ? $room->prices[0]->rateId : 0;
             $comision = $this->zConfig->get_comision($totalPrice,$channelId);

@@ -149,7 +149,7 @@ class Zodomus{
     public function checkProperty($apto) {
 //      echo '"propertyId"=> "2798863"<br>';
       $params = [
-        "channelId"=> 2,
+        "channelId"=> 1,
         "propertyId"=> $apto,
       ];
       $this->call('property-check','POST',$params);
@@ -211,7 +211,7 @@ class Zodomus{
     
     public function getRates($apto) {
       $params = [
-        "channelId"=> 2,
+        "channelId"=> 1,
         "propertyId"=> $apto,
       ];
       $this->call('room-rates','GET',$params);
@@ -556,7 +556,7 @@ class Zodomus{
 //    $return = $Zodomus->activateRoom($roomToAt);
   }
   
-  function sendRatesGroup($apto,$rateId,$roomID,$channel_group){
+  function sendRatesGroup($apto,$rateId,$roomID,$channel_group,$channelId){
 //      $channel_group = 'ROSASJ';
   
       $priceDay = $minDay = [];
@@ -626,7 +626,7 @@ class Zodomus{
       foreach ($to_send as $v){
         if ($v['prices']['price'] == 999) continue;
          $param = [
-                "channelId" =>  2,
+                "channelId" =>  $channelId,
                 "propertyId" => $apto,
                 "roomId" =>  $roomID,
                 "dateFrom" => $v['dateFrom'],
