@@ -20,7 +20,7 @@ class WubookController extends AppController {
   public function index() {
     
     $WuBook = new WuBook();
-    $WuBook->conect();
+//    $WuBook->conect();
 //    $WuBook->get_pushURL();
 //    $WuBook->fetch_rooms();
 //    $rooms = $WuBook->getRoomsEquivalent(null);
@@ -51,13 +51,13 @@ class WubookController extends AppController {
     
     /*************************************************/
     //all bookings
-    $WuBook->fetch_bookings();
+//    $WuBook->fetch_bookings();
     /*************************************************/
     // get booking
 //    $WuBook->fetch_booking();
     
     
-    $WuBook->disconect();
+//    $WuBook->disconect();
   }
   
   /**
