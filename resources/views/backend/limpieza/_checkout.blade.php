@@ -5,7 +5,7 @@
 <?php $startWeek = Carbon::now()->startOfWeek(); ?>
 <?php $endWeek = Carbon::now()->endOfWeek(); ?>
 <div class="table-responsive">
-    <table class="table tableCheckOut table-striped"  style="margin: 0;">
+    <table class="table tableCheckOut table-data  table-striped" >
         <thead>
           <th class="bg-primary text-white" >Cliente</th>
           <th class="bg-primary text-white text-center">

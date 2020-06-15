@@ -3,24 +3,24 @@
         setlocale(LC_TIME, "es_ES"); 
 $startWeek = Carbon::now()->startOfWeek();
 $endWeek = Carbon::now()->endOfWeek(); 
-$lstSafetyBox = \App\BookSafetyBox::$keys_name; 
+$t_class = ($isMobile) ? '' : 'th-bookings';
 ?>
 <div class="tab-pane" id="tabPagadas">
     <div class="table-responsive">
-        <table class="table tableCheckIn table-striped"  data-type="confirmadas" style="margin-top: 0;">
+        <table class="table tableCheckIn table-data  table-striped" >
             <thead>
                 <tr class ="text-center bg-success text-white">
-                    <th class="th-bookings th-name" >Cliente</th>
+                    <th class="{{$t_class}} th-name" >Cliente</th>
                     <th class="th-bookings"> 
                       @if($isMobile) <i class="fa fa-phone"></i> @else Telefono @endif
                     </th>
-                    <th class="th-bookings th-2">Pax</th>
-                    <th class="th-bookings th-6">Apart</th>
-                    <th class="th-bookings th-3">  <i class="fa fa-moon-o"></i> </th>
-                    <th class="th-bookings th-3"> <i class="fa fa-clock-o"></i></th>
-                    <th class="th-bookings th-4">IN</th>
-                    <th class="th-bookings th-4">OUT</th>
-                    <th class="th-bookings th-2">&nbsp;</th>
+                    <th class="{{$t_class}} th-2">Pax</th>
+                    <th class="{{$t_class}} th-6">Apart</th>
+                    <th class="{{$t_class}} th-3">  <i class="fa fa-moon-o"></i> </th>
+                    <th class="{{$t_class}} th-3"> <i class="fa fa-clock-o"></i></th>
+                    <th class="{{$t_class}} th-4">IN</th>
+                    <th class="{{$t_class}} th-4">OUT</th>
+                    <th class="{{$t_class}} th-2">&nbsp;</th>
                 </tr>
             </thead>
             <tbody>
