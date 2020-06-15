@@ -563,7 +563,6 @@ trait ForfaitsPaymentsTraits {
           'ff_mount' => $ff_mount,
           'year'=>$year,
           'rooms'=>$rooms,
-          'errors'=>$errors,
           'totals'=>$totals,
           'year'=>$year,
           'selected'=>$obj1['selected'],

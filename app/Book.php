@@ -145,6 +145,7 @@ class Book extends Model {
     for($i=1;$i<21;$i++){
       $array[] = 'Agencia-'.$i;
     }
+    $array[999999] = 'Wubook';
     return $array;
   }
   
