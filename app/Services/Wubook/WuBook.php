@@ -47,12 +47,12 @@ class WuBook{
     }
     
     public function conect(){
-//      return ;
       $params = array(
-          'JL136',
-          'umi2f7nh',
-          '6e2104d9f0855c934ba5dcbe867c7ebe427d1cb3569e8d9f'
+          env('WUBOOK_USR'),
+          env('WUBOOK_PSW'),
+          env('WUBOOK_KEY')
           );
+//      dd($params);
       $aResponse = $this->call('acquire_token', $params);
       if ($aResponse){
         $this->token = strval($aResponse->string);
@@ -71,7 +71,7 @@ class WuBook{
       return FALSE; 
     }
     
-    public function pushURL($site,$url, $test=0){
+    public function pushURL($url, $test=0){
       // tdocs.wubook.net/wired/fetch.html#setting-up-the-push-notification
       if ($this->token){
         $aResponse = $this->call('push_activation', array($this->token,$this->iCode,$url, $test));
@@ -84,6 +84,14 @@ class WuBook{
       return FALSE; 
     }
     
+    public function get_pushURL(){
+      // tdocs.wubook.net/wired/fetch.html#setting-up-the-push-notification
+      if ($this->token){
+        $aResponse = $this->call('push_url', array($this->token,$this->iCode));
+        dd($aResponse);
+      }
+      return FALSE; 
+    }
 
     
     
@@ -114,18 +122,27 @@ class WuBook{
                 $aux = $data->value->struct->member->value->array->data->value;
                 $content = array();
                 foreach ($aux as $item){
-                  foreach ($item as $item2){
-                    $content[] = $item2;//->__toString();
+                  if (is_array($item)){
+                    foreach ($item as $item2){
+                      $content[] = $item2;//->__toString();
+                    }
+                  } else {
+                    $content[] = $item;
                   }
                 }
                 break;
               case 'rooms_occupancies':
-                $aux = $data->value->array->data->value->struct->member;
-                $content = array();
-                foreach ($aux as $item){
-//                 
-                  $content[$item->name] = $item->value->int;
-//                  $content[$item->name->__toString()] = $item->value[0]->int->__toString();
+                if (is_array($data->value->array->data->value)){
+                  $data->value->array->data->value = $data->value->array->data->value[0];
+                }
+                if (is_object($data->value->array->data->value)){
+                  $aux = $data->value->array->data->value->struct->member;
+                  $content = array();
+                  foreach ($aux as $item){
+  //                 
+                    $content[$item->name] = $item->value->int;
+  //                  $content[$item->name->__toString()] = $item->value[0]->int->__toString();
+                  }
                 }
                 break;
               case 'booked_rooms':
@@ -315,6 +332,8 @@ class WuBook{
         ];
         
         $aResponse = $this->call('fetch_bookings',$param);
+        $aux = json_encode($aResponse);
+        $aResponse = json_decode($aux);
 //        echo json_encode($aResponse);
 //        include_once public_path('MoreBook.php');
 //        $aResponse = json_decode($bookings);
@@ -353,7 +372,8 @@ class WuBook{
             $rCode,
         ];
         $aResponse = $this->call('fetch_booking',$param);
-//        echo json_encode($aResponse); die;
+        $aux = json_encode($aResponse);
+        $aResponse = json_decode($aux);
         
 //        include_once public_path('/tests/WuBook-booking.php');
 //        $aResponse = json_decode($bookings);
@@ -430,8 +450,8 @@ class WuBook{
         $customer->province = substr($customer->zipCode, 0,2);
       } else {
         if ($customer->country == 'es' || $customer->country == 'ES'){
-          if (trim($rCustomer->city) != ''){
-            $obj = \App\Provinces::where('province','LIKE', '%'.trim($rCustomer->city).'%')->first();
+          if (trim($customer->city) != ''){
+            $obj = \App\Provinces::where('province','LIKE', '%'.trim($customer->city).'%')->first();
             if ($obj) {
               $customer->province = $obj->code;
             }

@@ -20,12 +20,13 @@ class WubookController extends AppController {
   public function index() {
     
     $WuBook = new WuBook();
-//    $WuBook->conect();
+    $WuBook->conect();
+//    $WuBook->get_pushURL();
 //    $WuBook->fetch_rooms();
 //    $rooms = $WuBook->getRoomsEquivalent(null);
 //    dd($rooms);
 //    $url = 'https://apartamentosierranevada.net/wubook-Webhook';
-//    $WuBook->pushURL($url, 1);
+//    $WuBook->pushURL($url);
 //    foreach ($rooms as $ch=>$lcode){
 //      $WuBook->pushURL($lcode, $url, 1);
 //      dd($lcode);
@@ -50,7 +51,7 @@ class WubookController extends AppController {
     
     /*************************************************/
     //all bookings
-//    $WuBook->fetch_bookings();
+    $WuBook->fetch_bookings();
     /*************************************************/
     // get booking
 //    $WuBook->fetch_booking();
