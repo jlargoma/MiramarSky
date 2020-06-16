@@ -241,6 +241,12 @@ $is_mobile = $mobile->isMobile();
                                 {{ $booksCount['reservadas'] }}
                             </span>
                     </button>
+                <button class="btn  btn-primary btn-green btn-tables btn-cons" type="button" data-type="confirmadas">
+                        <span class="bold">Confirmadas</span>
+                        <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
+                                {{ $booksCount['confirmed'] }}
+                            </span>
+                    </button>
                 <?php if ( $uRole != "agente" ): ?>
                 <button class="btn btn-primary  btn-orange btn-tables btn-cons" type="button" data-type="especiales">
                         <span class="bold">Especiales</span>
@@ -249,12 +255,6 @@ $is_mobile = $mobile->isMobile();
                             </span>
                     </button>
                 <?php endif ?>
-                <button class="btn  btn-primary btn-green btn-tables btn-cons" type="button" data-type="confirmadas">
-                        <span class="bold">Confirmadas</span>
-                        <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
-                                {{ $booksCount['confirmed'] }}
-                            </span>
-                    </button>
                 <?php if ( $uRole != "agente" ): ?>
                 <button class="btn btn-success btn-tables btn-cons" type="button" data-type="checkin">
                         <span class="bold">Check IN</span>
@@ -513,6 +513,12 @@ $is_mobile = $mobile->isMobile();
                                         {{ $booksCount['reservadas'] }}
                                     </span>
                             </button>
+                            <button class="btn  btn-primary btn-green btn-tables" type="button" data-type="confirmadas">
+                                <span class="bold">Conf</span>
+                                <span class="text-black" >
+                                       {{ $booksCount['confirmed'] }}
+                                   </span>
+                            </button>
                         <?php if ( $uRole != "agente" ): ?>
                             <button class="btn btn-primary  btn-orange btn-tables" type="button" data-type="especiales">
                                 <span class="bold">Esp</span>
@@ -521,12 +527,6 @@ $is_mobile = $mobile->isMobile();
                                     </span>
                             </button>
                         <?php endif ?>
-                            <button class="btn  btn-primary btn-green btn-tables" type="button" data-type="confirmadas">
-                                <span class="bold">Conf</span>
-                                <span class="text-black" >
-                                       {{ $booksCount['confirmed'] }}
-                                   </span>
-                            </button>
                         <?php if ( $uRole != "agente" ): ?>
                             <button class="btn btn-success btn-tables" type="button" data-type="checkin">
                                 <span class="bold">IN</span>

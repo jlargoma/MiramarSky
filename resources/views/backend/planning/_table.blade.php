@@ -15,6 +15,7 @@ $role = Auth::user()->role;
       if ($role != "agente"){
         $columnDefs = '0,1,2,3,4,8,9,10,11';
       }
+      $orden = '  "order": [[ 0, "desc" ]],';
       break;
     case 'especiales':
       ?> @include('backend.planning.listados._especiales', ['books' => $books ])<?php
