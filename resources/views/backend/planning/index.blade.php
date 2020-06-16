@@ -142,6 +142,18 @@ $is_mobile = $mobile->isMobile();
         div.dataTables_length {
           float: right !important;
         }
+        th.table-pendientes {
+            background-color: #2b5d9b;
+            color: #FFF !important;
+        }
+        th.table-reservadas{
+            background-color: #53ca56;
+            /*color: #FFF !important;*/
+        }
+        th.table-cancel-xml{
+            background-color: #f55753;
+            color: #FFF !important;
+        }
         @media only screen and (max-width: 991px){
           button.btn.changeStatus,
           button.btn.changeRoom {
@@ -162,7 +174,11 @@ $is_mobile = $mobile->isMobile();
             position: relative !important;
           }
           .btn-tabs{
-            min-width: 515px;
+            min-width: 815px;
+          }
+          .btn-tables, .btn-calMobile{ 
+            width: 85px;
+            padding: 10px 5px;
           }
           .dataTables_length{
             display: none;
@@ -175,6 +191,9 @@ $is_mobile = $mobile->isMobile();
           .title-year-selector{    
             margin-top: -14px;
             font-weight: 800;
+          }
+          .btn-tables .text-black{
+            background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;font-size: 10px
           }
         }
     </style>
@@ -215,6 +234,12 @@ $is_mobile = $mobile->isMobile();
                                 {{ $booksCount['pending'] }}
                             </span>
                         <?php endif ?>
+                    </button>
+              <button class="btn btn-success btn-tables btn-cons" type="button" data-type="reservadas" style="background-color: #53ca57;">
+                        <span class="bold">Reservadas</span>
+                        <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
+                                {{ $booksCount['reservadas'] }}
+                            </span>
                     </button>
                 <?php if ( $uRole != "agente" ): ?>
                 <button class="btn btn-primary  btn-orange btn-tables btn-cons" type="button" data-type="especiales">
@@ -259,7 +284,12 @@ $is_mobile = $mobile->isMobile();
                             </span>
                         <?php endif ?>
                     </button>
-
+                    <button class="btn btn-danger btn-tables btn-cons" type="button" data-type="cancel-xml">
+                        <span class="bold">Cancel-XML</span>
+                        <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
+                                {{ $booksCount['cancel-xml'] }}
+                            </span>
+                    </button>
                 </div>
                 <div class="col-xs-12" id="resultSearchBook" style="display: none; padding-left: 0;"></div>
                 <div class="col-xs-12 content-tables" style="padding-left: 0;">
@@ -476,31 +506,38 @@ $is_mobile = $mobile->isMobile();
                                 </span>
                             <?php endif ?>
                         </button>
+                      
+                      <button class="btn btn-success  btn-tables" type="button" data-type="reservadas" style="background-color: #53ca57;">
+                                <span class="bold">Reser</span>
+                                <span class="text-black" >
+                                        {{ $booksCount['reservadas'] }}
+                                    </span>
+                            </button>
                         <?php if ( $uRole != "agente" ): ?>
                             <button class="btn btn-primary  btn-orange btn-tables" type="button" data-type="especiales">
                                 <span class="bold">Esp</span>
-                                <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
+                                <span class="text-black" >
                                         {{ $booksCount['special'] }}
                                     </span>
                             </button>
                         <?php endif ?>
                             <button class="btn  btn-primary btn-green btn-tables" type="button" data-type="confirmadas">
                                 <span class="bold">Conf</span>
-                                <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
+                                <span class="text-black" >
                                        {{ $booksCount['confirmed'] }}
                                    </span>
                             </button>
                         <?php if ( $uRole != "agente" ): ?>
                             <button class="btn btn-success btn-tables" type="button" data-type="checkin">
                                 <span class="bold">IN</span>
-                                <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
+                                <span class="text-black" >
                                          {{ $booksCount['checkin'] }}
                                     </span>
                             </button>
 
                             <button class="btn btn-primary btn-tables" type="button" data-type="checkout">
                                 <span class="bold">OUT</span>
-                                <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
+                                <span class="text-black" >
                                           {{ $booksCount['checkout'] }}
                                     </span>
                             </button>
@@ -508,16 +545,22 @@ $is_mobile = $mobile->isMobile();
 
                             <button class="btn btn-primary  Blocked-ical btn-tables" type="button" data-type="blocked-ical">
                                 <span class="bold">ICal</span>
-                                <span class="text-black" style="background-color: white; font-weight: 800; border-radius: 100%; padding: 5px;font-size: 10px">
+                                <span class="text-black" >
                                         {{ $booksCount['blocked-ical'] }}
                                     </span>
                             </button>
 
                             <button class="btn btn-danger btn-tables" type="button" data-type="eliminadas">
-                                <span class="bold">Elimin...</span>
-                                <span class="text-black" style="background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;">
+                                <span class="bold">Elim</span>
+                                <span class="text-black" >
                                         {{ $booksCount['deletes'] }}
                                     </span>
+                            </button>
+                            <button class="btn btn-danger btn-tables" type="button" data-type="cancel-xml">
+                              <span class="bold">Cancel</span>
+                              <span class="text-black" >
+                                      {{ $booksCount['cancel-xml'] }}
+                                  </span>
                             </button>
                         <?php endif ?>
                     </div>

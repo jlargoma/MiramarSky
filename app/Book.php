@@ -63,6 +63,9 @@ class Book extends Model {
   public function notifications() {
     return $this->hasMany('\App\BookNotification', 'book_id', 'id');
   }
+  public function LogImages() {
+    return $this->hasMany('\App\LogImages', 'book_id', 'id');
+  }
 
   public function partee() {
     return $this->hasOne(BookPartee::class)->first();
@@ -257,6 +260,10 @@ class Book extends Model {
   
   static function get_type_book_reserved() {
     return [1,2,4,7,8,9,11];
+  }
+  
+  static function get_type_book_pending() {
+    return [3,4,5,6,10,11,99];
   }
   
   /**

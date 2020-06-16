@@ -8,23 +8,23 @@ $uRole = Auth::user()->role;
 <table class="table table-data table-striped" data-type="pendientes">
     <thead>
     <tr>
-        <th class="text-center Reservado-table text-white"> Cliente</th>
-        <th class="text-center Reservado-table text-white">
+        <th class="table-{{$type}}"> Cliente</th>
+        <th class="table-{{$type}}">
           @if($isMobile) <i class="fa fa-phone"></i> @else Telefono @endif
         </th>
-        <th class="text-center Reservado-table text-white" style="width: 7%!important"> Pax</th>
-        <th class="text-center Reservado-table text-white" style="width: 5%!important"></th>
-        <th class="text-center Reservado-table text-white" style="width: 10%!important"> Apart</th>
-        <th class="text-center Reservado-table text-white" style="width: 30px !important"> IN</th>
-        <th class="text-center Reservado-table text-white" style="width: 30px !important"> OUT</th>
-        <th class="text-center Reservado-table text-white" style="width: 6%!important"><i class="fa fa-moon-o"></i></th>
-        <th class="text-center Reservado-table text-white"> Precio</th>
+        <th class="table-{{$type}}" style="width: 7%!important"> Pax</th>
+        <th class="table-{{$type}}" style="width: 5%!important"></th>
+        <th class="table-{{$type}}" style="width: 10%!important"> Apart</th>
+        <th class="table-{{$type}}" style="width: 30px !important"> IN</th>
+        <th class="table-{{$type}}" style="width: 30px !important"> OUT</th>
+        <th class="table-{{$type}}" style="width: 6%!important"><i class="fa fa-moon-o"></i></th>
+        <th class="table-{{$type}}"> Precio</th>
         @if($uRole != "agente" )
-        <th class="text-center Reservado-table text-white" style="width: 12%!important"> Estado</th>
+        <th class="table-{{$type}}" style="width: 12%!important"> Estado</th>
         @endif
-        <th class="text-center Reservado-table text-white" style="max-width:30px !important;">&nbsp;</th>
+        <th class="table-{{$type}}" style="max-width:30px !important;">&nbsp;</th>
 		<?php if ($uRole != "agente" ): ?>
-        <th class="text-center Reservado-table text-white" style="width: 65px!important">Acciones</th>
+        <th class="table-{{$type}}" style="width: 65px!important">Acciones</th>
 		<?php endif ?>
     </tr>
     </thead>
