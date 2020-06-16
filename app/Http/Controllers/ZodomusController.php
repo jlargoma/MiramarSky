@@ -269,8 +269,8 @@ class ZodomusController extends Controller {
     if($price && $price<0){
       \App\ProcessedData::savePriceUPD_toWubook(date('Y-m-d',$startTime),date('Y-m-d',$endTime));
     } else {
-      /**
-       * @ToDo enviar Min. estancia a WuBook*/
+      if ($min_estancia)
+      \App\ProcessedData::saveMinDayUPD_toWubook(date('Y-m-d',$startTime),date('Y-m-d',$endTime));
     }
   
     
@@ -1074,7 +1074,12 @@ class ZodomusController extends Controller {
       }
     }
   }
-  \App\ProcessedData::savePriceUPD_toWubook($min_day,$max_day);
+  if ($type == 'price')
+    \App\ProcessedData::savePriceUPD_toWubook($min_day,$max_day);
+  if ($type == 'minDay')
+    \App\ProcessedData::saveMinDayUPD_toWubook($min_day,$max_day);
+  
+//  \App\ProcessedData::savePriceUPD_toWubook($min_day,$max_day);
   //END: imforma los precios cambiados para Wubook
   
   $weekDays = "sun|mon|tue|wed|thu|fri|sat";

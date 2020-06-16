@@ -45,7 +45,7 @@ class BookController extends AppController
         if (Auth::user()->role != "agente")
         {
           $rooms       = Rooms::orderBy('order')->get();
-          $types       = [1,3,4,5,6,10,11,98,99];
+          $types       = Book::get_type_book_pending();
           $booksQry = Book::where('start', '>=', $startYear)
                   ->where('start', '<=', $endYear);
                   
@@ -76,9 +76,13 @@ class BookController extends AppController
         $query2 = clone $booksQry;
         $booksCount['pending'] = $query2->where('type_book', 3)->count();
         $query2 = clone $booksQry;
+        $booksCount['reservadas'] = $query2->where('type_book',1)->count();
+        $query2 = clone $booksQry;
         $booksCount['special'] = $query2->whereIn('type_book', [7,8])->count();
         $query2 = clone $booksQry;
         $booksCount['confirmed']    = $query2->where('type_book', 2)->count();
+        $query2 = clone $booksQry;
+        $booksCount['cancel-xml']    = $query2->where('type_book', 98)->count();
         $query2 = clone $booksQry;
         $booksCount['blocked-ical'] = $query2->whereIn('type_book', [11,12])->where("enable", "=", "1")->count();
         $booksCount['deletes']      = Book::where('start', '>', $startYear)->where('finish', '<', $endYear)
@@ -1049,116 +1053,117 @@ class BookController extends AppController
         $year      = self::getActiveYear();
         $startYear = new Carbon($year->start_date);
         $endYear   = new Carbon($year->end_date);
-        $books = [];
+        $books     = [];
+        $uRole     = getUsrRole();
 
-        if (Auth::user()->role == "limpieza"){
+        if ($uRole == "limpieza"){
           if (!($request->type == 'checkin' || $request->type == 'checkout')){
             $request->type = 'checkin';
           }
         }
           
-        if (Auth::user()->role != "agente")
+        if ($uRole != "agente")
         {
             $roomsAgents = \App\Rooms::all(['id'])->toArray();
             $rooms       = \App\Rooms::orderBy('order')->get();
-            $types       = [1,3,4,5,6,10,11,98,99];
+            $types       = Book::get_type_book_pending();
+            $booksQuery = Book::where_book_times($startYear, $endYear)
+            ->with('room','payments','customer');
         } else
         {
             $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
-//            $rooms       = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
             $rooms       = \App\Rooms::whereIn('id', $roomsAgents)->orderBy('order')->get();
             $types       = [1];
+            $booksQuery = Book::where_book_times($startYear, $endYear);
         }
 
-        switch ($request->type)
-        {
-            case 'pendientes':
+        switch ($request->type) {
+          case 'pendientes':
+            if ($uRole != "agente") {
+              $types = Book::get_type_book_pending();
+              $books = $booksQuery->whereIn('type_book', $types)
+                              ->orderBy('created_at', 'DESC')->get();
+            } else {
+              $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
+              $books = $booksQuery->where('type_book', 1)
+                              ->where('user_id', Auth::user()->id)
+                              ->whereIn('room_id', $roomsAgents)
+                              ->orWhere('agency', Auth::user()->agent->agency_id)
+                              ->with('room', 'payments')
+                              ->orderBy('created_at', 'DESC')->get();
+            }
+            $bg_color = '#295d9b';
+            break;
+          case 'reservadas':
+            $books = $booksQuery->where('type_book', 1)
+                            ->orderBy('created_at', 'DESC')->get();
+            $bg_color = '#53ca57';
+            break;
+          case 'especiales':
+            $books = $booksQuery->whereIn('type_book', [7, 8])->orderBy('created_at', 'DESC')->get();
+            $bg_color = 'orange';
+            break;
+          case 'confirmadas':
 
+            if ($uRole != "agente") {
+              $books = $booksQuery->with('LogImages')->whereIn('type_book', [2])->orderBy('created_at', 'DESC')->get();
+            } else {
+              $books = $booksQuery->where('type_book', 2)->whereIn('room_id', $roomsAgents)
+                              ->where('user_id', Auth::user()->id)
+                              ->with('LogImages')
+                              ->orWhere('agency', Auth::user()->agent->agency_id)
+                              ->orderBy('created_at', 'DESC')->get();
+            }
+            break;
+          case 'ff_pdtes_2':
 
-                if (Auth::user()->role != "agente")
-                {
-                  //->where('finish', '<=', $endYear)
-                    $books = \App\Book::where_book_times($startYear,$endYear)
-                                      ->whereIn('type_book', $types)->whereIn('room_id', $roomsAgents)
-                                      ->orderBy('created_at', 'DESC')->get();
-//                    dd($books);
-                } else
-                {
-                    $books = \App\Book::where_book_times($startYear,$endYear)
-                                      ->whereIn('type_book', $types)->where('user_id', Auth::user()->id)
-                                      ->whereIn('room_id', $roomsAgents)
-                                      ->orWhere(function ($query) use ($roomsAgents, $types) {
-                                          $query->where('agency', Auth::user()->agent->agency_id)
-                                                ->whereIn('room_id', $roomsAgents)->whereIn('type_book', $types);
-                                      })->orderBy('created_at', 'DESC')->get();
-                }
-                break;
-            case 'especiales':
-              //->where('finish', '<=', $endYear)
-                $books = \App\Book::where_book_times($startYear,$endYear)
-                                  ->whereIn('type_book', [
-                                      7,
-                                      8
-                                  ])->orderBy('created_at', 'DESC')->get();
-                break;
-            case 'confirmadas':
+            $dateX = Carbon::now();
+            $books = \App\Book::where('ff_status', 4)->where('type_book', '>', 0)
+                            ->where('start', '>=', $dateX->copy()->subDays(3))
+                            ->with('room', 'payments', 'customer')
+                            ->orderBy('start', 'ASC')->get();
+    //                $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $year->end_date)
+    //                                  ->where('type_book', 2)->orderBy('start', 'ASC')->get();
 
-                if (Auth::user()->role != "agente")
-                {
-                    $books = \App\Book::where_book_times($startYear,$endYear)
-                                      ->whereIn('type_book', [2])->whereIn('room_id', $roomsAgents)
-                                      ->orderBy('created_at', 'DESC')->get();
-                } else
-                {
-                    $books = \App\Book::where_book_times($startYear,$endYear)
-                                      ->whereIn('type_book', [2])->whereIn('room_id', $roomsAgents)
-                                      ->where('user_id', Auth::user()->id)
-                                      ->orWhere(function ($query) use ($roomsAgents) {
-                                          $query->where('agency', Auth::user()->agent->agency_id)
-                                                ->whereIn('room_id', $roomsAgents)->whereIn('type_book', [2]);
-                                      })->orderBy('created_at', 'DESC')->get();
-                }
-                break;
-            case 'ff_pdtes_2':
-              
-                $dateX = Carbon::now();
-                $books = \App\Book::where('ff_status',4)->where('type_book','>',0)
-                        ->where('start', '>=', $dateX->copy()->subDays(3))
-                        ->orderBy('start', 'ASC')->get();
-//                $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $year->end_date)
-//                                  ->where('type_book', 2)->orderBy('start', 'ASC')->get();
-                
-                break;
-            case 'checkin':
-            case 'ff_pdtes':
-                $dateX = Carbon::now();
-                $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $year->end_date)
-                                  ->whereIn('type_book',[1,2])->orderBy('start', 'ASC')->get();
-                break;
-            case 'checkout':
-                $dateX = Carbon::now();
-                $books = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))->where('finish', '<', $year->end_date)
-                                  ->where('type_book', 2)->orderBy('finish', 'ASC')->get();
-                break;
-            case 'eliminadas':
-                $books = \App\Book::where_book_times($startYear,$endYear)
-                                  ->where('type_book', 0)->orderBy('updated_at', 'DESC')->get();
-                break;
-            case 'blocked-ical':
-                $books = \App\Book::where('start', '>=', $startYear->copy()->subDays(3))
-                                  ->where('finish', '<=', $endYear)->whereIn('type_book', [
-                        11,
-                        12
-                    ])->orderBy('updated_at', 'DESC')->get();
-                break;
-            case 'overbooking':
-                //BEGIN: Processed data
-               $bookOverbooking = null;
-               $overbooking = [];
-               $oData = \App\ProcessedData::where('key','overbooking')->first();
-               if ($oData) $overbooking = json_decode($oData->content,true);
-               $books = Book::whereIn('id',$overbooking)->orderBy('updated_at', 'DESC')->get();
-              break;
+            break;
+          case 'checkin':
+          case 'ff_pdtes':
+            $dateX = Carbon::now();
+            $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))
+                            ->where('start', '<=', $year->end_date)
+                            ->with('room', 'payments', 'customer')
+                            ->whereIn('type_book', [1, 2])->orderBy('start', 'ASC')->get();
+            break;
+          case 'checkout':
+            $dateX = Carbon::now();
+            $books = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))
+                            ->where('finish', '<', $year->end_date)
+                            ->with('room', 'payments', 'customer')
+                            ->where('type_book', 2)->orderBy('finish', 'ASC')->get();
+            break;
+          case 'eliminadas':
+            $books = \App\Book::where_book_times($startYear, $endYear)
+                            ->where('type_book', 0)->orderBy('updated_at', 'DESC')->get();
+            break;
+          case 'cancel-xml':
+            $books = \App\Book::where_book_times($startYear, $endYear)
+                            ->where('type_book', 98)->orderBy('updated_at', 'DESC')->get();
+            break;
+          case 'blocked-ical':
+            $books = \App\Book::where('start', '>=', $startYear->copy()->subDays(3))
+                            ->with('room', 'payments', 'customer')
+                            ->where('finish', '<=', $endYear)->whereIn('type_book', [11, 12])
+                            ->orderBy('updated_at', 'DESC')->get();
+            break;
+          case 'overbooking':
+            //BEGIN: Processed data
+            $bookOverbooking = null;
+            $overbooking = [];
+            $oData = \App\ProcessedData::where('key', 'overbooking')->first();
+            if ($oData)
+              $overbooking = json_decode($oData->content, true);
+            $books = Book::whereIn('id', $overbooking)->orderBy('updated_at', 'DESC')->get();
+            break;
         }
 
 
@@ -1167,12 +1172,14 @@ class BookController extends AppController
         if ($request->type == 'confirmadas' || $request->type == 'checkin' || $request->type == 'ff_pdtes')
         {
             $payment = array();
-            foreach ($books as $key => $book)
-            {
-                $payment[$book->id] = 0;
-                $payments           = \App\Payments::where('book_id', $book->id)->get();
-                if (count($payments) > 0) foreach ($payments as $key => $pay) $payment[$book->id] += $pay->import;
-
+            $paymentStatus = array();
+            foreach ($books as $book){
+              $amount = $book->payments->pluck('import')->sum();
+              $payment[$book->id] = $amount;
+              if ($amount>=$book->total_price) $paymentStatus[$book->id] = 'paid';
+               else {
+                 if ($amount>=($book->total_price/2)) $paymentStatus[$book->id] = 'medium-paid';
+               }
             }
             return view('backend/planning/_table', compact('books', 'rooms', 'type', 'mobile', 'payment'));
         } else
