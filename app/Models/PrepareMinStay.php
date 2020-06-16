@@ -32,10 +32,8 @@ class PrepareMinStay {
       $this->error = 'Las fecha de inicio debe se mayor a la de final.';
       return false;
     }
-    $start = '2020-12-07';
-    $end = '2020-12-17';
     $this->startDate = $start;
-    $this->endDate = $end;
+    $this->endDate = date('Y-m-d', strtotime($end . ' +1 day'));
     $aux = configZodomusAptos();
     $aptoOtas = [];
     $channels = [];

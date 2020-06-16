@@ -66,4 +66,26 @@ class ProcessedData extends Model{
     $obj->save();
   }
 
+  public static function saveMinDayUPD_toWubook($start,$finish)
+  {
+    $obj = self::where('key', 'sentUPD_wubook_minStay')->first();
+    if (!$obj) {
+      $obj = new self;
+      $obj->key = 'sentUPD_wubook_minStay';
+      $obj->name = 'DateRange to send minStay to wubook';
+    }
+
+    $content = json_decode($obj->content);
+    if (!$content) {
+      $content = (object) [
+                  'start' => $start,
+                  'finish' => $finish,
+      ];
+    } else {
+      if ($content->start > $start) $content->start = $start;
+      if ($content->finish < $finish) $content->finish = $finish;
+    }
+    $obj->content = json_encode($content);
+    $obj->save();
+  }
 }

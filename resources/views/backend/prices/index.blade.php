@@ -76,34 +76,33 @@
   <div class="row">
     <div class="col-md-12">
       <div class="row">
-        <div class="col-md-4 col-xs-12">
+        <div class="col-md-3 col-xs-12">
           <h3>Precios de Temporadas:</h3>
         </div>
-        <div class="col-xs-12 col-md-4">
+        <div class="col-xs-12 col-md-7">
           <button class="btn btn-md btn-primary active"  disabled>PRECIO BASE X TEMP</button>
           <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.cal')}}">UNITARIA</a>
           <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.site')}}">EDIFICIO</a>
+          @include('backend.zodomus.sendToWubook')
           
         </div>
-        <div class="col-md-4 row">
-          <div class="col-md-6">@include('backend.years._selector', ['minimal' => true])</div>
-          <div class="col-md-6">@include('backend.zodomus.sendToWubook')</div>
+        <div class="col-md-2 row">
+          @include('backend.years._selector', ['minimal' => true])
         </div>
       </div>
     </div>
   </div>
   @if (Auth::user()->email == "jlargo@mksport.es")
   <div class="col-md-12">
-    <form action="{{route('precios.prepare-cron')}}" method="post">
+    <form action="{{route('precios.prepare-cron')}}" method="post" class="inline">
       <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
-      <button class="btn btn-success" title="{{$sendDataInfo}}">Enviar precios a OTAs</button>
+      <button class="btn btn-success" title="{{$sendDataInfo}}">Sincr. precios OTAs</button>
     </form>
-  </div>
-  <div class="col-md-12">
-    <form action="{{route('precios.prepare-cron-minStay')}}" method="post">
+    <form action="{{route('precios.prepare-cron-minStay')}}" method="post" class="inline">
       <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
-      <button class="btn btn-success" title="{{$sendDataInfo_minStay}}">Enviar Estadías Mínimas a OTAs</button>
+      <button class="btn btn-success" title="{{$sendDataInfo_minStay}}">Sincr. Estadías Mínimas OTAs</button>
     </form>
+    <small>(Sincronizar toda la temporada)</small>
   </div>
   @endif
   

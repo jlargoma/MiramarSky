@@ -125,6 +125,54 @@ class WubookController extends AppController {
   }
   
   
+   /**
+   * 
+   * @param Request $request
+   * @return type
+   */
+  public function sendMinStayGroup(Request $request) {
+    
+    $sentUPD_wubook = \App\ProcessedData::findOrCreate('sentUPD_wubook_minStay');
+    $dates = json_decode($sentUPD_wubook->content);
+    if (!$dates){
+      return redirect()->back()->withErrors(['No hay registros que enviar']);
+    }
+    $start    = $dates->start;
+    $today    = date('Y-m-d');
+    $end      = $dates->finish;
+    
+    if ($today>$end) 
+      return redirect()->back()->withErrors(['No se pueden enviar registros anteriores a la fecha actual']);
+    
+    if ($start<$today) $start = $today;
+    
+    $oPrepareMinStay = new \App\Models\PrepareMinStay($start, $end);
+    $oPrepareMinStay->process_justWubook();
+    
+    $items = \App\ProcessedData::where('key','SendToWubook_minStay')->limit(5)->get();
+    if (count($items)>0){
+      $WuBook = new WuBook();
+      $WuBook->conect();
+      foreach ($items as $item){
+        $data = json_decode($item->content,true);
+        $response = $WuBook->set_Restrictions($data['start'],$data['min_stay']);
+
+        if ($response) { $item->delete();}
+        else {
+          $item->key = 'SendToWubook_minStay-error';
+          $item->save();
+        }
+      }
+      $WuBook->disconect();
+    }
+      
+    $sentUPD_wubook->content = null;
+    $sentUPD_wubook->save();
+   
+    return redirect()->back()->with(['success'=>'Estancias mímimas enviados a WuBook']);
+  }
+  
+  
   /**
    * Get the list of prices to send to Wubook
    * @param type $ch

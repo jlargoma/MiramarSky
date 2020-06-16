@@ -50,13 +50,10 @@
     <div class="col-xs-12 col-md-4">
       <h3>Listado de Precios:</h3>
     </div>
-    <div class="col-xs-12 col-md-4">
+    <div class="col-xs-12 col-md-8">
       <a class="text-white btn btn-md btn-primary" href="{{route('precios.base')}}">PRECIO BASE X TEMP</a>
       <button class="btn btn-md btn-primary active"  disabled>UNITARIA</button>
       <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.site')}}">EDIFICIO</a>
-    </div>
-    <div class="col-xs-12 col-md-2"></div>
-    <div class="col-xs-12 col-md-2">
       @include('backend.zodomus.sendToWubook')
     </div>
   </div>
