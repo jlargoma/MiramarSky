@@ -151,4 +151,12 @@ class Settings extends Model
       if ($luxuryCostSetting)  return $luxuryCostSetting->value;
       return 0;
     }
+    
+     static function getLenguaje($country){
+      $lngSP = ['AR','BO','CL','CO','CR','CU','EC','ES','SV','DO','GQ','GT','HN','MX','NI','PA','PE','PY','UY','VE'];
+      if (in_array($country, $lngSP)){
+        return 'es';
+      }
+      return 'en';
+    }
 }
