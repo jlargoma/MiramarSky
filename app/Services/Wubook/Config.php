@@ -34,6 +34,7 @@ class Config {
         1 => 4,
         2 => 1,
         3 => 1,
+        43 => 4,
     ];
 
     return isset($chanels[$id_chanel]) ? $chanels[$id_chanel] : -1;

@@ -464,7 +464,8 @@ class WuBook{
       $pax    = isset($data['rooms_occupancies']) ? $data['rooms_occupancies']['occupancy'] : 0;
       if ($pax <1)  $pax = $data['men'] + $data['children'];
       $amount = floatval($data['amount']);
-      $agency = 999999; //wubook
+//      $agency = 999999; //wubook
+      $agency = $this->WBConfig->getAgency(intval($data['id_channel'])); //wubook
 
       $book_comments = 'id Reserva - OTA: '.$data['channel_reservation_code'].'<br>'
             .'Moneda: '.$data['currency'].'|'
