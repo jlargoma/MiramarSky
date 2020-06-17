@@ -141,7 +141,9 @@ function getUserIpAddr(){
 }
 
 function translateSubject($text,$lng='es'){
-  if (!$lng || strtolower($lng) == 'es'){
+  $lng = App\Settings::getLenguaje(strtoupper($lng));
+  
+  if ($lng == 'es'){
     return $text;
   }
   

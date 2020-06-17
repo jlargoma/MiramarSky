@@ -7,7 +7,7 @@ use Closure;
 class ApiControl
 {
     private $tokens = [
-      1=>'zdWIiOiIxMnR5cCI6IkpZSI6IkpvaG4',
+      1=>'eyJzdWIiOiIxMjM0oxNTE2MjM5MDIyfQ',
     ];
     /**
      * Handle an incoming request.

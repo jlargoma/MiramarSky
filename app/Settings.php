@@ -64,6 +64,8 @@ class Settings extends Model
         *SMS Partee (subir dni para el control diario de huéspedes)
        */
       
+      $lng = self::getLenguaje(strtoupper($lng));
+      
       $lst = [
           'new_request_rva'                   =>'Solicitud RVA',
           'reservation_state_changed_reserv'  =>'Reservado RVA',
@@ -100,15 +102,14 @@ class Settings extends Model
     
     static function getContent($key,$lng='es') {
       
-      if ($lng && strtolower($lng) != 'es'){
-        
+      $lng = self::getLenguaje(strtoupper($lng));
+      $Object = null;
+      if ($lng == 'en'){
         $Object = Settings::where('key',$key.'_en')->first();
-        if (!$Object)
-          $Object = Settings::where('key',$key)->first();
-        
-      } else {
+      }
+
+      if (!$Object){
         $Object = Settings::where('key',$key)->first();
-        
       }
        
       
