@@ -473,6 +473,7 @@ class Zodomus{
     //save
     $book->save();
     
+    $book->sendAvailibility($roomID,$reserv['start'],$reserv['end']); 
     
     return $book->id;
   }
@@ -526,6 +527,7 @@ class Zodomus{
     //save
     $book->save();
             
+    $book->sendAvailibility($roomID,$reserv['start'],$reserv['end']); 
     return $book->id;
   }
   

@@ -517,6 +517,8 @@ class WuBook{
 
       $book->save();
       
+      $book->sendAvailibility($roomID,$start,$finish);
+      
       return $book->id;
       
      
