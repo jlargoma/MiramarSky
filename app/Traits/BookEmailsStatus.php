@@ -21,7 +21,7 @@ trait BookEmailsStatus
     {
       if ($book->customer->send_mails == false || !$book->customer->email || trim($book->customer->email) == '') return;
         $cachedRepository  = new CachedRepository();
-        $otaAgencies = [1,4];
+        $otaAgencies = [1];
         if ($status == 1){
           if (in_array($book->agency,$otaAgencies)){ 
             $keyMail = $this->getKeyTemplate('1.1');

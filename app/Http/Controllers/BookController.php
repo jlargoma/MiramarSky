@@ -85,6 +85,11 @@ class BookController extends AppController
         $booksCount['cancel-xml']    = $query2->where('type_book', 98)->count();
         $query2 = clone $booksQry;
         $booksCount['blocked-ical'] = $query2->whereIn('type_book', [11,12])->where("enable", "=", "1")->count();
+        $query2 = clone $booksQry;
+        $totalReserv = $query2->where('type_book', 1)->count();
+        $query2 = clone $booksQry;
+        $amountReserv = $query2->where('type_book', 1)->sum('total_price');
+        
         $booksCount['deletes']      = Book::where('start', '>', $startYear)->where('finish', '<', $endYear)
                                                ->where('type_book', 0)->where("enable", "=", "1")->count();
         
@@ -92,8 +97,6 @@ class BookController extends AppController
         $booksCount['checkout']     = $this->getCounters('checkout');
 
         $books = $booksQry->whereIn('type_book', $types)->orderBy('created_at', 'DESC')->get();
-        $totalReserv = $booksQry->where('type_book', 1)->count();
-        $amountReserv = $booksQry->where('type_book', 1)->sum('total_price');
         $stripe = null;
        
         $lastBooksPayment = \App\Payments::where('created_at', '>=', Carbon::today()->toDateString())

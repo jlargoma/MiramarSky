@@ -466,6 +466,10 @@ class WuBook{
       $amount = floatval($data['amount']);
 //      $agency = 999999; //wubook
       $agency = $this->WBConfig->getAgency(intval($data['id_channel'])); //wubook
+      
+      $PVPAgencia = 0;
+      if ($agency == 999999)  $PVPAgencia = $amount * 0.12;
+      
 
       $book_comments = 'id Reserva - OTA: '.$data['channel_reservation_code'].'<br>'
             .'Moneda: '.$data['currency'].'|'
@@ -484,7 +488,7 @@ class WuBook{
       $book->agency = $agency;
       $book->pax = $pax;
       $book->real_pax = $pax;
-      $book->PVPAgencia = 0.1;
+      $book->PVPAgencia = $PVPAgencia;
       $book->total_price = $data['amount'];
       $book->external_id = $data['reservation_code'];
       $book->propertyId = $data['rooms'];

@@ -149,7 +149,7 @@ div.dataTables_length {
 
 
 .table-icon-row i.fa.fa-coffee.col-xs-4 {
-    margin-top: 5px;
+  margin-top: 5px;
 }
 
 @media only screen and (max-width: 991px){
@@ -302,33 +302,237 @@ div.dataTables_length {
   background-color: #51e851 !important;
 }
 .table.table-striped tbody tr.Reservado td {
-    background-color: #c4ffc6 !important;
+  background-color: #c4ffc6 !important;
 }
 span.pay-icon {
-    font-weight: 600;
-    color: gray;
-    font-size: 1.5em;
+  font-weight: 600;
+  color: gray;
+  font-size: 1.5em;
 }
 span.pay-icon.medium-paid {
-    color: #00b500;
+  color: #00b500;
 }
 span.pay-icon.paid {
-    color: #005400;
+  color: #005400;
 }
 .fa-unlock{
   color: #2f8000;
   cursor: pointer;
 }
 i.fa.fa-lock.openSafetyBox {
-    color: #afafaf;
-    cursor: pointer;
+  color: #afafaf;
+  cursor: pointer;
 }
 .table#table_partee {
-    margin-bottom: 5em !important;
+  margin-bottom: 5em !important;
 }
 #table_partee .tooltiptext.comment{
-    top: -13px;
-    left: 0;
-    font-size: 13px;
-    width: 415px;
+  top: -13px;
+  left: 0;
+  font-size: 13px;
+  width: 415px;
+}
+
+#TT_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G{
+  margin: 10px auto;
+}
+.table-data .form-control{
+  width: 100%;
+}
+.sendFianza {
+  border: 3px solid;
+  border-radius: 50%;
+  padding: 3px;
+  width: 29px;
+  font-size: 18px;
+}
+.tooltiptext {
+  position: absolute;
+  font-size: 11px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.42);
+  padding: 2px 5px;
+  width: 10em;
+  border-radius: 7px;
+}
+.tooltiptext.FF_resume,
+.tooltiptext.BookComm{
+  color: inherit;
+  text-align: left;
+  z-index: 9;
+  width: 22em;
+  display: none;
+}
+.tooltiptext.FF_resume p,
+.tooltiptext.BookComm p{
+  color: #fff;
+}
+.showFF_resume:hover .tooltiptext.FF_resume,
+.showBookComm:hover .tooltiptext.BookComm{
+  display: block;
+}
+.tooltiptext.FF_resume .table tbody tr td{
+  padding: 8px !important;
+  font-size: 1.3em;
+  font-weight: 600;
+}
+.tooltiptext.FF_resume span.Pendiente {
+  color: red;
+}
+.showBookComm{
+  cursor: pointer;
+  padding: 6px;
+}
+.BookComm.tooltiptext {
+  color: #fff;
+  padding: 11px;
+  background-color: #333;
+  font-size: 1em;
+}
+
+.th-w125{
+  min-width: 125px;
+}
+
+
+select.status.form-control.minimal {
+  padding: 0;
+}
+.fix-col-data{
+  min-width: 150px;
+}
+.table.table-data tbody td{
+  text-align: center;
+}
+.td-b1{
+  padding: 10px 5px!important;
+  text-align: left !important;
+}
+.td-date{
+  width: 20%!important
+}
+.p-rel{
+  position: relative;
+}
+.getImagesCustomer.a{
+  border: none; background-color:transparent!important; color: lightgray; padding: 0;
+}
+.getImagesCustomer.b{
+  border: none; background-color: transparent!important; color:black; padding: 0;
+}
+
+button.btn.changeStatus,
+button.btn.changeRoom {
+  max-width: 80px;
+  min-width: 80px;
+  overflow: hidden;
+  padding-left: 2px;
+  border: solid 1px #292929;
+  background-color: transparent;
+  color: #000;
+}
+
+.btn.btnChangeRoom,
+.btn.btnChangeStatus {
+  display: block;
+  width: 70%;
+  margin: 1px auto;
+}
+.btn.btnChangeRoom.active,
+.btn.btnChangeStatus.active {
+  background-color: #a2a0a0;
+  color: #fff;
+}
+
+.update-book.r{
+  color: red;
+}
+#modalChangeBook .modal-dialog {
+  margin-top: 4em;
+}
+.minimal {
+  padding: 5px 7px !important;
+}
+.minimal span{
+  font-size: 12px;
+}
+
+div.dataTables_length {
+  float: right !important;
+}
+th.table-pendientes {
+  background-color: #2b5d9b;
+  color: #FFF !important;
+}
+th.table-reservadas{
+  background-color: #53ca56;
+  /*color: #FFF !important;*/
+}
+th.table-cancel-xml{
+  background-color: #f55753;
+  color: #FFF !important;
+}
+
+
+.btn-sites{
+  /*margin-top: 1em;*/
+  margin-bottom: -20px;
+} 
+.btn-tables .text-cont{
+  background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;
+}
+.btn-tabs{
+  overflow-x:auto;
+}
+.btn-tabs .lst-tabs-btn{
+  width: 150%;
+  margin-top: 10px;
+}
+.my-5px {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+@media only screen and (max-width: 991px){
+  button.btn.changeStatus,
+  button.btn.changeRoom {
+    max-width: 120px;
+    min-width: 120px;
+  }
+  select#schedule,
+  select#scheduleOut {
+    width: 3em !important;
+    height: 2em;
+  }
+
+  .fix-col-data{
+    width:120px;overflow-x: scroll;
+    white-space: nowrap;
+  }
+  .tooltip-2 {
+    position: relative !important;
+  }
+  .btn-tabs{
+    min-width: 815px;
+  }
+  .btn-tables, .btn-calMobile{ 
+    width: 85px;
+    padding: 10px 5px;
+  }
+  .dataTables_length{
+    display: none;
+  }
+
+  .cargar_calend.btn-large{
+    display: block;
+    margin: 6em auto;
+  }
+  .title-year-selector{    
+    margin-top: -14px;
+    font-weight: 800;
+  }
+  .btn-tables .text-black{
+    background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;font-size: 10px
+  }
 }
