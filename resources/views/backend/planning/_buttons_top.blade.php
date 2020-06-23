@@ -43,7 +43,7 @@
           <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">PARTEE</span>
           <span class="numPaymentLastBooks"><?php echo  $parteeToActive; ?></span>
         </button>
-        <button class="btn btn-success btn-tables" style="background-color: #96ef99; color: black;padding: 7px 18px;     width: auto !important;border: none;" type="button" data-type="pendientes">
+        <button class="btn btn-success btn-tables" style="background-color: #96ef99; color: black;padding: 7px 18px;     width: auto !important;border: none;" type="button" data-type="reservadas">
           <span >RVA({{$totalReserv}}) <?php echo number_format($amountReserv, 0, ',', '.')?>€</span>
         </button>
         @if(is_array($overbooking) && count($overbooking)>0)

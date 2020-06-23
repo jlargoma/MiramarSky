@@ -197,8 +197,6 @@ class prepareDefaultPrices {
                   "weekDays" => $weekDays,
                   "prices" =>  $v['prices'],
                   "closed" =>  0,
-                  "minimumStay" => 1,
-                  "minimumStayArrival" => 1,
                 ];
 
           $datas[] = [
