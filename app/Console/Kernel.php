@@ -60,5 +60,6 @@ class Kernel extends ConsoleKernel
          $schedule->command('sendFFAdmin:sendForfaits')->dailyAt('6:45')->timezone('Europe/Madrid');
          $schedule->command('wubook:sendAvaliables')->everyFiveMinutes();
          $schedule->command('wubook:getBookings')->everyMinute();
+         $schedule->command('OTAs:sendMinStaySeason')->everyFiveMinutes();
     }
 }

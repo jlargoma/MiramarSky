@@ -560,4 +560,40 @@ class WuBook{
         var_dump($aResponse);
     }
     
+    public function getCC_Data($rcode) {
+      
+      $pwd_used_to_store_ccs = env('WUBOOK_CC_KEY');
+      $param = [
+          $this->token,
+          $this->iCode,
+          $rcode,
+          $pwd_used_to_store_ccs
+        ];
+        $aResponse = $this->call('fetch_ccard',$param);
+        $aResponse = json_decode(json_encode($aResponse));
+//      $test = '{"struct":{"member":[{"name":"cc_type","value":{"int":"2"}},{"name":"cc_number","value":{"string":"5338210232212016"}},{"name":"cc_cvv","value":{"string":"198"}},{"name":"cc_code","value":{"string":{}}},{"name":"cc_owner","value":{"string":"mercedes heredia"}},{"name":"cc_expiring","value":{"string":"12\/2021"}}]}}';
+//      $aResponse = json_decode($test);
+      $registers = $aResponse->struct->member;
+      $cc = [];
+      foreach ($registers as $data){
+        foreach ($data->value as $v){
+          $cc[$data->name] = $v;
+        }
+      }
+      
+      $cvc = isset($cc['cc_cvv']) ? $cc['cc_cvv'] : null;
+      if(!$cvc){
+        $cvc = isset($cc['cc_code']) ? $cc['cc_code'] : '';
+      }
+      $fieldsCard = [
+          "name"=> isset($cc['cc_owner']) ? $cc['cc_owner'] : '',
+          "number"=>isset($cc['cc_number']) ? $cc['cc_number'] : '',
+          'date'=>isset($cc['cc_expiring']) ? $cc['cc_expiring'] : '',
+          "cvc"=>$cvc,
+          'type'=>isset($cc['cc_type']) ? $cc['cc_type'] : '',
+          ];
+      
+      return $fieldsCard;
+            
+    }
 }

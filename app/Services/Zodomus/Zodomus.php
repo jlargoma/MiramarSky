@@ -137,9 +137,9 @@ class Zodomus{
     public function activateChannels($apto) {
       
       $params = [
-        "channelId"=> 1,
+        "channelId"=> 2,
         "propertyId"=> $apto,
-        "priceModelId"=> 2
+        "priceModelId"=> 4
       ];
 //      $this->call('property-status','POST',$params);
       $this->call('property-activation','POST',$params);
@@ -149,7 +149,7 @@ class Zodomus{
     public function checkProperty($apto) {
 //      echo '"propertyId"=> "2798863"<br>';
       $params = [
-        "channelId"=> 1,
+        "channelId"=> 2,
         "propertyId"=> $apto,
       ];
       $this->call('property-check','POST',$params);
@@ -211,7 +211,7 @@ class Zodomus{
     
     public function getRates($apto) {
       $params = [
-        "channelId"=> 1,
+        "channelId"=> 2,
         "propertyId"=> $apto,
       ];
       $this->call('room-rates','GET',$params);
