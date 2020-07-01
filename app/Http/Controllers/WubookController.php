@@ -147,6 +147,7 @@ class WubookController extends AppController {
     if ($start<$today) $start = $today;
     
     $oPrepareMinStay = new \App\Models\PrepareMinStay($start, $end);
+    if(!empty($oPrepareMinStay->error)) die($oPrepareMinStay->error);
     $oPrepareMinStay->process_justWubook();
     
     $items = \App\ProcessedData::where('key','SendToWubook_minStay')->limit(5)->get();
