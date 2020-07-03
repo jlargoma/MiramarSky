@@ -382,7 +382,7 @@ class ZodomusController extends Controller {
     ///admin/channel-manager/config
 //    $condif = configZodomusAptos(); dd($condif); die;
     $confFile = \Illuminate\Support\Facades\File::get(storage_path('app/config/zodomus.php'));
-//  eval($confFile);
+  eval($confFile);
   }
   
   
@@ -469,76 +469,77 @@ class ZodomusController extends Controller {
    */
   function zodomusTest(){
     
-     return null;
+   
       $oZodomus =  new \App\Services\Zodomus\Zodomus();
-//      $apto = 2092950; 
+//      $apto = 55092492; 
+      $return = $oZodomus->sendRatesGroup(55092491,'248289373A',214347592,'CHLT',2);
+//      $return = $oZodomus->sendRatesGroup(55092492,"264338152A",228636461,'ESTG',2);
+//      $return = $oZodomus->checkProperty(55092491);
+     
+      if ($return){
+//        var_dump($return); die;
+        dd($return);
+      }
+//      $return = $oZodomus->getRates($apto);
+//        dd($return);
 //      $return = $Zodomus->sendRatesGroup($apto,10084311,209295006,'EstL',1);
       
-        $param = [
-                "channelId" =>  1,
-                "propertyId" => 1542253,
-                "reservationId" =>  3537637317,
-              ];
-    
-      $reservation = $oZodomus->getBooking($param);
-      dd($reservation);    
+//        $param = [
+//                "channelId" =>  1,
+//                "propertyId" => 1542253,
+//                "reservationId" =>  3537637317,
+//              ];
+//    
+//      $reservation = $oZodomus->getBooking($param);
+//      dd($reservation);    
       
-       $rooms = [
-        [ "roomId" => 209295006,
-        "roomName" => "ESTUDIOS LUJO",
-        "status" => 1,
-        "quantity" =>10,
-        "rates" => [10084311]
-        ],
-        ];
-      $roomToAt = [
-        "channelId" => 1,
-        "propertyId" => $apto,
-        "rooms" =>  $rooms
-      ];
-//      $return = $Zodomus->activateRoom($roomToAt);
-//      
+//       $rooms = [
+//        [ "roomId" => 214347592,
+//        "roomName" => "CHALET ADOSADO ZON MEDIA-BAJA'",
+//        "status" => 1,
+//        "quantity" =>10,
+//        "rates" => ['248289373A']
+//        ],
+//        ];
+//      $roomToAt = [
+//        "channelId" => 2,
+//        "propertyId" => $apto,
+//        "rooms" =>  $rooms
+//      ];
+//      $return = $oZodomus->activateRoom($roomToAt);
+//       dd($return);
       
-  dd($return);
+
       
       
-      $rooms = [];
-      $aptosLst = configZodomusAptos();
-      foreach ($aptosLst as $k=>$v){
-        foreach ($v->rooms as $j){
-          if($j->channel == 2){
-//            $rooms[] =  ["roomId" => $j->roomID,"roomName" => $j->name,"rates" => [$j->rateID],"quantity" => 10,"status" => 1];
-//          echo'['.$j->roomID.','.$j->rateID.','.$k.']<br>';
-          }
-          
-        }
-      }
-      die;
+//      $rooms = [];
+//      $aptosLst = configZodomusAptos();
+//      foreach ($aptosLst as $k=>$v){
+//        foreach ($v->rooms as $j){
+//          if($j->channel == 2){
+////            $rooms[] =  ["roomId" => $j->roomID,"roomName" => $j->name,"rates" => [$j->rateID],"quantity" => 10,"status" => 1];
+////          echo'['.$j->roomID.','.$j->rateID.','.$k.']<br>';
+//          }
+//          
+//        }
+//      }
+//      die;
       
       //sendRatesGroup($rateId,$roomID,$channel_group)
 //       $return = $Zodomus->activateRoom($roomToAt);
-//    $return = $Zodomus->checkProperty($apto);
-      
-      
-      $ratesRooms = [
-          [231940162,'286355412A','DDE'],
-          [231940164,'286355419A','DDL'],
-          [231940097,'286355357A','EstS'],
-          [231940160,'286355407A','EstL'],
-          [231940170,'286355432A','7J'],
-          [231940174,'286355437A','9F'],
-          [231940167,'286355427A','10I'],
-      ];
-      foreach ($ratesRooms as $r){
-        $return = $Zodomus->sendRatesGroup($apto,$r[1],$r[0],$r[2]);
-      }
+//    $return = $oZodomus->checkProperty($apto);
+     
+//      $ratesRooms = [
+//          [55092492,'264338152A','ESTG'],
+//          [55092491,'248289373A','CHLT'],
+//      ];
+//      foreach ($ratesRooms as $r){
+//        $return = $Zodomus->sendRatesGroup($apto,$r[1],$r[0],$r[2]);
+//      }
       
 //     $return = $Zodomus->getRates($apto);
 //    $return = $Zodomus->createTestReserv($apto);
-    if ($return){
-        var_dump($return); die;
-        dd($return);
-      }
+   
       
   }
   
