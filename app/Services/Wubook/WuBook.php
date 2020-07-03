@@ -52,7 +52,6 @@ class WuBook{
           env('WUBOOK_PSW'),
           env('WUBOOK_KEY')
           );
-//      dd($params);
       $aResponse = $this->call('acquire_token', $params);
       if ($aResponse){
         $this->token = strval($aResponse->string);
@@ -399,9 +398,17 @@ class WuBook{
     private function addBook($data)
     {
    
-      $alreadyExist = \App\Book::where('external_id',$data['reservation_code'])->first();
-      if ($alreadyExist) return null;
-      
+      /***********************************************************/
+      /** CANCEL THE BOOKING **/
+      if ($data['status'] == 5){
+        $alreadyExist = \App\Book::where('external_id',$data['reservation_code'])->first();
+        if ($alreadyExist){
+          $alreadyExist->type_book = 98;
+          $alreadyExist->save();
+        }
+        return null;
+      }
+      /***********************************************************/
       
       foreach ($data as $k=>$v){
         if ($k != 'rooms_occupancies')
@@ -418,15 +425,41 @@ class WuBook{
      
       $start  = convertDateToDB($data['date_arrival']);
       $finish = convertDateToDB($data['date_departure']);
+      $nights = calcNights($start, $finish);
+      $data['start_date'] = $start;
+      $data['end_date'] = $finish;
+      $data['nights'] = $nights;
       
-      $roomGroup = isset($this->channels[$data['rooms']]) ? $this->channels[$data['rooms']] : 'DDE';
+      
+      /** UPDATE THE BOOKING **/
+      $alreadyExist = \App\Book::where('external_id',$data['reservation_code'])->first();
+      if ($alreadyExist){
+        // Customer
+        $customer             = \App\Customers::find($alreadyExist->customer_id);
+        if ($customer && $customer->id == $alreadyExist->customer_id){
+          $customer->name       = $data['customer_name'].' '.$data['customer_surname'];
+          $customer->email      = $data['customer_mail'];
+          $customer->phone      = $data['customer_phone'];
+          $customer->address    = $data['customer_address'];
+          $customer->country    = $data['customer_country'];
+          $customer->city       = $data['customer_city'];
+          $customer->zipCode    = $data['customer_zip'];
+          $customer->comments   = $customer->comments.$data['customer_notes'];
+          $customer->save();
+        }
+        
+        $this->updBooking($alreadyExist, $data);
+        return null;
+      }
+      
+       /** CREATE THE BOOKING **/
+      $roomGroup = isset($this->channels[$data['rooms']]) ? $this->channels[$data['rooms']] : 'ROSASJ';
       $room = new \App\Rooms();
       $roomID = $room->calculateRoomToFastPayment($roomGroup, $start, $finish);
       if ($roomID<0){
         $roomID = 33;
       }
             
-      $nights = calcNights($start, $finish);
       $book = new \App\Book();
 
       // Customer
@@ -435,7 +468,6 @@ class WuBook{
       $customer->name       = $data['customer_name'].' '.$data['customer_surname'];
       $customer->email      = $data['customer_mail'];
       $customer->phone      = $data['customer_phone'];
-      $customer->comments   = $data['customer_surname'];
       $customer->address    = $data['customer_address'];
       $customer->country    = $data['customer_country'];
       $customer->city       = $data['customer_city'];
@@ -461,74 +493,68 @@ class WuBook{
       $customer->save();
     
       //Create Book
-      $pax    = isset($data['rooms_occupancies']) ? $data['rooms_occupancies']['occupancy'] : 0;
-      if ($pax <1)  $pax = $data['men'] + $data['children'];
-      $amount = floatval($data['amount']);
-//      $agency = 999999; //wubook
-      $agency = $this->WBConfig->getAgency(intval($data['id_channel'])); //wubook
-      
-      $PVPAgencia = 0;
-      if ($agency == 999999)  $PVPAgencia = $amount * 0.12;
-      
-
-      $book_comments = 'id Reserva - OTA: '.$data['channel_reservation_code'].'<br>'
-            .'Moneda: '.$data['currency'].'|'
-            .'Adultos: '.$data['men'].'|'
-            .'Niños: '.$data['children'];
-                
-      
       $book->user_id = 39;
       $book->customer_id = $customer->id;
       $book->room_id = $roomID;
-      $book->start = $start;
-      $book->finish = $finish;
-      $book->comment = $book_comments;
-      $book->type_book = 11;
-      $book->nigths = $nights;
-      $book->agency = $agency;
-      $book->pax = $pax;
-      $book->real_pax = $pax;
-      $book->PVPAgencia = $PVPAgencia;
-      $book->total_price = $data['amount'];
       $book->external_id = $data['reservation_code'];
       $book->propertyId = $data['rooms'];
+      $book->save();
+
+      $this->updBooking($book, $data);
+      return $book->id;
+      /************************************************************/
+    }
+    
+    private function updBooking($book, $data){
+      
+      $pax    = isset($data['rooms_occupancies']) ? $data['rooms_occupancies']['occupancy'] : 0;
+      if ($pax <1)  $pax = $data['men'] + $data['children'];
+      $book_comments = $book->comment .'id Reserva - OTA: '.$data['channel_reservation_code'].'<br>'
+            .'Moneda: '.$data['currency'].'|'
+            .'Adultos: '.$data['men'].'|'
+            .'Niños: '.$data['children'];
+      
+      $agency = $this->WBConfig->getAgency(intval($data['id_channel'])); //wubook
+      $amount = floatval($data['amount']);
+      $PVPAgencia = 0;
+      if ($agency == 999999)  $PVPAgencia = intval ($data['amount']) * 0.12;
+      $book->type_book = 11;
+      $book->nigths = $data['nights'];
+      $book->agency = $agency;
+      $book->PVPAgencia = $PVPAgencia;
+      $book->pax = $pax;
+      $book->real_pax = $pax;
+      $book->start = $data['start_date'];
+      $book->finish = $data['end_date'];
+      $book->comment = $book_comments;
+      $book->total_price = $data['amount'];
       $book->external_roomId = null;
       $book->priceOTA = $data['amount'];
 
       $book->save();
-
-
-       //costes
-      $room = \App\Rooms::find($roomID);
+      
+      //costes
+      $room = \App\Rooms::find($book->room_id);
       $costes = $room->priceLimpieza($room->sizeApto);
       $book->cost_limp = isset($costes['cost_limp']) ? $costes['cost_limp'] : 0;
-
-
       $book->cost_lujo = 0;
       if ($room->luxury == 1){
         $book->type_luxury = 1;
         $book->cost_lujo = \App\Settings::priceLujo();
       }
-
-
-      $book->cost_park = (\App\Settings::priceParking()*$nights) * $room->num_garage;
+      $book->cost_park = (\App\Settings::priceParking()*$data['nights']) * $room->num_garage;
       $book->type_park = 1;
 
       $book->cost_apto = $room->getCostRoom($book->start,$book->finish,$book->pax);
       $book->extraCost  = \App\Extras::find(4)->cost;
 
       $book->cost_total = $book->get_costeTotal();
-
       $book->save();
+
+      $book->sendAvailibility($book->room_id,$data['start_date'],$data['end_date']);
       
-      $book->sendAvailibility($roomID,$start,$finish);
-      
-      return $book->id;
-      
-     
     }
-    
-   
+     
     public function getRoomsEquivalent($channels) {
       $result = [];
       $lst = $this->WBConfig->roomsEquivalent();
@@ -569,11 +595,13 @@ class WuBook{
           $rcode,
           $pwd_used_to_store_ccs
         ];
-        $aResponse = $this->call('fetch_ccard',$param);
-        $aResponse = json_decode(json_encode($aResponse));
-//      $test = '{"struct":{"member":[{"name":"cc_type","value":{"int":"2"}},{"name":"cc_number","value":{"string":"5338210232212016"}},{"name":"cc_cvv","value":{"string":"198"}},{"name":"cc_code","value":{"string":{}}},{"name":"cc_owner","value":{"string":"mercedes heredia"}},{"name":"cc_expiring","value":{"string":"12\/2021"}}]}}';
-//      $aResponse = json_decode($test);
-      $registers = $aResponse->struct->member;
+      $aResponse = $this->call('fetch_ccard',$param);
+      $aResponse = json_decode(json_encode($aResponse));
+      //      $test = '{"struct":{"member":[{"name":"cc_type","value":{"int":"2"}},{"name":"cc_number","value":{"string":"5338210232212016"}},{"name":"cc_cvv","value":{"string":"198"}},{"name":"cc_code","value":{"string":{}}},{"name":"cc_owner","value":{"string":"mercedes heredia"}},{"name":"cc_expiring","value":{"string":"12\/2021"}}]}}';
+      //      $aResponse = json_decode($test);
+      @$registers = $aResponse->struct;
+      if (!$registers) return null;
+      $registers = $registers->member;
       $cc = [];
       foreach ($registers as $data){
         foreach ($data->value as $v){

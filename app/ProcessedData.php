@@ -53,6 +53,8 @@ class ProcessedData extends Model{
     }
 
     $content = json_decode($obj->content);
+    //fix incremente 1 day
+    $finish = date('Y-m-d', strtotime($finish) + (24*60*60));
     if (!$content) {
       $content = (object) [
                   'start' => $start,
