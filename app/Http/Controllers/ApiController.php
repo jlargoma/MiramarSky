@@ -48,10 +48,8 @@ class ApiController extends AppController
         $index = 0;
         foreach ($oItems as $item){
           $roomData = $this->getRoomsPvpAvail($date_start,$date_finish,$pax,$item->channel_group);
-          
+          if ($roomData['price']<1) continue;
           $roomPrice = $this->getPriceOrig($roomData['price']); //Booking price
-          
-          
           $minStay = $roomData['minStay'];
           
           $pvp_1 = $roomPrice - ($roomPrice*$this->discount_1);
@@ -93,7 +91,8 @@ class ApiController extends AppController
          $response[] = [
               'k'=> encriptID($parkPvpSetting->id),
               'n'=> 'Parking ('.$parkPvpSetting->value.'€ x noche)',
-              'p' => $parkPvpSetting->value*$nigths
+              'p' => $parkPvpSetting->value*$nigths,
+              'i'=> clearTitle('Parking'),
           ];
       }
       $parkPvpSetting = Settings::where('key', Settings::BREAKFAST_PVP_SETTING_CODE)->first();
@@ -101,7 +100,8 @@ class ApiController extends AppController
          $response[] = [
               'k'=> encriptID($parkPvpSetting->id),
               'n'=> 'Desayuno ('.$parkPvpSetting->value.'€ x pers. x día)',
-              'p' => $parkPvpSetting->value*$pax*$nigths
+              'p' => $parkPvpSetting->value*$pax*$nigths,
+              'i'=> clearTitle('Desayuno'),
           ];
       }
      
@@ -135,21 +135,38 @@ class ApiController extends AppController
     
     
     private function getRoomsPvpAvail($startDate,$endDate,$pax,$channel_group){
+      
       $book = new Book();
+      $return = [
+                'price'   => 0,
+                'minStay' => 0,
+                'availiable' => 0
+                ];
+      
       $oRooms = Rooms::where('channel_group',$channel_group)
               ->where('maxOcu','>=', $pax)->where('state',1)->get();
       if ($oRooms){
+        $availibility = $book->getAvailibilityBy_channel($channel_group, $startDate, $endDate);
+        $availiable = count($oRooms);
+        if (count($availibility)){
+          foreach ($availibility as $day=>$avail){
+            if ($avail<$availiable){
+              $availiable = $avail;
+            }
+          }
+        }
         foreach ($oRooms as $room){
           if ($book->availDate($startDate, $endDate, $room->id)){
             return [
                 'price'   => $room->getPvp($startDate,$endDate,$pax),
-                'minStay' => $room->getMin_estancia($startDate,$endDate)
+                'minStay' => $room->getMin_estancia($startDate,$endDate),
+                'availiable' => $availiable,
                 ];
              
           }
         }
       }
-      return null;
+      return $return;
     }
     
     private function getRoomsWithAvail($startDate,$endDate,$pax,$channel_group){
@@ -182,27 +199,16 @@ class ApiController extends AppController
       // c_name c_mail c_phone c_tyc 
       $usr = $request->input('usr',null);
       
-      if($usr['c_phone'] != '123-789') {
-        $response =  'No hay información disponible';
-      return response()->json(['success'=>false,'data'=>$response],401);
-      }
+//      if($usr['c_phone'] != '123-789') {
+//        $response =  'No hay información disponible';
+//      return response()->json(['success'=>false,'data'=>$response],401);
+//      }
         
         
       $pax = $request->input('pax',null);
       $date_start = $request->input('start',null);
       $date_finish = $request->input('end',null);
       
-      
-      /*  
-       * ["item"]=>
-              ["p"]=> price
-              ["t"]=> title
-              ["rt"]=> rate type
-              ["rt_text"]=> rate type text
-              ["ext"]=> extras [n=>name, k=>k_id,p=>price,v=>value(price),s=>selected(bool)]
-              ["code"]=>k_id RoomTYpe
-              ["pvp"]=> PVP 
-       */
       $selected = $request->input('item',null);
       $code = null;
       $comments = '';
@@ -216,12 +222,9 @@ class ApiController extends AppController
         $comments = trim($selected['rt_text']);
       }
       $roomTypeID = desencriptID($code);
-      
       $aborrar = [];
       
-      $roomType = \App\RoomsType::where('id',$roomTypeID)
-            ->where('status',1)                
-            ->first();
+      $roomType = \App\RoomsType::where('id',$roomTypeID)->first();
    
     
       /***************************/
@@ -247,8 +250,10 @@ class ApiController extends AppController
             'name'  => $usr['c_name'],
             'email' => $usr['c_mail'],
             'phone' => $usr['c_phone'],
+            'token' => isset($usr['token']) ? $usr['token'] : time(),
         ];
-        $response = $this->createBooking($date_start,$date_finish,$customer,$oRoom,$comments,$pax,$selected['ext'],$rate);
+        $extras = isset($selected['ext']) ? $selected['ext'] : [];
+        $response = $this->createBooking($date_start,$date_finish,$customer,$oRoom,$comments,$pax,$extras,$rate);
         if ($response){
           return response()->json(['data'=>$response],200);
         }
@@ -267,21 +272,46 @@ class ApiController extends AppController
      */
     private function createBooking($date_start,$date_finish,$cData,$room,$comments,$pax,$Extras,$rate)
     {
+      $alreadyExist = null;
+      if ($cData && isset($cData['token'])){ //check if is a upd
+        $token = $cData['token'];
+        $customer = \App\Customers::where('api_token',$token)->first();
+        if ($customer && $customer->api_token === $token){
+          $alreadyExist = $customer->id;
+        }
+      }
+      if (!$alreadyExist){
         //createacion del cliente
         $customer          = new \App\Customers();
         $customer->name    = $cData['name'];
         $customer->email   = $cData['email'];
         $customer->phone   = $cData['phone'];
+        
         $customer->user_id = 1;
         if (!$customer->save()) return FALSE;
-        
+      }
+
+      $customer->api_token= encriptID($customer->id).bin2hex(time());
+      $customer->save();
+      
+      if ($alreadyExist) {
+      //busco de la reserva
+        $book = \App\Book::where('customer_id', $customer->id)->first();
+        if (!$book || $book->customer_id != $customer->id) {
+          $book = new \App\Book();  //Creacion de la reserva
+        } else {
+          $this->removeOldExtras($book);
+        }
+      } else {
         //Creacion de la reserva
-        $book   = new \App\Book();
+        $book = new \App\Book();
+      }
+
         $book->room_id       = $room->id;
         $book->start         = $date_start;
         $book->finish        = $date_finish;
         $book->comment       = $comments;
-        $book->type_book     = 3;//99;
+        $book->type_book     = 99;
         $book->pax           = $pax;
         $book->real_pax      = $pax;
         $book->nigths        = calcNights($date_start, $date_finish);
@@ -340,7 +370,8 @@ class ApiController extends AppController
               }
             }
           }
-          $book->sendAvailibilityBy_dates($book->start, $book->finish);
+//          $book->sendAvailibilityBy_dates($book->start, $book->finish);
+          return 'http://miramarski.virtual/mantenimiento.html';
           //Prin box to payment
           $description = "COBRO RESERVA CLIENTE " . $book->customer->name;
           $urlPayland = 'url payland';
@@ -398,35 +429,30 @@ class ApiController extends AppController
 
     
     private function setExtras($aExtrs,$book){
-      $qty = 1;
-      if (count($aExtrs)>0){
-        $aExtrsID = [];
-        foreach ($aExtrs as $e){
-          if ($e['s'] == "true") $aExtrsID[] = desencriptID($e['k']);
-        }
-        $extras = \App\ExtraPrices::getDynamicToFront();
-        $bookingExtras = [];
-        if ($extras){
-          foreach ($extras as $oExtra){
-            if (in_array($oExtra->id, $aExtrsID)){
-              $oBookExtra = new \App\BookExtraPrices();
-              $oBookExtra->book_id = $book->id;
-              $oBookExtra->extra_id = $oExtra->id;
-              $oBookExtra->qty = $qty;
-              $oBookExtra->price = $oExtra->price;
-              $oBookExtra->cost = $oExtra->cost*$qty;
-              $oBookExtra->status = 1;
-              $oBookExtra->vdor = null;
-              $oBookExtra->type = $oExtra->type;
-              $oBookExtra->fixed = 0;
-              $oBookExtra->deleted = 0;
-              $oBookExtra->save();
-            }
-          }
-        }
+          
+
+      $parkPvpSetting = Settings::where('key', Settings::PARK_PVP_SETTING_CODE)->first();
+      if($parkPvpSetting){
+         $response[] = [
+              'k'=> encriptID($parkPvpSetting->id),
+              'n'=> 'Parking ('.$parkPvpSetting->value.'€ x noche)',
+              'p' => $parkPvpSetting->value*$nigths,
+              'i'=> clearTitle('Parking'),
+          ];
+      }
+      $parkPvpSetting = Settings::where('key', Settings::BREAKFAST_PVP_SETTING_CODE)->first();
+      if($parkPvpSetting){
+         $response[] = [
+              'k'=> encriptID($parkPvpSetting->id),
+              'n'=> 'Desayuno ('.$parkPvpSetting->value.'€ x pers. x día)',
+              'p' => $parkPvpSetting->value*$pax*$nigths,
+              'i'=> clearTitle('Desayuno'),
+          ];
       }
       
+      
     }
+    
     
     
     private function getPriceOrig($pvp) {

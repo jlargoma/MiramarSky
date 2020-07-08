@@ -488,7 +488,7 @@ div#box_msg_lst {
     padding: 1em 3px;
   }
 }
-.Reservado, .table.table-striped tbody tr.Reservado td {
+.table.table-striped tbody tr.Reservado td {
   background-color: #FFF !important;
 }
 .contestado-email {
