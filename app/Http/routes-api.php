@@ -17,7 +17,7 @@ Route::group(['prefix' => 'api'], function () {
 Route::group(['middleware' => 'apiControl','prefix' => 'api'], function () {
   Route::get('get-items-suggest','ApiController@getItemsSuggest');
   Route::post('get-items-suggest','ApiController@getItemsSuggest');
-  Route::get('finish-booking-external','ApiController@finishBooking');
+  Route::post('finish-booking-external','ApiController@finishBooking');
   Route::get('extas-opcions','ApiController@getExtasOpcion');
   Route::get('finish_booking','ApiController@finishBooking');
   Route::get('booking/detail/{apto}', 'ApiController@getDetail');

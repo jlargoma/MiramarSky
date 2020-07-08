@@ -645,7 +645,15 @@ class ZodomusController extends Controller {
       if ($reservationStatus == 1 || $reservationStatus == 2){
         $this->importAnReserv($channelId,$propertyId,$reservationId);
       }else {
-        echo $reservationStatus.' error';
+        //Cancelada 
+        $alreadyExist = \App\Book::where('external_id', $reservationId)->first();
+        if ($alreadyExist) {
+          $response = $alreadyExist->changeBook(98, "", $alreadyExist);
+          if ($response['status'] == 'success' || $response['status'] == 'warning') {
+            //Ya esta disponible
+            $alreadyExist->sendAvailibilityBy_status();
+          }
+        }
       }
         
     } else {
@@ -678,7 +686,7 @@ class ZodomusController extends Controller {
               $alreadyExist = \App\Book::where('external_id', $reservationId)->get();
               if ($alreadyExist) {
                 foreach ($alreadyExist as $item){
-                  $response = $item->changeBook(3, "", $item);
+                  $response = $item->changeBook(98, "", $item);
                   echo $item->id.' cancelado - ';
                   if ($response['status'] == 'success' || $response['status'] == 'warning') {
                     //Ya esta disponible

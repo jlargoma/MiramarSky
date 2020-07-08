@@ -562,18 +562,15 @@ class Zodomus{
 //      $channel_group = 'ROSASJ';
   
       $priceDay = $minDay = [];
-      $startTime = time();
-      $finsh =  strtotime('2021-07-01');
-      $day = 24*60*60;
-      while ($startTime<$finsh){
-        $priceDay[date('Y-m-d',$startTime)] = 999;
-        $startTime += $day;
-      }
+      $startDate = '2020-12-01';
+      $endDate = '2021-07-01';
+      $oRoom = \App\Rooms::where('channel_group',$channel_group)->first();
+      $defaults = $oRoom->defaultCostPrice( $startDate, $endDate,$oRoom->minOcu);
+      $priceDay = $defaults['priceDay'];
       $oPrice = \App\DailyPrices::where('channel_group',$channel_group)
-                ->where('date','>=',date('Y-m-d'))
-                ->where('date','<=',date('Y-m-d',$finsh))
+                ->where('date','>=',$startDate)
+                ->where('date','<=',$endDate)
                 ->get();
-    
     
       foreach ($oPrice as $p){
         if (isset($priceDay[$p->date])){
@@ -581,7 +578,7 @@ class Zodomus{
         }
       }
      
-      $d1 = date('Y-m-d');
+      $d1 = $startDate;
       $d2 = null;
       $to_send = [];
       $precio = null;
@@ -623,7 +620,6 @@ class Zodomus{
       "thu"=>true,
       "fri"=>true,
       "sat"=>true];
-        
         
       foreach ($to_send as $v){
         if ($v['prices']['price'] == 999) continue;

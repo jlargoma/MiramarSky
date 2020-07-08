@@ -42,6 +42,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/static-token',
         '/zodomus-Webhook',
         '/wubook-Webhook',
-        '/admin/paymentspro/seeLiquidationProp'
+        '/admin/paymentspro/seeLiquidationProp',
+        '/api/*'
     ];
 }
