@@ -21,6 +21,7 @@ Route::group(['middleware' => 'apiControl','prefix' => 'api'], function () {
   Route::get('extas-opcions','ApiController@getExtasOpcion');
   Route::get('finish_booking','ApiController@finishBooking');
   Route::get('booking/detail/{apto}', 'ApiController@getDetail');
+  Route::post('change-customer-booking-external','ApiController@changeCustomer');
   Route::get('booking/', 'ApiController@index');
 });
 ?>
