@@ -1,4 +1,4 @@
-@if (Auth::user()->email == "jlargo@mksport.es")
+@if (false)
 <div class="inline-block">
   @if( !(\App\ProcessedData::emptyContent('sentUPD_wubook')) )
   <form action="{{route('Wubook.sendPrices')}}" method="POST" class="inline-block">

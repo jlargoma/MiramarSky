@@ -55,6 +55,7 @@ class ProcessData extends Command
     {
        $this->check_overbooking();
        $this->check_customPricesWubook();
+       $this->check_customMinStayWubook();
     }
     
     private function check_overbooking(){
@@ -127,4 +128,34 @@ class ProcessData extends Command
       }
       
     }
+     /**
+   * 
+   * @param Request $request
+   * @return type
+   */
+  public function check_customMinStayWubook() {
+    
+    $sentUPD_wubook = \App\ProcessedData::findOrCreate('sentUPD_wubook_minStay');
+    $dates = json_decode($sentUPD_wubook->content);
+    if (!$dates){//No hay registros que enviar
+      return null;
+    }
+    $start    = $dates->start;
+    $today    = date('Y-m-d');
+    $end      = $dates->finish;
+    
+    //No se pueden enviar registros anteriores a la fecha actual
+    if ($today>$end){
+      $sentUPD_wubook->content = null;
+      $sentUPD_wubook->save();
+      return null;
+    }
+    
+    if ($start<$today) $start = $today;
+    
+    $oPrepareMinStay = new \App\Models\PrepareMinStay($start, $end);
+    $oPrepareMinStay->process_justWubook();
+    $sentUPD_wubook->content = null;
+    $sentUPD_wubook->save();
+  }
 }

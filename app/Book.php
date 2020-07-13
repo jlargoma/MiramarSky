@@ -894,9 +894,18 @@ class Book extends Model {
   
   public function getLastPayment() {
     $lastPayment = 0;
-    if (count($this->payments) > 0) {
-      foreach ($this->payments as $index => $payment) {
-        $lastPayment = $payment->import;
+    if (!$this->payments){
+      $payments = \App\Payments::where('book_id', $this->id)->get();
+      if ($payments){
+        foreach ($payments as $payment){
+          $lastPayment += $payment->import;
+        }
+      }
+    } else {
+      if (count($this->payments) > 0) {
+        foreach ($this->payments as $index => $payment) {
+          $lastPayment = $payment->import;
+        }
       }
     }
 

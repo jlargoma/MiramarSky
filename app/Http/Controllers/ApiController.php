@@ -14,6 +14,7 @@ class ApiController extends AppController
 {
   private $discount_1 = 0.15;
   private $discount_2 = 0.1;
+  private $customerToken = null;
   
   public function __construct(){}
   
@@ -255,11 +256,11 @@ class ApiController extends AppController
         $extras = isset($selected['ext']) ? $selected['ext'] : [];
         $response = $this->createBooking($date_start,$date_finish,$customer,$oRoom,$comments,$pax,$extras,$rate);
         if ($response){
-          return response()->json(['data'=>$response],200);
+          return response()->json(['data'=>$response,'c_token'=>$this->customerToken],200);
         }
       }
       $response =  'No hay información disponible';
-      return response()->json(['data'=>$response],401);
+      return response()->json(['data'=>$response,'c_token'=>$this->customerToken],401);
      
     }
     
@@ -272,6 +273,7 @@ class ApiController extends AppController
      */
     private function createBooking($date_start,$date_finish,$cData,$room,$comments,$pax,$Extras,$rate)
     {
+//      return 'https://www.apartamentosierranevada.net/mantenimiento.html';
       $alreadyExist = null;
       if ($cData && isset($cData['token'])){ //check if is a upd
         $token = $cData['token'];
@@ -325,27 +327,33 @@ class ApiController extends AppController
         $this->setExtras($Extras,$book);
            
         
-        $totales = $book->getPriceBook($date_start,$date_finish,$room->id);
+        /*************************************************************************************************/
+//            if ($request->input('priceDiscount') == "yes" || $request->input('price-discount') == "yes") {
+//              $discount = Settings::getKeyValue('discount_books');
+//              $book->real_price -= $discount;
+//              $book->ff_status = 4;
+//              $book->has_ff_discount = 1;
+//              $book->ff_discount = $discount;
+//            }
+        /*************************************************************************************************/
         
+        $costes = $room->priceLimpieza($room->sizeApto);
+        $book->sup_limp  = $costes['price_limp'];
+        $book->cost_limp = $costes['cost_limp'];
         
-                  
-        $roomPrice = $this->getPriceOrig($totales['pvp']); //Booking price
+        $pvp = $room->getPVP($date_start, $date_finish,$book->pax);
+        $roomPrice = $this->getPriceOrig($pvp); //Booking price
         if ($rate == 1)  $pvp = $roomPrice - ($roomPrice*$this->discount_1);
         if ($rate == 2)  $pvp = $roomPrice - ($roomPrice*$this->discount_2);
           
-        $book->total_price = $pvp;
         
-        $book->cost_apto   = $totales['cost'];
-        $book->extraPrice  = $totales['extra_fixed'];
-        $book->extraCost   = $totales['cost_extra_fixed'];
-        $book->sup_limp    = $totales['limp'];
-        $book->cost_limp   = $totales['cost_limp'];
-        $book->cost_total  = $book->cost_total + $totales['cost_extra_dynamic'];
-        $book->real_price  = $pvp + $book->sup_limp + $book->extraPrice+$totales['extra_dynamic'];
-        $book->total_price += $totales['extra_dynamic'];
-        
+        $book->real_price  = $pvp + $book->sup_park + $book->sup_lujo + $book->sup_limp;
+        $book->cost_apto = $room->getCostRoom($date_start, $date_finish, $book->pax);
+        $book->cost_total = $book->get_costeTotal();
+        $book->total_price = $book->real_price;
+        $book->total_ben = $book->total_price - $book->cost_total;
+        $book->promociones = 0;
         $book->comment     = $comments .PHP_EOL." - precio publicado: $pvp";
-        
         if ($book->save()) {
           $amount = ($book->total_price / 2);
           $client_email = 'no_email';
@@ -370,8 +378,9 @@ class ApiController extends AppController
               }
             }
           }
+          $this->customerToken = $customer->api_token;
 //          $book->sendAvailibilityBy_dates($book->start, $book->finish);
-          return 'http://miramarski.virtual/mantenimiento.html';
+          return 'https://www.apartamentosierranevada.net/mantenimiento.html';
           //Prin box to payment
           $description = "COBRO RESERVA CLIENTE " . $book->customer->name;
           $urlPayland = 'url payland';
@@ -428,29 +437,46 @@ class ApiController extends AppController
     }
 
     
+    private function removeOldExtras($book){
+      $book->sup_park = 0;
+      $book->cost_park = 0;
+      $book->type_park = 0;
+      $book->type_luxury = 0;
+      $book->sup_lujo = 0;
+      $book->cost_lujo = 0;
+      $book->save();
+    }
+    
     private function setExtras($aExtrs,$book){
           
-
+      if (!$aExtrs || count($aExtrs)<1) return null;
+      $extID = [];
+      foreach ($aExtrs as $ext){
+        if ($ext['s'] === "true") $extID[] = desencriptID($ext['k']);
+      }
+      //parking  
       $parkPvpSetting = Settings::where('key', Settings::PARK_PVP_SETTING_CODE)->first();
       if($parkPvpSetting){
-         $response[] = [
-              'k'=> encriptID($parkPvpSetting->id),
-              'n'=> 'Parking ('.$parkPvpSetting->value.'€ x noche)',
-              'p' => $parkPvpSetting->value*$nigths,
-              'i'=> clearTitle('Parking'),
-          ];
+        if (in_array($parkPvpSetting->id, $extID)){
+          $cost = Settings::where('key', Settings::PARK_COST_SETTING_CODE)->first();
+          $book->sup_park  = $parkPvpSetting->value*$book->nigths;
+          $book->cost_park = $cost->value*$book->nigths;
+          $book->type_park = 1;
+          $book->save();
+        }
       }
+      
+      //suplemento de lujo
       $parkPvpSetting = Settings::where('key', Settings::BREAKFAST_PVP_SETTING_CODE)->first();
       if($parkPvpSetting){
-         $response[] = [
-              'k'=> encriptID($parkPvpSetting->id),
-              'n'=> 'Desayuno ('.$parkPvpSetting->value.'€ x pers. x día)',
-              'p' => $parkPvpSetting->value*$pax*$nigths,
-              'i'=> clearTitle('Desayuno'),
-          ];
+        if (in_array($parkPvpSetting->id, $extID)){
+          $cost = Settings::where('key', Settings::LUXURY_COST_SETTING_CODE)->first();
+          $book->type_luxury = 1;
+          $book->sup_lujo    = $parkPvpSetting->value*$book->pax*$book->nigths;
+          $book->cost_lujo   = $cost->value*$book->pax*$book->nigths;
+          $book->save();
+        }
       }
-      
-      
     }
     
     
@@ -458,5 +484,26 @@ class ApiController extends AppController
     private function getPriceOrig($pvp) {
       $zConfig = new \App\Services\Zodomus\Config();
       return $zConfig->priceByChannel($pvp,1); //Booking price
+    }
+    
+    public function changeCustomer(Request $request) {
+      // c_name c_mail c_phone c_tyc 
+      $cData = $request->input('usr',null);
+      if ($cData){
+        $token = $cData['token'];
+        $oCustomer = \App\Customers::where('api_token',$token)->first();
+        if ($oCustomer && $oCustomer->api_token === $token){
+          
+          if (isset($cData['c_name']))  $oCustomer->name    = $cData['c_name'];
+          if (isset($cData['c_mail'])) $oCustomer->email   = $cData['c_mail'];
+          if (isset($cData['c_phone'])) $oCustomer->phone   = $cData['c_phone'];
+          
+          $oCustomer->api_token= encriptID($oCustomer->id).bin2hex(time());
+          $oCustomer->save();
+          return response()->json(['success'=>true,'data'=>$oCustomer->api_token],200);
+        }
+      }
+        
+      return response()->json(['success'=>false,'data'=>'Acceso denegado'],401);
     }
 }

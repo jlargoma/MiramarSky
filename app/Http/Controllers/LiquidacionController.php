@@ -1809,4 +1809,9 @@ class LiquidacionController extends AppController {
     dd($data);
   }
   
+  
+  static function addBank($data){
+    return null;
+  }
+  
 }
