@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\WobookAvails;
 use App\Book;
 use App\Services\Wubook\WuBook;
+use App\Services\OtaGateway\OtaGateway;
 
 ///admin/Wubook/Availables?detail=1
 class WubookAvailables extends Command
@@ -60,6 +61,19 @@ class WubookAvailables extends Command
        //clear before dates
     WobookAvails::where('date','<',date('Y-m-d'))->delete();
     
+    
+    /**********************************/
+    $otaGateway = new \App\Services\OtaGateway\Config();
+    $otaGatewayRooms = [];
+    foreach ($otaGateway->getRooms() as $ch=>$d){
+      $otaGatewayRooms[$ch] = $d['roomID'];
+      
+    }
+    $ogAvail = [];
+    /*******************************************/
+    
+  
+    
     $list = WobookAvails::orderBy('id','desc')->get();
     $items = [];
     $delIDs = [];
@@ -73,6 +87,15 @@ class WubookAvailables extends Command
             'avail'=> $v->avail,
             'date'=> convertDateToShow($v->date,true)
             ];
+          /************   OTA GATEWAY  ***********************/
+          if (isset($otaGatewayRooms[$v->channel_group])){
+            $og_rID = $otaGatewayRooms[$v->channel_group];
+            if (!isset($ogAvail[$og_rID])) $ogAvail[$og_rID] = [];
+            $ogAvail[$og_rID][$v->date] = $v->avail;
+          }
+          /************   OTA GATEWAY  ***********************/
+          /*****************************************/
+          
         }
         if (!isset($delIDs[$v->channel_group])) $delIDs[$v->channel_group] = [];
         $delIDs[$v->channel_group][] = $v->id;
@@ -101,7 +124,22 @@ class WubookAvailables extends Command
         }
       }
     }
-//    dd($roomdays,$delDay);
+    
+    /************   OTA GATEWAY  ***********************/
+    $OtaGateway = new OtaGateway();
+    if (count($ogAvail)>0){
+      $OtaGateway->conect();
+      $result = $OtaGateway->sendAvailability(['availability'=>$ogAvail]);
+      $OtaGateway->disconect();
+      if ($OtaGateway->responseCode != 200){
+        var_dump($OtaGateway->response);
+      }
+    }
+    /************   OTA GATEWAY  ***********************/
+    /**************************************************/
+     
+     
+//    dd($ogAvail,$delDay);
     if (count($roomdays)>0){
       $WuBook->conect();
       if ($WuBook->set_Closes($roomdays)){

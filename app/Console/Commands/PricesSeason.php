@@ -8,6 +8,8 @@ use Log;
 use Illuminate\Support\Facades\DB;
 use App\Services\Wubook\WuBook;
 use App\Services\Zodomus\Zodomus;
+use App\Services\OtaGateway\OtaGateway;
+
 use App\ProcessedData;
 
 ///admin/Wubook/Availables?detail=1
@@ -55,6 +57,7 @@ class PricesSeason extends Command
     {
        $this->check_and_send_zodumos();
        $this->check_and_send_wubooks();
+       $this->check_and_send_OtaGateway();
     }
     
     private function check_and_send_zodumos(){
@@ -96,4 +99,24 @@ class PricesSeason extends Command
       }
     }
     
+    private function check_and_send_OtaGateway(){
+      $OtaGateway = new OtaGateway();
+
+      $items = ProcessedData::where('key','SendToOtaGateway')->limit(15)->get();
+
+      if (count($items)>0){
+        $OtaGateway->conect();
+        foreach ($items as $item){
+          $data = json_decode($item->content,true);
+          $prices = [$data['room']=>$data['prices']];
+          $response = $OtaGateway->setRates(["price"=>$prices]);
+          if ($response == 200) { $item->delete();}
+          else {
+            $item->key = 'SendToOtaGateway-error';
+            $item->save();
+          }
+        }
+        $OtaGateway->disconect();
+      }
+    }
 }

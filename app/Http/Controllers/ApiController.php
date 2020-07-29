@@ -500,6 +500,15 @@ class ApiController extends AppController
           
           $oCustomer->api_token= encriptID($oCustomer->id).bin2hex(time());
           $oCustomer->save();
+          if (isset($cData['c_observ'])){
+            $booking = Book::where('customer_id',$oCustomer->id)->first();
+            if ($booking){
+              $booking->comment   = $cData['c_observ'];
+              $booking->save();
+            }
+          }
+          
+            
           return response()->json(['success'=>true,'data'=>$oCustomer->api_token],200);
         }
       }
