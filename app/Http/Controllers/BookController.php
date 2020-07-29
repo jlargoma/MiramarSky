@@ -1229,7 +1229,7 @@ class BookController extends AppController
         $startYear     = new Carbon($year->start_date);
         $endYear       = new Carbon($year->end_date);
 
-        $type_book_not = [0,3,6,12,99];
+        $type_book_not = [0,3,6,12,98,99];
         $uRole = Auth::user()->role;
         $mobile = new Mobile();
         $isMobile = $mobile->isMobile();

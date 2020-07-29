@@ -331,6 +331,11 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   });
   
   
-  
+    
+  // OTA Gateway  
+  Route::get('/otaGate/test','OtaGate@test');
+
   
 });
+  Route::get('/connect_airbnb',function(){ var_dump($_REQUEST); die; });
+  Route::post('/connect_airbnb',function(){ var_dump($_REQUEST); die; });

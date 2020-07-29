@@ -36,6 +36,7 @@
 
     Route::post('zodomus-Webhook','ZodomusController@webHook');
     Route::post('wubook-Webhook', 'WubookController@webHook');
+    Route::post('Ota-Gateway-Webhook', 'OtaGate@webHook');
     
     Route::get('/partee-checkHuespedes', function () {
         $partee = new \App\Services\ParteeService();

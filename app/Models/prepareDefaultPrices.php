@@ -21,6 +21,7 @@ class prepareDefaultPrices {
   private $roomsPrices;
   private $specialSegment;
   private $zData;
+  private $ogData;
   private $wData;
   public $error;
 
@@ -45,13 +46,14 @@ class prepareDefaultPrices {
     $this->zData = $aptoOtas;
     $WuBook = new \App\Services\Wubook\WuBook();
     $this->wData  = $WuBook->getRoomsEquivalent($channels);
+    
+    $otaGateway = new \App\Services\OtaGateway\Config();
+    $this->ogData = $otaGateway->getRooms();
   }
 
   public function process() {
-    
-//    $this->getSpecialSegments();
-    //obtengo todos los aptos
-    if (true){
+    //obtengo todos los aptos - ZODOMUS / WUBOOK
+    if (false){
       foreach ($this->zData as $chGroup=>$v){
         $this->dailyPrices = [];
         $oRoom = \App\Rooms::where('channel_group',$chGroup)->first();
@@ -65,9 +67,28 @@ class prepareDefaultPrices {
       }
       $this->saveQueriesToSendWubook();
     }
+    
+    //obtengo todos los aptos - OTA-GATEWAY
+    if (true){
+      $this->process_OtaGateway();
+    }
+    
+    
   }
   
-   public function process_justWubook() {
+  public function process_OtaGateway() {
+    foreach ($this->ogData as $chGroup=>$v){
+      $this->dailyPrices = [];
+      $oRoom = \App\Rooms::where('channel_group',$chGroup)->first();
+
+      if ($oRoom){
+        $this->dailyPrice($oRoom);
+        $this->generateQueriesToSendOtaGateWay($chGroup);
+      } 
+    }
+  }
+  
+  public function process_justWubook() {
     
     //obtengo todos los aptos
       foreach ($this->wData as $chGroup=>$v){
@@ -247,5 +268,30 @@ class prepareDefaultPrices {
             ->where('name',$nameProcess)->delete();
     
     \App\ProcessedData::insert($datas);
+  }
+  
+    
+  /*******************************************/
+  
+  function generateQueriesToSendOtaGateWay($chGroup){
+    $d1 = $this->startDate;
+    $d2 = $this->endDate;
+    $to_send = [];
+    $precio = null;
+    if (!isset($this->ogData[$chGroup])) return null;
+    $aApto = $this->ogData[$chGroup];
+     
+    $nameProcess = $this->startDate.'_'.$this->endDate.'_'.$chGroup;
+    $key = 'SendToOtaGateway';
+
+    $data = [
+      'key'=>$key,
+      'name'=>$nameProcess,
+      'content'=> json_encode(['room'=>$aApto['roomID'],'prices'=>$this->dailyPrices])
+    ];
+    \App\ProcessedData::where('key',$key)
+            ->where('name',$nameProcess)->delete();
+    
+    \App\ProcessedData::insert($data);
   }
 }

@@ -20,6 +20,7 @@ class PrepareMinStay {
   private $dailyMinStay;
   private $zData;
   private $wData;
+  private $ogData;
   private $roomsMinStay;
   public $error;
 
@@ -45,13 +46,16 @@ class PrepareMinStay {
     $WuBook = new \App\Services\Wubook\WuBook();
     $this->wData  = $WuBook->getRoomsEquivalent($channels);
     $this->getSpecialSegments();
+    
+    $otaGateway = new \App\Services\OtaGateway\Config();
+    $this->ogData = $otaGateway->getRooms();
   }
 
   public function process() {
     
     
-    //obtengo todos los aptos
-    if (true){
+    //obtengo todos los aptos  - ZODOMUS / WUBOOK
+    if (false){
       foreach ($this->zData as $chGroup=>$v){
         $this->dailyMinStay = [];
         $oRoom = \App\Rooms::where('channel_group',$chGroup)->first();
@@ -64,9 +68,25 @@ class PrepareMinStay {
       }
       $this->saveQueriesToSendWubook();
     }
+    //obtengo todos los aptos - OTA-GATEWAY
+    if (true){
+      $this->process_OtaGateway();
+    }
   }
   
-   public function process_justWubook() {
+  public function process_OtaGateway() {
+    foreach ($this->ogData as $chGroup=>$v){
+      $this->dailyMinStay = [];
+      $oRoom = \App\Rooms::where('channel_group',$chGroup)->first();
+
+      if ($oRoom){
+        $this->dailyMinStay($oRoom);
+        $this->prepareQueriesToSendOtaGateWay($chGroup);
+      } 
+    }
+  }
+  
+  public function process_justWubook() {
     
     //obtengo todos los aptos
       foreach ($this->wData as $chGroup=>$v){
@@ -247,5 +267,38 @@ class PrepareMinStay {
             ->where('name',$nameProcess)->delete();
     
     \App\ProcessedData::insert($datas);
+  }
+  
+  /**************************************************************/
+  
+  function prepareQueriesToSendOtaGateWay($chGroup){
+    
+    $d1 = $this->startDate;
+    $d2 = $this->endDate;
+    $to_send = [];
+    $precio = null;
+    
+    if (!isset($this->ogData[$chGroup])) return null;
+    $aApto = $this->ogData[$chGroup];
+    
+    $MinStay = [];
+    foreach ($this->dailyMinStay as $day=>$v) {
+      $MinStay[$day] = ['min_stay'=>$v];
+    }
+    
+    $nameProcess = $this->startDate.'_'.$this->endDate.'_'.$chGroup;
+    $key = 'SendToOtaGateway_minStay';
+
+    $data = [
+      'key'=>$key,
+      'name'=>$nameProcess,
+      'content'=> json_encode(['room'=>$aApto['roomID'],'MinStay'=>$MinStay])
+    ];
+    \App\ProcessedData::where('key',$key)
+            ->where('name',$nameProcess)->delete();
+    
+    \App\ProcessedData::insert($data);
+    
+
   }
 }

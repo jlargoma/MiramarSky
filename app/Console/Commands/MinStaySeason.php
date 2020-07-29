@@ -8,6 +8,7 @@ use Log;
 use Illuminate\Support\Facades\DB;
 use App\Services\Wubook\WuBook;
 use App\Services\Zodomus\Zodomus;
+use App\Services\OtaGateway\OtaGateway;
 use App\ProcessedData;
 
 ///admin/Wubook/Availables?detail=1
@@ -55,6 +56,7 @@ class MinStaySeason extends Command
     {
        $this->check_and_send_zodumos();
        $this->check_and_send_wubooks();
+       $this->check_and_send_otaGateway();
     }
     
     private function check_and_send_zodumos(){
@@ -94,6 +96,27 @@ class MinStaySeason extends Command
           }
         }
         $WuBook->disconect();
+      }
+    }
+    private function check_and_send_otaGateway(){
+      $OtaGateway = new OtaGateway();
+
+      $items = ProcessedData::where('key','SendToOtaGateway_minStay')->limit(15)->get();
+
+      if (count($items)>0){
+        $OtaGateway->conect();
+        foreach ($items as $item){
+          $data = json_decode($item->content,true);
+          $response = $OtaGateway->setMinStay(['restrictions'=>[$data['room']=>$data['MinStay']]]);
+          
+          if ($response == 200) { $item->delete();}
+          else {
+            $item->key = 'SendToOtaGateway_minStay-error';
+            $item->save();
+          }
+          
+        }
+        $OtaGateway->disconect();
       }
     }
     

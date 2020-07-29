@@ -54,8 +54,10 @@ class ProcessData extends Command
     public function handle()
     {
        $this->check_overbooking();
-       $this->check_customPricesWubook();
-       $this->check_customMinStayWubook();
+//       $this->check_customPricesWubook();
+       $this->check_customPricesOtaGateway();
+//       $this->check_customMinStayWubook();
+       $this->check_customMinStayOtaGateway();
     }
     
     private function check_overbooking(){
@@ -128,6 +130,31 @@ class ProcessData extends Command
       }
       
     }
+    
+    function check_customPricesOtaGateway(){
+      
+      $sentUPD = \App\ProcessedData::findOrCreate('sentUPD_OtaGateway');
+      $dates = json_decode($sentUPD->content);
+      if ($dates){
+        
+        //increment  1 DAY
+        $finish = date('Y-m-d', strtotime('+1 day', strtotime($dates->finish)));
+        
+        $sendPrices = new \App\Models\prepareDefaultPrices($dates->start,$finish);
+        if ($sendPrices->error){
+          echo $sendPrices->error;
+          $sentUPD->content = null;
+          $sentUPD->save();
+          
+        }
+       
+        $sendPrices->process_OtaGateway();
+        $sentUPD->content = null;
+        $sentUPD->save();
+      }
+      
+    }
+    
      /**
    * 
    * @param Request $request
@@ -157,5 +184,40 @@ class ProcessData extends Command
     $oPrepareMinStay->process_justWubook();
     $sentUPD_wubook->content = null;
     $sentUPD_wubook->save();
+  }
+     /**
+   * 
+   * @param Request $request
+   * @return type
+   */
+  public function check_customMinStayOtaGateway() {
+    
+    $sentUPD = \App\ProcessedData::findOrCreate('sentUPD_OtaGateway_minStay');
+    $dates = json_decode($sentUPD->content);
+    if (!$dates){//No hay registros que enviar
+      return null;
+    }
+    $start    = $dates->start;
+    $today    = date('Y-m-d');
+    $end      = $dates->finish;
+    
+    //No se pueden enviar registros anteriores a la fecha actual
+    if ($today>$end){
+      $sentUPD->content = null;
+      $sentUPD->save();
+      return null;
+    }
+    
+    if ($start<$today) $start = $today;
+    
+    $oPrepareMinStay = new \App\Models\PrepareMinStay($start, $end);
+    if ($sendPrices->error){
+      echo $sendPrices->error;
+      $sentUPD->content = null;
+      $sentUPD->save();
+    }
+    $oPrepareMinStay->process_OtaGateway();
+    $sentUPD->content = null;
+    $sentUPD->save();
   }
 }
