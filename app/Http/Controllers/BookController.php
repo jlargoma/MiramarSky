@@ -794,7 +794,7 @@ class BookController extends AppController
 
     }
 
-    public function getCostPark($typePark, $nights)
+    public static function getCostPark($typePark, $nights)
     {
         $costParking     = 0;
         $parkCostSetting = Settings::where('key', Settings::PARK_COST_SETTING_CODE)->first();
@@ -847,7 +847,7 @@ class BookController extends AppController
      * @param $typeLuxury
      * @return float|int
      */
-    public function getCostLujo($typeLuxury)
+    public static function getCostLujo($typeLuxury)
     {
       //default, no or free
       if ($typeLuxury == 0 || $typeLuxury == 2 || $typeLuxury == 3) return 0;

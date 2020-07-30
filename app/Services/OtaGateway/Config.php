@@ -131,6 +131,17 @@ class Config {
     return round($comision, 2);
   }
 
+  public function getAgency($id_chanel) {
+    // airbnb => 4,
+    //booking => 1
+    $chanels = [
+        'airbnb' => 4,
+        'booking' => 1,
+        'google-hotel' => 999999,
+    ];
+
+    return isset($chanels[$id_chanel]) ? $chanels[$id_chanel] : -1;
+  }
   /////////////////////////////////////////////////////////////////////////////
 
 
@@ -147,47 +158,36 @@ class Config {
     
   function getRooms() {
     return [
-      'CHLT' => [
-        'name' => 'CHALET LOS PINOS',
-        'roomID'=> 47078 
-      ],
-      'DDE' => [
-        'name' => '2 Dor. Est',
-        'roomID'=> 47067 
-      ],
-      'ESTG' => [
-        'name' => 'EST.G',
-        'roomID'=> 47073 
-      ],
-      'DDL' => [
-        'name' => '2 Dor. Lujo',
-        'roomID'=> 47068 
-      ],
-      'EstS' => [
-        'name' => 'ESTUDIOS ESTÁNDAR',
-        'roomID'=> 47069 
-      ],
-      'EstL' => [
-        'name' => 'ESTUDIOS LUJO',
-        'roomID'=> 47070 
-      ],
-      '7J' => [
-        'name' => '7J',
-        'roomID'=> 47074 
-      ],
-      '9R' => [
-        'name' => '9R',
-        'roomID'=> 47075 
-      ],
-      '9F' => [
-        'name' => '9F',
-        'roomID'=> 47076 
-      ],
-      '10I' => [
-        'name' => '10I',
-        'roomID'=> 47077 
-      ]
+      'CHLT' => 47078,
+      'DDE'  => 47067,
+      'ESTG' => 47073,
+      'DDL'  => 47068,
+      'EstS' => 47069,
+      'EstL' => 47070,
+      '7J'   => 47074,
+      '9R'   => 47075,
+      '9F'   => 47076,
+      '10I'  => 47077
     ];
   }
 
+  function getRoomsName() {
+    return [
+      'CHLT' =>'CHALET LOS PINOS',
+      'DDE' => '2 Dor. Est',
+      'ESTG' => 'EST.G',
+      'DDL' => '2 Dor. Lujo',
+      'EstS' => 'ESTUDIOS ESTÁNDAR',
+      'EstL' => 'ESTUDIOS LUJO',
+      '7J' => '7J',
+      '9R' => '9R',
+      '9F' => '9F',
+      '10I' =>  '10I',
+    ];
+  }
+
+  function getChannelByRoom($roomtype_id){
+    $ch = array_search($roomtype_id, $this->getRooms());
+    return  $ch === FALSE ? 'ROOMDD' : $ch;
+  }
 }

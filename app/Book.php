@@ -378,10 +378,18 @@ class Book extends Model {
       'status'        => 'error',  
       'msg'           => 'error',  
       'pvp'           => 0,  
+      'cost_apto'     => 0,  
       'parking'       => 0,
       'price_lux'     => 0,
       'price_limp'    => 0,
-      'price_total'    => 0,
+      'price_extr'    => 0,
+      'cost_parking'  => 0,
+      'cost_limp'     => 0,
+      'cost_lux'      => 0,
+      'cost_extr'     => 0,
+      'price_total'   => 0,
+      'cost_total'    => 0,
+        
     ];
     if (!$oRoom){
       $return['msg'] = "Apto no encontrado";
@@ -401,13 +409,20 @@ class Book extends Model {
     if ($price > 0){
       $return['pvp'] = $price;
       $costes = $oRoom->priceLimpieza($oRoom->sizeApto);
-      $return['price_limp'] = $costes['price_limp'];
+      $return['price_limp']= $costes['price_limp'];
+      $return['cost_limp'] = $costes['cost_limp'];
+      $return['cost_apto'] = $oRoom->getCostRoom($dStart,$dEnd,$pax);
 
       $return['parking'] = Http\Controllers\BookController::getPricePark($this->type_park,$this->nigths) * $oRoom->num_garage;
+      $return['cost_parking'] = Http\Controllers\BookController::getCostPark($this->type_park,$this->nigths) * $oRoom->num_garage;
       $return['price_lux'] = Http\Controllers\BookController::getPriceLujo($this->type_luxury);
-
-      $return['price_total'] =  $return['pvp']+ $return['parking']+ $return['price_lux']+ $return['price_limp'];
-//          $total   = $price + $priceParking + $limp + $luxury;
+      $return['cost_lux'] = Http\Controllers\BookController::getCostLujo($this->type_luxury);
+      
+      $extraPrice = \App\Extras::find(4);
+      $return['price_extr'] = floatval($extraPrice->price);
+      $return['cost_extr']  = floatval($extraPrice->cost);
+      
+      $return['price_total'] =  $return['pvp']+ $return['parking']+ $return['price_lux']+ $return['price_limp']+ $return['price_extr'];
 
     }
    
