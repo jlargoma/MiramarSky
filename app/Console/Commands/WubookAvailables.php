@@ -64,11 +64,7 @@ class WubookAvailables extends Command
     
     /**********************************/
     $otaGateway = new \App\Services\OtaGateway\Config();
-    $otaGatewayRooms = [];
-    foreach ($otaGateway->getRooms() as $ch=>$d){
-      $otaGatewayRooms[$ch] = $d['roomID'];
-      
-    }
+    $otaGatewayRooms = $otaGateway->getRooms();
     $ogAvail = [];
     /*******************************************/
     

@@ -72,6 +72,13 @@ class OtaGate extends Controller {
     $this->sendAvail();
   }
   
+  function getBooking(){
+
+  $param = ['D953V_280720','NUDDS_280720','VUPSA_280720'];
+  $this->loadBooking($param);
+  $cg='DDE';
+ 
+  }
   function sendAvail(){
     
      //Prepara la disponibilidad por día de la reserva
@@ -244,25 +251,60 @@ class OtaGate extends Controller {
    */
   public function webHook(Request $request) {
     
-    $rcode = $request->input('rcode');
-    $lcode = $request->input('lcode');
-    
-         
-    //save the params to response quikly the HTTP 200
-    $oData = \App\ProcessedData::findOrCreate('wubook_webhook');
-    $content = json_decode($oData->content,true);
-    if (!$content || !is_array($content)) $content = [];
-      
-    $content[] = [
-          'date' =>time(),
-          'rcode'=>$rcode,
-          'lcode'=>$lcode,
-      ];
-    
-    $oData->content = json_encode($content);
-    $oData->save();
-    
+    $params = $request->all();
+    //save a copy
+    $json = json_encode($params);
+    $dir = storage_path().'/OtaWateway';
+    if (!file_exists($dir)) {
+        mkdir($dir, 0775, true);
+    }
+    file_put_contents($dir."/".time(),$json);
+   
+    if (isset($params['data']))
+    {
+      if (isset($params['data']['booking_numbers'])){
+         $this->sOta->conect();
+         $this->loadBooking($params['data']['booking_numbers']);
+         $this->sOta->disconect();
+      }
+    }
     return response('',200);
   }
   
+  private function loadBooking($booking_numbers) {
+
+    $response = $this->sOta->getBooking($booking_numbers);
+    $oBookings = null;
+    if ( isset($response->booking) )  $oBookings = $response->booking;
+    if ( isset($response->bookings) )  $oBookings = $response->bookings;
+    if (!$oBookings)   return null;
+    
+    $oConfig = new oConfig();
+    foreach ($oBookings as $oBooking){
+      $channel_group = $oConfig->getChannelByRoom($oBooking->roomtype_id);
+      $reserv = [
+                'channel' => $oBooking->ota_id,
+                'bkg_number' => $oBooking->number,
+                'rate_id' => $oBooking->plan_id,
+                'external_roomId' => $oBooking->roomtype_id,
+                'reser_id' => $oBooking->ota_booking_id,
+                'comision'=>0,
+                'channel_group' => $channel_group,
+                'status' => $oBooking->status_id,
+                'agency' => $oConfig->getAgency($oBooking->ota_id),
+                'customer_name' => $oBooking->name.' '.$oBooking->surname,
+                'customer_email' => $oBooking->email,
+                'customer_phone' => $oBooking->phone,
+                'customer_comment' => $oBooking->comment,
+                'totalPrice' => $oBooking->amount,
+                'adults' => $oBooking->adults,
+                'children' => $oBooking->children,
+//                    'currency' => $oBooking->currency,
+                'start' => $oBooking->arrival,
+                'end' => $oBooking->departure,
+              ];
+      $bookID = $this->sOta->addBook($channel_group,$reserv);
+    }
+    
+  }
 }
