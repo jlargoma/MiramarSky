@@ -287,7 +287,7 @@ class prepareDefaultPrices {
     $data = [
       'key'=>$key,
       'name'=>$nameProcess,
-      'content'=> json_encode(['room'=>$aApto['roomID'],'prices'=>$this->dailyPrices])
+      'content'=> json_encode(['room'=>$aApto,'prices'=>$this->dailyPrices])
     ];
     \App\ProcessedData::where('key',$key)
             ->where('name',$nameProcess)->delete();

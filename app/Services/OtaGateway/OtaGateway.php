@@ -21,17 +21,8 @@ class OtaGateway{
   
    public function __construct()
     {
-//      $this->URL = config('app.zodomus.base_uri');
-//      $this->usr = config('app.zodomus.usr');
-//      $this->psw = config('app.zodomus.psw');
-//      $this->psw_card = config('app.zodomus.psw_cc');
-      
-      $this->URL = "https://api.sandbox.reservationsteps.ru/v1/api/";
-//      $this->URL = "https://api.reservationsteps.ru/v1/api/";
-//      $this->account_id = 4768;
-      $this->account_id = 346;
-
-
+      $this->URL = env('OTA_GATEWAY_URL');
+      $this->account_id = env('OTA_GATEWAY_USR_ID');
       $this->oConfig = new oConfig();
     }
     
@@ -45,10 +36,11 @@ class OtaGateway{
     public function call( $endpoint,$method = "POST", $data = [],$fixParam='')
     {
        
-      if ($method == "POST" || $method == "PUT" || $method == "DELETE"  ){
+      if ($method == "POST" || $method == "PUT"  ){
         
         $data_string = json_encode($data);   
         $ch = curl_init($this->URL.$endpoint);
+        
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);                                                                     
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
@@ -123,9 +115,8 @@ class OtaGateway{
         return true; 
       }
       $params = array(
-          'username' => 'jlargo@mksport.es',
-//          'password' => 'jAlEmqiEVNs0VaSQ91kVhMi6qRWGiBQV',
-          'password' => 'eNpcwGUwFZotHapIMWvmEIhr7UKhwfmO',
+          'username' => env('OTA_GATEWAY_USR'),
+          'password' => env('OTA_GATEWAY_PSW')
           );
       $Response = $this->call('auth',"POST", $params);
 //      dd($Response,$this->response);
@@ -140,7 +131,7 @@ class OtaGateway{
     public function disconect(){
       if (isset($_COOKIE["OTA_GATE_TOKEN"])){
         $this->token = $_COOKIE["OTA_GATE_TOKEN"];
-        $Response = $this->call('auth',"DELETE", null);
+        $Response = $this->call('auth',"DELETE", []);
         setcookie("OTA_GATE_TOKEN",  $this->token, time()-3000); 
       }
     }
@@ -198,6 +189,7 @@ class OtaGateway{
     public function sendAvailability($params) {
       $params['token'] = $this->token;
       $params['account_id'] = $this->account_id;
+      
       $this->call('availability','POST',$params);
       return  ($this->responseCode);
     }

@@ -292,7 +292,7 @@ class PrepareMinStay {
     $data = [
       'key'=>$key,
       'name'=>$nameProcess,
-      'content'=> json_encode(['room'=>$aApto['roomID'],'MinStay'=>$MinStay])
+      'content'=> json_encode(['room'=>$aApto,'MinStay'=>$MinStay])
     ];
     \App\ProcessedData::where('key',$key)
             ->where('name',$nameProcess)->delete();

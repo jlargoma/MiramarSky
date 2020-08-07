@@ -197,6 +197,10 @@
         \Artisan::call('wubook:sendAvaliables');
         die('finish');
     });
+     Route::get('admin/rum/Process-data', function () {
+        \Artisan::call('ProcessData:all');
+        die('finish');
+    });
     
     /* ICalendar links */
     Route::get('/ical/{aptoID}', [

@@ -78,11 +78,6 @@ class WubookAvailables extends Command
       foreach ($list as $v){
         if (!in_array($v->channel_group.$v->date,$already)){
           $already[] = $v->channel_group.$v->date;
-          if (!isset($items[$v->channel_group])) $items[$v->channel_group] = [];
-          $items[$v->channel_group][] = [
-            'avail'=> $v->avail,
-            'date'=> convertDateToShow($v->date,true)
-            ];
           /************   OTA GATEWAY  ***********************/
           if (isset($otaGatewayRooms[$v->channel_group])){
             $og_rID = $otaGatewayRooms[$v->channel_group];
@@ -93,34 +88,10 @@ class WubookAvailables extends Command
           /*****************************************/
           
         }
-        if (!isset($delIDs[$v->channel_group])) $delIDs[$v->channel_group] = [];
-        $delIDs[$v->channel_group][] = $v->id;
+        $delIDs[] = $v->id;
       }
       
     }
-
-    $WuBook = new WuBook();
-    //Get the Channel -> Wubook rooms ID
-
-    $lstChannels = $this->getChannels();
-    
-    $roomdays = [];
-    $delDay = [];
-    if (count($lstChannels)>0){ //the Site has channels
-
-      $rIDs = $WuBook->getRoomsEquivalent($lstChannels);
-      if (count($rIDs)){ //the channels has a WuBook's room
-        foreach ($rIDs as $ch=>$rid){
-          if (isset($items[$ch]))
-            $roomdays[] = ['id'=> $rid, 'days'=> $items[$ch]];
-          if (isset($delIDs[$ch])){
-            foreach ($delIDs[$ch] as $d) $delDay[] = $d;
-          }
-            
-        }
-      }
-    }
-    
     /************   OTA GATEWAY  ***********************/
     $OtaGateway = new OtaGateway();
     if (count($ogAvail)>0){
@@ -128,22 +99,15 @@ class WubookAvailables extends Command
       $result = $OtaGateway->sendAvailability(['availability'=>$ogAvail]);
       $OtaGateway->disconect();
       if ($OtaGateway->responseCode != 200){
-        var_dump($OtaGateway->response);
+        dd($OtaGateway->response);
       }
     }
     /************   OTA GATEWAY  ***********************/
     /**************************************************/
-     
-     
 //    dd($ogAvail,$delDay);
-    if (count($roomdays)>0){
-      $WuBook->conect();
-      if ($WuBook->set_Closes($roomdays)){
+    if (count($delIDs)>0){
         //delete the aux table data
         WobookAvails::whereIn('id',$delIDs)->delete();
-      }
-      $WuBook->disconect();
-      
     }
     /*************************************************/
     
