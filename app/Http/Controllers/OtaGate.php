@@ -83,14 +83,15 @@ class OtaGate extends Controller {
     
      //Prepara la disponibilidad por día de la reserva
     $oneDay = 24*60*60;
-      $startAux = time();
-      $endAux = strtotime('2020-10-20');
+    //desde el 28-03-2021
+      $startAux = strtotime('2021-03-28');//time();
+      $endAux = strtotime('2021-03-28'. ' +1 year');
       $ogAvail = [];
       while ($startAux<$endAux){
-        $ogAvail[date('Y-m-d',$startAux)] = 5;
+        $ogAvail[date('Y-m-d',$startAux)] = 1;
         $startAux+=$oneDay;
       }
-    $return = $this->sOta->sendAvailability(['availability'=>[1719=>$ogAvail]]);
+    $return = $this->sOta->sendAvailability(['availability'=>[47077=>$ogAvail]]);
       dd($return,$this->sOta->response);
   }
   function createOTA(){

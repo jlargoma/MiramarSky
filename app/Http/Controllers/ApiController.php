@@ -353,7 +353,7 @@ class ApiController extends AppController
         $book->total_price = $book->real_price;
         $book->total_ben = $book->total_price - $book->cost_total;
         $book->promociones = 0;
-        $book->comment     = $comments .PHP_EOL." - precio publicado: $pvp";
+        $book->book_comments     = $comments .PHP_EOL." - precio publicado: $pvp";
         if ($book->save()) {
           $amount = ($book->total_price / 2);
           $client_email = 'no_email';

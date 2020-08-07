@@ -10,7 +10,7 @@ use App\Book;
 use App\Rooms;
 use App\ProcessedData;
 
-///admin/Wubook/Availables?detail=1
+///admin/rum/Process-data?detail=1
 class ProcessData extends Command
 {
     /**
@@ -55,7 +55,7 @@ class ProcessData extends Command
     {
        $this->check_overbooking();
 //       $this->check_customPricesWubook();
-       $this->check_customPricesOtaGateway();
+//       $this->check_customPricesOtaGateway();
 //       $this->check_customMinStayWubook();
        $this->check_customMinStayOtaGateway();
     }
@@ -200,7 +200,7 @@ class ProcessData extends Command
     $start    = $dates->start;
     $today    = date('Y-m-d');
     $end      = $dates->finish;
-    
+
     //No se pueden enviar registros anteriores a la fecha actual
     if ($today>$end){
       $sentUPD->content = null;
@@ -211,8 +211,8 @@ class ProcessData extends Command
     if ($start<$today) $start = $today;
     
     $oPrepareMinStay = new \App\Models\PrepareMinStay($start, $end);
-    if ($sendPrices->error){
-      echo $sendPrices->error;
+      
+    if ($oPrepareMinStay->error){
       $sentUPD->content = null;
       $sentUPD->save();
     }
