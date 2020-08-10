@@ -29,6 +29,13 @@ class UsersController extends AppController
 
     public function create(Request $request)
     {
+        
+      $email = $request->input('email');
+      $alreadyExist = User::where('email',$email)->first();
+      if ($alreadyExist){
+        return redirect()->back()->withErrors("El usuario $email ya existe en la base de datos");
+      }
+      
         $user = new User();
 
         $user->name = $request->input('name');
@@ -175,18 +182,16 @@ class UsersController extends AppController
         
     }
 
-	public function searchUserByName(Request $request)
-	{
-		if (empty($request->input('search')))
-		{
-			$users =  User::whereIn('role', User::getRolesLst())->get();
-		}
-		else{
-			$users = User::where('name', 'LIKE', "%".$request->input('search')."%")->get();
-		}
-		return view('backend/users/_tableUser',  [
-			'users' => $users
-		]);
+  public function searchUserByName(Request $request) {
+    if (empty($request->input('search'))) {
+      $users = User::whereIn('role', User::getRolesLst())->get();
+    } else {
+      $users = User::where('name', 'LIKE', "%" . $request->input('search') . "%")
+              ->orWhere('email', 'LIKE', "%" . $request->input('search') . "%")->get();
     }
+    return view('backend/users/_tableUser', [
+        'users' => $users
+    ]);
+  }
 
 }

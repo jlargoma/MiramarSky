@@ -318,11 +318,11 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
       \Artisan::call('ical:import');
   });
   
-  
-
-  
   Route::get('/zodomus/import', function () {
       \Artisan::call('zodomus:importAll');
+  });
+  Route::get('/ota-gateway/import', function () {
+      \Artisan::call('OGImportAll:import');
   });
   
   Route::get('/channel-manager-test', function(){

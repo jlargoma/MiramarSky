@@ -148,6 +148,7 @@ class Book extends Model {
     for($i=1;$i<21;$i++){
       $array[] = 'Agencia-'.$i;
     }
+    $array[28] = 'Expedia';
     $array[999999] = 'Google';
     return $array;
   }

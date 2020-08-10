@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
         Commands\CheckPartee::class,
         Commands\SendParteeSMS::class,
         Commands\CreateMonthLimpieza::class,
-        Commands\RoomsPhotosMigrate::class,
+//        Commands\RoomsPhotosMigrate::class,
         Commands\SendSecondPay::class,
         Commands\SendParteeAdmin::class,
         Commands\ChatEmails::class,
@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
         Commands\GetDailyFFSeason::class,
         Commands\SendFFAdmin::class,
 //        Commands\ZodomusImport::class,
-        Commands\ZodomusImportAll::class,
+        Commands\OG_ImportAll::class,
         Commands\ProcessData::class,
         Commands\WubookAvailables::class,
         Commands\WubookGetBookings::class,
@@ -51,7 +51,8 @@ class Kernel extends ConsoleKernel
 //         $schedule->command('monthLimpieza:create')->monthlyOn(1, '5:00')->timezone('Europe/Madrid');
          $schedule->command('ical:import')->everyTenMinutes();
 //         $schedule->command('zodomus:import')->everyTenMinutes();
-         $schedule->command('zodomus:importAll')->hourly();
+//         $schedule->command('zodomus:importAll')->hourly();
+         $schedule->command('OGImportAll:importAll')->hourly();
          $schedule->command('OTAs:sendPricesSeason')->everyMinute();
 //         $schedule->command('OTAs:MinStaySeason')->everyMinute();
          $schedule->command('ProcessData:all')->everyFiveMinutes();
