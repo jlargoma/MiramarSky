@@ -252,7 +252,7 @@ class OtaGateway {
     //Booking Status. 1 - new, 2 - canceled, 3 - pending
     $alreadyExist_qry = \App\Book::where('bkg_number', $reserv['bkg_number']);
     if (isset($reserv['reser_id']) && $reserv['reser_id'] > 0) {
-      $alreadyExist_qry->orWhere('external_id', $reserv['reser_id']);
+      $alreadyExist_qry->Where('external_id', $reserv['reser_id']);
     }
     $alreadyExist = $alreadyExist_qry->first();
     if ($alreadyExist) {
@@ -266,6 +266,10 @@ class OtaGateway {
       } else {
         $update = $alreadyExist->id;
       }
+    } else {
+       if ($reserv['status'] == 2) {//Cancelada
+         return null; //la ignoro
+       }
     }
     /*     * ******************************************************** */
 

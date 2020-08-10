@@ -168,7 +168,7 @@ table, td, th,td {
           ?>
             <tr>
               <td style="height: 5em;"><?php echo $book['channel']; ?></td>
-              <td><?php echo $book['bkg_number'].'<br>'.$book['external_roomId']; ?></td>
+              <td><?php echo $book['bkg_number'].'<br>'.$book['external_roomId'].'<br>'.$book['reser_id']; ?></td>
               <td><?php echo $book['customer_name'].'<br>'.$book['customer_email']; ?></td>
               <td><?php echo $book['start']; ?></td>
               <td><?php echo $book['end']; ?></td>

@@ -267,6 +267,7 @@ class OtaGate extends Controller {
       file_put_contents($dir."/".time().'copy-array',json_encode($data));
     } else{
       file_put_contents($dir."/".time().'copy-json',$data);
+      $data = json_decode($data,true);
     }
     if (isset($data)){
       $data = $data['request']['data'];
