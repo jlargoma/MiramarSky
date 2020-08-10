@@ -137,6 +137,7 @@ class Config {
     $chanels = [
         'airbnb' => 4,
         'booking' => 1,
+        'expedia' => 28,
         'google-hotel' => 999999,
     ];
 

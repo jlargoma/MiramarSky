@@ -266,7 +266,7 @@ class ZodomusController extends Controller {
       $startTimeAux += $day;
     }
 
-    if($price && $price<0){
+    if($price && $price>0){
       \App\ProcessedData::savePriceUPD_toWubook(date('Y-m-d',$startTime),date('Y-m-d',$endTime));
     } else {
       if ($min_estancia)

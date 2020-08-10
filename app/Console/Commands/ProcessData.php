@@ -55,7 +55,7 @@ class ProcessData extends Command
     {
        $this->check_overbooking();
 //       $this->check_customPricesWubook();
-//       $this->check_customPricesOtaGateway();
+       $this->check_customPricesOtaGateway();
 //       $this->check_customMinStayWubook();
        $this->check_customMinStayOtaGateway();
     }

@@ -61,6 +61,7 @@ class OtaGate extends Controller {
     if (!$conexion->conect()){
       die('error de conexión');
     }
+    $this->getBooking();
 //    $this->createWebHook();
 //    $this->createRoom();
 //    $this->createRestrictionPlans();
@@ -69,7 +70,7 @@ class OtaGate extends Controller {
 //    $this->setMinStay();
 //    $this->createOTA();
    // $this->asociateOTA();
-    $this->sendAvail();
+//    $this->sendAvail();
   }
   
   function getBooking(){
@@ -210,7 +211,7 @@ class OtaGate extends Controller {
   
   function createWebHook(){
 //    webhook_id": 4758
-    $url = 'https://apartamentosierranevada.net/Ota-Gateway-Webhook';
+    $url = 'https://www.apartamentosierranevada.net/Ota-Gateway-Webhook';
     $param = [
       "type"=> "bookings",
       "url"=> $url,
@@ -260,14 +261,29 @@ class OtaGate extends Controller {
         mkdir($dir, 0775, true);
     }
     file_put_contents($dir."/".time(),$json);
-   
-    if (isset($params['data']))
-    {
-      if (isset($params['data']['booking_numbers'])){
-         $this->sOta->conect();
-         $this->loadBooking($params['data']['booking_numbers']);
-         $this->sOta->disconect();
+    
+    $data =  $request->input('data',null);
+    if (is_array($data)){
+      file_put_contents($dir."/".time().'copy-array',json_encode($data));
+    } else{
+      file_put_contents($dir."/".time().'copy-json',$data);
+    }
+    if (isset($data)){
+      $data = $data['request']['data'];
+      if (is_array($data)){
+        file_put_contents($dir."/".time().'copy2-array',json_encode($data));
+      } else{
+        file_put_contents($dir."/".time().'copy2-json',$data);
       }
+      if (isset($data['booking_numbers'])){
+         $this->sOta->conect();
+         $this->loadBooking($data['booking_numbers']);
+         $this->sOta->disconect();
+      } else {
+        var_dump('empty data',$data);
+      }
+    } else {
+        var_dump('Unset data',$data);
     }
     return response('',200);
   }
@@ -276,13 +292,17 @@ class OtaGate extends Controller {
 
     $response = $this->sOta->getBooking($booking_numbers);
     $oBookings = null;
-    if ( isset($response->booking) )  $oBookings = $response->booking;
+    if ( isset($response->booking) )  $oBookings = [$response->booking];
     if ( isset($response->bookings) )  $oBookings = $response->bookings;
-    if (!$oBookings)   return null;
+    if (!$oBookings){
+      var_dump('booking no found',$booking_numbers);
+      return null;
+    }
     
     $oConfig = new oConfig();
     foreach ($oBookings as $oBooking){
       $channel_group = $oConfig->getChannelByRoom($oBooking->roomtype_id);
+      
       $reserv = [
                 'channel' => $oBooking->ota_id,
                 'bkg_number' => $oBooking->number,
@@ -300,11 +320,14 @@ class OtaGate extends Controller {
                 'totalPrice' => $oBooking->amount,
                 'adults' => $oBooking->adults,
                 'children' => $oBooking->children,
+                'extra_array' => is_string($oBooking->extra_array) ? json_decode($oBooking->extra_array) : $oBooking->extra_array,
 //                    'currency' => $oBooking->currency,
                 'start' => $oBooking->arrival,
                 'end' => $oBooking->departure,
               ];
+      
       $bookID = $this->sOta->addBook($channel_group,$reserv);
+      var_dump($reserv);
     }
     
   }
