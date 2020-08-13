@@ -25,7 +25,7 @@ class WubookController extends AppController {
 //    $WuBook->fetch_rooms();
 //    $rooms = $WuBook->getRoomsEquivalent(null);
 //    dd($rooms);
-//    $url = 'https://apartamentosierranevada.net/wubook-Webhook';
+//    $url = 'https://admin.apartamentosierranevada.net/wubook-Webhook';
 //    $WuBook->pushURL($url);
 //    foreach ($rooms as $ch=>$lcode){
 //      $WuBook->pushURL($lcode, $url, 1);

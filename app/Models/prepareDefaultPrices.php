@@ -61,11 +61,11 @@ class prepareDefaultPrices {
         if ($oRoom){
           $this->dailyPrice($oRoom);
           $this->generateQueriesToSendZodomus($chGroup);
-          $this->prepareQueriesToSendWubook($chGroup);
+//          $this->prepareQueriesToSendWubook($chGroup);
         } 
 //        $this->prepareSpecialSegments();
       }
-      $this->saveQueriesToSendWubook();
+//      $this->saveQueriesToSendWubook();
     }
     
     //obtengo todos los aptos - OTA-GATEWAY

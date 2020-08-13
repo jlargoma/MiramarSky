@@ -167,18 +167,55 @@ class OtaGateway {
     $params['token'] = $this->token;
     $params['account_id'] = $this->account_id;
     $params['plan_id'] = $this->oConfig->Plans();
-    $this->call('prices', 'POST', $params);
+//    $this->call('prices', 'POST', $params);
+    
+    /* SEND TO Booking.com */
+    $this->setRatesOta($params,1);
+    /* SEND TO Expedia */
+    $this->setRatesOta($params,2);
+    /* SEND TO AirBnb */
+    $this->setRatesOta($params,3);
+    /* SEND TO GHotels */
+    $this->setRatesOta($params,99);
+    
     return ($this->responseCode);
   }
-
+  public function setRatesOta($params,$ota_id) {
+     $priceBase = $params['price'];
+    /* SEND TO AirBnb */
+    foreach ($priceBase as $room=>$prices){
+      $aux = $params['price'][$room];
+      foreach ($prices as $day=>$price){
+        $aux[$day] =$this->oConfig->priceByChannel($price,$ota_id);
+      }
+      $params['price'][$room] = $aux;
+    }
+    $params['plan_id'] = $this->oConfig->Plans($ota_id);
+    $this->call('prices', 'POST', $params);
+  }
+  
   public function setMinStay($params) {
     $params['token'] = $this->token;
     $params['account_id'] = $this->account_id;
     $params['restriction_plan_id'] = $this->oConfig->restriction_plan();
+//    $this->call('restrictions', 'POST', $params);
+    
+    /* SEND  Booking.com */
+    $this->setMinStayOta($params,1);
+    /* SEND TO Expedia */
+    $this->setMinStayOta($params,2);
+    /* SEND TO AirBnb */
+    $this->setMinStayOta($params,3);
+    /* SEND TO GHotels */
+    $this->setMinStayOta($params,99);
+    
+    return ($this->responseCode);
+  }
+  public function setMinStayOta($params,$ota_id) {
+    $params['restriction_plan_id'] = $this->oConfig->restriction_plan($ota_id);
     $this->call('restrictions', 'POST', $params);
     return ($this->responseCode);
   }
-
   public function createOTA($params) {
     $params['token'] = $this->token;
     $params['account_id'] = $this->account_id;
@@ -252,7 +289,7 @@ class OtaGateway {
     //Booking Status. 1 - new, 2 - canceled, 3 - pending
     $alreadyExist_qry = \App\Book::where('bkg_number', $reserv['bkg_number']);
     if (isset($reserv['reser_id']) && $reserv['reser_id'] > 0) {
-      $alreadyExist_qry->orWhere('external_id', $reserv['reser_id']);
+      $alreadyExist_qry->Where('external_id', $reserv['reser_id']);
     }
     $alreadyExist = $alreadyExist_qry->first();
     if ($alreadyExist) {
@@ -266,6 +303,10 @@ class OtaGateway {
       } else {
         $update = $alreadyExist->id;
       }
+    } else {
+       if ($reserv['status'] == 2) {//Cancelada
+         return null; //la ignoro
+       }
     }
     /*     * ******************************************************** */
 

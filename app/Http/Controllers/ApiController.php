@@ -41,6 +41,10 @@ class ApiController extends AppController
       $date_start = $request->input('start',null);
       $date_finish = $request->input('end',null);
       $response = [];
+      $usr = $request->input('usr',null);
+      //Save potencial customer data
+      if (isset($usr['c_cp']) && trim($usr['c_cp']) == '')
+        \App\CustomersRequest::createOrEdit($request->all(),-1);
         
       $oItems = $this->getItems($pax);
       
@@ -53,8 +57,10 @@ class ApiController extends AppController
           $roomPrice = $this->getPriceOrig($roomData['price']); //Booking price
           $minStay = $roomData['minStay'];
           
-          $pvp_1 = $roomPrice - ($roomPrice*$this->discount_1);
-          $pvp_2 = $roomPrice - ($roomPrice*$this->discount_2);
+          $pvp_1 = $roomPrice - ($roomPrice*$this->discount_1) + $roomData['price_limp'];
+          $roomPrice = $roomPrice + $roomData['price_limp']+round($roomData['price_limp']*$this->discount_1,2);
+          $pvp_2 = 99999;
+//          $pvp_2 = $roomPrice - ($roomPrice*$this->discount_2);
           $response[] = [
             'name' => $item->name,
             'max_pax' => $item->max_pax,
@@ -158,9 +164,11 @@ class ApiController extends AppController
         }
         foreach ($oRooms as $room){
           if ($book->availDate($startDate, $endDate, $room->id)){
+            $costes = $room->priceLimpieza($room->sizeApto);
             return [
-                'price'   => $room->getPvp($startDate,$endDate,$pax),
-                'minStay' => $room->getMin_estancia($startDate,$endDate),
+                'price'      => $room->getPvp($startDate,$endDate,$pax),
+                'price_limp' => $costes['price_limp'],
+                'minStay'    => $room->getMin_estancia($startDate,$endDate),
                 'availiable' => $availiable,
                 ];
              
@@ -200,12 +208,6 @@ class ApiController extends AppController
       // c_name c_mail c_phone c_tyc 
       $usr = $request->input('usr',null);
       
-//      if($usr['c_phone'] != '123-789') {
-//        $response =  'No hay información disponible';
-//      return response()->json(['success'=>false,'data'=>$response],401);
-//      }
-        
-        
       $pax = $request->input('pax',null);
       $date_start = $request->input('start',null);
       $date_finish = $request->input('end',null);

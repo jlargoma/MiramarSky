@@ -54,8 +54,8 @@ class MinStaySeason extends Command
      */
     public function handle()
     {
-       $this->check_and_send_zodumos();
-       $this->check_and_send_wubooks();
+//       $this->check_and_send_zodumos();
+//       $this->check_and_send_wubooks();
        $this->check_and_send_otaGateway();
     }
     

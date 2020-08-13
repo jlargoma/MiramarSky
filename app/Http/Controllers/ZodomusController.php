@@ -471,11 +471,11 @@ class ZodomusController extends Controller {
     
    
       $oZodomus =  new \App\Services\Zodomus\Zodomus();
-//      $apto = 55092492; 
-      $return = $oZodomus->sendRatesGroup(55092491,'248289373A',214347592,'CHLT',2);
+      $apto = 2942008; 
+//      $return = $oZodomus->sendRatesGroup(55092491,'248289373A',214347592,'CHLT',2);
 //      $return = $oZodomus->sendRatesGroup(55092492,"264338152A",228636461,'ESTG',2);
 //      $return = $oZodomus->checkProperty(55092491);
-     
+      $return = $oZodomus->checkProperty($apto);
       if ($return){
 //        var_dump($return); die;
         dd($return);
