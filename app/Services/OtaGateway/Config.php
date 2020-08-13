@@ -7,21 +7,48 @@ class Config {
   /**
    * restriction_plan_id
    */
-  public function restriction_plan() {
+  public function restriction_plan($ota=null) {
+    
+    switch ($ota){
+      case 1:
+      case "1": //"Booking.com",
+      return 1592050;
+      case 2:
+      case "2": //Expedia,
+      return 1592548;
+      case 3:
+      case "3": //"Plan Miramar - AirBnb"
+        return 1592531;
+      case 99:
+      case "99": //google GHotels
+        return 1592532;
+     
+    }
     return 1592050;
+     
   }
   /**
    * Rate Plan ID
    */
-  public function Plans() {
+  public function Plans($ota=null) {
+    switch ($ota){
+      case 1:
+      case "1": //"Booking.com",
+      return 17633;
+      case 2:
+      case "2": //Expedia,
+      return 18126;
+      case 3:
+      case "3": //"Plan Miramar - AirBnb"
+        return 18111;
+      case 99:
+      case "99": //google GHotels
+        return 18112;
+      default :
+        return 17633;
+    }
     return 17633;
-//    return [
-//        1 => 764, //"Booking.com",
-//        2 => "Expedia",
-//        3 => "Airbnb",
-//        4 => "Agoda",
-//        99 => "Wubook",
-//    ];
+
   }
 
   /**
@@ -47,42 +74,56 @@ class Config {
     return $params;
   }
 
-  public function priceByChannel($price, $channelId = null, $room = null, $text = false) {
-    if (!$price || !is_numeric($price)) {
-      if ($text)
-        $price = 1;
-      else
-        return null;
-    }
-    $priceText = '';
-
-    switch ($channelId) {
-      case 1:
-      case "1": //"Booking.com",
-        $price = ($price > 0) ? $price + ($price * 0.20) : 20;
-        $priceText .= '+20%';
-        break;
-      case 2:
-      case "2": //Expedia,
-        $price = ($price > 0) ? $price + ($price * 0.175) : 17.5;
-        $priceText .= '+17,5%';
-        break;
-      case 3:
-      case "3": //airbnb,
-        $price = ($price > 0) ? $price + ($price * 0.05) : 5;
-        $priceText .= '+5%';
-        break;
-      case 99:
-      case "99": //google,
-        $price = ($price > 0) ? $price + ($price * 0.12) : 12;
-        $priceText .= '+12%';
-        break;
-    }
-
-
-    if ($text)
-      return $priceText;
-    return $price;
+  public function priceByChannel($price,$channelId=null,$room=null,$text=false) {
+      
+      if (!$price || !is_numeric($price)){
+        if ($text) $price = 1;
+        else return null;
+      }
+      $priceText = '';
+      //Parking
+      if ($channelId <3){
+        if ($room == '7J' || $room == '9F'){
+          $price += 40; 
+          $priceText = '(PVP+40€)';
+        } else {
+          $price += 20; 
+          $priceText = '(PVP+20€)';
+        }
+      }
+      
+      switch ($channelId){
+        case 1:
+        case "1": //"Booking.com",
+          if ($room == 'DDL'){
+            $price = $price+($price*0.24);
+            $priceText .= '+24%';
+          }
+          else{
+            $price = $price+($price*0.20);
+            $priceText .= '+20%';
+          }
+          break;
+        case 2:
+        case "2": //Expedia,
+          $price = $price+($price*0.20);
+          $priceText .= '+20%';
+          break;
+        case 3:
+        case "3": //airbnb,
+          $price = $price+($price*0.05);
+          $priceText = '+5%';
+          break;
+        case 99:
+        case "99": //google,
+          $price = $price+($price*0.12);
+          $priceText = '+12%';
+          break;
+      }
+      
+      
+      if ($text) return $priceText;
+      return $price;
   }
 
   function get_detailRate($rateID) {

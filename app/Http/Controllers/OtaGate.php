@@ -61,8 +61,8 @@ class OtaGate extends Controller {
     if (!$conexion->conect()){
       die('error de conexión');
     }
-    $this->getBooking();
-//    $this->createWebHook();
+//    $this->getBooking();
+    $this->createWebHook();
 //    $this->createRoom();
 //    $this->createRestrictionPlans();
 //    $this->createRatesPlans();
@@ -211,7 +211,7 @@ class OtaGate extends Controller {
   
   function createWebHook(){
 //    webhook_id": 4758
-    $url = 'https://www.apartamentosierranevada.net/Ota-Gateway-Webhook';
+    $url = 'https://admin.apartamentosierranevada.net/Ota-Gateway-Webhook';
     $param = [
       "type"=> "bookings",
       "url"=> $url,

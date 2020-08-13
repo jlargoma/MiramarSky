@@ -43,8 +43,8 @@
 					A través de este área privada a la que solo puedes acceder con usuario contraseña, cada  propietario recibe información actualizada sobre el plannning de ocupación de su apartamento de manera que tenga visibilidad total sobre el progreso de la temporada y del dinero que le corresponde por cada reserva. <br><br>
 
 					<b>Si no dispones de contraseña aún, debes ingresar en esta url:</b><br><br>
-					<a href="https://www.apartamentosierranevada.net/admin/propietario/create/password/<?php echo base64_encode($user->email) ?>">
-						https://www.apartamentosierranevada.net/admin/propietario/create/password/<?php echo base64_encode($user->email) ?>
+					<a href="https://admin.apartamentosierranevada.net/admin/propietario/create/password/<?php echo base64_encode($user->email) ?>">
+						https://admin.apartamentosierranevada.net/admin/propietario/create/password/<?php echo base64_encode($user->email) ?>
 					</a><br><br>
 
 					Despues debes acceder aquí para ver tus resumenes:<br><br>
