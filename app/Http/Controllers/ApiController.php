@@ -246,6 +246,7 @@ class ApiController extends AppController
         return response()->json(['data'=>$response],401);
       }
       
+      $widget_observations = Settings::getContent('widget_observations');
       /*******************************/
       if ($roomType){
         $oRoom = $this->getRoomsWithAvail($date_start,$date_finish,$pax,$roomType->channel_group);
@@ -258,11 +259,11 @@ class ApiController extends AppController
         $extras = isset($selected['ext']) ? $selected['ext'] : [];
         $response = $this->createBooking($date_start,$date_finish,$customer,$oRoom,$comments,$pax,$extras,$rate);
         if ($response){
-          return response()->json(['data'=>$response,'c_token'=>$this->customerToken],200);
+          return response()->json(['data'=>$response,'c_token'=>$this->customerToken,'observations'=>$widget_observations],200);
         }
       }
       $response =  'No hay información disponible';
-      return response()->json(['data'=>$response,'c_token'=>$this->customerToken],401);
+      return response()->json(['data'=>$response,'c_token'=>$this->customerToken,'observations'=>$widget_observations],401);
      
     }
     

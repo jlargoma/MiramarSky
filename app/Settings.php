@@ -88,6 +88,7 @@ class Settings extends Model
           'SMS_Partee_upload_dni'             =>'SMS Partee (subir dni para el control diario de huéspedes)',
           'send_encuesta'                     =>'Mail de Encuestas',
           'send_encuesta_subject'             =>'Asunto de Encuestas',
+          'widget_observations'               =>'Observaciones de su reserva',
       ];
       if ($lng && $lng != 'es'){
         $lstNew = [];
