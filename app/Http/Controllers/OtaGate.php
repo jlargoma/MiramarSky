@@ -263,19 +263,12 @@ class OtaGate extends Controller {
     file_put_contents($dir."/".time(),$json);
     
     $data =  $request->input('data',null);
-    if (is_array($data)){
-      file_put_contents($dir."/".time().'copy-array',json_encode($data));
-    } else{
-      file_put_contents($dir."/".time().'copy-json',$data);
+    if (!is_array($data)){
       $data = json_decode($data,true);
     }
+    
     if (isset($data)){
       $data = $data['request']['data'];
-      if (is_array($data)){
-        file_put_contents($dir."/".time().'copy2-array',json_encode($data));
-      } else{
-        file_put_contents($dir."/".time().'copy2-json',$data);
-      }
       if (isset($data['booking_numbers'])){
          $this->sOta->conect();
          $this->loadBooking($data['booking_numbers']);
@@ -328,7 +321,7 @@ class OtaGate extends Controller {
               ];
       
       $bookID = $this->sOta->addBook($channel_group,$reserv);
-      var_dump($reserv);
+//      var_dump($reserv,$oBooking);
     }
     
   }

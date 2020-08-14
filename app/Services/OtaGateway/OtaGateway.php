@@ -186,7 +186,7 @@ class OtaGateway {
     foreach ($priceBase as $room=>$prices){
       $aux = $params['price'][$room];
       foreach ($prices as $day=>$price){
-        $aux[$day] =$this->oConfig->priceByChannel($price,$ota_id);
+        $aux[$day] =$this->oConfig->priceByChannel($price,$ota_id,$room);
       }
       $params['price'][$room] = $aux;
     }
@@ -313,10 +313,10 @@ class OtaGateway {
     $book = new \App\Book();
     $start = $reserv['start'];
     $finish = $reserv['end'];
-    $nights = calcNights($start, $finish);
+    $nigths = calcNights($start, $finish);
     $reserv['start_date'] = $start;
     $reserv['end_date'] = $finish;
-    $reserv['nights'] = $nights;
+    $reserv['nigths'] = $nigths;
 
     /** UPDATE THE BOOKING * */
     if ($update) {
@@ -325,7 +325,7 @@ class OtaGateway {
       if ($customer && $customer->id == $alreadyExist->customer_id) {
         $customer->name = $reserv['customer_name'];
         $customer->email = $reserv['customer_email'];
-        $customer->phone = $reserv['customer_phone'];
+        $customer->phone = '+'.str_replace('+','',$reserv['customer_phone']);
         $customer->DNI = "";
         $customer->email_notif = $reserv['customer_email'];
         $customer->send_notif = 1;
@@ -405,6 +405,7 @@ class OtaGateway {
 
     $book->start = $reserv['start'];
     $book->finish = $reserv['end'];
+    $book->nigths = $reserv['nigths'];
     $book->comment = $comment;
     $book->book_comments = $book_comments;
     $book->type_book = 11;

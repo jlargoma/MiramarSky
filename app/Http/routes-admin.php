@@ -1,5 +1,11 @@
 <?php
 
+Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], function () {
+  Route::get('admin/get-SafetyBox', 'BookController@getSafetyBoxLst');
+  Route::get('admin/get-CustomersRequest', 'BookController@getCustomersRequestLst');
+  Route::post('admin/hideCustomersRequest', 'BookController@hideCustomersRequest');
+});
+
 Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista']], function () {
   
   Route::get('admin/sendEncuesta/{id?}', 'BookController@sendEncuesta')->name('sendEncuesta');
@@ -91,7 +97,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 
   
   Route::get('/paymentspro/delete/{id}', 'RouterActionsController@paymentspro_del');
-  Route::get('/customer/delete/{id}','RouterActionsController@customer_delete');
+
   Route::get('/customer/change/phone/{id}/{phone}','RouterActionsController@customer_change');
   
   Route::get('/sendImagesRoomEmail', 'RoomsController@sendImagesRoomEmail');
@@ -103,7 +109,6 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
   Route::get('/sales/updateCostPark/{id}/{importe}','RouterActionsController@sales_updateCostPark');
   Route::get('/sales/updateCostTotal/{id}/{importe}','RouterActionsController@sales_updateCostTotal');
   Route::get('/sales/updatePVP/{id}/{importe}','RouterActionsController@sales_updatePVP');
-  Route::get('/customers/searchByName/{searchString?}','RouterActionsController@customers_searchByName');
   Route::get('/invoices/searchByName/{searchString?}','RouterActionsController@invoices_searchByName');
   Route::get('/settings', 'SettingsController@index');
   Route::post('/settings-general', 'SettingsController@upd_general')->name('settings.gral.upd');

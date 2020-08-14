@@ -335,7 +335,7 @@ class ZodomusController extends Controller {
       foreach ($priceDay as $d => $p) {
 
         $priceBooking = ceil($zConfig->priceByChannel($p,1,$apto));
-        $priceExpedia = ceil($zConfig->priceByChannel($p,2));
+        $priceExpedia = ceil($zConfig->priceByChannel($p,2,$apto));
         $priceAirbnb = ceil($zConfig->priceByChannel($p,3));
         $priceGoogle = ceil($zConfig->priceByChannel($p,99));
         $min_estancia = isset($min[$d]) ? $min[$d] : 0;
