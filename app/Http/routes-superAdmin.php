@@ -165,9 +165,10 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
   Route::get('/clientes/export-excel', 'CustomersController@createExcel');
   Route::get('/customers/importExcelData', 'CustomersController@createExcel');
   Route::get('/clientes/delete/{id}', 'CustomersController@delete');
+  Route::get('/customers/searchByName/{searchString?}','CustomersController@searchByName');
+  Route::get('/customer/delete/{id}','CustomersController@delete');
   
   //Facturas
- 
   Route::get('/facturas/solicitudes/{year?}', 'InvoicesController@solicitudes');
   Route::get('/facturas/isde/create', 'InvoicesController@createIsde');
   Route::post('/facturas/isde/create', 'InvoicesController@createIsde');

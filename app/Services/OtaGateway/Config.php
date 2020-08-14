@@ -83,7 +83,7 @@ class Config {
       $priceText = '';
       //Parking
       if ($channelId <3){
-        if ($room == '7J' || $room == '9F'){
+        if ( in_array($room, ['7J','9F',47074,47076]) ){ //name o ID equivalent
           $price += 40; 
           $priceText = '(PVP+40€)';
         } else {

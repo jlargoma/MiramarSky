@@ -59,14 +59,16 @@
             $('.deleteCustomer').click(function(event) {
                 var id = $(this).attr('data-id');
                 var line = "#customer-"+id;
-
-                $.get('/admin/customer/delete/'+id, function(data) {
-                    if (data == "ok") {
-                        $(line).hide();
-                    } else {
-                        alert(data);
-                    }
-                });
+                if (confirm('Eliminar datos del cliente?')){
+                  $.get('/admin/customer/delete/'+id, function(data) {
+                      if (data == "ok") {
+                          $(line).hide();
+                          alert('datos del cliente eliminado');
+                      } else {
+                          alert(data);
+                      }
+                  });
+                }
             });
 
             $('#search-table').keypress(function(event) {

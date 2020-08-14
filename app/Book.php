@@ -134,23 +134,44 @@ class Book extends Model {
 
    //Para poner nombre a la agencia//
   static function listAgency() {
+//    $array = [
+//        0 => "",
+//        1 => "Booking",
+//        2 => "Trivago",
+//        3 => "Bed&Snow",
+//        4 => "AirBnb",
+//        5 => "Jaime Diaz",
+//        6 => "S.essence",
+//        7 => "Cerogrados"
+//    ];
+//    
+//    for($i=1;$i<21;$i++){
+//      $array[] = 'Agencia-'.$i;
+//    }
+//    $array[28] = 'Expedia';
+//    $array[999999] = 'Google';
+//    return $array;
+    
     $array = [
         0 => "",
         1 => "Booking",
-        2 => "Trivago",
-        3 => "Bed&Snow",
-        4 => "AirBnb",
-        5 => "Jaime Diaz",
-        6 => "S.essence",
-        7 => "Cerogrados"
-    ];
-    
-    for($i=1;$i<21;$i++){
-      $array[] = 'Agencia-'.$i;
-    }
+        4 => "AirBnb"
+        ];
     $array[28] = 'Expedia';
     $array[999999] = 'Google';
+    $array[5] = "Jaime Diaz";
+    $array[3] = "Bed&Snow";
+    $array[2] = "Trivago";
+    $array[6] = "S.essence";
+    $array[7] = "Cerogrados";
+    
+    for($i=1;$i<21;$i++){
+      $array[7+$i] = 'Agencia-'.$i;
+    }
     return $array;
+    
+    
+    
   }
   
   //Para poner nombre a la agencia//

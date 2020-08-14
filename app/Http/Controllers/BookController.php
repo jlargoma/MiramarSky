@@ -162,14 +162,19 @@ class BookController extends AppController
         //END: Processed data
         
         $ff_mount = null;
-
+        /*****/
+        $CustomersRequest = \App\CustomersRequest::where('status',0)
+                ->where('created_at','>=',date('Y-m-d', strtotime('-7 days')))
+                ->count();
+        
+        /*****/
        
          
         return view('backend/planning/index',
                 compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
                         'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits',
                         'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment',
-                        'ff_pendientes','ff_mount','totalReserv','amountReserv','overbooking')
+                        'ff_pendientes','ff_mount','totalReserv','amountReserv','overbooking','CustomersRequest')
 		);
     }
 

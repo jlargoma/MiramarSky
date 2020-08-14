@@ -72,15 +72,6 @@ class RouterActionsController extends AppController {
       return 'error';
     }
   }
-
-  function customer_delete($id) {
-    if (\App\Customers::find($id)->delete()) {
-      return 'ok';
-    } else {
-      return 'error';
-    }
-  }
-
   function customer_change($id, $phone) {
     $customer = \App\Customers::find($id);
     $customer->phone = $phone;
@@ -163,25 +154,6 @@ class RouterActionsController extends AppController {
     if ($book->save()) {
       return "OK";
     }
-  }
-
-  function customers_searchByName($searchString = "") {
-    if ($searchString == "") {
-      $arraycorreos = array();
-      $correosUsuarios = \App\User::all();
-      foreach ($correosUsuarios as $correos) {
-        $arraycorreos[] = $correos->email;
-      }
-      $arraycorreos[] = "iankurosaki@gmail.com";
-      $arraycorreos[] = "jlargoma@gmail.com";
-      $arraycorreos[] = "victorgerocuba@gmail.com";
-      $customers = \App\Customers::whereNotIn('email', $arraycorreos)->where('email', '!=', ' ')
-                      ->distinct('email')->orderBy('created_at', 'DESC')->get();
-    } else {
-      $customers = \App\Customers::where('name', 'LIKE', '%' . $searchString . '%')
-                      ->orWhere('email', 'LIKE', '%' . $searchString . '%')->get();
-    }
-    return view('backend.customers._table', ['customers' => $customers,]);
   }
 
   function invoices_searchByName($searchString = "") {

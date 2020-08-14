@@ -152,6 +152,15 @@ div.dataTables_length {
   margin-top: 5px;
 }
 
+.table-mobile td{
+  padding: 7px !important;
+  text-align: center;
+}
+.table-mobile th.th-bookings.static {
+    height: 42px;
+    padding: 10px !important;
+}
+
 @media only screen and (max-width: 991px){
   button.btn.changeStatus,
   button.btn.changeRoom {

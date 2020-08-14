@@ -994,6 +994,40 @@ $('body').on('click','.deleteBook',function(event) {
               $('#loadigPage').hide('slow');
           });
       });
+      
+      
+          
+  // CARGAMOS POPUP DE CLIENTES POSIBLES
+  $('#btnCustomersRequest').click(function (event) {
+    $('#modalBookSafetyBox').modal('show');
+    $('#_BookSafetyBox').empty().load('/admin/get-CustomersRequest');
+  });
+
+  $('#_BookSafetyBox').on('click','.hideCustomerRequest',function(){
+    var ObjTR = $(this).closest('tr');
+    var id = $(this).data('id');
+    $.post('/admin/hideCustomersRequest', {_token: "{{ csrf_token() }}", id: id}, function (data) {
+      ObjTR.remove();
+    });
+  });
+  $('#_BookSafetyBox').on('click','.filterSite',function(){
+    var site_id = $(this).data('key');
+    $('.filterSite').removeClass('active');
+    $(this).addClass('active');
+    $('#_BookSafetyBox tr').each(function(item){
+      if (item == 0){
+         $(this).show();
+      } else {
+        if (site_id>0){
+          if ($(this).data('site') == site_id) $(this).show();
+          else  $(this).hide();
+        } else {
+          $(this).show();
+        }
+      }
+      console.log(item);
+    });
+  });
  });
 
     </script>
