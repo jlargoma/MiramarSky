@@ -383,11 +383,19 @@ class ApiController extends AppController
           }
           $this->customerToken = $customer->api_token;
 //          $book->sendAvailibilityBy_dates($book->start, $book->finish);
-          return 'https://www.apartamentosierranevada.net/mantenimiento.html';
+//          return 'https://www.apartamentosierranevada.net/mantenimiento.html';
           //Prin box to payment
           $description = "COBRO RESERVA CLIENTE " . $book->customer->name;
           $urlPayland = 'url payland';
-          $oPaylands = new \App\Models\Paylands();
+          
+          $endPoint               = (env('PAYLAND_ENVIRONMENT') == "dev") ? env('PAYLAND_ENDPOINT') . self::SANDBOX_ENV : env('PAYLAND_ENDPOINT');
+          $paylandConfig          = [
+              'endpoint'  => $endPoint,
+              'api_key'   => env('PAYLAND_API_KEY'),
+              'signarute' => env('PAYLAND_SIGNATURE'),
+              'service'   => env('PAYLAND_SERVICE')
+          ];
+          $oPaylands    = new \App\Services\PaylandService($paylandConfig);
           $urlPayland = $oPaylands->generateOrderPaymentBooking(
                   $book->id, $book->customer->id, $client_email, $description, $amount
           );
