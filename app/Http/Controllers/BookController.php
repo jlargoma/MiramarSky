@@ -516,6 +516,9 @@ class BookController extends AppController
           $send_notif = $book->customer->send_notif ? 'checked' : '';
         }
         
+        $otaURL = $this->getOtaURL($book);
+        
+    
         return view('backend/planning/update'.$updateBlade, [
             'book'         => $book,
             'low_profit'   => $low_profit,
@@ -533,6 +536,7 @@ class BookController extends AppController
             'priceBook'    => $priceBook,
             'email_notif'  => $email_notif,
             'send_notif'   => $send_notif,
+            'otaURL'       => $otaURL,
         ]);
     }
 
@@ -2028,4 +2032,50 @@ class BookController extends AppController
     
     return 'Encuesta no enviada';
   }
+  
+  function getOtaURL($book){
+        $otaURL = null;
+        if ($book->agency == 1 && isset($_COOKIE["OTA_BOOKING"])) {
+          $prop_channel = [
+              'DDE' => 2092950,
+              'DDL' => 2092950,
+              'EstS' => 2092950,
+              'EstL' => 2092950,
+              'ESTG' => 4284223,
+              '7J' => 2942008,
+              '9R' => 6037501,
+              '9F' => 2942955,
+              '10I' => 5813366,
+              'CHLT' => 2798863,
+          ];
+          if (isset($prop_channel[$book->room->channel_group])){
+          $sess = $_COOKIE["OTA_BOOKING"];
+          $otaURL = 'https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/booking.html?res_id='.$book->external_id
+                  . '&hotel_id='.$prop_channel[$book->room->channel_group]	
+                  . '&extranet_search=1&'.$sess;
+          }
+        }
+        
+        if ($book->agency == 28){
+          $prop_channel = [
+            'DDE' => 51813430,
+            'DDL' => 51813430,
+            'EstS' => 51813430,
+            'EstL' => 51813430,
+            'ESTG' => 55092492,
+            '7J' => 51813430,
+            '9F' => 51813430,
+            '10I' => 51813430,
+            'CHLT' => 55092491,
+          ];
+          
+          if (isset($prop_channel[$book->room->channel_group])){
+          $otaURL = 'https://apps.expediapartnercentral.com/lodging/reservations/reservationDetails.html?htid='.$prop_channel[$book->room->channel_group]
+                  . '&reservationIds='.$book->external_id;
+          }
+        }
+        
+        return $otaURL;
+        
+    }
 }

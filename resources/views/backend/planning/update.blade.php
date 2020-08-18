@@ -62,9 +62,6 @@ $mobile = new Mobile();
             </div>
             <div class="col-md-4 push-10">
               <label for="phone">Telefono</label>
-              <?php if ($book->customer->phone == 0): ?>
-    <?php $book->customer->phone = "" ?>
-  <?php endif ?>
               <input class="form-control only-numbers cliente" type="text" name="phone"
                      value="<?php echo $book->customer->phone ?>"
                      data-id="<?php echo $book->customer->id ?>" <?php if (Auth::user()->role == "limpieza"): ?>disabled<?php endif ?>>

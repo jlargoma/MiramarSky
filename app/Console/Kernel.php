@@ -52,7 +52,7 @@ class Kernel extends ConsoleKernel
          $schedule->command('ical:import')->everyTenMinutes();
 //         $schedule->command('zodomus:import')->everyTenMinutes();
 //         $schedule->command('zodomus:importAll')->hourly();
-         $schedule->command('OGImportAll:importAll')->hourly();
+         $schedule->command('OGImportAll:import')->hourly();
          $schedule->command('OTAs:sendPricesSeason')->everyMinute();
 //         $schedule->command('OTAs:MinStaySeason')->everyMinute();
          $schedule->command('ProcessData:all')->everyFiveMinutes();
