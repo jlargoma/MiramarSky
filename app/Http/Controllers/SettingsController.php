@@ -209,6 +209,14 @@ class SettingsController extends AppController
                 $obj->save();
             }
         }
+        $session_ota_booking = $request->input('session_ota_booking');
+        if ($session_ota_booking && trim($session_ota_booking) != ''){
+          $url = parse_url($session_ota_booking);
+          if ( isset($url['query']) ){
+          $param = $url['query'];
+          setcookie("OTA_BOOKING", $param, time() + 36000);
+          }
+        }
         return back()->with('success-gral', 'Setting updated!');
     }
     

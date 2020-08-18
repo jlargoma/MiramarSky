@@ -18,6 +18,12 @@
             </td>
           </tr>
         <?php endforeach ?>
+        <tr>
+          <td >URL/Sesión en Booking.com</td>
+          <td class="text-center" >
+            <input class="form-control" type="text" name="session_ota_booking" id="session_ota_booking" value="" >
+          </td>
+        </tr> 
       </tbody>
     </table>
     <button class="btn btn-complete font-w400" type="submit">Guardar</button>

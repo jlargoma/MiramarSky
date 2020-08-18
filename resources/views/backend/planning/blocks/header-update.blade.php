@@ -31,12 +31,17 @@
           <h5>
             Creado por <?php echo "<b>" . strtoupper($book->user->name) . "</b>" ?>
             / ID: <?php echo "<b>" . $book->id . "</b>" ?>
-            <?php if ($book->external_id){ echo "/ OTA-ID: <b>" . $book->external_id . "</b>"; }?>
+            <?php if ($book->external_id){ 
+              if($otaURL){
+                echo '/ OTA-ID: <b><a href="'.$otaURL.'" target="_black">'. $book->external_id . "</a></b>"; 
+              } else {
+              echo "/ OTA-ID: <b>" . $book->external_id . "</b>"; 
+              }
+            }?>
+            <span style="display: none">{{$book->bkg_number}}</span>
           </h5>
           
         </div>
-          
-          
         <div class="row">
           @if ($book->type_book == 2)
           <div class="icon-lst">

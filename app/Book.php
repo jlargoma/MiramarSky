@@ -657,11 +657,13 @@ class Book extends Model {
         \App\WobookAvails::insert($WubookAvailDays);
       }
 
-      $resultLst[] = [
-          "avail" => $v,
-          "start" => $startAux2,
-          "end" => date('Y-m-d', strtotime($end)+$oneDay),
-      ];
+      if ($value){
+        $resultLst[] = [
+            "avail" => $value,
+            "start" => $startAux2,
+            "end" => date('Y-m-d', strtotime($end)+$oneDay),
+        ];
+      }
       
       //buscos los OTAs
       $otas = [];
