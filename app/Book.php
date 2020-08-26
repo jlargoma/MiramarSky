@@ -577,11 +577,11 @@ class Book extends Model {
     
     if ($room){
       $oRooms = Rooms::where('channel_group',$room->channel_group)->pluck('id')->toArray();
-      
+            
       $match1 = [['start','>=', $start ],['start','<=', $finish ]];
       $match2 = [['finish','>=', $start ],['finish','<=', $finish ]];
       $match3 = [['start','<', $start ],['finish','>', $finish ]];
-
+      
       $books = self::where_type_book_reserved()->whereIn('room_id',$oRooms)
             ->where(function ($query) use ($match1,$match2,$match3) {
               $query->where($match1)
@@ -593,8 +593,10 @@ class Book extends Model {
       $oneDay = 24*60*60;
       
       //Prepara la disponibilidad por día de la reserva
+      $today = strtotime(date('Y-m-d'));
       $startAux = strtotime($start);
       $endAux = strtotime($finish);
+      if ($startAux<$today) $startAux = $today;
       $aLstDays = [];
       while ($startAux<$endAux){
         $aLstDays[date('Y-m-d',$startAux)] = $avail;
@@ -622,49 +624,64 @@ class Book extends Model {
           }
         }
       }
-    
       //Genero el listado para enviar a Zodomus
       $resultLst = [];
+      $WubookAvailDays = [];
       $startAux2 = $end = $value = null;
-      foreach ($aLstDays as $d => $v) {
-        if ($value === null) {
-          $value = $v;
-          $startAux2 = $d;
-        }
-        if ($value != $v) {
+      if (count($aLstDays) == 1){
+        foreach ($aLstDays as $d => $v) {
           $resultLst[] = [
-              "avail" => $value,
-              "start" => $startAux2,
-              "end" => date('Y-m-d', strtotime($end)+$oneDay),
+                "avail" => $v,
+                "start" => $d,
+                "end" => date('Y-m-d', strtotime($d)+$oneDay),
+            ];
+          //Wubook Items: just to RIAD and HotelRosa
+          if ($room->site_id != 3)
+            $WubookAvailDays[] = [
+              'channel_group' => $room->channel_group,
+              'date'          => $d,
+              'avail'         => $v
           ];
-
-          $value = $v;
-          $startAux2 = $d;
         }
+      } else {
+        foreach ($aLstDays as $d => $v) {
+          if ($value === null) {
+            $value = $v;
+            $startAux2 = $d;
+          }
+          if ($value != $v) {
+            $resultLst[] = [
+                "avail" => $value,
+                "start" => $startAux2,
+                "end" => date('Y-m-d', strtotime($end)+$oneDay),
+            ];
 
-        $end = $d;
+            $value = $v;
+            $startAux2 = $d;
+          }
+
+          $end = $d;
         
-        $WubookAvailDays[] = [
-          'channel_group' => $room->channel_group,
-          'date'          => $d,
-          'avail'         => $v
-        ];
+            $WubookAvailDays[] = [
+              'channel_group' => $room->channel_group,
+              'date'          => $d,
+              'avail'         => $v
+            ];
          
+        }
       }
-      
       //save the new availibility
       if (count($WubookAvailDays)){
         \App\WobookAvails::insert($WubookAvailDays);
       }
-
-      if ($value){
+      if ($value !== null){
         $resultLst[] = [
             "avail" => $value,
             "start" => $startAux2,
             "end" => date('Y-m-d', strtotime($end)+$oneDay),
         ];
       }
-      
+     
       //buscos los OTAs
       $otas = [];
       $aptos = configZodomusAptos();
@@ -686,6 +703,8 @@ class Book extends Model {
             ];
          
           $return = $Zodomus->setRoomsAvailability($paramAvail);
+          
+//           if (isset($_POST['date_range']))   dd($return);
         }
       }
       

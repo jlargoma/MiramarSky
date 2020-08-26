@@ -1011,6 +1011,7 @@ class BookController extends AppController
       $book->type_book = 0;
 
       if ($book->save()) {
+        $book->sendAvailibilityBy_status($book->start,$book->finish);
         return [
             'status' => 'success',
             'title' => 'OK',
