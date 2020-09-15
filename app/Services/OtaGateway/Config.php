@@ -74,20 +74,29 @@ class Config {
     return $params;
   }
 
-  public function priceByChannel($price,$channelId=null,$room=null,$text=false) {
+  public function priceByChannel($price,$channelId=null,$room=null,$text=false,$nights=1) {
       
       if (!$price || !is_numeric($price)){
         if ($text) $price = 1;
         else return null;
       }
+      
+      if (is_numeric($room)){
+        $aux = array_search($room, $this->getRooms());
+        if ($aux) $room = $aux;
+      }
+      
+      
+      
+      
       $priceText = '';
       //Parking
       if ($channelId <3){
         if ( in_array($room, ['7J','9F',47074,47076]) ){ //name o ID equivalent
-          $price += 40; 
+          $price += 40*$nights;  
           $priceText = '(PVP+40€)';
         } else {
-          $price += 20; 
+          $price += 20*$nights;  
           $priceText = '(PVP+20€)';
         }
       }
@@ -95,7 +104,7 @@ class Config {
       switch ($channelId){
         case 1:
         case "1": //"Booking.com",
-          if ($room == 'DDL'){
+          if ($room == 'DDL' || $room == 'EstL' || $room == '9F'){
             $price = $price+($price*0.24);
             $priceText .= '+24%';
           }
@@ -120,7 +129,6 @@ class Config {
           $priceText = '+12%';
           break;
       }
-      
       
       if ($text) return $priceText;
       return $price;

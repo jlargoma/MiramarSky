@@ -367,6 +367,14 @@ class OtaGateway {
     $book->external_id = $reserv['reser_id'];
     $book->bkg_number = $reserv['bkg_number'];
     $book->external_roomId = $reserv['external_roomId'];
+    $book->type_book = 11;
+    $book->type_park = 1;
+    
+    $room = \App\Rooms::find($roomID);
+    if ($room && $room->luxury == 1){
+      $book->type_luxury = 1;
+    }
+    
     $book->save();
 
     $this->updBooking($book, $reserv);
@@ -408,7 +416,7 @@ class OtaGateway {
     $book->nigths = $reserv['nigths'];
     $book->comment = $comment;
     $book->book_comments = $book_comments;
-    $book->type_book = 11;
+    
     $book->agency = $reserv['agency'];
     $book->pax = $pax;
     $book->real_pax = $pax;

@@ -82,6 +82,8 @@ class PricesController extends AppController {
     $oSetting = new \App\Settings();
     $priceExtrPax = \App\Settings::getKeyValue('price_extr_pax');
      
+    $dw = listDaysSpanish(true);
+     
     return view('backend/prices/index', [
         'seasons' => $oSeasonType,
         'newseasons' => $oSeasonType,
@@ -90,6 +92,7 @@ class PricesController extends AppController {
         'typeSeasonsTemp' => $oSeasonType,
         'year' => $year,
         'diff' => $diff,
+        'dw' => $dw,
         'startYear' => $startYear,
         'endYear' => $endYear,
         'ch_group' => $ch_group,

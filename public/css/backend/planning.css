@@ -161,6 +161,22 @@ div.dataTables_length {
     padding: 10px !important;
 }
 
+.checkout .table-icon-row {
+    width: 2em;
+    float: right;
+    position: relative;
+}
+.content-tables table.dataTable thead .sorting:after,
+.content-tables table.dataTable thead .sorting_asc:after,
+.content-tables table.dataTable thead .sorting_desc:after,
+.content-tables table.dataTable thead .sorting_asc_disabled:after,
+.content-tables table.dataTable thead .sorting_desc_disabled:after{
+  display: none;
+  opacity: 0 !important;
+}
+
+/******************************************************************************/
+
 @media only screen and (max-width: 991px){
   button.btn.changeStatus,
   button.btn.changeRoom {
