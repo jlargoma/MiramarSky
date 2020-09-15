@@ -195,6 +195,18 @@ class ZodomusController extends Controller {
   }
 
   public function calendRoomUPD(Request $request, $apto) {
+    if ($apto == 'ALL'){
+      $aptos = configZodomusAptos();
+      foreach ($aptos as $k=>$v){
+        $this->calendRoomUPD_byRoom($request, $k);
+      }
+      return response()->json(['status'=>'OK','msg'=>'datos cargados']);
+    } else {
+      return $this->calendRoomUPD_byRoom($request, $apto);
+    }
+  }
+  
+  public function calendRoomUPD_byRoom(Request $request, $apto) {
     
     $date_range = $request->input('date_range', null);
     

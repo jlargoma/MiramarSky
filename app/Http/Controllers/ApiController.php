@@ -54,9 +54,8 @@ class ApiController extends AppController
         foreach ($oItems as $item){
           $roomData = $this->getRoomsPvpAvail($date_start,$date_finish,$pax,$item->channel_group);
           if ($roomData['price']<1) continue;
-          $roomPrice = $this->getPriceOrig($roomData['price']); //Booking price
+          $roomPrice = $this->getPriceOrig($roomData['price'],$item->channel_group,$nigths); //Booking price
           $minStay = $roomData['minStay'];
-          
           $pvp_1 = $roomPrice - ($roomPrice*$this->discount_1) + $roomData['price_limp'];
           $roomPrice = $roomPrice + $roomData['price_limp']+round($roomData['price_limp']*$this->discount_1,2);
           $pvp_2 = 99999;
@@ -311,7 +310,7 @@ class ApiController extends AppController
         //Creacion de la reserva
         $book = new \App\Book();
       }
-
+        $nigths = calcNights($date_start, $date_finish);
         $book->room_id       = $room->id;
         $book->start         = $date_start;
         $book->finish        = $date_finish;
@@ -319,7 +318,7 @@ class ApiController extends AppController
         $book->type_book     = 99;
         $book->pax           = $pax;
         $book->real_pax      = $pax;
-        $book->nigths        = calcNights($date_start, $date_finish);
+        $book->nigths        = $nigths;
         $book->PVPAgencia    = 0;
         $book->is_fastpayment = 0;//1;
         $book->user_id = 1;
@@ -345,7 +344,7 @@ class ApiController extends AppController
         $book->cost_limp = $costes['cost_limp'];
         
         $pvp = $room->getPVP($date_start, $date_finish,$book->pax);
-        $roomPrice = $this->getPriceOrig($pvp); //Booking price
+        $roomPrice = $this->getPriceOrig($pvp,$room->channel_group,$nigths); //Booking price
         if ($rate == 1)  $pvp = $roomPrice - ($roomPrice*$this->discount_1);
         if ($rate == 2)  $pvp = $roomPrice - ($roomPrice*$this->discount_2);
           
@@ -492,9 +491,9 @@ class ApiController extends AppController
     
     
     
-    private function getPriceOrig($pvp) {
-      $zConfig = new \App\Services\Zodomus\Config();
-      return $zConfig->priceByChannel($pvp,1); //Booking price
+    private function getPriceOrig($pvp,$ChGr,$nigths) {
+      $oConfig = new \App\Services\OtaGateway\Config();
+      return $oConfig->priceByChannel($pvp,1,$ChGr,false,$nigths); //Booking price
     }
     
     public function changeCustomer(Request $request) {

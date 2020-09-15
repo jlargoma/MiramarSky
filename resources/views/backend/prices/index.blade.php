@@ -70,6 +70,41 @@
         font-size: 11px;
         cursor: pointer;
     }
+  .weekdays:first-child {
+    margin-left: 10px;
+  }
+  .weekdays {
+    float: left;
+    width: 12%;
+  }
+    .weekdays label {
+    display: block;
+    padding-left: 10px;
+    text-indent: -17px;
+    color:#a7a7a7;
+  }
+
+  .weekdays input {
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: 0;
+    vertical-align: bottom;
+    position: relative;
+    top: -1px;
+  }
+  
+  input:checked + span {
+    color: #2b5d9b;
+  }
+  
+  .btn_days {
+    padding: 4px 15px;
+  }
+  .btn_days.active {
+    background-color: #2b5d9b;
+    color: #fff;
+  }
 </style>
 
 <div class="container-fluid padding-25 sm-padding-10">
@@ -145,7 +180,7 @@
   <script src="/assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js" type="text/javascript"></script>
   <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/datatables.responsive.js"></script>
   <script type="text/javascript" src="/assets/plugins/datatables-responsive/js/lodash.min.js"></script>
-
+<script type="text/javascript" src="/js/datePicker01.js"></script>
   <script type="text/javascript">
       $(document).ready(function() {
 
@@ -262,7 +297,83 @@
             });
           }
         });
+      /**********************************************************************/
       
+      
+
+  var allDayW = function(){
+    $('.btn_days').removeClass('active');
+    for(i=0; i<7; i++){
+      $('#dw_'+i).prop("checked", true);
+    }
+  }
+
+  var pintar = function (start, end) {
+    
+    var el_lst = $(".fc-bg");
+    var limit = 30;
+    var oneDay = 24*60*60;
+    $('.calend_select').removeClass('calend_select');
+    
+    // seconds * minutes * hours * milliseconds = 1 day 
+    var day = 60 * 60 * 24 * 1000;
+    start = new Date(start.getTime() + day);
+    end = new Date(end.getTime() + day);
+
+    while( limit && start <= end){
+      el_lst.find("[data-date='" + start.yyyymmmdd() + "']").addClass('calend_select'); 
+      start = new Date(start.getTime() + day);
+      limit--;
+    }
+
+
+  }
+
+  $('#selAllDays').on('click', function (e) {
+    $('.btn_days').removeClass('active');
+    $(this).addClass('active');
+    allDayW();
+  });
+  $('#selWorkdays').on('click', function (e) {
+     $('.btn_days').removeClass('active');
+    $(this).addClass('active');
+    allDayW();
+    $('#dw_5').prop("checked", false);
+    $('#dw_6').prop("checked", false);
+  });
+   $('#selHolidays').on('click', function (e) {
+      $('.btn_days').removeClass('active');
+    $(this).addClass('active');
+    for(i=0; i<7; i++){
+      $('#dw_'+i).prop("checked", false);
+    }
+    $('#dw_5').prop("checked", true);
+    $('#dw_6').prop("checked", true);
+  });
+
+  $('#channelFormMinStay').on('submit', function (event) {
+
+    event.preventDefault();
+    $('#error').text('').hide();
+    $('#success').text('').hide();
+    var form_data = $(this).serialize();
+    var url = $(this).attr('action');
+    $.ajax({
+      type: "POST",
+      url: url,
+      data: form_data, // serializes the form's elements.
+      success: function (data)
+      {
+        if (data.status == 'OK') {
+          $('#success').text(data.msg).show();
+        } else {
+          $('#error').text(data.msg).show();
+        }
+      }
+    });
+  });
+  
+  /***********************************************************************/
   });
 </script>
 @endsection
