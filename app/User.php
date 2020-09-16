@@ -52,4 +52,8 @@ class User extends Authenticatable
           'subadmin',
       ];
     }
+    
+    static function getUsersNames(){
+      return self::all()->pluck('name','id');
+    }
 }

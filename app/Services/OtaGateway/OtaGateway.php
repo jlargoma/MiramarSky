@@ -77,30 +77,7 @@ class OtaGateway {
     $this->responseCode = $httpCode;
     $this->response = \json_decode($result);
     return TRUE;
-    switch ($httpCode) {
-      case 200:
-        if (!$result) {
-          $this->response = null;
-          return FALSE;
-        }
-        $this->response = \json_decode($result);
-        return TRUE;
-        break;
-      case 400:
-        $this->response = 'Wrong data - Bad Request';
-        break;
-      case 401:
-        $this->response = $result;
-        break;
-      case 404:
-        $this->response = $result; //'NotFound';
-        break;
-      default :
-        $this->response = 'Server error';
-        break;
-    }
-
-    return FALSE;
+   
   }
 
   public function conect() {

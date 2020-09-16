@@ -197,9 +197,40 @@ class ZodomusController extends Controller {
   public function calendRoomUPD(Request $request, $apto) {
     if ($apto == 'ALL'){
       $aptos = configZodomusAptos();
+      $count = 0;
       foreach ($aptos as $k=>$v){
         $this->calendRoomUPD_byRoom($request, $k);
+        $count++;
       }
+      /*******************************/
+      // save log data
+      $lData = new \App\LogsData();
+          
+      $date_range = $request->input('date_range', null);
+      $date = explode(' - ', $date_range);
+      $startTime = convertDateToDB($date[0]);
+      $endTime = convertDateToDB($date[1]);
+      
+      $weekDays = [];
+      $diaSemana = listDaysSpanish(true); 
+      for($i=0;$i<7;$i++){
+        if ($request->input('dw_' . $i, null)){
+          $weekDays[] = $diaSemana[$i];
+        }
+      }
+      $min_estancia = $request->input('min_estancia', null);
+      $dataLog = [
+          'min_estancia' => $min_estancia,
+          'startDate'=> $startTime,
+          'endDate'  => $endTime,
+          'weekDays' => implode(', ', $weekDays),
+          'userID'   => Auth::user()->id
+      ];
+      $lData->key  = "min_stay_group";
+      $lData->data =  $count.' Registros cargados';
+      $lData->long_info = json_encode($dataLog);
+      $lData->save();
+      /*******************************/
       return response()->json(['status'=>'OK','msg'=>'datos cargados']);
     } else {
       return $this->calendRoomUPD_byRoom($request, $apto);

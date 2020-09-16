@@ -105,6 +105,15 @@
     background-color: #2b5d9b;
     color: #fff;
   }
+    .table-logs tr td{
+    text-align: center;
+    padding: 3px 5px !important;
+  }
+  .table-logs tr th{
+    white-space: nowrap;
+    font-weight: bold;
+    text-align: center;
+  }
 </style>
 
 <div class="container-fluid padding-25 sm-padding-10">
@@ -297,10 +306,8 @@
             });
           }
         });
-      /**********************************************************************/
-      
-      
 
+  /**********************************************************************/
   var allDayW = function(){
     $('.btn_days').removeClass('active');
     for(i=0; i<7; i++){
@@ -358,6 +365,7 @@
     $('#success').text('').hide();
     var form_data = $(this).serialize();
     var url = $(this).attr('action');
+     $('#loadigPage').show('slow');
     $.ajax({
       type: "POST",
       url: url,
@@ -369,6 +377,7 @@
         } else {
           $('#error').text(data.msg).show();
         }
+         $('#loadigPage').hide('slow');
       }
     });
   });

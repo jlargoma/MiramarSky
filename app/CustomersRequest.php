@@ -23,7 +23,7 @@ class CustomersRequest extends Model
       if(isset($data['pax']))    $customer->pax = trim($data['pax']);
       if(isset($data['start']))  $customer->start = trim($data['start']);
       if(isset($data['end']))    $customer->finish = trim($data['end']);
-      
+      $customer->status = 0;
       $customer->save();
     }   
   }
