@@ -504,9 +504,30 @@ class ApiController extends AppController
         $oCustomer = \App\Customers::where('api_token',$token)->first();
         if ($oCustomer && $oCustomer->api_token === $token){
           
-          if (isset($cData['c_name']))  $oCustomer->name    = $cData['c_name'];
-          if (isset($cData['c_mail'])) $oCustomer->email   = $cData['c_mail'];
-          if (isset($cData['c_phone'])) $oCustomer->phone   = $cData['c_phone'];
+          if (!(isset($cData['c_name']) && isset($cData['c_mail']) && isset($cData['c_phone']))){
+            return response()->json(['success'=>false,'data'=>'Los campos son requeridos'],401);
+          }
+          
+          $name = trim($cData['c_name']);
+          $email = trim($cData['c_mail']);
+          $phone = trim($cData['c_phone']);
+          
+          if (strlen($name)<8 || strlen($name)>125)
+            return response()->json(['success'=>false,'data'=>'El nombre es requerido.'],401);
+          
+          if (strlen($email)<8 || strlen($email)>125)
+            return response()->json(['success'=>false,'data'=>'La dirección de correo es requerida.'],401);
+            
+          if(filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE)
+            return response()->json(['success'=>false,'data'=>'La dirección de correo es requerida.'],401);
+          
+          if (strlen($phone)<6 || strlen($phone)>125)
+            return response()->json(['success'=>false,'data'=>'El teléfono es requerido.'],401);
+          
+          
+          if ($name)  $oCustomer->name    = $name;
+          if ($email) $oCustomer->email   = $email;
+          if ($phone) $oCustomer->phone   = $phone;
           
           $oCustomer->api_token= encriptID($oCustomer->id).bin2hex(time());
           $oCustomer->save();

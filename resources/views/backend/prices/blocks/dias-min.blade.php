@@ -40,4 +40,31 @@
     <p class="alert alert-danger" style="display:none;" id="error"></p>
     <p class="alert alert-success" style="display:none;" id="success"></p>
   </div>
+  
+  @if(count($logMinStays))
+  <div class="table-responsive table-logs">
+    <table class="table">
+      <thead>
+        <tr>
+          <th >Fecha</th>
+          <th >Min. Stay</th>
+          <th >Días</th>
+          <th >Usuario</th>
+        </tr>
+      </thead>
+      @if($logMinStays)
+      <tbody>
+        @foreach($logMinStays as $item)
+        <tr>
+          <td class="nowrap">{{$item['start']}} / {{$item['end']}}</td>
+          <td class="nowrap">{{$item['min_stay']}}</td>
+          <td class="">{{$item['weekDays']}}</td>
+          <td class="nowrap">{{$item['user']}}</td>
+        </tr>
+        @endforeach
+        </tbody>
+      @endif
+    </table>
+  </div>
+  @endif
 </div>

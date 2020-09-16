@@ -83,11 +83,30 @@ class PricesController extends AppController {
     $priceExtrPax = \App\Settings::getKeyValue('price_extr_pax');
      
     $dw = listDaysSpanish(true);
+    /************************************************************************/
+    
+    $logMinStays = [];
+    $min_stayLogs = \App\LogsData::where('key','min_stay_group')->orderBy('created_at','DESC')->get();
+    if ($min_stayLogs){
+      $usersNames = \App\User::getUsersNames();
+      foreach ($min_stayLogs as $item){
+        $dataLog = json_decode($item->long_info);
+        $logMinStays[] = [
+          'start'    => convertDateToShow_text($dataLog->startDate),
+          'end'      => convertDateToShow_text($dataLog->endDate),
+          'user'     => isset($usersNames[$dataLog->userID]) ?  $usersNames[$dataLog->userID] : '',
+          'min_stay' => $dataLog->min_estancia,  
+          'weekDays' => $dataLog->weekDays,  
+        ];
+      }
+    }
+    /************************************************************************/
      
     return view('backend/prices/index', [
         'seasons' => $oSeasonType,
         'newseasons' => $oSeasonType,
         'seasonsTemp' => $seasonTemp,
+        'logMinStays' => $logMinStays,
         'newtypeSeasonsTemp' => $oSeasonType,
         'typeSeasonsTemp' => $oSeasonType,
         'year' => $year,
