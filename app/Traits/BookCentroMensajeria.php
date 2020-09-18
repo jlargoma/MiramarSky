@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Book;
 use App\BookPartee;
 use App\PaymentOrders;
-
+use Illuminate\Support\Facades\Auth;
 trait BookCentroMensajeria {
 
   /**
@@ -1002,23 +1002,172 @@ trait BookCentroMensajeria {
     return view('backend/planning/_safety-boxs', compact('books', 'safety_boxes', 'isMobile', 'today'));
   }
 
-  public function getCustomersRequestLst() {
+  
+  /***********************************************************************/
+  public function getCustomersRequestLst(){
 
-    $items = \App\CustomersRequest::where('status', 0)
-            ->where('created_at', '>=', date('Y-m-d', strtotime('-7 days')))
-            ->get();
-
+    $items = \App\CustomersRequest::where('status',0)
+                ->where('updated_at','>=',date('Y-m-d', strtotime('-7 days')))
+                ->get();
+     
+    /*********************************************/
+    
+    $users = \App\User::where('role','!=','limpieza')->get();
+    $aUsers = [];
+    foreach ($users as $v){
+      $aUsers[$v->id] = $v->name;
+    }
     $isMobile = config('app.is_mobile');
-    return view('backend/planning/_customers-request', compact('items', 'isMobile'));
-  }
+    return view('backend/planning/_customers-request',compact('items','isMobile','aUsers'));
 
+  }   
   public function hideCustomersRequest(Request $request) {
+          
+    $ID = $request->input('id',null);
+    $user_id = $request->input('userID',null);
+    $comment = $request->input('comments',null);
 
-    $ID = $request->input('id', null);
+    $item = \App\CustomersRequest::find($ID);
+    if ($item){
+      $item->user_id = $user_id;
+      $item->comment = $comment;
+      $item->update_by = Auth::user()->id;
+      $item->status =  1; // ignered;
+      $item->save();
+      return 'OK';
+    }
+    return 'error';
+  }   
+    
+  public function saveCustomerRequest(Request $request) {
+          
+    $ID = $request->input('id',null);
+    $user_id = $request->input('userID',null);
+    $comment = $request->input('comments',null);
+    $send_mail = $request->input('send_mail',null);
 
-    $items = \App\CustomersRequest::where('id', $ID)->update(['status' => 1]);
+    $item = \App\CustomersRequest::find($ID);
+    if ($item){
+      if ($user_id == -2){
+        $item->delete();
+        return 'OK';
+      }
+      $item->user_id = $user_id;
+      $item->comment = $comment;
+      $item->update_by = Auth::user()->id;
+      $item->save();
+  
+      if ($send_mail){
+        $email = $item->email;
+        $subject = "Reservas Apartamiento Sierra Nevada";
+        $sended = Mail::send('backend.emails.base', [
+            'mailContent' => nl2br($comment),
+            'title'       => $subject,
+        ], function ($message) use ($subject,$email) {
+            $message->from(env('MAIL_FROM'));
+            $message->to($email);
+            $message->subject($subject);
+        });
+        if ($sended){
+          $item->sentMail();
+        } else {
+          return 'errorMail';
+        }
+      }
+      
+      return 'OK';
+    }
+    return 'error';
+  }   
+  
+  public function getCustomersRequest(Request $request) {
+          
+    $ID = $request->input('id',null);
 
-    return 'ok';
-  }
-
+    $item = \App\CustomersRequest::where('id', $ID)->first();
+    if ($item){
+      $status = 'Sin atender';
+      
+      if ($item->status == 1) $status = 'Ignorada';
+      
+      $booking = '';
+      if ($item->book_id){
+        $status = 'Converida a Reserva';
+        $booking = '<a href="/admin/reservas/update/'.$item->book_id.'" tarjet="_black">'.$item->book_id.'</a>';
+      }
+    
+      if (!$item->user_id){
+        $item->user_id = Auth::user()->id;
+      }
+      
+      $req = [
+          'id'     => $item->id,
+          'user_id'=> $item->user_id,
+          'name'   => $item->name,
+          'email'  => $item->email,
+          'pax'    => $item->pax,
+          'price'  => moneda($item->getMediaPrice()),
+          'phone'  => '<a href="tel:+'.$item->phone.'">'.$item->phone.'</a>',
+          'comment'=> $item->comment,
+          'date'   => dateMin($item->start).' - '.dateMin($item->finish),
+          'status' => $status,
+          'booking'=> $booking,
+          'created'=> convertDateTimeToShow_text($item->created_at),
+          'canBooking' => ($item->start>=date('Y-m-d')),
+          'mails' => $item->getMetasContet('mailSent')
+      ];
+      
+      return response()->json($req);
+    }
+  }   
+  
+  public function getCustomersRequest_book($bookID) {
+    $userID = Auth::user()->id;
+    $comment = '';
+    $item = \App\CustomersRequest::where('book_id', $bookID)->first();
+    if ($item){
+      if ($item->user_id){
+        $userID = $item->user_id;
+      }
+      $comment = $item->comment;
+    } else {
+      $oBook = Book::find($bookID);
+      $item = new \App\CustomersRequest();
+      $item->user_id = $userID;
+      $item->book_id = $bookID;
+      $item->site_id =  $oBook->room->site_id;
+      $item->pax =  $oBook->pax;
+      $item->name = $oBook->customer->name.' B-'.$oBook->id;
+      $item->status =  1; // ignered;
+      $item->save();
+    }
+    
+    
+    $users = \App\User::where('role','!=','limpieza')->get();
+    $aUsers = [];
+    foreach ($users as $v){
+      $aUsers[$v->id] = $v->name;
+    }
+    ?>
+      <div class="">
+        <div class="form-group">
+          <label>Usuario</label>
+          <select id="CRE_user" class="form-control">
+            <?php  foreach ($users as $v):
+              $select = ($v->id === $userID) ? 'selected' : '';
+              echo '<option value="'.$v->id.'" '.$select.'>'.$v->name.'</option>';
+              endforeach;
+            ?>
+            <option value="-2">ELIMINAR</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Comentario</label>
+          <textarea class="form-control" id="CRE_comment" rows="5"><?php echo $comment; ?></textarea>
+        </div>
+        <button class="btn btn-primary" id="saveCustomerRequest" type="button" data-id="<?php echo $item->id; ?>">Guardar</button>
+      </div>
+    <?php
+  }   
+  /****************************************************************************/
 }

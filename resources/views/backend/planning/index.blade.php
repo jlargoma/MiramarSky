@@ -27,7 +27,7 @@ $is_mobile = $mobile->isMobile();
     <?php if (!$is_mobile ): ?>
         <div class="container-fluid  p-l-15 p-r-15 p-t-20 bg-white">
             @include('backend.years.selector', ['minimal' => false])
-            @include('backend.planning._buttons_top',[
+            @include('backend.planning.blocks._buttons_top',[
             'alarms'=>$alarms,
             'lastBooksPayment'=>$lastBooksPayment,
             'alert_lowProfits'=>$alert_lowProfits,
@@ -239,7 +239,7 @@ $is_mobile = $mobile->isMobile();
                 </div>
               </div>
             </div>
-            @include('backend.planning._buttons_top',[
+            @include('backend.planning.blocks._buttons_top',[
             'alarms'=>$alarms,
             'lastBooksPayment'=>$lastBooksPayment,
             'alert_lowProfits'=>$alert_lowProfits,
@@ -996,40 +996,180 @@ $('body').on('click','.deleteBook',function(event) {
       });
       
       
-          
-  // CARGAMOS POPUP DE CLIENTES POSIBLES
+/****************************************************************************/
+
+
+    // CARGAMOS POPUP DE CLIENTES POSIBLES
   $('#btnCustomersRequest').click(function (event) {
     $('#modalBookSafetyBox').modal('show');
     $('#_BookSafetyBox').empty().load('/admin/get-CustomersRequest');
   });
 
-  $('#_BookSafetyBox').on('click','.hideCustomerRequest',function(){
-    var ObjTR = $(this).closest('tr');
+  $('#_BookSafetyBox').on('click','.editCustomerRequest',function(){
     var id = $(this).data('id');
-    $.post('/admin/hideCustomersRequest', {_token: "{{ csrf_token() }}", id: id}, function (data) {
-      ObjTR.remove();
-    });
-  });
-  $('#_BookSafetyBox').on('click','.filterSite',function(){
-    var site_id = $(this).data('key');
-    $('.filterSite').removeClass('active');
-    $(this).addClass('active');
-    $('#_BookSafetyBox tr').each(function(item){
-      if (item == 0){
-         $(this).show();
+    $.post('/admin/getCustomersRequest', {_token: "{{ csrf_token() }}", id: id}, function (data) {
+      $('#_BookSafetyBox').find('#customerRequestTable').hide();
+      var edit = $('#_BookSafetyBox').find('#customerRequestEdit');
+      edit.show();
+      
+      edit.find('#CRE_name').html(data.name);
+      edit.find('#CRE_email').html(data.email);
+      edit.find('#CRE_pax').html(data.pax);
+      edit.find('#CRE_phone').html(data.phone);
+      edit.find('#CRE_date').html(data.date);
+      edit.find('#CRE_site').html(data.site);
+      edit.find('#CRE_status').html(data.status);
+      edit.find('#CRE_comment').html(data.comment);
+      edit.find('#CRE_booking').html(data.booking);
+      edit.find('#CRE_user').val(data.user_id);
+      if (data.canBooking){  
+        $('#convertCustomerRequest').data('id',id);
+        $('#convertCustomerRequest').attr('disable',false);
       } else {
-        if (site_id>0){
-          if ($(this).data('site') == site_id) $(this).show();
-          else  $(this).hide();
-        } else {
-          $(this).show();
-        }
+        $('#convertCustomerRequest').attr('disable',true);
       }
-      console.log(item);
+      $('#hideCustomerRequest').data('id',id);
+      $('#saveCustomerRequest').data('id',id);
+      
+      if (data.mails){  
+        var table = $('#_BookSafetyBox').find('#tableSentMails');
+        table.html('');
+        $.each((data.mails), function(index, item) {
+           var row = '<tr>';
+           var content = '<i class="fa fa-commenting seeComment"><div class="seeComment_body">'+nl2br(item.val)+'</div></i>';
+           row += '<td>' + item.username + '</td>';
+           row += '<td>' + item.date + '</td>';
+           row += '<td>' + content + '</td>';
+           row += '</tr>';
+           table.append(row);
+         });
+      }
+      
     });
   });
- });
-
+  $('#_BookSafetyBox').on('click','#hideCustomerRequest',function(){
+    var id = $(this).data('id');
+    var ObjTR =  $('#_BookSafetyBox').find('#tr_CRT_'+id);
+    var user_id = $('#CRE_user').val();
+    if (user_id=="" ){
+      alert('El usuario es requerido');
+      return;
+    }
+    var data = {
+      _token: "{{ csrf_token() }}",
+      id: id,
+      userID: $('#CRE_user').val(),
+      comments: $('#CRE_comment').val(),
+    };
+    
+    $.post('/admin/hideCustomersRequest', data, function (response) {
+      if (response == 'OK'){
+        ObjTR.remove();
+        $('#_BookSafetyBox').find('#customerRequestTable').show();
+        $('#_BookSafetyBox').find('#customerRequestEdit').hide()
+      } else {
+        window.show_notif('','error', 'El item no pudo ser removido.');
+      }
+    });
+  });
+  
+  $('#_BookSafetyBox').on('change','#CRE_send_mail',function(){
+    if ($(this).is(':checked'))   $(this).closest('.form-check').addClass('alert-danger');
+      else    $(this).closest('.form-check').removeClass('alert-danger');
+  });
+    
+  $('#_BookSafetyBox').on('click','#saveCustomerRequest',function(){
+    var id = $(this).data('id');
+    var ObjTR =  $('#_BookSafetyBox').find('#tr_CRT_'+id);
+    var user_id = $('#CRE_user').val();
+    if (user_id=="" ){
+      alert('El usuario es requerido');
+      return;
+    }
+    var data = {
+      _token: "{{ csrf_token() }}",
+      id: id,
+      userID: $('#CRE_user').val(),
+      comments: $('#CRE_comment').val(),
+      send_mail: ($('#CRE_send_mail').is(':checked') ? 1 : 0),
+    };
+    
+    $.post('/admin/saveCustomerRequest', data, function (response) {
+      if (response == 'OK'){
+        window.show_notif('','success', 'Item guardado.');
+        $('#_BookSafetyBox').empty().load('/admin/get-CustomersRequest');
+      } else {
+        if (response == 'errorMail')
+          window.show_notif('','error', 'No se pudo enviar el registro.');
+        else   window.show_notif('','error', 'No se pudo guardar el registro.');
+      }
+    });
+  });
+  
+  $('#_BookSafetyBox').on('click','#cancelCustomerRequest',function(){
+    var ObjTR =  $('#_BookSafetyBox');
+    ObjTR.find('#customerRequestTable').show();
+    ObjTR.find('#customerRequestEdit').hide()
+  });
+  $('#_BookSafetyBox').on('click','#convertCustomerRequest',function(){
+    var id = $(this).data('id');
+    if (!id){
+      window.show_notif('','error', 'No se puede generar la reserva.');
+      return;
+    }
+    var data = {
+      _token: "{{ csrf_token() }}",
+      cr_id: id,
+      userID: $('#CRE_user').val(),
+      comments: $('#CRE_comment').val(),
+    };
+    
+    $('#modalCalculateBook .modal-content').empty()
+            .load('/admin/reservas/help/calculateBook',data,function(){
+              $('#modalBookSafetyBox').modal('hide');
+              $('#modalCalculateBook').modal();
+              $('#form-book-apto-lujo').submit();
+    });
+//    $.post('/admin/reservas/new',data, function (data) {
+//      
+//      $('#modalBookSafetyBox').modal('hide');
+//      $("#modalNewBook").modal();
+//      $('.contentNewBook').empty().append(data);
+//    });
+  });
+ 
+  /****************************************************************************/
+  
+  $('body').on('click','.calc_createNew',function(){
+    var id = $(this).data('room');
+    if (!id){
+      window.show_notif('','error', 'No se puede generar la reserva.');
+      return;
+    }
+    var luxury = $(this).data('luxury');
+    
+    var data = {
+      _token: "{{ csrf_token() }}",
+      calcular_id: id,
+      username: $('#calc_username').val(),
+      cr_id: $('#cr_id').val(),
+      calc_start: $('#calc_start').val(),
+      calc_finish: $('#calc_finish').val(),
+      calc_pax: $('#calc_pax').val(),
+      luxury: luxury,
+    };
+    
+    
+    $.post('/admin/reservas/new',data, function (data) {
+      $('#modalCalculateBook').modal('hide');
+      $("#modalNewBook").modal();
+      $('.contentNewBook').empty().append(data);
+      setTimeout(function () { calculate(null, false);}, 150);
+    });
+  });
+  
+  /****************************************************************************/
+  });
     </script>
 
 

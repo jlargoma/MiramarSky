@@ -27,8 +27,12 @@
   max-width: 85%;
 }
 .nav.navbar-nav.navbar-right{
-  max-width: 14%;
+  width: 7em;
   text-align: left;
+  border-left: 1px solid #fff;
+  overflow: hidden;
+  white-space: nowrap;
+
 }
 .navbar-inverse .navbar-nav > li > a {
   padding: 7px 10px;

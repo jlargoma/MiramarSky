@@ -222,7 +222,12 @@ class OtaGateway {
     }
     $params['token'] = $this->token;
     $params['account_id'] = $this->account_id;
-
+//    $params['booking_number'] = "F2DLL-130820";
+//    $params['created_from'] = '2020-06-09';
+//    $params['created_to'] = date('Y-m-d');
+//    $params['arrival_from'] = '2020-12-28';
+//    $params['arrival_to'] = '2021-01-26';
+    
     $this->call('bookings', 'GET', $params, $fixParam);
     return $this->response;
   }

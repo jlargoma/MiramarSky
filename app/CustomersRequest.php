@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class CustomersRequest extends Model
 {
@@ -27,4 +28,58 @@ class CustomersRequest extends Model
       $customer->save();
     }   
   }
+
+
+  public static function removeIfExist($email,$site_id){
+    $customer = CustomersRequest::where('email',$email)->where('site_id',$site_id)->first();
+    if ($customer){
+      $customer->delete();
+    }
+  }
+  
+  
+  public static function getCustomersLst(){
+    return CustomersRequest::whereNull('book_id')->get();
+  }
+  
+  public function getMediaPrice(){
+    return 0;
+  }
+  
+  /**********************************************************************/
+  /////////  customers_requests_meta //////////////
+  
+  public function getMetasContet($key) {
+    
+    $lst = DB::table('customers_requests_meta')
+            ->where('cr_id',$this->id)->where('meta_key',$key)->get();
+    $return = [];
+    if ($lst){
+      
+      $users = \App\User::where('role','!=','limpieza')->get();
+      $aUsers = [];
+      foreach ($users as $v){
+        $aUsers[$v->id] = $v->name;
+      }
+    
+      foreach ($lst as $item){
+        $return[] = [
+          'user_id' => $item->user_id,
+          'username' => isset($aUsers[$item->user_id]) ? $aUsers[$item->user_id] : '--',
+          'date' => convertDateTimeToShow_text($item->created_at),
+          'val' => $item->meta_value,
+        ];
+      }
+    }
+    
+    return $return;
+    
+  }
+  public function sentMail() {
+    DB::table('customers_requests_meta')->insert([
+        ['user_id' => $this->update_by, 'cr_id' => $this->id,'meta_key' => 'mailSent', 'meta_value' => $this->comment],
+    ]);
+  }
 }
+
+      
