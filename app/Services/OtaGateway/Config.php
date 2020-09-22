@@ -218,9 +218,7 @@ class Config {
 
   function getRoomsName() {
     return [
-        'CHLT' => 'CHALET LOS PINOS',
         'DDE' => '2 Dor. Est',
-        'ESTG' => 'EST.G',
         'DDL' => '2 Dor. Lujo',
         'EstS' => 'ESTUDIOS ESTÁNDAR',
         'EstL' => 'ESTUDIOS LUJO',
@@ -228,6 +226,8 @@ class Config {
         '9R' => '9R',
         '9F' => '9F',
         '10I' => '10I',
+        'ESTG' => 'EST.G',
+        'CHLT' => 'CHALET LOS PINOS',
     ];
   }
 
