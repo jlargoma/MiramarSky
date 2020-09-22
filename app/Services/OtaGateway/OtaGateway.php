@@ -146,15 +146,10 @@ class OtaGateway {
     $params['plan_id'] = $this->oConfig->Plans();
 //    $this->call('prices', 'POST', $params);
     
-    /* SEND TO Booking.com */
-    $this->setRatesOta($params,1);
-    /* SEND TO Expedia */
-    $this->setRatesOta($params,2);
-    /* SEND TO AirBnb */
-    $this->setRatesOta($params,3);
-    /* SEND TO GHotels */
-    $this->setRatesOta($params,99);
-    
+    $agencyLst = $this->oConfig->getAllAgency();
+    foreach ($agencyLst as $agenc => $id)
+      $this->setRatesOta($params,$id);
+
     return ($this->responseCode);
   }
   public function setRatesOta($params,$ota_id) {
@@ -177,15 +172,9 @@ class OtaGateway {
     $params['restriction_plan_id'] = $this->oConfig->restriction_plan();
 //    $this->call('restrictions', 'POST', $params);
     
-    /* SEND  Booking.com */
-    $this->setMinStayOta($params,1);
-    /* SEND TO Expedia */
-    $this->setMinStayOta($params,2);
-    /* SEND TO AirBnb */
-    $this->setMinStayOta($params,3);
-    /* SEND TO GHotels */
-    $this->setMinStayOta($params,99);
-    
+    $agencyLst = $this->oConfig->getAllAgency();
+    foreach ($agencyLst as $agenc => $id)
+      $this->setMinStayOta($params,$id);
     return ($this->responseCode);
   }
   public function setMinStayOta($params,$ota_id) {
@@ -389,7 +378,7 @@ class OtaGateway {
     }
 
 
-    if ($agency == 999999)
+    if ($agency == 99)
       $reserv['comision'] = intval($reserv['totalPrice']) * 0.12;
     $comment = $reserv['customer_comment'];
 

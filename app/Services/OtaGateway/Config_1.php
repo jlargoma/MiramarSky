@@ -74,7 +74,6 @@ class Config {
 
   public function priceByChannel($price, $channelId = null, $room = null, $text = false, $nights = 1) {
 
-   
     if (!$price || !is_numeric($price)) {
       if ($text)
         $price = 1;
@@ -82,7 +81,8 @@ class Config {
         return null;
     }
 
-    $roomsLst = $this->getRooms();
+
+    $roomsLst = $this->getRoomsName();
     $agencyLst = $this->getAllAgency();
 
     if (is_numeric($room)) {
@@ -114,16 +114,82 @@ class Config {
         if ($text)  return $priceText;
         return $price;
       }
-      
       //if the price is not load
+      dd($prices_ota,$room . $channelId);
       if ($text)  return '--';
         return null;
       
     } else {
        return null;
     }
+  
+    
+    
   }
- 
+
+  public function priceByChannelOld($price, $channelId = null, $room = null, $text = false, $nights = 1) {
+
+    if (!$price || !is_numeric($price)) {
+      if ($text)
+        $price = 1;
+      else
+        return null;
+    }
+
+    if (is_numeric($room)) {
+      $aux = array_search($room, $this->getRooms());
+      if ($aux)
+        $room = $aux;
+    }
+
+
+
+
+    $priceText = '';
+    //Parking
+    if ($channelId < 3) {
+      if (in_array($room, ['7J', '9F', 47074, 47076])) { //name o ID equivalent
+        $price += 40 * $nights;
+        $priceText = '(PVP+40€)';
+      } else {
+        $price += 20 * $nights;
+        $priceText = '(PVP+20€)';
+      }
+    }
+
+    switch ($channelId) {
+      case 1:
+      case "1": //"Booking.com",
+        if ($room == 'DDL' || $room == 'EstL' || $room == '9F') {
+          $price = $price + ($price * 0.24);
+          $priceText .= '+24%';
+        } else {
+          $price = $price + ($price * 0.20);
+          $priceText .= '+20%';
+        }
+        break;
+      case 2:
+      case "2": //Expedia,
+        $price = $price + ($price * 0.20);
+        $priceText .= '+20%';
+        break;
+      case 3:
+      case "3": //airbnb,
+        $price = $price + ($price * 0.05);
+        $priceText = '+5%';
+        break;
+      case 99:
+      case "99": //google,
+        $price = $price + ($price * 0.12);
+        $priceText = '+12%';
+        break;
+    }
+
+    if ($text)
+      return $priceText;
+    return $price;
+  }
+
   function get_detailRate($rateID) {
 
     $text = '';

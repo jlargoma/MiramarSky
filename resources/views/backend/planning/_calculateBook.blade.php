@@ -152,10 +152,6 @@ $(document).ready(function () {
 
   });
 
-  $('#site_id').on('change', function () {
-    var id = $(this).val();
-    $("#size_apto_id").load('/ajax/get-size-site/' + id, );
-  });
 
 });
 

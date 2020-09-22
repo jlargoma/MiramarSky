@@ -11,15 +11,20 @@ use App\Services\OtaGateway\Config as oConfig;
 use App\Rooms;
 use App\DailyPrices;
 use App\ChannelManagerQueues;
+use App\Traits\OtasTraits;
 
 class OtaGate extends Controller {
 
+  use OtasTraits;
+  
   private $aptos;
   private $sOta;
+  var $oConfig;
        
   function __construct() {
-   $this->sOta = new OtaGateway();
+    $this->sOta = new OtaGateway();
     $this->aptos = configZodomusAptos();
+    $this->oConfig = new oConfig();
   }
   
   function index($apto = null) {

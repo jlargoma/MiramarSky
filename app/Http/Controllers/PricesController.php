@@ -272,4 +272,80 @@ class PricesController extends AppController {
     return back()->with('sent','Precios cargados para ser enviados');
   }
 
+  
+   /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function pricesOTAs() {
+    
+    $otaConfig = new \App\Services\OtaGateway\Config();
+    $agencies = $otaConfig->getAllAgency();
+    $rooms = $otaConfig->getRoomsName();
+    $prices_ota = \App\Settings::getContent('prices_ota'); 
+    if ($prices_ota){
+      $prices_ota = unserialize($prices_ota);
+    } else {
+      $prices_ota = [];
+    }
+    
+    $aPricesOta = [];
+    foreach ($rooms as $k=>$n){
+      foreach($agencies as $name=>$id)
+        $aPricesOta[$k.$id] = isset ($prices_ota[$k.$id]) ? $prices_ota[$k.$id] : ['f'=>0,'p'=>0];
+    }
+   
+    /************************************************************************/
+     
+    return view('backend/prices/pricesOTAs', [
+        'aPricesOta' => $aPricesOta,
+        'agencies' => $agencies,
+        'rooms' => $rooms,
+    ]);
+  }
+  
+  public function pricesOTAsUpd(Request $request) {
+    
+    $otaConfig = new \App\Services\OtaGateway\Config();
+    $agencies = $otaConfig->getAllAgency();
+    $rooms = $otaConfig->getRoomsName();
+    
+    
+    $prices_ota = null;
+    $oSetting = \App\Settings::where('key', 'prices_ota')->first();
+    if ($oSetting){
+      $prices_ota = $oSetting->content;
+    }else{
+      $oSetting = new \App\Settings();
+      $oSetting->key   = 'prices_ota';
+      $oSetting->value = '';
+      $oSetting->name  =  "Porcentajes y extras de las OTAs";
+    }
+
+    if ($prices_ota){
+      $prices_ota = unserialize($prices_ota);
+    } else {
+      $prices_ota = [];
+    }
+    
+    $aPricesOta = [];
+    foreach ($rooms as $k=>$n){
+      foreach($agencies as $name=>$id)
+        $aPricesOta[$k.$id] = isset($prices_ota[$k.$id]) ? $prices_ota[$k.$id] : ['f'=>0,'p'=>0];
+    }
+    
+    $key = $request->input('room').$request->input('ota');
+    if (isset($aPricesOta[$key])){
+      $type = $request->input('type');
+      $aPricesOta[$key][$type] = intval($request->input('val'));
+    }
+   
+    $oSetting->content = serialize($aPricesOta);
+    $oSetting->save();
+    
+    return response()->json(['status'=>'OK','msg'=>'datos cargados']);
+    
+  }
+  
 }
