@@ -336,90 +336,7 @@ class ZodomusController extends Controller {
     return response()->json(['status'=>'OK','msg'=>'datos cargados']);
   }
 
-  /**
-   * 
-   * @param Request $request
-   * @param type $apto
-   * @return type
-   */
-  public function listBy_room(Request $request, $apto) {
 
-    $prices = [];
-    $start = $request->input('start', null);
-    $end = $request->input('end', null);
-
-    $zConfig = new ZConfig();
-    $room = Rooms::where('channel_group',$apto)->first();
-    if (!$room)
-      return null;
-
-    $pax = $room->minOcu;
-    if ($start && $end) {
-      
-      $start = (convertDateToDB($start));
-      $end = (convertDateToDB($end));
-
-
-      $defaults = $room->defaultCostPrice($start, $end, $pax);
-      $priceDay = $defaults['priceDay'];
-      $min = [];
-      $oPrice = DailyPrices::where('channel_group', $apto)
-              ->where('date', '>=', $start)
-              ->where('date', '<=', $end)
-              ->get();
-      if ($oPrice) {
-        foreach ($oPrice as $p) {
-          $priceDay[$p->date] = $p->price;
-          $min[$p->date] = $p->min_estancia;
-        }
-      }
-      $priceLst = [];
-      $redDays = [];
-      foreach ($priceDay as $d => $p) {
-
-        $priceBooking = ceil($zConfig->priceByChannel($p,1,$apto));
-        $priceExpedia = ceil($zConfig->priceByChannel($p,2,$apto));
-        $priceAirbnb = ceil($zConfig->priceByChannel($p,3));
-        $priceGoogle = ceil($zConfig->priceByChannel($p,99));
-        $min_estancia = isset($min[$d]) ? $min[$d] : 0;
-        
-        
-        $priceLst[] = [
-            "title" => '<table>'
-            . '<tr><td colspan="2" class="main">'.$p.' €</td></tr>'
-            . '<tr><td colspan="2" class="min-estanc">'.$min_estancia.' dias</td></tr>'
-            . '<tr><td><span class="price-booking">'.$priceBooking.'</span></td><td><span class="price-airbnb">'.$priceAirbnb.'</span></td></tr>'
-            . '<tr><td><span class="price-expedia">'.$priceExpedia.'</span></td><td><span class="price-google">'.$priceGoogle.'</span></td></tr>'
-            . '</table>',
-            "start" => $d,
-            'classNames' => 'prices',
-        ];
-
-      }
-
-      $book = new \App\Book();
-      $availibility = $book->getAvailibilityBy_channel($apto, $start, $end);
-      foreach ($availibility as $d => $p) {
-        $class = ($p>0) ? 'yes' : 'no';
-        
-        if ($p<=0) $redDays[] = $d;
-       
-        $priceLst[] = [
-            "title" => $p,
-            "start" => $d.' 01:00',
-            'classNames' =>  'availibility '.$class
-        ];
-
-      }
-
-      return response()->json(['priceLst' => $priceLst,'redDays'=>$redDays]);
-    }
-
-
-
-
-    return response()->json($prices);
-  }
 
   function generate_config() {
     ///admin/channel-manager/config
@@ -1127,36 +1044,36 @@ class ZodomusController extends Controller {
     }
   }
   if ($type == 'price')
-    \App\ProcessedData::savePriceUPD_toWubook($min_day,$max_day);
+    \App\ProcessedData::savePriceUPD_toOtaGateway($min_day,$max_day);
   if ($type == 'minDay')
-    \App\ProcessedData::saveMinDayUPD_toWubook($min_day,$max_day);
+    \App\ProcessedData::saveMinDayUPD_toOtaGateway($min_day,$max_day);
   
 //  \App\ProcessedData::savePriceUPD_toWubook($min_day,$max_day);
   //END: imforma los precios cambiados para Wubook
   
-  $weekDays = "sun|mon|tue|wed|thu|fri|sat";
-  $min_estancia = $price = null;
-  if ($type == 'price') $price = floatval ($val);
-  if ($type == 'minDay') $min_estancia = intval ($val);
-   
-  foreach ($lstRangeDay as $k=>$v){
-    foreach ($v as $k1=>$v1){
-       $insert = [
-           'price'=>$price,
-           'minimumStay'=>$min_estancia,
-           'weekDays'=>$weekDays,
-           'channel_group'=>$k,
-           'date_start'=>$v1[0],
-           'date_end'=>$v1[1],
-           'sent'=>0,
-       ];
-       $response = $this->sendPricesZodomus($insert);
-       if ($response) {
-         return response()->json(['status'=>'error','msg'=>'Channel Manager: '.$response]);
-       }
-    }
-  }
- 
+//  $weekDays = "sun|mon|tue|wed|thu|fri|sat";
+//  $min_estancia = $price = null;
+//  if ($type == 'price') $price = floatval ($val);
+//  if ($type == 'minDay') $min_estancia = intval ($val);
+//   
+//  foreach ($lstRangeDay as $k=>$v){
+//    foreach ($v as $k1=>$v1){
+//       $insert = [
+//           'price'=>$price,
+//           'minimumStay'=>$min_estancia,
+//           'weekDays'=>$weekDays,
+//           'channel_group'=>$k,
+//           'date_start'=>$v1[0],
+//           'date_end'=>$v1[1],
+//           'sent'=>0,
+//       ];
+//       $response = $this->sendPricesZodomus($insert);
+//       if ($response) {
+//         return response()->json(['status'=>'error','msg'=>'Channel Manager: '.$response]);
+//       }
+//    }
+//  }
+// 
   return response()->json(['status'=>'OK','msg'=>'datos cargados']);
  
   }

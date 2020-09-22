@@ -54,6 +54,8 @@
       <a class="text-white btn btn-md btn-primary" href="{{route('precios.base')}}">PRECIO BASE X TEMP</a>
       <button class="btn btn-md btn-primary active"  disabled>UNITARIA</button>
       <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.site')}}">EDIFICIO</a>
+                <a class="text-white btn btn-md btn-primary" href="{{route('channel.promotions')}}">PROMOCIONES</a>
+
       @include('backend.zodomus.sendToWubook')
     </div>
   </div>

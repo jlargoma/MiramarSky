@@ -11,15 +11,20 @@ use App\Services\OtaGateway\Config as oConfig;
 use App\Rooms;
 use App\DailyPrices;
 use App\ChannelManagerQueues;
+use App\Traits\OtasTraits;
 
 class OtaGate extends Controller {
 
+  use OtasTraits;
+  
   private $aptos;
   private $sOta;
+  var $oConfig;
        
   function __construct() {
-   $this->sOta = new OtaGateway();
+    $this->sOta = new OtaGateway();
     $this->aptos = configZodomusAptos();
+    $this->oConfig = new oConfig();
   }
   
   function index($apto = null) {
@@ -61,8 +66,8 @@ class OtaGate extends Controller {
     if (!$conexion->conect()){
       die('error de conexión');
     }
-//    $this->getBooking();
-    $this->createWebHook();
+    $this->getBooking();
+//    $this->createWebHook();
 //    $this->createRoom();
 //    $this->createRestrictionPlans();
 //    $this->createRatesPlans();
@@ -75,10 +80,24 @@ class OtaGate extends Controller {
   
   function getBooking(){
 
-  $param = ['D953V_280720','NUDDS_280720','VUPSA_280720'];
-  $this->loadBooking($param);
-  $cg='DDE';
- 
+//  $param = ['D953V_280720','NUDDS_280720','VUPSA_280720'];
+//  $this->loadBooking($param);
+//  $cg='DDE';
+//    $ext = ['2931064261','3856183780','2610785042','1593726240','3918198990', 
+//'2409530217','3922578176','3717109572','3358547680','2766376803', 
+//'1579622319', '2150440729', '3317338448', '2976529004', '3959797450', '3521844214'];
+//  $response = $this->sOta->getBooking(null);
+//  dd($response);
+//  foreach ($response->bookings as $b){
+//    if (in_array($b->ota_booking_id, $ext))
+//      echo $b->surname .' '.$b->surname.' > '.$b->number.' - '. $b->ota_booking_id.'      '.$b->status_id.'<br>';
+////    if($b->status_id ==2 ){
+////      echo '"'. $b->ota_booking_id.'",<br>';
+////    }
+//  }
+//  die;
+//  dd($response);
+  
   }
   function sendAvail(){
     

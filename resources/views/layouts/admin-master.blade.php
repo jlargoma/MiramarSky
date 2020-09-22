@@ -64,7 +64,7 @@
                     <span class="icon-bar"></span>
                 </button>
             </div>
-            <div class="navbar-collapse collapse" style="<?php if (env('APP_APPLICATION') == "riad"): ?>background-color: #6d5cae!important; <?php else:?> background-color: #295d9b!important;<?php endif; ?>">
+            <div class="navbar-collapse collapse" style="background-color: #295d9b!important;">
                @include('layouts._nav_links')
                 <ul class="nav navbar-nav navbar-right">
                     <li style="color:white"><a href="#"

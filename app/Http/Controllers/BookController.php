@@ -210,7 +210,7 @@ class BookController extends AppController
         return $alarms;
     }
 
-    public function newBook(Request $request)
+     public function newBook(Request $request)
     {
         if (Auth::user()->role != "agente")
         {
@@ -220,10 +220,63 @@ class BookController extends AppController
             $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
             $rooms       = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
         }
-        $extras = \App\Extras::all();
-        return view('backend/planning/_nueva', compact('rooms', 'extras'));
+        
+        $data = [];
+        $cr_id = $request->input('cr_id',null);
+        if ($cr_id){
+          $usrData = \App\CustomersRequest::find($cr_id);
+          if ($usrData){
+            $data = [
+              'cr_id'  => $usrData->id,
+              'user_id'=> $usrData->user_id,
+              'name'   => $usrData->name,
+              'email'  => $usrData->email,
+              'pax'    => $usrData->pax,
+              'phone'  => $usrData->phone,
+              'comment'  => $usrData->comment,
+              'date'   => date('d M, y', strtotime($usrData->start)).' - '.date('d M, y', strtotime($usrData->finish)),
+              'start'   => convertDateToDB($usrData->start),
+              'finish'   => convertDateToDB($usrData->finish),
+              'nigths'   => calcNights($usrData->start,$usrData->finish),
+            ];
+            $newRoomID = $request->input('calcular_id',null);
+            if ($newRoomID){
+              $start  = $request->input('calc_start',null);
+              $finish = $request->input('calc_finish',null);
+              $data['pax']  = $request->input('calc_pax',null);
+              $data['date'] = date('d M, y', strtotime($start)).' - '.date('d M, y', strtotime($finish));
+              $data['start']  = $start;
+              $data['finish']  = $finish;
+              $data['nigths']  = calcNights($start,$finish);
+              $data['newRoomID']  = $newRoomID;
+            }
+          }
+        } else {
+          $newRoomID = $request->input('calcular_id',null);
+          if ($newRoomID){
+
+            $start  = $request->input('calc_start',null);
+            $finish = $request->input('calc_finish',null);
+            $data = [
+              'name'      => $request->input('username',null),
+              'email'     => "",
+              'pax'       => $request->input('calc_pax',null),
+              'phone'     => "",
+              'comment'   => "",
+              'date'      => date('d M, y', strtotime($start)).' - '.date('d M, y', strtotime($finish)),
+              'start'     => $start,
+              'finish'    => $finish,
+              'nigths'    => calcNights($start,$finish),
+              'newRoomID' => $newRoomID
+            ];
+          }
+        }
+        $data['luxury'] = $request->input('luxury',null);
+        
+        return view('backend/planning/_nueva', compact('rooms','data'));
     }
 
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -413,6 +466,15 @@ class BookController extends AppController
                             $notification          = new \App\BookNotification();
                             $notification->book_id = $book->id;
                             $notification->save();
+                        }
+                        $customerRequest = $request->input('cr_id',null);
+                        if ($customerRequest){
+                          $oCustomerRequest = \App\CustomersRequest::find($customerRequest);
+                          if ($oCustomerRequest){
+                            $oCustomerRequest->book_id = $book->id;
+                            $oCustomerRequest->status = 2;
+                            $oCustomerRequest->save();
+                          }
                         }
                         // MailController::sendEmailBookSuccess( $book, 0);
                         return redirect('admin/reservas');
@@ -1646,7 +1708,99 @@ class BookController extends AppController
      * @param Request $request
      * @return type
      */
+    
     public function getTotalBook(Request $request)
+    {
+        $start      = $request->input('start');
+        $finish     = $request->input('end');
+        $site_id    = $request->input('site_id');
+        $pax        = $request->input('quantity');
+        $size_apto  = $request->input('size_apto');
+        $email      = $request->input('email');
+        $phone      = $request->input('phone');
+        $countDays  = calcNights($start,$finish);
+        $hasParking = $request->input('parking');
+        $pricePark  = BookController::getPricePark(1, $countDays);
+        $msg = null;
+        $limp = 0;
+        $lujo = ($request->input('luxury') == 'si');
+        $priceLux = BookController::getPriceLujo(1);
+        $roomAssigneds = Rooms::getRoomsToBooking($pax, $start,$finish,$size_apto ,$lujo);
+        $minEstancias = Rooms::getListMin_estancia($start);
+        $tiposApto = \App\SizeRooms::allSizeApto();
+       
+        $book = new Book();
+        $rooms = [];
+        if ($roomAssigneds){
+          
+          foreach ($roomAssigneds as $room){
+            
+            $msg = null;
+            if (isset($minEstancias[$room->channel_group]) && $minEstancias[$room->channel_group]>$countDays){
+              $msg ='Estancia mínima de '.$minEstancias[$room->channel_group].' noches';
+            }
+        
+            
+            $price = $room->getPVP($start,$finish,$pax);
+            if ($price > 0){
+              $costes = $room->priceLimpieza($room->sizeApto);
+              $limp = $costes['price_limp'];
+              if ($hasParking == 'si')
+              {
+                  $priceParking =  $pricePark * $room->num_garage;
+                  $parking      = 1;
+              } else
+              {
+                  $priceParking = 0;
+                  $parking      = 2;
+              }
+
+              $total   = $price + $priceParking + $limp;
+              if ($room->luxury)
+                $total += $priceLux;
+                        
+
+
+              if (isset($rooms[$room->sizeApto])){
+                $rooms[$room->sizeApto]['avail']++;
+              } else {
+                $rooms[$room->sizeApto] = [
+                  'price'=>  $total,
+                  'price_ota'=> $room->channel_group,
+                  'msg'  =>  $msg,
+                  'luxury'  =>  $room->luxury,
+                  'roomID' =>  $room->id,
+                  'tiposApto' => isset($tiposApto[$room->sizeApto]) ? $tiposApto[$room->sizeApto] : '',
+                  'avail' => 1
+                ];
+              }
+          }
+          }
+        } else {
+          return view('frontend.bookStatus.bookError');
+        }
+        
+        $oSetting = new Settings();
+        $url = $oSetting->getLongKeyValue('gha_sitio');
+        return view('backend.bookStatus.response', [
+                'pax'          => $pax,
+                'nigths'       => $countDays,
+                'tiposApto'    => $tiposApto,
+                'name'         => $request->input('name'),
+                'start'        => $start,
+                'finish'       => $finish,
+                'rooms'        => $rooms,
+                'urlGH'       => $url,
+                'isMobile'     => config('app.is_mobile'),
+                'msg'          => null,
+                'email'        => $email,
+                'phone'        => $phone,
+            
+            ]);
+        
+    }
+    
+    public function getTotalBook222(Request $request)
     {
 
         $start     = $request->input('start');

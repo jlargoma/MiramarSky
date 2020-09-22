@@ -39,6 +39,9 @@ $mobile = new Mobile();
     <div class="col-md-12">
         <form role="form"  action="{{ url('/admin/reservas/create') }}" method="post" id="newForm">
             <!-- DATOS DEL CLIENTE -->
+            @if( isset($data['cr_id']) )
+            <input type="hidden" name="cr_id" value="{{$data['cr_id']}}">
+            @endif       
             <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
             <div class="col-md-6 center text-left0">
                 <div class="col-md-4 m-t-10">
@@ -73,15 +76,15 @@ $mobile = new Mobile();
 
                 <div class="col-md-4 col-xs-12 push-10">
                     <label for="name">Nombre</label>
-                    <input class="form-control cliente nombre-cliente" type="text" name="name">
+                    <input class="form-control cliente nombre-cliente" type="text" name="name" {!!value_isset($data,'name')!!} >
                 </div>
                 <div class="col-md-4 col-xs-12 push-10">
                     <label for="email">Email</label>
-                    <input class="form-control cliente email-cliente" type="email" name="email" <?php if ( Auth::user()->role == "agente"):?>value="{{ Auth::user()->email }}" <?php endif ?>>
+                    <input class="form-control cliente email-cliente" type="email" name="email" <?php if ( Auth::user()->role == "agente"):?>value="{{ Auth::user()->email }}" <?php elseif( isset($data['email']) ): echo 'value="'.$data['email'].'"';?>  <?php endif ?>  >
                 </div>
                 <div class="col-md-4 col-xs-12 push-10">
                     <label for="phone">Telefono</label>
-                    <input class="form-control cliente only-numbers" type="text" name="phone" >
+                    <input class="form-control cliente only-numbers" type="text" name="phone" {!!value_isset($data,'phone')!!} >
                 </div>
                 <div class="col-md-3 col-xs-12 push-10">
                     <label for="dni">DNI</label>
@@ -128,21 +131,21 @@ $mobile = new Mobile();
                 <div class="col-md-3 col-xs-12 push-xs-10">
                     <label>Entrada</label>
                     <div class="input-prepend input-group input_dates">
-                        <input type="text" class="form-control daterange1" id="fechas" name="fechas" required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
-                        <input type="hidden" class="date_start" id="start" name="start" value="">
-                        <input type="hidden" class="date_finish" id="finish" name="finish" value="">
+                      <input type="text" class="form-control daterange02" id="fechas" name="fechas" <?php value_isset($data,'date'); ?>  required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
+                        <input type="hidden" class="date_start" id="start" name="start" <?php value_isset($data,'start'); ?>>
+                        <input type="hidden" class="date_finish" id="finish" name="finish" <?php value_isset($data,'finish'); ?>>
                     </div>
                 </div>
                 <div class="col-md-1 col-xs-6 push-xs-10">
                     <label>Noches</label>
-                    <input type="text" class="form-control nigths" name="nigths" style="width: 100%" disabled>
-                    <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" >
+                    <input type="text" class="form-control nigths" name="nigths" style="width: 100%" disabled <?php value_isset($data,'nigths'); ?> >
+                    <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" <?php value_isset($data,'nigths'); ?> >
                 </div>
                 <div class="col-md-2 col-xs-6 push-xs-10">
                     <label>Pax</label>
                     <select class=" form-control pax minimal"  name="pax">
                         <?php for ($i=1; $i <= 14 ; $i++): ?>
-                          <option value="<?php echo $i ?>">
+                          <option value="<?php echo $i ?>" <?php if ( isset($data['pax']) && $data['pax'] == $i ){ echo 'selected';}?>>
                             <?php echo $i ?>
                           </option>
                         <?php endfor;?>
@@ -154,7 +157,7 @@ $mobile = new Mobile();
                      <select class="form-control real_pax "  name="real_pax" style="color:red">
                         <?php for ($i=1; $i <= 14 ; $i++): ?>
                          <?php if ($i != 9 && $i != 11): ?>
-                         <option value="<?php echo $i ?>">
+                         <option value="<?php echo $i ?>" <?php if ( isset($data['pax']) && $data['pax'] == $i ){ echo 'selected';}?>>
                                     <?php echo $i ?>
                                 </option>
                          <?php endif; ?>
@@ -169,7 +172,7 @@ $mobile = new Mobile();
                         <option ></option>
                         <?php foreach ($rooms as $room): ?>
                           <?php if($room->state>0):?>
-                            <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>" data-size="<?php echo $room->sizeApto ?>">
+                            <option value="<?php echo $room->id ?>" data-luxury="<?php echo $room->luxury ?>" data-size="<?php echo $room->sizeApto ?>" <?php if ( isset($data['newRoomID']) && $data['newRoomID'] == $room->id ){ echo 'selected';}?>>
                               <?php echo substr($room->nameRoom." - ".$room->name, 0,12)  ?>
                             </option>
                           <?php endif; ?>
@@ -194,7 +197,7 @@ $mobile = new Mobile();
                     <label>Sup. Lujo</label>
                     <select class=" form-control full-width type_luxury minimal" name="type_luxury">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
-                        <option value="<?php echo $i ?>" <?php echo ($i == 2)?"selected": "" ?>>
+                        <option value="<?php echo $i ?>" <?php echo ($i == $data['luxury'])?"selected": "" ?>>
                                 <?php echo \App\Book::getSupLujo($i) ?>
                             </option>
                         <?php endfor;?>

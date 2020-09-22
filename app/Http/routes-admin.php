@@ -2,8 +2,14 @@
 
 Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], function () {
   Route::get('admin/get-SafetyBox', 'BookController@getSafetyBoxLst');
-  Route::get('admin/get-CustomersRequest', 'BookController@getCustomersRequestLst');
+  Route::get('/admin/get-CustomersRequest', 'BookController@getCustomersRequestLst');
   Route::post('admin/hideCustomersRequest', 'BookController@hideCustomersRequest');
+  Route::post('admin/saveCustomerRequest', 'BookController@saveCustomerRequest');
+  Route::post('admin/getCustomersRequest', 'BookController@getCustomersRequest');
+  Route::get('/admin/getCustomerRequestBook/{bID}', 'BookController@getCustomersRequest_book');
+  
+  Route::get('/admin/reservas/help/calculateBook','AppController@calculateBook');
+  Route::post('/admin/reservas/help/calculateBook','AppController@calculateBook');
 });
 
 Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista']], function () {
@@ -75,13 +81,10 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
   Route::get('/rooms/api/getImagesRoom/{id?}/{bookId?}', 'RoomsController@getImagesRoom');
   Route::get('/reservas/api/getTableData', 'BookController@getTableData');
   Route::get('/reservas/new', 'BookController@newBook');
+  Route::post('/reservas/new', 'BookController@newBook');
   Route::get('/apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
   Route::get('/apartamentos/getLuxuryPerRooms/{id}', 'RoomsController@getLuxuryPerRooms');
   Route::get('/api/reservas/getDataBook', 'BookController@getAllDataToBook');
-  
-  Route::get('/reservas/help/calculateBook', function () {
-    return view('backend.planning._calculateBook');
-  });
   Route::get('/update/seasonsDays/{val}', 'RouterActionsController@seasonsDays');
   Route::get('/update/percentBenef/{val}', 'LiquidacionController@changePercentBenef');
   Route::post('/reservas/help/getTotalBook', 'BookController@getTotalBook');

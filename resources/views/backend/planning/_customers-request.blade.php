@@ -4,65 +4,80 @@
 
 <div class="col-md-12 not-padding content-last-books">
   <div class="alert alert-info fade in alert-dismissable" style="max-height: 600px; overflow-y: auto;position: relative;">
-    <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a> -->
-    <!-- <strong>Info!</strong> This alert box indicates a neutral informative change or action. -->
     <h4 class="text-center">CONSULTAS REALIZADAS POR WEB</h4>
-    @if(count($items)>0)
-    <div class="table-responsive" style="overflow-y: hidden;">
-      <table class="table table-mobile">
-        <thead>
-          <tr class ="text-center bg-success text-white">
-            @if($isMobile)
-            <th class="th-bookings static" style="width: 130px; padding: 14px !important;background-color: #10cfbd;">  
-              Nombre
-            </th>
-            <th class="th-bookings first-col" style="padding-left: 130px!important"></th>
-            @else
-            <th class="th-bookings static" style="background-color: #10cfbd;">  
-              Nombre
-            </th>
-            <th class="th-bookings first-col"></th> 
-            @endif
-            <th class="th-bookings text-center th-2">Tel.</th>
-            <th class="th-bookings text-center th-2">Email</th>
-            <th class="th-bookings text-center th-2">Pax</th>
-            <th class="th-bookings text-center th-4">IN - OUT </th>
-            <th class="th-bookings text-center th-1">&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($items as $item): ?>
-            <tr data-site='{{$item->site_id}}'>
+    <div id="customerRequestTable">
+      @if(count($items)>0)
+      <div class="table-responsive" style="    overflow-y: hidden;">
+        <table class="table table-mobile">
+          <thead>
+            <tr class ="text-center bg-success text-white">
               @if($isMobile)
-              <td class ="text-left static" style=" width: 130px;color: black;overflow-x: scroll;    padding: 5px 6px !important; ">  
-                @else
-              <td class ="text-left" style="position: relative; padding: 7px !important;">  
-                @endif
-                {{$item->name}}
-              </td>
-              @if($isMobile)
-              <td class="text-center first-col" style="height: 2em;padding: 5px; padding-left: 130px!important">
+              <th class="th-bookings static" style="width: 130px; padding: 14px !important;background-color: #10cfbd;">  
+                Nombre
+              </th>
+              <th class="th-bookings first-col" style="padding-left: 130px!important"></th>
               @else
-              <td class="text-center">
+              <th class="th-bookings static" style="background-color: #10cfbd;">  
+                Nombre
+              </th>
+              <th class="th-bookings first-col"></th> 
               @endif
-              </td>
-              <td >
-                <a href="tel:<?php echo $item->phone ?>">{{$item->phone}}</a>
-              </td>
-              <td >{{$item->email}}</td>
-              <td >{{$item->pax}}</td>
-              <td data-order="{{$item->start}}"  style="width:20%!important">
-                <b>{{dateMin($item->start)}}</b>
-                <span>-</span>
-                <b>{{dateMin($item->finish)}}</b>
-              </td>
-              <td class="text-center">
-                <i class="fa fa-trash hideCustomerRequest" data-id="{{$item->id}}"></i>
-              </td>
+              <th class="th-bookings text-center th-2">Tel.</th>
+              <th class="th-bookings text-center th-2">Email</th>
+              <th class="th-bookings text-center th-2">Pax</th>
+              <th class="th-bookings text-center" style="width:120px !important">IN - OUT </th>
+              <th class="th-bookings text-center th-2">Estado</th>
+              <th class="th-bookings text-center th-1">Observ</th>
             </tr>
-        <?php endforeach ?>
-        </tbody>
-      </table>
+          </thead>
+          <tbody id="CR_lstITems">
+            <?php foreach ($items as $item): ?>
+              <tr data-site='{{$item->site_id}}' id="tr_CRT_{{$item->id}}">
+                @if($isMobile)
+                <td class ="text-left static" style=" width: 130px;color: black;overflow-x: scroll;padding: 18px 6px !important;height: 5em;">  
+                  @else
+                <td class ="text-left" style="position: relative; padding: 7px !important;">  
+                  @endif
+                  <span class="editCustomerRequest cursor" data-id="{{$item->id}}">
+                      <?php echo ($item->name && trim($item->name) != '') ? $item->name : '--'; ?>
+                  </span>
+                </td>
+                @if($isMobile)
+                <td class="text-center first-col" style="height: 2em;padding: 5px; padding-left: 130px!important">
+                  @else
+                <td class="text-center">
+                  @endif
+                </td>
+                <td >
+                  <a href="tel:<?php echo $item->phone ?>">{{$item->phone}}</a>
+                </td>
+                <td >{{$item->email}}</td>
+                <td >{{$item->pax}}</td>
+                <td data-order="{{$item->start}}"  class="nowrap">
+                  <b>{{dateMin($item->start)}}</b>
+                  <span>-</span>
+                  <b>{{dateMin($item->finish)}}</b>
+                </td>
+                <td class="text-center">
+                  @if($item->user_id)
+                    {{show_isset($aUsers,$item->user_id)}}
+                  @else
+                  <span class="text-danger">Sin Contestar</span>
+                  @endif
+                </td>
+                <td class="text-center" >
+                  @if(trim($item->comment) != '')
+                  <i class="fa fa-commenting seeComment" style="color: #000;" aria-hidden="true">
+                    <div class="seeComment_body">{!! nl2br($item->comment)!!}</div>
+                  </i>
+                  @endif
+                </td>
+              </tr>
+            <?php endforeach ?>
+          </tbody>
+        </table>
+      </div>
+
       <div id="conteiner_msg_lst">
         <div class="box-msg-lst">
           <div id="box_msg_lst"></div>
@@ -75,6 +90,80 @@
       </p>
       @endif
     </div>
-  </div> 
+    <div id="customerRequestEdit" class="row" style="display: none;">
+      <div class="col-md-6 col-sm-12">
+        <div><b>Nombre: </b><span id="CRE_name"></span></div>
+        <div><b>Email: </b><span id="CRE_email"></span></div>
+        <div><b>Pax: </b><span id="CRE_pax"></span></div>
+        <div><b>Teléfono: </b><span id="CRE_phone"></span></div>
+        <div><b>In-Out: </b><span id="CRE_date"></span></div>
+        <div><b>Estado: </b><span id="CRE_status"></span> <span id="CRE_booking"></span></div>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <div class="form-group">
+          <label>Usuario</label>
+          <select id="CRE_user" class="form-control">
+            @foreach($aUsers as $uid => $name)
+            <option value="{{$uid}}">{{$name}}</option>
+            @endforeach
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Comentario</label>
+          <textarea class="form-control" id="CRE_comment" rows="5"></textarea>
+        </div>
+        <div class="form-check" style="border: 1px solid #000;padding: 5px;margin: 8px 0px;">
+          <input type="checkbox" class="form-check-input" id="CRE_send_mail" >
+          <label class="form-check-label" for="CRE_send_mail">Enviar comentario al mail del cliente</label>
+        </div>
+      </div>
+      <button class="btn btn-success" id="convertCustomerRequest" type="button">Reservar</button>
+      <button class="btn" id="hideCustomerRequest" type="button"><i class="fa fa-eye-slash" ></i></button>
+      <button class="btn" id="cancelCustomerRequest" type="button">Volver</button>
+      <button class="btn btn-primary pull-right" id="saveCustomerRequest" type="button">Guardar</button>
+      
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th  class="text-center">Usuario</th>
+              <th  class="text-center">Fecha</th>
+              <th  class="text-center">Mail</th>
+            </tr>
+          </thead>
+          <tbody id="tableSentMails">
+            
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div> 
 
 
+<style>
+  i.fa.fa-commenting.seeComment {
+    position: relative;
+  }
+  .seeComment_body {
+    position: fixed;
+    background-color: black;
+    color: #FFF;
+    padding: 7px;
+    z-index: 9;
+    display: none;
+    text-align: left;
+  }
+  i.fa.fa-commenting.seeComment:hover .seeComment_body{
+    display: block;
+  }
+  .table tbody#tableSentMails td {
+    text-align: center;
+    padding: 5px 12px !important;
+  }
+  div#customerRequestEdit {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 2em;
+  }
+</style>

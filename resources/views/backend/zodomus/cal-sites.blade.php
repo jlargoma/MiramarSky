@@ -22,6 +22,8 @@
           <a class="text-white btn btn-md btn-primary" href="{{route('precios.base')}}">PRECIO BASE X TEMP</a>
           <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.cal')}}">UNITARIA</a>
           <button class="btn btn-md btn-primary active"  disabled>EDIFICIO</button>
+                    <a class="text-white btn btn-md btn-primary" href="{{route('channel.promotions')}}">PROMOCIONES</a>
+
           @include('backend.zodomus.sendToWubook')
         </div>
         
@@ -251,7 +253,6 @@ $(document).ready(function () {
             } else {
             window.show_notif('Error','danger',response.msg);
             }
-            console.log(data.msg); // show response from the php script.
           }
         });
     
@@ -264,7 +265,6 @@ $(document).ready(function () {
     });
         
     $("#table_prices").on('keydown','.only-numbers',function (e) {
-      console.log(e.keyCode);
       // Allow: backspace, delete, tab, escape, enter and .
       if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 188,109]) !== -1 ||
               // Allow: home, end, left, right, down, up

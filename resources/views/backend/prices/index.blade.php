@@ -127,6 +127,8 @@
           <button class="btn btn-md btn-primary active"  disabled>PRECIO BASE X TEMP</button>
           <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.cal')}}">UNITARIA</a>
           <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.site')}}">EDIFICIO</a>
+          <a class="text-white btn btn-md btn-primary" href="{{route('channel.promotions')}}">PROMOCIONES</a>
+          <a class="text-white btn btn-md btn-primary" href="{{route('precios.pricesOTAs')}}">PRECIOS OTAs</a>
           @include('backend.zodomus.sendToWubook')
           
         </div>

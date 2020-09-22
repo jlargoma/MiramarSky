@@ -385,4 +385,26 @@ class AppController extends Controller
     }
     return null;
   }
+  
+    
+  function calculateBook(Request $request) {
+    $data = ['name'=>'','date'=>'','phone'=>'','email'=>'','pax'=>1,'cr_id'=>null];
+    $param = $request->input('cr_id',null);
+    if ($param){
+      $usrData = \App\CustomersRequest::find($param);
+      if ($usrData){
+        $usrData->user_id = $request->input('userID',null);
+        $usrData->comment = $request->input('comments',null);
+        $usrData->save();
+        $data['name'] = $usrData->name;
+        $data['phone'] = $usrData->phone;
+        $data['email'] = $usrData->email;
+        $data['pax'] = $usrData->pax;
+        $data['date'] = date('d M, y', strtotime($usrData->start)).' - '.date('d M, y', strtotime($usrData->finish));
+        $data['cr_id'] = $param;
+      }
+    }
+            
+    return view('backend.planning._calculateBook',$data);
+  }
 }

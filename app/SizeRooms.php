@@ -62,4 +62,12 @@ class SizeRooms extends Model {
     return ['sizeRoom' => $sizeRoom,'typeApto'=>$typeApto];
   }
 
+  
+  static function allSizeApto() {
+    $lst = self::all();
+    $return = [];
+    foreach ($lst as $l) $return[$l->id] = $l->name;
+      
+    return $return;
+  }
 }

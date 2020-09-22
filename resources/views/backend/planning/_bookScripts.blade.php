@@ -98,8 +98,9 @@
         var comentario = $('.book_comments').val();
         var has_ff_discount = ($('#has_ff_discount').is(':checked')) ? 1 : 0;
         var ff_discount_val = $('#ff_discount').val();
-
-        var date       = $('.daterange1').val();
+        
+        if (typeof $('.daterange02').val() == "undefined") var date = $('.daterange1').val();
+        else var date       = $('.daterange02').val();
         var arrayDates = date.split('-');
         var res1       = arrayDates[0].replace("Abr", "Apr");
         var date1      = new Date(res1);
@@ -264,6 +265,56 @@
             book_id: book_id
           }).done(function( data ) {
             $('#computed-data').html(JSON.stringify(data));
+            
+            
+            var isEdited = $('.total').attr('data-edited');
+            if (data.costes.promotion == 0) {
+
+              $('.book_owned_comments').empty();
+            } else {
+              $('.book_owned_comments').html('(PROMOCIÓN 3x2 DESCUENTO : ' + Math.abs(data.costes.promotion) + ' €)');
+            }
+            $('.total').val(data.calculated.total_price);
+            $('#total_pvp').val(data.calculated.total_price);
+            $('.cost').val(data.calculated.total_cost);
+            $('.costApto').val(data.costes.book);
+            $('.costExtra').val(data.costes.extra_fixed);
+            $('.beneficio').val(data.calculated.profit);
+            $('.beneficio-text').html(data.calculated.profit_percentage + '%');
+            $('#real-price').html(data.calculated.real_price);
+            $('#minDay').val(data.aux.minDay);
+            
+            var nigths = $('.nigths').val();
+            $('#minDay').removeClass('danger');
+            if (nigths<data.aux.minDay){
+              $('#minDay').addClass('danger');
+            }
+            
+            
+            
+            $('#start').val(start);
+            $('#finish').val(finish);
+           
+           
+           if ($('#realPrice')) $('#realPrice').text(data.calculated.real_price);
+           if ($('#realPVP')) $('#realPVP').text(data.totales.book);
+           if ($('#realExta')) $('#realExta').text(data.totales.extra_fixed+data.totales.limp);
+           if ($('#realDynamic')) $('#realDynamic').text(data.totales.extra_dynamic);
+                              
+                 
+            /* fix data.aux.price_modified UNDEFINED */
+            var price_modified = 0;
+            if (data.aux) {
+              price_modified = data.aux.price_modified;
+            }
+            $('#modified-price').html(price_modified);
+            if (data.calculated.real_price < price_modified) {
+              $('#arrow-price-modification').fadeIn().removeClass().addClass('fa fa-arrow-up');
+            } else if (data.calculated.real_price == price_modified) {
+              $('#arrow-price-modification').fadeOut();
+            } else {
+              $('#arrow-price-modification').fadeIn().removeClass().addClass('fa fa-arrow-down');
+            }
           });
         }
 
