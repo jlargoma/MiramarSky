@@ -13,11 +13,11 @@ class Config {
       case 1:
       case "1": //"Booking.com",
         return 1592050;
-      case 2:
-      case "2": //Expedia,
+      case 28:
+      case "28": //Expedia,
         return 1592548;
-      case 3:
-      case "3": //"Plan Miramar - AirBnb"
+      case 4:
+      case "4": //"Plan Miramar - AirBnb"
         return 1592531;
       case 99:
       case "99": //google GHotels
@@ -34,11 +34,11 @@ class Config {
       case 1:
       case "1": //"Booking.com",
         return 17633;
-      case 2:
-      case "2": //Expedia,
+      case 28:
+      case "28": //Expedia,
         return 18126;
-      case 3:
-      case "3": //"Plan Miramar - AirBnb"
+      case 4:
+      case "4": //"Plan Miramar - AirBnb"
         return 18111;
       case 99:
       case "99": //google GHotels

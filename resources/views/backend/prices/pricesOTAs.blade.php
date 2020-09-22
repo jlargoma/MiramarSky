@@ -24,6 +24,9 @@
     text-align: center;
     margin: 4px auto;
 }
+td.border-1{
+  border-left: 2px solid #000;
+}
 </style>
 @endsection
 @section('content')
@@ -77,7 +80,7 @@
           <td class="aptos">{{$n}}</td>
           @if($agencies)
           @foreach($agencies as $name=>$id)
-          <td class="inputs">
+          <td class="inputs border-1">
             <input type="number" class="form-control changeVal" data-room="{{$k}}" data-ota="{{$id}}" data-type="f" value="{{$aPricesOta[$k.$id]['f']}}">
           </td>
           <td class="inputs">
