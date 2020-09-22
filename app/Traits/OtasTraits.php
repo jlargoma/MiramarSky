@@ -24,7 +24,6 @@ trait OtasTraits
     $agencies = $oConfig->getAllAgency();
     $roomsLst = $oConfig->getRoomsName();
     
-    $aptos = configZodomusAptos();
     $rooms = [];
     foreach ($roomsLst as $k => $name) {
       if (!$room) $room = $k;
@@ -32,8 +31,6 @@ trait OtasTraits
     }
 
     $dw = listDaysSpanish(true);
-    $price_booking = $price_expedia = $price_airbnb = $price_google = 0;
-    
     $data = [
         'rooms' => $rooms,
         'room' => $room,
@@ -279,5 +276,144 @@ trait OtasTraits
   }
   
   
+    /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  function calendSite($site = 1,$month=null,$year=null) {
+
+    
+    
+    $oConfig = $this->oConfig;
+    
+    $agencies = $oConfig->getAllAgency();
+    $roomsLst = $oConfig->getRoomsName();
+       
+    
+    /**************************************************************************************/
+    
+    //Armo el calendario
+    if(!$month) $month = date('m');
+    if(!$year) $year = date('Y');
+    
+    $days = [];
+    $dateTime = strtotime("$year-$month-01");
+    $current = getMonthsSpanish($month,false).' '.$year;
+    $start = date('Y-m-d',$dateTime);
+    
+    
+    $day = 24*60*60;
+    $dateTime -= $day;
+    for($i=0;$i<35;$i++){
+      $dateTime += $day;
+      
+      $days[date('Y-m-d',$dateTime)] = [
+          'day' => date('d',$dateTime),
+          'w' => date('w',$dateTime),
+          'month' => date('n',$dateTime),
+          'monthText' => getMonthsSpanish(date('n',$dateTime)),
+          'rooms' => []
+      ];
+    }
+    $finish = date('Y-m-d',$dateTime);
+    
+    $aMonth = [];
+    $count = 0;
+    $aux = true;
+    foreach ($days as $k=>$day){
+      $count++;
+      if ($month != $day['month'] && $aux){
+        $aux = false;
+        $aMonth[] = ['colspan'=>$count-1,'text'=>getMonthsSpanish($month)];
+        $count = 1;
+      } elseif($count>6){
+        $aMonth[] = ['colspan'=>$count,'text'=>getMonthsSpanish($month)];
+        $count = 0;
+      }
+    }
+    if ($count>0)   $aMonth[] = ['colspan'=>$count,'text'=>getMonthsSpanish($day['month'])];
+    //END: Armo el calendario
+    
+    
+    // listo los Channels Group del sitio
+    $rooms = [];
+    foreach ($roomsLst as $room => $roomNAme) {
+        $dataAux =[
+            'tit' => $roomNAme,
+            'price_booking' => 0,
+            'price_expedia' => 0,
+            'price_airbnb'  => 0,
+            'price_google'  => 0,
+        ];
+        
+        
+        foreach ($agencies as $ag=>$agencID){
+          if ($ag == 'google-hotel') $ag = 'google';
+          $dataAux['price_'.$ag] = $oConfig->priceByChannel(0,$agencID,$room,true);
+        }
+        $rooms[$room] = $dataAux;
+    }
+    //END: listo los Channels Group del sitio
+    
+    
+    //Cargo la disponibilidad y precios por día
+    foreach ($rooms as $k=>$v){
+      $rooms[$k]['data'] = $this->getPriceDay_group($k,$start,$finish);
+    }
+    $dw = listDaysSpanish(true);
+
+    return view('backend/zodomus/cal-sites', [
+        'rooms' => $rooms,
+        'site' => $site,
+        'dw' => $dw,
+        'days' => $days,
+        'month' => $month,
+        'year' => $year,
+        'aMonth' => $aMonth,
+        'current' => $current,
+        'prev' => date('m/Y',strtotime('-1 month'.$start)),
+        'next' => date('m/Y',strtotime('+1 month'.$start)),
+    ]);
   
+  }
+  
+  function getPriceDay_group($ch,$start,$end){
+    // public function listBy_room(Request $request, $apto) {
+    $prices = [];
+    $oConfig = $this->oConfig;
+    $room = Rooms::where('channel_group',$ch)->first();
+    if (!$room)   return null;
+    $defaults = $room->defaultCostPrice($start, $end, $room->pax);
+    $priceDay = $defaults['priceDay'];
+    $min = [];
+    $oPrice = DailyPrices::where('channel_group', $ch)
+            ->where('date', '>=', $start)
+            ->where('date', '<=', $end)
+            ->get();
+    if ($oPrice) {
+      foreach ($oPrice as $p) {
+        if ($p->price) $priceDay[$p->date] = $p->price;
+        $min[$p->date] = $p->min_estancia;
+      }
+    }
+    $priceLst = [];
+    $redDays = [];
+    foreach ($priceDay as $d => $p) {
+      $min_estancia = isset($min[$d]) ? $min[$d] : 0;
+      $priceLst[$d] = [
+          $p,
+          $min_estancia
+        ];
+    }
+    $book = new \App\Book();
+    $availibility = $book->getAvailibilityBy_channel($ch, $start, $end,true);
+    
+    return [
+        'priceLst' => $priceLst,
+        'avail'=>$availibility[0],
+        't_rooms'=>$availibility[1]
+    ];
+      
+  }
 }
