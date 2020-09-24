@@ -468,5 +468,7 @@ function show_isset($array,$index){
 function value_isset($array,$index){
   if(isset($array[$index])){
     echo 'value="'.$array[$index].'"';
+  } else {
+    echo 'value=""';
   }
 }

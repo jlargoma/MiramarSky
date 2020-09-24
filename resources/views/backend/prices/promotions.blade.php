@@ -54,11 +54,13 @@
     <div class="col-md-6 col-lg-8 col-xs-12 box-row">
       @if($lstPromotions)
       @foreach($lstPromotions as $item)
-      <div class="box row">
+      <div class="box row box_promotion">
         <div class="col-md-4">
           <h4>{{$item['value']}}%</h4>
           <strong>{{$item['start'].' - '.$item['finish']}}</strong><br>
-          <button class="btn btn-default editPromotion" type="button" >Editar</button>
+          <button class="btn btn-default editPromotion" type="button" data-id="{{$item['id']}}">Editar</button>
+          <button class="btn btn-danger deletePromotion" type="button" data-id="{{$item['id']}}">Eliminar</button>
+       
         </div>
         <div class="col-md-4">
           <strong>Apartamentos</strong>
@@ -87,6 +89,7 @@
     <div class="pt-1 col-md-6 col-lg-4 col-xs-12">
       <form method="POST" action="{{route('channel.promotions.new')}}" id="channelForm">
         <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+        <input type="hidden" id="itemID" name="itemID" value="">
         <div class="row">
           <div class="pt-1 col-md-8  col-xs-12">
             <label>Rango de Fechas</label>
@@ -99,13 +102,14 @@
           <div class="pt-1 col-xs-12">
             <div class="row">
               @if($ch_group)
-              <div class="form-group">
-                <label for="">Apartamentos</label>
-                <select multiple class="form-control" name="ch_group[]" id="ch_group[]">
-                  @foreach($ch_group as $k=>$v)
-                  <option value="{{$k}}">{{$v}}</option>
-                  @endforeach
-                </select>
+              <div class="form-group row">
+                <label class="col-md-12">Apartamentos</label>
+                @foreach($ch_group as $k=>$v)
+                <div class="form-check col-md-6">
+                  <input type="checkbox" class="form-check-input" id="apto{{$k}}" name="apto{{$k}}">
+                  <label class="form-check-label" >{{$v}}</label>
+                </div>
+                @endforeach
               </div>
               @endif
             </div>
@@ -117,11 +121,13 @@
               <input class="datepicker" name="date_0" type="text" />
             </div>
             <button class="btn btn-primary" id="add" type="button">Agregar</button>
+            
           </div>
 
         </div>
         <div class="pt-1 ">
-          <button class="btn btn-primary m-t-20">Guardar</button>
+          <button class="btn btn-primary">Guardar</button>
+          <button class="btn btn-primary" id="new" type="button">Nueva</button>
         </div>
       </form>
     </div>
@@ -152,6 +158,74 @@ $(document).ready(function () {
             );
   });
   /********************************************************/
+  $('#new').on('click',function () {
+        $("#discount").val(15);
+        $("#itemID").val(null);
+        $('#datebox').html('');
+        $('.form-check-input').prop('checked', true);
+  });
+  $('.editPromotion').on('click',function () {
+    var id = $(this).data('id');
+    var url = "{{route('channel.promotions.get')}}/"+id;
+    $.get(url, function(resp) {
+      if (resp == 'not_found'){
+      } else {
+        $("#ch_group").val('');
+        $("#discount").val(resp.value);
+        $("#itemID").val(id);
+        $("#datepicker").val(id);
+        $('#range').data('daterangepicker').setStartDate(resp.start);
+        $('#range').data('daterangepicker').setEndDate(resp.finish);
+        
+        $('#datebox').html('');
+        for(var i in resp.except){
+          var name = 'date_' + i;
+          $('#datebox').append(
+            $('<input/>', {name: name, type: 'text', class: 'datepicker',value: resp.except[i]}).datepicker()
+          );
+        }
+        
+        for(var i in resp.rooms){
+          $("#apto"+resp.rooms[i]).prop('checked', true);
+          
+//          $("#ch_group option[value=" + resp.rooms[i] + "]").prop('selected', true);
+        }
+      }
+      });
+    
+  });
+  
+  
+  $('.deletePromotion').click(function (event) {
+          
+          if (confirm('Eliminar la promoción?')){
+            var data = {
+              id: $(this).data('id'),
+              _token: "{{csrf_token()}}"
+            };
+            
+            var elemet = $(this).closest('.box_promotion');
+            
+            $.ajax({
+                url: "{{route('channel.promotions.delete')}}",
+                data: data,
+                type: 'DELETE',
+                success: function(result) {
+                  if (result == 'OK'){
+                    window.show_notif('OK','success','Registro Eliminado.');
+                    elemet.remove(); 
+                  } else{
+                    window.show_notif('ERROR','danger','Registro no encontrado');
+                  }
+                },
+                error: function(e){
+                  console.log(e);
+                  window.show_notif('ERROR','danger','Error de sistema');
+                }
+            });
+          }
+        });
+  
 });
 </script>
 @endsection

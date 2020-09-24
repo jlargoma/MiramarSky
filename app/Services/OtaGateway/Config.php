@@ -106,7 +106,7 @@ class Config {
         
         //incremento el valo por porcentaje
         if ($priceData['p']){
-          $price = $price + ($price * ($priceData['p'] / 100));
+          $price = $price * (1+ ($priceData['p'] / 100));
           $priceText .= '+'.$priceData['p'].'%';
         }
         

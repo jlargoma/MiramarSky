@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \Carbon\Carbon;
 use App\Http\Requests;
-use App\Services\Zodomus\Config as ZConfig;
+use App\Services\OtaGateway\Config as oConfig;
 use App\Promotions;
 
 class PromotionsController extends AppController {
@@ -21,11 +21,9 @@ class PromotionsController extends AppController {
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
     
-    $aptos = configZodomusAptos();
-    $ch_group = [];
-    foreach ($aptos as $k=>$v){
-      $ch_group[$k] = $v->name;
-    }
+    $oConfig = new oConfig();
+    $ch_group = $oConfig->getRoomsName();
+    
     /***********************************************************************/
     $oPromotions = Promotions::where('start', '>=', $startYear)
             ->where('finish', '<=', $endYear)
@@ -56,11 +54,12 @@ class PromotionsController extends AppController {
           'finish' =>convertDateToShow_text($item->finish,true),
           'rooms' => $lstRooms,
           'except' => $lstExcepts,
-          'value' => $item->value
+          'value' => $item->value,
+          'id' => $item->id
         ];
+
       }
     }
-
     /***********************************************************************/
      
     return view('backend/prices/promotions', [
@@ -70,6 +69,36 @@ class PromotionsController extends AppController {
   }
 
   /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function getItem($id) {
+    /***********************************************************************/
+    $item = Promotions::find($id);
+    if ($item){
+        /**************/
+        $rooms = unserialize($item->rooms);
+        if (!$rooms || !is_array($rooms)) $rooms = [];
+        /**************/
+        $exceptions = unserialize($item->exceptions);
+        if (!$exceptions || !is_array($exceptions)) $exceptions = [];
+        for($i=0; $i< count($exceptions); $i++){
+          $exceptions[$i] = convertDateToShow($exceptions[$i],true);
+        }
+        /**************/
+        return response()->json([
+          'start' =>convertDateToShow($item->start,true),
+          'finish' =>convertDateToShow($item->finish,true),
+          'rooms' => $rooms,
+          'except' => $exceptions,
+          'value' => $item->value
+        ]);
+      }
+      return 'not_found';
+  }
+  
+  /**
    * Show the form for creating a new resource.
    *
    * @return \Illuminate\Http\Response
@@ -77,6 +106,7 @@ class PromotionsController extends AppController {
   public function create(Request $request) {
     
     $data = $request->all();
+    
     $aRange = explode(' - ', $data['range']);
     $start  = convertDateToDB($aRange[0]);
     $finish  = convertDateToDB($aRange[1]);
@@ -88,6 +118,13 @@ class PromotionsController extends AppController {
       }
     }
     
+    $chGroupSel = [];
+    $oConfig = new oConfig();
+    $ch_group = $oConfig->getRoomsName();
+    foreach ($ch_group as $k=>$name) 
+      if (isset ($data['apto'.$k])) $chGroupSel[] = $k;
+    
+      
     $oneDay = 24*60*60;
     $startAux = strtotime($start);
     $endAux = strtotime($finish);
@@ -98,11 +135,15 @@ class PromotionsController extends AppController {
       $startAux+=$oneDay;
     }
     
-    $oPromotion = new Promotions();
+    $oPromotion = null;
+    if (isset($data['itemID']) && $data['itemID'])
+      $oPromotion = Promotions::find($data['itemID']);
+    if (!$oPromotion)  $oPromotion = new Promotions();
+    
     $oPromotion->start  = $start;
     $oPromotion->finish = $finish;
     $oPromotion->value = $data['discount'];
-    $oPromotion->rooms = serialize($data['ch_group']);
+    $oPromotion->rooms = serialize($chGroupSel);
     $oPromotion->days  = serialize($days);
     $oPromotion->exceptions  = serialize($exceptions);
     $oPromotion->save();
@@ -111,112 +152,11 @@ class PromotionsController extends AppController {
     
   }
 
-  public function delteExtraPrices(Request $request) {
-
-      $id = $request->input('id');
-      $extra = \App\Extras::find($id);
-      if ($extra->id == $id){
-        $extra->deleted = 1;
-        if ($extra->save()) return "OK";
-      }
-      return 'Extra no encontrado';
-  }
-  
-   /**
-   * Update the specified resource in storage.
-   *
-   * @param  \Illuminate\Http\Request $request
-   * @param  int                      $id
-   * @return \Illuminate\Http\Response
-   */
-  public function update(Request $request) {
-    $key = explode('-',  $request->input('id'));
-    if (!is_array($key) || count($key) != 2 ){
-      return ('ops, algo salió mal.');
-    }
-    $oPrice = Prices::findOrCreate($key[0],$key[1]);
-    $oPrice->price = $request->input('price');
-    $oPrice->cost = $request->input('cost');
-
-    if ($oPrice->save()) return 'OK';
+  function delete(Request $request){
+    $oPromotion = Promotions::find($request->input('id'));
+    if ($oPromotion->delete()) return 'OK';
     
-     return ('ops, algo salió mal.');
-  }
-
-  public function updateExtra(Request $request) {
-    $id = $request->input('id');
-    $extraUpdate = \App\Extras::find($id);
-
-    $extraUpdate->price = $request->input('extraprice');
-    $extraUpdate->cost = $request->input('extracost');
-
-    if ($extraUpdate->save()) {
-      echo "Cambiada!!";
-    }
-  }
-
-  /**
-   * Remove the specified resource from storage.
-   *
-   * @param  int $id
-   * @return \Illuminate\Http\Response
-   */
-  public function delete($id) {
-    $price = \App\Prices::find($id);
-    if ($price->delete()) {
-      return redirect()->action('PricesController@index');
-    }
-  }
-  
-  /*******************************************/
-  /*******************************************/
-  public function prepareYearPrices(Request $request) {
-    $year = $this->getActiveYear();
-    $cUser = \Illuminate\Support\Facades\Auth::user();
-    // Sólo lo puede ver jorge
-    if ($cUser->email != "jlargo@mksport.es"){
-      return redirect('no-allowed');
-    }
-    
-    $store = \App\ProcessedData::findOrCreate('create_baseSeason_'.$year->id);
-    $store->content = json_encode([
-        'u' =>$cUser->email,
-        'ip'=>getUserIpAddr()
-    ]);
-    $store->save();
-    
-    $prepareDefaultPrices = new prepareDefaultPrices($year->start_date,$year->end_date);
-    if ($prepareDefaultPrices->error){
-      return back()->with('sent_error',$prepareDefaultPrices->error);
-    }
-    $prepareDefaultPrices->process();
-    
-    return back()->with('sent','Precios cargados para ser enviados');
-  }
-  
-  public function prepareYearMinStay(Request $request) {
-    $year = $this->getActiveYear();
-    $cUser = \Illuminate\Support\Facades\Auth::user();
-    // Sólo lo puede ver jorge
-//    if ($cUser->email != "jlargo@mksport.es"){
-//      return redirect('no-allowed');
-//    }
-//    
-    $store = \App\ProcessedData::findOrCreate('send_minStaySeason_'.$year->id);
-    $store->content = json_encode([
-        'u' =>$cUser->email,
-        'ip'=>getUserIpAddr()
-    ]);
-    $store->save();
-    
-    $prepareMinStay = new \App\Models\PrepareMinStay($year->start_date,$year->end_date);
-    if ($prepareMinStay->error){
-      return back()->withErrors([$prepareMinStay->error]);
-    }
-    $prepareMinStay->process();
-//    $prepareMinStay->process_justWubook();
-    
-    return back()->with('sent','Precios cargados para ser enviados');
+    return 'error';
   }
 
 }
