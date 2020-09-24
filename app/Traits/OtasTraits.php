@@ -210,19 +210,22 @@ trait OtasTraits
       $defaults = $room->defaultCostPrice($start, $end, $pax);
       $priceDay = $defaults['priceDay'];
       $min = [];
+      
       $oPrice = DailyPrices::where('channel_group', $apto)
               ->where('date', '>=', $start)
               ->where('date', '<=', $end)
               ->get();
       if ($oPrice) {
         foreach ($oPrice as $p) {
-          $priceDay[$p->date] = $p->price;
+          if (isset($priceDay[$p->date]) && $p->price)
+            $priceDay[$p->date] = $p->price;
           $min[$p->date] = $p->min_estancia;
         }
       }
       $priceLst = [];
       $redDays = [];
       $agencies = $this->oConfig->getAllAgency();
+      
       foreach ($priceDay as $d => $p) {
         $data = [
             'price_booking' => 0,

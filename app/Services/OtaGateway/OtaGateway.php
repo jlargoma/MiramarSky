@@ -169,7 +169,7 @@ class OtaGateway {
   public function setMinStay($params) {
     $params['token'] = $this->token;
     $params['account_id'] = $this->account_id;
-    $params['restriction_plan_id'] = $this->oConfig->restriction_plan();
+//    $params['restriction_plan_id'] = $this->oConfig->restriction_plan();
 //    $this->call('restrictions', 'POST', $params);
     
     $agencyLst = $this->oConfig->getAllAgency();

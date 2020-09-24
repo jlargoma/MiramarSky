@@ -31,8 +31,6 @@ class ApiController extends AppController
       return RoomsType::where('min_pax','<=',$pax)
                 ->where('max_pax','>=',$pax)
                 ->get();
-//      where('status',1)
-      
     }
     
     public function getItemsSuggest(Request $request) {
@@ -42,6 +40,7 @@ class ApiController extends AppController
       $date_finish = $request->input('end',null);
       $response = [];
       $usr = $request->input('usr',null);
+      
       //Save potencial customer data
       if (isset($usr['c_cp']) && trim($usr['c_cp']) == '')
         \App\CustomersRequest::createOrEdit($request->all(),-1);
@@ -52,23 +51,28 @@ class ApiController extends AppController
       if ($oItems){
         $index = 0;
         foreach ($oItems as $item){
+         
           $roomData = $this->getRoomsPvpAvail($date_start,$date_finish,$pax,$item->channel_group);
           if ($roomData['price']<1) continue;
           $roomPrice = $this->getPriceOrig($roomData['price'],$item->channel_group,$nigths); //Booking price
           $minStay = $roomData['minStay'];
-          $pvp_1 = $roomPrice - ($roomPrice*$this->discount_1) + $roomData['price_limp'];
-          $roomPrice = $roomPrice + $roomData['price_limp']+round($roomData['price_limp']*$this->discount_1,2);
+          $discount = $roomData['discounts'];
+          
+          $pvp_1 = $roomPrice - ($roomPrice*($discount/100));
+//          $pvp_1 = $roomPrice - ($roomPrice*($discount/100)) + $roomData['price_limp'];
+//          $roomPrice = $roomPrice + $roomData['price_limp']+round($roomData['price_limp']*($discount/100),2);
           $pvp_2 = 99999;
 //          $pvp_2 = $roomPrice - ($roomPrice*$this->discount_2);
           $response[] = [
             'name' => $item->name,
             'max_pax' => $item->max_pax,
             'code'=>encriptID($item->id),
-            'price'=> moneda($roomPrice),
+            'price'=> moneda($roomPrice,true,2),
             'pvp'=>$roomPrice,
-            'price_1'=> moneda($pvp_1),
-            'pvp_1'=>$pvp_1,
-            'discount_1'=>$this->discount_1*100,
+            'extr_costs'=>$roomData['price_limp'],
+            'price_1'=> moneda($pvp_1,true,2),
+            'pvp_1'=> round($pvp_1,2),
+            'discount_1'=>$discount,
             'price_2'=> moneda($pvp_2),
             'pvp_2'=>$pvp_2,
             'discount_2'=>$this->discount_2*100,
@@ -77,7 +81,7 @@ class ApiController extends AppController
         }
   
       }
-      
+//      dd($response);
       if (count($response)>0)  return response()->json($response);
        return response('empty');
     }
@@ -86,31 +90,6 @@ class ApiController extends AppController
     
     public function getExtasOpcion(Request $request) {
       $response = [];
-      
-      $pax = $request->input('pax',null);
-      $date_start = $request->input('start',null);
-      $date_finish = $request->input('end',null);
-      $nigths = calcNights($date_start,$date_finish);
-     
-      $parkPvpSetting = Settings::where('key', Settings::PARK_PVP_SETTING_CODE)->first();
-      if($parkPvpSetting){
-         $response[] = [
-              'k'=> encriptID($parkPvpSetting->id),
-              'n'=> 'Parking ('.$parkPvpSetting->value.'€ x noche)',
-              'p' => $parkPvpSetting->value*$nigths,
-              'i'=> clearTitle('Parking'),
-          ];
-      }
-      $parkPvpSetting = Settings::where('key', Settings::BREAKFAST_PVP_SETTING_CODE)->first();
-      if($parkPvpSetting){
-         $response[] = [
-              'k'=> encriptID($parkPvpSetting->id),
-              'n'=> 'Desayuno ('.$parkPvpSetting->value.'€ x pers. x día)',
-              'p' => $parkPvpSetting->value*$pax*$nigths,
-              'i'=> clearTitle('Desayuno'),
-          ];
-      }
-     
       return response()->json($response);
     }
     
@@ -169,6 +148,7 @@ class ApiController extends AppController
                 'price_limp' => $costes['price_limp'],
                 'minStay'    => $room->getMin_estancia($startDate,$endDate),
                 'availiable' => $availiable,
+                'discounts' => $room->getDiscount($startDate,$endDate)
                 ];
              
           }
@@ -326,36 +306,32 @@ class ApiController extends AppController
         
         if (!$book->save())  return FALSE;
         
-        $this->setExtras($Extras,$book);
+        $this->setExtras($book,$room->luxury);
            
-        
-        /*************************************************************************************************/
-//            if ($request->input('priceDiscount') == "yes" || $request->input('price-discount') == "yes") {
-//              $discount = Settings::getKeyValue('discount_books');
-//              $book->real_price -= $discount;
-//              $book->ff_status = 4;
-//              $book->has_ff_discount = 1;
-//              $book->ff_discount = $discount;
-//            }
         /*************************************************************************************************/
         
         $costes = $room->priceLimpieza($room->sizeApto);
         $book->sup_limp  = $costes['price_limp'];
         $book->cost_limp = $costes['cost_limp'];
         
+        /**********************************/
         $pvp = $room->getPVP($date_start, $date_finish,$book->pax);
         $roomPrice = $this->getPriceOrig($pvp,$room->channel_group,$nigths); //Booking price
-        if ($rate == 1)  $pvp = $roomPrice - ($roomPrice*$this->discount_1);
-        if ($rate == 2)  $pvp = $roomPrice - ($roomPrice*$this->discount_2);
-          
         
-        $book->real_price  = $pvp + $book->sup_park + $book->sup_lujo + $book->sup_limp;
+        $promo    = $room->getDiscount($date_start,$date_finish);
+        $discount = round($roomPrice*( $promo/100),2);
+        $pvp      = intval($roomPrice-$discount);
+        
+        $book->real_price = $pvp + $book->sup_limp + 1;
+        $book->total_price = $pvp + $book->sup_limp;
+        $book->ff_status = 4;
+        $book->has_ff_discount = 1;
+        $book->ff_discount = $discount;
         $book->cost_apto = $room->getCostRoom($date_start, $date_finish, $book->pax);
         $book->cost_total = $book->get_costeTotal();
-        $book->total_price = $book->real_price;
         $book->total_ben = $book->total_price - $book->cost_total;
         $book->promociones = 0;
-        $book->book_comments     = $comments .PHP_EOL." - precio publicado: $pvp";
+        $book->book_comments     = $comments .PHP_EOL." - precio publicado: $pvp + ".$book->sup_limp.': €'.$book->total_price;
         if ($book->save()) {
           $amount = ($book->total_price / 2);
           $client_email = 'no_email';
@@ -457,43 +433,36 @@ class ApiController extends AppController
       $book->save();
     }
     
-    private function setExtras($aExtrs,$book){
+    private function setExtras($book,$lux=false){
           
-      if (!$aExtrs || count($aExtrs)<1) return null;
-      $extID = [];
-      foreach ($aExtrs as $ext){
-        if ($ext['s'] === "true") $extID[] = desencriptID($ext['k']);
-      }
       //parking  
       $parkPvpSetting = Settings::where('key', Settings::PARK_PVP_SETTING_CODE)->first();
       if($parkPvpSetting){
-        if (in_array($parkPvpSetting->id, $extID)){
           $cost = Settings::where('key', Settings::PARK_COST_SETTING_CODE)->first();
-          $book->sup_park  = $parkPvpSetting->value*$book->nigths;
+          $book->sup_park  = 0;
           $book->cost_park = $cost->value*$book->nigths;
           $book->type_park = 1;
-          $book->save();
-        }
       }
       
       //suplemento de lujo
-      $parkPvpSetting = Settings::where('key', Settings::BREAKFAST_PVP_SETTING_CODE)->first();
-      if($parkPvpSetting){
-        if (in_array($parkPvpSetting->id, $extID)){
-          $cost = Settings::where('key', Settings::LUXURY_COST_SETTING_CODE)->first();
-          $book->type_luxury = 1;
-          $book->sup_lujo    = $parkPvpSetting->value*$book->pax*$book->nigths;
-          $book->cost_lujo   = $cost->value*$book->pax*$book->nigths;
-          $book->save();
+      if ($lux){
+        $parkPvpSetting = Settings::where('key', Settings::BREAKFAST_PVP_SETTING_CODE)->first();
+        if($parkPvpSetting){
+            $cost = Settings::where('key', Settings::LUXURY_COST_SETTING_CODE)->first();
+            $book->type_luxury = 1;
+            $book->sup_lujo    = 0;
+            $book->cost_lujo   = $cost->value;
         }
       }
+      
+      $book->save();
     }
     
     
     
     private function getPriceOrig($pvp,$ChGr,$nigths) {
       $oConfig = new \App\Services\OtaGateway\Config();
-      return $oConfig->priceByChannel($pvp,1,$ChGr,false,$nigths); //Booking price
+      return $oConfig->priceByChannel($pvp,99,$ChGr,false,$nigths); //Google Hotels price
     }
     
     public function changeCustomer(Request $request) {

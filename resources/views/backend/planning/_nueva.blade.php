@@ -131,7 +131,7 @@ $mobile = new Mobile();
                 <div class="col-md-3 col-xs-12 push-xs-10">
                     <label>Entrada</label>
                     <div class="input-prepend input-group input_dates">
-                      <input type="text" class="form-control daterange02" id="fechas" name="fechas" <?php value_isset($data,'date'); ?>  required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
+                      <input type="text" class="form-control daterange1" id="fechas" name="fechas" <?php value_isset($data,'date'); ?>  required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
                         <input type="hidden" class="date_start" id="start" name="start" <?php value_isset($data,'start'); ?>>
                         <input type="hidden" class="date_finish" id="finish" name="finish" <?php value_isset($data,'finish'); ?>>
                     </div>
