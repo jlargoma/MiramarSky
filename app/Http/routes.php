@@ -191,9 +191,13 @@
     
     
   
-      
+     
+    Route::get('admin/OTAs/sendPricesSeason', function () {
+        \Artisan::call('OTAs:sendPricesSeason');
+        die('finish');
+    });
     
-     Route::get('admin/Wubook/Availables', function () {
+    Route::get('admin/Wubook/Availables', function () {
         \Artisan::call('wubook:sendAvaliables');
         die('finish');
     });

@@ -62,9 +62,18 @@ class PromotionsController extends AppController {
     }
     /***********************************************************************/
      
+    $sentData = \App\ProcessedData::findOrCreate('create_baseSeason_'.$year->id);
+    $sendDataInfo = 'No ha sido enviado aún';
+    if ($sentData->content){
+      $sentData->content = json_decode($sentData->content);
+      $sendDataInfo = 'Enviado el '. convertDateTimeToShow_text($sentData->updated_at);
+      $sendDataInfo .= "\n".'Por '.$sentData->content->u;
+    }
+    
     return view('backend/prices/promotions', [
         'ch_group' => $ch_group,
-        'lstPromotions' =>$lstPromotions
+        'lstPromotions' =>$lstPromotions,
+        'sendDataInfo' => $sendDataInfo
     ]);
   }
 
@@ -113,7 +122,7 @@ class PromotionsController extends AppController {
     
     $exceptions = [];
     foreach ($data as $k=>$v){
-      if (preg_match('/^date/', $k)){
+      if (preg_match('/^date/', $k) && trim($v) != ''){
         $exceptions[] = convertDateToDB($v);
       }
     }

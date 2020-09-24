@@ -35,6 +35,8 @@ td.border-1{
 </style>
 
 <div class="container-fluid padding-25 sm-padding-10">
+  @if (\Session::has('sent'))<p class="alert alert-success">{!! \Session::get('sent') !!}</p>@endif
+  @if($errors->any())<p class="alert alert-danger">{{$errors->first()}}</p>@endif
   <div class="row">
     <div class="col-md-12">
       <div class="row">
@@ -49,6 +51,15 @@ td.border-1{
           <button class="btn btn-md btn-primary active"  disabled>PORCENTAJES OTAs</button>
         </div>
         <div class="col-md-2 row"></div>
+        @if (Auth::user()->email == "jlargo@mksport.es")
+          <div class="col-md-12">
+            <form action="{{route('precios.prepare-cron')}}" method="post" class="inline">
+              <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+              <button class="btn btn-success" title="{{$sendDataInfo}}">Sincr. precios OTAs</button>
+            </form>
+            <small>(Sincronizar toda la temporada)</small>
+          </div>
+        @endif
       </div>
     </div>
   </div>

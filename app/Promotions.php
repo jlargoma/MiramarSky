@@ -9,9 +9,10 @@ class Promotions extends Model {
   public $timestamps = false;
 
   function getDiscount($startDate, $endDate, $ch_group) {
-    $oPromotions = \App\Promotions::where('start', '<=', $startDate)
-                    ->where('finish', '>=', $endDate)->get();
+//    $oPromotions = \App\Promotions::where('start', '<=', $startDate)
+//                    ->where('finish', '>=', $endDate)->get();
 
+    $oPromotions = \App\Promotions::all();
     if ($oPromotions) {
       $oneDay = 24 * 60 * 60;
       $startAux = strtotime($startDate);
