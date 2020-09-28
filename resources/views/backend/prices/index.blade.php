@@ -117,6 +117,8 @@
 </style>
 
 <div class="container-fluid padding-25 sm-padding-10">
+  @if (\Session::has('sent'))<p class="alert alert-success">{!! \Session::get('sent') !!}</p>@endif
+  @if($errors->any())<p class="alert alert-danger">{{$errors->first()}}</p>@endif
   <div class="row">
     <div class="col-md-12">
       <div class="row">

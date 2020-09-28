@@ -12,7 +12,7 @@ use App\Services\OtaGateway\OtaGateway;
 
 use App\ProcessedData;
 
-///admin/Wubook/Availables?detail=1
+///admin/OTAs/sendPricesSeason?detail=1
 class PricesSeason extends Command
 {
     /**

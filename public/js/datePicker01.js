@@ -1,11 +1,9 @@
 $(document).ready(function () {
-
-$(".daterange01").daterangepicker({
+window['dateRangeObj'] = {
     "buttonClasses": "button button-rounded button-mini nomargin",
     "applyClass": "button-color",
     "cancelClass": "button-light",
     autoUpdateInput: true,
-//    locale: 'es',
     locale: {
       firstDay: 2,
       format: 'DD/MM/YYYY',
@@ -39,47 +37,13 @@ $(".daterange01").daterangepicker({
       ],
     },
 
-  });
+  };
+$(".daterange01").daterangepicker(window.dateRangeObj);
+window.dateRangeObj.locale.format = 'DD MMM, YY';
+$(".daterange02").daterangepicker(window.dateRangeObj);
+window.dateRangeObj.locale.format = 'DD/MM/YYYY';
 
-$(".daterange02").daterangepicker({
-    "buttonClasses": "button button-rounded button-mini nomargin",
-    "applyClass": "button-color",
-    "cancelClass": "button-light",
-    autoUpdateInput: true,
-    locale: {
-      firstDay: 2,
-      format: 'DD MMM, YY',
-      "applyLabel": "Aplicar",
-      "cancelLabel": "Cancelar",
-      "fromLabel": "From",
-      "toLabel": "To",
-      "customRangeLabel": "Custom",
-      "daysOfWeek": [
-        "Do",
-        "Lu",
-        "Mar",
-        "Mi",
-        "Ju",
-        "Vi",
-        "Sa"
-      ],
-      "monthNames": [
-        "Enero",
-        "Febrero",
-        "Marzo",
-        "Abril",
-        "Mayo",
-        "Junio",
-        "Julio",
-        "Agosto",
-        "Septiembre",
-        "Octubre",
-        "Noviembre",
-        "Diciembre"
-      ],
-    },
 
-  });
   Date.prototype.ddmmmyyyy = function () {
     var mm = this.getMonth() + 1; // getMonth() is zero-based
     var dd = this.getDate();

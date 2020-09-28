@@ -58,11 +58,27 @@ class ApiController extends AppController
           $minStay = $roomData['minStay'];
           $discount = $roomData['discounts'];
           
-          $pvp_1 = $roomPrice - ($roomPrice*($discount/100));
-//          $pvp_1 = $roomPrice - ($roomPrice*($discount/100)) + $roomData['price_limp'];
-//          $roomPrice = $roomPrice + $roomData['price_limp']+round($roomData['price_limp']*($discount/100),2);
+          $pvp_1 = round($roomPrice - ($roomPrice*($discount/100)),2);
+          $pvp_discount = round($roomPrice - $pvp_1,2);
+          $pvp_promo = 0;
+          // promociones tipo 7x4
+          $hasPromo = 0;
+          if ($roomData['promo']){
+            
+            $promo_nigths = $roomData['promo']['night'];
+            $nigths_discount = $promo_nigths-$roomData['promo']['night_apply'];
+            $pvp_promo = $pvp_1;
+            if ($promo_nigths>0 && $nigths_discount>0 && $nigths>=$promo_nigths){
+              $nigths_ToApply = intval($nigths/$promo_nigths) * $nigths_discount;
+              $pvp_aux = round( ($pvp_1/$nigths) * ($nigths-$nigths_ToApply) , 2);
+              $hasPromo = $roomData['promo']['name'];
+              $pvp_promo =  round($pvp_1 - $pvp_aux , 2);
+              $pvp_1 = $pvp_aux;
+            }
+          }
+          
+          ////////////////////////
           $pvp_2 = 99999;
-//          $pvp_2 = $roomPrice - ($roomPrice*$this->discount_2);
           $response[] = [
             'name' => $item->name,
             'max_pax' => $item->max_pax,
@@ -73,6 +89,9 @@ class ApiController extends AppController
             'price_1'=> moneda($pvp_1,true,2),
             'pvp_1'=> round($pvp_1,2),
             'discount_1'=>$discount,
+            'pvp_discount'=>$pvp_discount,
+            'promo_name'=>$hasPromo,
+            'pvp_promo'=>$pvp_promo,
             'price_2'=> moneda($pvp_2),
             'pvp_2'=>$pvp_2,
             'discount_2'=>$this->discount_2*100,
@@ -148,7 +167,8 @@ class ApiController extends AppController
                 'price_limp' => $costes['price_limp'],
                 'minStay'    => $room->getMin_estancia($startDate,$endDate),
                 'availiable' => $availiable,
-                'discounts' => $room->getDiscount($startDate,$endDate)
+                'discounts'  => $room->getDiscount($startDate,$endDate),
+                'promo'      => $room->getPromo($startDate,$endDate)
                 ];
              
           }
@@ -264,15 +284,18 @@ class ApiController extends AppController
           $alreadyExist = $customer->id;
         }
       }
+      
       if (!$alreadyExist){
         //createacion del cliente
         $customer          = new \App\Customers();
         $customer->name    = $cData['name'];
         $customer->email   = $cData['email'];
         $customer->phone   = $cData['phone'];
-        
         $customer->user_id = 1;
         if (!$customer->save()) return FALSE;
+      }
+      if (isset($cData['c_observ'])){
+        $comments .= PHP_EOL.$cData['c_observ'];
       }
 
       $customer->api_token= encriptID($customer->id).bin2hex(time());
@@ -320,7 +343,25 @@ class ApiController extends AppController
         
         $promo    = $room->getDiscount($date_start,$date_finish);
         $discount = round($roomPrice*( $promo/100),2);
-        $pvp      = intval($roomPrice-$discount);
+        $pvp      = ($roomPrice-$discount);
+        
+        
+        // promociones tipo 7x4
+          $hasPromo = '';
+          $aPromo = $room->getPromo($date_start,$date_finish);
+          if ($aPromo){
+            $promo_nigths = $aPromo['night'];
+            $nigths_discount = $promo_nigths-$aPromo['night_apply'];
+            $pvp_promo = $pvp;
+            if ($promo_nigths>0 && $nigths_discount>0 && $nigths>=$promo_nigths){
+              $nigths_ToApply = ($nigths/$promo_nigths) * $nigths_discount;
+              $pvp = round( ($pvp/$nigths) * ($nigths-$nigths_ToApply) , 2);
+              $comments .= PHP_EOL." promoción ".$aPromo['name'];
+            }
+          }
+          
+        // promociones tipo 7x4  
+          
         
         $book->real_price = $pvp + $book->sup_limp + 1;
         $book->total_price = $pvp + $book->sup_limp;
@@ -331,7 +372,7 @@ class ApiController extends AppController
         $book->cost_total = $book->get_costeTotal();
         $book->total_ben = $book->total_price - $book->cost_total;
         $book->promociones = 0;
-        $book->book_comments     = $comments .PHP_EOL." - precio publicado: $pvp + ".$book->sup_limp.': €'.$book->total_price;
+        $book->book_comments = $comments .PHP_EOL." - precio publicado: $pvp + ".$book->sup_limp.': €'.$book->total_price;
         if ($book->save()) {
           $amount = ($book->total_price / 2);
           $client_email = 'no_email';
@@ -462,7 +503,7 @@ class ApiController extends AppController
     
     private function getPriceOrig($pvp,$ChGr,$nigths) {
       $oConfig = new \App\Services\OtaGateway\Config();
-      return $oConfig->priceByChannel($pvp,99,$ChGr,false,$nigths); //Google Hotels price
+      return round($oConfig->priceByChannel($pvp,99,$ChGr,false,$nigths),2); //Google Hotels price
     }
     
     public function changeCustomer(Request $request) {

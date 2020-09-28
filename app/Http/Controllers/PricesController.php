@@ -280,6 +280,10 @@ class PricesController extends AppController {
    */
   public function pricesOTAs() {
     
+    $year = $this->getActiveYear();
+    $startYear = new Carbon($year->start_date);
+    $endYear = new Carbon($year->end_date);
+    
     $otaConfig = new \App\Services\OtaGateway\Config();
     $agencies = $otaConfig->getAllAgency();
     $rooms = $otaConfig->getRoomsName();
@@ -297,10 +301,18 @@ class PricesController extends AppController {
     }
    
     /************************************************************************/
-     
+    $sentData = \App\ProcessedData::findOrCreate('create_baseSeason_'.$year->id);
+    $sendDataInfo = 'No ha sido enviado aún';
+    if ($sentData->content){
+      $sentData->content = json_decode($sentData->content);
+      $sendDataInfo = 'Enviado el '. convertDateTimeToShow_text($sentData->updated_at);
+      $sendDataInfo .= "\n".'Por '.$sentData->content->u;
+    }
+    
     return view('backend/prices/pricesOTAs', [
         'aPricesOta' => $aPricesOta,
         'agencies' => $agencies,
+        'sendDataInfo' => $sendDataInfo,
         'rooms' => $rooms,
     ]);
   }

@@ -46,15 +46,26 @@ class PromotionsController extends AppController {
         $exceptions = unserialize($item->exceptions);
         if ($exceptions)
           foreach ($exceptions as $e){
-           $lstExcepts[] = convertDateToShow_text($e);
+           $lstExcepts[] = convertDateToShow_text($e['start']).' - '.convertDateToShow_text($e['end']);
           }
+        /**************/
+        $discount = $item->value.'%';
+        if ($item->type == 'nights'){
+          $discount = 'cada '.$item->nights.' paga '.($item->night_apply);
+        }
+        /**************/
+        $weekDay = null;
+        if ($item->weekday == 'working') $weekDay = 'Laborables';
+        if ($item->weekday == 'end') $weekDay = 'Fin de Semana';
         /**************/
         $lstPromotions[] = [
           'start' =>convertDateToShow_text($item->start,true),
           'finish' =>convertDateToShow_text($item->finish,true),
           'rooms' => $lstRooms,
           'except' => $lstExcepts,
-          'value' => $item->value,
+          'value' => $discount,
+          'name' => $item->name,
+          'weekDay' => $weekDay,
           'id' => $item->id
         ];
 
@@ -62,9 +73,18 @@ class PromotionsController extends AppController {
     }
     /***********************************************************************/
      
+    $sentData = \App\ProcessedData::findOrCreate('create_baseSeason_'.$year->id);
+    $sendDataInfo = 'No ha sido enviado aún';
+    if ($sentData->content){
+      $sentData->content = json_decode($sentData->content);
+      $sendDataInfo = 'Enviado el '. convertDateTimeToShow_text($sentData->updated_at);
+      $sendDataInfo .= "\n".'Por '.$sentData->content->u;
+    }
+    
     return view('backend/prices/promotions', [
         'ch_group' => $ch_group,
-        'lstPromotions' =>$lstPromotions
+        'lstPromotions' =>$lstPromotions,
+        'sendDataInfo' => $sendDataInfo
     ]);
   }
 
@@ -84,16 +104,25 @@ class PromotionsController extends AppController {
         $exceptions = unserialize($item->exceptions);
         if (!$exceptions || !is_array($exceptions)) $exceptions = [];
         for($i=0; $i< count($exceptions); $i++){
-          $exceptions[$i] = convertDateToShow($exceptions[$i],true);
+          $exceptions[$i] = [
+              'start' => convertDateToShow($exceptions[$i]['start'],true),
+              'end' => convertDateToShow($exceptions[$i]['end'],true)
+              ];
         }
         /**************/
         return response()->json([
-          'start' =>convertDateToShow($item->start,true),
-          'finish' =>convertDateToShow($item->finish,true),
-          'rooms' => $rooms,
+          'start'  => convertDateToShow($item->start,true),
+          'finish' => convertDateToShow($item->finish,true),
+          'rooms'  => $rooms,
           'except' => $exceptions,
-          'value' => $item->value
+          'value'  => $item->value,
+          'name'   => $item->name,
+          'weekday'=> $item->weekday,
+          'type'   => $item->type,
+          'nights' => $item->nights,
+          'night_apply' => $item->night_apply,
         ]);
+      
       }
       return 'not_found';
   }
@@ -106,18 +135,61 @@ class PromotionsController extends AppController {
   public function create(Request $request) {
     
     $data = $request->all();
+    $oneDay = 24*60*60;
     
+
+    /***********************************/
+    /***    Exceptions   *************/
+    $exceptions = [];
+    $exceptLst  = [];
+    foreach ($data as $k=>$v){
+      if (preg_match('/^date/', $k) && trim($v) != ''){
+        $auxRange = explode(' - ', $v);
+        
+        $startAux = convertDateToDB($auxRange[0]);
+        $endAux   = convertDateToDB($auxRange[1]);
+         
+        $exceptLst[] = ['start'=>$startAux,'end'=>$endAux];
+        
+        $startAux = strtotime($startAux);
+        $endAux = strtotime($endAux);
+        
+        while ($startAux<=$endAux){
+          $exceptions[] = date('Y-m-d',$startAux);
+          $startAux+=$oneDay;
+        }
+      }
+    }
+    /***********************************/
+    /***    Range-Days     *************/
     $aRange = explode(' - ', $data['range']);
     $start  = convertDateToDB($aRange[0]);
     $finish  = convertDateToDB($aRange[1]);
     
-    $exceptions = [];
-    foreach ($data as $k=>$v){
-      if (preg_match('/^date/', $k)){
-        $exceptions[] = convertDateToDB($v);
+    $startAux = strtotime($start);
+    $endAux = strtotime($finish);
+    $days = [];
+    while ($startAux<$endAux){
+      $dateAux= date('Y-m-d',$startAux);
+      $active = (in_array($dateAux, $exceptions)) ? 0 : 1;
+      
+      if ($active === 1){
+        $weekday = date('w',$startAux);
+        switch ($data['weekday']){
+          case 'working':
+            if ($weekday > 4) $active = 0;
+            break;
+          case 'end':
+            if ($weekday < 5) $active = 0;
+            break;
+        }
       }
+      $days[$dateAux] = $active;
+      $startAux+=$oneDay;
     }
-    
+        
+    /***********************************/
+    /***    Channel Group *************/
     $chGroupSel = [];
     $oConfig = new oConfig();
     $ch_group = $oConfig->getRoomsName();
@@ -125,16 +197,6 @@ class PromotionsController extends AppController {
       if (isset ($data['apto'.$k])) $chGroupSel[] = $k;
     
       
-    $oneDay = 24*60*60;
-    $startAux = strtotime($start);
-    $endAux = strtotime($finish);
-    $days = [];
-    while ($startAux<$endAux){
-      $dateAux= date('Y-m-d',$startAux);
-      $days[$dateAux] = (in_array($dateAux, $exceptions)) ? 0 : 1;
-      $startAux+=$oneDay;
-    }
-    
     $oPromotion = null;
     if (isset($data['itemID']) && $data['itemID'])
       $oPromotion = Promotions::find($data['itemID']);
@@ -142,10 +204,15 @@ class PromotionsController extends AppController {
     
     $oPromotion->start  = $start;
     $oPromotion->finish = $finish;
+    $oPromotion->name = $data['name'];
+    $oPromotion->weekday = $data['weekday'];
+    $oPromotion->type = $data['type'];
+    $oPromotion->nights = $data['nights'];
+    $oPromotion->night_apply = $data['night_apply'];
     $oPromotion->value = $data['discount'];
     $oPromotion->rooms = serialize($chGroupSel);
     $oPromotion->days  = serialize($days);
-    $oPromotion->exceptions  = serialize($exceptions);
+    $oPromotion->exceptions  = serialize($exceptLst);
     $oPromotion->save();
 
     return redirect()->back();
