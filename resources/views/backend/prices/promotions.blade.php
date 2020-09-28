@@ -9,13 +9,10 @@
 @endsection
 @section('content')
 <style>
-  input.datepicker {
+
+  #datebox input.daterange01 {
     height: 3em;
-    border: 1px solid;
-    float: left;
-    margin-right: 1%;
-    margin-bottom: 1em;
-    width: 7em;
+    margin: 7px 5px;
     padding: 1em 2px;
     text-align: center;
   }
@@ -27,7 +24,30 @@
   .box ul li {list-style: none;}
   select[multiple], select[size] {
     height: 18em !important;
-}
+  }
+  form label {font-size: 11px;}
+  .mt-2em {margin-top: 2em;}
+  button.btn.btn_weekday {padding: 6px;}
+  button.btn.btn_weekday.active {
+    background-color: #2b5d9b;
+    color: #FFF;
+  }
+  .blockType {
+    margin: 2em 0;
+    max-width: 48%;
+    margin-left: 2%;
+  }
+  .row.promo_type input {background-color: #000 !important;}
+  .row.promo_type.checked input {background-color: #FFF !important;}
+  a.selAll {
+    color: #3a8fc8;
+    font-size: 10px;
+    text-transform: lowercase;
+  }
+  i.rm_exept.fa.fa-trash {
+    color: red;
+    cursor: pointer;
+  }
 </style>
 
 <div class="container-fluid padding-25 sm-padding-10">
@@ -62,33 +82,36 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-6 col-lg-8 col-xs-12 box-row">
+    <div class="pt-1 col-md-6 col-lg-5 col-xs-12">
+      @include('backend.prices.blocks._promo_form')
+    </div>
+    <div class="col-md-6 col-lg-7 col-xs-12 box-row">
       @if($lstPromotions)
       @foreach($lstPromotions as $item)
       <div class="box row box_promotion">
         <div class="col-md-4">
-          <h4>{{$item['value']}}%</h4>
-          <strong>{{$item['start'].' - '.$item['finish']}}</strong><br>
+          <h4>{{$item['name']}}</h4>
+          <h5>{{$item['value']}}</h5>
+          <strong>{{$item['start'].' - '.$item['finish']}}</strong>
+          <br>
+          @if($item['weekDay'])
+          <p class="alert alert-warning">{{$item['weekDay']}}</p>
+          @endif
+          <br>
           <button class="btn btn-default editPromotion" type="button" data-id="{{$item['id']}}">Editar</button>
           <button class="btn btn-danger deletePromotion" type="button" data-id="{{$item['id']}}">Eliminar</button>
-       
+
         </div>
         <div class="col-md-4">
-          <strong>Apartamentos</strong>
-          @if($item['rooms'])
-          <ul>
-            @foreach($item['rooms'] as $room)
-            <li>{{$room}}</li>
-            @endforeach
-          </ul>
-          @endif
+          <strong>Apartamentos</strong><br><br>
+          <?php if($item['rooms']){ echo implode(', ',$item['rooms']); }?>
         </div>
         <div class="col-md-4">
           <strong>Excepciones</strong>
           @if($item['except'])
           <ul>
             @foreach($item['except'] as $day)
-              <li>{{$day}}</li>
+            <li>{{$day}}</li>
             @endforeach
           </ul>
           @endif
@@ -97,53 +120,10 @@
       @endforeach
       @endif
     </div>
-    <div class="pt-1 col-md-6 col-lg-4 col-xs-12">
-      <form method="POST" action="{{route('channel.promotions.new')}}" id="channelForm">
-        <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
-        <input type="hidden" id="itemID" name="itemID" value="">
-        <div class="row">
-          <div class="pt-1 col-md-8  col-xs-12">
-            <label>Rango de Fechas</label>
-            <input type="text" class="form-control daterange01" id="range" name="range" value="">
-          </div>
-          <div class="pt-1 col-md-4 col-xs-12">
-            <label>Descuento</label>
-            <input type="number" class="form-control" name="discount" id="discount" value="15">
-          </div>
-          <div class="pt-1 col-xs-12">
-            <div class="row">
-              @if($ch_group)
-              <div class="form-group row">
-                <label class="col-md-12">Apartamentos</label>
-                @foreach($ch_group as $k=>$v)
-                <div class="form-check col-md-6">
-                  <input type="checkbox" class="form-check-input" id="apto{{$k}}" name="apto{{$k}}">
-                  <label class="form-check-label" >{{$v}}</label>
-                </div>
-                @endforeach
-              </div>
-              @endif
-            </div>
-          </div>
-          <div class="pt-1 col-xs-12">
-            <label>Excluir Fechas</label>
 
-            <div id="datebox">
-              <input class="datepicker" name="date_0" type="text" />
-            </div>
-            <button class="btn btn-primary" id="add" type="button">Agregar</button>
-            
-          </div>
-
-        </div>
-        <div class="pt-1 ">
-          <button class="btn btn-primary">Guardar</button>
-          <button class="btn btn-primary" id="new" type="button">Nueva</button>
-        </div>
-      </form>
-    </div>
   </div>
-  <div class="row"></div>
+</div>
+<div class="row"></div>
 </div>
 
 
@@ -160,13 +140,36 @@
 <script type="text/javascript">
 $(document).ready(function () {
   /********************************************************/
+  var date_excl = 0;
   $('.datepicker').datepicker();
   $('#add').click(function () {
-    var name = 'date_' + ($('.datepicker').length + 1);
+    date_excl++;
+    var name = 'date_' + date_excl;
     // APPEND NEW DATE AND BIND IT AT THE SAME TIME
-    $('#datebox').append(
-            $('<input/>', {name: name, type: 'text', class: 'datepicker'}).datepicker()
-            );
+    var content = $('<div/>', {class: 'date_excl'});
+    var input = $('<input/>', {name: name, type: 'text', class: 'daterange01'}).daterangepicker(window.dateRangeObj);
+    var inputBtn = $('<i/>', {tipe: "button", type: 'button', class: 'rm_exept fa fa-trash'}).data('id',name);
+    content.append(input).append(inputBtn);
+    $('#datebox').append(content);
+  });
+    
+  $('#datebox').on('click','.rm_exept',function () {
+    $("#datebox").find('[name="'+$(this).data('id')+'"]').remove();
+    $(this).remove();
+  });
+  /********************************************************/
+  $('.btn_weekday').on('click',function () {
+        $(".btn_weekday").removeClass('active');
+        $(this).addClass('active');
+        $('#weekday').val($(this).data('val'));
+  });
+  $('.radioType').on('change',function () {
+        $(".promo_type").removeClass('checked');
+        $(this).closest('.promo_type').addClass('checked');
+  });
+  $('.selAll').on('click',function (e) {
+    e.preventDefault();
+    $(".aptos_check").prop('checked', true);
   });
   /********************************************************/
   $('#new').on('click',function () {
@@ -188,18 +191,43 @@ $(document).ready(function () {
         $('#range').data('daterangepicker').setStartDate(resp.start);
         $('#range').data('daterangepicker').setEndDate(resp.finish);
         
+        
+        $("#name").val(resp.name);
+        $("#nights").val(resp.nights);
+        $("#night_apply").val(resp.night_apply);
+        $("#weekday").val(resp.weekday);
+        
+        $(".btn_weekday").removeClass('active');
+        $('.weekday_'+resp.weekday).addClass('active');
+        $('#weekday').val(resp.weekday);
+        
+        let checkType = "#type_"+resp.type;
+        $(checkType).attr('checked',true);
+        $(".promo_type").removeClass('checked');
+        $(checkType).closest('.promo_type').addClass('checked');
+        
+        
+        
+        
+
+    
         $('#datebox').html('');
+        let dateRangeObj = Object.assign({}, window.dateRangeObj);
         for(var i in resp.except){
           var name = 'date_' + i;
-          $('#datebox').append(
-            $('<input/>', {name: name, type: 'text', class: 'datepicker',value: resp.except[i]}).datepicker()
-          );
+          dateRangeObj.startDate = resp.except[i].start;
+          dateRangeObj.endDate = resp.except[i].end;
+          var content = $('<div/>', {class: 'date_excl'});
+          var input = $('<input/>', {name: name, id: name, type: 'text', class: 'daterange01'}).daterangepicker(dateRangeObj);
+          var inputBtn = $('<i/>', {tipe: "button", type: 'button', class: 'rm_exept fa fa-trash'}).data('id',name);
+          
+          content.append(input).append(inputBtn);
+          $('#datebox').append(content);
+          date_excl = i;
         }
         
         for(var i in resp.rooms){
           $("#apto"+resp.rooms[i]).prop('checked', true);
-          
-//          $("#ch_group option[value=" + resp.rooms[i] + "]").prop('selected', true);
         }
       }
       });

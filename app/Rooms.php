@@ -528,4 +528,8 @@ class Rooms extends Model {
     $oPromotions = new \App\Promotions();
     return $oPromotions->getDiscount($startDate,$endDate,$this->channel_group);
   }
+  function getPromo($startDate,$endDate){
+    $oPromotions = new \App\Promotions();
+    return $oPromotions->getPromo($startDate,$endDate,$this->channel_group);
+  }
 }
