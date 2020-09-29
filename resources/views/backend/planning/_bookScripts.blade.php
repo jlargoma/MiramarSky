@@ -209,13 +209,18 @@
 	                    $('.beneficio').val(data.calculated.profit);
 	                    $('.beneficio-text').html(data.calculated.profit_percentage + '%');
 	                    $('#real-price').html(data.calculated.real_price);
-	                    $('#realPVP').html(data.calculated.real_price);
-	                    $('#real_parking').html(data.totales.parking);
-	                    $('#real_limp').html(data.totales.limp);
-	                    $('#real_lujo').html(data.totales.lujo);
-	                    $('#real_book').html(data.totales.book);
-                        
-
+//	                    $('#realPVP').html(data.calculated.real_price);
+//	                    $('#real_parking').html(data.totales.parking);
+//	                    $('#real_limp').html(data.totales.limp);
+//	                    $('#real_lujo').html(data.totales.lujo);
+//	                    $('#real_book').html(data.totales.book);
+                            
+                            $('#publ_price').html(data.public.pvp_init);
+                            $('#publ_disc').html(data.public.discount_pvp);
+                            $('#publ_promo').html(data.public.promo_pvp);
+                            $('#publ_limp').html(data.public.price_limp);
+                            $('#publ_total').html(data.public.pvp);
+                            
 
                             /* fix data.aux.price_modified UNDEFINED */
                                     var price_modified = 0;
