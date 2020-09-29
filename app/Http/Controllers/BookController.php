@@ -277,13 +277,13 @@ class BookController extends AppController
         $info = $request->input('info',null);
         if ($info){
           $info = unserialize($info);
-          $comentInter = 'Descuento: '.moneda($info['disc_pvp'],false,2).' ( '.$info['discount']. '% )';
+          $comentInter = PHP_EOL.'Descuento: '.moneda($info['disc_pvp'],false,2).' ( '.$info['discount']. '% )';
           if ($info['pvp_promo']>0)
             $comentInter .= PHP_EOL.$info['promoName'].': '.moneda($info['pvp_promo'],false,2);
           
           $comentInter .= PHP_EOL.'Suplemento Limpieza: '.moneda($info['limp'],false,2);
-          $comentInter .= PHP_EOL.'Precio final: '.moneda($info['price'],false,2);
-          $data['comments'] = $comentInter;
+          $comentInter .= PHP_EOL.'Precio final: €'.round($info['price'],2);
+          $data['book_comments'] .= $comentInter;
           $data['pvp_promo'] = $info['pvp_promo'];
           $data['disc_pvp'] = $info['disc_pvp'];
           

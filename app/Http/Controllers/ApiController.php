@@ -347,19 +347,21 @@ class ApiController extends AppController
         
         
         // promociones tipo 7x4
-          $hasPromo = '';
-          $aPromo = $room->getPromo($date_start,$date_finish);
-          if ($aPromo){
-            $promo_nigths = $aPromo['night'];
-            $nigths_discount = $promo_nigths-$aPromo['night_apply'];
-            $pvp_promo = $pvp;
-            if ($promo_nigths>0 && $nigths_discount>0 && $nigths>=$promo_nigths){
-              $nigths_ToApply = ($nigths/$promo_nigths) * $nigths_discount;
-              $pvp = round( ($pvp/$nigths) * ($nigths-$nigths_ToApply) , 2);
-              $comments .= PHP_EOL." promoción ".$aPromo['name'];
-            }
+        $book->promociones = 0;
+        $hasPromo = '';
+        $aPromo = $room->getPromo($date_start,$date_finish);
+        if ($aPromo){
+          $promo_nigths = $aPromo['night'];
+          $nigths_discount = $promo_nigths-$aPromo['night_apply'];
+          $pvp_promo = $pvp;
+          if ($promo_nigths>0 && $nigths_discount>0 && $nigths>=$promo_nigths){
+            $nigths_ToApply = intval(($nigths/$promo_nigths) * $nigths_discount);
+            $pvpAux = round( ($pvp/$nigths) * ($nigths-$nigths_ToApply) , 2);
+            $comments .= PHP_EOL."Promoción ".$aPromo['name'];
+            $book->promociones = $pvp - $pvpAux;
+            $pvp = $pvpAux;
           }
-          
+        }
         // promociones tipo 7x4  
           
         
@@ -371,8 +373,8 @@ class ApiController extends AppController
         $book->cost_apto = $room->getCostRoom($date_start, $date_finish, $book->pax);
         $book->cost_total = $book->get_costeTotal();
         $book->total_ben = $book->total_price - $book->cost_total;
-        $book->promociones = 0;
-        $book->book_comments = $comments .PHP_EOL." - precio publicado: $pvp + ".$book->sup_limp.': €'.$book->total_price;
+        
+        $book->book_comments = $comments .PHP_EOL."Precio publicado: $pvp + ".$book->sup_limp.': €'.$book->total_price;
         if ($book->save()) {
           $amount = ($book->total_price / 2);
           $client_email = 'no_email';
