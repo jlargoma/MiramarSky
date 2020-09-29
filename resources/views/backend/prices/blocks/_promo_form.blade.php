@@ -4,7 +4,7 @@
   <div class="row">
     <div class="col-md-6">
       <div>
-        <label>Nombre</label>
+        <label>Nombre Promo</label>
         <input type="text" class="form-control" id="name" name="name" value="">
       </div>
       <div class="pt-1">

@@ -73,7 +73,7 @@
                       <label for="luxury-no" class="radio-style-3-label">No</label>
                     </div>
                   </div>
-                  <div class="form-group col-sm-6 col-xs-4 col-md-3 not-padding-mobile">
+                  <div class="form-group col-sm-6 col-xs-4 col-md-3 not-padding-mobile hidden">
                     <label style="display: inline!important;" class="col-md-12 parking">*Parking</label>
                     <div class="col-md-6">
                       <input id="parking-yes" class="radio-style" name="parking" type="radio" checked="" value="si">

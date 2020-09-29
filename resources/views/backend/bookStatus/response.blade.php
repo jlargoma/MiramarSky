@@ -31,41 +31,26 @@
     <table class="table table-mobile">
       <thead>
         <tr class ="text-center bg-success text-white">
-          @if($isMobile)
-          <th class="th-bookings static" style="width: 130px; padding: 14px !important;background-color: #10cfbd;">  
-            Apto.
-          </th>
-          <th class="th-bookings first-col" style="padding-left: 130px!important"></th>
-          @else
-          <th class="th-bookings static" style="background-color: #10cfbd;">  
-            Apto.
-          </th>
-          <th class="th-bookings first-col"></th> 
-          @endif
-          <th class="th-bookings text-center th-2">Precio</th>
           <th class="th-bookings text-center th-2">Disp.</th>
-          <th class="th-bookings text-center th-2">&nbsp;</th>
+          <th class="th-bookings">Apto.</th>
+          <th class="th-bookings text-center th-2">Precio</th>
+          <th class="th-bookings text-center th-2">Desc</th>
+          <th class="th-bookings text-center th-2">Promo</th>
+          <th class="th-bookings text-center th-2">Supl Limp</th>
+          <th class="th-bookings text-center th-2">total</th>
           <th class="th-bookings text-center th-2">&nbsp;</th>
         </tr>
       </thead>
       <tbody>
         @foreach($rooms as $room)
         <tr >
-          @if($isMobile)
-          <td class ="text-left static" style=" width: 130px;color: black;overflow-x: scroll;    padding: 21px 6px !important; ">  
-            @else
-          <td class ="text-left" style="position: relative; padding: 7px !important;">  
-            @endif
-            {{$room['tiposApto']}}
-          </td>
-          @if($isMobile)
-          <td class="text-center first-col" style="height: 2em;padding: 5px; padding-left: 130px!important">
-            @else
-          <td class="text-center">
-            @endif
-          </td>
-          <td class="text-center"><b >{{moneda($room['price'])}}</b></td>
           <td class="text-center">{{$room['avail']}}</td>
+          <td class="th-bookings text-left">{{$room['tiposApto']}}</td>
+          <td class="text-center"><b >{{moneda($room['pvp_init'],false,2)}}</b></td>
+          <td class="text-center text-danger"><b ><?php echo ($room['disc_pvp']>0)? '-'.moneda($room['disc_pvp'],false,2) : ''; ?></b></td>
+          <td class="text-center text-danger"><b ><?php echo ($room['pvp_promo']>0)? '-'.moneda($room['pvp_promo'],false,2) : ''; ?></b></td>
+          <td class="text-center"><b >{{moneda($room['limp'],false,2)}}</b></td>
+          <td class="text-center"><b >{{moneda($room['price'],false,2)}}</b></td>
           <td> 
             <?php if (Auth::user()->role != "agente"): ?>
               <button 
@@ -73,6 +58,7 @@
                 class="btn btn-success text-white calc_createNew"
                 data-room="{{$room['roomID']}}"
                 data-luxury="{{$room['luxury']}}"
+                data-info="{{serialize($room)}}"
                 >RESERVAR</button>
               <?php endif; ?>
           </td>
