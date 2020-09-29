@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use \Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use App\Services\OtaGateway\Config as oConfig;
+
 
 /**
  * @property mixed id
@@ -532,4 +534,49 @@ class Rooms extends Model {
     $oPromotions = new \App\Promotions();
     return $oPromotions->getPromo($startDate,$endDate,$this->channel_group);
   }
+  
+  
+  function getRoomPrice($startDate,$endDate,$pax){
+
+    $nigths = calcNights($startDate, $endDate);
+    $result = [
+        'price_limp'=>0,
+        'pvp_init'=>0,'pvp'=>0,
+        'discount'=>0,'discount_pvp'=>0,
+        'promo_name'=>'','promo_pvp'=>0
+    ];
+    /*------------------------------------*/
+    $costes = $this->priceLimpieza($this->sizeApto);
+    $result['price_limp'] = $costes['price_limp'];
+    /*------------------------------------*/
+    $oConfig = new oConfig();
+    $pvp = $this->getPVP($startDate, $endDate,$pax);
+    $pvp = round($oConfig->priceByChannel($pvp,99,$this->channel_group,false,$nigths),2); //Google Hotels price
+    $result['pvp_init'] = $pvp;
+    $result['discount'] = $this->getDiscount($startDate,$endDate);
+    $result['discount_pvp'] = round($pvp*( $result['discount']/100),2);
+
+    $pvp =  round($pvp-$result['discount_pvp'],2);
+
+    // promociones tipo 7x4
+    $hasPromo = '';
+    $aPromo = $this->getPromo($startDate, $endDate);
+    if ($aPromo){
+      $promo_nigths = $aPromo['night'];
+      $nigths_discount = $promo_nigths-$aPromo['night_apply'];
+      $pvp_promo = $pvp;
+      if ($promo_nigths>0 && $nigths_discount>0 && $nigths>=$promo_nigths){
+        $nigths_ToApply = intval(($nigths/$promo_nigths) * $nigths_discount);
+        $pvpAux = round( ($pvp/$nigths) * ($nigths-$nigths_ToApply) , 2);
+        $result['promo_name'] = $aPromo['name'];
+        $result['promo_pvp'] = round(($pvp - $pvpAux),2);
+        $pvp = $pvpAux;
+      }
+    }
+    // promociones tipo 7x4  
+          
+    $result['pvp'] = round($pvp + $costes['price_limp'],2);
+    return $result;
+  }
+  
 }

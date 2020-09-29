@@ -594,7 +594,7 @@ class BookController extends AppController
           $low_profit = true;
         //END: Check low_profit alert
         
-        $priceBook = $book->room->getPVP($book->start, $book->finish, $book->park)-$book->promociones;
+        $priceBook = $book->room->getRoomPrice($book->start, $book->finish, $book->park);
 
         $email_notif = '';
         $send_notif = '';
@@ -1649,7 +1649,8 @@ class BookController extends AppController
         $data['calculated']['profit']            = $profit;
         $data['calculated']['profit_percentage'] = ($totalPrice>0) ? round(($profit / $totalPrice) * 100) : 0;
         $data['calculated']['real_price']        = array_sum($data['totales']);
-
+        
+        $data['public'] = $room->getRoomPrice($start, $finish, $request->park);
         return $data;
     }
 

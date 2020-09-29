@@ -329,22 +329,22 @@ $mobile = new Mobile();
 
             </div>
             <?php if (Auth::user()->role != "agente"): ?>
-            <p class="col-xs-12 text-center">Detalle del precio de lista</p>
+            <p class="col-xs-12 text-center">Precio que se muestra al público</p>
             <div class="col-md-12 col-xs-12 push-20 not-padding">
-              <div class="col-md-3 col-xs-12 box-info">
-                PVP<br><span  id="realPVP">{{$book->real_price}}</span><br/>
-              </div>
-              <div class="col-md-2 col-xs-6 box-info">
-                 Apto<br><span  id="real_book">{{$priceBook}}</span>
-              </div>
-              <div class="col-md-2 col-xs-6 box-info">
-                PARKING<br><span  id="real_parking">{{$book->sup_park}}</span>
-              </div>
-              <div class="col-md-2 col-xs-6 box-info">
-                SUP lUX<br><span  id="real_lujo">{{$book->sup_lujo}}</span>
-              </div>
               <div class="col-md-3 col-xs-6 box-info">
-                LIMP<br><span  id="real_limp">{{$book->sup_limp}}</span>
+                PVP Final<br><span  id="publ_total">{{$priceBook['pvp']}}</span>
+              </div>
+              <div class="col-md-3 col-xs-12 box-info">
+                PVP Inicial<br><span  id="publ_price">{{$priceBook['pvp_init']}}</span><br/>
+              </div>
+              <div class="col-md-2 col-xs-6 box-info">
+                DESC<br><span  id="publ_disc">{{$priceBook['discount_pvp']}}</span>
+              </div>
+              <div class="col-md-2 col-xs-6 box-info">
+                PROMO<br><span  id="publ_promo">{{$priceBook['promo_pvp']}}</span>
+              </div>
+              <div class="col-md-2 col-xs-6 box-info">
+                SUPL LIMP<br><span  id="publ_limp">{{$priceBook['price_limp']}}</span>
               </div>
             </div>
             <?php endif ?>
