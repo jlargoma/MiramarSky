@@ -288,8 +288,6 @@ $mobile = new Mobile();
               <input type="hidden" name="old_ff_discount" id="old_ff_discount"    value="{{$book->ff_discount}}">
                 </div>
               </div>
-             
-               
             </div>
   <?php if ($book->book_owned_comments != "" && $book->promociones != 0): ?>
               <div class="col-md-2 col-xs-6 push-10 content_image_offert">

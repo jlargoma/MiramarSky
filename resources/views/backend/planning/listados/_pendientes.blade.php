@@ -62,7 +62,7 @@ $uRole = Auth::user()->role;
                 </a>
                 <?php else: ?>
                 <a class="update-book" data-id="<?php echo $book->id ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                  <?php echo $book->customer['name']  ?>
+                  <?php echo (trim($book->customer['name']) != '') ? $book->customer['name'] : '--'; ?>
                 </a>
                 <?php endif ?>
                </div>

@@ -1147,6 +1147,7 @@ $('body').on('click','.deleteBook',function(event) {
       return;
     }
     var luxury = $(this).data('luxury');
+    var info = $(this).data('info');
     
     var data = {
       _token: "{{ csrf_token() }}",
@@ -1157,6 +1158,7 @@ $('body').on('click','.deleteBook',function(event) {
       calc_finish: $('#calc_finish').val(),
       calc_pax: $('#calc_pax').val(),
       luxury: luxury,
+      info: info,
     };
     
     

@@ -132,8 +132,8 @@ $mobile = new Mobile();
                     <label>Entrada</label>
                     <div class="input-prepend input-group input_dates">
                       <input type="text" class="form-control daterange1" id="fechas" name="fechas" <?php value_isset($data,'date'); ?>  required="" style="cursor: pointer; text-align: center;min-height: 28px;" readonly="">
-                        <input type="hidden" class="date_start" id="start" name="start" <?php value_isset($data,'start'); ?>>
-                        <input type="hidden" class="date_finish" id="finish" name="finish" <?php value_isset($data,'finish'); ?>>
+                      <input type="hidden" class="date_start" id="start" name="start" <?php value_isset($data,'start'); ?>>
+                      <input type="hidden" class="date_finish" id="finish" name="finish" <?php value_isset($data,'finish'); ?>>
                     </div>
                 </div>
                 <div class="col-md-1 col-xs-6 push-xs-10">
@@ -179,11 +179,9 @@ $mobile = new Mobile();
                         <?php endforeach ?>
                     </select>
                 </div>
-                <?php if ( Auth::user()->role == "agente" ): ?>
                 <div style="clear: both;"></div>
-                <?php endif ?>
                 <?php if ( Auth::user()->role != "agente" ): ?>
-                <div class="col-md-4 col-xs-6 push-xs-10">
+                <div class="col-md-2 col-xs-6 push-xs-10">
                     <label>Parking</label>
                     <select class=" form-control parking minimal"  name="parking">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -193,7 +191,7 @@ $mobile = new Mobile();
                         <?php endfor;?>
                     </select>
                 </div>
-                <div class="col-md-4 col-xs-6 push-xs-10">
+                <div class="col-md-2 col-xs-6 push-xs-10">
                     <label>Sup. Lujo</label>
                     <select class=" form-control full-width type_luxury minimal" name="type_luxury">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
@@ -205,7 +203,7 @@ $mobile = new Mobile();
                 </div>
                 <?php else: ?>
                 <input type="hidden" step='0.01' class="parking white" name="parking" value="1">
-                    <input type="hidden" step='0.01' class="type_luxury white" name="type_luxury" value="1">
+                <input type="hidden" step='0.01' class="type_luxury white" name="type_luxury" value="1">
                 <?php endif ?>
                 <div class="col-md-2 col-xs-6 push-xs-10">
                     <label >IN</label>
@@ -249,33 +247,40 @@ $mobile = new Mobile();
                 </div>
             </div>
             <div class="col-xs-12 bg-white">
-                <div class="col-xs-12 col-md-4 not-padding">
-                    <div class="col-md-6 col-xs-6 push-10">
-                        <label>Agencia</label>
-                        <?php if ( Auth::user()->role != "agente"): ?>
-                        <select class="form-control full-width agency minimal" name="agency" >
-                          @include('backend.blocks._select-agency', ['agencyID'=>$book->agency,'book' => $book])
-                          </select>
-                        <?php else: ?>
-                            <input type="hidden" name="agency" value="<?php echo Auth::user()->agent->agency_id ?>">
-                            <input type="text" disabled class="form-control full-width agency minimal" value="<?php echo \App\Book::getAgency(Auth::user()->agent->agency_id) ?>">
-                        <?php endif ?>
-                    </div>
-                    <div class="col-md-6 col-xs-6 push-10">
-                        <label>Cost Agencia</label>
-                        <input type="number" class="agencia form-control" step='0.01' name="agencia">
-                    </div>
+              <div class="col-md-3 col-xs-6 push-10">
+                  <label>Agencia</label>
+                  <?php if ( Auth::user()->role != "agente"): ?>
+                  <select class="form-control full-width agency minimal" name="agency" >
+                    @include('backend.blocks._select-agency', ['agencyID'=>$book->agency,'book' => $book])
+                    </select>
+                  <?php else: ?>
+                      <input type="hidden" name="agency" value="<?php echo Auth::user()->agent->agency_id ?>">
+                      <input type="text" disabled class="form-control full-width agency minimal" value="<?php echo \App\Book::getAgency(Auth::user()->agent->agency_id) ?>">
+                  <?php endif ?>
+              </div>
+              <div class="col-md-3 col-xs-6 push-10">
+                  <label>Cost Agencia</label>
+                  <input type="number" class="agencia form-control" step='0.01' name="agencia">
+              </div>
 
-                </div>
                 <?php if ( Auth::user()->role != "agente" ): ?>
-                <div class="col-xs-12 col-md-6 not-padding">
-                    <div class="col-md-6 col-xs-6 push-10">
-                        <label>promoción 3x2</label>
-                        <input type="number" class="promociones form-control" step='0.01'  name="promociones">
+                <div class="col-xs-12 col-md-3 not-padding">
+                  <label>promoción</label>
+                  <input type="number" class="promociones form-control" step='0.01'  name="promociones" <?php value_isset($data,'pvp_promo'); ?>>
+                </div>
+                <div class="col-md-3 col-xs-6 push-20 hiddenOnlyRiad">
+                  <label>DTO</label>
+                  <div class="row">
+                    <div class="col-xs-4">
+                      <span class="input-group-addon">
+                            <input type="checkbox" name="has_ff_discount" id="has_ff_discount"  data-init-plugin="switchery" data-size="small" data-color="primary" checked/>
+                        </span>
                     </div>
-                    <div class="col-md-6 col-xs-6 push-10 content_image_offert" style="display: none;">
-                        <img src="/pages/oferta.png" style="width: 90px;">
+                    <div class="col-xs-8">
+                      <input type="text"  class="only-numbers form-control"  name="ff_discount" id="ff_discount" <?php value_isset($data,'disc_pvp'); ?>>
+                      <input type="hidden" name="old_ff_discount" id="old_ff_discount" <?php value_isset($data,'disc_pvp'); ?>>
                     </div>
+                  </div>
                 </div>
 	            <?php else: ?>
                     <input type="hidden" class="promociones form-control" step='0.01' name="promociones" value="0">
@@ -331,11 +336,11 @@ $mobile = new Mobile();
             <div class="col-xs-12 bg-white padding-block">
                 <div class="col-md-4 col-xs-12">
                     <label>Comentarios Cliente </label>
-                    <textarea class="form-control" name="comments" rows="5" ></textarea>
+                    <textarea class="form-control" name="comments" rows="5" ><?php if ( isset($data['comments']) ){ echo $data['comments'];}?></textarea>
                 </div>
                 <div class="col-md-4 col-xs-12">
                     <label>Comentarios Internos</label>
-                    <textarea class="form-control book_comments" name="book_comments" rows="5" ></textarea>
+                    <textarea class="form-control book_comments" name="book_comments" rows="5" ><?php if ( isset($data['book_comments']) ){ echo $data['book_comments'];}?></textarea>
                 </div>
                 <div class="col-md-4 col-xs-12 content_book_owned_comments" style="display: none;">
                     <label>Comentarios Propietario</label>
@@ -354,5 +359,13 @@ $mobile = new Mobile();
 
 <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
 <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
-<script type="text/javascript" src="{{ asset('/js/datePicker01.js')}}"></script>
 @include('backend.planning._bookScripts', ['update' => 0])
+<script type="text/javascript">
+
+$(document).ready(function () {
+  @if(isset($data['date']))
+  $('#fechas').val("{{$data['date']}}");
+  @endif
+        
+});
+</script>
