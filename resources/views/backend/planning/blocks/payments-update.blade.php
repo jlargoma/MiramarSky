@@ -109,13 +109,13 @@
         </tbody>
       </table>
     </div>
-    <div class="col-xd-12 mb-1em over-auto">
-      <div class="col-xs-6" id="sendNotifPayment">
+    <div class="row col-xs-12 mb-1em over-auto">
+      <div class="col-md-6 col-xs-8" id="sendNotifPayment">
         <input type="checkbox" class="form-control" id="send_notif" {{$send_notif}} data-id="{{$book->id}}">
         <label class="checkbox">Enviar Recibos</label>
         <input type="text" class="form-control" id="email_notif" value="{{$email_notif}}" data-id="{{$book->id}}">
       </div>
-      <div class="col-xs-6">
+      <div class="col-md-6 col-xs-4">
         <input type="button" name="cobrar" class="btn btn-success  m-t-10 cobrar" value="GUARGAR"
            data-id="<?php echo $book->id ?>">
       </div>
