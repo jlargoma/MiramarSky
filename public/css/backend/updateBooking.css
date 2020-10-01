@@ -367,6 +367,35 @@ input#send_notif {
   border: 1px solid #d6d6d6;
   padding: 7px;
 }
+input#minDay.danger {
+    border-color: red;
+    color: red !important;
+}
+.ui-dialog.ui-corner-all.ui-widget.ui-widget-content.ui-front.ui-dialog-buttons.ui-draggable {
+    background-color: #FFF;
+    padding: 10px;
+    box-shadow: 1px 1px 16px #000;
+    border-radius: 7px;
+}
+.ui-dialog-titlebar.ui-corner-all.ui-widget-header.ui-helper-clearfix.ui-draggable-handle {
+    width: 100%;
+    font-size: 1.2em;
+    text-align: center;
+    color: red;
+    font-weight: bold;
+}
+button.ui-dialog-titlebar-close {
+    background-image: url(/img/close.jpg);
+    background-size: cover;
+    width: 17px;
+    height: 17px;
+    background-color: white;
+    border: none;
+    float: right;
+}
+.ui-dialog-buttonset button {
+    margin-right: 1em;
+}
 @media screen and (max-width: 767px) {
   .daterangepicker {
     position: fixed;

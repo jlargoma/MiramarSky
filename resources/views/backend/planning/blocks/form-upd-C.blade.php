@@ -5,13 +5,13 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
 <div class="row col-xs-12 push-20">
   <div class="col-md-3 col-xs-12 text-center boxtotales" style="background-color: #0c685f;">
     <label class="font-w800 text-white" for="">PVP</label>
-    <input type="number" class="form-control total m-t-10 m-b-10 white" {{$disabl_limp}}
-           name="total" value="<?php echo $book->real_price ?>">
+    <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" {{$disabl_limp}}
+           name="total" value="<?php echo $book->total_price ?>">
   </div>
 <?php if ($uRole == "admin"): ?>
     <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #99D9EA;">
       <label class="font-w800 text-white" for="">COSTE TOTAL</label>
-      <input  readonly="" class="form-control cost m-t-10 m-b-10 white" value="{{$book->cost_total}}">
+      <input  readonly=""  step='0.01' class="form-control cost m-t-10 m-b-10 white" value="{{$book->cost_total}}">
     </div>
     <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #91cf81;">
       <label class="font-w800 text-white" for="">COSTE APTO</label>
@@ -36,22 +36,26 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
   <p class="text-center">Precio que se muestra al público</p>
   <div class="col-md-12 col-xs-12 push-20 not-padding" >
     <div class="col-md-3 col-xs-6 box-info">
+      <input type="hidden" id="confirm_publ_total" value="{{$priceBook['pvp']}}">
       PVP Final<br><span  id="publ_total">{{$priceBook['pvp']}}</span>
     </div>
     <div class="col-md-3 col-xs-6 box-info">
+      <input type="hidden" id="confirm_publ_price" value="{{$priceBook['pvp_init']}}">
       PVP Inicial<br><span  id="publ_price">{{$priceBook['pvp_init']}}</span><br/>
     </div>
     <div class="col-md-2 col-xs-4 box-info">
+      <input type="hidden" id="confirm_publ_disc" value="{{$priceBook['discount_pvp']}}">
       DESC<br><span  id="publ_disc">{{$priceBook['discount_pvp']}}</span>
     </div>
     <div class="col-md-2 col-xs-4 box-info">
+      <input type="hidden" id="confirm_publ_promo" value="{{$priceBook['promo_pvp']}}">
       PROMO<br><span  id="publ_promo">{{$priceBook['promo_pvp']}}</span>
     </div>
     <div class="col-md-2 col-xs-4 box-info">
+      <input type="hidden" id="confirm_publ_limp" value="{{$priceBook['price_limp']}}">
       SUPL LIMP<br><span  id="publ_limp">{{$priceBook['price_limp']}}</span>
     </div>
   </div>
- 
 <?php endif ?>
 
 <div class="col-md-12 col-xs-12 push-20 not-padding">
@@ -59,11 +63,6 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
     <?php if ($book->pax < $book->room->minOcu): ?>
       Van menos personas que la ocupacion minima del apartamento.
 <?php endif ?>
-  </p>
-</div>
-<div class="col-md-12 col-xs-12 not-padding text-left">
-  <p class="precio-antiguo font-s18">
-  <!--El precio asignado-<b>El precio asignado <?php echo $book->total_price ?> y el precio de tarifa es <?php echo $book->real_price ?></b> -->
   </p>
 </div>
 <div class="col-xs-12 padding-block">
@@ -81,6 +80,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
   </div>
   <div class="col-md-4 col-xs-12 content_book_owned_comments">
     <label>Comentarios Propietario</label>
+    <input type="hidden" id="promo_text" value="{{$priceBook['promo_name']}}">
     <textarea class="form-control book_owned_comments" name="book_owned_comments" rows="5"
               data-idBook="<?php echo $book->id ?>"
               data-type="3"><?php if (!empty($book->book_owned_comments)): ?><?php echo $book->book_owned_comments ?><?php endif; ?></textarea>

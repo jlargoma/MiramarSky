@@ -12,9 +12,6 @@
 
   <script src="/assets/js/notifications.js" type="text/javascript"></script>
   @include('backend.planning._bookScripts', ['update' => 1])
-  <script>
-    calculate(null, false);
-  </script>
 
   <script type="text/javascript">
     $(document).ready(function () {

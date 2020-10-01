@@ -29,7 +29,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
     </div>
     <div class="col-md-1 col-xs-3 push-10 p-l-0">
       <label>Noches</label>
-      <input type="number" class="form-control nigths" name="nigths" disabled value="<?php echo $book->nigths ?>">
+      <input type="number" class="form-control nigths" name="nigths" id="minDay" disabled value="<?php echo $book->nigths ?>">
     </div>
     <div class="col-md-2 col-xs-3">
       <label>Pax</label>
@@ -75,7 +75,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
   <div class="col-xs-12 row">
     <div class="col-md-2 col-xs-6 push-10">
       <label>Parking</label>
-      <select class=" form-control parking minimal" name="parking" {{$disabl_limp}}>
+      <select class=" form-control parking recalc minimal" name="parking" {{$disabl_limp}}>
         <option value="0"> -- </option>
 <?php for ($i = 1; $i <= 4; $i++): ?>
           <option value="<?php echo $i ?>" {{ $book->type_park == $i ? 'selected' : '' }}><?php echo $book->getParking($i) ?></option>
@@ -84,7 +84,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
     </div>
     <div class="col-md-2 col-xs-6 push-10">
       <label>Sup. Lujo</label>
-      <select class=" form-control full-width type_luxury minimal" name="type_luxury" {{$disabl_limp}}>
+      <select class=" form-control full-width type_luxury recalc minimal" name="type_luxury" {{$disabl_limp}}>
         <option value="0"> -- </option>
 <?php for ($i = 1; $i <= 4; $i++): ?>
           <option value="<?php echo $i ?>" {{ $book->type_luxury == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
@@ -140,29 +140,28 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
   <div class="col-xs-12 row">
     <div class="col-md-3 col-xs-6 push-10">
       <label>Agencia</label>
-      <select class="form-control full-width agency minimal" name="agency" >
+      <select class="form-control full-width agency recalc minimal" name="agency" >
         @include('backend.blocks._select-agency', ['agencyID'=>$book->agency,'book' => $book])
       </select>
     </div>
     <div class="col-md-3 col-xs-6 push-10">
       <label>Cost Agencia</label>
 <?php if ($book->PVPAgencia == 0.00): ?>
-        <input type="number" step='0.01' class="agencia form-control" name="agencia" value="" {{$disabl_limp}}>
+        <input type="number" step='0.01' class="agencia form-control recalc" name="agencia" value="" {{$disabl_limp}}>
              <?php else: ?>
-        <input type="number" step='0.01' class="agencia form-control" name="agencia" {{$disabl_limp}}
+        <input type="number" step='0.01' class="agencia form-control recalc" name="agencia" {{$disabl_limp}}
                value="<?php echo $book->PVPAgencia ?>">
 <?php endif ?>
     </div>
     <div class="col-md-3 col-xs-6 push-20 ">
       <label title="Descuento al propietario">Desc. al prop.</label>
-      <input type="number" step='0.01' class="promociones only-numbers form-control" {{$disabl_limp}}
+      <input type="number" step='0.01' class="promociones recalc only-numbers form-control " {{$disabl_limp}}
              name="promociones"
              value="<?php echo ($book->promociones > 0) ? $book->promociones : "" ?>">
     </div>
-    <?php if ($book->promociones > 0): ?>
-      <div class="col-md-2 col-xs-6 push-10 content_image_offert">
+    
+      <div class="col-md-2 col-xs-6 push-10 content_image_offert" <?php if ($book->promociones <1) echo 'style="display:none"' ?>>
         <img src="/pages/oferta.png" style="width: 90px;">
       </div>
-  <?php endif?>
   </div>
 </div>
