@@ -48,6 +48,7 @@ class ApiController extends AppController
       $oItems = $this->getItems($pax);
       
       $nigths = calcNights($date_start,$date_finish);
+      $infoCancel = \App\Settings::getContent('widget_alert_cancelation','es');
       if ($oItems){
         $index = 0;
         foreach ($oItems as $item){
@@ -82,6 +83,7 @@ class ApiController extends AppController
             'pvp_2'=>$pvp_2,
             'discount_2'=>$this->discount_2*100,
             'minStay'=>($nigths<$minStay) ? $minStay : 0,
+            'infoCancel'=>$infoCancel,
           ];
 //          dd($roomData,$response);
         }
