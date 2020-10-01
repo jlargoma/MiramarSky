@@ -1773,55 +1773,36 @@ class BookController extends AppController
               $msg ='Estancia mínima de '.$minEstancias[$room->channel_group].' noches';
             }
         
-            
-            $price = $room->getPVP($start,$finish,$pax);
-            if ($price > 0){
-              $costes = $room->priceLimpieza($room->sizeApto);
-              $limp = $costes['price_limp'];
-              
-              $pvp = round($oConfig->priceByChannel($price,99,$room->channel_group,false,$nigths),2); //Google Hotels price
-              $pvp_init = $pvp;  
-              if (isset($rooms[$room->sizeApto])){
-                $rooms[$room->sizeApto]['avail']++;
-              } else {
+            if (isset($rooms[$room->channel_group])){
+                $rooms[$room->channel_group]['avail']++;
+            } else {
                 
-                $discount = $room->getDiscount($start,$finish);
-                $disc_pvp  = round($pvp*($discount/100),2);
-                $pvp -= $disc_pvp;
-                
-                $promo = $room->getPromo($start,$finish);
-                $pvp_promo = 0; 
-                $promoName = '';
-                if ($promo){
-                  $nigths_discount = $promo['night']-$promo['night_apply'];
-                  
-                  if ($promo['night']>0 && $nigths_discount>0 && $nigths>=$promo['night']){
-                    $nigths_ToApply = intval($nigths/$promo['night']) * $nigths_discount;
-                    $pvp_aux = round( ($pvp/$nigths) * ($nigths-$nigths_ToApply) , 2);
-                    $pvp_promo =  round($pvp - $pvp_aux , 2);
-                    $pvp = $pvp_aux;
-                    $promoName = $promo['name'];
-                  }
-                }
-                $total = $pvp+$limp;
-                 
-                $rooms[$room->sizeApto] = [
-                  'pvp_init'=>  $pvp_init,
-                  'price'=>  $total,
-                  'limp'=>  $limp,
-                  'price_ota'=> $room->channel_group,
-                  'msg'  =>  $msg,
-                  'luxury'  =>  $room->luxury,
-                  'roomID' =>  $room->id,
-                  'tiposApto' => isset($tiposApto[$room->sizeApto]) ? $tiposApto[$room->sizeApto] : '',
-                  'avail' => 1,
-                  'discount'  => $discount,
-                  'disc_pvp'  => $disc_pvp,
-                  'pvp_promo' =>$pvp_promo,
-                  'promoName' =>$promoName,
-                ];
+              $roomPrice = $room->getRoomPrice($start, $finish,$pax);      
+              if ($roomPrice['pvp'] > 0){
+                //descriminamos el precio de limpieza
+                $pvp = $roomPrice['pvp_init'];
+                $price = $roomPrice['pvp'];
+                if ($pvp < 1) continue;
+                // promociones tipo 7x4
+                $hasPromo = 0;
+                if ($roomPrice['promo_pvp']>0) $hasPromo = $roomPrice['promo_name'];
+                $rooms[$room->channel_group] = [
+                    'pvp_init'=>  $pvp,
+                    'price'=>  $price,
+                    'limp'=>  $roomPrice['price_limp'],
+                    'price_ota'=> $room->channel_group,
+                    'msg'  =>  $msg,
+                    'luxury'  =>  $room->luxury,
+                    'roomID' =>  $room->id,
+                    'tiposApto' => isset($tiposApto[$room->sizeApto]) ? $tiposApto[$room->sizeApto] : '',
+                    'avail' => 1,
+                    'discount'  => $roomPrice['discount'],
+                    'disc_pvp'  => $roomPrice['discount_pvp'],
+                    'pvp_promo' =>$roomPrice['promo_pvp'],
+                    'promoName' =>$hasPromo,
+                  ];
               }
-          }
+            }
           }
         } else {
           return view('frontend.bookStatus.bookError');

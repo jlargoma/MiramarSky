@@ -48,6 +48,7 @@ class ApiController extends AppController
       $oItems = $this->getItems($pax);
       
       $nigths = calcNights($date_start,$date_finish);
+      $infoCancel = \App\Settings::getContent('widget_alert_cancelation','es');
       if ($oItems){
         $index = 0;
         foreach ($oItems as $item){
@@ -57,11 +58,12 @@ class ApiController extends AppController
           $roomPrice = $roomData['prices'];
           $minStay = $roomData['minStay'];
           //descriminamos el precio de limpieza
-          $pvp = $roomPrice['pvp_init'] - $roomPrice['price_limp'];
+          $pvp = $roomPrice['pvp_init'];
           $pvp_1 = $roomPrice['pvp'] - $roomPrice['price_limp'];
           // promociones tipo 7x4
           $hasPromo = 0;
           if ($roomPrice['promo_pvp']>0) $hasPromo = $roomPrice['promo_name'];
+          
           ////////////////////////
           $pvp_2 = 99999;
           $response[] = [
@@ -81,7 +83,9 @@ class ApiController extends AppController
             'pvp_2'=>$pvp_2,
             'discount_2'=>$this->discount_2*100,
             'minStay'=>($nigths<$minStay) ? $minStay : 0,
+            'infoCancel'=>$infoCancel,
           ];
+//          dd($roomData,$response);
         }
   
       }
