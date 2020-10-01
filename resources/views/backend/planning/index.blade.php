@@ -1166,7 +1166,7 @@ $('body').on('click','.deleteBook',function(event) {
       $('#modalCalculateBook').modal('hide');
       $("#modalNewBook").modal();
       $('.contentNewBook').empty().append(data);
-      setTimeout(function () { calculate(null, false);}, 150);
+
     });
   });
   

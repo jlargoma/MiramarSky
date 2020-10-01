@@ -983,4 +983,24 @@ class Book extends Model {
             ->where('start', '>=', $activeYear->start_date)
             ->where('start', '<=', $activeYear->end_date)->get();
   }
+  
+  /**********************************************************************/
+  /////////  book_meta //////////////
+  public function setMetaContent($key,$content) {
+    DB::table('book_meta')
+    ->updateOrInsert(
+        ['book_id' => $this->id, 'meta_key' => $key],
+        ['meta_value' => $content]
+    );
+  }
+  public function getMetaContent($key) {
+    
+    $book_meta = DB::table('book_meta')
+            ->where('book_id',$this->id)->where('meta_key',$key)->first();
+    
+    if ($book_meta) {
+      return $book_meta->meta_value;
+    }
+    return null;
+  }
 }

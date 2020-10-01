@@ -53,45 +53,30 @@ class ApiController extends AppController
         foreach ($oItems as $item){
          
           $roomData = $this->getRoomsPvpAvail($date_start,$date_finish,$pax,$item->channel_group);
-          if ($roomData['price']<1) continue;
-          $roomPrice = $this->getPriceOrig($roomData['price'],$item->channel_group,$nigths); //Booking price
+          if ($roomData['prices']['pvp'] < 1) continue;
+          $roomPrice = $roomData['prices'];
           $minStay = $roomData['minStay'];
-          $discount = $roomData['discounts'];
-          
-          $pvp_1 = round($roomPrice - ($roomPrice*($discount/100)),2);
-          $pvp_discount = round($roomPrice - $pvp_1,2);
-          $pvp_promo = 0;
+          //descriminamos el precio de limpieza
+          $pvp = $roomPrice['pvp_init'] - $roomPrice['price_limp'];
+          $pvp_1 = $roomPrice['pvp'] - $roomPrice['price_limp'];
           // promociones tipo 7x4
           $hasPromo = 0;
-          if ($roomData['promo']){
-            
-            $promo_nigths = $roomData['promo']['night'];
-            $nigths_discount = $promo_nigths-$roomData['promo']['night_apply'];
-            $pvp_promo = $pvp_1;
-            if ($promo_nigths>0 && $nigths_discount>0 && $nigths>=$promo_nigths){
-              $nigths_ToApply = intval($nigths/$promo_nigths) * $nigths_discount;
-              $pvp_aux = round( ($pvp_1/$nigths) * ($nigths-$nigths_ToApply) , 2);
-              $hasPromo = $roomData['promo']['name'];
-              $pvp_promo =  round($pvp_1 - $pvp_aux , 2);
-              $pvp_1 = $pvp_aux;
-            }
-          }
-          
+          if ($roomPrice['promo_pvp']>0) $hasPromo = $roomPrice['promo_name'];
           ////////////////////////
           $pvp_2 = 99999;
           $response[] = [
             'name' => $item->name,
             'max_pax' => $item->max_pax,
             'code'=>encriptID($item->id),
-            'price'=> moneda($roomPrice,true,2),
-            'pvp'=>$roomPrice,
-            'extr_costs'=>$roomData['price_limp'],
+            'price'=> moneda($pvp,true,2),
+            'pvp'=>$pvp,
+            'extr_costs'=>$roomPrice['price_limp'],
             'price_1'=> moneda($pvp_1,true,2),
             'pvp_1'=> round($pvp_1,2),
-            'discount_1'=>$discount,
-            'pvp_discount'=>$pvp_discount,
+            'discount_1'=>$roomPrice['discount'],
+            'pvp_discount'=>$roomPrice['discount_pvp'],
             'promo_name'=>$hasPromo,
-            'pvp_promo'=>$pvp_promo,
+            'pvp_promo'=>$roomPrice['promo_pvp'],
             'price_2'=> moneda($pvp_2),
             'pvp_2'=>$pvp_2,
             'discount_2'=>$this->discount_2*100,
@@ -142,7 +127,7 @@ class ApiController extends AppController
       
       $book = new Book();
       $return = [
-                'price'   => 0,
+                'prices'   => 0,
                 'minStay' => 0,
                 'availiable' => 0
                 ];
@@ -161,14 +146,11 @@ class ApiController extends AppController
         }
         foreach ($oRooms as $room){
           if ($book->availDate($startDate, $endDate, $room->id)){
-            $costes = $room->priceLimpieza($room->sizeApto);
+            $meta_price = $room->getRoomPrice($startDate, $endDate,$pax);             
             return [
-                'price'      => $room->getPvp($startDate,$endDate,$pax),
-                'price_limp' => $costes['price_limp'],
+                'prices'      => $meta_price,
                 'minStay'    => $room->getMin_estancia($startDate,$endDate),
                 'availiable' => $availiable,
-                'discounts'  => $room->getDiscount($startDate,$endDate),
-                'promo'      => $room->getPromo($startDate,$endDate)
                 ];
              
           }
@@ -234,13 +216,13 @@ class ApiController extends AppController
       $roomData = $this->getRoomsPvpAvail($date_start,$date_finish,$pax,$roomType->channel_group);
       
       $minStay = isset($roomData['minStay']) ? $roomData['minStay'] : 0;
-      $price = isset($roomData['price']) ? $roomData['price'] : 0;
+      $prices = isset($roomData['prices']) ? $roomData['prices'] : 0;
       
       if ($nigths<$minStay){
         $response =  'Estancia mínima: '.$minStay.' Noches';
         return response()->json(['data'=>$response],401);
       }
-      if ($price<1){
+      if ($prices['pvp']<1){
         $response =  'Ocurrió un error a procesar su reserva';
         return response()->json(['data'=>$response],401);
       }
@@ -253,6 +235,7 @@ class ApiController extends AppController
             'name'  => $usr['c_name'],
             'email' => $usr['c_mail'],
             'phone' => $usr['c_phone'],
+            'c_observ' => $usr['c_observ'],
             'token' => isset($usr['token']) ? $usr['token'] : time(),
         ];
         $extras = isset($selected['ext']) ? $selected['ext'] : [];
@@ -294,9 +277,6 @@ class ApiController extends AppController
         $customer->user_id = 1;
         if (!$customer->save()) return FALSE;
       }
-      if (isset($cData['c_observ'])){
-        $comments .= PHP_EOL.$cData['c_observ'];
-      }
 
       $customer->api_token= encriptID($customer->id).bin2hex(time());
       $customer->save();
@@ -317,7 +297,7 @@ class ApiController extends AppController
         $book->room_id       = $room->id;
         $book->start         = $date_start;
         $book->finish        = $date_finish;
-        $book->comment       = $comments;
+        $book->comment       = isset($cData['c_observ']) ? $cData['c_observ']: '';
         $book->type_book     = 99;
         $book->pax           = $pax;
         $book->real_pax      = $pax;
@@ -338,44 +318,34 @@ class ApiController extends AppController
         $book->cost_limp = $costes['cost_limp'];
         
         /**********************************/
-        $pvp = $room->getPVP($date_start, $date_finish,$book->pax);
-        $roomPrice = $this->getPriceOrig($pvp,$room->channel_group,$nigths); //Booking price
         
-        $promo    = $room->getDiscount($date_start,$date_finish);
-        $discount = round($roomPrice*( $promo/100),2);
-        $pvp      = ($roomPrice-$discount);
+        $meta_price = $room->getRoomPrice($date_start, $date_finish,$book->pax);
         
+        $pvp = $meta_price['pvp'];
+        $pvp_total = $meta_price['pvp_init']+$meta_price['price_limp'];
         
+        if ($meta_price['discount']>0){
+          $comments .= PHP_EOL."Descuento: ".$meta_price['discount'].'%';
+        }
         // promociones tipo 7x4
         $book->promociones = 0;
-        $hasPromo = '';
-        $aPromo = $room->getPromo($date_start,$date_finish);
-        if ($aPromo){
-          $promo_nigths = $aPromo['night'];
-          $nigths_discount = $promo_nigths-$aPromo['night_apply'];
-          $pvp_promo = $pvp;
-          if ($promo_nigths>0 && $nigths_discount>0 && $nigths>=$promo_nigths){
-            $nigths_ToApply = intval(($nigths/$promo_nigths) * $nigths_discount);
-            $pvpAux = round( ($pvp/$nigths) * ($nigths-$nigths_ToApply) , 2);
-            $comments .= PHP_EOL."Promoción ".$aPromo['name'];
-            $book->promociones = $pvp - $pvpAux;
-            $pvp = $pvpAux;
-          }
+        if ($meta_price['promo_pvp']>0){
+          $comments .= PHP_EOL."Promoción ".$meta_price['promo_name'];
+          $book->promociones = $meta_price['promo_pvp'];
+          $book->book_owned_comments = 'Promoción '.$meta_price['promo_name'].': '. moneda($meta_price['promo_pvp'],true,2);
         }
         // promociones tipo 7x4  
-          
         
-        $book->real_price = $pvp + $book->sup_limp + 1;
-        $book->total_price = $pvp + $book->sup_limp;
-        $book->ff_status = 4;
-        $book->has_ff_discount = 1;
-        $book->ff_discount = $discount;
-        $book->cost_apto = $room->getCostRoom($date_start, $date_finish, $book->pax);
+        $book->real_price = $pvp_total;
+        $book->total_price= $pvp;
+        $book->ff_status  = 4;
+        $book->cost_apto  = $room->getCostRoom($date_start, $date_finish, $book->pax);
         $book->cost_total = $book->get_costeTotal();
-        $book->total_ben = $book->total_price - $book->cost_total;
+        $book->total_ben  = $book->total_price - $book->cost_total;
         
-        $book->book_comments = $comments .PHP_EOL."Precio publicado: $pvp + ".$book->sup_limp.': €'.$book->total_price;
+        $book->book_comments = $comments .PHP_EOL.'Precio publicado: '.moneda($pvp);
         if ($book->save()) {
+          $book->setMetaContent('price_detail', serialize($meta_price));
           $amount = ($book->total_price / 2);
           $client_email = 'no_email';
           if ($customer->emaill && trim($customer->emaill)) {

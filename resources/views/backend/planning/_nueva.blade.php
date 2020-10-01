@@ -15,6 +15,10 @@ $mobile = new Mobile();
     .push-xs-10{
         margin-bottom: 10px;
     }
+    .box-info {
+        border: 1px solid #d6d6d6;
+        padding: 7px;
+    }
     @media only screen and (max-width: 767px){
         .daterangepicker {
             left: 12%!important;
@@ -39,6 +43,7 @@ $mobile = new Mobile();
     <div class="col-md-12">
         <form role="form"  action="{{ url('/admin/reservas/create') }}" method="post" id="newForm">
             <!-- DATOS DEL CLIENTE -->
+            <input type="hidden" id="new_book" value="1">
             @if( isset($data['cr_id']) )
             <input type="hidden" name="cr_id" value="{{$data['cr_id']}}">
             @endif       
@@ -268,20 +273,6 @@ $mobile = new Mobile();
                   <label>promoción</label>
                   <input type="number" class="promociones form-control" step='0.01'  name="promociones" <?php value_isset($data,'pvp_promo'); ?>>
                 </div>
-                <div class="col-md-3 col-xs-6 push-20 hiddenOnlyRiad">
-                  <label>DTO</label>
-                  <div class="row">
-                    <div class="col-xs-4">
-                      <span class="input-group-addon">
-                            <input type="checkbox" name="has_ff_discount" id="has_ff_discount"  data-init-plugin="switchery" data-size="small" data-color="primary" checked/>
-                        </span>
-                    </div>
-                    <div class="col-xs-8">
-                      <input type="text"  class="only-numbers form-control"  name="ff_discount" id="ff_discount" <?php value_isset($data,'disc_pvp'); ?>>
-                      <input type="hidden" name="old_ff_discount" id="old_ff_discount" <?php value_isset($data,'disc_pvp'); ?>>
-                    </div>
-                  </div>
-                </div>
 	            <?php else: ?>
                     <input type="hidden" class="promociones form-control" step='0.01' name="promociones" value="0">
                 <?php endif ?>
@@ -292,7 +283,7 @@ $mobile = new Mobile();
                     </p>
                 </div>
             </div>
-            <div class="col-xs-12 bg-white">
+            <div class="row col-xs-12 bg-white">
                 <div class="col-xs-12 not-padding">
                     <div class="col-md-3 col-xs-12 text-center  first" style="background-color: #0c685f;">
                         <label class="font-w800 text-white" for="">TOTAL</label>
@@ -333,6 +324,24 @@ $mobile = new Mobile();
                     <?php endif ?>
                 </div>
             </div>
+            <div class="row col-xs-12 bg-white">
+              <p class="text-center">Precio que se muestra al público</p>
+                <div class="col-md-3 col-xs-6 box-info">
+                  PVP Final<br><span  id="publ_total"></span>
+                </div>
+                <div class="col-md-3 col-xs-6 box-info">
+                  PVP Inicial<br><span  id="publ_price"></span>
+                </div>
+                <div class="col-md-2 col-xs-4 box-info">
+                  DESC<br><span  id="publ_disc"></span>
+                </div>
+                <div class="col-md-2 col-xs-4 box-info">
+                  PROMO<br><span  id="publ_promo"></span>
+                </div>
+                <div class="col-md-2 col-xs-4 box-info">
+                  SUPL LIMP<br><span  id="publ_limp"></span>
+                </div>
+              </div>
             <div class="col-xs-12 bg-white padding-block">
                 <div class="col-md-4 col-xs-12">
                     <label>Comentarios Cliente </label>
@@ -342,7 +351,7 @@ $mobile = new Mobile();
                     <label>Comentarios Internos</label>
                     <textarea class="form-control book_comments" name="book_comments" rows="5" ><?php if ( isset($data['book_comments']) ){ echo $data['book_comments'];}?></textarea>
                 </div>
-                <div class="col-md-4 col-xs-12 content_book_owned_comments" style="display: none;">
+                <div class="col-md-4 col-xs-12 content_book_owned_comments">
                     <label>Comentarios Propietario</label>
                     <textarea class="form-control book_owned_comments" name="book_owned_comments" rows="5" ></textarea>
                 </div>
@@ -367,5 +376,6 @@ $(document).ready(function () {
   $('#fechas').val("{{$data['date']}}");
   @endif
         
+  
 });
 </script>
