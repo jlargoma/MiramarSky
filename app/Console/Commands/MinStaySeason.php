@@ -54,49 +54,7 @@ class MinStaySeason extends Command
      */
     public function handle()
     {
-//       $this->check_and_send_zodumos();
-//       $this->check_and_send_wubooks();
-       $this->check_and_send_otaGateway();
-    }
-    
-    private function check_and_send_zodumos(){
-      
-      $oZodomus = new Zodomus();
-      $items = ProcessedData::where('key','SendToZoodomus_minStay')->limit(45)->get();
-      if ($items){
-        foreach ($items as $item){
-          $data = json_decode($item->content,true);
-          $errorMsg = $oZodomus->setRates($data[0],$data[1]);
-          if ($errorMsg){
-            $item->name = $errorMsg;
-            $item->key = 'SendToZoodomus_minStay-error';
-            $item->save();
-          } else {
-            $item->delete();
-          }
-        }
-      }
-    }
-    
-    private function check_and_send_wubooks(){
-      $WuBook = new WuBook();
-
-      $items = ProcessedData::where('key','SendToWubook_minStay')->limit(15)->get();
-
-      if (count($items)>0){
-        $WuBook->conect();
-        foreach ($items as $item){
-          $data = json_decode($item->content,true);
-          $response = $WuBook->set_Restrictions($data['start'],$data['min_stay']);
-          
-          if ($response) { $item->delete();}
-          else {
-            $item->key = 'SendToWubook_minStay-error';
-            $item->save();
-          }
-        }
-        $WuBook->disconect();
-      }
+      $this->check_and_send_otaGateway();
     }
     private function check_and_send_otaGateway(){
       $OtaGateway = new OtaGateway();
