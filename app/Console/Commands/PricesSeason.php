@@ -6,8 +6,6 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Log;
 use Illuminate\Support\Facades\DB;
-use App\Services\Wubook\WuBook;
-use App\Services\Zodomus\Zodomus;
 use App\Services\OtaGateway\OtaGateway;
 
 use App\ProcessedData;
@@ -55,50 +53,9 @@ class PricesSeason extends Command
      */
     public function handle()
     {
-//       $this->check_and_send_zodumos();
-//       $this->check_and_send_wubooks();
        $this->check_and_send_OtaGateway();
     }
-    
-    private function check_and_send_zodumos(){
-      
-      $oZodomus = new Zodomus();
-      $items = ProcessedData::where('key','SendToZoodomus')->limit(15)->get();
-      if ($items){
-        foreach ($items as $item){
-          $data = json_decode($item->content,true);
-          $errorMsg = $oZodomus->setRates($data[0],$data[1]);
-          if ($errorMsg){
-            $item->name = $errorMsg;
-            $item->key = 'SendToZoodomus-error';
-            $item->save();
-          } else {
-            $item->delete();
-          }
-        }
-      }
-    }
-    
-    private function check_and_send_wubooks(){
-      $WuBook = new WuBook();
 
-      $items = ProcessedData::where('key','SendToWubook')->limit(15)->get();
-
-      if (count($items)>0){
-        $WuBook->conect();
-        foreach ($items as $item){
-          $data = json_decode($item->content,true);
-          $response = $WuBook->set_Prices($data['start'],$data['prices']);
-          if ($response) { $item->delete();}
-          else {
-            $item->key = 'SendToWubook-error';
-            $item->save();
-          }
-        }
-        $WuBook->disconect();
-      }
-    }
-    
     private function check_and_send_OtaGateway(){
       $OtaGateway = new OtaGateway();
 

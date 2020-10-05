@@ -20,9 +20,7 @@ class prepareDefaultPrices {
   private $dailyPrices;
   private $roomsPrices;
   private $specialSegment;
-  private $zData;
   private $ogData;
-  private $wData;
   public $error;
 
   public function __construct($start,$end){
@@ -36,44 +34,13 @@ class prepareDefaultPrices {
     }
     $this->startDate = $start;
     $this->endDate = $end;
-    $aux = configZodomusAptos();
-    $aptoOtas = [];
-    $channels = [];
-    foreach ($aux as $k=>$data){
-      $aptoOtas[$k] = $data->rooms;
-      $channels[] = $k;
-    }
-    $this->zData = $aptoOtas;
-    $WuBook = new \App\Services\Wubook\WuBook();
-    $this->wData  = $WuBook->getRoomsEquivalent($channels);
-    
     $otaGateway = new \App\Services\OtaGateway\Config();
     $this->ogData = $otaGateway->getRooms();
   }
 
   public function process() {
-    //obtengo todos los aptos - ZODOMUS / WUBOOK
-    if (false){
-      foreach ($this->zData as $chGroup=>$v){
-        $this->dailyPrices = [];
-        $oRoom = \App\Rooms::where('channel_group',$chGroup)->first();
-       
-        if ($oRoom){
-          $this->dailyPrice($oRoom);
-          $this->generateQueriesToSendZodomus($chGroup);
-//          $this->prepareQueriesToSendWubook($chGroup);
-        } 
-//        $this->prepareSpecialSegments();
-      }
-//      $this->saveQueriesToSendWubook();
-    }
-    
     //obtengo todos los aptos - OTA-GATEWAY
-    if (true){
-      $this->process_OtaGateway();
-    }
-    
-    
+    $this->process_OtaGateway();
   }
   
   public function process_OtaGateway() {
@@ -86,20 +53,6 @@ class prepareDefaultPrices {
         $this->generateQueriesToSendOtaGateWay($chGroup);
       } 
     }
-  }
-  
-  public function process_justWubook() {
-    
-    //obtengo todos los aptos
-      foreach ($this->wData as $chGroup=>$v){
-        $this->dailyPrices = [];
-        $oRoom = \App\Rooms::where('channel_group',$chGroup)->first();
-        if ($oRoom){
-          $this->dailyPrice($oRoom);
-          $this->prepareQueriesToSendWubook($chGroup);
-        } 
-      }
-      $this->saveQueriesToSendWubook();
   }
   
   private function dailyPrice($oRoom){
@@ -150,126 +103,6 @@ class prepareDefaultPrices {
 //    $this->dailyPrices
 //    $this->specialSegment = $ssDays;
   }
-  /*******************************************/
-  function generateQueriesToSendZodomus($chGroup){
-    $d1 = $this->startDate;
-    $d2 = $this->endDate;
-    $to_send = [];
-    $precio = null;
-   
-    if (!isset($this->zData[$chGroup])) return null;
-    $zAptos = $this->zData[$chGroup];
-    
-    
-    foreach ($this->dailyPrices as $d=>$p){
-      $d2 = $d;
-      if (is_null($precio)) $precio = $p;
-      if (is_null($d1))  $d1 = $d;
-
-
-      if ($p!=$precio){
-        $to_send[] =  [
-            "dateFrom" => $d1,
-            "dateTo" => $d2,
-            "prices" =>   [ "price" => $precio ],
-
-        ];
-        $d1 = $d;
-        $precio = $p;
-      }
-
-
-    }
-      
-    if ($d2!=$d1){
-       $to_send[] =  [
-           "dateFrom" => $d1,
-           "dateTo" => $d2,
-           "prices" =>   [ "price" => $precio ],
-
-       ];
-     }
-      
-    $weekDays = [ 
-      "sun"=>true,
-      "mon"=>true,
-      "tue"=>true,
-      "wed"=>true,
-      "thu"=>true,
-      "fri"=>true,
-      "sat"=>true];
-        
-    $datas = [];
-    
- 
-    $nameProcess = $this->startDate.'_'.$this->endDate.'_'.$chGroup;
-    
-    foreach ($to_send as $v){
-      foreach ($zAptos as $room){
-        if ($room->roomID>0){
-          $param = [
-                  "channelId" =>  $room->channel,
-                  "propertyId" => $room->propID,
-                  "roomId" =>  $room->roomID,
-                  "dateFrom" => $v['dateFrom'],
-                  "dateTo" => $v['dateTo'],
-                  "currencyCode" =>  "EUR",
-                  "rateId" =>  $room->rateID,
-                  "weekDays" => $weekDays,
-                  "prices" =>  $v['prices'],
-                  "closed" =>  0,
-                ];
-
-          $datas[] = [
-            'key'=>'SendToZoodomus',
-            'name'=>$nameProcess,
-            'content'=> json_encode([$param,$chGroup])
-          ];
-        }
-      }
-
-    }
-    \App\ProcessedData::where('key','SendToZoodomus')
-            ->where('name',$nameProcess)->delete();
-    
-    \App\ProcessedData::insert($datas);
-  }
-  
-  
-  function prepareQueriesToSendWubook($chGroup){
-    
-    $d1 = $this->startDate;
-    $d2 = $this->endDate;
-    $to_send = [];
-    $precio = null;
-   
-    
-    if (!isset($this->wData[$chGroup])) return null;
-    $rid = $this->wData[$chGroup];
-    $prices = [];
-    foreach ($this->dailyPrices as $v)  $prices[] = $v;
-    
-    $this->roomsPrices['_int_'.$rid] = $prices;
-
-  }
-  
-  function saveQueriesToSendWubook(){
-    
-    $nameProcess = $this->startDate.'_'.$this->endDate;
-    $datas[] = [
-      'key'=>'SendToWubook',
-      'name'=>$nameProcess,
-      'content'=> json_encode([
-          'start'=>$this->startDate,
-          'prices'=>$this->roomsPrices,
-              ])
-    ];
-    \App\ProcessedData::where('key','SendToWubook')
-            ->where('name',$nameProcess)->delete();
-    
-    \App\ProcessedData::insert($datas);
-  }
-  
     
   /*******************************************/
   

@@ -572,7 +572,6 @@ class Book extends Model {
    */
   public function sendAvailibility($room_id,$start,$finish) {
     
-    $Zodomus  =  new \App\Services\Zodomus\Zodomus();
     $room     = Rooms::find($room_id);
     
     if ($room){
@@ -624,7 +623,7 @@ class Book extends Model {
           }
         }
       }
-      //Genero el listado para enviar a Zodomus
+      //Genero el listado para enviar a OTAs
       $resultLst = [];
       $WubookAvailDays = [];
       $startAux2 = $end = $value = null;
@@ -674,40 +673,6 @@ class Book extends Model {
       if (count($WubookAvailDays)){
         \App\WobookAvails::insert($WubookAvailDays);
       }
-      if ($value !== null){
-        $resultLst[] = [
-            "avail" => $value,
-            "start" => $startAux2,
-            "end" => date('Y-m-d', strtotime($end)+$oneDay),
-        ];
-      }
-     
-      //buscos los OTAs
-      $otas = [];
-      $aptos = configZodomusAptos();
-      foreach ($aptos as $cg => $apto){
-        if ($cg == $room->channel_group)
-          $otas = $apto->rooms;
-      }
-      //envío cada periodo de disponibilidad
-      foreach ($resultLst as $data){
-        foreach ($otas as $ota){
-
-          $paramAvail = [
-              "channelId" =>  $ota->channel,
-              "propertyId" => $ota->propID,
-              "roomId" =>  $ota->roomID,
-              "dateFrom" => $data['start'],
-              "dateTo" => $data['end'],
-              "availability" =>  $data['avail'],
-            ];
-         
-          $return = $Zodomus->setRoomsAvailability($paramAvail);
-          
-//           if (isset($_POST['date_range']))   dd($return);
-        }
-      }
-      
     }
   }
     
@@ -718,7 +683,6 @@ class Book extends Model {
    */
   public function getAvailibilityBy_channel($apto, $start, $finish,$return = false) {
 
-    $Zodomus = new \App\Services\Zodomus\Zodomus();
     $oRooms = Rooms::where('channel_group', $apto)->pluck('id')->toArray();
 
     $match1 = [['start', '>=', $start], ['start', '<=', $finish]];
