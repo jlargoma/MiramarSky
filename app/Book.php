@@ -59,7 +59,9 @@ class Book extends Model {
   public function payments() {
     return $this->hasMany(Payments::class);
   }
-  
+  public function leads() {
+    return $this->hasOne('\App\CustomersRequest', 'book_id', 'id');
+  }
   public function notifications() {
     return $this->hasMany('\App\BookNotification', 'book_id', 'id');
   }
@@ -168,8 +170,8 @@ class Book extends Model {
     for($i=1;$i<21;$i++){
       $array[7+$i] = 'Agencia-'.$i;
     }
+     $array[999999] = 'Google (no usar)' ;
     return $array;
-    
     
     
   }
@@ -257,16 +259,20 @@ class Book extends Model {
   }
   
   
-  /**
+    /**
    * Get object Book that has status 2,7,8
    * 
    * @return Object Query
    */
-  static function where_type_book_sales($reservado_stripe=false) {
-    if ($reservado_stripe) return self::whereIn('type_book', [1, 2, 7, 8]);
+  static function where_type_book_sales($reservado_stripe=false,$ota=false) {
+    
+    $types = [2, 7, 8];
+    if ($reservado_stripe) $types[] = 1;
+    if ($ota) $types[] = 11;
     //Pagada-la-señal / Reserva Propietario / ATIPICAS
                 
-    return self::whereIn('type_book', [2, 7, 8]);
+    return self::whereIn('type_book',$types);
+    
   }
   static function where_type_book_prop() {
     return self::whereIn('type_book', [2, 7]);

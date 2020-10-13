@@ -1,5 +1,10 @@
 @extends('layouts.admin-master')
-
+<?php 
+use \Carbon\Carbon;
+use App\Classes\Mobile;
+$uRole = getUsrRole();
+$is_mobile = $mobile->isMobile();
+?>
 @section('title') Administrador de reservas MiramarSKI @endsection
 
 @section('externalScripts')
@@ -7,13 +12,7 @@
 @endsection
 
 @section('content')
-<?php
 
-use \Carbon\Carbon;
-use App\Classes\Mobile;
-
-$mobile = new Mobile();
-?>
 @if($errors->any())
 <p class="alert alert-danger">{{$errors->first()}}</p>
 @endif
@@ -21,7 +20,7 @@ $mobile = new Mobile();
 <p class="alert alert-success">{!! \Session::get('success') !!}</p>
 @endif
 
-<div class="container-fluid padding-10 sm-padding-10">
+<div class="container-fluid padding-10 sm-padding-10" id="updateBooking">
   @include('backend.planning.blocks.header-update')
   <div class="row center text-center">
     <!-- DATOS DE LA RESERVA -->

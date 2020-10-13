@@ -13,11 +13,11 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        Commands\ImportICal::class,
+        Commands\SendPoll::class,
+        Commands\SafeBox::class,
         Commands\CheckPartee::class,
         Commands\SendParteeSMS::class,
         Commands\CreateMonthLimpieza::class,
-//        Commands\RoomsPhotosMigrate::class,
         Commands\SendSecondPay::class,
         Commands\SendParteeAdmin::class,
         Commands\ChatEmails::class,
@@ -25,13 +25,15 @@ class Kernel extends ConsoleKernel
         Commands\CreatePaymentFianza::class,
         Commands\GetDailyFFSeason::class,
         Commands\SendFFAdmin::class,
-//        Commands\ZodomusImport::class,
         Commands\OG_ImportAll::class,
         Commands\ProcessData::class,
         Commands\WubookAvailables::class,
-        Commands\WubookGetBookings::class,
         Commands\PricesSeason::class,
         Commands\MinStaySeason::class,
+//        Commands\WubookGetBookings::class,
+//        Commands\ZodomusImport::class,
+//        Commands\RoomsPhotosMigrate::class,
+//        Commands\ImportICal::class,
     ];
 
     /**
@@ -43,24 +45,27 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
       //Le quito 2 horas de diff
-         $schedule->command('partee:check')->everyThirtyMinutes();
-         $schedule->command('partee:sendSMS')->dailyAt('7:00')->timezone('Europe/Madrid');
-         $schedule->command('partee:sendAlert')->dailyAt('21:00')->timezone('Europe/Madrid');
-         $schedule->command('secondPay:sendEmails')->dailyAt('7:00')->timezone('Europe/Madrid');
-         $schedule->command('FFSeasson:get')->dailyAt('4:00')->timezone('Europe/Madrid');
+      
+        $schedule->command('SafeBox:asignAndSend')->dailyAt('13:00')->timezone('Europe/Madrid');
+        $schedule->command('SendPoll:sendEmails')->dailyAt('12:00')->timezone('Europe/Madrid');
+        $schedule->command('FFSeasson:get')->dailyAt('4:00')->timezone('Europe/Madrid');
+        $schedule->command('sendFFAdmin:sendForfaits')->dailyAt('6:45')->timezone('Europe/Madrid');
+        $schedule->command('partee:sendSMS')->dailyAt('7:00')->timezone('Europe/Madrid');
+        $schedule->command('secondPay:sendEmails')->dailyAt('7:00')->timezone('Europe/Madrid');
+        $schedule->command('forfait:sendReminder')->dailyAt('8:00')->timezone('Europe/Madrid');
+        $schedule->command('partee:sendAlert')->dailyAt('21:00')->timezone('Europe/Madrid');
+        $schedule->command('partee:check')->everyThirtyMinutes();
+        $schedule->command('OGImportAll:import')->hourly();
+        $schedule->command('OTAs:sendPricesSeason')->everyMinute();
+        $schedule->command('wubook:sendAvaliables')->everyFiveMinutes();
+        $schedule->command('ProcessData:all')->everyFiveMinutes();
+        $schedule->command('OTAs:sendMinStaySeason')->everyFiveMinutes();
+//         $schedule->command('ical:import')->everyTenMinutes();
 //         $schedule->command('monthLimpieza:create')->monthlyOn(1, '5:00')->timezone('Europe/Madrid');
-         $schedule->command('ical:import')->everyTenMinutes();
 //         $schedule->command('zodomus:import')->everyTenMinutes();
 //         $schedule->command('zodomus:importAll')->hourly();
-         $schedule->command('OGImportAll:import')->hourly();
-         $schedule->command('OTAs:sendPricesSeason')->everyMinute();
 //         $schedule->command('OTAs:MinStaySeason')->everyMinute();
-         $schedule->command('ProcessData:all')->everyFiveMinutes();
 //         $schedule->command('mails:read')->everyThirtyMinutes();
-         $schedule->command('forfait:sendReminder')->dailyAt('8:00')->timezone('Europe/Madrid');
-         $schedule->command('sendFFAdmin:sendForfaits')->dailyAt('6:45')->timezone('Europe/Madrid');
-         $schedule->command('wubook:sendAvaliables')->everyFiveMinutes();
 //         $schedule->command('wubook:getBookings')->everyMinute();
-         $schedule->command('OTAs:sendMinStaySeason')->everyFiveMinutes();
     }
 }

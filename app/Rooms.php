@@ -69,6 +69,11 @@ class Rooms extends Model {
   public function paymentPro() {
     return $this->hasMany('\App\Paymentspro', 'id', 'room_id');
   }
+  
+  public function RoomsType()
+  {
+    return $this->hasOne('\App\RoomsType', 'channel_group', 'channel_group');
+  }
 
   public static function getPaxRooms($pax, $room) {
     $obj = self::select('minOcu')->where('id', $room)->first();
@@ -579,4 +584,7 @@ class Rooms extends Model {
     return $result;
   }
   
+  static public function getRoomList(){
+    return self::orderBy('nameRoom')->pluck('nameRoom','id');
+  }
 }

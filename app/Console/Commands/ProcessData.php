@@ -53,6 +53,7 @@ class ProcessData extends Command
      */
     public function handle()
     {
+       $this->bookingsWithoutCvc();
        $this->check_overbooking();
 //       $this->check_customPricesWubook();
        $this->check_customPricesOtaGateway();
@@ -218,6 +219,14 @@ class ProcessData extends Command
     }
     $oPrepareMinStay->process_OtaGateway();
     $sentUPD->content = null;
+    $sentUPD->save();
+  }
+  
+  
+  public function bookingsWithoutCvc() {
+    $lst = Book::whereNotNull('external_id')->join('book_visa','book_id','=','book.id')->whereNull('cvc')->pluck('book_id');
+    $sentUPD = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
+    $sentUPD->content = json_encode($lst);
     $sentUPD->save();
   }
 }

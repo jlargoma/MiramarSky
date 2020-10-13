@@ -16,7 +16,7 @@
             <th class="bg-primary text-white text-center">Out</th>
             <th class="bg-primary text-white text-center">Apto</th>
             <th class="bg-primary text-white text-center"><i class="fa fa-clock-o" aria-hidden="true"></i>@if(!$isMobile) Salida @endif</th>
-            <?php if (getUsrRole() != "limpieza"): ?><th class="bg-primary text-white text-center">A</th><?php endif ?>
+            <th class="bg-primary text-white text-center">A</th>
         </thead>
         <tbody>
             <?php $count = 0 ?>
@@ -54,7 +54,7 @@
                     @endif
                     
                     <div class="row table-icon-row">
-                        <?php if (getUsrRole() != "limpieza" && (!empty($book->comment) || !empty($book->book_comments))): ?>
+                        <?php if ((!empty($book->comment) || !empty($book->book_comments))): ?>
                             <?php 
                                 $textComment = "";
                                 if (!empty($book->comment)) {
@@ -111,14 +111,10 @@
                             <?php echo number_format($book->total_price,2,',','.') ?> €
                         <?php endif ?> -->
                     </td>
-
-                    <?php if (getUsrRole() != "limpieza"): ?>
                     <td class="text-center">
-                      <button class="btn btn-primary send_encuesta" type="button" data-id="{{$book->id}}" title="Enviar encuesta mail">
-                           <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                        </button>
+                      <button class="btn  open_modal_encuesta <?php echo in_array($book->id, $pullSent) ? 'btn-warning' : ''; ?>" type="button" data-id="{{$book->id}}" title="Encuesta mail" >
+                      </button>
                     </td>
-                    <?php endif ?>
                 </tr>
             <?php endforeach ?>
         </tbody>

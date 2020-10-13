@@ -1,13 +1,26 @@
 <div class="row alert alert-info fade in alert-dismissable" style="margin-top: 30px; background-color: #daeffd!important;">
   <div class="col-xs-12">
-    <h2 class="text-center font-w300" style="letter-spacing: -1px;">
-      GENERADOR DE LINKS y PAGOS PAYLAND
-    </h2>
+    <div class="row btn-percents">
+      <div class="col-sm-8 col-xs-7">
+        <h5>
+          GENERADOR DE LINKS y PAGOS PAYLAND
+        </h5>
+      </div>
+      <div class="col-sm-4 col-xs-5 ">
+        <button onclick="load_amount(1)" class="btn btn-success" type="button">100%</button>
+        <button onclick="load_amount(0.5)" class="btn btn-success" type="button">50%</button>
+      </div>
+    </div>
   </div>
   <div class="col-md-8  col-xs-6">
     <input type="hidden" id="payland_token" value="<?php echo csrf_token(); ?>">
     <input type="hidden" id="payland_booking" value="{{ encriptID($customer) }}-{{ encriptID($id) }}">
-    <input type="number" class="form-control only-numbers" id="payland_paymentAmount" placeholder="importe..." required @if(isset($book)) value="{{ $book->total_price * 0.5 }}" @endif>
+    <?php 
+    $toPay =  isset($payment_pend) ? $payment_pend : $book->total_price;
+    if ($toPay<0) $toPay = 0;
+    ?>
+    <input type="hidden" id="total_price" value="<?php echo $toPay; ?>">
+    <input type="number" class="form-control only-numbers" id="payland_paymentAmount" placeholder="importe..." required value="{{$toPay}}">
   </div>
   <div class="col-md-4 col-xs-6 push-20">
     <button onclick="_createPayment('link')" class="btn btn-success" type="button" id="_createPaymentLink">Link</button>
@@ -65,6 +78,23 @@
 
   });
   
+  function copyElementToClipboard(element) {
+    window.getSelection().removeAllRanges();
+    let range = document.createRange();
+    range.selectNode(typeof element === 'string' ? document.getElementById(element) : element);
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+    window.getSelection().removeAllRanges();
+  }
+  
+  $('#paymentDataContent').on("click", "#copyLinkStripe", function () {
+    copyElementToClipboard('textPayment');
+  });
+  
+  function load_amount(percent) {
+    var total_price = $('#total_price').val();
+    $('#payland_paymentAmount').val(total_price * percent);
+  }
   $('#visaDataContent').on("click", '.copy_data', function () {
     var copyText = $(this).closest('div').find('input');
     copyText.select();

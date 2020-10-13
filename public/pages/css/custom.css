@@ -640,27 +640,7 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
 #limpieza_table td{
   padding: 7px !important;
 }
-.month_select-box{
-  clear: both;
-  overflow: auto;
-}
-.month_select{
-    float: left;
-    padding: 5px 9px;
-    margin: 4px;
-    background-color: #295d9b;
-    color: #fff;
-    border-radius: 17px;
-    min-width: 5.5em;
-    text-align: center;
-    cursor: pointer;
-}
-.month_select.active,
-.month_select:hover{
-  background-color: #9b59ff;
-  color: initial;
 
-}
 .loading-box,.message-bottom-box{
   background-color: rgba(189, 189, 189, 0.5);
   display: none;

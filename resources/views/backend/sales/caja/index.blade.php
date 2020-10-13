@@ -66,6 +66,11 @@ $isMobile = $mobile->isMobile();
       width: 30px; float: left; margin: 5px 2px;
       cursor: pointer;
     }
+    i.fa.cajaDelete {
+    color: #ee5653;
+    font-size: 17px;
+    cursor: pointer;
+}
   </style>
 @endsection
 
@@ -91,12 +96,14 @@ $isMobile = $mobile->isMobile();
         <div class="col-md-6">
           <button type="button" class="btn btn-success btn-green" id="addNew_ingr" type="button" data-toggle="modal" data-target="#modalAddIngr"><i class="fas fa-plus-circle toggle-contab-site"></i> Añadir Ingresos</button>
           <button type="button" class="btn btn-success btn-danger" id="addNew_gasto" type="button" data-toggle="modal" data-target="#modalAddGasto"><i class="fas fa-plus-circle toggle-contab-site"></i> Añadir Gastos</button>
+          <button type="button" class="btn btn-info" id="addNew_arqueo" type="button" data-toggle="modal" data-target="#modalAddArqueo">
+            <i class="fas fa-plus-circle toggle-contab-site"></i> <span class="hidden-mobile">Añadir</span> Arqueo</button>
         </div>
         <div class="col-md-3">
-          <h3>Total Selec. <span id="t_month">0</span></h3>
+          <h3>SALDO MES  <span id="t_month">0</span></h3>
         </div>
         <div class="col-md-3">
-          <h3>Total Año {{moneda($totalYear)}}
+          <h3>SALDO ANUAL {{moneda($totalYear)}}
         </div>
       </div>
         <div class="col-md-12 col-xs-12" style="padding-right: 0; min-height: 43em;">
@@ -123,6 +130,7 @@ $isMobile = $mobile->isMobile();
               <th class="text-center bg-complete text-white col-md-1">Saldo</th>
               <th class="text-center bg-complete text-white col-md-2">Aptos</th>
               <th class="text-center bg-complete text-white col-md-2">Comentario</th>
+              <th class="text-center bg-complete text-white col-md-2"></th>
             </thead>
             <tbody id="tableItems" class="text-center">
             </tbody>
@@ -153,6 +161,19 @@ $isMobile = $mobile->isMobile();
         </button>
       </div>
       <div class="modal-body">@include('backend.sales.caja._form_ingresos')</div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="modalAddArqueo" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong class="modal-title" id="modalChangeBookTit" style="font-size: 1.4em;">Arqueo</strong>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">@include('backend.sales.caja._form_arqueo')</div>
     </div>
   </div>
 </div>
@@ -192,6 +213,18 @@ $isMobile = $mobile->isMobile();
             $('#ms_'+year+'_'+month).addClass('active');
             $('#tableItems').html('');
             $('#t_month').html(response.total);
+            
+             var row = '<tr><td></td>';
+              row += '<td>SALDO '+response.month_prev+'</td>';
+              row += '<td>--</td>';
+              row += '<td>--</td>';
+              row += '<td>--</td>';
+              row += '<td>' + response.totalPrev.toFixed(2) + '</td>';
+              row += '<td>--</td>';
+              row += '<td>Saldo mes anterior</td>';
+              row += '<td>---</td></tr>';
+              $('#tableItems').append(row);
+              
             var saldo = 0;
             $.each((response.respo_list), function(index, val) {
               if (val.debe != '--')  saldo += parseFloat(val.debe);
@@ -203,7 +236,8 @@ $isMobile = $mobile->isMobile();
               row += '<td>' + val.haber+ '</td>';
               row += '<td>' + saldo.toFixed(2) + '</td>';
               row += '<td>' + val.aptos + '</td>';
-              row += '<td>' + val.comment + '</td></tr>';
+              row += '<td>' + val.comment + '</td>';
+              row += '<td><i class="fa fa-trash cajaDelete" data-key="' + val.key + '" ></i></td></tr>';
               $('#tableItems').append(row);
             });
           } else{
@@ -265,6 +299,24 @@ $isMobile = $mobile->isMobile();
 $("#tableItems").on('click','tr',function(){
    $(this).addClass('selected').siblings().removeClass('selected');    
 });
+ $("#tableItems").on('click','.cajaDelete',function(){
+  if (confirm('Borrar el registro de la caja?')){
+    var key = $(this).data('key');
+    $.ajax({
+      url: '/admin/caja/del-item',
+      type:'POST',
+      data: {key:key, '_token':"{{csrf_token()}}"},
+      success: function(response){
+        if (response.status == 'OK'){
+          dataTable($('#year').val(),$('#month').val());
+        } else {
+          window.show_notif('ERROR','danger',response.msg);
+        }
+      }
+    });
+  }
+   
+});   
     
     </script>
 @endsection

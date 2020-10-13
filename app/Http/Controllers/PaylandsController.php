@@ -99,7 +99,7 @@ class PaylandsController extends AppController
       
       $urlPay = $this->generateOrder($amount,$subject,$bookingID);
       if ($urlPay){
-        return $this->getPaymentText($urlPay);
+        return $this->getPaymentText($urlPay,$bookingID,$amount);
       }
       return 'error';
     }
@@ -147,39 +147,40 @@ class PaylandsController extends AppController
       return null;
     }
     
-    private function getPaymentText($urlPay,$is_deferred=false) {
-      
-      if ($is_deferred){
-        $texto = 'En este link podrás realizar el pago de la Fianza.<br> En el momento en que efectúes el pago, te legará un email';
-      } else {
+    private function getPaymentText($urlPay,$bookingID=false,$amount=null) {
+      $texto = null;
+      if ($bookingID){
+        $oBooking = \App\Book::where('id',$bookingID)->with('room')->first();
+        if ($oBooking && $oBooking->room){
+          $texto = $this->getMailData($oBooking, 'text_payment_link');
+          $texto = str_replace('{payment_amount}', $amount, $texto);
+          $texto = str_replace('{urlPayment}', $urlPay, $texto);
+          
+          $whatsapp = str_replace('<strong>', '*', $texto);
+          $whatsapp = str_replace('</strong>', '*', $whatsapp);
+          $whatsapp = str_replace('<br />', '&#10;', $whatsapp);
+          $textoUnformat = strip_tags(str_replace('<br />', '&#10;', $texto));
+        }
+      } 
+      if (!$texto){
         $texto = 'En este link podrás realizar el pago de la señal.<br> En el momento en que efectúes el pago, te legará un email';
       }
-      
-      $response = '<div class="col-md-2 col-xs-12">
-              <h2 class="text-center" style="font-size: 18px; line-height: 18px; margin: 0;">
-
-                  <a href="whatsapp://send?text='. str_replace('<br>', '&#10;',$texto).' - ' . $urlPay . '" data-action="share/whatsapp/share">
-                      <i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>
-                  </a>
-              </h2>
-          </div>
-          <div class="col-md-10 col-xs-12">
-              <h2 class="text-center" style="font-size: 24px; line-height: 15px">
-                  <span style="font-size: 18px;">'.$texto.'</span><br>
-                  <a target="_blank" href="' . $urlPay . '">
-                      ' . substr($urlPay, 0, 45) . '...     
-                  </a>
-              </h2>
+              
+      $whatsapp = strip_tags($whatsapp);
+      $response = '
+              <div id="textPayment">'.$texto.'</div>
               <div class="row text-center">
-                  <button class="btn btn-cons" type="button" id="copy-link-stripe" data-link="' . $urlPay . '">
-                      <span class="bold">Copiar Link</span>
-                  </button>  
-                <input type="text" id="cpy_link" value="' . $urlPay . '" style="display:none;border: none;color: #fff;">
-              </div>
-
+              
+                  <a href="whatsapp://send?text='. $whatsapp.'" data-action="share/whatsapp/share">
+                      <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
+                  </a>
+                  <span id="copyLinkStripe">
+                    <i class="fa fa-copy  fa-2x" aria-hidden="true"></i>
+                  </span>  
+                <textarea type="text" id="cpy_link" style="display:none;border: none;color: #fff;">' . $textoUnformat . '</textarea>
           </div>';
       return $response;
-    }
+    }    
 
     public function thansYouPayment($key_token)
     {
@@ -610,9 +611,9 @@ class PaylandsController extends AppController
       if ($accepted_hiring_policies !== "true"){
         return response()->json('Por favor, acepte las políticas de contratación');
       }
-      if ($accepted_bail_conditions !== "true"){
-        return response()->json('Por favor, acepte las políticas de fianza');
-      }
+//      if ($accepted_bail_conditions !== "true"){
+//        return response()->json('Por favor, acepte las políticas de fianza');
+//      }
       if ($token){
           $payment = \App\PaymentOrders::where('token',$token)->first();
           if ($payment){
@@ -654,7 +655,7 @@ class PaylandsController extends AppController
             $is_deferred = $request->input('is_deferred', null); //fianza
             $urlPay = $this->generateOrder($amount,$subject,$bookingID,$is_deferred);
             if ($urlPay){
-              return $this->getPaymentText($urlPay,$is_deferred);
+              return $this->getPaymentText($urlPay,$bookingID,$amount);
             }
             
           }

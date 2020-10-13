@@ -78,13 +78,13 @@ function lstMonths($startYear,$endYear,$format='ym',$name=false){
   $diff = $startYear->diffInMonths($endYear) + 1;
   $lstMonths = [];
   if (is_numeric($diff) && $diff>0){
-    $aux = strtotime($startYear);
+    $aux = strtotime('first day of '.$startYear);
     while ($diff>0){
       if ($name)
         $lstMonths[date($format,$aux)] =['m' => date('n',$aux), 'y' => date('y',$aux),'name'=> getMonthsSpanish(date('n',$aux))];
       else
         $lstMonths[date($format,$aux)] =['m' => date('n',$aux), 'y' => date('y',$aux)];
-      $aux = strtotime("+1 month", $aux);
+      $aux = strtotime('next month', $aux);
       $diff--;
     }
   }
@@ -92,12 +92,13 @@ function lstMonths($startYear,$endYear,$format='ym',$name=false){
   return $lstMonths;
 }
 
-function getMonthsSpanish($m,$min=true){
+function getMonthsSpanish($m,$min=true,$list=false){
   if ($min){
     $arrayMonth = ['','Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sept', 'Oct', 'Nov', 'Dic'];
   } else {
     $arrayMonth = ['','Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
   }
+  if ($list)return $arrayMonth;
   $m = intval($m);
   return isset($arrayMonth[$m]) ? $arrayMonth[$m] : '';
 }
@@ -191,6 +192,7 @@ function getUrlToPay($token){
 
 function getCloudfl($url){
   
+  return $url;
   global $CDN_URL;
   
   if (!$CDN_URL){
@@ -471,4 +473,48 @@ function value_isset($array,$index){
   } else {
     echo 'value=""';
   }
+}
+function colors(){
+  return ['#9b59ff','#295d9b','#10cfbd','red','#871282','#066572','#a7dae7','#1fa7c0','#b2d33d','#3aaa49'];
+}
+
+function printColor($id){
+  $lst = colors();
+  $count = count($lst);
+  if ($id<$count) return $lst[$id];
+  
+  $id = $id/$count;
+  return $lst[$id];
+}
+
+
+function convertBold($detail){
+  $detail = trim(nl2br($detail));
+  if (!$detail || trim($detail) == '') return '';
+  $start = false;
+  $aDetail = explode('*', $detail);
+  $result = '';
+  if ($detail[0] == '*'){
+    $result = '<b>';
+    $start =  true;
+  }
+  if (count($aDetail)>0){
+    foreach ($aDetail as $v){
+      if ($v == "") continue;
+      $result .= $v;
+      if ($start)  $result .= '</b>';
+      else  $result .= '<b>';
+      
+      $start = !$start;
+    }
+  }
+  
+  if ($start)  $result .= '</b>';
+  return $result;
+    
+}
+
+function removeIVA($price,$iva){
+  if (!$price || !$iva) return 0;
+  return round($price / (1 + $iva/100),2);
 }

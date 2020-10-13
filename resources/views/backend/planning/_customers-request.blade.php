@@ -28,6 +28,7 @@
               <th class="th-bookings text-center" style="width:120px !important">IN - OUT </th>
               <th class="th-bookings text-center th-2">Estado</th>
               <th class="th-bookings text-center th-1">Observ</th>
+              <th class="th-bookings text-center th-1">€ Medio</th>
             </tr>
           </thead>
           <tbody id="CR_lstITems">
@@ -67,10 +68,19 @@
                 </td>
                 <td class="text-center" >
                   @if(trim($item->comment) != '')
-                  <i class="fa fa-commenting seeComment" style="color: #000;" aria-hidden="true">
-                    <div class="seeComment_body">{!! nl2br($item->comment)!!}</div>
+                  <i class="far fa-comment-dots  seeContentPop" data-id="cr_comm{{$item->id}}" data-content="{{$item->comment}}" style="color: #000;" aria-hidden="true" >
                   </i>
                   @endif
+                </td>
+                <td class="text-center">
+                  <?php 
+                  $mediaPvp = $item->getMediaPrice();
+                  $urls = null;
+                  if($urls): ?>
+                  <a class="btn" href="{{$urls}}" target="_black">{{moneda($mediaPvp)}}</a>
+                  <?php else: 
+                    echo moneda($mediaPvp);
+                  endif ?>
                 </td>
               </tr>
             <?php endforeach ?>
@@ -122,6 +132,7 @@
       <button class="btn" id="cancelCustomerRequest" type="button">Volver</button>
       <button class="btn btn-primary pull-right" id="saveCustomerRequest" type="button">Guardar</button>
       
+      <h2 style="width: 100%;text-align: center;background-color: #000;color: #efefef;margin: 1em 0 0 0;">Histótico Emails con el cliente</h2>
       <div class="table-responsive">
         <table class="table">
           <thead>

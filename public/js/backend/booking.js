@@ -5,7 +5,6 @@ $(document).ready(function() {
     let dateRangeObj = Object.assign({}, window.dateRangeObj);
     dateRangeObj.locale.format = 'DD MMM, YY';
     $(".daterange1").daterangepicker(dateRangeObj);
-
     var newPvp = 0;
     var newDisc = null;
     var newPromo = null;
@@ -247,8 +246,8 @@ $(document).ready(function() {
             var oldValue = ($(this).attr('data-cost-on-focus'));
             var diff = oldValue - $(this).val();
 
-            var totalCost = $('.cost').val();
-            $('.cost').val(totalCost - diff);
+            var totalCost = parseFloat($('.cost').val() - diff).toFixed(2);
+            $('.cost').val(totalCost);
 
             $(this).attr('data-cost-on-focus', $(this).val());
             calculateProfit();
@@ -261,20 +260,19 @@ $(document).ready(function() {
             var oldValue = ($(this).attr('data-cost-on-focus'));
             var diff = oldValue - $(this).val();
 
-            var totalCost = $('.cost').val();
-            $('.cost').val(totalCost - diff);
+            var totalCost = parseFloat($('.cost').val() - diff).toFixed(2);
+            $('.cost').val(totalCost);
 
             $(this).attr('data-cost-on-focus', $(this).val());
             calculateProfit();
         });
 
         function calculateProfit() {
-            var pvp = $('.total').val();
+            var pvp = $('#total_pvp').val();
             var totalCost = $('.cost').val();
 
-            var profit = pvp - totalCost;
+            var profit = (parseFloat(pvp) - parseFloat(totalCost)).toFixed(2);
             var profitPercentage = Math.round((profit / pvp) * 100);
-
             $('.beneficio').val(profit);
             $('.beneficio-text').html(profitPercentage + ' %');
         }

@@ -17,12 +17,14 @@
         <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalLinkStrip">
           <i class="fa fa-money" aria-hidden="true"></i> <span class="bold hidden-mobile">Cobros TPV</span>
         </button>
-        @if($CustomersRequest>0)
-        <button class="btn btn-success btn-orange btn-alarms" id="btnCustomersRequest">
+        
+        <button class="btn btn-success btn-orange @if($CustomersRequest>0) btn-alarms @endif" id="btnCustomersRequest">
           <span class="bold">LEADS</span>
+          @if($CustomersRequest>0)
           <span class="numPaymentLastBooks" data-val="{{$CustomersRequest}}">{{$CustomersRequest}}</span>
+          @endif
         </button>
-        @endif
+        
       <?php endif ?>
       <button class="btn btn-success btn-calcuteBook btn-cons" type="button" data-toggle="modal" data-target="#modalCalculateBook">
         <span class="bold hidden-mobile"><i class="fa fa-calendar-alt" aria-hidden="true"></i>&nbsp;Calcular reserva</span>
@@ -59,14 +61,19 @@
         <button class="btn btn-danger btn-cons btn-blink"  id="btnBookSafetyBox" >
           <i class="fa fa-lock" aria-hidden="true"></i> <span class="bold">CAJAS</span>
         </button>
+        <?php if (getUsrRole() == "admin"): ?>
+        <a class="btn btn-primary" href="/admin/sales">
+          <span class="bold">Informes</span>
+        </a>
+        <button class="btn btn-success btn-orange @if($CustomersRequest>0) btn-alarms @endif" id="btnBookingsWithoutCvc">
+          <span class="bold">sin CVC</span>
+          @if($bookings_without_Cvc>0)
+          <span class="numPaymentLastBooks" data-val="{{$bookings_without_Cvc}}">{{$bookings_without_Cvc}}</span>
+          @endif
+        </button>
+        
+        <?php endif ?>
       <?php endif ?>
-      <button class="btn btn-primary btn-sm calend show-mobile cargar_calend" type="button" >
-        <span class="bold"><i class="fa fa-calendar"></i></span>
-      </button>
-
-      <a href="#" class=" sendImportICal btn btn-primary btn-cons show-mobile" <?php if (count(\App\IcalImport::all()) == 0): ?> disabled="" <?php endif ?> style="background-color: #337ab7; border-color: #2e6da4;">
-        <span class="bold">IMPORTACIÓN</span>
-      </a>
     </div>
   </div>
   @if(!$is_mobile)
@@ -93,3 +100,19 @@
   </div>
   @endif
 </div>
+ @if(is_array($urgentes) && count($urgentes)>0)
+  <div class="box-alerts-popup">
+    <div class="content-alerts">
+      <h2>Alertas Urgentes</h2>
+      <button type="button" class="close" id="closeUrgente" >
+        <i class="fa fa-times fa-2x" ></i>
+      </button>
+      @foreach($urgentes as $item)
+      <div class="items">
+        <button {!! $item['action'] !!}><i class="fa fa-bell" aria-hidden="true"></i> </button>
+        {{$item['text']}}
+      </div>
+      @endforeach 
+    </div>
+  </div>
+ @endif

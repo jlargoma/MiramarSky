@@ -43,6 +43,24 @@ class CustomersRequest extends Model
   }
   
   public function getMediaPrice(){
+    if (!$this->pax) return 0;
+    
+    $oItems = RoomsType::where('min_pax','<=',$this->pax)
+                ->where('max_pax','>=',$this->pax)
+                ->get();
+    $aPrices = [];
+    if ($oItems){
+        foreach ($oItems as $item){
+          $oRoom = Rooms::where('channel_group',$item->channel_group)
+              ->where('maxOcu','>=', $this->pax)->where('state',1)->first();
+          if ($oRoom){
+            $price = $oRoom->getRoomPrice($this->start,$this->finish,$this->pax);
+            $aPrices[] = $price['pvp'];
+          }
+        }
+       if (count($aPrices))
+       return ceil(array_sum($aPrices) / count($aPrices));
+    }
     return 0;
   }
   

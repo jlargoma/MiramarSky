@@ -636,4 +636,42 @@ trait BookEmailsStatus
 
         return $sended;
     }
+    
+    
+    
+    
+    function getSafeBoxMensaje($book,$msgKey,$safebox){
+      $messageSMS = $this->getMailData($book,$msgKey);
+      $content = str_replace('{buzon}', $safebox->box_name, $messageSMS);
+      $content = str_replace('{buzon_key}', $safebox->keybox, $content);
+      $content = str_replace('{buzon_color}', $safebox->color, $content);
+      $content = str_replace('{buzon_caja}', $safebox->caja, $content);
+      return $this->clearVars($content);
+    }
+    
+    
+    function sendSafeBoxMensaje($book,$msgKey,$safebox){
+      
+      if (!$book->customer->email || trim($book->customer->email) == '') return false;
+      
+      $message = $this->getSafeBoxMensaje($book,$msgKey,$safebox);
+      $subject = translateSubject('Recordatorio para retiro de llaves',$book->customer->country);
+      $to = trim($book->customer->email);
+      
+      setlocale(LC_TIME, "ES");
+      setlocale(LC_TIME, "es_ES");
+      $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $message,
+            'title'       => $subject
+        ], function ($message) use ($to, $subject) {
+          $message->from(env('MAIL_FROM'));
+          $message->to($to);
+          $message->subject($subject);
+          $message->replyTo(env('MAIL_FROM'));
+      });
+      if ($sended){
+        \App\BookLogs::saveLog($book->id, $book->room_id, $book->customer->email, 'book_email_buzon', $subject, $message);
+      }
+      return $sended;
+    }
 }

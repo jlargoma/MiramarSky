@@ -1,68 +1,39 @@
-<?php   use \Carbon\Carbon;
-        setlocale(LC_TIME, "ES"); 
-        setlocale(LC_TIME, "es_ES"); 
-?>
-<table class="table table-hover">
+<div class="table-responsive">
+  <table class="table table-data table-striped" id="tableInvoices" >
     <thead>
-    <tr>
-        <th class ="text-center bg-complete text-white">
-            F. Fact
-        </th>
-        <th class ="text-center bg-complete text-white" >
-            # Fact
-        </th>
-        <th class ="text-center bg-complete text-white" >
-            Apto
-        </th>
-
-        <th class ="text-center bg-complete text-white" >
-            Cliente
-        </th>
-        <th class ="text-center bg-complete text-white" >
-            DNI
-        </th>
-        <th class ="text-center bg-complete text-white" >
-            Importe
-        </th>
-        <th class ="text-center bg-complete text-white" >
-            Acciones
-        </th>
-    </tr>
+      <tr>
+        <th>F. Fact</th>
+        <th># Fact</th>
+        <th>Alojamiento</th>
+        <th>Cliente</th>
+        <th>DNI</th>
+        <th>Importe</th>
+        <th>Acciones</th>
+      </tr>
     </thead>
-    <tbody>
-    <?php foreach ($books as $key => $book): ?>
-    <?php $num = $key + 1; ?>
+  <tbody>
+    @if($invoices)
+    @foreach($invoices as $item)
     <tr>
-        <td class="text-left font-s16" >
-            <span class="hidden"><?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->format('U'); ?></span>
-            <?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->formatLocalized('%d %B %Y'); ?>
-        </td>
-        <td class="text-center font-s16">
-            <b>#<?php echo substr($book->room->nameRoom , 0,2)?>/<?php echo Carbon::CreateFromFormat('Y-m-d',$book->start)->format('Y'); ?>/<?php echo str_pad($num, 5, "0", STR_PAD_LEFT);  ?></b>
-        </td>
-        <td class="text-center font-s16">
-            <b><?php echo $book->room->nameRoom ?></b>
-        </td>
-
-        <td class="text-center font-s16">
-            <b><?php echo ucfirst($book->customer->name) ?></b>
-        </td>
-        <td class="text-center font-s16">
-            <input type="text" class="form-control dni-customer" idCustomer="<?php echo $book->customer->id; ?>" value="<?php echo $book->customer->DNI ?>">
-        </td>
-        <td class="text-center font-s16">
-            <b><?php echo number_format($book->total_price/2, 2, ',','.') ?>€</b>
-        </td>
-        <td class="text-center font-s16">
-            <div class="btn-group">
-                <a href="{{ url ('/admin/facturas/ver') }}/<?php echo base64_encode($book->id."-".$num) ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>
-                </a>
-                <a href="{{ url ('/admin/facturas/descargar') }}/<?php echo base64_encode($book->id."-".$num) ?>" class="btn btn-sm btn-success">    <i class="fa fa-download"></i>
-                </a>
-            </div>
-        </td>
+      <td class="text-left" >
+        <?php echo convertDateToShow_text($item->date, true); ?>
+      </td>
+      <td class="text-center"><?php echo $item->num?></td>
+      <td class="text-center"><?php show_isset($aRoomsLst,$item->room_id);?></td>
+      <td class="text-center"><?php echo $item->name?></td>
+      <td class="text-center"><?php echo $item->nif?></td>
+      <td class="text-center">{{moneda($item->total_price,true,2)}}</td>
+      <td class="text-center font-s16">
+        <div class="btn-group">
+          <a href="{{ route('invoice.edit',$item->id) }}" class="btn btn-xs btn-complete"><i class="fas fa-pen"></i></a>
+          <a href="{{ route('invoice.view',$item->id) }}" class="btn btn-xs btn-primary" target="_black"><i class="fa fa-eye"></i></a>
+          <a href="{{ route('invoice.downl',$item->id) }}" class="btn btn-xs btn-success" target="_black"><i class="fa fa-download"></i></a>
+        </div>
+      </td>
     </tr>
-    <?php endforeach ?>
-    </tbody>
+    @endforeach
+    @endif
+
+  </tbody>
 </table>
-{{ $books->links() }}
+</div>

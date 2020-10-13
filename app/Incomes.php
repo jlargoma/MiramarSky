@@ -13,6 +13,10 @@ class Incomes extends Model
           'rappel_clases' => 'RAPPEL CLASES',
           'rappel_forfaits' => 'RAPPEL FORFAITS',
           'rappel_alq_material' => 'RAPPEL ALQ MATERIAL',
+          'desayuno' => 'DESAYUNOS',
+          'minibar' => 'MINIBAR',
+          'excursiones' => 'EXCURSIONES',
+          'tickets_parking' => 'TICKETS PARKING',
           'others' => 'OTROS',
       ];
     }

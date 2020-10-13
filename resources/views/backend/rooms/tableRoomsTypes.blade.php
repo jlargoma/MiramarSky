@@ -3,9 +3,11 @@
     <thead>
       <tr>
         <th>Tipo de Habitacion</th>
-        <th>Min PAX</th>
-        <th>Max PAX</th>
-        <th>URL SLUG</th>
+        <th class="th-1">Nombre</th>
+        <th class="th-2">Min PAX</th>
+        <th class="th-2">Max PAX</th>
+        <th class="th-3">URL Web</th>
+        <th class="th-2">URL SLUG</th>
       </tr>
     </thead>
     <tbody>
@@ -13,7 +15,9 @@
       @foreach($ch_group as $k=>$name)
       <tr>
         <td>{{$name}}</td>
-        
+        <td class="text-center">
+          <input class="editable  th-1" data-id="{{$k}}"  data-type="title" value="{{$title[$k]}}" >
+        </td>
         <td class="text-center">
           <input class="editable" data-id="{{$k}}"  data-type="minPax" value="{{$minPax[$k]}}" >
         </td>

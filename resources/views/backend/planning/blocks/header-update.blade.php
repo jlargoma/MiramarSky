@@ -42,35 +42,57 @@
           </h5>
           
         </div>
+          
         <div class="row">
+          @if (trim($book->customer->phone) != '')
+          <div class="icon-lst">
+            <a href="tel:<?php echo $book->customer->phone ?>" class="btn" style="padding: 4px;">
+              <i class="fa fa-phone  text-success fa-2x"></i>
+            </a>
+          </div>
+          @endif
+          <div class="icon-lst">
+            <button class="btn" id="open_invoice" type="button" data-id="{{$book->id}}" title="Factura" style="padding: 4px;">
+              <i class="fa fa-file-invoice fa-2x"></i>
+            </button>
+          </div>
           @if ($book->type_book == 2)
           <div class="icon-lst">
-            <a href="{{ url('/admin/pdf/pdf-reserva/'.$book->id) }}" title="Descargar reserva">
-              <img src="/img/pdf.png" >
-            </a>
+            <a href="{{ url('/admin/pdf/pdf-reserva/'.$book->id) }}" title="Descargar reserva" target="_black" class="btn" style="background-image: url(/img/pdf.png) !important;"></a>
           </div>
+           
           <div class="icon-lst">
-              <?php $text = "Hola, esperamos que hayas disfrutado de tu estancia con nosotros." . "\n" . "Nos gustaria que valorarás, para ello te dejamos este link : https://www.apartamentosierranevada.net/encuesta-satisfaccion/" . base64_encode($book->id);?>
-              <a href="whatsapp://send?text=<?php echo $text; ?>"
-                 data-action="share/whatsapp/share"
-                 data-original-title="Enviar encuesta de satisfacción"
-                 data-toggle="tooltip">
-                <i class="fa fa-whatsapp" title="Encuestas"></i><br><span>Encuesta</span>
-              </a>
-          </div>
-          <div class="icon-lst">
-          <a class="send_encuesta" type="button" data-id="{{$book->id}}" title="Enviar encuesta de satisfacción por mail">
-            <i class="fa fa-paper-plane" aria-hidden="true"></i><br><span>Encuesta</span>
-          </a>
-            </div>
-          @endif
-          @if (trim($book->customer->phone) != '')
-           <div class="icon-lst">
-            <a href="tel:<?php echo $book->customer->phone ?>">
-              <i class="fa fa-phone  text-success"></i>
-            </a>
+            <button class="btn open_modal_encuesta" type="button" data-id="{{$book->id}}" title="Enviar encuesta mail">
+            </button>
           </div>
           @endif
+          <div class="icon-lst">
+            <button class="btn" id="open_CustomerRequest" type="button" data-id="{{$book->id}}" title="LEADs" style="padding: 4px;">
+              <?php $color = $book->leads ? 'color: #c5cc00;' : ''; ?>
+              <i class="fa fa-star fa-2x" style="{{$color}}"></i>
+            </button>
+          </div> 
+          @if($partee)
+          <div class="icon-lst partee-icon">
+          <?php echo $partee->print_status($book->id, $book->start, $book->pax, true); ?>
+          </div>
+          @endif
+          <?php
+          $SafetyBox = $book->SafetyBox();
+          $hasSafetyBox = 0;
+          $safetyBoxClass = 'fa-lock';
+          $titSafetyBox = 'Asignar Buzón';
+          if ($SafetyBox && !$SafetyBox->deleted) {
+            $hasSafetyBox = 1;
+            $safetyBoxClass = 'fa-unlock';
+            $titSafetyBox = isset($lstSafetyBox[$SafetyBox->box_id]) ? $lstSafetyBox[$SafetyBox->box_id] : '';
+          }
+          ?>
+          <div class="icon-lst">
+            <button class="btn openSafetyBox" type="button" data-id="{{$book->id}}" title="{{$titSafetyBox}}" style="padding: 4px;">
+                <i class="fa {{$safetyBoxClass}} fa-2x" ></i>
+            </button>
+          </div>
           <div class="icon-lst showFF_resume">
             
               <a data-booking="<?php echo $book->id; ?>" class="openFF"   >
@@ -83,25 +105,6 @@
             </a>
             <div class="FF_resume tooltiptext"></div>
           </div>
-          
-          <div class="icon-lst show-mobile">
-            <?php $text = "En este link podrás realizar el pago de la señal por el 25% del total." . "\n" . " En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/" . base64_encode($book->id);?>
-            <a href="whatsapp://send?text=<?php echo $text; ?>"  data-action="share/whatsapp/share" title="pago de la señal">
-              <i class="fa fa-eye" aria-hidden="true"></i>
-            </a>
-          </div>
-          
-          <?php
-          $policeman = 'error';
-          $partee = $book->partee();
-          if ($partee):
-          ?>
-          <div class="icon-lst partee-icon" style="position:relative">
-            <?php  echo $partee->print_status($book->id,$book->start,$book->pax,true); ?>
-          </div>
-          <?php 
-          endif;
-          ?>
         </div>
         </div>
         <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">

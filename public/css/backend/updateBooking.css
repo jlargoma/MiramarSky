@@ -166,12 +166,13 @@ span#loadchatbox {
   font-size: 2em !important;
   float: left;
   margin: 8px 5px;
-  min-height: 2.5em !important;
+  width: 1.5em;
+  min-height: 1.5em !important;
 }
 
 .icon-lst.partee-icon {
-  width: 4em;
-  margin: 9px 0;
+  width: 3em;
+  position: relative;
 }
 .icon-lst a,
 .icon-lst img {
@@ -181,24 +182,15 @@ span#loadchatbox {
   margin-top: -1px;
 }
 
-.icon-lst.encuesta{
-  font-size: 1em !important;
-}
-
-.icon-lst a, .icon-lst img {
-  width: 100%;
-  max-width: 40px;
-  margin-top: 2px;
-}
-
-.icon-lst span{
-  font-size: 11px;
+.icon-lst .btn {
+  background-size: contain;
+  content: "";
   display: block;
-
-}
-.icon-lst  i.fa.fa-phone.text-success {
-  font-size: 34px;
-  padding-top: 7px;
+  background-repeat: no-repeat;
+  background-repeat: no-repeat;
+  height: 3em;
+  background-position: center;
+  background-color: transparent;
 }
 
 
