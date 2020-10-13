@@ -50,6 +50,7 @@ $uRole = Auth::user()->role;
         <tr class="<?php echo $class;?>" data-id="{{$book->id}}" >
             <td class="fix-col td-b1" data-order="{{$book->id}}">
                <div class="fix-col-data">
+                 @if($book->leads)<i class="fa fa-star" style="color: #c5cc00;"></i>@endif
                 <?php if ($book->agency != 0): ?>
                   <img class="img-agency" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png"/>
                 <?php endif ?>

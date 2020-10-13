@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="{{ assetV('/css/backend/updateBooking.css')}}" type="text/css"/>
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css"/>
 <script type="text/javascript" src="{{ assetV('/js/partee.js')}}"></script>
+<script type="text/javascript" src="{{ assetV('/js/backend/buzon.js')}}"></script>
 
 
   <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
@@ -195,6 +196,23 @@
               $('#loadigPage').hide('slow');
           });
       });
+      
+      
+ $('body').on('change','#cc_cvc',function(event) {
+        var id = {{$book->id}};
+        var idCustomer = {{$book->customer_id}};
+        var cc_cvc = $(this).val();
+        $('#loadigPage').show('slow');
+        $.post('/admin/reservas/upd-visa', { _token: "{{ csrf_token() }}",id:id,idCustomer:idCustomer,cc_cvc:cc_cvc }, function(data) {
+              if (data.status == 'success') {
+                window.show_notif('Ok',data.status,data.response);
+              } else {
+                window.show_notif('Error:',data.status,data.response);
+              }
+              $('#loadigPage').hide('slow');
+          });
+        });
+        
     });
   
   </script>

@@ -18,7 +18,9 @@ use App\Book;
 use App\Seasons;
 use App\Prices;
 use App\Traits\BookEmailsStatus;
-use App\Traits\BookCentroMensajeria;
+use App\Traits\Bookings\CentroMensajeria;
+use App\Traits\Bookings\Partee;
+use App\Traits\Bookings\SafetyBox;
 use App\Traits\BookLogsTraits;
 use App\BookPartee;
 use App\Settings;
@@ -28,7 +30,7 @@ setlocale(LC_TIME, "es_ES");
 
 class BookController extends AppController
 {
-    use BookEmailsStatus, BookCentroMensajeria,BookLogsTraits;
+    use BookEmailsStatus, CentroMensajeria,Partee,SafetyBox,BookLogsTraits;
 
      /**
      * Display a listing of the resource.
@@ -96,7 +98,7 @@ class BookController extends AppController
         $booksCount['checkin']      = $this->getCounters('checkin');
         $booksCount['checkout']     = $this->getCounters('checkout');
 
-        $books = $booksQry->whereIn('type_book', $types)->orderBy('created_at', 'DESC')->get();
+        $books = $booksQry->with('room','payments','customer','leads')->whereIn('type_book', $types)->orderBy('created_at', 'DESC')->get();
         $stripe = null;
        
         $lastBooksPayment = \App\Payments::where('created_at', '>=', Carbon::today()->toDateString())
@@ -163,21 +165,69 @@ class BookController extends AppController
         
         $ff_mount = null;
         /*****/
-        $CustomersRequest = \App\CustomersRequest::where('status',0)
-                ->where('created_at','>=',date('Y-m-d', strtotime('-7 days')))
+        $CustomersRequest = \App\CustomersRequest::where('status',0)->whereNull('user_id')
+                ->where('updated_at','>=',date('Y-m-d', strtotime('-7 days')))
                 ->count();
         
         /*****/
        
+        $urgentes = null;
+        if ($parteeToActive > 0){
+          $urgentes[] = [
+              'action' => 'class="btn btn-danger" id="btnParteeToActive2" test-target="#modalParteeToActive"',
+              'text'   => 'Hay PARTEEs no enviados a la policía'
+              ];
+        }
+        $countNotPaidYet = $this->countNotPaidYet();
+        if($countNotPaidYet){
+          $urgentes[] = [
+              'action' => 'class="btn btn-danger  btn-tables" data-type="checkin"',
+              'text'   => 'Hay Clientes alojados que no han abonado el 100%'
+              ];          
+        }
+        if(is_array($overbooking) && count($overbooking)>0){
+          $urgentes[] = [
+              'action' => 'class="btn btn-danger btn-tables"  data-type="overbooking"',
+              'text'   => 'Tienes un OVERBOOKING'
+              ];          
+        }
+        
+        /****************************************************************/
+        /*bookings_without_Cvc*/
+        $bookings_without_Cvc = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
+        $bookings_without_Cvc = json_decode($bookings_without_Cvc->content);
+        if ($bookings_without_Cvc){
+          $bookings_without_Cvc = count($bookings_without_Cvc);
+        } else {
+          $bookings_without_Cvc = 0;
+        }
          
+        /****************************************************************/
         return view('backend/planning/index',
                 compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
                         'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits',
                         'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment',
-                        'ff_pendientes','ff_mount','totalReserv','amountReserv','overbooking','CustomersRequest')
+                        'ff_pendientes','ff_mount','totalReserv','amountReserv','overbooking',
+                        'CustomersRequest','urgentes','bookings_without_Cvc')
 		);
     }
 
+    private function countNotPaidYet() {
+      $today = Carbon::now();
+      $lstBook =  Book::where('start', '>=', $today->copy()->subDays(3))
+              ->where('start', '<=', $today->copy())
+              ->whereIn('type_book',[1,2])->get();
+      
+      if ($lstBook){
+        foreach ($lstBook as $book){
+          if($book->pending > 1){
+            return true;
+          }
+        }
+      }
+      
+      return null;
+    }
     private function countPartte() {
       $today = Carbon::now();
       return Book::Join('book_partees','book.id','=','book_id')
@@ -363,80 +413,7 @@ class BookController extends AppController
 
         $book->real_price  = $room->getPVP($date_start, $date_finish,$book->pax) + $book->sup_park + $book->sup_lujo + $book->sup_limp;
         
-    
-        
-        
-        //from widget
-        if ($request->input('from')) {
-          
-          $customer->user_id = (Auth::check()) ? Auth::user()->id : 1;
-          if ($customer->save()) {
 
-            $book->user_id = (Auth::check()) ? Auth::user()->id : 1;
-            $book->customer_id = $customer->id;
-            $book->cost_apto = $room->getCostRoom($date_start, $date_finish, $book->pax);
-            $book->cost_total = $book->get_costeTotal();
-
-//            if ($request->input('priceDiscount') == "yes" || $request->input('price-discount') == "yes") {
-//              $discount = Settings::getKeyValue('discount_books');
-//              $book->real_price -= $discount;
-//              $book->ff_status = 4;
-//              $book->has_ff_discount = 1;
-//              $book->ff_discount = $discount;
-//            }
-
-            $book->total_price = $book->real_price;
-            $book->total_ben = $book->total_price - $book->cost_total;
-            $book->promociones = 0;
-
-            if ($book->save()) {
-
-              $meta_price = $room->getRoomPrice($book->start, $book->finish, $book->park);
-              $book->setMetaContent('price_detail', serialize($meta_price));
-                
-              if ($request->input('fast_payment') == 1) {
-                $amount = ($book->total_price / 2);
-                $client_email = 'no_email';
-                if ($customer->emaill && trim($customer->emaill)) {
-                  $client_email = $customer->emaill;
-                }
-
-                //check if already exist another FastPayment to the user
-                if ($client_email) {
-
-                  $clientExist = Book::select('book.*')->join('customers', function ($join) use($client_email) {
-                            $join->on('book.customer_id', '=', 'customers.id')
-                                    ->where('customers.email', '=', $client_email);
-                          })->where('type_book', 99)->get();
-
-                  if ($clientExist) {
-                    foreach ($clientExist as $oldBook) {
-                      if ($book->id != $oldBook->id) {
-                        $oldBook->type_book = 0;
-                        $oldBook->save();
-                      }
-                    }
-                  }
-                }
-                $book->sendAvailibilityBy_dates($book->start, $book->finish);
-                //Prin box to payment
-                $description = "COBRO RESERVA CLIENTE " . $book->customer->name;
-                $urlPayland = $this->generateOrderPaymentBooking(
-                        $book->id, $book->customer->id, $client_email, $description, $amount
-                );
-
-                return view('frontend.bookStatus.bookPaylandPay', ['urlPayland' => $urlPayland]);
-                
-              } else {
-                /* Notificacion via email */
-                if ($customer->email) {
-                  MailController::sendEmailBookSuccess($book, 1);
-                }
-                return view('frontend.bookStatus.bookOk');
-              }
-            }
-          }
-        } else {
             $isReservable = 0;
             if (in_array($book->type_book, $book->get_type_book_reserved())){
               if ($book->availDate($date_start, $date_finish, $request->input('newroom')))
@@ -469,6 +446,8 @@ class BookController extends AppController
                       $book->total_price = $request->input('total');
                       $book->cost_apto = ($request->input('costApto')) ? $request->input('costApto') : $room->getCostRoom($date_start,$date_finish,$book->pax);
                       $book->cost_total = ($request->input('cost')) ? $request->input('cost') : $book->cost_apto + $subTotalCost;
+                      if ($request->input('costParking'))
+                      $book->cost_park = round($request->input('costParking'),2);
                       if (isset($request->priceDiscount) && $request->input('priceDiscount') == "yes"){
                         $discount = Settings::getKeyValue('discount_books');
                         $book->ff_status = 4;
@@ -525,9 +504,6 @@ class BookController extends AppController
                 return redirect('admin/reservas')->withErrors(['Error: El apartamento ya tiene una reserva confirmada']);
               }
             }
-        }
-
-
     }
 
     public function update(Request $request, $id){
@@ -535,6 +511,7 @@ class BookController extends AppController
       $updateBlade = '';
       $hasVisa = false;
       $visaHtml = null;
+      $partee = null;
       $oUser = Auth::user();
       if ( $oUser->role != "agente"){
          
@@ -547,22 +524,42 @@ class BookController extends AppController
             if ($oVisa){
               $hasVisa = true;
               $visaData = json_decode($oVisa->visa_data,true);
-              $fieldsCard = ["name","number",'date',"cvc",'type'];
+              $fieldsCard = ["name","number",'date',"cvc",'type','expiration_date'];
+              $fieldsName = ["name"=>'Nombre',"number"=>'Nro tarj','date'=>'Vto','expiration_date'=>'Vto',"cvc"=>'CVC','type'=>'Tipo'];
               foreach ($fieldsCard as $f){
                 if (isset($visaData[$f])){
                   if ($f == 'date') $visaData[$f] = str_replace ('/20', ' / ', $visaData[$f]);
-                  $visaHtml .= '
-                    <div>
-                    <label>'.$f.'</label>
-                    <input type="text" class="form-control" value="'.$visaData[$f].'" >
-                    <button class="btn btn-success copy_data" type="button"><i class="fa fa-copy"></i></button>
-                    </div>';
+                  if ($f !== 'cvc'){
+                    $visaHtml .= '
+                      <div>
+                      <label>'.$fieldsName[$f].'</label>
+                      <input type="text" class="form-control" value="'.$visaData[$f].'">
+                      <button class="btn btn-success copy_data" type="button"><i class="fa fa-copy"></i></button>
+                      </div>';
+                  }
                 }
               }
+              
+              $visaHtml .= '
+                <div>
+                <label>CVC</label>
+                <input type="text" class="form-control" value="'.$oVisa->cvc.'"  id="cc_cvc">
+                <button class="btn btn-success copy_data" type="button"><i class="fa fa-copy"></i></button>
+                <a href="https://online.bnovo.ru/dashboard?q='.$book->external_id.'" class="btn btn-bnovo" target="_black"></a>
+                </div>';                
+
+              
               $visaHtml .=  '<div class="btn btn-blue" type="button" id="_getPaymentVisaForce">Refrescar datos</div>';
             }
             
           }
+          
+        if($book->type_book == 2 || $book->type_book == 1 ){
+          $partee = $book->partee();
+          if (!$partee){
+            $partee = new \App\BookPartee();
+          }  
+        }
           
        } else {
          
@@ -581,7 +578,10 @@ class BookController extends AppController
          return redirect('/admin/reservas');
        }
         $totalpayment = $book->sum_payments;
-
+        
+        $payment_pend = floatVal($book->total_price)-$totalpayment;
+       
+//dd($book->total_price,$totalpayment,$payment_pend);
         // We are passing wrong data from this to view by using $book data, in order to correct data
         // an AJAX call has been made after rendering the page.
 //        $hasFiance = \App\Fianzas::where('book_id', $book->id)->first();
@@ -629,6 +629,7 @@ class BookController extends AppController
             'payments'     => $book->payments,
             'typecobro'    => new \App\Book(),
             'totalpayment' => $totalpayment,
+            'payment_pend' => $payment_pend,
             'mobile'       => new Mobile(),
             'hasFiance'    => $hasFiance,
             'stripe'       => StripeController::$stripe,
@@ -636,6 +637,7 @@ class BookController extends AppController
             'email_notif'  => $email_notif,
             'send_notif'   => $send_notif,
             'otaURL'       => $otaURL,
+            'partee' => $partee,
         ]);
     }
 
@@ -1174,6 +1176,7 @@ class BookController extends AppController
         $startYear = new Carbon($year->start_date);
         $endYear   = new Carbon($year->end_date);
         $books     = [];
+        $pullSent  = [];
         $uRole     = getUsrRole();
 
         if ($uRole == "limpieza"){
@@ -1188,13 +1191,13 @@ class BookController extends AppController
             $rooms       = \App\Rooms::orderBy('order')->get();
             $types       = Book::get_type_book_pending();
             $booksQuery = Book::where_book_times($startYear, $endYear)
-            ->with('room','payments','customer');
+            ->with('room','payments','customer','leads');
         } else
         {
             $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
             $rooms       = \App\Rooms::whereIn('id', $roomsAgents)->orderBy('order')->get();
             $types       = [1];
-            $booksQuery = Book::where_book_times($startYear, $endYear);
+            $booksQuery = Book::where_book_times($startYear, $endYear)->with('room','payments','customer','leads');
         }
 
         switch ($request->type) {
@@ -1209,7 +1212,6 @@ class BookController extends AppController
                               ->where('user_id', Auth::user()->id)
                               ->whereIn('room_id', $roomsAgents)
                               ->orWhere('agency', Auth::user()->agent->agency_id)
-                              ->with('room', 'payments')
                               ->orderBy('created_at', 'DESC')->get();
             }
             $bg_color = '#295d9b';
@@ -1240,7 +1242,7 @@ class BookController extends AppController
             $dateX = Carbon::now();
             $books = \App\Book::where('ff_status', 4)->where('type_book', '>', 0)
                             ->where('start', '>=', $dateX->copy()->subDays(3))
-                            ->with('room', 'payments', 'customer')
+                            ->with('room','payments','customer','leads')
                             ->orderBy('start', 'ASC')->get();
     //                $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))->where('start', '<=', $year->end_date)
     //                                  ->where('type_book', 2)->orderBy('start', 'ASC')->get();
@@ -1251,15 +1253,26 @@ class BookController extends AppController
             $dateX = Carbon::now();
             $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))
                             ->where('start', '<=', $year->end_date)
-                            ->with('room', 'payments', 'customer')
+                            ->with('room','payments','customer','leads')
                             ->whereIn('type_book', [1, 2])->orderBy('start', 'ASC')->get();
             break;
           case 'checkout':
             $dateX = Carbon::now();
             $books = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))
                             ->where('finish', '<', $year->end_date)
-                            ->with('room', 'payments', 'customer')
+                            ->with('room','payments','customer','leads')
                             ->where('type_book', 2)->orderBy('finish', 'ASC')->get();
+            if ($books){
+              $bList = [];
+              foreach ($books as $book){
+                $bList[] = $book->id;
+              }
+
+              if (count($bList) > 0){
+                $pullSent = \App\BookData::whereIn('book_id',$bList)
+                  ->where('key','sent_poll')->pluck('book_id')->toArray();
+              }
+            }
             break;
           case 'eliminadas':
             $books = \App\Book::where_book_times($startYear, $endYear)
@@ -1288,10 +1301,10 @@ class BookController extends AppController
 
 
         $type = $request->type;
-
+        $payment = array();
         if ($request->type == 'confirmadas' || $request->type == 'checkin' || $request->type == 'ff_pdtes')
         {
-            $payment = array();
+            
             $paymentStatus = array();
             foreach ($books as $book){
               $amount = $book->payments->pluck('import')->sum();
@@ -1301,12 +1314,9 @@ class BookController extends AppController
                  if ($amount>=($book->total_price/2)) $paymentStatus[$book->id] = 'medium-paid';
                }
             }
-            return view('backend/planning/_table', compact('books', 'rooms', 'type', 'mobile', 'payment'));
-        } else
-        {
-
-            return view('backend/planning/_table', compact('books', 'rooms', 'type', 'mobile'));
         }
+           
+        return view('backend/planning/_table', compact('books', 'rooms', 'type', 'mobile','pullSent','payment'));
     }
 
     public function getLastBooks(Request $request)
@@ -1613,12 +1623,26 @@ class BookController extends AppController
         if (!$room){
           return null;
         }
+        
+        $loadedParking = $loadedCostRoom = false;
         if ($request->book_id){
           $book = Book::find($request->book_id);
           if ($book){
             $paymentTPV = $book->getPayment(2);
             if ($paymentTPV>0){
               $data['costes']['tpv'] = paylandCost($paymentTPV);
+            }
+            
+            $sammeDate = false;
+            if ($request->start == $book->start && $request->finish  == $book->finish){
+              if ($request->pax == $book->pax && $request->room == $book->room_id ){
+                $loadedCostRoom = true;
+                $data['costes']['book'] = $book->cost_apto;
+                if ($request->park == $book->type_park){
+                  $loadedParking = true;
+                  $data['costes']['parking'] = $book->cost_park;
+                }
+              }
             }
           }
         }
@@ -1627,8 +1651,13 @@ class BookController extends AppController
         $finish = $request->finish;
         $pax= $request->pax;
         $noches = calcNights($start, $finish);
-        $data['costes']['parking']   = $this->getCostPark($request->park, $noches) * $room->num_garage;
-        $data['costes']['book']      = $room->getCostRoom($start, $finish, $pax)-$promotion;
+        
+        if (!$loadedParking)
+          $data['costes']['parking']   = $this->getCostPark($request->park, $noches) * $room->num_garage;
+        if (!$loadedCostRoom)
+          $data['costes']['book']      = $room->getCostRoom($start, $finish, $pax)-$promotion;
+        
+        
         $data['costes']['lujo']      = $this->getCostLujo($request->lujo);
         $data['costes']['obsequio']  = Rooms::GIFT_COST;
         $data['costes']['agencia']   = (float) $request->agencyCost;
@@ -1893,6 +1922,49 @@ class BookController extends AppController
      * @param Request $request
      * @return string
      */
+    function updVisa(Request $request){
+      $bookingID = $request->input('id', null);
+      $clientID = $request->input('idCustomer', null);
+      $cc_cvc = $request->input('cc_cvc', null);
+      $oUser = Auth::user();
+      $response = [
+                  'title' => 'Error',
+                  'status' => 'warning',
+                  'response' => 'Algo ha salido mal',
+              ];
+      if ( $oUser->role == "admin" || $oUser->role == "subadmin"){
+          $oVisa = DB::table('book_visa')
+                    ->where('book_id',$bookingID)
+                    ->where('customer_id',$clientID)
+                    ->first();
+          if ($oVisa){
+            DB::table('book_visa')
+                          ->where('id', $oVisa->id)
+                          ->update([
+                              'cvc' => $cc_cvc,
+                              'updated_at'=>date('Y-m-d H:m:s'),
+                              'imported' => $oVisa->imported+1]);
+               
+              $response = [
+                  'title' => 'OK',
+                  'status' => 'success',
+                  'response' => 'Dato Guardado',
+              ];
+            
+            $lst = Book::whereNotNull('external_id')->join('book_visa','book_id','=','book.id')->whereNull('cvc')->pluck('book_id');
+            $sentUPD = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
+            $sentUPD->content = json_encode($lst);
+            $sentUPD->save();
+          }
+      }
+      
+      return response()->json($response);
+    }
+    /**
+     * Return the visa date
+     * @param Request $request
+     * @return string
+     */
     function getVisa(Request $request){
         $booking = $request->input('booking', null);
         $force = $request->input('force', null);
@@ -1929,7 +2001,7 @@ class BookController extends AppController
                 }
               } else {
                 $imported = $oVisa->imported;
-                if ($imported>1){
+                if ($imported>11){
                    echo '<p class="alert alert-warning">Excedió el máximo de descargas para esta reserva.</p>';
                    return;
                 }
@@ -1941,6 +2013,7 @@ class BookController extends AppController
             $booking = Book::find($bookingID);
             if ($booking && $booking->customer_id == $clientID){
               $visa_data = $this->getCreditCardData($booking);
+//              $visa_data = json_encode(["name"=>'test',"number"=>112321,'date'=>'2020-12-02',"cvc"=>'','type'=>'']);
               if ($visa_data){
                 if ($oVisa){
                   DB::table('book_visa')
@@ -2107,17 +2180,7 @@ class BookController extends AppController
               ]);
     }
     
-  function sendEncuesta($bookID) {
-    $book = Book::find($bookID);
-    if (!$book->customer->email || trim($book->customer->email) == ''){
-      return 'El cliente no posee un emial cargado.';
-    }
-    
-    if ($this->sendEmail_Encuesta($book,"DANOS 5' Y TE INVITAMOS A DESAYUNAR"))
-      return 'ok';
-    
-    return 'Encuesta no enviada';
-  }
+
   
   function getOtaURL($book){
         $otaURL = null;
@@ -2164,4 +2227,19 @@ class BookController extends AppController
         return $otaURL;
         
     }
+    
+  /***********************************************************************/
+  
+    public function getBooksWithoutCvc() {
+
+      $bookings_without_Cvc = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
+      $bookings_without_Cvc = json_decode($bookings_without_Cvc->content);
+      $bookLst = null;
+      if ($bookings_without_Cvc){
+        $bookLst = Book::whereIn('id',$bookings_without_Cvc)->with('customer')->get();
+      }
+      $isMobile = config('app.is_mobile');
+      return view('backend/planning/_load-cvc',compact('bookLst','isMobile'));
+
+  }   
 }

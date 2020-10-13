@@ -1,6 +1,9 @@
-<?php
+<?php 
+use \Carbon\Carbon;
 use App\Classes\Mobile;
 $mobile = new Mobile();
+$uRole = getUsrRole();
+$is_mobile = $mobile->isMobile();
 ?>
 <link href="{{ asset('/assets/plugins/bootstrap-datepicker/css/datepicker3.css')}}" rel="stylesheet" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
@@ -148,7 +151,7 @@ $mobile = new Mobile();
                 </div>
                 <div class="col-md-2 col-xs-6 push-xs-10">
                     <label>Pax</label>
-                    <select class=" form-control pax minimal"  name="pax">
+                    <select class=" form-control pax minimal recalc"  name="pax">
                         <?php for ($i=1; $i <= 14 ; $i++): ?>
                           <option value="<?php echo $i ?>" <?php if ( isset($data['pax']) && $data['pax'] == $i ){ echo 'selected';}?>>
                             <?php echo $i ?>
@@ -159,7 +162,7 @@ $mobile = new Mobile();
                 <?php if ( Auth::user()->role != "agente" ): ?>
                 <div class="col-md-2 col-xs-5 push-xs-10">
                      <label style="color: red">Pax-reales</label>
-                     <select class="form-control real_pax "  name="real_pax" style="color:red">
+                     <select class="form-control real_pax recalc"  name="real_pax" style="color:red">
                         <?php for ($i=1; $i <= 14 ; $i++): ?>
                          <?php if ($i != 9 && $i != 11): ?>
                          <option value="<?php echo $i ?>" <?php if ( isset($data['pax']) && $data['pax'] == $i ){ echo 'selected';}?>>
@@ -188,7 +191,7 @@ $mobile = new Mobile();
                 <?php if ( Auth::user()->role != "agente" ): ?>
                 <div class="col-md-2 col-xs-6 push-xs-10">
                     <label>Parking</label>
-                    <select class=" form-control parking minimal"  name="parking">
+                    <select class=" form-control parking minimal recalc"  name="parking">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
                         <option value="<?php echo $i ?>">
                                 <?php echo \App\Book::getParking($i) ?>
@@ -198,7 +201,7 @@ $mobile = new Mobile();
                 </div>
                 <div class="col-md-2 col-xs-6 push-xs-10">
                     <label>Sup. Lujo</label>
-                    <select class=" form-control full-width type_luxury minimal" name="type_luxury">
+                    <select class=" form-control full-width type_luxury minimal recalc" name="type_luxury">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
                         <option value="<?php echo $i ?>" <?php echo ($i == $data['luxury'])?"selected": "" ?>>
                                 <?php echo \App\Book::getSupLujo($i) ?>
@@ -255,7 +258,7 @@ $mobile = new Mobile();
               <div class="col-md-3 col-xs-6 push-10">
                   <label>Agencia</label>
                   <?php if ( Auth::user()->role != "agente"): ?>
-                  <select class="form-control full-width agency minimal" name="agency" >
+                  <select class="form-control full-width agency minimal recalc" name="agency" >
                     @include('backend.blocks._select-agency', ['agencyID'=>$book->agency,'book' => $book])
                     </select>
                   <?php else: ?>
@@ -265,13 +268,13 @@ $mobile = new Mobile();
               </div>
               <div class="col-md-3 col-xs-6 push-10">
                   <label>Cost Agencia</label>
-                  <input type="number" class="agencia form-control" step='0.01' name="agencia">
+                  <input type="number" class="agencia form-control recalc" step='0.01' name="agencia">
               </div>
 
                 <?php if ( Auth::user()->role != "agente" ): ?>
                 <div class="col-xs-12 col-md-3 not-padding">
                   <label>promoción</label>
-                  <input type="number" class="promociones form-control" step='0.01'  name="promociones" <?php value_isset($data,'pvp_promo'); ?>>
+                  <input type="number" class="promociones form-control recalc" step='0.01'  name="promociones" <?php value_isset($data,'pvp_promo'); ?>>
                 </div>
 	            <?php else: ?>
                     <input type="hidden" class="promociones form-control" step='0.01' name="promociones" value="0">
@@ -308,7 +311,7 @@ $mobile = new Mobile();
                             <label class="font-w800 text-white" for="">PARKING</label>
                             <input type="number" step='0.01' class="form-control costParking m-t-10 m-b-10 white" name="costParking" >
                         </div>
-                    <?else: ?>
+                    <?php else: ?>
                     <input type="hidden" step='0.01' class="cost white" name="cost" >
                         <input type="hidden" step='0.01' class="costApto white" name="costApto" >
                         <input type="hidden" step='0.01' class="costParking white" name="costParking" >

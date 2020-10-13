@@ -45,6 +45,77 @@ $(document).ready(function () {
     });
   });
   
+   $('body').on('click', '#safeBoxLst', function (event) {
+    $.ajax({
+      url: '/ajax/editSafetyBox',
+      type: 'GET',
+      success: function (response) {
+        $('#modalSafetyBox_content').html(response);
+        $('#modalSafetyBox_title').html('Cajas de seguridad');
+        $('#modalSafetyBox').modal('show');
+      },
+      error: function (response) {
+        alert('No se ha podido obtener los detalles de la consulta.');
+      }
+    });
+  });
+  
+  $('body').on('click', '#createSafetyBox', function (event) {
+    var caja = $('#safetyBox_caja').val();
+    var color = $('#safetyBox_color').val();
+    var clave = $('#safetyBox_clave').val();
+    var roomID = $('#safetyBox_room').val();
+    var roomName = $( "#safetyBox_room option:selected" ).text();
+    $.ajax({
+      url: '/ajax/createSafetyBox',
+      type: 'POST',
+      data:{caja:caja,color:color,clave:clave,room_id:roomID},
+      success: function (response) {
+        if (response == 'OK') {
+          window.show_notif('','success','Caja generada');
+          $('#safetyBox_clave').val('');
+          $("#modalSafetyBox_content").find('tbody')
+          .append($('<tr>')
+              .append($('<td>').text(color+' - '+caja))
+              .append($('<td>').text(roomName))
+              .append($('<td>').text(clave))
+          );
+        } else {
+          window.show_notif('','error',response);
+        }
+      },
+      error: function (response) {
+        window.show_notif('','error',response);
+        alert('No se ha podido obtener los detalles de la consulta.');
+      }
+    });
+
+  });
+  
+  $('body').on('change', '.editSafeBox', function (event) {
+    var value = $(this).val();
+    var id = $(this).data('id');
+    var field = $(this).data('field');
+    $.ajax({
+      url: '/ajax/SafetyBox-updKey',
+      type: 'POST',
+      data:{id:id,val:value,field:field},
+      success: function (response) {
+        if (response == 'OK') {
+          
+          window.show_notif('','success','Caja de seguridad guardada.');
+        } else {
+          window.show_notif('','error',response);
+        }
+      },
+      error: function (response) {
+        window.show_notif('','error',response);
+        alert('No se ha podido obtener los detalles de la consulta.');
+      }
+    });
+
+  });
+  
   $('body').on('change', '.upd_CajaAsig_lst', function (event) {
     var value = $(this).val();
     var book = $(this).data('id');

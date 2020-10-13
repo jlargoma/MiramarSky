@@ -70,10 +70,11 @@
           <input type="hidden" class="date_start" id="start" name="start" value="{{$start}}">
           <input type="hidden" class="date_finish" id="finish" name="finish" value="{{$finish}}">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-5">
           <br>
           <button class="btn btn-primary">Cargar</button>
           <a href="{{$dwnl_url}}" class="btn btn-default">Descargar</a>
+          <a href="https://arce.ine.es/ARCE/jsp/encuestaXml.jsp" class="btn btn-info" target="_black">INE</a>
         </div>
       </div>
       <table>

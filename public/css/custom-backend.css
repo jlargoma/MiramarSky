@@ -401,12 +401,32 @@ input#dateRangefilter {
   pointer-events: none
 }
 
-@media only screen and (min-width: 426px) {
-  .show-mobile{
-    display: none;
-  }
-
+.open_modal_encuesta{
+    background-image: url(/img/G_Poll.png) !important;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    width:2.5em;
+    margin: auto;
+    min-height: 25px;
 }
+
+.btn-bnovo{
+    background-image: url(/img/bnovo.png) !important;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    text-align: center;
+    width:2.5em;
+    margin: auto;
+    min-height: 31px;
+    float: left;
+}
+#visaDataContent input#cc_cvc {
+    width: 35%;
+}
+
 img.img-agency {
   width: 15px;
   float: left;
@@ -449,49 +469,60 @@ img.img-oferta {
 div#box_msg_lst {
   margin: 2em auto;
 }
-
-@media only screen and (max-width: 768px) {
-  th.static {
-    position: absolute;
-    height: 5em;
-    background-color: #51b1f7;
-    padding: 31px !important;
-    margin: 5px auto;
-  }
-  td.static{
-    position: absolute;
-    background-color: white;
-    border-right: 1px solid #efefef;
-    z-index: 9;
-  }
-
-  .first-col {
-    padding-left: 190px !important;
-  }
-  #tabPagadas select {
-    min-width: 0;
-    width: 33px;
-  }
-  .mobil-pad-x3{
-    padding: 0 18px !important;
-  }
+div#safeBoxLst {
+    display: inline-block;
+    font-size: 15px;
+    background-color: #1e416d;
+    padding: 1px 12px;
+    color: #FFF;
+    border-radius: 7px;
+    cursor: pointer;
 }
-@media only screen and (max-width: 425px) {
-  .hidden-mobile{
-    visibility: hidden;
-    display: none;
-  }
-  .modal.slide-up .modal-dialog{
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .modal-dialog .modal-content{
-    width: 100% !important;
-  }
-  .modal-dialog .alert.alert-info.fade.in.alert-dismissable {
-    padding: 1em 3px;
-  }
+
+.form-control.editSafeBox {
+    border: 1px solid #e6e6e6;
+    width: 124px;
+    margin: 4px auto;
 }
+.msgEmergente{
+  display: block;
+  position: fixed;
+  top: 0;
+  background-color: #FFF;
+  padding: 11px;
+  border-radius: 7px;
+  box-shadow: 1px 1px 8px #000;
+  z-index: 1090;
+  overflow: auto;
+}
+
+.month_select-box{
+  clear: both;
+  overflow: auto;
+}
+.month_select{
+    float: left;
+    padding: 5px 9px;
+    margin: 4px;
+    background-color: #295d9b;
+    color: #fff;
+    border-radius: 17px;
+    min-width: 4em;
+    text-align: center;
+    cursor: pointer;
+}
+.month_select.active,
+.month_select:hover{
+  background-color: #9b59ff;
+  color: initial;
+
+}
+.month_select{
+  padding: 5px 0px;
+  margin: 5px 1px;
+}
+
+
 .table.table-striped tbody tr.Reservado td {
   background-color: #FFF !important;
 }
@@ -539,16 +570,6 @@ div#box_msg_lst {
   min-width: 75px;
   text-align: right;
 }
-
-@media only screen and (max-width: 991px){
-
-  .table-resumen  .fix-col-data{
-    width:120px;overflow-x: scroll;
-    white-space: nowrap;
-  }
-}
-
-
 .resume-head{
   background-color: #51b1f7;
 }
@@ -692,19 +713,79 @@ table.table-prices {
 i.fa.fa-unlock.openSafetyBox {
     color: green;
 }
-
-.month_select{
-  padding: 5px 0px;
-  margin: 5px 1px;
-}
 .inline-block {
     display: inline-block;
 }
+.alert{
+  padding: 7px 2em;
+}
+.btn{
+      padding-left: 5px;
+    padding-right: 5px;
+}
+/*****************************************************************************/
+/*****************************************************************************/
+/*****************************************************************************/
+@media only screen and (min-width: 426px) {
+  .show-mobile{
+    display: none;
+  }
+
+}
+@media only screen and (max-width: 768px) {
+  th.static {
+    position: absolute;
+    height: 5em;
+    background-color: #51b1f7;
+    padding: 31px !important;
+    margin: 5px auto;
+  }
+  td.static{
+    position: absolute;
+    background-color: white;
+    border-right: 1px solid #efefef;
+    z-index: 9;
+  }
+
+  .first-col {
+    padding-left: 190px !important;
+  }
+  #tabPagadas select {
+    min-width: 0;
+    width: 33px;
+  }
+  .mobil-pad-x3{
+    padding: 0 18px !important;
+  }
+}
+@media only screen and (max-width: 425px) {
+  .hidden-mobile{
+    visibility: hidden;
+    display: none;
+  }
+  .modal.slide-up .modal-dialog{
+    margin-left: 0;
+    margin-right: 0;
+  }
+  .modal-dialog .modal-content{
+    width: 100% !important;
+  }
+  .modal-dialog .alert.alert-info.fade.in.alert-dismissable {
+    padding: 1em 3px;
+  }
+}
+
+
+@media only screen and (max-width: 991px){
+
+  .table-resumen  .fix-col-data{
+    width:120px;overflow-x: scroll;
+    white-space: nowrap;
+  }
+}
+
 @media (min-width: 768px){
   #modalNewBook .modal-dialog {
     margin: 0 2%;
   }
-}
-.alert{
-  padding: 7px 2em;
 }

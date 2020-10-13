@@ -1,6 +1,10 @@
 <?php
 
 Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], function () {
+  
+  Route::post('admin/sendEncuesta', 'BookController@sendEncuesta')->name('sendEncuesta');
+  Route::get('admin/showFormEncuesta/{id?}', 'BookController@showFormEncuesta')->name('showFormEncuesta');
+  
   Route::get('admin/get-SafetyBox', 'BookController@getSafetyBoxLst');
   Route::get('/admin/get-CustomersRequest', 'BookController@getCustomersRequestLst');
   Route::post('admin/hideCustomersRequest', 'BookController@hideCustomersRequest');
@@ -8,14 +12,19 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], fun
   Route::post('admin/getCustomersRequest', 'BookController@getCustomersRequest');
   Route::get('/admin/getCustomerRequestBook/{bID}', 'BookController@getCustomersRequest_book');
   
+  Route::get('/admin/get-books-without-cvc', 'BookController@getBooksWithoutCvc');
+  
+  
   Route::get('/admin/reservas/help/calculateBook','AppController@calculateBook');
   Route::post('/admin/reservas/help/calculateBook','AppController@calculateBook');
+  
+  //informes
+  Route::get('admin/sales/{year?}','InformesController@sales_index');
+  Route::post('admin/salesLst/','InformesController@get_sales_list');
 });
 
 Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista']], function () {
   
-  Route::get('admin/sendEncuesta/{id?}', 'BookController@sendEncuesta')->name('sendEncuesta');
-    
   //LIMPIEZA
   Route::get('admin/limpieza', 'LimpiezaController@index');
   Route::get('admin/limpiezas/{year?}','LimpiezaController@limpiezas');
@@ -49,19 +58,31 @@ Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionist
   Route::get('/ajax/get-book-comm/{bookID}', 'BookController@getComment');
   
   Route::get('/ajax/showSafetyBox/{bookID}', 'BookController@showSafetyBox');
+  Route::get('/ajax/editSafetyBox', 'BookController@editSafetyBox');
   Route::get('/ajax/updSafetyBox/{bookID}/{value}/{min?}', 'BookController@updSafetyBox');
   Route::get('/ajax/SafetyBoxMsg/{bookID}', 'BookController@getSafetyBoxMsg');
   Route::post('/ajax/send-SafetyBox-sms', 'BookController@sendSafetyBoxSMS');
+  Route::post('/ajax/createSafetyBox', 'BookController@createSafetyBox');
+  Route::post('/ajax/SafetyBox-updKey', 'BookController@updKeySafetyBox');
   Route::post('/ajax/send-SafetyBox-mail', 'BookController@sendSafetyBoxMail');
   Route::get('admin/get-SafetyBox', 'BookController@getSafetyBoxLst');
   
 });
 Route::group(['middleware' => ['auth','role:admin|propietario'], 'prefix' => 'admin',], function () {
+  
   //Facturas
-  Route::get('/facturas/ver/{id}', 'InvoicesController@view');
-  Route::get('/facturas/descargar/{id}', 'InvoicesController@download');
+  Route::get('/facturas/ver/{id}', 'InvoicesController@view')->name('invoice.view');
+  Route::get('/facturas/editar/{id}', 'InvoicesController@update')->name('invoice.edit');
+  Route::post('/facturas/guardar', 'InvoicesController@save')->name('invoice.save');
+  Route::post('/facturas/enviar', 'InvoicesController@sendMail')->name('invoice.sendmail');
+  Route::get('/facturas/modal/editar/{id}', 'InvoicesController@update_modal');
+  Route::post('/facturas/modal/guardar', 'InvoicesController@save_modal');
+  Route::delete('/facturas/borrar', 'InvoicesController@delete')->name('invoice.delete');
+  Route::get('/facturas/descargar/{id}', 'InvoicesController@download')->name('invoice.downl');
   Route::get('/facturas/descargar-todas', 'InvoicesController@downloadAll');
   Route::get('/facturas/descargar-todas/{year}/{id}', 'InvoicesController@downloadAllProp');
+  Route::get('/facturas/solicitudes/{year?}', 'InvoicesController@solicitudes');
+  Route::get('/facturas/{order?}', 'InvoicesController@index');
   
  //Propietario
   Route::get('/propietario/bloquear', 'OwnedController@bloqOwned');

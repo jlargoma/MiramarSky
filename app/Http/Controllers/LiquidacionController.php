@@ -110,7 +110,7 @@ class LiquidacionController extends AppController {
         ];
         
     $year = $this->getActiveYear();
-    $qry_books = Book::where_type_book_sales()
+    $qry_books = Book::where_type_book_sales(true,true)
             ->where('start', '>=', $year->start_date)
             ->where('start', '<=', $year->end_date);
     
@@ -334,10 +334,10 @@ class LiquidacionController extends AppController {
     if ($incomesLst){
       foreach ($incomesLst as $item){
         $m = date('ym', strtotime($item->date));
-        $concept = isset($ingrType[$item->concept]) ? $item->concept : 'others';
-        $ingresos[$concept][$m] += $item->import;
+        $type = isset($ingrType[$item->type]) ? $item->type : 'others';
+        $ingresos[$type][$m] += $item->import;
         if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $item->import;
-        $lstT_ing[$concept] += $item->import;
+        $lstT_ing[$type] += $item->import;
       }
     }
     
@@ -1180,8 +1180,8 @@ class LiquidacionController extends AppController {
     $month = isset($aDate[1]) ? intval($aDate[1]) : null;
     $year  = isset($aDate[2]) ? $aDate[2] : null;
     $concept = $request->input('concept');
+    $type = $request->input('type');
     $import = floatval($request->input('import',null));
-    
     
     if ($month && $import){
         $ingreso = \App\Incomes::where('month',$month)
@@ -1196,6 +1196,7 @@ class LiquidacionController extends AppController {
           $ingreso->month = intval($month);
           $ingreso->year  = $year;
           $ingreso->concept  = $concept;
+          $ingreso->type  = $type;
           $ingreso->date = Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
           $ingreso->import = $import;
         }
@@ -1226,7 +1227,7 @@ class LiquidacionController extends AppController {
     $totalYear = $incomesLst-$gastos;
    
 
-    $current = ($year->year-2000).',0';
+    $current = ($year->year-2000).','.date('m');
     
     return view('backend/sales/caja/index', [
         'year' => $year,
@@ -1433,12 +1434,17 @@ class LiquidacionController extends AppController {
     if ($year<100) $year = '20'.$year;
     
     
+     //last month
+    $year_prev = intval($year);
+    $monthPrev = ($month>1) ? $month-1 : 12;
+    if ($monthPrev == 12) $year_prev--;
+    $totalPrev = 0;
     
 
     $oRooms = \App\Rooms::all();
     $aptos = [];
     foreach ($oRooms as $r){
-      $aptos[$r->id] = $r->name;
+      $aptos[$r->id] = $r->nameRoom;
     }
     
     if ($month) {
@@ -1458,8 +1464,6 @@ class LiquidacionController extends AppController {
       
     }
     
-    
-    $gastos = $qry->orderBy('date')->get();
     $gType = \App\Expenses::getTypes();
     $ingrType = \App\Incomes::getTypes();
     $response = [
@@ -1468,6 +1472,13 @@ class LiquidacionController extends AppController {
     ];
     
     $respo_list = array();
+    
+    
+    /********************************************************************/
+    //// Expenses
+    
+    $gastos = $qry->orderBy('date')->get();
+   
     $typePayment = Book::getTypeCobro();
     if ($gastos){
       foreach ($gastos as $item){
@@ -1495,9 +1506,20 @@ class LiquidacionController extends AppController {
             'debe'=> '--',
             'comment'=> $item->comment,
             'aptos' => (count($lstAptos)>0) ? implode(', ', $lstAptos) : 'TODOS',
+            'key'=> 'gasto-'.$item->id
         ];
       }
     }
+    
+     $totalPrevExpenses = \App\Expenses::whereYear('date','=', $year_prev)
+            ->whereMonth('date','=', $monthPrev)
+            ->where('typePayment',2)->sum('import');
+    if ($totalPrevExpenses){
+      $totalPrev -= intval($totalPrevExpenses);
+    }
+    /********************************************************************/
+    //// Incomes
+    
     if ($month) {
       $qry = \App\Incomes::whereYear('date','=', $year);
       $qry->whereMonth('date','=', $month);
@@ -1506,10 +1528,10 @@ class LiquidacionController extends AppController {
       $qry = \App\Incomes::where('date', '>=', $oYear->start_date)->Where('date', '<=', $oYear->end_date);
     }
     
-   
+
     if($page !=='banco'){
       $oIngr = $qry->orderBy('date')->get();
-
+        
       if ($oIngr){
 
         foreach ($oIngr as $item){
@@ -1526,9 +1548,149 @@ class LiquidacionController extends AppController {
               'haber'=> '--',
               'comment'=> '',
               'aptos'=> '',
+              'key'=> 'ingreso-'.$item->id
           ];
         }
       }
+      
+    
+    $totalPrevIncomes = \App\Incomes::whereYear('date','=', $year_prev)
+            ->whereMonth('date','=', $monthPrev)->sum('import');
+    if ($totalPrevIncomes){
+      $totalPrev += intval($totalPrevIncomes);
+    }
+    
+    /***************************************************/
+    // Pagos de reservas CASH y Reintegros
+    $qry = \App\Payments::whereIn('type',[0,4]);
+     if ($month) {
+      $qry->whereYear('datePayment','=', $year)->whereMonth('datePayment','=', $month);
+    }else{
+      $oYear = \App\Years::where('year', $year)->first();
+      $qry->where('datePayment', '>=', $oYear->start_date)->Where('datePayment', '<=', $oYear->end_date);
+    }
+    $oIngrPayments = $qry->orderBy('datePayment')->get();
+    $bookLst = [];
+    if ($oIngrPayments){
+
+        foreach ($oIngrPayments as $item){
+          $bookLst[] = $item->book_id;
+        }
+          
+        $aBookLst = Book::whereIn('id', array_unique($bookLst))->pluck('room_id','id')->toArray();
+       
+        foreach ($oIngrPayments as $item){
+          $total += $item->import;
+
+          if (!isset($respo_list[strtotime($item->date)])) $respo_list[strtotime($item->date)] = [];
+
+          $concept = 'Reserva <a href="'.route('book.update',$item->book_id).'" target="_blank">'.$item->book_id.'</a>';
+          $aptoName = '';
+          if (isset($aBookLst[$item->book_id]) && isset($aptos[$aBookLst[$item->book_id]])){
+            $aptoName = ($aptos[$aBookLst[$item->book_id]]);
+          }
+          $respo_list[strtotime($item->date)][] = [
+              'id'=> -1,
+              'concept'=> $concept,
+              'date'=> convertDateToShow_text($item->date),
+              'type'=> 'Payment',
+              'debe'=> $item->import,
+              'haber'=> '--',
+              'comment'=> $item->comment,
+              'aptos'=> $aptoName,
+              'key'=> 'payment-'.$item->id
+          ];
+        }
+    }
+    
+    $totalPrevIncomes = \App\Payments::whereIn('type',[0,4])
+            ->whereYear('datePayment','=', $year_prev)
+            ->whereMonth('datePayment','=', $monthPrev)->sum('import');
+    if ($totalPrevIncomes){
+      $totalPrev += intval($totalPrevIncomes);
+    }
+    /***************************************************/
+    // Arqueos
+    $qry = \App\Arqueos::whereYear('date','=', $year);
+    if ($month>0)   $qry->whereMonth('date','=', $month);
+    $oObj = $qry->orderBy('date')->get();
+    if ($oObj){
+      foreach ($oObj as $item){
+        $total += $item->import;
+        
+        if (!isset($respo_list[strtotime($item->date)])) $respo_list[strtotime($item->date)] = [];
+        $respo_list[strtotime($item->date)][] = [
+            'id'=> $item->id,
+            'concept'=> $item->observ,
+            'date'=> convertDateToShow_text($item->date),
+            'type'=> 'Arqueo',
+            'debe'=> ($item->import>0) ? ($item->import) : '--',
+            'haber'=> ($item->import<0) ? ($item->import*-1) : '--',
+            'comment'=> '',
+            'aptos'=> "",
+            'key'=> 'arqueo-'.$item->id
+        ];
+        
+        
+      }
+    }
+    
+    $totalPrevArqueos = \App\Arqueos::whereYear('date','=', $year_prev)
+            ->whereMonth('date','=', $monthPrev)->sum('import');
+    if ($totalPrevArqueos){
+      $totalPrev += intval($totalPrevArqueos);
+    }
+    
+    } else { 
+      /***************************************************/
+    // Pagos de reservas BANCO
+    $qry = \App\Payments::whereIn('type',[2,3]);
+     if ($month) {
+      $qry->whereYear('datePayment','=', $year)->whereMonth('datePayment','=', $month);
+    }else{
+      $oYear = \App\Years::where('year', $year)->first();
+      $qry->where('datePayment', '>=', $oYear->start_date)->Where('datePayment', '<=', $oYear->end_date);
+    }
+    $oIngrPayments = $qry->orderBy('datePayment')->get();
+    $bookLst = [];
+    if ($oIngrPayments){
+
+        foreach ($oIngrPayments as $item){
+          $bookLst[] = $item->book_id;
+        }
+          
+        $aBookLst = Book::whereIn('id', array_unique($bookLst))->pluck('room_id','id')->toArray();
+       
+        foreach ($oIngrPayments as $item){
+          $total += $item->import;
+
+          if (!isset($respo_list[strtotime($item->date)])) $respo_list[strtotime($item->date)] = [];
+
+          $concept = 'Reserva <a href="'.route('book.update',$item->book_id).'" target="_blank">'.$item->book_id.'</a>';
+          $aptoName = '';
+          if (isset($aBookLst[$item->book_id]) && isset($aptos[$aBookLst[$item->book_id]])){
+            $aptoName = ($aptos[$aBookLst[$item->book_id]]);
+          }
+          $respo_list[strtotime($item->date)][] = [
+              'id'=> -1,
+              'concept'=> $concept,
+              'date'=> convertDateToShow_text($item->date),
+              'type'=> 'Payment',
+              'debe'=> $item->import,
+              'haber'=> '--',
+              'comment'=> $item->comment,
+              'aptos'=> $aptoName,
+              'key'=> 'payment-'.$item->id
+          ];
+        }
+    }
+    
+    $totalPrevIncomes = \App\Payments::whereIn('type',[0,4])
+            ->whereYear('datePayment','=', $year_prev)
+            ->whereMonth('datePayment','=', $monthPrev)->sum('import');
+    if ($totalPrevIncomes){
+      $totalPrev += intval($totalPrevIncomes);
+    }
     }
     
     $return = [];
@@ -1539,13 +1701,15 @@ class LiquidacionController extends AppController {
           $return[] = $item;
         }
       }
+    } 
       
      $response = [
           'status' => 'true',
           'total' => moneda($total),
           'respo_list' => $return,
+          'totalPrev' => $totalPrev,
+          'month_prev' => getMonthsSpanish($monthPrev,false)
       ];
-    }
     
      
     
@@ -1554,6 +1718,39 @@ class LiquidacionController extends AppController {
     } else {
       return $response;
     }
+  }
+  function delCajaItem(Request $request){
+    $key = $request->input('key');
+    if (!$key) return response()->json(['status'=>'Error','msg'=>'item no encontrado']);
+    $aux = explode('-', $key);
+    
+    if (!(is_array($aux) && count($aux)==2))
+      return response()->json(['status'=>'Error','msg'=>'item no encontrado']);
+    
+    $type = $aux[0];
+    $id = $aux[1];
+    $oObj = null;
+    if ($type == 'ingreso') $oObj = \App\Incomes::find($id);
+    if ($type == 'arqueo') $oObj = \App\Arqueos::find($id);
+    if ($type == 'gasto') $oObj = \App\Expenses::find($id);
+    if ($type == 'payment') 
+       return response()->json(['status'=>'Error','msg'=>'No se puede eliminar un cobro de una reserva']);
+    
+    if (!$oObj) 
+      return response()->json(['status'=>'Error','msg'=>'item no encontrado']);
+    
+    
+    if ($type == 'ingreso'){
+      if ($oObj->book_id) 
+        return response()->json(['status'=>'Error','msg'=>'No se puede eliminar un cobro de una reserva']);
+    }
+    
+    if ($oObj->delete()){
+      return response()->json(['status'=>'OK','msg'=>'Registro eliminado.']);
+    }
+    
+    return response()->json(['status'=>'Error','msg'=>'Ocurrió un error']);
+    
   }
   /***************************************************************************/
     
@@ -1809,6 +2006,27 @@ class LiquidacionController extends AppController {
     dd($data);
   }
   
+  function arqueoCreate(Request $request){
+    $date =  $request->input('fecha');
+    $aDate = explode('/', $date);
+    $month = isset($aDate[1]) ? intval($aDate[1]) : null;
+    $year  = isset($aDate[2]) ? $aDate[2] : null;
+    $import = floatval($request->input('import',null));
+    
+    
+    if ($month && $import){
+          $arqueo = new \App\Arqueos();
+          $arqueo->month = intval($month);
+          $arqueo->year  = $year;
+          $arqueo->observ  = $request->input('observ');
+          $arqueo->date = Carbon::createFromFormat('d/m/Y', $date)->format('Y-m-d');
+          $arqueo->import = $import;
+      if ($arqueo->save()) {
+        return redirect()->back();
+      }
+    }
+    return redirect()->back()->withErrors(['No se pudo cargar el Arqueo.']);
+  }
   
   static function addBank($data){
     return null;

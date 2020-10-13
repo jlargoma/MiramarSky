@@ -222,6 +222,7 @@
         return redirect('https://miramarski.com/forfait/');
     });
 
+    Route::get('/factura/{id}/{num}/{emial}', 'InvoicesController@donwload_external');
 //    Route::get('/ical/importFromUrl', function () {
 //      \Artisan::call('ical:import');
 ////      return redirect('/admin/reservas');

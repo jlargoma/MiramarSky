@@ -1140,6 +1140,7 @@ class RoomsController extends AppController {
       $ch_group[$k]= $v->name;
       $minPax[$k]  = 0;
       $maxPax[$k]  = 0;
+      $title[$k]   = '';
       $slug[$k]    = '';
     }
     
@@ -1149,12 +1150,13 @@ class RoomsController extends AppController {
       $ch = $r->channel_group;
       if (isset($minPax[$ch])) $minPax[$ch] = $r->min_pax;
       if (isset($maxPax[$ch])) $maxPax[$ch] = $r->max_pax;
+      if (isset($title[$ch])) $title[$ch] = $r->title;
       if (isset($slug[$ch])) $slug[$ch] = $r->name;
 //      dd($r);
     }
 //    dd($minPax,$maxPax);
     
-    return view('backend.rooms.tableRoomsTypes', compact('ch_group','minPax','maxPax','slug'));
+    return view('backend.rooms.tableRoomsTypes', compact('ch_group','minPax','maxPax','slug','title'));
   }
 
   public function updRoomsType(Request $request){
@@ -1171,6 +1173,7 @@ class RoomsController extends AppController {
     switch($type){
       case 'minPax': $oObj->min_pax = intval($val); break;
       case 'maxPax': $oObj->max_pax = intval($val); break;
+      case 'title':  $oObj->title = ($val); break;
       case 'slug':   $oObj->name = ($val); break;
     }
       

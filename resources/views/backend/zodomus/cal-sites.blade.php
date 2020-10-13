@@ -36,7 +36,18 @@
         <div class="col-md-6 col-xs-12">
           <div class="select-month">
             <a href="/admin/channel-manager/price-site/1/{{$prev}}"><i class="fa fa-arrow-left"></i> </a>
-              <span>{{$current}}</span>
+            <select id="currentMonth">
+              @if($monthsLst)
+              @foreach($monthsLst as $k=>$v)
+              <option value="{{$k}}" <?php echo $k==$month ? 'selected':'' ; ?>>{{$v}}</option>
+              @endforeach
+              @endif
+            </select>
+            <select id="currentYear">
+              <option value="{{$year-1}}" >{{$year-1}}</option>
+              <option value="{{$year}}" selected>{{$year}}</option>
+              <option value="{{$year+1}}" >{{$year+1}}</option>
+            </select>
             <a href="/admin/channel-manager/price-site/1/{{$next}}"><i class="fa fa-arrow-right"></i> </a>
           </div>
         </div>
@@ -73,7 +84,7 @@
           <tbody>
         @foreach($rooms as $kRoom=>$item)
         <tr class="room-name">
-          <td  class="room-name static static-header" colspan="15" >
+          <td  class="room-name static static-header" colspan="9" >
             <div class="col-2">
               <h3 class="white">{{$item['tit']}}</h3>
             </div>
@@ -100,6 +111,25 @@
             @else
               <td class="day tPriceEdit price_{{$k}}" data-id="{{$kRoom.'@'.$k}}">-</td>
             @endif
+          @endforeach
+        </tr>
+        <tr>
+          <th>OTAs €</th>
+          @foreach($days as $k=>$day)
+          <td class="day text-center">
+            @if(isset($priceLst[$k]))
+            <i class="fa fa-question-circle">
+              <div class="t-otas-room">
+              <table class="">
+                <tr><td><span class="price-booking">{{$priceLst[$k]['booking']}}</span></td><td><span class="price-airbnb">{{$priceLst[$k]['airbnb']}}</span></td></tr>
+                <tr><td><span class="price-expedia">{{$priceLst[$k]['expedia']}}</span></td><td><span class="price-google">{{$priceLst[$k]['google']}}</span></td></tr>
+              </table>
+                </div>
+            </i>
+            @else
+            -
+            @endif
+            </td>
           @endforeach
         </tr>
         <tr>
@@ -278,6 +308,13 @@ $(document).ready(function () {
         e.preventDefault();
       }
     });
+        
+    $('#currentMonth').on('change', function(){
+      location.href = '/admin/channel-manager/price-site/{{$site}}/'+$(this).val()+'/{{$year}}';
+    });
+    $('#currentYear').on('change', function(){
+      location.href = '/admin/channel-manager/price-site/{{$site}}/{{$month}}/'+$(this).val();
+    });
 });
 </script>
 <style>
@@ -378,6 +415,8 @@ $(document).ready(function () {
     border: none !important;
     min-width: 6em;
     width: 19em;
+        position: sticky;
+    left: 0;
   }
   
   #table_prices.table-resumen .room-name table.table-prices td {
@@ -399,7 +438,7 @@ $(document).ready(function () {
   width: 55px;
 }
 .table-resumen-content{
-  max-height: 50em;
+  max-height:  calc( 100vh - 212px);
   position: relative;
   overflow: scroll;
 }
@@ -421,9 +460,11 @@ table#table_prices  tbody th {
   position: -webkit-sticky; /* for Safari */
   position: sticky;
   left: 0;
+  
   background: #FFF;
   border-right: 1px solid #CCC;
   text-align: center;
+  z-index: 3;
 }
 .select_column{
   cursor: pointer;
@@ -437,5 +478,39 @@ table#table_prices  tbody th {
 .table-prices td span {
     padding: 0 2em 0 0;
 }
+  select#currentMonth,
+  select#currentYear {
+    background-color: transparent;
+    font-size: 21px;
+  }
+  .select-month{
+    font-size: 2em;
+    font-weight: 800;
+    text-align: center;
+  }
+  i.fa.fa-question-circle {
+    position: relative;
+    cursor: pointer;
+}
+  .t-otas-room {
+    position: absolute;
+    width: 6em;
+    top: 27px;
+    left: -14px;
+    padding: 5px !important;
+    display: none;
+    background-color: #fafafa;
+    box-shadow: 1px 1px 3px #000;
+}
+.t-otas-room table td{
+  text-align: center;
+}
+.t-otas-room table{
+    width: 98%;
+    margin: 1%;
+}
+  i.fa.fa-question-circle:hover  .t-otas-room{
+    display: table;
+  }
 </style>
 @endsection

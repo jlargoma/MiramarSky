@@ -55,7 +55,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
       </select>
     </div>
     <div class="col-md-3 col-xs-6 push-10">
-      <label>Apartamento</label>
+      <label>ALOJAMIENTO</label>
       <select class="form-control full-width minimal newroom" name="newroom" {{$disabl_limp}}
               id="newroom" <?php
                 if (isset($_GET['saveStatus']) && !empty($_GET['saveStatus'])): echo "style='border: 1px solid red'";

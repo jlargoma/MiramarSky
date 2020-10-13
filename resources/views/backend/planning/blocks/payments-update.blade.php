@@ -63,7 +63,7 @@
                   </a>
                 </td>
               </tr>
-              <?php $total = $total + $payment->import ?>
+             
             <?php endforeach ?>
           <?php endif; ?>
           <tr>
@@ -89,21 +89,16 @@
           </tr>
           <tr>
             <td></td>
-            <?php if ($total < $book->total_price): ?>
-              <td class="text-center"><p
-                  style="color:red;font-weight: bold;font-size:15px"><?php echo $total - $book->total_price ?>
-                  €</p></td>
+            <?php 
+            $color = ($payment_pend>0) ? 'color:red;' : ''; 
+            $statusPaymentText = 'Al corriente de pago';
+            if ($payment_pend>0) $statusPaymentText = 'Pendiente de pago';
+            if ($payment_pend<0) $statusPaymentText = 'Sobrante';
+              ?>
+              <td class="text-center">
+                <p style="{{$color}} font-weight: bold;font-size:15px">{{moneda($payment_pend,true,2)}}</p></td>
               <td class="text-left" colspan="2"><p style="color:red;font-weight: bold;font-size:15px">
-                  Pendiente de pago</p></td>
-            <?php elseif ($total > $book->total_price): ?>
-              <td class="text-center"><p
-                  style="color:black;font-weight: bold;font-size:15px"><?php echo $total - $book->total_price ?>
-                  €</p></td>
-              <td class="text-left" colspan="2">Sobrante</td>
-            <?php else: ?>
-              <td class="text-center"><p style="color:black;font-weight: bold;font-size:15px">0€</p></td>
-              <td class="text-left" colspan="2">Al corriente de pago</td>
-            <?php endif ?>
+                  {{$statusPaymentText}}</p></td>
               <td></td>
           </tr>
         </tbody>

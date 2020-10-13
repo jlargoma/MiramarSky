@@ -4,7 +4,7 @@
 $startWeek = Carbon::now()->startOfWeek();
 $endWeek = Carbon::now()->endOfWeek(); 
 $isMobile = $mobile->isMobile();
-$uRole = Auth::user()->role;
+$uRole = getUsrRole();
 $lstSafetyBox = \App\BookSafetyBox::$keys_name; 
 ?>
 <div class="tab-pane" id="tabPagadas">
@@ -25,11 +25,8 @@ $lstSafetyBox = \App\BookSafetyBox::$keys_name;
                     <th class="th-bookings th-4"><i class="fa fa-lock"></i></th>
                     <th class="th-bookings th-3 hiddenOnlyRiad">FF</th>
                     <th class="th-bookings th-6" style="min-width:110px !important;">   Precio      </th>
-                    <?php if ($uRole != "limpieza"): ?>
-                        <th class="th-bookings th-6">   a      </th>
-                    <?php endif ?>
+                    <th class="th-bookings th-6">   a      </th>
                     <th class="th-bookings th-2">&nbsp;</th>
-
                 </tr>
             </thead>
             <tbody>
@@ -246,10 +243,7 @@ $lstSafetyBox = \App\BookSafetyBox::$keys_name;
                             <?php endif ?>
                         </td>
 
-                        <?php if ($uRole != "limpieza"): ?>
                         <td class="text-center sm-p-t-10 sm-p-b-10">
-
-
                             <?php if ($book->send == 1): ?>
                           <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-default sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="1" style="margin-top: -11px;">
                                     <i class="fa fa-paper-plane" aria-hidden="true"></i>
@@ -259,17 +253,7 @@ $lstSafetyBox = \App\BookSafetyBox::$keys_name;
                                     <i class="fa fa-paper-plane" aria-hidden="true"></i>
                                 </button> 
                             <?php endif ?>
-                             <?php
-                              if(env('APP_APPLICATION') == "riad"):
-                              $partee = $book->partee();
-                              if ($partee):
-                                echo $partee->print_status($book->id,$book->start,$book->pax);
-                               endif;
-                               echo $book->getFianza();
-                              endif;
-                            ?>
                         </td>
-                        <?php endif ?>
                         <td class="text-center">
                             <?php if ($book->promociones> 0 ): ?>
                                 <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">
@@ -279,8 +263,6 @@ $lstSafetyBox = \App\BookSafetyBox::$keys_name;
 
                             <?php endif ?>
                         </td>
-
-
                     </tr>
                 <?php endforeach ?>
             </tbody>

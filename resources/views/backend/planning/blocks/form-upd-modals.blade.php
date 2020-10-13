@@ -104,3 +104,17 @@
   <div id="confirm_PVP_promo" class="text-danger"></div>
   <hr/>
 </div>
+
+
+<div class="modal fade slide-up in" id="modalSafetyBox" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xd">
+    <div class="modal-content-classic">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+        <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
+      </button>
+      <h3 id="modalSafetyBox_title"></h3>
+      <div id="modalSafetyBox_content" class="row" style="margin-top:1em;">
+      </div>
+    </div>
+  </div>
+</div>

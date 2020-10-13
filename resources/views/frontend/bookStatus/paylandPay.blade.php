@@ -122,7 +122,7 @@
         border: 1px solid #cac090;
         border-radius: 7px;
       }
-      input[type="checkbox" i] {
+      input[type="checkbox"] {
         width: 22px;
         height: 21px;
         position: absolute;
@@ -236,16 +236,7 @@ label.checkbox :checked + span:after {
               </a>
             </label>
           </div>
-          <div class="m1">
-            <label class="checkbox">
-              <input type="checkbox" id="tyc_2" >
-              <span></span>
-              Acepta las 
-              <a href="{{route('cond.fianza')}}" title="Ir a condiciones de fianza" target="_black">
-                condiciones de fianza
-              </a>
-            </label>
-          </div>
+         
           <div class="text-center">
             <input type="hidden" name="recaptcha_response" id="recaptchaResponse">
             <button class="btn btn-primary" title="Ir al paso 2" id="siguiente">Siguente</button>
@@ -279,10 +270,7 @@ label.checkbox :checked + span:after {
           showError('Por favor, acepte las políticas de contratación para continuar');
           return;
         }
-        if (!$('#tyc_2').is(':checked')) {
-          showError('Por favor, acepte las condiciones de fianza para continuar');
-          return;
-        }
+      
 
         var dni = $('#dni').val();
         if (isBlank(dni) || isEmpty(dni)) {

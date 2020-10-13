@@ -42,7 +42,7 @@
 <?php if (Auth::user()->role != "limpieza"): ?>
   <div class="row">
     @include('Paylands.payment', ['routeToRedirect' => route('payland.thanks.payment',
-    ['id' => $book->id]), 'id' => $book->id, 'customer' => $book->customer->id])
+    ['id' => $book->id]), 'id' => $book->id, 'customer' => $book->customer->id,'payment_pend'=>$payment_pend])
   </div>
 <?php endif ?>
 <div class="col-xs-12 bg-black push-0">
@@ -52,5 +52,3 @@
 </div>
 <button class="btn btn-success btn-cons m-b-10" type="button"
         data-toggle="modal" data-target="#modalResponseEmail">Enviar Nueva Respuesta</button>
-</div>
-</div>

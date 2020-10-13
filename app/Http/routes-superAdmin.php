@@ -204,6 +204,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista'], 'pre
 //  Route::get('/reservas/ff_change_status_popup/{id}/{status}', 'BookController@updateBookFFStatus');
     
   Route::post('/reservas/get-visa', 'BookController@getVisa')->name('booking.get_visa');
+  Route::post('/reservas/upd-visa', 'BookController@updVisa')->name('booking.upd_visa');
   Route::post('/reservas/change-mail-notif', 'BookController@changeMailNotif')->name('booking.changeMailNotif');
   Route::get('/book-logs/see-more/{id}', 'BookController@getBookLog');
   Route::get('/book-logs/see-more-mail/{id}', 'BookController@getMailLog');
@@ -296,6 +297,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/caja', 'LiquidacionController@caja');
   Route::post('/caja/cajaLst', 'LiquidacionController@getTableCaja');
   Route::get('/caja/getTableMoves/{year?}/{type}', 'LiquidacionController@getTableMoves');
+  Route::post('/caja/del-item', 'LiquidacionController@delCajaItem');
   Route::post('/cashBox/create', 'LiquidacionController@cashBoxCreate');
   Route::get('/cashbox/updateSaldoInicial/{id}/{type}/{importe}','RouterActionsController@cashbox_updateSaldoInicial');
   Route::get('/banco', 'LiquidacionController@bank');
@@ -305,6 +307,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/days/secondPay/update/{id}/{days}','RouterActionsController@days_secondPay_update');
   Route::get('/estadisticas/{year?}', 'LiquidacionController@Statistics');
   Route::get('/contabilidad', 'LiquidacionController@contabilidad');
+  Route::post('/arqueo/create', 'LiquidacionController@arqueoCreate');
 
   Route::get('/contabilidad','LiquidacionController@contabilidad');
   

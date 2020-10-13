@@ -292,7 +292,7 @@ trait OtasTraits
     
     $agencies = $oConfig->getAllAgency();
     $roomsLst = $oConfig->getRoomsName();
-       
+    $months = getMonthsSpanish(null,false,true);
     
     /**************************************************************************************/
     
@@ -372,6 +372,7 @@ trait OtasTraits
         'dw' => $dw,
         'days' => $days,
         'month' => $month,
+        'monthsLst' => $months,
         'year' => $year,
         'aMonth' => $aMonth,
         'current' => $current,
@@ -406,7 +407,11 @@ trait OtasTraits
       $min_estancia = isset($min[$d]) ? $min[$d] : 0;
       $priceLst[$d] = [
           $p,
-          $min_estancia
+          $min_estancia,
+          'booking'=>ceil($oConfig->priceByChannel($p,1,$ch)),
+          'expedia'=>ceil($oConfig->priceByChannel($p,28,$ch)),
+          'airbnb'=>ceil($oConfig->priceByChannel($p,4,$ch)),
+          'google'=>ceil($oConfig->priceByChannel($p,99,$ch)),
         ];
     }
     $book = new \App\Book();

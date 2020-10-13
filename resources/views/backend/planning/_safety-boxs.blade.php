@@ -10,9 +10,9 @@ $isMobile = $mobile->isMobile();
   <div class="alert alert-info fade in alert-dismissable" style="max-height: 600px; overflow-y: auto;position: relative;">
     <!-- <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a> -->
     <!-- <strong>Info!</strong> This alert box indicates a neutral informative change or action. -->
-    <h4 class="text-center">CAJAS DE SEGURIDAD ASIGNADAS</h4>
+    <h4 class="text-center">CAJAS DE SEGURIDAD ASIGNADAS <div id="safeBoxLst">Cajas</div></h4>
     @if(count($books)>0)
-    <div class="table-responsive" style="    overflow-y: hidden;">
+     <div class="table-responsive" style="    overflow-y: hidden;">
       <table class="table" id="table_partee">
         <thead>
           <tr class ="text-center bg-success text-white">
@@ -29,12 +29,12 @@ $isMobile = $mobile->isMobile();
             @endif
             <th class="th-bookings text-center th-2">Pax</th>
             <th class="th-bookings text-center">Apart</th>
-            <th class="th-bookings text-center th-2"><i class="fa fa-moon-o"></i> </th>
-            <th class="th-bookings text-center th-2"><i class="fa fa-clock-o"></i></th>
+            <th class="th-bookings text-center th-2"><i class="fa fa-moon-o" title="cantidad de noches"></i> </th>
+            <th class="th-bookings text-center th-2"><i class="fa fa-clock-o" title="Hora de llegada"></i></th>
             <th class="th-bookings text-center th-4">IN - OUT </th>
             <th class="th-bookings text-center th-2">Caja</th>
+            <th class="th-bookings text-center th-2">Contraseña</th>
             <th class="th-bookings text-center th-1">&nbsp;</th>
-            <th class="th-bookings text-center th-2">&nbsp;</th>
           </tr>
         </thead>
         <tbody>
@@ -79,7 +79,7 @@ $isMobile = $mobile->isMobile();
                   <?php endif ?>
               </td>
               @if($isMobile)
-              <td class="text-center first-col" style="padding: 30px 0px !important; padding-left: 130px!important">
+              <td class="text-center first-col" style="padding: 35px 0px !important; padding-left: 130px!important">
               @else
               <td class="text-center">
               @endif
@@ -87,8 +87,6 @@ $isMobile = $mobile->isMobile();
                   <a href="tel:<?php echo $book->customer->phone ?>">
                     <i class="fa fa-phone"></i>
                   </a>
-                <?php else: ?>
-              &nbsp;
                 <?php endif ?>
               </td>
               <td class ="text-center" >{{$book->pax}}</td>
@@ -100,21 +98,12 @@ $isMobile = $mobile->isMobile();
                 <span>-</span>
                 <b>{{dateMin($book->finish)}}</b>
               </td>
-              <td class="mobil-pad-x3">
-                <?php 
-                  echo isset($safety_boxes[$book->key]) ? $safety_boxes[$book->key] : '--'; 
-                ?>
-              </td>
+              <td class="text-center">{{show_isset($boxs,$book->box_id)}}</td>
+              <td class="text-center">{{show_isset($keys,$book->box_id)}}</td>
               <td class="text-center">
-                <i class="fa fa-paper-plane openSafetyBox" data-id="{{$book->id}}"></i>
-              </td>
-              <td class="text-center">
-              @if ($book->promociones > 0)
-                <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id ?>">
-                  <img src="/pages/oferta.png" style="width: 40px;">
-                </span>
-                <div class="comment-floating content-commentOwned-<?php echo $book->id ?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
-              @endif
+                <button data-id="<?php echo $book->id ?>" class="btn openSafetyBox" type="button" data-toggle="tooltip" title="" data-original-title="Centro Mensajería">
+                   <i class="fas fa-mail-bulk"></i>
+                    </button> 
               </td>
             </tr>
         <?php endforeach ?>

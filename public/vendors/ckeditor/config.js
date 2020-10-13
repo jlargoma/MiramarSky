@@ -6,6 +6,11 @@
 CKEDITOR.editorConfig = function( config ) {
   config.height = '35em'; 
 	// Define changes to default configuration here. For example:
-	// config.language = 'fr';
+  config.language = 'es';
 	// config.uiColor = '#AADC6E';
+  config.toolbar = [
+   ['Styles','Format','Font','FontSize','-','Bold','Italic','Underline','StrikeThrough','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+   '/',
+   ['Undo','Redo','-','Cut','Copy','Paste','Find','-','Outdent','Indent','-','Print','-','NumberedList','BulletedList','-','Link','TextColor','BGColor','Source'],
+  ] ;  
 };

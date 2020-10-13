@@ -44,6 +44,8 @@ class VerifyCsrfToken extends BaseVerifier
         '/wubook-Webhook',
         '/Ota-Gateway-Webhook',
         '/admin/paymentspro/seeLiquidationProp',
-        '/api/*'
+        '/api/*',
+        '/ajax/createSafetyBox',
+        '/ajax/SafetyBox-updKey'
     ];
 }

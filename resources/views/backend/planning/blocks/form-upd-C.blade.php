@@ -6,7 +6,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
   <div class="col-md-3 col-xs-12 text-center boxtotales" style="background-color: #0c685f;">
     <label class="font-w800 text-white" for="">PVP</label>
     <input type="number" step='0.01' class="form-control total m-t-10 m-b-10 white" {{$disabl_limp}}
-           name="total" value="<?php echo $book->total_price ?>">
+           name="total" value="<?php echo $book->total_price ?>" id="total_pvp">
   </div>
 <?php if ($uRole == "admin"): ?>
     <div class="col-md-3 col-xs-12 text-center boxtotales" style="background: #99D9EA;">

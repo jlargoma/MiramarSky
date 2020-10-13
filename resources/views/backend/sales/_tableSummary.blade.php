@@ -125,7 +125,7 @@
                         <tr >
                           <td class ="text-left">  
                             <div class=" fix-col">
-                          <?php if ($book->agency != 0): ?>
+                          <?php if ($book->agency > 0):?>
                           <img src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" class="img-agency" />
                           <?php endif ?>
                           <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
