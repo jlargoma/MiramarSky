@@ -35,7 +35,7 @@ class InformesController extends AppController {
             ->get();
     if ($book) {
       foreach ($book as $b){
-        $m = date('yn', strtotime($b->start));
+        $m = date('ym', strtotime($b->start));
         $userID = $b->user_id;
         if (!isset($salesGroupUser[$userID])){
           $salesGroupUser[$userID] = $months_empty;

@@ -48,11 +48,11 @@ td.border-1{
           <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.cal')}}">UNITARIA</a>
           <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.site')}}">EDIFICIO</a>
           <a class="text-white btn btn-md btn-primary" href="{{route('channel.promotions')}}">PROMOCIONES</a>
-          <button class="btn btn-md btn-primary active"  disabled>PORCENTAJES OTAs</button>
+          <button class="btn btn-md btn-primary active"  disabled>PRECIOS OTAs</button>
         </div>
-        <div class="col-md-2 row"></div>
+        <div class="col-md-2 col-xs-12 row"></div>
         @if (Auth::user()->email == "jlargo@mksport.es")
-          <div class="col-md-12">
+          <div class="col-md-12 col-xs-12">
             <form action="{{route('precios.prepare-cron')}}" method="post" class="inline">
               <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
               <button class="btn btn-success" title="{{$sendDataInfo}}">Sincr. precios OTAs</button>

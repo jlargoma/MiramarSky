@@ -242,9 +242,8 @@ trait OtasTraits
         
         
         $priceLst[] = [
-            "title" => '<table>'
-            . '<tr><td colspan="2" class="main">'.$p.' €</td></tr>'
-            . '<tr><td colspan="2" class="min-estanc">'.$min_estancia.' dias</td></tr>'
+            "title" => ''.$p.' €<p class="min-estanc">'.$min_estancia.' dias</p>'
+            . '<table class="t-otas">'
             . '<tr><td><span class="price-booking">'.$data['price_booking'].'</span></td><td><span class="price-airbnb">'.$data['price_airbnb'].'</span></td></tr>'
             . '<tr><td><span class="price-expedia">'.$data['price_expedia'].'</span></td><td><span class="price-google">'.$data['price_google'].'</span></td></tr>'
             . '</table>',

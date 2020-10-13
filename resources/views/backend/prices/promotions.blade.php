@@ -66,11 +66,11 @@
           <button class="btn btn-md btn-primary active"  disabled>PROMOCIONES</button>
           <a class="text-white btn btn-md btn-primary" href="{{route('precios.pricesOTAs')}}">PRECIOS OTAs</a>
         </div>
-        <div class="col-md-2 row">
+        <div class="col-md-2 col-xs-12 row">
           @include('backend.years._selector', ['minimal' => true])
         </div>
         @if (Auth::user()->email == "jlargo@mksport.es")
-          <div class="col-md-12">
+          <div class="col-md-12 col-xs-12">
             <form action="{{route('precios.prepare-cron')}}" method="post" class="inline">
               <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
               <button class="btn btn-success" title="{{$sendDataInfo}}">Sincr. precios OTAs</button>

@@ -84,7 +84,7 @@
           <tbody>
         @foreach($rooms as $kRoom=>$item)
         <tr class="room-name">
-          <td  class="room-name static static-header" colspan="9" >
+          <td  class="room-name static static-header" colspan="13" >
             <div class="col-2">
               <h3 class="white">{{$item['tit']}}</h3>
             </div>
@@ -99,7 +99,7 @@
                </table>
             </div>
           </td>
-          <td colspan="{{count($days)+1}}"></td>
+          <td colspan="{{count($days)+13}}"></td>
         </tr>
 
         <tr>
