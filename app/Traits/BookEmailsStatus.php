@@ -24,7 +24,11 @@ trait BookEmailsStatus
         $otaAgencies = [1];
         if ($status == 1){
           if (in_array($book->agency,$otaAgencies)){ 
-            $keyMail = $this->getKeyTemplate('1.1');
+            if ($book->agency == 4){ // Sólo para AirBnb
+              $keyMail = $this->getKeyTemplate('1.4');
+            } else {
+              $keyMail = $this->getKeyTemplate('1.1');
+            }
             $subject = "Confirmación de reserva";
           } else {
             $keyMail = $this->getKeyTemplate($status);
@@ -192,6 +196,10 @@ trait BookEmailsStatus
             case 1.1:
             case "1.1":
                 $key = 'reservation_state_changed_reserv_ota';
+                break;
+            case 1.4:
+            case "1.4":
+                $key = 'reservation_state_changed_reserv_airbnb';
                 break;
             case 2:
             case "2":

@@ -168,7 +168,7 @@ trait SafetyBox {
           <?php
            if (count($showInfo)){
             ksort($showInfo);
-            echo '<div class="col-md-6" ><b>Histórico:</b><br>';
+            echo '<div class="col-xs-12" ><b>Histórico:</b><br>';
             echo implode('<br>', $showInfo);
             echo '</div>';
           }

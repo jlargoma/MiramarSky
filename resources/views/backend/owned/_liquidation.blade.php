@@ -122,7 +122,7 @@
 						
 						<th class="bg-complete text-white text-center"><i class="fa fa-calendar" aria-hidden="true"></i></th>
 						<th class="bg-complete text-white text-center">Tipo</th>
-						<th class="bg-complete text-white text-center"><i class="fa fa-money" aria-hidden="true"></i></th>
+						<th class="bg-complete text-white text-center"><i class="fas fa-euro-sign"></i></th>
 						<th class="bg-complete text-white text-center">Pend</th>
 					</thead>
 					<tbody>

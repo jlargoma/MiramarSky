@@ -71,16 +71,15 @@
             @endforeach
           </select>
         </div>     
-        <div class="form-material pt-1 col-xs-12 col-md-6">
+        <div class="form-material col-xs-12 col-md-6">
           
           <table class="table-prices">
             <tr>
-             
               <td><span class="price-booking">{{$price_booking}}</span></td>
               <td><span class="price-airbnb">{{$price_airbnb}}</span></td>
+           </tr><tr>
               <td><span class="price-expedia">{{$price_expedia}}</span></td>
               <td><span class="price-google">{{$price_google}}</span></td>
-              <td><span class="disp-layout">Disponib</span></td>
             </tr>
           </table>
         </div>
@@ -98,7 +97,7 @@
             <div class="row">
               <div class="col-md-3 col-xs-5 pt-1"><label>Rango de Fechas</label></div>
               <div class="col-md-9 col-xs-7">
-                <input type="text" class="form-control daterange01" id="date_range" name="date_range" value="">
+                <input type="text" class="form-control daterange1" id="date_range" name="date_range" value="">
               </div>
             </div>
 
@@ -146,23 +145,94 @@
 @section('scripts')
 
 <script type="text/javascript" src="/js/datePicker01.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function () {
 
 
+
+
+
+  $(".daterange1").daterangepicker({
+    "buttonClasses": "button button-rounded button-mini nomargin",
+    "applyClass": "button-color",
+    "cancelClass": "button-light",
+    autoUpdateInput: true,
+//    locale: 'es',
+    locale: {
+      firstDay: 2,
+      format: 'DD MMM, YY',
+      "applyLabel": "Aplicar",
+      "cancelLabel": "Cancelar",
+      "fromLabel": "From",
+      "toLabel": "To",
+      "customRangeLabel": "Custom",
+      "daysOfWeek": [
+        "Do",
+        "Lu",
+        "Mar",
+        "Mi",
+        "Ju",
+        "Vi",
+        "Sa"
+      ],
+      "monthNames": [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre"
+      ],
+    },
+
+  });
+
+  Date.prototype.ddmmmyyyy = function () {
+    var mm = this.getMonth() + 1; // getMonth() is zero-based
+    var dd = this.getDate();
+    return [
+      (dd > 9 ? '' : '0') + dd,
+      (mm > 9 ? '' : '0') + mm,
+      this.getFullYear()
+    ].join('/');
+  };
+  Date.prototype.yyyymmmdd = function () {
+    var mm = this.getMonth() + 1; // getMonth() is zero-based
+    var dd = this.getDate();
+    return [
+      this.getFullYear(),
+      (mm > 9 ? '' : '0') + mm,
+      (dd > 9 ? '' : '0') + dd
+    ].join('-');
+  };
   var render_yyyymmmdd = function (dates) {
     var date = dates.trim().split('/');
     return date[2] + '-' + date[1] + '-' + date[0];
   };
+  
+    
+  Date.prototype.addDays = function(days) {
+    var date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+  }
 
-  $('.daterange01').change(function (event) {
+
+  $('.daterange1').change(function (event) {
     var date = $(this).val();
 
-    var arrayDates = date.split('-');
-    var date1 = render_yyyymmmdd(arrayDates[0]);
-    var date2 = render_yyyymmmdd(arrayDates[1]);
-    date1 = new Date(date1);
-    date2 = new Date(date2);
+    var arrayDates = date.split(' - ');
+    var res1       = arrayDates[0].replace("Abr", "Apr");
+    var date1      = new Date(res1);
+    var res2       = arrayDates[1].replace("Abr", "Apr");
+    var date2      = new Date(res2);
     pintar(date1, date2);
     allDayW();
   });
@@ -197,7 +267,7 @@ $(document).ready(function () {
                 for(var i=0;i<total;i++){
                   el_lst.find("[data-date='" + data.redDays[i] + "']").addClass('calend_red'); 
                 }
-                console.log(data,total);
+//                console.log(data,total);
                 callback((data.priceLst));
               });
     },
@@ -212,8 +282,8 @@ $(document).ready(function () {
     var start = new Date(info.start);
     var end = new Date(info.end);
     end.setDate(end.getDate() - 1);
-    $('#date_range').data('daterangepicker').setStartDate(start.ddmmmyyyy());
-    $('#date_range').data('daterangepicker').setEndDate(end.ddmmmyyyy());
+    $('#date_range').data('daterangepicker').setStartDate(start);
+    $('#date_range').data('daterangepicker').setEndDate(end);
     allDayW();
     
   });
@@ -234,21 +304,19 @@ $(document).ready(function () {
     
     var el_lst = $(".fc-bg");
     var limit = 30;
-    var oneDay = 24*60*60;
+//    var oneDay = 24*60*60;
     $('.calend_select').removeClass('calend_select');
-    
     // seconds * minutes * hours * milliseconds = 1 day 
     var day = 60 * 60 * 24 * 1000;
-    start = new Date(start.getTime() + day);
-    end = new Date(end.getTime() + day);
+    start = new Date(start.getTime());
+    end = new Date(end.getTime());
 
     while( limit && start <= end){
       el_lst.find("[data-date='" + start.yyyymmmdd() + "']").addClass('calend_select'); 
       start = new Date(start.getTime() + day);
+//       console.log(start.getTime(),day,start.yyyymmmdd());
       limit--;
     }
-
-
   }
 
   $('#room_list').on('change', function (e) {
@@ -300,7 +368,7 @@ $(document).ready(function () {
         } else {
           $('#error').text(data.msg).show();
         }
-        console.log(data.msg); // show response from the php script.
+//        console.log(data.msg); // show response from the php script.
       }
     });
   });
@@ -417,6 +485,29 @@ th.fc-day-header.fc-widget-header {
     background-color: #e0e0e0;
     border: 1px solid #000;
 }
+table.t-otas {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    background-color: #fafafa !important;
+    border: 2px solid #6d5cae !important;
+    display: none;
+}
+a.fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end.prices:hover table.t-otas {
+    display: table;
+}
+.fc-dayGrid-view .fc-body .fc-row {
+    min-height: 5px !important;
+    max-height: 80px;
+}
+a.fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end.prices {
+    color: #000;
+    cursor: default;
+}
+a.fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end.prices p.min-estanc {
+    color: #6d5cae;
+}
 @media only screen and (max-width: 768px) {
     .calendar-blok{
     width: 100%;
@@ -425,6 +516,9 @@ th.fc-day-header.fc-widget-header {
      .daterangepicker {
     top: auto !important;
   }
+  table.table-prices td{
+  padding: 7px !important;
+}
   }
 </style>
 @endsection
