@@ -186,6 +186,7 @@ class HomeController extends AppController
           }
         }
 
+        return 'No encontrado';
         return redirect('404');
         
     

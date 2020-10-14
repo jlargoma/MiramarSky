@@ -1,3 +1,8 @@
+@extends('layouts.master_onlybody')
+
+@section('styles')
+<script src="{{asset('/frontend/js/modernizr.custom.js')}}"></script>
+
 <style type="text/css">
 
   .lSNext::before{
@@ -106,6 +111,26 @@
     }
   }
 </style>
+@endsection
+
+@section('title') {!! $room->meta_title !!} @endsection
+@section('metadescription') {!! $room->meta_descript !!} @endsection
+
+@section('content')
+<section class="page-title apartamento fotos centered">
+  <div class="container">
+    <div class="content-box">
+      <?php if ($url == '9F'): ?>
+        <h1 class="center hidden-sm hidden-xs psuh-20">ATICO DUPLEX DE LUJO</h1>
+        <h1 class="center hidden-lg hidden-md green push-10">ATICO DUPLEX DE LUJO</h1>
+      <?php else: ?>
+        <h1 class="center hidden-sm hidden-xs psuh-20"><?php echo strtoupper($aptoHeading); ?></h1>
+        <h1 class="center hidden-lg hidden-md green push-10"><?php echo strtoupper($aptoHeadingMobile); ?></h1>
+      <?php endif ?>
+      <h2 class="subtit">{{$room->nameRoom}}</h2>
+    </div>
+  </div>
+</section>
 <section >
   <div class="container">
     <div class="row">
@@ -113,41 +138,13 @@
         <div class="clearfix">
 
           @if($photos)
-          <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-            <ol class="carousel-indicators">
-              <?php 
-              $start = 'active';
-              $count = 0;
-              foreach($photos as $img):
-                ?>
-                 <li data-target="#carouselExampleIndicators" data-slide-to="{{$count}}" class="{{$start}}"></li>
-                <?php
-                $start = '';
-              endforeach;
-              ?>
-            </ol>
-            <div class="carousel-inner">
-              <?php 
-              $start = 'active';
-              foreach($photos as $img):
-                ?>
-                <div class="carousel-item  {{$start}}">
-                 <img src="{{url($img->file_rute.'/'.$img->file_name)}}" alt="{{$aptoHeading}}"/>
-                </div>
-                <?php
-                $start = '';
-              endforeach;
-              ?>
-            </div>
-            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="sr-only">Previous</span>
-            </a>
-            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="sr-only">Next</span>
-            </a>
-          </div>
+          <ul id="image-gallery" class="gallery list-unstyled cS-hidden">
+            @foreach($photos as $img)
+            <li data-thumb="{{$directoryThumbnail}}{{$img->file_name}}"> 
+              <img src="{{$img->file_rute}}/{{$img->file_name}}" alt="{{$aptoHeading}}"/>
+            </li>
+            @endforeach
+          </ul>
           @endif
         </div>
       </div>
@@ -157,5 +154,21 @@
 
       </div>
     </div>
-
+    <div id="fixed-book" class="col-xs-12 text-center center bg-white" >
+      <div class="content">
+        <div class=" btn_reservar">
+          <img class="image_shine effect_shine" src="{{url('/img/miramarski/offer_tag_300.png')}}" style="max-width:125px;"/>
+        </div>
+        <a href="https://www.apartamentosierranevada.net/reservar/" class="button button-desc button-3d button-rounded showFormBook " style="">¡Reserva YA!</a>
+      </div>
+    </div>
 </section>
+@section('scripts')
+<script type="text/javascript" src="{{ asset('/js/flip.min.js')}}"></script>
+<script type="text/javascript" src="{{ assetV('/frontend/js/progressbar.min.js')}}"></script>
+<script src="{{ assetV('/frontend/vendor/lightslider-master/src/js/lightslider.js')}}"></script>
+<script type="text/javascript" src="{{asset('/frontend/js/components/moment.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.min.js')}}"></script>
+<script type="text/javascript" src="{{ assetV('/frontend/js/scripts.js')}}"></script>
+<script type="text/javascript" src="{{ assetV('/frontend/js/form_booking.js')}}"></script>
+@endsection

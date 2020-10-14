@@ -1,3 +1,7 @@
+@extends('layouts.master')
+@section('styles')
+<script src="{{asset('/frontend/js/modernizr.custom.js')}}"></script>
+
 <style type="text/css">
   label{
     color: white!important
@@ -59,6 +63,11 @@
     height: 60px;
 }
 </style>
+@endsection
+@section('metadescription') {{ $meta_descript }} @endsection
+@section('title') {{ $meta_tit }} @endsection
+
+@section('content')
 
   <section class="page-title apartamento centered">
     <div class="container">
@@ -165,3 +174,12 @@
       </div>
     </div>
   </section>
+
+
+  @include('frontend.blocks.services')
+  @include('frontend.blocks.info-links')
+@endsection
+
+@section('scripts')
+<script src="{{ getCloudfl(assetV('/frontend/vendor/lightslider-master/dist/js/lightslider.min.js'))}}"  defer=""></script>
+@endsection

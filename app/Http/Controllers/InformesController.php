@@ -94,9 +94,15 @@ class InformesController extends AppController {
     $salesUser = array();
     $qry_book = Book::where_type_book_reserved()
         ->select('total_price','customers_requests.user_id','book.start')
-        ->Join('customers_requests', 'customers_requests.book_id', '=', 'book.id')
-        ->whereYear('book.start', '=', '20' . $year);
-    if ($month) $qry_book->whereMonth('book.start', '=', $month);
+        ->Join('customers_requests', 'customers_requests.book_id', '=', 'book.id');
+    if ($month){
+      $qry_book->whereYear('book.start', '=', '20' . $year)->whereMonth('book.start', '=', $month);
+    } else {
+      $year = $this->getActiveYear();
+      $startYear = new Carbon($year->start_date);
+      $endYear = new Carbon($year->end_date);
+      $qry_book->where('book.start','>=',$startYear)->where('book.start','<=',$endYear);
+    }
     
     $book = $qry_book->get();
     if ($book) {
