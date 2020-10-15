@@ -70,7 +70,7 @@ td.border-1{
           <th>Apto</th>
           @if($agencies)
           @foreach($agencies as $name=>$id)
-          <th colspan="2">{{$name}}</th>
+          <th colspan="2"><?php echo ($name == 'google-hotel') ? 'direct' : $name; ?></th>
           @endforeach
           @endif
         </tr>

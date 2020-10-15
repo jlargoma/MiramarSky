@@ -224,7 +224,14 @@ class ProcessData extends Command
   
   
   public function bookingsWithoutCvc() {
-    $lst = Book::whereNotNull('external_id')->join('book_visa','book_id','=','book.id')->whereNull('cvc')->pluck('book_id');
+    
+    $finish = date('Y-m-d', strtotime('-2 days'));
+    $lst = Book::where_type_book_reserved()
+            ->whereNotNull('external_id')
+            ->join('book_visa','book_id','=','book.id')
+            ->whereNull('cvc')
+            ->where('finish', '>', $finish)
+            ->pluck('book_id');
     $sentUPD = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
     $sentUPD->content = json_encode($lst);
     $sentUPD->save();

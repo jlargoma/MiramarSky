@@ -2032,4 +2032,156 @@ class LiquidacionController extends AppController {
     return null;
   }
   
+  
+  function gastos_import(Request $request){
+    $data = $request->all();
+   
+    $campos = [
+      'date' =>-1,  
+      'concept' =>-1,  
+      'type' =>-1, 
+      'import' =>-1,  
+      'typePayment' =>-1, 
+      'apto' =>-1,  
+      'comment' =>-1,
+    ];
+    
+  
+    foreach ($data as $k=>$v){
+      if ($v != '' && !is_array($v)){
+        preg_match('/column_([0-9]*)/', $k, $colID);
+        if (isset($colID[1]) && isset($campos[$v])){
+          $campos[$v] = $colID[1];
+        }
+      } 
+    }
+          
+    $info = [];
+    foreach ($campos as $k=>$v){
+      if (isset($data['cell_'.$v])){
+        $info[$k] = $data['cell_'.$v];
+      }
+    }
+    if (count($info) == 0) return back();
+    
+    /***************************************************/
+    $expensesType = \App\Expenses::getTypes();
+    $aRooms = \App\Rooms::getRoomList()->toArray();
+    foreach ($aRooms as $k=>$v) $aRooms[$k] = strtoupper($v); 
+//    foreach ($aRooms as $r) echo $r.'<br>'; die;
+    /***************************************************/
+
+    $campos = [
+      'date' =>'Fecha',  
+      'concept' =>'Concepto',  
+      'type' =>'Tipo de Gasto', 
+      'import' =>'Precio',  
+      'typePayment' =>'Metodo de Pago', 
+      'apto' =>'Apto',  
+      'comment' =>'Comentario',
+    ];
+    
+    $today = date('Y-m-d');
+    $insert = [];
+    $newEmpty = [
+          'concept'=>null,'date'=>null,'import'=>null,'typePayment'=>null,
+          'type'=>null,'comment'=>null,'site_id'=>null,
+        ];
+    
+    
+    
+    ?>
+<style>
+  th {
+    background-color: #cccccc;
+    padding: 7px !important;
+    text-align: left;
+}
+td {
+    padding: 7px;
+    border: 1px solid #b7b7b7;
+}
+</style>
+<?php
+    echo '<table><thead><tr>';
+    foreach ($campos as $k=>$v){
+      echo '<th>'.$v.'</th>';
+    }
+    echo '</tr></thead>';
+    echo '<tbody>';
+    
+    $total = count(current($info));
+    for($i = 0; $i<$total; $i++){
+      echo '<tr>';
+      $new = $newEmpty;
+      foreach ($campos as $k=>$v){
+
+        $value = '';
+        if (!isset($info[$k])){ echo '<td>---</td>'; continue;}
+        if (!isset($info[$k][$i])){ echo '<td>---</td>'; continue;}
+        $variab = $info[$k][$i];
+        switch ($k){
+          case 'date':
+            $value = ($variab != '') ? date("d/m/Y",strtotime($variab)) : 'Día/Mes/Año';
+            $new['date'] =  ($variab != '') ? date("Y-m-d",strtotime($variab)) : $today;
+            break;
+          case 'import':
+            $orig = $variab;
+            $variab = floatval(str_replace(',','', $variab));
+            $value = moneda($variab,true,2).' (<b>'.$orig.'</b>)';
+            $new['import'] = $variab;
+            break;
+          case 'typePayment':
+            $value = 'Método no encontrado';
+            $aux = strtolower($variab);
+            $idType = 0;
+            if ($aux == 'banco'){$value = 'Banco'; $idType = 3;}
+            if ($aux == 'cash') {$value = 'CASH'; $idType = 2;}
+            if ($aux == 'tarjeta') $value = 'Tarjeta visa';
+            
+            $new['typePayment'] = $idType;
+            break;
+          case 'type':
+            $type = array_search($variab,$expensesType);
+            $new['type'] = $type;
+            $value = ($type) ? $variab : $type;
+            break;
+          case 'apto':
+            $aptoIDs = '';
+            $value = '';
+            $aAptoLst = explode(',',$variab);
+            if (count($aAptoLst)){
+              foreach ($aAptoLst as $r){
+                $aptoID = array_search(strtoupper(trim($r)),$aRooms);
+                if ($aptoID){
+                  $aptoIDs .= $aptoID.',';
+                  $value .= $r.',';
+                } else {
+                  $value .= $r.'(no existe),';
+                }
+              }
+            }
+            $new['PayFor'] = $aptoIDs;
+            break;
+          default:
+            $value = $variab;
+            $new[$k] = $value;
+            break;
+        }
+        echo '<td>'.$value.'</td>';
+      }
+      echo '</tr>';
+      $insert[] = $new;
+    }
+    echo '</tbody></table>';
+    
+//    dd($insert);
+//    \App\Expenses::insert($insert);
+    die;
+    
+   
+   
+  }
+  
+  
 }

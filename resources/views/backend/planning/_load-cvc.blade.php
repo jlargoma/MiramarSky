@@ -25,6 +25,7 @@
               <th class="th-bookings text-center th-2">Tel.</th>
               <th class="th-bookings text-center th-2">Email</th>
               <th class="th-bookings text-center th-2">Pax</th>
+              <th class="th-bookings text-center th-2">Estado</th>
               <th class="th-bookings text-center" style="width:120px !important">IN - OUT </th>
               <th class="th-bookings text-center th-2">Comentario</th>
               <th class="th-bookings text-center th-1">CVC</th>
@@ -55,6 +56,7 @@
                 </td>
                 <td >{{$item->customer->email}}</td>
                 <td >{{$item->pax}}</td>
+                <td >{{$item->getStatus($item->type_book) }}</td>
                 <td data-order="{{$item->start}}"  class="nowrap">
                   <b>{{dateMin($item->start)}}</b>
                   <span>-</span>

@@ -620,7 +620,15 @@ a.fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end.prices {
 a.prices:hover{
   color: inherit;
 }
-
+.price-agoda:before{
+  content: '';
+  background:url('/pages/agoda.png'); 
+  background-size: contain;
+  width: 18px;
+  height: 18px;
+  float: left;
+  margin: 0 3px;
+}
 .price-booking:before{
   content: '';
   background:url('/pages/booking.png'); 
@@ -628,7 +636,7 @@ a.prices:hover{
   width: 18px;
   height: 18px;
   float: left;
-
+  margin: 0 3px;
 }
 .price-expedia:before{
   content: '';
@@ -639,6 +647,7 @@ a.prices:hover{
   height: 12px;
   margin-top: 3px;
   margin-left: 2px;
+  margin: 0 3px;
 }
 .price-google:before{
   content: '';
@@ -649,6 +658,7 @@ a.prices:hover{
   height: 12px;
   margin-top: 3px;
   margin-left: 2px;
+  margin: 0 3px;
 }
 .price-airbnb:before{
   content: '';
@@ -659,6 +669,7 @@ a.prices:hover{
   height: 15px;
   margin-top: 3px;
   margin-left: 2px;
+  margin: 0 3px;
 }
 
 a.prices .fc-content .fc-title td.min-estanc {

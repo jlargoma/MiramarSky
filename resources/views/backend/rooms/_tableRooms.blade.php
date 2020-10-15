@@ -104,7 +104,7 @@ $mobile = new Mobile();
               <i class="fa fa-file-pdf"></i>
             </a>
             @endif
-            <a type="button" class="btn btn-default btn-sm" href="{{ url ('/fotos') }}/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
+            <a type="button" class="btn btn-default btn-sm" href="https://www.apartamentosierranevada.net/fotos/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
               <i class="fa fa-paperclip"></i>
             </a>
             @if($room->user)
