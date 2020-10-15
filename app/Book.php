@@ -160,6 +160,7 @@ class Book extends Model {
         4 => "AirBnb"
         ];
     $array[28] = 'Expedia';
+    $array[98] = 'Agoda';
     $array[99] = 'Google';
     $array[5] = "Jaime Diaz";
     $array[3] = "Bed&Snow";

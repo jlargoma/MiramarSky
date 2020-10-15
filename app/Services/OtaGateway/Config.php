@@ -176,6 +176,7 @@ class Config {
         'booking' => 1,
         'expedia' => 28,
         'google-hotel' => 99,
+        'agoda' => 98,
     ];
   }
 

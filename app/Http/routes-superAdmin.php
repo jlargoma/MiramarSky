@@ -277,7 +277,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista'], 'pre
 Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin',], function () {
    //Liquidacion
   
-
+  Route::post('/gastos/importar', 'LiquidacionController@gastos_import');
   Route::get('/gastos/{year?}', 'LiquidacionController@gastos');
   Route::post('/gastos/create', 'LiquidacionController@gastoCreate');
   Route::get('/gastos/getTableGastos', 'LiquidacionController@getTableGastos');

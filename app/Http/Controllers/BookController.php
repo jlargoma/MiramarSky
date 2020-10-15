@@ -1373,7 +1373,14 @@ class BookController extends AppController
         $endAux->lastOfMonth();
         $books = \App\Book::where_book_times($startAux,$endAux)
                 ->whereNotIn('type_book', $type_book_not)->orderBy('start', 'ASC')->get();
-
+        
+        /****************************************/    
+        $bookings_without_Cvc = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
+        $bookings_without_Cvc = json_decode($bookings_without_Cvc->content);
+        if (!$bookings_without_Cvc || !is_array($bookings_without_Cvc)){
+          $bookings_without_Cvc = [];
+        }
+        /****************************************/  
         
         setlocale(LC_TIME, "ES");
         setlocale(LC_TIME, "es_ES");
@@ -1384,7 +1391,7 @@ class BookController extends AppController
             $start      = Carbon::createFromFormat('Y-m-d', $book->start);
             $finish     = Carbon::createFromFormat('Y-m-d', $book->finish);
             $diferencia = $start->diffInDays($finish);
-            $event = $this->calendarEvent($book,$uRole,$isMobile);
+            $event = $this->calendarEvent($book,$uRole,$isMobile,$bookings_without_Cvc);
            
             for ($i = 0; $i <= $diferencia; $i++)
             {
@@ -1430,8 +1437,12 @@ class BookController extends AppController
                                        ->get();
         }
         $days = $arrayDays;
-
-      $buffer = ob_html_compress(view('backend.planning.calendar.content', compact('arrayBooks', 'arrayMonths', 'arrayTotales', 'rooms', 'roomscalendar', 'arrayReservas', 'mes', 'date', 'extras', 'days', 'startYear', 'endYear','currentM','startAux')));
+  
+        
+      $buffer = ob_html_compress(view('backend.planning.calendar.content', 
+              compact('arrayBooks', 'arrayMonths', 'arrayTotales', 'rooms',
+                      'roomscalendar', 'arrayReservas', 'mes', 'date', 'extras',
+                      'days', 'startYear', 'endYear','currentM','startAux')));
       return view('backend.planning.calendar.index',['content'=>$buffer]);
       
     }
@@ -1880,7 +1891,7 @@ class BookController extends AppController
      * @param type $uRole
      * @return type
      */
-    private function calendarEvent($book,$uRole,$isMobile) {
+    private function calendarEvent($book,$uRole,$isMobile,$bookings_without_Cvc) {
       
       $class = $book->getStatus($book->type_book);
       if ($class == "Contestado(EMAIL)"){ $class = "contestado-email";}
@@ -1902,6 +1913,9 @@ class BookController extends AppController
       }
 
       $titulo .= $agency;
+      if (in_array($book->id, $bookings_without_Cvc)){
+        $titulo.= '&#10;Falta CVC';
+      }
       
       if ($isMobile) $titulo = '';
       $return = json_encode([

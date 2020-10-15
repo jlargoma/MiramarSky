@@ -84,7 +84,7 @@
           <tbody>
         @foreach($rooms as $kRoom=>$item)
         <tr class="room-name">
-          <td  class="room-name static static-header" colspan="13" >
+          <td  class="room-name static static-header" colspan="20" >
             <div class="col-2">
               <h3 class="white">{{$item['tit']}}</h3>
             </div>
@@ -95,6 +95,7 @@
                    <td><span class="price-airbnb">{{$item['price_airbnb']}}</span></td>
                    <td><span class="price-expedia">{{$item['price_expedia']}}</span></td>
                    <td><span class="price-google">{{$item['price_google']}}</span></td>
+                   <td><span class="price-agoda">{{$item['price_agoda']}}</span></td>
                  </tr>
                </table>
             </div>

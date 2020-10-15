@@ -50,7 +50,7 @@ if(isset($page)){
           <div class="row" id="contentRooms" style="display: none;">
             <?php foreach (\App\Rooms::where('state', 1)->orderBy('order', 'ASC')->get() as $key => $room): ?>
               <div class=" roomEspecifica text-center" data-idRoom="<?php echo $room->id; ?>" data-selected="0">
-                <?php echo substr($room->nameRoom, -2); ?>
+                <?php echo $room->nameRoom; ?>
               </div>
             <?php endforeach ?>
           </div>

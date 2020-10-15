@@ -347,6 +347,7 @@ trait OtasTraits
             'price_expedia' => 0,
             'price_airbnb'  => 0,
             'price_google'  => 0,
+            'price_agoda'  => 0,
         ];
         
         

@@ -1,113 +1,37 @@
-<style type="text/css">
-
-  .lSNext::before{
-    content: ">";
-    width: 0px;
-    display: block;
-    color: #fff;
-    font-size: 4em;
-    margin-left: -10px;
-    margin-right: 0;
-  }
-  .lSPrev::before{
-    content: "<";
-    width: 0px;
-    display: block;
-    color: #fff;
-    font-size: 4em;
-    margin-right: -10px;
-  }
-
-  @media only screen and (max-width: 768px){
-    .page-title {
-      padding-top: 0px !important;
-    }
-  }
-
-</style>
 <style>
-
-  .images-apto {
-    /*opsition: relative;*/
-    width: 100%;
-    height: 70vh;
-    background-size: cover;
-    background-position: center center;
-    background-repeat: no-repeat;
+  h1{
+    margin-bottom: 0 !important;
   }
-  .thumbnail-gall {
-    width: 75px !important;
-    height: 75px;
-    display: inline-block;
-    background-size: cover;
-    background-repeat: no-repeat;
-    margin: 5px;
-  }
-  a.carousel-control-next,
-  .carousel-control-prev{
-    height: 70%;
-  }
-  .apartamento h1{
-    transform-origin: center center 0px;
-    transform: scale(1) translate3d(0px, 0px, 0px);
-    font-family: 'miramar';
-    color: #fff;
-    text-shadow: rgb(8, 8, 8) 1px 1px;
-    line-height: 80px;
-    font-weight: bold;
-    font-size: 5em;
-    line-height: 1;
-    padding: 1em;
-  }
-  .apartamento.fotos {
-    background-image: url('{{ $photoHeader }}') !important;
-  }
-
-  .page-title {
-    padding: 5em 0 3em;
-    background-size: cover; 
-    background-position: center center; 
-    background-repeat: no-repeat; 
-    margin-top: -12em;
-    padding-top: 14em;
-    margin-bottom: 2em;
-  }
-  section.page-section.darkgrey {
-    margin: 2em 0;
-    padding: 2.2em;
-  }
-  h2.text-center.white.font-w300 {
-    width: 100%;
-    font-size: 3.2em;
-    margin-bottom: 1em;
-  }
-
-  h2.subtit {
-    width: 100%;
+  
+  .stars {
+    width: auto;
+    margin: 7px auto;
+    padding-bottom: 2em;
     text-align: center;
-    /* transform-origin: center center 0px; */
-    /* transform: scale(1) translate3d(0px, 0px, 0px); */
-    font-family: 'miramar';
-    color: #fff;
-    text-shadow: rgb(8, 8, 8) 1px 1px;
-    line-height: 80px;
-    font-weight: bold;
-    font-size: 3em;
-    line-height: 1;
-    padding: 0;
-    margin: 0;
   }
-  @media (max-width: 768px){
-    .apartamento h1{
-      padding: 0;
-    }
-    .page-title.apartamento.fotos{
-      margin-top: 0;
-    }
+  .stars i{
+    color: #f28d7b;
+    font-size: 2em
   }
+
 </style>
 <section >
   <div class="container">
+    <div class="content-box">
+      <?php if ($url == '9F'): ?>
+        <h1 class="text-center">ATICO DUPLEX DE LUJO</h1>
+      <?php else: ?>
+        <h1 class="text-center"><?php echo strtoupper($aptoHeadingMobile); ?></h1>
+      <?php endif ?>
+      <h2 class="text-center">{{$room->nameRoom}}</h2>
+    </div>
+    <div class="stars">
+      <i aria-hidden="true" class="fas fa-star"></i>
+      <i aria-hidden="true" class="fas fa-star"></i>
+      <i aria-hidden="true" class="fas fa-star"></i>
+      <i aria-hidden="true" class="fas fa-star"></i>
+      <i aria-hidden="true" class="fas fa-star"></i>
+    </div>
     <div class="row">
       <div class="col-lg-6 col-md-7 img-colmun">
         <div class="clearfix">
@@ -157,5 +81,6 @@
 
       </div>
     </div>
+  </div>
 
 </section>

@@ -14,6 +14,8 @@ $isMobile = $mobile->isMobile();
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
+  <script type="text/javascript" src="/js/backend/import-excel.js"></script>
+
   <style>
     .table-resumen .first-col {
       white-space: nowrap;
@@ -63,7 +65,7 @@ $isMobile = $mobile->isMobile();
       color: #fff;
     }
     .roomEspecifica{
-      width: 30px; float: left; margin: 5px 2px;
+      padding: 7px; float: left; margin: 2px;
       cursor: pointer;
     }
     input[type="number"] {
@@ -97,6 +99,32 @@ $isMobile = $mobile->isMobile();
     .table-responsive th select option {
      color: #008ff7;
     }
+  .btnImportExcel{background-color: #10cfbd;float: left;padding: 7px;color: #FFF;}
+  #importExcel{
+    width: 80%;
+    float: left;
+    padding: 6px;
+    margin: 0px 14px 0px 0px;
+    height: 6em;
+  }
+  .btnSendImportExcel{clear: both; display: none;}
+  select.colExcel {
+    width: 100%;
+    background-color: #FFF;
+    color: #000;
+    padding: 7px;
+  }
+  #excel_table{
+    margin-top: 1em;
+  }
+  #excel_table th {
+      padding: 0px !important;
+  }
+  #excel_table td input {
+    border: none;
+      width: 100%;
+      padding: 7px;
+  }
   </style>
 @endsection
 
@@ -152,7 +180,7 @@ $isMobile = $mobile->isMobile();
             <h3>Total Año <br/>{{moneda($total_year_amount)}}</h3>
           </div>
           
-        <div class="col-md-12 col-xs-12" style="padding-right: 0; min-height: 43em;">
+        <div class="col-md-12 col-xs-12" style="padding-right: 0; min-height: 3em;">
           <input type="hidden" id="year" value="">
           <input type="hidden" id="month" value="">
           <div class="table-responsive">
@@ -194,6 +222,17 @@ $isMobile = $mobile->isMobile();
             </tbody>
           </table>
         </div>
+          <div class="col-md-12 col-xs-12" style="min-height:43em;"> 
+            <div class="clearfix">
+              <textarea id="importExcel" rows="1" placeholder="Pegar los registros del Excel"></textarea>
+              <div class="btnImportExcel">Importar</div>
+              <form method="post" action="/admin/gastos/importar">
+                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                <table class="table" id="excel_table"></table>
+                <button class="btn btn-success btnSendImportExcel" >Enviar</button>
+              </form>
+            </div>
+          </div>
       </div>
       
 <div class="modal fade" id="modalAddNew" tabindex="-1" role="dialog"  aria-hidden="true">
@@ -210,7 +249,7 @@ $isMobile = $mobile->isMobile();
   </div>
 </div>
 </div>
-    
+
 @endsection
 
 <!---->
