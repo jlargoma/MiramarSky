@@ -21,6 +21,11 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], fun
   //informes
   Route::get('admin/sales/{year?}','InformesController@sales_index');
   Route::post('admin/salesLst/','InformesController@get_sales_list');
+  
+  //bloqueo automático
+  Route::get('/admin/multiple-room-lock', 'BookController@multipleRoomLock_print');
+  Route::post('/admin/multiple-room-lock', 'BookController@multipleRoomLock_send');
+  Route::post('/admin/multiple-room-lock-task', 'BookController@multipleRoomLock_tasks');
 });
 
 Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista']], function () {

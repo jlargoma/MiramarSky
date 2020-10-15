@@ -224,6 +224,7 @@ $isMobile = $mobile->isMobile();
         </div>
           <div class="col-md-12 col-xs-12" style="min-height:43em;"> 
             <div class="clearfix">
+              <p class="alert alert-warning">Modo Pruebas</p>
               <textarea id="importExcel" rows="1" placeholder="Pegar los registros del Excel"></textarea>
               <div class="btnImportExcel">Importar</div>
               <form method="post" action="/admin/gastos/importar">

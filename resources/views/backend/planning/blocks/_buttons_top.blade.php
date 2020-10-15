@@ -95,6 +95,10 @@
         <button class="btn btn-blue btn_intercambio btn-cons minimal" type="button" data-toggle="modal" data-target="#modalIntercambio">
           <span class="bold">intercambio</span>
         </button>
+        <button class="btn btn-danger btn-cons btn-blink"  id="btnBookBlockAll" >
+          <i class="fa fa-key" aria-hidden="true"></i>
+          <span class="bold hidden-mobile">Bloqueo</span>
+        </button>
       <?php endif ?>
     </div>
   </div>

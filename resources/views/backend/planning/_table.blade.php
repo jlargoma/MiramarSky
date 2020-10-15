@@ -10,6 +10,7 @@ $role = Auth::user()->role;
     case 'pendientes':
     case 'overbooking':
     case 'reservadas':
+    case 'blocks':
     case 'cancel-xml':
       ?> @include('backend.planning.listados._pendientes', ['books' => $books ])<?php
       if ($role != "agente"){

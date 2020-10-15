@@ -8,6 +8,10 @@
         </span>
       <?php endif ?>
     </button>
+    <button class="btn btn-primary btn-tables btn-cons" type="button" data-type="blocks" style="background-color: #448eff;">
+      <span class="bold">Bloqueadas</span>
+      <span class="text-black text-cont">{{ $booksCount['blocks'] }}</span>
+    </button>
     <button class="btn btn-success btn-tables btn-cons" type="button" data-type="reservadas" style="background-color: #53ca57;">
       <span class="bold">Reservadas</span>
       <span class="text-black text-cont" style="">
@@ -66,7 +70,10 @@
       </span>
     <?php endif ?>
   </button>
-
+  <button class="btn btn-success btn-tables btn-cons" type="button" data-type="blocks" style="background-color: #448eff;">
+    <span class="bold">Bloq</span>
+    <span class="text-black text-cont" >{{ $booksCount['blocks'] }}</span>
+  </button>
   <button class="btn btn-success  btn-tables" type="button" data-type="reservadas" style="background-color: #53ca57;">
     <span class="bold">Reser</span>
     <span class="text-black" >

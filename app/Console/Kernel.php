@@ -30,6 +30,7 @@ class Kernel extends ConsoleKernel
         Commands\WubookAvailables::class,
         Commands\PricesSeason::class,
         Commands\MinStaySeason::class,
+        Commands\ProcessMultipleRoomLock::class,
 //        Commands\WubookGetBookings::class,
 //        Commands\ZodomusImport::class,
 //        Commands\RoomsPhotosMigrate::class,
@@ -60,6 +61,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('wubook:sendAvaliables')->everyFiveMinutes();
         $schedule->command('ProcessData:all')->everyFiveMinutes();
         $schedule->command('OTAs:sendMinStaySeason')->everyFiveMinutes();
+        $schedule->command('MultipleRoomLock:Process')->hourly()->timezone('Europe/Madrid');
 //         $schedule->command('ical:import')->everyTenMinutes();
 //         $schedule->command('monthLimpieza:create')->monthlyOn(1, '5:00')->timezone('Europe/Madrid');
 //         $schedule->command('zodomus:import')->everyTenMinutes();
