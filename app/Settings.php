@@ -178,5 +178,20 @@ class Settings extends Model {
       return null;
     }
   }
+  
+   
+    // Put this in any model and use
+    // Modelname::findOrCreate($id);
+    public static function findOrCreate($key)
+    {
+        $obj = static::where('key',$key)->first(); 
+        if ($obj) return $obj;
+
+        $obj = new static;
+        $obj->key = $key;
+        $obj->save();
+        return $obj;
+    }
+    
 
 }

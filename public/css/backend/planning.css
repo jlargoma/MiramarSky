@@ -531,6 +531,10 @@ th.table-reservadas{
   background-color: #53ca56;
   /*color: #FFF !important;*/
 }
+th.table-blocks {
+    background-color: #478eff;
+    color: #FFF !important;
+}
 th.table-cancel-xml{
   background-color: #f55753;
   color: #FFF !important;

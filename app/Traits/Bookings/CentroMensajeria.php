@@ -577,4 +577,46 @@ trait CentroMensajeria {
     return response()->json(['status'=>'error','msg'=>'Encuesta no enviada']);
   }
   
+  
+  
+  public function multipleRoomLock_print() {
+ 
+    $start = Carbon::now();
+    $finish = Carbon::now()->addDay(1);
+    $MultipleRoomLock = new \App\Services\Bookings\MultipleRoomLock();
+    $oRooms = $MultipleRoomLock->getRoomsName();
+    $aTaskData = $MultipleRoomLock->get_RoomLockSetting($oRooms);
+    return view('backend/planning/_multiple-room-lock', compact('oRooms','start','finish','aTaskData'));
+  }
+  
+  public function multipleRoomLock_tasks(Request $request) {
+    $roomSelect = $request->input('rooms',null);
+    $time  = $request->input('time',null);
+    $MultipleRoomLock = new \App\Services\Bookings\MultipleRoomLock();
+    $oRooms = $MultipleRoomLock->getRoomsName();
+    $aTaskData = ['time'=>$time,'rooms'=>[]];
+    foreach ($oRooms as $k=>$v){
+      if (in_array($k,$roomSelect)) $aTaskData['rooms'][$k] = 1;
+      else $aTaskData['rooms'][$k] = 0;
+    }
+    
+    $MultipleRoomLock->set_RoomLockSetting($aTaskData);
+      
+    return response()->json(['title'=>'OK','status'=>'success','msg'=>'Bloqueo Automático guardado']);
+  }
+  
+   public function multipleRoomLock_send(Request $request) {
+    $roomCh = $request->input('room',null);
+    $start  = $request->input('start',null);
+    $finish = $request->input('finish',null);
+    
+    if ($roomCh){
+      $MultipleRoomLock = new \App\Services\Bookings\MultipleRoomLock();
+      $MultipleRoomLock->roomLockBy_ChannelGr($roomCh,$start,$finish);
+      return response()->json(['title'=>'OK','status'=>'success','msg'=>'Apartamento bloqueados']);
+    }
+    
+    return response()->json(['title'=>'error','status'=>'danger','msg'=>'No se pudo llevar a cabo la acción solicitada']);
+
+  }
 }

@@ -48,6 +48,7 @@ class BookController extends AppController
         {
           $rooms       = Rooms::orderBy('order')->get();
           $types       = Book::get_type_book_pending();
+          unset($types[array_search(4,$types)]);
           $booksQry = Book::where('start', '>=', $startYear)
                   ->where('start', '<=', $endYear);
                   
@@ -87,6 +88,8 @@ class BookController extends AppController
         $booksCount['cancel-xml']    = $query2->where('type_book', 98)->count();
         $query2 = clone $booksQry;
         $booksCount['blocked-ical'] = $query2->whereIn('type_book', [11,12])->where("enable", "=", "1")->count();
+        $query2 = clone $booksQry;
+        $booksCount['blocks']    = $query2->where('type_book', 4)->count();
         $query2 = clone $booksQry;
         $totalReserv = $query2->where('type_book', 1)->count();
         $query2 = clone $booksQry;
@@ -1204,6 +1207,7 @@ class BookController extends AppController
           case 'pendientes':
             if ($uRole != "agente") {
               $types = Book::get_type_book_pending();
+              unset($types[array_search(4,$types)]);
               $books = $booksQuery->whereIn('type_book', $types)
                               ->orderBy('created_at', 'DESC')->get();
             } else {
@@ -1274,6 +1278,12 @@ class BookController extends AppController
               }
             }
             break;
+          case 'blocks':
+                $books = $booksQuery->where('type_book', 4)
+                  ->orderBy('created_at', 'DESC')->get();
+
+            $bg_color = '#448eff';
+          break;
           case 'eliminadas':
             $books = \App\Book::where_book_times($startYear, $endYear)
                             ->where('type_book', 0)->orderBy('updated_at', 'DESC')->get();

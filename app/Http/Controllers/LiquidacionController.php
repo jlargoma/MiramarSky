@@ -535,11 +535,18 @@ class LiquidacionController extends AppController {
     $vtas_alojamiento_iva  = $ing_iva;
     
     //EXTRAORDINARIOS + RAPPEL CLASES + RAPPEL FORFAITS
-    $data['otros_ingr'] = $data['lstT_ing']['extr']
-            +$data['lstT_ing']['rappel_clases']
-            +$data['lstT_ing']['rappel_forfaits']
-            +$data['lstT_ing']['rappel_alq_material']
-            +$data['lstT_ing']['others'];
+    $data['otros_ingr'] = 0;
+    $otherIng = $ingrType = \App\Incomes::getTypes();
+    foreach ($otherIng as $k=>$v){
+      if (isset($data['lstT_ing'][$k])){
+         $data['otros_ingr'] += $data['lstT_ing'][$k];
+      }
+    }
+//    $data['otros_ingr'] = $data['lstT_ing']['extr']
+//            +$data['lstT_ing']['rappel_clases']
+//            +$data['lstT_ing']['rappel_forfaits']
+//            +$data['lstT_ing']['rappel_alq_material']
+//            +$data['lstT_ing']['others'];
     $data['otros_ingr_base'] = $data['otros_ingr']/1.21;
     $data['otros_ingr_iva']  = $data['otros_ingr']-$data['otros_ingr_base'];
     
@@ -1103,10 +1110,10 @@ class LiquidacionController extends AppController {
     if ($incomesLst){
       foreach ($incomesLst as $item){
         $date = date('ym', strtotime($item->date));
-        $concept = isset($ingrType[$item->concept]) ? $item->concept : 'others';
-        if (!isset($ingrMonths[$concept][$date])) $ingrMonths[$concept][$date] = 0;
-        $ingrMonths[$concept][$date] += $item->import;
-        $ingrMonths[$concept][0] += $item->import;
+        $type = isset($ingrType[$item->type]) ? $item->type : 'others';
+        if (!isset($ingrMonths[$type][$date])) $ingrMonths[$type][$date] = 0;
+        $ingrMonths[$type][$date] += $item->import;
+        $ingrMonths[$type][0] += $item->import;
        
       }
     }

@@ -24,7 +24,7 @@
         @if($k == 'ventas' || $k == 'ff')
           <td class="text-center" >
         @else
-          <td class="text-center editable_ingr" data-key="{{$k}}" data-month="{{$k_month}}" data-val="{{moneda($ingresos[$k][$k_month],false)}}">
+          <td class="text-center" data-key="{{$k}}" data-month="{{$k_month}}" data-val="{{moneda($ingresos[$k][$k_month],false)}}">
         @endif
           {{moneda($ingresos[$k][$k_month],false)}}
         </td> 
