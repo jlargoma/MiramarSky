@@ -28,6 +28,7 @@
               <th class="th-bookings text-center th-2">Estado</th>
               <th class="th-bookings text-center" style="width:120px !important">IN - OUT </th>
               <th class="th-bookings text-center th-2">Comentario</th>
+              <th class="th-bookings text-center th-2">Nro tarj</th>
               <th class="th-bookings text-center th-1">CVC</th>
               <th class="th-bookings text-center th-1"></th>
             </tr>
@@ -69,7 +70,10 @@
                   @endif
                 </td>
                 <td class="text-center">
-                 <input type="text" class="form-control" value=""  id="cc_cvc" data-book_id="{{$item->id}}" data-customer_id="{{$item->customer_id}}">
+                 <input type="text" class="form-control cc_upd" {!!value_isset($aVisasNumLst,$item->id)!!}  id="cc_number{{$item->id}}" data-book_id="{{$item->id}}" data-customer_id="{{$item->customer_id}}">
+                </td>
+                <td class="text-center">
+                 <input type="text" class="form-control cc_upd" {!!value_isset($aVisasCVCLst,$item->id)!!}  id="cc_cvc{{$item->id}}" data-book_id="{{$item->id}}" data-customer_id="{{$item->customer_id}}">
                 </td>
                 <td class="text-center">
                 <a href="https://online.bnovo.ru/dashboard?q={{$item->external_id}}" class="btn btn-bnovo" target="_black"></a>
@@ -124,16 +128,17 @@
 </style>
 <script>
 $(document).ready(function () {
-  $('body').on('change','#cc_cvc',function(event) {
+  $('body').on('change','.cc_upd',function(event) {
     var that = $(this);
     var id = that.data('book_id');
     var idCustomer = that.data('customer_id');
-    var cc_cvc = that.val();
+    var cc_cvc = $('#cc_cvc'+id).val();
+    var cc_number = $('#cc_number'+id).val();
     $('#loadigPage').show('slow');
-    $.post('/admin/reservas/upd-visa', { _token: "{{ csrf_token() }}",id:id,idCustomer:idCustomer,cc_cvc:cc_cvc }, function(data) {
+    $.post('/admin/reservas/upd-visa', { _token: "{{ csrf_token() }}",id:id,idCustomer:idCustomer,cc_cvc:cc_cvc,cc_number:cc_number }, function(data) {
           if (data.status == 'success') {
             window.show_notif('',data.status,data.response);
-            that.closest('tr').remove();
+//            that.closest('tr').remove();
           } else {
             window.show_notif('Error:',data.status,data.response);
           }

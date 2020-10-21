@@ -124,7 +124,7 @@ $lstSafetyBox = \App\BookSafetyBox::$keys_name;
                             <?php if ($uRole != "limpieza" && (!empty($book->comment) || !empty($book->book_comments))): ?>
                           
                             <div data-booking="<?php echo $book->id; ?>" class="showBookComm" >
-                              <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                              <i class="far fa-comment-dots" style="color: #000;" aria-hidden="true"></i>
                               <div class="BookComm tooltiptext"></div>
                             </div>
                             <?php endif ?>

@@ -107,6 +107,9 @@ $mobile = new Mobile();
             <a type="button" class="btn btn-default btn-sm" href="https://www.apartamentosierranevada.net/fotos/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
               <i class="fa fa-paperclip"></i>
             </a>
+            <button type="button" class="btn btn-success btn-sm uploadFile action-rooms-table" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" title="Subir imagenes aptos">
+                    <i class="fa fa-upload" aria-hidden="true"></i>
+            </button> 
             @if($room->user)
             <button class="btn btn-default btn-emiling btn-sm" type="button" data-toggle="modal" data-target="#modalEmailing" data-id="<?php echo $room->user->id ?>">
               <i class=" pg-mail"></i>

@@ -230,7 +230,9 @@ class ProcessData extends Command
             ->whereNotNull('external_id')
             ->join('book_visa','book_id','=','book.id')
             ->whereNull('cvc')
+            ->whereNull('cc_number')
             ->where('finish', '>', $finish)
+            ->where('agency', '!=', 4)
             ->pluck('book_id');
     $sentUPD = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
     $sentUPD->content = json_encode($lst);

@@ -112,7 +112,7 @@
           <a href="{{ url('admin/orders-payland') }}" class="detailed">PAYLAND</a>
     </li>
 <?php endif ?>
-    <?php if ( (env('APP_APPLICATION') != "riad") && $uRole == "admin"): ?>
+    <?php if (  $uRole == "admin"): ?>
     <li class="{{  (preg_match('/\/contents-home/i',$pathRequest))  ? 'active' : '' }}">
       <a href="{{ url('/admin/contents-home') }}" class="detailed">Contenidos Front</a>
     </li>

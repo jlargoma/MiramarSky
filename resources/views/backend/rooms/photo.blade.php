@@ -5,8 +5,8 @@
       @foreach ($photos as $photo)
       <li class="photo_sortable" id="{{$photo->id}}">
         <img src="{{ $photo->file_rute }}/thumbnails/{{ $photo->file_name }}" alt="{{$roomName}}">
-        <button class="btn btn-danger btn_remove" type="button" data-toggle="tooltip" data-id="{{$photo->id}}"  title="" data-apto="{{$roomName}}" data-gal="{{$key_gal}}" data-original-title="Eliminar Reserva" onclick="return confirm('¿Quieres Eliminar la reserva?');">
-          <i class="fa fa-trash-o"></i>
+        <button class="btn btn-danger btn_remove" type="button" data-toggle="tooltip" data-id="{{$photo->id}}"  title="" data-apto="{{$roomName}}" data-gal="{{$key_gal}}" data-original-title="Eliminar Foto" >
+          <i class="far fa-trash-alt"></i>
         </button>
         <i class="fas fa-check btn_main <?php if ($photo->main) echo 'active'; ?>" data-id="{{$photo->id}}"></i>
       </li>
@@ -51,6 +51,7 @@
 
     $('.photo_sortable').on('click', '.btn_remove', function () {
 
+    if (confirm('¿Quieres Eliminar la Foto?')){
       var id = $(this).data('id');
       var apto = $(this).data('apto');
       var item = $(this).closest('.photo_sortable');
@@ -76,7 +77,7 @@
           showFloatMsg('error', 'No se ha podido obtener los detalles de la consulta.');
         }
       });
-
+    }
     });
 
     $('.photo_sortable').on('click', '.btn_main', function () {

@@ -65,14 +65,14 @@ $isMobile = $mobile->isMobile();
                     }
                     ?>
                     @if($isMobile)
-                    <i class="fa fa-commenting msgs fa-2x" 
+                    <i class="far fa-comment-dots msgs fa-2x" 
                        style="color: #000;" 
                        aria-hidden="true"
                        data-msg="{{$textComment}}"
                        ></i>
                     @else
                     <div class="tooltip-2">
-                      <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                      <i class="far fa-comment-dots" style="color: #000;" aria-hidden="true"></i>
                       <div class="tooltiptext comment"><p class="text-left"><?php echo $textComment ?></p></div>
                     </div>
                     @endif
