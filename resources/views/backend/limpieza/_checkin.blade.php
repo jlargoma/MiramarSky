@@ -88,7 +88,7 @@ $t_class = ($isMobile) ? '' : 'th-bookings';
                         <td class="text-center">
                           @if($book->book_owned_comments)
                           <div class="show-comment">
-                          <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                          <i class="far fa-comment-dots" style="color: #000;" aria-hidden="true"></i>
                           <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
                           </div>
                           @endif

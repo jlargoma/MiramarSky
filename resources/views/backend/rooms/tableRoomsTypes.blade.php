@@ -19,10 +19,10 @@
           <input class="editable  th-1" data-id="{{$k}}"  data-type="title" value="{{$title[$k]}}" >
         </td>
         <td class="text-center">
-          <input class="editable" data-id="{{$k}}"  data-type="minPax" value="{{$minPax[$k]}}" >
+          <input class="editable td-2" data-id="{{$k}}"  data-type="minPax" value="{{$minPax[$k]}}" >
         </td>
         <td class="text-center">
-          <input class="editable" data-id="{{$k}}" data-type="maxPax" value="{{$maxPax[$k]}}" >
+          <input class="editable td-2"  data-id="{{$k}}" data-type="maxPax" value="{{$maxPax[$k]}}" >
         </td>
         <td class="text-center">
           <input class="editable" data-id="{{$k}}" data-type="slug" value="{{$slug[$k]}}" >
@@ -41,5 +41,11 @@
     border-style: none;
     padding: 0px 12px;
     cursor: pointer;
+  }
+  .th-2{
+      width: 5em !important;
+  }
+  .editable.td-2{
+    max-width: 5em;
   }
 </style>

@@ -65,7 +65,7 @@
                                 }
                             ?>
                             <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
-                                <i class="fa fa-commenting" style="color: #000;" aria-hidden="true"></i>
+                                <i class="far fa-comment-dots" style="color: #000;" aria-hidden="true"></i>
                             </span>
                             <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $textComment ?></p></div>
                         <?php endif ?>

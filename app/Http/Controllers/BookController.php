@@ -207,8 +207,8 @@ class BookController extends AppController
          
         /****************************************************************/
         return view('backend/planning/index',
-                compact('books', 'mobile', 'stripe', 'inicio', 'rooms', 'roomscalendar', 'date',
-                        'stripedsPayments', 'notifications', 'booksCount', 'alarms','lowProfits',
+                compact('books', 'mobile', 'stripe', 'rooms', 
+                        'booksCount', 'alarms','lowProfits',
                         'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment',
                         'ff_pendientes','ff_mount','totalReserv','amountReserv','overbooking',
                         'CustomersRequest','urgentes','bookings_without_Cvc')
@@ -531,8 +531,8 @@ class BookController extends AppController
               $fieldsName = ["name"=>'Nombre',"number"=>'Nro tarj','date'=>'Vto','expiration_date'=>'Vto',"cvc"=>'CVC','type'=>'Tipo'];
               foreach ($fieldsCard as $f){
                 if (isset($visaData[$f])){
-                  if ($f == 'date') $visaData[$f] = str_replace ('/20', ' / ', $visaData[$f]);
-                  if ($f !== 'cvc'){
+                  if ($f == 'date' || $f == 'expiration_date') $visaData[$f] = str_replace ('/20', ' / ', $visaData[$f]);
+                  if ($f !== 'cvc' && $f !== 'number'){
                     $visaHtml .= '
                       <div>
                       <label>'.$fieldsName[$f].'</label>
@@ -540,13 +540,19 @@ class BookController extends AppController
                       <button class="btn btn-success copy_data" type="button"><i class="fa fa-copy"></i></button>
                       </div>';
                   }
+                  
                 }
               }
               
               $visaHtml .= '
                 <div>
+                <label>Nro tarj</label>
+                <input type="text" class="form-control cc_upd" value="'.$oVisa->cc_number.'"  id="cc_number">
+                <button class="btn btn-success copy_data" type="button"><i class="fa fa-copy"></i></button>
+                </div>                
+                <div>
                 <label>CVC</label>
-                <input type="text" class="form-control" value="'.$oVisa->cvc.'"  id="cc_cvc">
+                <input type="text" class="form-control cc_upd" value="'.$oVisa->cvc.'"  id="cc_cvc">
                 <button class="btn btn-success copy_data" type="button"><i class="fa fa-copy"></i></button>
                 <a href="https://online.bnovo.ru/dashboard?q='.$book->external_id.'" class="btn btn-bnovo" target="_black"></a>
                 </div>';                
@@ -1450,8 +1456,8 @@ class BookController extends AppController
   
         
       $buffer = ob_html_compress(view('backend.planning.calendar.content', 
-              compact('arrayBooks', 'arrayMonths', 'arrayTotales', 'rooms',
-                      'roomscalendar', 'arrayReservas', 'mes', 'date', 'extras',
+              compact('arrayMonths', 'rooms',
+                      'roomscalendar', 'arrayReservas', 'mes', 
                       'days', 'startYear', 'endYear','currentM','startAux')));
       return view('backend.planning.calendar.index',['content'=>$buffer]);
       
@@ -1950,6 +1956,8 @@ class BookController extends AppController
       $bookingID = $request->input('id', null);
       $clientID = $request->input('idCustomer', null);
       $cc_cvc = $request->input('cc_cvc', null);
+      $cc_number = $request->input('cc_number', null);
+      
       $oUser = Auth::user();
       $response = [
                   'title' => 'Error',
@@ -1966,6 +1974,7 @@ class BookController extends AppController
                           ->where('id', $oVisa->id)
                           ->update([
                               'cvc' => $cc_cvc,
+                              'cc_number' => $cc_number,
                               'updated_at'=>date('Y-m-d H:m:s'),
                               'imported' => $oVisa->imported+1]);
                
@@ -1976,9 +1985,9 @@ class BookController extends AppController
               ];
             
             $lst = Book::whereNotNull('external_id')->join('book_visa','book_id','=','book.id')->whereNull('cvc')->pluck('book_id');
-            $sentUPD = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
-            $sentUPD->content = json_encode($lst);
-            $sentUPD->save();
+//            $sentUPD = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
+//            $sentUPD->content = json_encode($lst);
+//            $sentUPD->save();
           }
       }
       
@@ -2258,12 +2267,26 @@ class BookController extends AppController
 
       $bookings_without_Cvc = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
       $bookings_without_Cvc = json_decode($bookings_without_Cvc->content);
+      $aVisasCVCLst = [];
+      $aVisasNumLst = [];
       $bookLst = null;
       if ($bookings_without_Cvc){
         $bookLst = Book::whereIn('id',$bookings_without_Cvc)->with('customer')->get();
+        
+
+        $oVisas = DB::table('book_visa')
+                    ->whereIn('book_id',$bookings_without_Cvc)
+                    ->get();
+//        dd($oVisas);
+        if ($oVisas){
+            foreach ($oVisas as $visa){
+                $aVisasCVCLst[$visa->book_id] = $visa->cvc;
+                $aVisasNumLst[$visa->book_id] = $visa->cc_number;
+            }
+        }
       }
       $isMobile = config('app.is_mobile');
-      return view('backend/planning/_load-cvc',compact('bookLst','isMobile'));
+      return view('backend/planning/_load-cvc',compact('bookLst','isMobile','aVisasCVCLst','aVisasNumLst'));
 
   }   
 }

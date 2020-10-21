@@ -13,7 +13,7 @@ class Expenses extends Model
         'prop_pay' => 'PAGO PROPIETARIOS',
         'excursion' => 'PROVEEDORES EXCURSIÓN',
         'agencias' => 'AGENCIAS',
-        'amenities' => 'AMENITIES (EXTRAS)',
+        'amenities' => 'AMENITIES',
         'comision_tpv' => 'COMSION TPV',
         'lavanderia' => 'LAVANDERIA',
         'limpieza' => 'LIMPIEZA',

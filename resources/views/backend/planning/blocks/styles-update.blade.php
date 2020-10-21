@@ -198,12 +198,13 @@
       });
       
       
- $('body').on('change','#cc_cvc',function(event) {
+ $('body').on('change','.cc_upd',function(event) {
         var id = {{$book->id}};
         var idCustomer = {{$book->customer_id}};
-        var cc_cvc = $(this).val();
+        var cc_cvc = $('#cc_cvc').val();
+        var cc_number = $('#cc_number').val();
         $('#loadigPage').show('slow');
-        $.post('/admin/reservas/upd-visa', { _token: "{{ csrf_token() }}",id:id,idCustomer:idCustomer,cc_cvc:cc_cvc }, function(data) {
+        $.post('/admin/reservas/upd-visa', { _token: "{{ csrf_token() }}",id:id,idCustomer:idCustomer,cc_cvc:cc_cvc,cc_number:cc_number }, function(data) {
               if (data.status == 'success') {
                 window.show_notif('Ok',data.status,data.response);
               } else {

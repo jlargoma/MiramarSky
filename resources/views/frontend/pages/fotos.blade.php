@@ -56,7 +56,7 @@
               foreach($photos as $img):
                 ?>
                 <div class="carousel-item  {{$start}}">
-                 <img src="{{url($img->file_rute.'/'.$img->file_name)}}" alt="{{$aptoHeading}}"/>
+                 <img src="{{url($img->file_rute.'/'.$img->file_name)}}" alt="{{$aptoHeading}}" data-skip-lazy/>
                 </div>
                 <?php
                 $start = '';

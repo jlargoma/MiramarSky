@@ -54,6 +54,7 @@ class ApiController extends AppController
         foreach ($oItems as $item){
          
           $roomData = $this->getRoomsPvpAvail($date_start,$date_finish,$pax,$item->channel_group);
+          if (!isset($roomData['prices']) || !$roomData['prices']) continue;
           if ($roomData['prices']['pvp'] < 1) continue;
           $roomPrice = $roomData['prices'];
           $minStay = $roomData['minStay'];
@@ -131,7 +132,7 @@ class ApiController extends AppController
       
       $book = new Book();
       $return = [
-                'prices'   => 0,
+                'prices'   => null,
                 'minStay' => 0,
                 'availiable' => 0
                 ];
