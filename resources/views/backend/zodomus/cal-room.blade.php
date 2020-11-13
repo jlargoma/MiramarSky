@@ -98,6 +98,8 @@
               <div class="col-md-3 col-xs-5 pt-1"><label>Rango de Fechas</label></div>
               <div class="col-md-9 col-xs-7">
                 <input type="text" class="form-control daterange1" id="date_range" name="date_range" value="">
+                <input type="hidden" id="date_start" name="date_start">
+                <input type="hidden" id="date_end" name="date_end">
               </div>
             </div>
 
@@ -234,6 +236,9 @@ $(document).ready(function () {
     var res2       = arrayDates[1].replace("Abr", "Apr");
     var date2      = new Date(res2);
     pintar(date1, date2);
+    
+    $('#date_start').val(date1.yyyymmmdd());
+    $('#date_end').val(date2.yyyymmmdd());
     allDayW();
   });
 
