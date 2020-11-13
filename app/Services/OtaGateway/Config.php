@@ -40,6 +40,9 @@ class Config {
       case 4:
       case "4": //"Plan Miramar - AirBnb"
         return 18111;
+      case 98:
+      case "98": //google agoda
+        return -1;
       case 99:
       case "99": //google GHotels
         return 18112;
@@ -202,8 +205,8 @@ class Config {
     dd($rooms);
   }
 
-  function getRooms() {
-    return [
+  function getRooms($room=null) {
+    $lst = [
         'CHLT' => 47078,
         'DDE' => 47067,
         'ESTG' => 47073,
@@ -215,6 +218,11 @@ class Config {
         '9F' => 47076,
         '10I' => 47077
     ];
+    
+    if ($room){
+      return isset($lst[$room]) ? $lst[$room] : -1;
+    }
+    return $lst;
   }
 
   function getRoomsName() {

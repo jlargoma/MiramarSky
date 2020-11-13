@@ -115,11 +115,15 @@ trait OtasTraits
     if ((!$price || $price<0) && (!$min_estancia || $min_estancia<0) )
       return response()->json(['status'=>'error','msg'=>'Debe seleccionar el precio o estancia mínima']);
 
-    $date = explode(' - ', $date_range);
+    $OtaGateway = new \App\Services\OtaGateway\OtaGateway();
+    if (!$OtaGateway->conect() )
+      return response()->json(['status'=>'error','msg'=>'Ota no conectada']);
+
+        
+//    $date = explode(' - ', $date_range);
     
-    
-    $startTime = strtotime(convertDateToDB($date[0]));
-    $endTime = strtotime(convertDateToDB($date[1]));
+    $startTime = strtotime($request->input('date_start', null));
+    $endTime   = strtotime($request->input('date_end', null));
     
     $dw = listDaysSpanish(true);
     $dayWeek = [];
@@ -153,31 +157,51 @@ trait OtasTraits
     
     $day = 24*60*60;
     $startTimeAux = $startTime;
+    $aPrices = $aMinStay = [];
     while ($startTimeAux<=$endTime){
       $dWeek = date('w',$startTimeAux);
       if (in_array($dWeek,$dayWeek)){
+        $dateItem = date('Y-m-d',$startTimeAux);
         $oPrice = DailyPrices::where('channel_group', $apto)
-              ->where('date', '=', date('Y-m-d',$startTimeAux))
+              ->where('date', '=', $dateItem)
               ->first();
         if (!$oPrice){
           $oPrice = new DailyPrices();
           $oPrice->channel_group = $apto;
-          $oPrice->date = date('Y-m-d',$startTimeAux);
+            $oPrice->date = $dateItem;
         }
-        if($price && $price>0) $oPrice->price = $price;
-        if($min_estancia && $min_estancia>0) $oPrice->min_estancia = $min_estancia;
+        if($price && $price>0){
+          $oPrice->price = $price;
+          $aPrices[$dateItem] = $price;
+        }
+        if($min_estancia && $min_estancia>0){
+          $oPrice->min_estancia = $min_estancia;
+          $aMinStay[$dateItem] = $min_estancia;
+        }
         $oPrice->user_id = $uID;
         $oPrice->save();
       }
       $startTimeAux += $day;
     }
+    
+    
+    $roomTypeID = $this->oConfig->getRooms($apto);
 
-    if($price && $price>0){
-      \App\ProcessedData::savePriceUPD_toOtaGateway(date('Y-m-d',$startTime),date('Y-m-d',$endTime));
-    } else {
-      if ($min_estancia)
-      \App\ProcessedData::saveMinDayUPD_toOtaGateway(date('Y-m-d',$startTime),date('Y-m-d',$endTime));
+    if (count($aPrices)){
+      $resp = $OtaGateway->setRates(["price"=>[$roomTypeID=>$aPrices]]);
     }
+    
+    if (count($aMinStay)){
+      $OtaGateway->setMinStay(['restrictions'=>[$roomTypeID=>$aMinStay]]);
+    }
+    
+//
+//    if($price && $price>0){
+//      \App\ProcessedData::savePriceUPD_toOtaGateway(date('Y-m-d',$startTime),date('Y-m-d',$endTime));
+//    } else {
+//      if ($min_estancia)
+//      \App\ProcessedData::saveMinDayUPD_toOtaGateway(date('Y-m-d',$startTime),date('Y-m-d',$endTime));
+//    }
 
     return response()->json(['status'=>'OK','msg'=>'datos cargados']);
   }
@@ -424,4 +448,135 @@ trait OtasTraits
     ];
       
   }
+  
+  
+   /**
+   * Update Price or Min by cal-2
+   * @param Request $request
+   * @return type
+   */
+  function calendSiteUpd(Request $request){
+  
+  
+  $items = $request->input('items');
+  $val = $request->input('val');
+  $type = $request->input('type');
+  $lst = array();
+  $lstAllDays = array();
+  
+  if (!$val || $val<0)
+    return response()->json(['status'=>'error','msg'=>'Debe seleccionar el valor a modificar']);
+      
+  if (!$type)
+    return response()->json(['status'=>'error','msg'=>'Error de tipo de datos']);
+      
+  if (!$items || count($items)<1)
+    return response()->json(['status'=>'error','msg'=>'Error de datos']);
+      
+      
+  if ($items){
+    foreach ($items as $v){
+      $aux = explode('@',$v);
+      if (!isset($lst[$aux[0]])) $lst[$aux[0]] = array();
+      if (!isset($lstAllDays[$aux[0]])) $lstAllDays[$aux[0]] = array();
+       $lst[$aux[0]][] = strtotime($aux[1]);
+       $lstAllDays[$aux[0]][] = $aux[1];
+       
+    }
+  }
+  
+  $day = 24*60*60;
+  $lstRangeDay = [];
+  if ($lst){
+    foreach ($lst as $k=>$v){
+      $lstRangeDay[$k] = [];    
+      $start = $startDate = $endDate = null;
+      $aux = [];
+      sort($v);
+      foreach ($v as $k2=>$v2){
+        
+        if ($start){
+          if ($v2 == $start+$day){
+            $start = $v2;
+            $endDate = date('Y-m-d',$v2);
+           
+          } else {
+            $aux[] = [$startDate,$endDate];
+            $start = $v2;
+            $startDate = date('Y-m-d',$v2);
+            $endDate = date('Y-m-d',$v2);
+          }
+        } else {
+          $start = $v2;
+          $startDate = date('Y-m-d',$v2);
+          $endDate = date('Y-m-d',$v2);
+        }
+        
+      }
+      if ($endDate){
+        $aux[] = [$startDate,$endDate];
+      }
+      
+      
+      $lstRangeDay[$k] = $aux;
+    }
+  }
+  
+  
+  
+  //save registers
+  $uID = Auth::user()->id;
+    
+  foreach ($lstAllDays as $k=>$v){
+    $oPrice = DailyPrices::where('channel_group', $k)
+              ->whereIn('date', $v)
+              ->get();
+    if ($oPrice){
+      foreach ($oPrice as $p){
+        if (($key = array_search($p->date, $v)) !== false) {
+          unset($v[$key]);
+          
+          if ($type == 'price') $p->price = floatval ($val);
+          if ($type == 'minDay') $p->min_estancia = intval ($val);
+          $p->user_id = $uID;
+          $p->save();
+        }
+      }
+    }
+    
+    if (count($v)>0){
+      foreach ($v as $d){
+        $p = new DailyPrices();
+        $p->date = $d;
+        $p->channel_group = $k;
+        if ($type == 'price') $p->price = floatval ($val);
+        if ($type == 'minDay') $p->min_estancia = intval ($val);
+        $p->user_id = $uID;
+        $p->save();
+      }
+    }
+    
+  }
+
+  //BEGIN: imforma los precios cambiados para Wubook
+  $min_day = $max_day = null;
+  foreach ($lstAllDays as $k=>$v){
+    foreach ($v as $day){
+      if (!$min_day){
+        $min_day = $max_day = $day;
+      } else {
+        if ($min_day>$day) $min_day = $day;
+        if ($max_day<$day) $max_day = $day;
+      }
+    }
+  }
+  if ($type == 'price')
+    \App\ProcessedData::savePriceUPD_toOtaGateway($min_day,$max_day);
+  if ($type == 'minDay')
+    \App\ProcessedData::saveMinDayUPD_toOtaGateway($min_day,$max_day);
+  
+  return response()->json(['status'=>'OK','msg'=>'datos cargados']);
+ 
+  }
+  
 }

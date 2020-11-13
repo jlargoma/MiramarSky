@@ -6,7 +6,7 @@
   <div class="alert alert-info fade in alert-dismissable" style="max-height: 600px; overflow-y: auto;position: relative;">
     <h4 class="text-center">RESERVAS SIN CVC</h4>
     <div id="customerRequestTable">
-      @if(count($bookLst)>0)
+      @if(($bookLst) && count($bookLst)>0)
       <div class="table-responsive" style="    overflow-y: hidden;">
         <table class="table table-mobile">
           <thead>

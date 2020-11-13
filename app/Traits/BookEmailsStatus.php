@@ -21,7 +21,7 @@ trait BookEmailsStatus
     {
       if ($book->customer->send_mails == false || !$book->customer->email || trim($book->customer->email) == '') return;
         $cachedRepository  = new CachedRepository();
-        $otaAgencies = [1];
+        $otaAgencies = [1,4,28,98,99];
         if ($status == 1){
           if (in_array($book->agency,$otaAgencies)){ 
             if ($book->agency == 4){ // Sólo para AirBnb

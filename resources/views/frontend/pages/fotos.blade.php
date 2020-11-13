@@ -17,21 +17,6 @@
 </style>
 <section >
   <div class="container">
-    <div class="content-box">
-      <?php if ($url == '9F'): ?>
-        <h1 class="text-center">ATICO DUPLEX DE LUJO</h1>
-      <?php else: ?>
-        <h1 class="text-center"><?php echo strtoupper($aptoHeadingMobile); ?></h1>
-      <?php endif ?>
-      <h2 class="text-center">{{$room->nameRoom}}</h2>
-    </div>
-    <div class="stars">
-      <i aria-hidden="true" class="fas fa-star"></i>
-      <i aria-hidden="true" class="fas fa-star"></i>
-      <i aria-hidden="true" class="fas fa-star"></i>
-      <i aria-hidden="true" class="fas fa-star"></i>
-      <i aria-hidden="true" class="fas fa-star"></i>
-    </div>
     <div class="row">
       <div class="col-lg-6 col-md-7 img-colmun">
         <div class="clearfix">
@@ -83,4 +68,10 @@
     </div>
   </div>
 
+    
+  <?php if ($url == '9F'): ?>
+    <input type="hidden" id="nameAptoFoto" value="ATICO DUPLEX DE LUJO <?php echo strtoupper($room->nameRoom); ?>">
+  <?php else: ?>
+    <input type="hidden" id="nameAptoFoto" value="<?php echo strtoupper($aptoHeading.' '.$room->nameRoom); ?>">
+  <?php endif ?>
 </section>

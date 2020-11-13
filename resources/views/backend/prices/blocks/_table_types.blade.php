@@ -22,7 +22,7 @@
             </tr>
           </thead>
           <tbody>
-            @for($K=1;$K<11;$K++)
+            @for($K=1;$K<13;$K++)
             <tr>
               <td>{{$K}}</td>
               @foreach($seasons as $season)

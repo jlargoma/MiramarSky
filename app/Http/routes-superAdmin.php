@@ -248,7 +248,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista'], 'pre
   Route::get('/channel-manager/config', 'ZodomusController@generate_config');
   
   Route::get('/channel-manager/price-site/{site?}/{month?}/{year?}','OtaGate@calendSite')->name('channel.price.site');
-  Route::post('/channel-manager/upd-price-site/','ZodomusController@calendSiteUpd')->name('channel.price.site.upd');
+  Route::post('/channel-manager/upd-price-site/','OtaGate@calendSiteUpd')->name('channel.price.site.upd');
   Route::get('/channel-manager/promocion/{promoID?}','PromotionsController@getItem')->name('channel.promotions.get');
   Route::get('/channel-manager/promociones/','PromotionsController@index')->name('channel.promotions');
   Route::post('/channel-manager/promociones/create','PromotionsController@create')->name('channel.promotions.new');
