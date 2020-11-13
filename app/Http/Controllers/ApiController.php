@@ -41,9 +41,6 @@ class ApiController extends AppController
       $response = [];
       $usr = $request->input('usr',null);
       
-      //Save potencial customer data
-      if (isset($usr['c_cp']) && trim($usr['c_cp']) == '')
-        \App\CustomersRequest::createOrEdit($request->all(),-1);
         
       $oItems = $this->getItems($pax);
       
@@ -237,9 +234,9 @@ class ApiController extends AppController
       if ($roomType){
         $oRoom = $this->getRoomsWithAvail($date_start,$date_finish,$pax,$roomType->channel_group);
         $customer = [
-            'name'  => $usr['c_name'],
-            'email' => $usr['c_mail'],
-            'phone' => $usr['c_phone'],
+            'c_name'  => $usr['c_name'],
+            'c_email' => $usr['c_email'],
+            'c_phone' => $usr['c_phone'],
             'c_observ' => $usr['c_observ'],
             'token' => isset($usr['token']) ? $usr['token'] : time(),
         ];
@@ -276,9 +273,9 @@ class ApiController extends AppController
       if (!$alreadyExist){
         //createacion del cliente
         $customer          = new \App\Customers();
-        $customer->name    = $cData['name'];
-        $customer->email   = $cData['email'];
-        $customer->phone   = $cData['phone'];
+        $customer->name    = $cData['c_name'];
+        $customer->email   = $cData['c_email'];
+        $customer->phone   = $cData['c_phone'];
         $customer->user_id = 1;
         if (!$customer->save()) return FALSE;
       }
@@ -313,6 +310,9 @@ class ApiController extends AppController
         $book->customer_id = $customer->id;
         
         if (!$book->save())  return FALSE;
+        
+        //Save potencial customer data
+        \App\CustomersRequest::createOrEdit($cData,-1,$book->id);
         
         $this->setExtras($book,$room->luxury);
            
@@ -491,6 +491,10 @@ class ApiController extends AppController
         $oCustomer = \App\Customers::where('api_token',$token)->first();
         if ($oCustomer && $oCustomer->api_token === $token){
           
+          
+          //Save potencial customer data
+          \App\CustomersRequest::createOrEdit($cData,-1,$book->id);
+        
           if (!(isset($cData['c_name']) && isset($cData['c_mail']) && isset($cData['c_phone']))){
             return response()->json(['success'=>false,'data'=>'Los campos son requeridos'],401);
           }
