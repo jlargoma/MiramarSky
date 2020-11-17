@@ -97,12 +97,10 @@ $(document).ready(function() {
         if (!data) return null;
         
           $('#computed-data').html(JSON.stringify(data));
-
-      console.log(dates,data);
-             $('#minDay').removeClass('danger');
-             if (dates.nigths<data.aux.min_day){
-               $('#minDay').addClass('danger');
-             }
+            $('#minDay').removeClass('danger');
+            if (dates.nigths<data.aux.min_day){
+              $('#minDay').addClass('danger');
+            }
       
 //          var isEdited = $('.total').attr('data-edited');
           if (data.public.promo_pvp<1) {
@@ -123,7 +121,7 @@ $(document).ready(function() {
             newPromo = '<b>Promo '+data.public.promo_name+':</b> -'+window.formatterEuro.format(data.public.promo_pvp)+''
           else newPromo = null;
           
-          $('#total_pvp').val(data.calculated.total_price);
+//          $('#total_pvp').val(data.calculated.total_price);
           $('.cost').val(data.calculated.total_cost);
           $('.costApto').val(data.costes.book);
           $('.costParking').val(data.costes.parking);
@@ -390,7 +388,7 @@ $(document).ready(function() {
             $('#updateForm').submit(function(event) {
                 event.preventDefault();
                 newPvp = parseFloat(newPvp);
-                 var totalPvp = parseFloat($('input[name="total"]').val());
+                var totalPvp = parseFloat($('input[name="total"]').val());
                  
                 if (newPvp == 0){
                   sendFormBooking(totalPvp,0);
