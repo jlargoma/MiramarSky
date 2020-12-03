@@ -228,7 +228,7 @@ $is_mobile = $mobile->isMobile();
                 margin-bottom: 0px;
             }
             .btn-cons{
-                min-width: auto!important;
+                min-width: 3em!important;
             }
         </style>
 

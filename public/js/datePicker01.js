@@ -5,7 +5,7 @@ window['dateRangeObj'] = {
     "cancelClass": "button-light",
     autoUpdateInput: true,
     locale: {
-      firstDay: 2,
+      firstDay: 1,
       format: 'DD/MM/YYYY',
       "applyLabel": "Aplicar",
       "cancelLabel": "Cancelar",

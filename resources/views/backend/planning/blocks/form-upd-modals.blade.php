@@ -92,19 +92,33 @@
   </div>
 </div>
 
-<div id="dialog-confirm" title="Atención: cambio del PVP" style="display: none;">
-  <h4>Reserva Original: <b id="confirm_PVP_current"></b></h4>
-  <?php 
-  if ($priceBook['discount']>0) echo '<div class="text-danger"><b>Descuento del '.$priceBook['discount'].'%:</b> -'.moneda($priceBook['discount_pvp'],false,2).'</div>';
-  if ($priceBook['promo_name'] != '') echo '<div class="text-danger"><b>Promo '.$priceBook['promo_name'].':</b> -'.moneda($priceBook['promo_pvp'],false,2).'</div>';
-  ?>
-  
-  <h4>Modificación: <b id="confirm_PVP_modif"></b></h4>
-  <div id="confirm_PVP_disc" class="text-danger"></div>
-  <div id="confirm_PVP_promo" class="text-danger"></div>
-  <hr/>
-</div>
+<div class="modal fade slide-up in" id="modal_confirm_PVP" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-xd">
+    <div class="modal-content-classic">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+        <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
+      </button>
+      <h3>Atención: cambio del PVP</h3>
+      <div class="row" style="margin-top:1em;">
+        
+        <h4>Reserva Original: <b id="confirm_PVP_current"></b></h4>
+        <?php 
+        if ($priceBook['discount']>0) echo '<div class="text-danger"><b>Descuento del '.$priceBook['discount'].'%:</b> -'.moneda($priceBook['discount_pvp'],false,2).'</div>';
+        if ($priceBook['promo_name'] != '') echo '<div class="text-danger"><b>Promo '.$priceBook['promo_name'].':</b> -'.moneda($priceBook['promo_pvp'],false,2).'</div>';
+        ?>
 
+        <h4>Modificación: <b id="confirm_PVP_modif"></b></h4>
+        <div id="confirm_PVP_disc" class="text-danger"></div>
+        <div id="confirm_PVP_promo" class="text-danger"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary confirm_PVP_send" id="cpvps_acept">Aceptar</button>
+        <button type="button" class="btn btn-danger confirm_PVP_send" id="cpvps_refuse">Rechazar</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="modal fade slide-up in" id="modalSafetyBox" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-xd">

@@ -14,7 +14,8 @@ $(document).ready(function () {
       {n: 'concept', t: 'Concepto'},
       {n: 'type', t: 'Tipo'},
       {n: 'typePayment', t: 'Método de pago'},
-      {n: 'comment', t: 'Comentario'}
+      {n: 'comment', t: 'Comentario'},
+      {n: 'filter', t: 'Filtrar'},
     ]
 
     var select = '';

@@ -68,17 +68,17 @@ class ApiController extends AppController
             'name' => $item->name,
             'max_pax' => $item->max_pax,
             'code'=>encriptID($item->id),
-            'price'=> moneda($pvp,true,2),
-            'pvp'=>$pvp,
+            'price'=> moneda($pvp,true),
+            'pvp'=>round($pvp),
             'extr_costs'=>$roomPrice['price_limp'],
-            'price_1'=> moneda($pvp_1,true,2),
-            'pvp_1'=> round($pvp_1,2),
-            'discount_1'=>$roomPrice['discount'],
-            'pvp_discount'=>$roomPrice['discount_pvp'],
+            'price_1'=> moneda($pvp_1,true),
+            'pvp_1'=> round($pvp_1),
+            'discount_1'=>round($roomPrice['discount']),
+            'pvp_discount'=>round($roomPrice['discount_pvp']),
             'promo_name'=>$hasPromo,
             'pvp_promo'=>$roomPrice['promo_pvp'],
             'price_2'=> moneda($pvp_2),
-            'pvp_2'=>$pvp_2,
+            'pvp_2'=>round($pvp_2),
             'discount_2'=>$this->discount_2*100,
             'minStay'=>($nigths<$minStay) ? $minStay : 0,
             'infoCancel'=>$infoCancel,
@@ -267,9 +267,11 @@ class ApiController extends AppController
         $customer = \App\Customers::where('api_token',$token)->first();
         if ($customer && $customer->api_token === $token){
           $alreadyExist = $customer->id;
+          $customer->name    = $cData['c_name'];
+          $customer->email   = $cData['c_email'];
+          $customer->phone   = $cData['c_phone'];
         }
       }
-      
       if (!$alreadyExist){
         //createacion del cliente
         $customer          = new \App\Customers();
@@ -380,7 +382,6 @@ class ApiController extends AppController
           //Prin box to payment
           $description = "COBRO RESERVA CLIENTE " . $book->customer->name;
           $urlPayland = 'url payland';
-          
           $endPoint               = (env('PAYLAND_ENVIRONMENT') == "dev") ? env('PAYLAND_ENDPOINT') . self::SANDBOX_ENV : env('PAYLAND_ENDPOINT');
           $paylandConfig          = [
               'endpoint'  => $endPoint,
@@ -397,14 +398,6 @@ class ApiController extends AppController
       }
       
     }
-    
-    
-    
-    
-    
-    
-    
-    
     
     /***********************************************/
     
@@ -490,17 +483,12 @@ class ApiController extends AppController
         $token = $cData['token'];
         $oCustomer = \App\Customers::where('api_token',$token)->first();
         if ($oCustomer && $oCustomer->api_token === $token){
-          
-          
-          //Save potencial customer data
-          \App\CustomersRequest::createOrEdit($cData,-1,$book->id);
-        
-          if (!(isset($cData['c_name']) && isset($cData['c_mail']) && isset($cData['c_phone']))){
+          if (!(isset($cData['c_name']) && isset($cData['c_email']) && isset($cData['c_phone']))){
             return response()->json(['success'=>false,'data'=>'Los campos son requeridos'],401);
           }
           
           $name = trim($cData['c_name']);
-          $email = trim($cData['c_mail']);
+          $email = trim($cData['c_email']);
           $phone = trim($cData['c_phone']);
           
           if (strlen($name)<8 || strlen($name)>125)
