@@ -20,6 +20,10 @@ $is_mobile = $mobile->isMobile();
           overflow: auto !important;
           max-height: 88vh !important;
       }
+      #modalLastBooks .btn.active{
+        background-color: #1e416c;
+        color: #FFF;
+      }
     </style>
     <script src="{{ asset('/vendors/ckeditor/ckeditor.js') }}"></script>
 @endsection

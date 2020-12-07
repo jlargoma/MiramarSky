@@ -24,27 +24,13 @@ $appName = env('APP_APPLICATION');
                 $typeAux = 2; 
                 $currentAux = null; 
                 $posicion = 0;
-                
-                if ($appName == "riad"){
-                  $arrayLine = [5,11,14,21];
-                } else {
-                  $arrayLine = [];
-                }
+                $arrayLine = [7,17,18,24,30,31,32,33];
                 ?>
                 <?php foreach ($roomscalendar as $key => $room): ?>
                   <?php $inicio = $inicioAux->copy() ?>
 
                   <?php 
-                  $line = "";
-                  if ($appName == "riad"){
-                    if (in_array($posicion, $arrayLine)){
-                      $line = "line-divide ";
-                    }
-                  } else {
-                    if ($room->luxury != $luxAux || ($currentAux && $room->channel_group != $currentAux)){
-                      $line = "line-divide ";
-                    }
-                  }
+                  $line = in_array($posicion, $arrayLine) ? "line-divide " : '';
                   $posicion++;
                   $luxAux = $room->luxury;
                   $typeAux = $room->sizeApto;
