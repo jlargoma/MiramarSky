@@ -9,6 +9,7 @@ use App\Rooms;
 use App\Book;
 use App\Http\Requests;
 use App\Settings;
+use App\Services\Bookings\GetRoomsSuggest;
 
 class ApiController extends AppController
 {
@@ -24,75 +25,20 @@ class ApiController extends AppController
       //  return view('api/index');
     }
 
-    private function getItems($pax) {
-      
-      if (!is_numeric($pax) || $pax<0) return [];
-      
-      return RoomsType::where('min_pax','<=',$pax)
-                ->where('max_pax','>=',$pax)
-                ->get();
-    }
+   
     
     public function getItemsSuggest(Request $request) {
 
       $pax = $request->input('pax',null);
       $date_start = $request->input('start',null);
       $date_finish = $request->input('end',null);
-      $response = [];
       $usr = $request->input('usr',null);
       
-      //Save potencial customer data
-      if (isset($usr['c_cp']) && trim($usr['c_cp']) == '')
-        \App\CustomersRequest::createOrEdit($request->all(),-1);
         
-      $oItems = $this->getItems($pax);
-      
-      $nigths = calcNights($date_start,$date_finish);
-      $infoCancel = \App\Settings::getContent('widget_alert_cancelation','es');
-      if ($oItems){
-        $index = 0;
-        foreach ($oItems as $item){
-         
-          $roomData = $this->getRoomsPvpAvail($date_start,$date_finish,$pax,$item->channel_group);
-          if (!isset($roomData['prices']) || !$roomData['prices']) continue;
-          if ($roomData['prices']['pvp'] < 1) continue;
-          $roomPrice = $roomData['prices'];
-          $minStay = $roomData['minStay'];
-          //descriminamos el precio de limpieza
-          $pvp = $roomPrice['pvp_init'];
-          $pvp_1 = $roomPrice['pvp'] - $roomPrice['price_limp'];
-          // promociones tipo 7x4
-          $hasPromo = 0;
-          if ($roomPrice['promo_pvp']>0) $hasPromo = $roomPrice['promo_name'];
-          
-          ////////////////////////
-          $pvp_2 = 99999;
-          $response[] = [
-            'name' => $item->name,
-            'max_pax' => $item->max_pax,
-            'code'=>encriptID($item->id),
-            'price'=> moneda($pvp,true,2),
-            'pvp'=>$pvp,
-            'extr_costs'=>$roomPrice['price_limp'],
-            'price_1'=> moneda($pvp_1,true,2),
-            'pvp_1'=> round($pvp_1,2),
-            'discount_1'=>$roomPrice['discount'],
-            'pvp_discount'=>$roomPrice['discount_pvp'],
-            'promo_name'=>$hasPromo,
-            'pvp_promo'=>$roomPrice['promo_pvp'],
-            'price_2'=> moneda($pvp_2),
-            'pvp_2'=>$pvp_2,
-            'discount_2'=>$this->discount_2*100,
-            'minStay'=>($nigths<$minStay) ? $minStay : 0,
-            'infoCancel'=>$infoCancel,
-          ];
-//          dd($roomData,$response);
-        }
-  
-      }
-//      dd($response);
-      if (count($response)>0)  return response()->json($response);
-       return response('empty');
+      $oGetRoomsSuggest = new GetRoomsSuggest();
+      $response = $oGetRoomsSuggest->getItemsSuggest($pax,$date_start,$date_finish);
+      if (count($response)>0) return response()->json($response);
+      return response('empty');
     }
     
     
@@ -125,43 +71,6 @@ class ApiController extends AppController
       
       return $result;
                   
-    }
-    
-    
-    private function getRoomsPvpAvail($startDate,$endDate,$pax,$channel_group){
-      
-      $book = new Book();
-      $return = [
-                'prices'   => null,
-                'minStay' => 0,
-                'availiable' => 0
-                ];
-      
-      $oRooms = Rooms::where('channel_group',$channel_group)
-              ->where('maxOcu','>=', $pax)->where('state',1)->get();
-      if ($oRooms){
-        $availibility = $book->getAvailibilityBy_channel($channel_group, $startDate, $endDate);
-        $availiable = count($oRooms);
-        if (count($availibility)){
-          foreach ($availibility as $day=>$avail){
-            if ($avail<$availiable){
-              $availiable = $avail;
-            }
-          }
-        }
-        foreach ($oRooms as $room){
-          if ($book->availDate($startDate, $endDate, $room->id)){
-            $meta_price = $room->getRoomPrice($startDate, $endDate,$pax);             
-            return [
-                'prices'      => $meta_price,
-                'minStay'    => $room->getMin_estancia($startDate,$endDate),
-                'availiable' => $availiable,
-                ];
-             
-          }
-        }
-      }
-      return $return;
     }
     
     private function getRoomsWithAvail($startDate,$endDate,$pax,$channel_group){
@@ -218,7 +127,8 @@ class ApiController extends AppController
     
       /***************************/
       $nigths = calcNights($date_start,$date_finish);
-      $roomData = $this->getRoomsPvpAvail($date_start,$date_finish,$pax,$roomType->channel_group);
+      $oGetRoomsSuggest = new GetRoomsSuggest();
+      $roomData = $oGetRoomsSuggest->getRoomsPvpAvail($date_start,$date_finish,$pax,$roomType->channel_group);
       
       $minStay = isset($roomData['minStay']) ? $roomData['minStay'] : 0;
       $prices = isset($roomData['prices']) ? $roomData['prices'] : 0;
@@ -237,9 +147,9 @@ class ApiController extends AppController
       if ($roomType){
         $oRoom = $this->getRoomsWithAvail($date_start,$date_finish,$pax,$roomType->channel_group);
         $customer = [
-            'name'  => $usr['c_name'],
-            'email' => $usr['c_mail'],
-            'phone' => $usr['c_phone'],
+            'c_name'  => $usr['c_name'],
+            'c_email' => $usr['c_email'],
+            'c_phone' => $usr['c_phone'],
             'c_observ' => $usr['c_observ'],
             'token' => isset($usr['token']) ? $usr['token'] : time(),
         ];
@@ -270,15 +180,17 @@ class ApiController extends AppController
         $customer = \App\Customers::where('api_token',$token)->first();
         if ($customer && $customer->api_token === $token){
           $alreadyExist = $customer->id;
+          $customer->name    = $cData['c_name'];
+          $customer->email   = $cData['c_email'];
+          $customer->phone   = $cData['c_phone'];
         }
       }
-      
       if (!$alreadyExist){
         //createacion del cliente
         $customer          = new \App\Customers();
-        $customer->name    = $cData['name'];
-        $customer->email   = $cData['email'];
-        $customer->phone   = $cData['phone'];
+        $customer->name    = $cData['c_name'];
+        $customer->email   = $cData['c_email'];
+        $customer->phone   = $cData['c_phone'];
         $customer->user_id = 1;
         if (!$customer->save()) return FALSE;
       }
@@ -314,17 +226,23 @@ class ApiController extends AppController
         
         if (!$book->save())  return FALSE;
         
+        //Save potencial customer data
+        \App\CustomersRequest::createOrEdit($cData,-1,$book->id);
+        
         $this->setExtras($book,$room->luxury);
            
         /*************************************************************************************************/
         
         $costes = $room->priceLimpieza($room->sizeApto);
-        $book->sup_limp  = $costes['price_limp'];
+        $book->sup_limp  = round($costes['price_limp']);
         $book->cost_limp = $costes['cost_limp'];
         
         /**********************************/
         
         $meta_price = $room->getRoomPrice($date_start, $date_finish,$book->pax);
+        foreach ($meta_price as $k=>$v){
+          if (is_numeric($v)) $meta_price[$k] = round($v);
+        }
         
         $pvp = $meta_price['pvp'];
         $pvp_total = $meta_price['pvp_init']+$meta_price['price_limp'];
@@ -380,7 +298,6 @@ class ApiController extends AppController
           //Prin box to payment
           $description = "COBRO RESERVA CLIENTE " . $book->customer->name;
           $urlPayland = 'url payland';
-          
           $endPoint               = (env('PAYLAND_ENVIRONMENT') == "dev") ? env('PAYLAND_ENDPOINT') . self::SANDBOX_ENV : env('PAYLAND_ENDPOINT');
           $paylandConfig          = [
               'endpoint'  => $endPoint,
@@ -397,14 +314,6 @@ class ApiController extends AppController
       }
       
     }
-    
-    
-    
-    
-    
-    
-    
-    
     
     /***********************************************/
     
@@ -490,16 +399,15 @@ class ApiController extends AppController
         $token = $cData['token'];
         $oCustomer = \App\Customers::where('api_token',$token)->first();
         if ($oCustomer && $oCustomer->api_token === $token){
-          
-          if (!(isset($cData['c_name']) && isset($cData['c_mail']) && isset($cData['c_phone']))){
+          if (!(isset($cData['c_name']) && isset($cData['c_email']) && isset($cData['c_phone']))){
             return response()->json(['success'=>false,'data'=>'Los campos son requeridos'],401);
           }
           
           $name = trim($cData['c_name']);
-          $email = trim($cData['c_mail']);
+          $email = trim($cData['c_email']);
           $phone = trim($cData['c_phone']);
           
-          if (strlen($name)<8 || strlen($name)>125)
+          if (strlen($name)<1 || strlen($name)>125)
             return response()->json(['success'=>false,'data'=>'El nombre es requerido.'],401);
           
           if (strlen($email)<8 || strlen($email)>125)
@@ -508,7 +416,7 @@ class ApiController extends AppController
           if(filter_var($email, FILTER_VALIDATE_EMAIL) === FALSE)
             return response()->json(['success'=>false,'data'=>'La dirección de correo es requerida.'],401);
           
-          if (strlen($phone)<6 || strlen($phone)>125)
+          if (strlen($phone)<1 || strlen($phone)>125)
             return response()->json(['success'=>false,'data'=>'El teléfono es requerido.'],401);
           
           

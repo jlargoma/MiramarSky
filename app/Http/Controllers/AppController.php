@@ -405,6 +405,6 @@ class AppController extends Controller
       }
     }
             
-    return view('backend.planning._calculateBook',$data);
+    return view('backend.planning.calculateBook.form',$data);
   }
 }

@@ -2051,6 +2051,7 @@ class LiquidacionController extends AppController {
       'typePayment' =>-1, 
       'apto' =>-1,  
       'comment' =>-1,
+      'filter' =>-1,
     ];
     
   
@@ -2070,7 +2071,19 @@ class LiquidacionController extends AppController {
       }
     }
     if (count($info) == 0) return back();
-    
+        
+    /********   FILTRAR REGISTROS   *********************/
+    if (isset($info['filter'])){
+      foreach ($info['filter'] as $k=>$v){
+        if ($v == 1){
+          foreach ($campos as $k2=>$v2){
+            $info[$k2][$k]=null;
+          }
+          
+        }
+      }
+    }      
+//    dd($info);
     /***************************************************/
     $expensesType = \App\Expenses::getTypes();
     $aRooms = \App\Rooms::getRoomList()->toArray();
@@ -2090,13 +2103,17 @@ class LiquidacionController extends AppController {
     
     $today = date('Y-m-d');
     $insert = [];
-    $newEmpty = [
+
+    
+    
+    $this->printData($campos,$info,$aRooms,$expensesType);
+  }
+  
+  function printData($campos,$info,$aRooms,$expensesType){
+        $newEmpty = [
           'concept'=>null,'date'=>null,'import'=>null,'typePayment'=>null,
           'type'=>null,'comment'=>null,'site_id'=>null,
         ];
-    
-    
-    
     ?>
 <style>
   th {
@@ -2126,15 +2143,16 @@ td {
         $value = '';
         if (!isset($info[$k])){ echo '<td>---</td>'; continue;}
         if (!isset($info[$k][$i])){ echo '<td>---</td>'; continue;}
+        if (!($info[$k][$i])){ echo '<td>---</td>'; continue;}
         $variab = $info[$k][$i];
         switch ($k){
           case 'date':
-            $value = ($variab != '') ? date("d/m/Y",strtotime($variab)) : 'Día/Mes/Año';
-            $new['date'] =  ($variab != '') ? date("Y-m-d",strtotime($variab)) : $today;
+            $value = ($variab != '') ? convertDateToDB($variab) : 'Día/Mes/Año';
+            $new['date'] =  ($variab != '') ? convertDateToDB($variab) : $today;
             break;
           case 'import':
             $orig = $variab;
-            $variab = floatval(str_replace(',','', $variab));
+            $variab = floatval(str_replace(',','.',str_replace('.','', $variab)));
             $value = moneda($variab,true,2).' (<b>'.$orig.'</b>)';
             $new['import'] = $variab;
             break;

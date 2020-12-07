@@ -21,6 +21,7 @@ $is_mobile = $mobile->isMobile();
           max-height: 88vh !important;
       }
     </style>
+    <script src="{{ asset('/vendors/ckeditor/ckeditor.js') }}"></script>
 @endsection
 
 @section('content')
@@ -100,16 +101,6 @@ $is_mobile = $mobile->isMobile();
                     </div>
                 </div>
         </div>
-
-        <!-- CALCULAR RESERVAS -->
-        <div class="modal fade slide-up in" id="modalCalculateBook" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content-wrapper">
-                        <div class="modal-content"></div>
-                    </div>
-                </div>
-            </div>
-
         <!-- ÚLTIMAS RESERVAS -->
         <div class="modal fade slide-up in" id="modalLastBooks" tabindex="-1" role="dialog" aria-hidden="true" >
                 <div class="modal-dialog modal-lg">
@@ -228,7 +219,7 @@ $is_mobile = $mobile->isMobile();
                 margin-bottom: 0px;
             }
             .btn-cons{
-                min-width: auto!important;
+                min-width: 3em!important;
             }
         </style>
 
@@ -294,16 +285,6 @@ $is_mobile = $mobile->isMobile();
                 </div>
             </div>
         </div>
-
-        <!-- CALCULAR RESERVAS -->
-        <div class="modal fade slide-up in" id="modalCalculateBook" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content-wrapper">
-                    <div class="modal-content"></div>
-                </div>
-            </div>
-        </div>
-
         <!-- ÚLTIMAS RESERVAS -->
         <div class="modal fade slide-up in" id="modalLastBooks" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-lg" >
@@ -517,23 +498,6 @@ $is_mobile = $mobile->isMobile();
  </div>
 </div>
 </div>
-          
-          
-<div class="modal fade" id="modalIntercambio" tabindex="-1" role="dialog"  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <strong class="modal-title" style="font-size: 1.4em;">Intercambio de Habitaciones</strong>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body contentModalIntercambio">
-      </div>
-    </div>
-  </div>
-</div>
-
 @endsection
 
 @section('scripts')

@@ -5,7 +5,7 @@ window['dateRangeObj'] = {
     "cancelClass": "button-light",
     autoUpdateInput: true,
     locale: {
-      firstDay: 2,
+      firstDay: 1,
       format: 'DD/MM/YYYY',
       "applyLabel": "Aplicar",
       "cancelLabel": "Cancelar",
@@ -66,4 +66,21 @@ window.dateRangeObj.locale.format = 'DD/MM/YYYY';
     var date = dates.trim().split('/');
     return date[2] + '-' + date[1] + '-' + date[0];
   };
+});
+
+$('.daterange1').on('change',function (event) {
+      var date = $(this).val();
+
+      var arrayDates = date.split('-');
+      var res1 = arrayDates[0].replace("Abr", "Apr");
+      var date1 = new Date(res1);
+      var start = date1.getTime();
+      var res2 = arrayDates[1].replace("Abr", "Apr");
+      var date2 = new Date(res2);
+
+      var content = $(this).closest('div');
+      var startContent = content.find('.date_start');
+      if (startContent) startContent.val(date1.yyyymmmdd());
+      var endContent = content.find('.date_finish');
+      if (endContent) endContent.val(date2.yyyymmmdd());
 });

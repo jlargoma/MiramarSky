@@ -216,16 +216,6 @@ $is_mobile = $mobile->isMobile();
                     </div>
                 </div>
         </div>
-
-        <!-- CALCULAR RESERVAS -->
-        <div class="modal fade slide-up in" id="modalCalculateBook" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content-wrapper">
-                        <div class="modal-content"></div>
-                    </div>
-                </div>
-            </div>
-
         <!-- ÚLTIMAS RESERVAS -->
         <div class="modal fade slide-up in" id="modalLastBooks" tabindex="-1" role="dialog" aria-hidden="true" >
                 <div class="modal-dialog modal-lg">
@@ -445,16 +435,6 @@ $is_mobile = $mobile->isMobile();
                 </div>
             </div>
         </div>
-
-        <!-- CALCULAR RESERVAS -->
-        <div class="modal fade slide-up in" id="modalCalculateBook" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content-wrapper">
-                    <div class="modal-content"></div>
-                </div>
-            </div>
-        </div>
-
         <!-- ÚLTIMAS RESERVAS -->
         <div class="modal fade slide-up in" id="modalLastBooks" tabindex="-1" role="dialog" aria-hidden="true" >
             <div class="modal-dialog modal-lg" >
@@ -613,17 +593,9 @@ $is_mobile = $mobile->isMobile();
           });
 
         });
-
-        // Modal de calcular reserva
-        $('.btn-calcuteBook').click(function(event) {
-          $('#modalCalculateBook .modal-content').empty().load('/admin/reservas/help/calculateBook');
-        });
-
         $('#lastBooks').click(function(event) {
           $('#modalLastBooks .modal-content').empty().load('/admin/reservas/api/lastsBooks');
         });
-
-
         // Mostrar u ocultar formulario de stripe
         $('#stripePayment').click(function(event) {
           $('#stripe-conten-index').toggle(function() {

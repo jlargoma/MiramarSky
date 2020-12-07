@@ -9,17 +9,22 @@ $(document).ready(function () {
   });
 
   // Modal de calcular reserva
-  $('.btn-calcuteBook').click(function (event) {
-    $('#modalCalculateBook .modal-content').empty().load('/admin/reservas/help/calculateBook');
-  });
+//  $('.btn-calcuteBook').click(function (event) {
+//    $('#modalCalculateBook .modal-content').empty().load('/admin/reservas/help/calculateBook');
+//  });
 
   $('#lastBooks').click(function (event) {
     $('#modalLastBooks .modal-content').empty().load('/admin/reservas/api/lastsBooks');
   });
+//  $('.btn_intercambio').click(function (event) {
+//    $('#modalIntercambio .contentModalIntercambio').empty().load('/admin/reservas/api/intercambio');
+//  });
   $('.btn_intercambio').click(function (event) {
-    $('#modalIntercambio .contentModalIntercambio').empty().load('/admin/reservas/api/intercambio');
+    $('.content-tables').empty().load('/admin/reservas/api/intercambio');
   });
-
+  $('.btn-calcuteBook').click(function (event) {
+    $('.content-tables').empty().load('/admin/reservas/help/calculateBook');
+  });
 
   // Mostrar u ocultar formulario de stripe
   $('#stripePayment').click(function (event) {
@@ -584,37 +589,7 @@ $(document).ready(function () {
             });
   });
 
-  /****************************************************************************/
 
-  $('body').on('click', '.calc_createNew', function () {
-    var id = $(this).data('room');
-    if (!id) {
-      window.show_notif('', 'error', 'No se puede generar la reserva.');
-      return;
-    }
-    var luxury = $(this).data('luxury');
-    var info = $(this).data('info');
-
-    var data = {
-      _token: window.csrf_token,
-      calcular_id: id,
-      username: $('#calc_username').val(),
-      cr_id: $('#cr_id').val(),
-      calc_start: $('#calc_start').val(),
-      calc_finish: $('#calc_finish').val(),
-      calc_pax: $('#calc_pax').val(),
-      luxury: luxury,
-      info: info,
-    };
-
-
-    $.post('/admin/reservas/new', data, function (data) {
-      $('#modalCalculateBook').modal('hide');
-      $("#modalNewBook").modal();
-      $('.contentNewBook').empty().append(data);
-
-    });
-  });
 
   /****************************************************************************/
   $('body').on('click', '#closeUrgente', function () {

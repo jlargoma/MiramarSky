@@ -76,8 +76,8 @@
             <td class="text-center">
               <select class="full-width input-payment type_payment"
                       data-init-plugin="select2" name="type_payment" tabindex="-1" aria-hidden="true">
-                <option value="0"><?php echo $book->getTypeCobro(0) ?></option>
                 <option value="2"><?php echo $book->getTypeCobro(2) ?></option>
+                <option value="0"><?php echo $book->getTypeCobro(0) ?></option>
                 <option value="4"><?php echo $book->getTypeCobro(4) ?></option>
               </select>
             </td>

@@ -4,6 +4,7 @@
 $(document).ready(function() {
     let dateRangeObj = Object.assign({}, window.dateRangeObj);
     dateRangeObj.locale.format = 'DD MMM, YY';
+    console.log(dateRangeObj);
     $(".daterange1").daterangepicker(dateRangeObj);
     var newPvp = 0;
     var newDisc = null;
@@ -97,21 +98,20 @@ $(document).ready(function() {
         if (!data) return null;
         
           $('#computed-data').html(JSON.stringify(data));
-
-      console.log(dates,data);
-             $('#minDay').removeClass('danger');
-             if (dates.nigths<data.aux.min_day){
-               $('#minDay').addClass('danger');
-             }
+            $('#minDay').removeClass('danger');
+            if (dates.nigths<data.aux.min_day){
+              $('#minDay').addClass('danger');
+            }
       
 //          var isEdited = $('.total').attr('data-edited');
           if (data.public.promo_pvp<1) {
-              $('.promociones').val('');
+//              $('.promociones').val('');
               $('.book_owned_comments').empty();
               $('.content_image_offert').hide();
           } else {
-              $('.promociones').val(data.public.promo_pvp);
-              $('.book_owned_comments').html('('+data.public.promo_name+' : '+ Math.abs(data.public.promo_pvp) +' €)');
+//              $('.promociones').val(data.public.promo_pvp);
+//              $('.book_owned_comments').html('('+data.public.promo_name+' : '+ Math.abs(data.public.promo_pvp) +' €)');
+              $('.book_owned_comments').html(data.public.promo_name);
               $('.content_image_offert').show();
           }
           
@@ -123,7 +123,8 @@ $(document).ready(function() {
             newPromo = '<b>Promo '+data.public.promo_name+':</b> -'+window.formatterEuro.format(data.public.promo_pvp)+''
           else newPromo = null;
           
-          $('#total_pvp').val(data.calculated.total_price);
+          if ($('#new_book').val() == 1)     $('#total_pvp').val(data.calculated.total_price);
+          $('.promociones').val(data.costes.promotion);
           $('.cost').val(data.calculated.total_cost);
           $('.costApto').val(data.costes.book);
           $('.costParking').val(data.costes.parking);
@@ -387,10 +388,15 @@ $(document).ready(function() {
 
             });
 
+            $('.confirm_PVP_send').click(function(event) {
+              var type = 1;
+              if ($(this).attr('id') == 'cpvps_refuse') type = 0;
+              sendFormBooking($(this).data('value'),type);
+            });
             $('#updateForm').submit(function(event) {
                 event.preventDefault();
                 newPvp = parseFloat(newPvp);
-                 var totalPvp = parseFloat($('input[name="total"]').val());
+                var totalPvp = parseFloat($('input[name="total"]').val());
                  
                 if (newPvp == 0){
                   sendFormBooking(totalPvp,0);
@@ -405,39 +411,11 @@ $(document).ready(function() {
                 $('#confirm_PVP_modif').html(window.formatterEuro.format(newPvp));
                 $('#confirm_PVP_disc').html(newDisc);
                 $('#confirm_PVP_promo').html(newPromo);
-                $( "#dialog-confirm" ).dialog({
-                    resizable: false,
-                    height: "auto",
-                    width: 400,
-                    modal: true,
-                    buttons: [
-                        {
-                          text: "Aceptar",
-                          class: "btn btn-success",
-                          click: function() {
-                            $( this ).dialog( "close" );
-                            totalPvp = newPvp;
-                            sendFormBooking(totalPvp,1)
-                          }
-                        },
-                        {
-                          text: "Rechazar",
-                          class: "btn btn-danger",
-                          click: function() {
-                            $( this ).dialog( "close" );
-                            sendFormBooking(totalPvp,0)
-                          }
-                        },
-                        {
-                          text: "Cancelar",
-                          class: "btn btn-default",
-                          click: function() {
-                            $( this ).dialog( "close" );
-                          }
-                        },
-                      ]
-                  });
-                return;
+                
+                $('#modal_confirm_PVP').modal();
+                $('#cpvps_acept').data('value',newPvp);
+                $('#cpvps_refuse').data('value',totalPvp);
+                return false;
               });
               
               

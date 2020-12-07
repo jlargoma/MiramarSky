@@ -43,14 +43,9 @@ setlocale(LC_TIME, "es_ES");
       <input type="hidden" class="id" name="id" value="<?php echo $book->id; ?>">
 
       <div class="summernote-wrapper" style="margin-bottom: 30px;">
-        <?php if ($book->room->nameRoom != "CHLT"): ?>
-          <textarea class="form-control note-editable" name="text" style="width: 100%;">Hola <?php echo $book->customer->name ?><?php echo "\n" ?><?php echo "\n" ?>Si tenemos disponibilidad para tu reserva  <?php echo "\n" ?><?php echo "\n" ?>Nombre: <?php echo $book->customer->name ?><?php echo "\n" ?><?php echo "\n" ?>Teléfono: <?php echo $book->customer->phone ?><?php echo "\n" ?><?php echo "\n" ?>Email: <?php echo $book->customer->email ?><?php echo "\n" ?><?php echo "\n" ?>Apartamento: <?php echo $book->room->sizeRooms->name ?> // <?php echo ($book->type_luxury == 1) ? "Lujo" : "Estandar" ?><?php echo "\n" ?>Fechas: <?php echo Carbon::CreateFromFormat('Y-m-d', $book->start)->formatLocalized('%d %b') ?> - <?php echo Carbon::CreateFromFormat('Y-m-d', $book->finish)->formatLocalized('%d %b') ?><?php echo "\n" ?><?php echo "\n" ?>Noches: <?php echo $book->nigths; ?><?php echo "\n" ?><?php echo "\n" ?>Ocupantes: <?php echo $book->pax; ?><?php echo "\n" ?><?php echo "\n" ?><?php if ($book->sup_lujo > 0): ?>Suplemento Lujo: (SI) <?php echo $book->sup_lujo ?>€ <?php echo "\n" ?><?php echo "\n" ?><?php endif ?>Precio total: <?php echo number_format($book->total_price, 2, ',', '.') ?>€<?php echo "\n" ?><?php echo "\n" ?>El precio te incluye, una plaza de parking cubierto (dos plazas en los aptos. gran ocupación), piscina climatizada, gimnasio, taquilla guarda esquíes, sabanas y toallas. <?php echo "\n" ?><?php echo "\n" ?>SERVICIOS ADICIONALES<?php echo "\n" ?><?php echo "\n" ?>Te ofrecemos precios especiales que hemos pactado con el proveedor para vosotros en:<?php echo "\n" ?><?php echo "\n" ?>- Forfait <?php echo "\n" ?>- Clases de esquí<?php echo "\n" ?>- Alquiler de material<?php echo "\n" ?><?php echo "\n" ?>Para solicitar alguno de estos servicios solo es necesario que rellenes un formulario entrando en https://www.apartamentosierranevada.net/forfait/ <?php echo "\n" ?><?php echo "\n" ?>Para tu comodidad te llevamos el forfait a tu apartamento, no tienes que esperar colas<?php echo "\n" ?><?php echo "\n" ?>Gracias por confiarnos tus vacaciones, haremos todo lo posible para que pases unos días agradables. <?php echo "\n" ?>
-                                    www.apartamentosierranevada.net<?php echo "\n" ?><?php echo "\n" ?>Quedamos a la espera de tu respuesta.
+          <textarea class="form-control" id="textEmail" style="width: 100%;">
+            <?php echo $text_mail ?> 
           </textarea>
-        <?php else: ?>
-          <textarea class="form-control note-editable" name="text" style="width: 100%;">Hola <?php echo $book->customer->name ?> Si tenemos disponibilidad para tu reserva  <?php echo "\n" ?><?php echo "\n" ?>Nombre: <?php echo $book->customer->name ?><?php echo "\n" ?>Teléfono: <?php echo $book->customer->phone ?><?php echo "\n" ?>Email: <?php echo $book->customer->email ?><?php echo "\n" ?>Apartamento: <?php echo $book->room->sizeRooms->name ?> // <?php echo ($book->type_luxury == 1) ? "Lujo" : "Estandar" ?><?php echo "\n" ?>Fechas: <?php echo Carbon::CreateFromFormat('Y-m-d', $book->start)->formatLocalized('%d %b') ?> - <?php echo Carbon::CreateFromFormat('Y-m-d', $book->finish)->formatLocalized('%d %b') ?><?php echo "\n" ?>Noches: <?php echo $book->nigths; ?><?php echo "\n" ?>Ocupantes: <?php echo $book->pax; ?><?php echo "\n" ?><?php if ($book->sup_lujo > 0): ?>Suplemento Lujo: (SI) <?php echo $book->sup_lujo ?>€ <?php else: ?> <?php endif ?><?php echo "\n" ?><?php echo "\n" ?><?php echo "\n" ?>Precio total: <?php echo number_format($book->total_price, 2, ',', '.') ?>€<?php echo "\n" ?><?php echo "\n" ?>El precio te incluye, una plaza de parking cubierto (dos plazas en los aptos. gran ocupación), piscina climatizada, gimnasio, taquilla guarda esquíes, sabanas y toallas.<?php echo "\n" ?><?php echo "\n" ?>Te ofrecemos precios especiales que hemos pactado con el proveedor para vosotros en:<?php echo "\n" ?><?php echo "\n" ?>- Forfait <?php echo "\n" ?>- Clases de esquí<?php echo "\n" ?>- Alquiler de material<?php echo "\n" ?><?php echo "\n" ?>Para solicitar alguno de estos servicios solo es necesario que rellenes un formulario entrando en https://www.apartamentosierranevada.net/forfait/<?php echo "\n" ?><?php echo "\n" ?>Para tu comodidad te llevamos el forfait a tu apartamento, no tienes que esperar colas<?php echo "\n" ?><?php echo "\n" ?>Gracias por confiarnos tus vacaciones, haremos todo lo posible para que pases unos días agradables. <?php echo "\n" ?>www.apartamentosierranevada.net<?php echo "\n" ?><?php echo "\n" ?>Quedamos a la espera de tu respuesta.
-          </textarea>
-        <?php endif ?>
       </div>
 
       <div class="wrapper push-20" style="text-align: center;">
@@ -60,8 +55,6 @@ setlocale(LC_TIME, "es_ES");
   </div>
 </div>
 
-<script src="/assets/plugins/pace/pace.min.js" type="text/javascript"></script>
-<script src="/assets/plugins/jquery/jquery-1.11.1.min.js" type="text/javascript"></script>
 
 <script type="text/javascript">
 
@@ -76,6 +69,28 @@ function sended() {
 }
 
 
+  CKEDITOR.replace('textEmail',
+          {
+            toolbar:
+                    [
+            { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+            { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
+            { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv',
+                '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ] },
+            { name: 'links', items : [ 'Link','Unlink','Anchor' ] },
+            '/',
+            { name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
+            { name: 'colors', items : [ 'TextColor','BGColor' ] },
+            { name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }
+                    ]
+          });
+          
+
+
+
+
+
+
 $('#form-email').submit(function (event) {
   event.preventDefault();
 
@@ -84,9 +99,8 @@ $('#form-email').submit(function (event) {
   var formURL = $(this).attr("action");
   var token = $('input[name="_token"]').val();
   var id = $('.id').val();
-  var textEmail = $('.note-editable').val();
+  var textEmail = $('#textEmail').val();
   var type = 1;
-
   $.post(formURL, {_token: token, textEmail: textEmail, id: id, type: type}, function (data) {
     if (data == 1) {
       sended();
