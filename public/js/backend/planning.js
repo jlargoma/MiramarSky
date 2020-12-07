@@ -16,6 +16,16 @@ $(document).ready(function () {
   $('#lastBooks').click(function (event) {
     $('#modalLastBooks .modal-content').empty().load('/admin/reservas/api/lastsBooks');
   });
+  
+  $('#modalLastBooks').on('click','.getAll',function (event) {
+    $('#modalLastBooks .modal-content').empty().load('/admin/reservas/api/lastsBooks');
+  });
+  $('#modalLastBooks').on('click','.getLastMonth',function (event) {
+    $('#modalLastBooks .modal-content').empty().load('/admin/reservas/api/lastsBooks/month');
+  });
+  $('#modalLastBooks').on('click','.getLastWeek',function (event) {
+    $('#modalLastBooks .modal-content').empty().load('/admin/reservas/api/lastsBooks/week');
+  });
 //  $('.btn_intercambio').click(function (event) {
 //    $('#modalIntercambio .contentModalIntercambio').empty().load('/admin/reservas/api/intercambio');
 //  });

@@ -222,7 +222,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista'], 'pre
   Route::get('/reservas/saveFianza', 'BookController@saveFianza');
   Route::get('/reservas/reserva/{id}', 'BookController@tabReserva');
   Route::get('/reservas/cobrar/{id}', 'BookController@cobroBook');
-  Route::get('/reservas/api/lastsBooks', 'BookController@getLastBooks');
+  Route::get('/reservas/api/lastsBooks/{type?}', 'BookController@getLastBooks');
   Route::get('/reservas/api/intercambio', 'BookController@getIntercambio');
   Route::get('/reservas/api/intercambio-search/{block}/{search?}', 'BookController@getIntercambioSearch');
   Route::post('/reservas/api/intercambio-change', 'BookController@intercambioChange');

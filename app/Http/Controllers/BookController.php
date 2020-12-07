@@ -1184,7 +1184,15 @@ class BookController extends AppController
             $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
             $rooms       = \App\Rooms::whereIn('id', $roomsAgents)->orderBy('order')->get();
             $types       = [1];
-            $booksQuery = Book::where_book_times($startYear, $endYear)->with('room','payments','customer','leads');
+            $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
+            $agency = Auth::user()->agent->agency_id;
+            $booksQuery = Book::where_book_times($startYear, $endYear)
+                ->with('room','payments','customer','leads')
+                ->where(function ($query2) use ($roomsAgents,$agency) {
+                    $query2->whereIn('room_id', $roomsAgents)
+                    ->orWhere('agency', Auth::user()->agent->agency_id);
+                });
+                
         }
 
         switch ($request->type) {
@@ -1195,11 +1203,9 @@ class BookController extends AppController
               $books = $booksQuery->whereIn('type_book', $types)
                               ->orderBy('created_at', 'DESC')->get();
             } else {
-              $roomsAgents = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
+              
               $books = $booksQuery->where('type_book', 1)
                               ->where('user_id', Auth::user()->id)
-                              ->whereIn('room_id', $roomsAgents)
-                              ->orWhere('agency', Auth::user()->agent->agency_id)
                               ->orderBy('created_at', 'DESC')->get();
             }
             $bg_color = '#295d9b';
@@ -1214,16 +1220,7 @@ class BookController extends AppController
             $bg_color = 'orange';
             break;
           case 'confirmadas':
-
-            if ($uRole != "agente") {
-              $books = $booksQuery->with('LogImages')->whereIn('type_book', [2])->orderBy('created_at', 'DESC')->get();
-            } else {
-              $books = $booksQuery->where('type_book', 2)->whereIn('room_id', $roomsAgents)
-                              ->where('user_id', Auth::user()->id)
-                              ->with('LogImages')
-                              ->orWhere('agency', Auth::user()->agent->agency_id)
-                              ->orderBy('created_at', 'DESC')->get();
-            }
+              $books = $booksQuery->with('LogImages')->where('type_book', 2)->orderBy('created_at', 'DESC')->get();
             break;
           case 'ff_pdtes_2':
 
@@ -1239,17 +1236,35 @@ class BookController extends AppController
           case 'checkin':
           case 'ff_pdtes':
             $dateX = Carbon::now();
-            $books = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))
+            $booksQuery = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))
                             ->where('start', '<=', $year->end_date)
                             ->with('room','payments','customer','leads')
-                            ->whereIn('type_book', [1, 2])->orderBy('start', 'ASC')->get();
+                            ->whereIn('type_book', [1, 2])->orderBy('start', 'ASC');
+            
+             if ($uRole == "agente")
+            {
+                $booksQuery->where(function ($query2) use ($roomsAgents,$agency) {
+                    $query2->whereIn('room_id', $roomsAgents)
+                    ->orWhere('agency', Auth::user()->agent->agency_id);
+                });
+            }
+            $books = $booksQuery->get();
             break;
           case 'checkout':
             $dateX = Carbon::now();
-            $books = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))
+            $booksQuery = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))
                             ->where('finish', '<', $year->end_date)
                             ->with('room','payments','customer','leads')
-                            ->where('type_book', 2)->orderBy('finish', 'ASC')->get();
+                            ->where('type_book', 2)->orderBy('finish', 'ASC');
+            
+            if ($uRole == "agente"){
+                $booksQuery->where(function ($query2) use ($roomsAgents,$agency) {
+                    $query2->whereIn('room_id', $roomsAgents)
+                    ->orWhere('agency', Auth::user()->agent->agency_id);
+                });
+            }
+            $books = $booksQuery->get();
+            
             if ($books){
               $bList = [];
               foreach ($books as $book){
@@ -1269,15 +1284,13 @@ class BookController extends AppController
             $bg_color = '#448eff';
           break;
           case 'eliminadas':
-            $books = \App\Book::where_book_times($startYear, $endYear)
-                            ->where('type_book', 0)->orderBy('updated_at', 'DESC')->get();
+            $books = $booksQuery->where('type_book', 0)->orderBy('updated_at', 'DESC')->get();
             break;
           case 'cancel-xml':
-            $books = \App\Book::where_book_times($startYear, $endYear)
-                            ->where('type_book', 98)->orderBy('updated_at', 'DESC')->get();
+            $books = $booksQuery->where('type_book', 98)->orderBy('updated_at', 'DESC')->get();
             break;
           case 'blocked-ical':
-            $books = \App\Book::where('start', '>=', $startYear->copy()->subDays(3))
+            $books = $booksQuery->where('start', '>=', $startYear->copy()->subDays(3))
                             ->with('room', 'payments', 'customer')
                             ->where('finish', '<=', $endYear)->whereIn('type_book', [11, 12])
                             ->orderBy('updated_at', 'DESC')->get();
@@ -1313,26 +1326,136 @@ class BookController extends AppController
         return view('backend/planning/_table', compact('books', 'rooms', 'type', 'mobile','pullSent','payment'));
     }
 
-    public function getLastBooks(Request $request)
+    public function getLastBooks($type=null)
     {
         $mobile = new Mobile();
 
         $year      = self::getActiveYear();
         $startYear = new Carbon($year->start_date);
         $endYear   = new Carbon($year->end_date);
+        $bMonth = [];
+        $bWeek = [];
+        $total = 0;
+        $cW = date('W');
+        $cMonth = date('n');
+        
+        /*************************************************************************************/
+        $uRole     = getUsrRole();
+        if ($uRole == "limpieza" || $uRole == "agente"){
+          die;
+        }
+        /*************************************************************************************/
+        //confirmacioens, cancelaciones y reservado Stripe
+        $qry_lst = Book::whereIn('type_book',[1,2,98])
+            ->with('room','payments','customer','leads')
+            ->orderBy('updated_at');
+        switch ($type){
+          case 'week':
+            $fecha_actual = date("Y-m-d");
+            $qry_lst->where('updated_at','>',date("Y-m-d",strtotime($fecha_actual."- 7 days")));
+            break;
+          case 'month':
+            $fecha_actual = date("Y-m-d");
+            $qry_lst->where('updated_at','>',date("Y-m-d",strtotime($fecha_actual."- 31 days")));
+            break;
+          default :
+            $qry_lst->limit(50);
+            break;
+        }
+    
+    
+        $lst = $qry_lst->get();
 
-        $booksAux = array();
-        foreach (\App\Payments::orderBy('id', 'DESC')->get() as $key => $payment)
+        $books = [];
+        foreach ($lst as $book)
         {
-            if (!in_array($payment->book_id, $booksAux))  $booksAux[] = $payment->book_id;
-            if (count($booksAux) == 10) break;
+          $aux = [
+              'agency' => ($book->agency != 0) ? '/pages/'.strtolower($book->getAgency($book->agency)).'.png' : null,
+              'id'=> $book->id,
+              'name'=> $book->customer->name,
+              'url'=> url ('/admin/reservas/update').'/'.$book->id,
+              'room'=>substr($book->room->nameRoom,0,5),
+              'start'=>convertDateToShow($book->start),
+              'finish'=>convertDateToShow($book->finish),
+              'pvp'=> moneda($book->total_price),
+              'status'=>'',
+              'payment'=>0,
+              'toPay'=>0,
+              'percent'=>0,
+              'week'=>'',
+              'month'=>'',
+          ];
+          
+          $payments = \App\Payments::where('book_id', $book->id)->get();
+          $paymentBook = 0;
+          $countPays = 0;
+          if ( count($payments) > 0){
+            foreach ($payments as $key => $payment){
+              $paymentBook += $payment->import;
+              $countPays++;
+            }
+          }
+          
+          $total += $paymentBook;
+          $aux['payment'] = $paymentBook;
+          $aux['toPay'] = $book->total_price-$paymentBook;
+          $aux['percent'] = ($book->total_price>0) ? round(($paymentBook/$book->total_price)*100): 0;
+          
+          
+          if($countPays > 0){
+              $aux['status'] = $countPays. ' PAGO';
+          } else {
+            switch($book->type_book){
+              case 1: $aux['status'] = 'Reservado - stripe'; break;
+              case 2: $aux['status'] = 'Pagada-la-señal'; break;
+              case 98: $aux['status'] = 'Cancel'; break;
+            } 
+          }
+          
+          $books[] = $aux;
+          
+          /*
+           * 
+           * controlar el pago,y ver la fecha del pago para ver si lo ponemos en la semana o mes
+           * 
+           */
         }
-        $books = array();
-        for ($i = 0; $i < count($booksAux); $i++){
-            $books[] = \App\Book::find($booksAux[$i]);
-        }
+        
+        
+        return view('backend.planning._lastBookPayment', compact('books','bMonth','bWeek', 'mobile','total','type'));
+//        dd($books,$bWeek);
+//        
+        
+        
+        
+        /************************************************************************************/
 
-        return view('backend.planning._lastBookPayment', compact('books', 'mobile'));
+        
+        $lst = \App\Payments::orderBy('id', 'DESC')->limit(100)->get();
+        $booksAux = array();
+        $bMonth = [];
+        $bWeek = [];
+        $total = 0;
+        $cW = date('W');
+        $cMonth = date('n');
+        foreach ($lst as $key => $payment)
+        {
+            if (!in_array($payment->book_id, $booksAux)){
+              $booksAux[] = $payment->book_id;
+              $total++;
+              $timer = strtotime($payment->datePayment);
+              if (date('n',$timer) == $cMonth){
+                $bMonth[] = $payment->book_id;
+                if (date('W',$timer) == $cW){
+                  $bWeek[] = $payment->book_id;
+                } 
+              }
+            }
+            if ($total == 50) break;
+        }
+        
+        $books = Book::whereIn('id',$booksAux)->get();
+        return view('backend.planning._lastBookPayment', compact('books','bMonth','bWeek', 'mobile'));
 
     }
 
@@ -1683,9 +1806,9 @@ class BookController extends AppController
         
         
         $totalCost = array_sum($data['costes']) - $promotion;
-        $profit    = round($totalPrice - $totalCost,2);
+        $profit    = round($totalPrice - $totalCost);
         $data['calculated']['total_price']       = $totalPrice;
-        $data['calculated']['total_cost']        = round($totalCost,2);
+        $data['calculated']['total_cost']        = round($totalCost);
         $data['calculated']['profit']            = $profit;
         $data['calculated']['profit_percentage'] = ($totalPrice>0) ? round(($profit / $totalPrice) * 100) : 0;
         $data['calculated']['real_price']        = array_sum($data['totales']);

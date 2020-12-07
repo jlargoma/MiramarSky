@@ -557,7 +557,7 @@ class Rooms extends Model {
     $oConfig = new oConfig();
     $pvp = $this->getPVP($startDate, $endDate,$pax);
     $pvp = round($oConfig->priceByChannel($pvp,99,$this->channel_group,false,$nigths),2); //Google Hotels price
-    $result['pvp_init'] = $pvp;
+    $result['pvp_init'] = round($pvp);
     $result['discount'] = $this->getDiscount($startDate,$endDate);
     $result['discount_pvp'] = round($pvp*( $result['discount']/100));
 
