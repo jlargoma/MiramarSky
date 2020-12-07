@@ -203,7 +203,7 @@ $is_mobile = $mobile->isMobile();
                     <label>Sup. Lujo</label>
                     <select class=" form-control full-width type_luxury minimal recalc" name="type_luxury">
                         <?php for ($i=1; $i <= 4 ; $i++): ?>
-                        <option value="<?php echo $i ?>" <?php echo ($i == $data['luxury'])?"selected": "" ?>>
+                        <option value="<?php echo $i ?>" <?php echo ($i == $data['luxury']) ? "selected": "" ?>>
                                 <?php echo \App\Book::getSupLujo($i) ?>
                             </option>
                         <?php endfor;?>

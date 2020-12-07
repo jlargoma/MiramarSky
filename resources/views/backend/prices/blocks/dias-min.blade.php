@@ -7,7 +7,9 @@
         <div class="row">
           <div class="col-md-3 col-xs-5 pt-1"><label>Rango de Fechas</label></div>
           <div class="col-md-9 col-xs-7">
-            <input type="text" class="form-control daterange01" id="date_range" name="date_range" value="">
+            <input type="text" class="form-control daterange1" id="date_range" name="date_range" value="">
+            <input type="hidden" class="date_start" name="date_start" >
+            <input type="hidden" class="date_finish" name="date_end" >
           </div>
         </div>
 

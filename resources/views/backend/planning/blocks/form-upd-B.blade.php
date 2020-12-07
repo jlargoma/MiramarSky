@@ -76,18 +76,18 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
     <div class="col-md-2 col-xs-6 push-10">
       <label>Parking</label>
       <select class=" form-control parking recalc minimal" name="parking" {{$disabl_limp}}>
-        <option value="0"> -- </option>
+        <?php $sel = ($book->type_park) ? $book->type_park : 2; ?>
 <?php for ($i = 1; $i <= 4; $i++): ?>
-          <option value="<?php echo $i ?>" {{ $book->type_park == $i ? 'selected' : '' }}><?php echo $book->getParking($i) ?></option>
+          <option value="<?php echo $i ?>" {{ $sel == $i ? 'selected' : '' }}><?php echo $book->getParking($i) ?></option>
 <?php endfor; ?>
       </select>
     </div>
     <div class="col-md-2 col-xs-6 push-10">
       <label>Sup. Lujo</label>
+        <?php $sel = ($book->type_luxury) ? $book->type_luxury : 2;?>
       <select class=" form-control full-width type_luxury recalc minimal" name="type_luxury" {{$disabl_limp}}>
-        <option value="0"> -- </option>
 <?php for ($i = 1; $i <= 4; $i++): ?>
-          <option value="<?php echo $i ?>" {{ $book->type_luxury == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
+          <option value="<?php echo $i ?>" {{ $sel == $i ? 'selected' : '' }}><?php echo $book->getSupLujo($i) ?></option>
 <?php endfor; ?>
       </select>
     </div>

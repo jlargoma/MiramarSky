@@ -105,12 +105,13 @@ $(document).ready(function() {
       
 //          var isEdited = $('.total').attr('data-edited');
           if (data.public.promo_pvp<1) {
-              $('.promociones').val('');
+//              $('.promociones').val('');
               $('.book_owned_comments').empty();
               $('.content_image_offert').hide();
           } else {
-              $('.promociones').val(data.public.promo_pvp);
-              $('.book_owned_comments').html('('+data.public.promo_name+' : '+ Math.abs(data.public.promo_pvp) +' €)');
+//              $('.promociones').val(data.public.promo_pvp);
+//              $('.book_owned_comments').html('('+data.public.promo_name+' : '+ Math.abs(data.public.promo_pvp) +' €)');
+              $('.book_owned_comments').html(data.public.promo_name);
               $('.content_image_offert').show();
           }
           
@@ -123,7 +124,7 @@ $(document).ready(function() {
           else newPromo = null;
           
           if ($('#new_book').val() == 1)     $('#total_pvp').val(data.calculated.total_price);
-          
+          $('.promociones').val(data.costes.promotion);
           $('.cost').val(data.calculated.total_cost);
           $('.costApto').val(data.costes.book);
           $('.costParking').val(data.costes.parking);

@@ -74,6 +74,7 @@ class Settings extends Model {
         'reservation_state_changed_confirm' => 'Confirmado RVA',
         'reservation_state_changed_cancel' => 'Denegada RVA',
         'reserva-propietario' => 'RVA Propietario',
+        'reserva-constestado-email' => 'Contestado e-mail',
         'second_payment_reminder' => 'Recordatorio 2º pago',
         'second_payment_confirm' => 'Confirmación del 2º pago',
         'Forfait_email_payment_request' => 'Solicitud de pago Forfaits',

@@ -26,7 +26,7 @@
         </button>
         
       <?php endif ?>
-      <button class="btn btn-success btn-calcuteBook btn-cons" type="button" data-toggle="modal" data-target="#modalCalculateBook">
+      <button class="btn btn-success btn-calcuteBook btn-cons" type="button">
         <span class="bold hidden-mobile"><i class="fa fa-calendar-alt" aria-hidden="true"></i>&nbsp;Calcular reserva</span>
         <span class="bold show-mobile">$</span>
       </button>
@@ -92,7 +92,7 @@
             <span class="bold">Cupos Vtn Rapida</span>
           </button>
         <?php endif ?>
-        <button class="btn btn-blue btn_intercambio btn-cons minimal" type="button" data-toggle="modal" data-target="#modalIntercambio">
+        <button class="btn btn-blue btn_intercambio btn-cons minimal" type="button">
           <span class="bold">intercambio</span>
         </button>
         <button class="btn btn-danger btn-cons btn-blink"  id="btnBookBlockAll" >

@@ -9,6 +9,7 @@ $is_mobile = $mobile->isMobile();
 
 @section('externalScripts')
 @include('backend.planning.blocks.styles-update')
+<script src="{{ asset('/vendors/ckeditor/ckeditor.js') }}"></script>
 @endsection
 
 @section('content')

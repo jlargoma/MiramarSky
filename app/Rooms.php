@@ -559,9 +559,9 @@ class Rooms extends Model {
     $pvp = round($oConfig->priceByChannel($pvp,99,$this->channel_group,false,$nigths),2); //Google Hotels price
     $result['pvp_init'] = $pvp;
     $result['discount'] = $this->getDiscount($startDate,$endDate);
-    $result['discount_pvp'] = round($pvp*( $result['discount']/100),2);
+    $result['discount_pvp'] = round($pvp*( $result['discount']/100));
 
-    $pvp =  round($pvp-$result['discount_pvp'],2);
+    $pvp =  round($pvp-$result['discount_pvp']);
 
     // promociones tipo 7x4
     $hasPromo = '';
@@ -572,9 +572,9 @@ class Rooms extends Model {
       $pvp_promo = $pvp;
       if ($promo_nigths>0 && $nigths_discount>0 && $nigths>=$promo_nigths){
         $nigths_ToApply = intval(($nigths/$promo_nigths) * $nigths_discount);
-        $pvpAux = round( ($pvp/$nigths) * ($nigths-$nigths_ToApply) , 2);
+        $pvpAux = round( ($pvp/$nigths) * ($nigths-$nigths_ToApply));
         $result['promo_name'] = $aPromo['name'];
-        $result['promo_pvp'] = round(($pvp - $pvpAux),2);
+        $result['promo_pvp'] = round(($pvp - $pvpAux));
         $pvp = $pvpAux;
       }
     }

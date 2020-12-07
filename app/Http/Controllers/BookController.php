@@ -263,8 +263,7 @@ class BookController extends AppController
         return $alarms;
     }
 
-     public function newBook(Request $request)
-    {
+     public function newBook(Request $request){
         if (Auth::user()->role != "agente")
         {
             $rooms = \App\Rooms::where('state', '=', 1)->orderBy('order')->get();
@@ -274,71 +273,36 @@ class BookController extends AppController
             $rooms       = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
         }
         
-        $data = [];
-        $cr_id = $request->input('cr_id',null);
-
-        if ($cr_id){
-          $usrData = \App\CustomersRequest::find($cr_id);
-          if ($usrData){
-            $data = [
-              'cr_id'  => $usrData->id,
-              'user_id'=> $usrData->user_id,
-              'name'   => $usrData->name,
-              'email'  => $usrData->email,
-              'pax'    => $usrData->pax,
-              'phone'  => $usrData->phone,
-              'book_comments'  => $usrData->comment,
-              'date'   => date('d M, y', strtotime($usrData->start)).' - '.date('d M, y', strtotime($usrData->finish)),
-              'start'   => convertDateToDB($usrData->start),
-              'finish'   => convertDateToDB($usrData->finish),
-              'nigths'   => calcNights($usrData->start,$usrData->finish),
-            ];
-            $newRoomID = $request->input('calcular_id',null);
-            if ($newRoomID){
-              $start  = $request->input('calc_start',null);
-              $finish = $request->input('calc_finish',null);
-              $data['pax']  = $request->input('calc_pax',null);
-              $data['date'] = date('d M, y', strtotime($start)).' - '.date('d M, y', strtotime($finish));
-              $data['start']  = $start;
-              $data['finish']  = $finish;
-              $data['nigths']  = calcNights($start,$finish);
-              $data['newRoomID']  = $newRoomID;
-            }
-          }
-        } else {
-          $newRoomID = $request->input('calcular_id',null);
-          if ($newRoomID){
-
-            $start  = $request->input('calc_start',null);
-            $finish = $request->input('calc_finish',null);
-            $data = [
-              'name'      => $request->input('username',null),
-              'email'     => "",
-              'pax'       => $request->input('calc_pax',null),
-              'phone'     => "",
-              'book_comments'   => "",
-              'date'      => date('d M, y', strtotime($start)).' - '.date('d M, y', strtotime($finish)),
-              'start'     => $start,
-              'finish'    => $finish,
-              'nigths'    => calcNights($start,$finish),
-              'newRoomID' => $newRoomID
-            ];
-          }
-        }
-        $data['luxury'] = $request->input('luxury',null);
-        
+        $data = [
+             'name'      => '',
+             'email'     => '',
+             'pax'       => '',
+             'phone'     => "",
+             'book_comments'   => "",
+             'date'      => '',
+             'start'     => '',
+             'finish'    => '',
+             'nigths'    => '',
+             'newRoomID' => '',
+           ];
+         
+        $form_data = $request->input('form_data',null);
         $info = $request->input('info',null);
+        if ($form_data){
+          foreach ($form_data as $k=>$v){
+            $data[$v['name']] = $v['value'];
+          }
+          $data['pax'] =$data['quantity'];
+          $data['nigths'] = calcNights($data['start'],$data['finish']);
+        }
         if ($info){
           $info = unserialize($info);
-//          $comentInter = PHP_EOL.'Descuento: '.moneda($info['disc_pvp'],false,2).' ( '.$info['discount']. '% )';
-//          if ($info['pvp_promo']>0)
-//            $comentInter .= PHP_EOL.$info['promoName'].': '.moneda($info['pvp_promo'],false,2);
-//          
-//          $comentInter .= PHP_EOL.'Suplemento Limpieza: '.moneda($info['limp'],false,2);
-//          $comentInter .= PHP_EOL.'Precio final: €'.round($info['price'],2);
-//          $data['book_comments'] .= $comentInter;
-          $data['pvp_promo'] = $info['pvp_promo'];
-          $data['disc_pvp'] = $info['disc_pvp'];
+          $data['pvp_promo']= $info['pvp_promo'];
+          $data['disc_pvp'] = $info['pvp_discount'];
+          $data['luxury']   = ($info['lux'] !== 0) ? 1 : 2;
+          $roomCode = trim($info['sugID']);
+          $data['newRoomID'] = desencriptID($roomCode);
+      
           
         }
         
@@ -702,6 +666,7 @@ class BookController extends AppController
             $book->book_comments       = ltrim($request->input('book_comments'));
             $book->pax                 = $request->input('pax');
             $book->real_pax            = $request->input('real_pax');
+            $book->promociones            = $request->input('promociones');
             $book->nigths              = calcNights($book->start, $book->finish );
 
             
@@ -1077,11 +1042,23 @@ class BookController extends AppController
     public function sendEmail(Request $request){
         $book = \App\Book::find($request->input('id'));
         if ($book){
-          Mail::send('backend.emails.contestadoAdvanced', ['body' => nl2br($request->input('textEmail')),], function ($message) use ($book) {
-              $message->from('reservas@apartamentosierranevada.net');
+          $mailClientContent = $request->input('textEmail');
+          $subject = 'Disponibilidad para tu reserva';
+          $sended = Mail::send('backend.emails.base', [
+              'mailContent' => $mailClientContent,
+              'title'       => $subject
+          ], function ($message) use ($book, $subject) {
+              $message->from(env('MAIL_FROM'));
               $message->to($book->customer->email);
-              $message->subject('Disponibilidad para tu reserva');
+              $message->subject($subject);
+              $message->replyTo(env('MAIL_FROM'));
           });
+        
+//          Mail::send('backend.emails.contestadoAdvanced', ['body' => nl2br($request->input('textEmail')),], function ($message) use ($book) {
+//              $message->from('reservas@apartamentosierranevada.net');
+//              $message->to($book->customer->email);
+//              $message->subject('Disponibilidad para tu reserva');
+//          });
           \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'sendEmailDisp','Disponibilidad para tu reserva',$request->input('textEmail'));
           // $book->send = 1;
           $book->type_book = 5;
@@ -1093,9 +1070,10 @@ class BookController extends AppController
     public function ansbyemail($id)
     {
         $book = \App\Book::find($id);
-
+        $mail = $this->getMailData($book, 'reserva-constestado-email');
         return view('backend/planning/_answerdByEmail', [
             'book'   => $book,
+            'text_mail'   => $mail,
             'mobile' => new Mobile()
         ]);
     }
@@ -1663,7 +1641,7 @@ class BookController extends AppController
             $sammeDate = false;
             if ($request->start == $book->start && $request->finish  == $book->finish){
               if ($request->pax == $book->pax && $request->room == $book->room_id ){
-                $loadedCostRoom = true;
+//                $loadedCostRoom = true;
                 $data['costes']['book'] = $book->cost_apto;
                 if ($request->park == $book->type_park){
                   $loadedParking = true;
@@ -1801,85 +1779,31 @@ class BookController extends AppController
     public function getTotalBook(Request $request)
     {
         $start      = $request->input('start');
-        $finish     = $request->input('end');
-        $site_id    = $request->input('site_id');
+        $finish     = $request->input('finish');
         $pax        = $request->input('quantity');
-        $size_apto  = $request->input('size_apto');
-        $email      = $request->input('email');
-        $phone      = $request->input('phone');
+        $size_apto  = $request->input('size_apto_id');
         $countDays  = calcNights($start,$finish);
-        $hasParking = $request->input('parking');
-        $pricePark  = BookController::getPricePark(1, $countDays);
-        $msg = null;
-        $limp = 0;
-        $lujo = ($request->input('luxury') == 'si');
-        $priceLux = BookController::getPriceLujo(1);
-        $roomAssigneds = Rooms::getRoomsToBooking($pax, $start,$finish,$size_apto ,$lujo);
-        $minEstancias = Rooms::getListMin_estancia($start);
-        $tiposApto = \App\SizeRooms::allSizeApto();
-        $nigths = calcNights($start,$finish);
-        $book = new Book();
-        $rooms = [];
-        if ($roomAssigneds){
-          $oConfig = new \App\Services\OtaGateway\Config();
-          foreach ($roomAssigneds as $room){
-            
-            $msg = null;
-            if (isset($minEstancias[$room->channel_group]) && $minEstancias[$room->channel_group]>$countDays){
-              $msg ='Estancia mínima de '.$minEstancias[$room->channel_group].' noches';
-            }
-        
-            if (isset($rooms[$room->channel_group])){
-                $rooms[$room->channel_group]['avail']++;
-            } else {
-                
-              $roomPrice = $room->getRoomPrice($start, $finish,$pax);      
-              if ($roomPrice['pvp'] > 0){
-                //descriminamos el precio de limpieza
-                $pvp = $roomPrice['pvp_init'];
-                $price = $roomPrice['pvp'];
-                if ($pvp < 1) continue;
-                // promociones tipo 7x4
-                $hasPromo = 0;
-                if ($roomPrice['promo_pvp']>0) $hasPromo = $roomPrice['promo_name'];
-                $rooms[$room->channel_group] = [
-                    'pvp_init'=>  $pvp,
-                    'price'=>  $price,
-                    'limp'=>  $roomPrice['price_limp'],
-                    'price_ota'=> $room->channel_group,
-                    'msg'  =>  $msg,
-                    'luxury'  =>  $room->luxury,
-                    'roomID' =>  $room->id,
-                    'tiposApto' => isset($tiposApto[$room->sizeApto]) ? $tiposApto[$room->sizeApto] : '',
-                    'avail' => 1,
-                    'discount'  => $roomPrice['discount'],
-                    'disc_pvp'  => $roomPrice['discount_pvp'],
-                    'pvp_promo' =>$roomPrice['promo_pvp'],
-                    'promoName' =>$hasPromo,
-                  ];
-              }
-            }
-          }
-        } else {
-          return view('frontend.bookStatus.bookError');
-        }
-        
+        $luxury     = $request->input('luxury');
+
+        if ($luxury == -1) $luxury = null;
+        $oGetRoomsSuggest = new \App\Services\Bookings\GetRoomsSuggest();
+        $oGetRoomsSuggest->size_apto = $size_apto;
+        $oGetRoomsSuggest->luxury = $luxury;
+        $rooms = $oGetRoomsSuggest->getItemsSuggest($pax,$start,$finish,$size_apto,$luxury);
         $oSetting = new Settings();
         $url = $oSetting->getLongKeyValue('gha_sitio');
-        return view('backend.bookStatus.response', [
-                'pax'          => $pax,
-                'nigths'       => $countDays,
-                'tiposApto'    => $tiposApto,
-                'name'         => $request->input('name'),
-                'start'        => $start,
-                'finish'       => $finish,
-                'rooms'        => $rooms,
-                'urlGH'       => $url,
-                'isMobile'     => config('app.is_mobile'),
-                'msg'          => null,
-                'email'        => $email,
-                'phone'        => $phone,
-            
+        foreach ($rooms as $k=>$v){
+          unset($rooms[$k]['infoCancel']);
+        }
+//        dd($rooms);
+        return view('backend.planning.calculateBook.response', [
+                'pax'   => $pax,
+                'nigths'=> $countDays,
+                'rooms' => $rooms,
+                'urlGH' => $url,
+                'name'  => $request->input('name'),
+                'start' => $start,
+                'finish'=> $finish,
             ]);
         
     }
