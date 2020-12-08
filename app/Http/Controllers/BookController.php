@@ -284,6 +284,7 @@ class BookController extends AppController
              'finish'    => '',
              'nigths'    => '',
              'newRoomID' => '',
+             'luxury'    => 2
            ];
          
         $form_data = $request->input('form_data',null);

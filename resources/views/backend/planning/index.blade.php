@@ -521,8 +521,8 @@ $is_mobile = $mobile->isMobile();
 
 
   <script src="/assets/js/notifications.js" type="text/javascript"></script>
-  <script src="/js/backend/planning.js" type="text/javascript"></script>
-  <script src="/js/backend/booking_script.js" type="text/javascript"></script>
+  <script src="{{assetV('/js/backend/planning.js')}}" type="text/javascript"></script>
+  <script src="{{assetV('/js/backend/booking_script.js')}}" type="text/javascript"></script>
   <?php if (Auth::user()->defaultTable != ''): ?>
   <script type="text/javascript">
     $(document).ready(function() {
