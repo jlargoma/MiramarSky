@@ -587,4 +587,28 @@ class Rooms extends Model {
   static public function getRoomList(){
     return self::orderBy('nameRoom')->pluck('nameRoom','id');
   }
+  
+  public function getTexts() {
+    $obj = \DB::table('rooms_text')->where('room_id', $this->id)->first();
+    $resp = ['detail'=>'','charact'=>''];
+    if ($obj){
+      $resp['detail'] = $obj->detail;
+      $resp['charact'] = $obj->charact;
+    }
+    
+    return $resp;
+  }
+  public function setTexts($detail,$charact) {
+    $data = ['detail'=>$detail,'charact'=>$charact];
+    $obj = \DB::table('rooms_text')->where('room_id', $this->id)->first();
+    if ($obj){
+    \DB::table('rooms_text')
+        ->where('room_id', $this->id)
+        ->update($data);
+    } else {
+      $data['room_id'] = $this->id;
+      \DB::table('rooms_text')->insert($data);
+    }
+   
+  }
 }

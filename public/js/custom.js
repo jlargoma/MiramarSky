@@ -137,3 +137,17 @@ function nl2br (str, is_xhtml) {
   return (str + '').replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '$1' + breakTag + '$2');
 }
 
+window["confiCKEDITOR"] =  {
+            toolbar:
+                    [
+            { name: 'clipboard', items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+            { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
+            { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv',
+                '-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock','-','BidiLtr','BidiRtl' ] },
+            { name: 'links', items : [ 'Link','Unlink','Anchor' ] },
+            '/',
+            { name: 'styles', items : [ 'Styles','Format','Font','FontSize' ] },
+            { name: 'colors', items : [ 'TextColor','BGColor' ] },
+            { name: 'tools', items : [ 'Maximize', 'ShowBlocks','-','About' ] }
+                    ]
+          }

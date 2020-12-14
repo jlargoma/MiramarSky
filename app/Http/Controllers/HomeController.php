@@ -59,10 +59,11 @@ class HomeController extends AppController
       $typeApto          = $room->sizeRooms->id;
       $directory = public_path() . "/img/miramarski/apartamentos/" . $room->nameRoom.'/';
       $directoryThumbnail = "/img/miramarski/apartamentos/" . $room->nameRoom . "/thumbnails/";
-
+      $texts = null;
       $photos = null;
       if ($room) {
         $photos = \App\RoomsPhotos::where('room_id', $room->id)->orderBy('main','DESC')->orderBy('position')->get();
+        $texts = $room->getTexts();
       }
       
       
@@ -118,6 +119,7 @@ class HomeController extends AppController
               'url'               => $url,
               'directory'         => $directory,
               'directoryThumbnail'=> $directoryThumbnail,
+              'texts'             => $texts,
           ]);
        
     }

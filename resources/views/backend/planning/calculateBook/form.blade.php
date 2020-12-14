@@ -19,7 +19,7 @@
                 </p>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 col-xs-4">
             <div class="form-group">
                 <label for="quantity">*Personas</label>
                 <div class="quantity">
@@ -32,7 +32,7 @@
                 <p class="help-block hidden-sm hidden-xs" style="line-height:1.2">Máx 12</p>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 col-xs-8">
             <div class="form-group">
                 <label>Tipo Apto</label>
                 <select class="form-control minimal" name="size_apto_id">
@@ -43,7 +43,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 col-xs-4">
             <div class="form-group not-padding-mobile">
                 <label>Lujo</label>
                 <select class="form-control minimal" name="luxury">
@@ -53,7 +53,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-md-3 ">
+        <div class="col-md-3 col-xs-8">
             <div class="form-group  text-center ">
                 <br/>
                 <button type="submit" class="btn btn-success btn-cons btn-lg" id="confirm-reserva">Calcular reserva</button>
@@ -64,6 +64,8 @@
 <div class="row" id="calcReserv_result" style="display: none;">
 
 </div>
+<br/>
+<br/>
 <script type="text/javascript" src="{{ asset('/js/datePicker01.js')}}"></script>
 <script type="text/javascript" src="{{ asset('/js/backend/calculateBook.js')}}"></script>
 
@@ -74,5 +76,15 @@
     text-align: center;
     padding: 4px;
     text-align: center;
+}
+@media (max-width: 425px){
+  #confirm-reserva.btn-cons {
+      min-width: 3em!important;
+      width: 100%;
+      max-width: 253px;
+      height: 35px;
+      margin-top: 5px;
+      padding: 0px;
+  }
 }
 </style>

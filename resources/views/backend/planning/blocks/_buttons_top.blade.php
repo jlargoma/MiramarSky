@@ -50,6 +50,12 @@
           <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">PARTEE</span>
           <span class="numPaymentLastBooks"><?php echo $parteeToActive; ?></span>
         </button>
+        <button class="btn btn-success btn-orange @if($CustomersRequest>0) btn-alarms @endif" id="btnBookingsWithoutCvc">
+          <span class="bold">sin CVC</span>
+          @if($bookings_without_Cvc>0)
+          <span class="numPaymentLastBooks" data-val="{{$bookings_without_Cvc}}">{{$bookings_without_Cvc}}</span>
+          @endif
+        </button>
         <button class="btn btn-success btn-tables" style="background-color: #96ef99; color: black;padding: 7px 18px;     width: auto !important;border: none;" type="button" data-type="reservadas">
           <span >RVA({{$totalReserv}}) <?php echo number_format($amountReserv, 0, ',', '.') ?>€</span>
         </button>
@@ -64,14 +70,7 @@
         <?php if (getUsrRole() == "admin"): ?>
         <a class="btn btn-primary" href="/admin/sales">
           <span class="bold">Informes</span>
-        </a>
-        <button class="btn btn-success btn-orange @if($CustomersRequest>0) btn-alarms @endif" id="btnBookingsWithoutCvc">
-          <span class="bold">sin CVC</span>
-          @if($bookings_without_Cvc>0)
-          <span class="numPaymentLastBooks" data-val="{{$bookings_without_Cvc}}">{{$bookings_without_Cvc}}</span>
-          @endif
-        </button>
-        
+        </a>       
         <?php endif ?>
       <?php endif ?>
     </div>
