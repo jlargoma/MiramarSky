@@ -24,6 +24,10 @@ $is_mobile = $mobile->isMobile();
         background-color: #1e416c;
         color: #FFF;
       }
+      #modalLastBooks tr.cancel,
+      #modalLastBooks tr.cancel a{
+          color: red;
+      }
     </style>
     <script src="{{ asset('/vendors/ckeditor/ckeditor.js') }}"></script>
 @endsection
@@ -115,16 +119,6 @@ $is_mobile = $mobile->isMobile();
                     </div>
                 </div>
             </div>
-
-        <div class="modal fade slide-up in" id="modalAlarms" tabindex="-1" role="dialog" aria-hidden="true" >
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content-wrapper">
-                    <div class="modal-content">
-                        @include('backend.planning._alarmsBooks', ['alarms' => $alarms])
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="modal fade slide-up in" id="modalLowProfits" tabindex="-1" role="dialog" aria-hidden="true" >
                 <div class="modal-dialog modal-lg">
@@ -306,16 +300,6 @@ $is_mobile = $mobile->isMobile();
                 <div class="modal-content-wrapper">
                     <div class="modal-content">
 
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade slide-up in" id="modalAlarms" tabindex="-1" role="dialog" aria-hidden="true" >
-            <div class="modal-dialog modal-xs" >
-                <div class="modal-content-wrapper">
-                    <div class="modal-content" style="width: 90%;">
-                        @include('backend.planning._alarmsBooks', ['alarms' => $alarms])
                     </div>
                 </div>
             </div>
@@ -521,8 +505,8 @@ $is_mobile = $mobile->isMobile();
 
 
   <script src="/assets/js/notifications.js" type="text/javascript"></script>
-  <script src="/js/backend/planning.js" type="text/javascript"></script>
-  <script src="/js/backend/booking_script.js" type="text/javascript"></script>
+  <script src="{{assetV('/js/backend/planning.js')}}" type="text/javascript"></script>
+  <script src="{{assetV('/js/backend/booking_script.js')}}" type="text/javascript"></script>
   <?php if (Auth::user()->defaultTable != ''): ?>
   <script type="text/javascript">
     $(document).ready(function() {

@@ -607,9 +607,9 @@ class RoomsController extends AppController {
 
   public function saveupdate(Request $request) {
 
-    // echo "<pre>";
-    // print_r($request->input());
-    // die();
+//     echo "<pre>";
+//     print_r($request->input());
+//     die();
 
     $room = Rooms::find($request->input('id'));
     $room->name = ($request->input('name')) ? $request->input('name') : $room->name;
@@ -632,13 +632,22 @@ class RoomsController extends AppController {
     $room->meta_descript = $request->input('meta_descript', null);
       
     if ($room->save()) {
+      
+      $room->setTexts($request->input('room_detail', ''),$request->input('room_charact', ''));
       return redirect()->action('RoomsController@index');
     }
   }
 
   public function getUpdateForm(Request $request) {
     $zodomusAptos = configZodomusAptos();
-    return view('backend/rooms/_updateFormRoom', ['room' => Rooms::find($request->id),'zodomusAptos'=>$zodomusAptos]);
+    $oRoom = Rooms::find($request->id);
+    $frontText = $oRoom->getTexts();
+    return view('backend/rooms/_updateFormRoom', 
+        [
+            'room' => $oRoom,
+            'frontText' => $frontText,
+            'zodomusAptos'=>$zodomusAptos,
+        ]);
   }
 
   public function searchByName(Request $request) {

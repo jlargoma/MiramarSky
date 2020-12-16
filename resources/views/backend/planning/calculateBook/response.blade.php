@@ -6,16 +6,17 @@
   <input type="hidden" id="calc_pax" value="{{$pax}}">
   
   <div class="table-responsive" style="overflow-y: hidden;">
-    <table class="table table-mobile">
+    <table class="table table-resumen table-mobile_cr">
       <thead>
         <tr class ="text-center bg-success text-white">
-          <th class="th-bookings text-center th-2">Disp.</th>
-          <th class="th-bookings">Apto.</th>
-          <th class="th-bookings text-center th-2">Precio</th>
+          <th class="th-bookings text-center th-2 static">Disp.</th>
+          <th class="th-bookings static-2" >Apto.</th>
+          <th class="first-col"></th>
+          <th class="th-bookings text-center th-2">Precio Final</th>
+          <th class="th-bookings text-center th-2">Precio Inicial</th>
           <th class="th-bookings text-center th-2">Desc</th>
           <th class="th-bookings text-center th-2">Promo</th>
           <th class="th-bookings text-center th-2">Supl Limp</th>
-          <th class="th-bookings text-center th-2">total</th>
           <th class="th-bookings text-center th-2">&nbsp;</th>
           <th class="th-bookings text-center th-2">&nbsp;</th>
         </tr>
@@ -23,13 +24,15 @@
       <tbody>
         @foreach($rooms as $room)
         <tr >
-          <td class="text-center">{{$room['availiable']}}</td>
-          <td class="th-bookings text-left">{{$room['title']}}</td>
+          <td class="static">{{$room['availiable']}}</td>
+          <td class="static-2">{{$room['title']}}</td>
+          <td class="first-col"></td>
+          <td class="text-center"><b >{{moneda($room['pvp_1']+$room['extr_costs'])}}</b>
           <td class="text-center"><b >{{$room['price']}}</b></td>
           <td class="text-center text-danger"><b ><?php echo '-'.moneda($room['pvp_discount'],false); ?></b></td>
           <td class="text-center text-danger"><b ><?php echo ($room['pvp_promo']>0)? '-'.moneda($room['pvp_promo'],false) : '--'; ?></b></td>
           <td class="text-center"><b >{{moneda($room['extr_costs'])}}</b></td>
-          <td class="text-center"><b >{{moneda($room['pvp_1']+$room['extr_costs'])}}</b>
+          
           </td>
           <td> 
             <?php if (Auth::user()->role != "agente"): ?>
@@ -50,17 +53,13 @@
         </tr>
           @if($room['minStay']>$nigths)
           <tr>
-            <td colspan="9"><p class="text-danger">Estadía mínima {{$room['minStay']}}</p></td>
+              <td colspan="9" class="minStay"><p class="text-danger">Estadía mínima {{$room['minStay']}}</p></td>
           </tr>
           @endif
         @endforeach
       </tbody>
     </table>
   </div>
-  <div class="col-md-6">
-    <button class="btn btn-danger btn-lg btn-cons  text-white center hvr-grow-shadow btn-back-calculate">VOLVER</button>
-  </div>
-
 </div>
 <script type="text/javascript">
   $(document).ready(function () {
@@ -71,3 +70,72 @@
     });
   });
 </script>
+<style>
+
+
+div#calcReserv_result {
+    background-color: white;
+}
+.table-resumen.table-mobile_cr th.static,
+.table-resumen.table-mobile_cr td.static {
+    width: 15px !important;
+    text-align: center !important;
+    min-width: 42px;
+    padding: 10px 0 0px 0px !important;
+    min-height: 36px;
+}
+.table-resumen.table-mobile_cr td.static-2,
+.table-resumen.table-mobile_cr th.static-2 {
+position: absolute;
+    background-color: white;
+    border-right: 1px solid #efefef;
+    z-index: 9;
+    padding: 10px 0 0 6px !important;
+    text-align: left;
+    overflow-y: hidden;
+    min-height: 36px;
+    width: 163px;
+    left: 48px;
+}
+td.minStay {
+    text-align: left;
+    padding: 6px 0 0 11px !important;
+}
+.table-resumen.table-mobile_cr th.th-bookings.static,
+.table-resumen.table-mobile_cr th.th-bookings.static-2 {
+    height: 61px;
+    background-color: #0fcfbd;
+    border: none;
+    text-align: center;
+    padding: 15px 0 0 0px !important;
+}
+.table-resumen.table-mobile_cr th.th-bookings.static{
+    padding-top: 11px !important;
+}
+.table-resumen.table-mobile_cr td.first-col,
+.table-resumen.table-mobile_cr th.first-col {
+    margin-left: 62px;
+    display: block;
+    height: 36px;
+    width: 1px;
+    max-width: 1px;
+    min-width: 1px;
+}
+  
+.table-resumen.table-mobile_cr td.static-2::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.table-resumen.table-mobile_cr td.static-2 {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+
+@media (min-width: 1760px){
+  .table-resumen.table-mobile_cr td.static-2 {
+    width: 238px;
+}
+}
+</style>

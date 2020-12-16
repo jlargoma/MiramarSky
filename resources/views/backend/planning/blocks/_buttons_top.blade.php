@@ -35,11 +35,12 @@
           <span class="bold">FORFAITS</span>
           <span class="numPaymentLastBooks show"><?php echo $ff_pendientes; ?></span>
         </button>
-
-        <button class="btn btn-danger btn-cons btn-blink <?php if (count($alarms) > 0) echo 'btn-alarms'; ?>" type="button" data-toggle="modal" data-target="#modalAlarms">
+        @if ($alarms > 0)
+        <button id="lastBooksPendientes"  class="btn btn-danger btn-cons btn-blink btn-alarms" type="button">
           <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">COBROS PDTES</span>
-          <span class="numPaymentLastBooks"><?php echo count($alarms); ?></span>
+          <span class="numPaymentLastBooks"><?php echo $alarms; ?></span>
         </button>
+        @endif
         <button class="btn btn-danger btn-cons btn-blink <?php if ($alert_lowProfits) echo 'btn-alarms'; ?> "  id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
 
           <span class="bold hidden-mobile"><i class="fa fa-bell" aria-hidden="true"></i> BAJO BENEFICIO</span>
@@ -49,6 +50,12 @@
         <button class="btn btn-danger btn-cons btn-blink <?php if ($parteeToActive > 0) echo 'btn-alarms'; ?> "  id="btnParteeToActive" test-target="#modalParteeToActive">
           <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">PARTEE</span>
           <span class="numPaymentLastBooks"><?php echo $parteeToActive; ?></span>
+        </button>
+        <button class="btn btn-success btn-orange @if($CustomersRequest>0) btn-alarms @endif" id="btnBookingsWithoutCvc">
+          <span class="bold">sin CVC</span>
+          @if($bookings_without_Cvc>0)
+          <span class="numPaymentLastBooks" data-val="{{$bookings_without_Cvc}}">{{$bookings_without_Cvc}}</span>
+          @endif
         </button>
         <button class="btn btn-success btn-tables" style="background-color: #96ef99; color: black;padding: 7px 18px;     width: auto !important;border: none;" type="button" data-type="reservadas">
           <span >RVA({{$totalReserv}}) <?php echo number_format($amountReserv, 0, ',', '.') ?>€</span>
@@ -64,14 +71,7 @@
         <?php if (getUsrRole() == "admin"): ?>
         <a class="btn btn-primary" href="/admin/sales">
           <span class="bold">Informes</span>
-        </a>
-        <button class="btn btn-success btn-orange @if($CustomersRequest>0) btn-alarms @endif" id="btnBookingsWithoutCvc">
-          <span class="bold">sin CVC</span>
-          @if($bookings_without_Cvc>0)
-          <span class="numPaymentLastBooks" data-val="{{$bookings_without_Cvc}}">{{$bookings_without_Cvc}}</span>
-          @endif
-        </button>
-        
+        </a>       
         <?php endif ?>
       <?php endif ?>
     </div>

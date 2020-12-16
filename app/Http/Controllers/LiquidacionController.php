@@ -2103,8 +2103,74 @@ class LiquidacionController extends AppController {
     
     $today = date('Y-m-d');
     $insert = [];
-
+    $newEmpty = [
+         'concept'=>null,'date'=>null,'import'=>null,'typePayment'=>null,
+         'type'=>null,'comment'=>null,'PayFor'=>null
+       ];
     
+    $total = count(current($info));
+    for($i = 0; $i<$total; $i++){
+      $new = $newEmpty;
+      foreach ($campos as $k=>$v){
+
+        $value = '';
+        if (!isset($info[$k])) continue;
+        if (!isset($info[$k][$i])) continue;
+        if (!($info[$k][$i])) continue;
+        $variab = $info[$k][$i];
+        
+        switch ($k){
+          case 'date':
+            $new['date'] =  ($variab != '') ? convertDateToDB($variab) : $today;
+            break;
+          case 'import':
+            $orig = $variab;
+            $variab = floatval(str_replace(',','.',str_replace('.','', $variab)));
+            $new['import'] = $variab;
+            break;
+          case 'typePayment':
+            $aux = strtolower($variab);
+            $idType = 0;
+            if ($aux == 'banco'){$idType = 3;}
+            if ($aux == 'cash') {$idType = 2;}
+            $new['typePayment'] = $idType;
+            break;
+          case 'type':
+            $type = array_search($variab,$expensesType);
+            $new['type'] = $type;
+            break;
+          case 'apto':
+            $aptoIDs = '';
+            $value = '';
+            $aAptoLst = explode(',',$variab);
+            if (count($aAptoLst)){
+              foreach ($aAptoLst as $r){
+                $aptoID = array_search(strtoupper(trim($r)),$aRooms);
+                if ($aptoID){
+                  $aptoIDs .= $aptoID.',';
+                }
+              }
+            }
+            $new['PayFor'] = $aptoIDs;
+            break;
+          default:
+            echo $k.' -> '.$variab.'<br>';
+            $new[$k] = $variab;
+            break;
+        }
+      }
+            
+      $hasVal = false;
+      foreach ($new as $value){
+        if ($value) $hasVal = true;
+      }
+      if ($hasVal)  $insert[] = $new;
+    }
+    $countInsert = count($insert);
+    if ($countInsert>0)
+      \App\Expenses::insert($insert);
+    
+    return back()->with(['success'=>$countInsert . ' Registros inportados']);
     
     $this->printData($campos,$info,$aRooms,$expensesType);
   }
