@@ -14,7 +14,11 @@ $(document).ready(function () {
 //  });
 
   $('#lastBooks').click(function (event) {
-    $('#modalLastBooks .modal-content').empty().load('/admin/reservas/api/lastsBooks');
+    $('#modalLastBooks .modal-content').empty().load('/admin/reservas/api/lastsBooks/week');
+  });
+  $('#lastBooksPendientes').click(function (event) {
+    $('#modalLastBooks .modal-content').empty().load('/admin/reservas/api/lastsBooks/pendientes');
+    $('#modalLastBooks').modal();
   });
   
   $('#modalLastBooks').on('click','.getAll',function (event) {
@@ -26,6 +30,27 @@ $(document).ready(function () {
   $('#modalLastBooks').on('click','.getLastWeek',function (event) {
     $('#modalLastBooks .modal-content').empty().load('/admin/reservas/api/lastsBooks/week');
   });
+  $('#modalLastBooks').on('click','.getPending',function (event) {
+    $('#modalLastBooks .modal-content').empty().load('/admin/reservas/api/lastsBooks/pendientes');
+  });
+   $('#modalLastBooks').on('click','.sendSecondPay',function(event) {
+            var id = $(this).attr('data-id');
+            if ($(this).hasClass('btn-default')) {
+                if (confirm("Quieres reenviarlo!")) {
+                    $.get('/admin/reservas/api/sendSencondEmail', { id:id }, function(data) {
+                        window.show_notif(data.title, data.status, data.response);
+                    });
+                }else{
+                    alert('NO actuamos');
+                }
+            } else {
+                $.get('/admin/reservas/api/sendSencondEmail', { id:id }, function(data) {
+                    window.show_notif(data.title, data.status, data.response);
+                });
+            }
+            
+        });
+        
 //  $('.btn_intercambio').click(function (event) {
 //    $('#modalIntercambio .contentModalIntercambio').empty().load('/admin/reservas/api/intercambio');
 //  });

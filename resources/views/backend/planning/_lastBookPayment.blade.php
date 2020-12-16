@@ -19,9 +19,10 @@ $isMobile = $mobile->isMobile();
                 </td>
                 
                 <td>
-                  <button type="button" class="btn getAll <?= !$type ? 'active' : ''?>">Todos</button>
+                  <button type="button" class="btn getAll <?= !$type ? 'active' : ''?>">TEMP</button>
                   <button type="button" class="btn getLastMonth <?= $type == 'month' ? 'active' : ''?>">Últ mes</button>
                   <button type="button" class="btn getLastWeek <?= $type == 'week'  ? 'active' : ''?>">Últ semana</button>
+                  <button type="button" class="btn getPending <?= $type == 'pendientes'  ? 'active' : ''?>">Pendientes (<?= count($alarmsPayment) ?>)</button>
                 </td>
             </tr>
         </table>
@@ -30,21 +31,23 @@ $isMobile = $mobile->isMobile();
 <table class="table table-data table-striped" data-type="pendientes">
     <thead>
     <tr>
-        <th style="width: 20%"> Cliente</th>
-        <th style="width: 10%; text-align: center;"> Apart</th>
-        <th style="width: 20%; text-align: center;">Fechas</th>
-        <th style="width: 10%; text-align: center;">PVP</th>
-        <th style="width: 10%; text-align: center;">Pagado</th>
-        <th style="width: 10%; text-align: center;">A pagar</th>
-        <th style="width: 20%; text-align: center;">estado</th>
+        <th style="width: 175px"> Cliente</th>
+        <th style="width: 80px; text-align: center;">Estado</th>
+        <th style="width: 50px; text-align: center;">Apart</th>
+        <th style="width: 155px; text-align: center;">Fechas</th>
+        <th style="width: 50px; text-align: center;">PVP</th>
+        <th style="width: 50px; text-align: center;">Pagado</th>
+        <th style="width: 50px; text-align: center;">Pendiente</th>
+        <th style="width: 50px; text-align: center;">Enviar Mail</th>
     </tr>
     </thead>
     <tbody>
             <tbody>
                 <?php foreach ($books as $key => $b): 
                   if (!$b) continue;
+                  $cancel = $b['tbook'] == 98 ? 'class="cancel"' : '' ;
                   ?>
-                    <tr>
+                    <tr <?= $cancel ?>>
                       @if($isMobile)
                         <td class ="text-left static" style="width: 130px;color: black;overflow-x: scroll;    padding: 9px !important; ">  
                       @else
@@ -63,6 +66,9 @@ $isMobile = $mobile->isMobile();
                       @else
                         <td class="text-center" >
                       @endif
+                          <b><?= $b['status'] ?></b> 
+                        </td>
+                        <td class="text-center">
                             <?=$b['room'] ?>       
                         </th>
                         <td class="text-center">   
@@ -75,12 +81,17 @@ $isMobile = $mobile->isMobile();
                           <?= moneda($b['payment']) ?> <br>
                           <b class="<?= $b['percent']>99 ? 'text-success' : 'text-danger' ?> "><?= $b['percent'] ?>%</b>
                         </td>
-                        <td class="text-center <?= $b['percent']>99 ? 'text-success' : 'text-danger' ?> ">
-                          <b><?= moneda($b['toPay']) ?></b>
-                        </td>
+                        @if($b['percent']>99)
+                        <td class="text-center"></td>
+                        <td class="text-center"></td>
+                        @else
+                        <td class="text-center text-danger" ><b><?= moneda($b['toPay']) ?></b></td>
                         <td class="text-center">
-                          <b><?= $b['status'] ?></b> 
+                          <button data-id="<?= $b['id']; ?>" class="btn btn-xs <?= $b['btn-send']; ?>  sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="0">
+                            <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                          </button>
                         </td>
+                        @endif
                     </tr>
                 <?php endforeach; ?>
             </tbody>

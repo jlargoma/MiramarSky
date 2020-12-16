@@ -35,11 +35,12 @@
           <span class="bold">FORFAITS</span>
           <span class="numPaymentLastBooks show"><?php echo $ff_pendientes; ?></span>
         </button>
-
-        <button class="btn btn-danger btn-cons btn-blink <?php if (count($alarms) > 0) echo 'btn-alarms'; ?>" type="button" data-toggle="modal" data-target="#modalAlarms">
+        @if ($alarms > 0)
+        <button id="lastBooksPendientes"  class="btn btn-danger btn-cons btn-blink btn-alarms" type="button">
           <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">COBROS PDTES</span>
-          <span class="numPaymentLastBooks"><?php echo count($alarms); ?></span>
+          <span class="numPaymentLastBooks"><?php echo $alarms; ?></span>
         </button>
+        @endif
         <button class="btn btn-danger btn-cons btn-blink <?php if ($alert_lowProfits) echo 'btn-alarms'; ?> "  id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
 
           <span class="bold hidden-mobile"><i class="fa fa-bell" aria-hidden="true"></i> BAJO BENEFICIO</span>

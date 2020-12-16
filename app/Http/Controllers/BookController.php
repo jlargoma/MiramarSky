@@ -117,50 +117,19 @@ class BookController extends AppController
         
         $parteeToActive = $this->countPartte();
         
-        
-        $now         = Carbon::now();
-        $booksAlarms = \App\Book::where('start', '>', $startYear)->where('finish', '<', $endYear)
-                                ->where('start', '>=', $now->format('Y-m-d'))->where('start', '<=', $now->copy()
-                                                                                                        ->addDays(15)
-                                                                                                        ->format('Y-m-d'))
-                                ->where('type_book', 2)->get();
-        $alarms      = array();
-        foreach ($booksAlarms as $key => $book)
-        {
-            $dateStart = Carbon::createFromFormat('Y-m-d', $book->start);
-            $diff      = $now->diffInDays($dateStart);
-
-            if (count($book->payments) > 0)
-            {
-                $total = 0;
-                foreach ($book->payments as $pay)
-                {
-                    $total += $pay->import;
-                }
-                //echo $total." DE ----> ".$book->total_price."<br>";
-
-                $percent = 0;
-                if ($total>0){
-                  $percentAux = ($book->total_price / $total);
-                  if ($percentAux>0)
-                  $percent = 100 / $percentAux;
-                }
-                if ($percent < 100 && $diff <= 15) $alarms[] = $book;
-            } else
-            {
-                if ($diff <= 15) $alarms[] = $book;
-            }
-        }
-        
-        
         //BEGIN: Processed data
         $bookOverbooking = null;
         $overbooking = [];
-        $oData = \App\ProcessedData::where('key','overbooking')->get();
+        $alarms = 0;
+        $oData = \App\ProcessedData::whereIn('key',['overbooking','alarmsPayment'])->get();
         foreach ($oData as $d){
           switch ($d->key){
             case 'overbooking':
               $overbooking = json_decode($d->content,true);
+              break;
+            case 'alarmsPayment':
+              if (trim($d->content) != '')
+                $alarms = count(json_decode($d->content));
               break;
           }
         }
@@ -1340,32 +1309,39 @@ class BookController extends AppController
         $cW = date('W');
         $cMonth = date('n');
         
+        $alarmsPayment = [];
+        $oData = \App\ProcessedData::where('key','alarmsPayment')->first();
+        if (trim($oData->content) != ''){
+          $alarmsPayment = json_decode($oData->content);
+        }
         /*************************************************************************************/
         $uRole     = getUsrRole();
         if ($uRole == "limpieza" || $uRole == "agente"){
           die;
         }
         /*************************************************************************************/
-        //confirmacioens, cancelaciones y reservado Stripe
-        $qry_lst = Book::whereIn('type_book',[1,2,98])
-            ->with('room','payments','customer','leads')
-            ->orderBy('updated_at');
         switch ($type){
+          case 'pendientes':
+            if (count($alarmsPayment)>0){
+              $qry_lst = Book::whereIn('id',$alarmsPayment);
+            } else $qry_lst = Book::where('id',-1);
+            break;
           case 'week':
             $fecha_actual = date("Y-m-d");
-            $qry_lst->where('updated_at','>',date("Y-m-d",strtotime($fecha_actual."- 7 days")));
+            $qry_lst = Book::where('updated_at','>',date("Y-m-d",strtotime($fecha_actual."- 7 days")));
             break;
           case 'month':
             $fecha_actual = date("Y-m-d");
-            $qry_lst->where('updated_at','>',date("Y-m-d",strtotime($fecha_actual."- 31 days")));
+            $qry_lst = Book::where('updated_at','>',date("Y-m-d",strtotime($fecha_actual."- 31 days")));
             break;
           default :
-            $qry_lst->limit(50);
+            $qry_lst = Book::where_book_times($startYear, $endYear)->limit(50);
             break;
         }
     
-    
-        $lst = $qry_lst->get();
+        $lst = $qry_lst->whereIn('type_book',[1,2,7,8,98])
+            ->with('room','payments','customer','leads')
+            ->orderBy('updated_at','DESC')->get();
 
         $books = [];
         foreach ($lst as $book)
@@ -1380,6 +1356,8 @@ class BookController extends AppController
               'finish'=>convertDateToShow($book->finish),
               'pvp'=> moneda($book->total_price),
               'status'=>'',
+              'tbook'=>$book->type_book,
+              'btn-send'=>($book->send == 1) ? 'btn-default' : 'btn-primary',
               'payment'=>0,
               'toPay'=>0,
               'percent'=>0,
@@ -1404,15 +1382,16 @@ class BookController extends AppController
           
           
           if($countPays > 0){
-              $aux['status'] = $countPays. ' PAGO';
+              $aux['status'] = $countPays. 'º PAGO';
           } else {
             switch($book->type_book){
-              case 1: $aux['status'] = 'Reservado - stripe'; break;
-              case 2: $aux['status'] = 'Pagada-la-señal'; break;
-              case 98: $aux['status'] = 'Cancel'; break;
+              case 1: $aux['status'] = 'RESERVADO'; break;
+              case 2: $aux['status'] = 'PENDT COBRO'; break;
+              case 7: $aux['status'] = 'PROPIETARIO'; break;
+              case 8: $aux['status'] = 'ATIPICA'; break;
+              case 98: $aux['status'] = 'CANCEL'; break;
             } 
           }
-          
           $books[] = $aux;
           
           /*
@@ -1423,7 +1402,7 @@ class BookController extends AppController
         }
         
         
-        return view('backend.planning._lastBookPayment', compact('books','bMonth','bWeek', 'mobile','total','type'));
+        return view('backend.planning._lastBookPayment', compact('books','bMonth','bWeek', 'mobile','total','type','alarmsPayment'));
 //        dd($books,$bWeek);
 //        
         

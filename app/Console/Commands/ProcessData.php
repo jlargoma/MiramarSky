@@ -33,7 +33,7 @@ class ProcessData extends Command
      *
      * @var string
      */
-    var $result = array();
+    var $result;
 
     /**
      * Create a new command instance.
@@ -53,12 +53,12 @@ class ProcessData extends Command
      */
     public function handle()
     {
-       $this->bookingsWithoutCvc();
-       $this->check_overbooking();
-//       $this->check_customPricesWubook();
-       $this->check_customPricesOtaGateway();
-//       $this->check_customMinStayWubook();
-       $this->check_customMinStayOtaGateway();
+//       $this->bookingsWithoutCvc();
+//       $this->check_overbooking();
+       $this->check_pendienteCobro();
+//       die;
+//       $this->check_customPricesOtaGateway();
+//       $this->check_customMinStayOtaGateway();
     }
     
     private function check_overbooking(){
@@ -235,6 +235,32 @@ class ProcessData extends Command
             ->where('agency', '!=', 4)
             ->pluck('book_id');
     $sentUPD = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
+    $sentUPD->content = json_encode($lst);
+    $sentUPD->save();
+  }
+  
+  
+  public function check_pendienteCobro() {
+
+    $finish = date('Y-m-d', strtotime('+15 days'));
+    $booksAlarms = \App\Book::where('start', '>=', date('Y-m-d'))
+            ->where('start', '<=', $finish)->where('type_book', 2)->get();
+
+    $lst = array();
+    foreach ($booksAlarms as $b){
+      $payment = $b->SumPayments;
+        
+      $percent = 0;
+      if ($payment>0){
+        $percentAux = $b->total_price / $payment;
+        if ($percentAux>0)  $percent = ceil(100 / $percentAux);
+      }
+      if ($percent<100){
+        $lst[] = $b->id;
+      }
+    }
+     
+    $sentUPD = \App\ProcessedData::findOrCreate('alarmsPayment');
     $sentUPD->content = json_encode($lst);
     $sentUPD->save();
   }
