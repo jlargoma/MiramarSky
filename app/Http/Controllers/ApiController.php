@@ -191,7 +191,7 @@ class ApiController extends AppController
         $customer->name    = $cData['c_name'];
         $customer->email   = $cData['c_email'];
         $customer->phone   = $cData['c_phone'];
-        $customer->user_id = 1;
+        $customer->user_id = 98;
         if (!$customer->save()) return FALSE;
       }
 
@@ -221,7 +221,7 @@ class ApiController extends AppController
         $book->nigths        = $nigths;
         $book->PVPAgencia    = 0;
         $book->is_fastpayment = 0;//1;
-        $book->user_id = 1;
+        $book->user_id = 98;
         $book->customer_id = $customer->id;
         
         if (!$book->save())  return FALSE;

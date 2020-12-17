@@ -53,12 +53,11 @@ class ProcessData extends Command
      */
     public function handle()
     {
-//       $this->bookingsWithoutCvc();
-//       $this->check_overbooking();
+       $this->bookingsWithoutCvc();
+       $this->check_overbooking();
        $this->check_pendienteCobro();
-//       die;
-//       $this->check_customPricesOtaGateway();
-//       $this->check_customMinStayOtaGateway();
+       $this->check_customPricesOtaGateway();
+       $this->check_customMinStayOtaGateway();
     }
     
     private function check_overbooking(){

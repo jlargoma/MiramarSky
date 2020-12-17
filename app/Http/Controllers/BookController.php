@@ -1947,7 +1947,8 @@ class BookController extends AppController
               'Pax-real '.$book->real_pax.'&#10;'.
               Carbon::createFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b').
               ' - '.Carbon::createFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b')
-              .'&#10;';
+              .'&#10;'
+          . strtoupper($book->user->name).'&#10;';
       }
       $href = '';
       if ($uRole != "agente" && $uRole != "limpieza"){

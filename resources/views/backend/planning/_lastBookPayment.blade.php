@@ -87,9 +87,11 @@ $isMobile = $mobile->isMobile();
                         @else
                         <td class="text-center text-danger" ><b><?= moneda($b['toPay']) ?></b></td>
                         <td class="text-center">
+                            @if($b['tbook'] == 2 || $b['tbook'] == 1)
                           <button data-id="<?= $b['id']; ?>" class="btn btn-xs <?= $b['btn-send']; ?>  sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="0">
                             <i class="fa fa-paper-plane" aria-hidden="true"></i>
                           </button>
+                            @endif
                         </td>
                         @endif
                     </tr>
