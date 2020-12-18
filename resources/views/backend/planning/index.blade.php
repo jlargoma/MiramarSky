@@ -28,6 +28,10 @@ $is_mobile = $mobile->isMobile();
       #modalLastBooks tr.cancel a{
           color: red;
       }
+      input#minDay.danger {
+        border: 1px solid red;
+        box-shadow: 1px 1px 4px 1px red;
+      }
     </style>
     <script src="{{ asset('/vendors/ckeditor/ckeditor.js') }}"></script>
 @endsection
@@ -68,7 +72,7 @@ $is_mobile = $mobile->isMobile();
                 </div>
 
             </div>
-        <div class="col-md-5">
+      <div class="col-md-5" style="overflow: auto;">
               @if($ff_mount !== null)
               <div class="row">
                 <div class="col-xs-4" style="margin-top: 11px;">

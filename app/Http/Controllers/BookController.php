@@ -879,6 +879,17 @@ class BookController extends AppController
 
     }
 
+    public function getPVPParking(){
+      $costParking     = 0;
+      $parkCostSetting = Settings::where('key', Settings::PARK_PVP_SETTING_CODE)->first();
+      if (!$parkCostSetting) return 0;
+      return $parkCostSetting->value;
+    }
+    public function getPVPLujo(){
+      $luxuryPvpSetting = Settings::where('key', Settings::LUXURY_PVP_SETTING_CODE)->first();
+      if (!$luxuryPvpSetting) return 0;
+      return $luxuryPvpSetting->value;
+    }
     public static function getPriceLujo($typeLuxury)
     {
       //default, no or free
@@ -1725,6 +1736,11 @@ class BookController extends AppController
         return view('backend/planning/_fianza', compact('book', 'hasFiance', 'stripe'));
     }
 
+    /**
+     * getDataBook
+     * @param Request $request
+     * @return type
+     */
     public function getAllDataToBook(Request $request){
         $data = ['costes'=>[],'totales'=>[],'calculated'=>[],'public'=>[]];
         $room = \App\Rooms::with('extra')->find($request->room);
@@ -1782,8 +1798,31 @@ class BookController extends AppController
 
 
         $data['public'] = $room->getRoomPrice($start, $finish, $pax);
-        $totalPrice     = $data['public']['pvp'];
         
+        /*****************************************************************/
+        $parkingPVP = $this->getPVPParking() * $noches * $room->num_garage;
+        switch ($request->park){
+            //keep the pvp
+            case 1: $parkingPVP = 0; break;
+            // 50%
+            case 4: $parkingPVP = $parkingPVP / 2; break;
+        }
+        
+        $lujoPVP = 0;
+        if ($room->luxury){
+          $lujoPVP    = floatval($this->getPVPLujo());
+          switch ($request->lujo){
+              //keep the pvp
+              case 1: $lujoPVP = 0; break;
+              // 50%
+              case 4: $lujoPVP = $lujoPVP / 2; break;
+          }
+        }
+        
+
+        /*****************************************************************/
+        $data['public']['pvp'] = $data['public']['pvp'] - $parkingPVP - $lujoPVP;
+        $totalPrice = $data['public']['pvp'];
         
         $totalCost = array_sum($data['costes']) - $promotion;
         $profit    = round($totalPrice - $totalCost);

@@ -4,26 +4,25 @@
 $(document).ready(function() {
     let dateRangeObj = Object.assign({}, window.dateRangeObj);
     dateRangeObj.locale.format = 'DD MMM, YY';
-    console.log(dateRangeObj);
     $(".daterange1").daterangepicker(dateRangeObj);
     var newPvp = 0;
     var newDisc = null;
     var newPromo = null;
     /**   */
     function getDatesBooking( data, override = true ) {
-      if (typeof $('.daterange02').val() == "undefined") var date = $('.daterange1').val();
-        else var date       = $('.daterange02').val();
-
-      var arrayDates = date.split('-');
-      var res1       = arrayDates[0].replace("Abr", "Apr");
-      var date1      = new Date(res1);
-      var res2       = arrayDates[1].replace("Abr", "Apr");
-      var date2      = new Date(res2);
-      
-      var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
-      var nigths     = Math.ceil(timeDiff / (1000 * 3600 * 24));
-      
-      return {'start':date1.yyyymmmdd(),'finish':date2.yyyymmmdd(),'nigths': nigths};
+//      if (typeof $('.daterange02').val() == "undefined") var date = $('.daterange1').val();
+//        else var date       = $('.daterange02').val();
+//
+//      var arrayDates = date.split('-');
+//      var res1       = arrayDates[0].replace("Abr", "Apr");
+//      var date1      = new Date(res1);
+//      var res2       = arrayDates[1].replace("Abr", "Apr");
+//      var date2      = new Date(res2);
+//      
+//      var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
+//      var nigths     = Math.ceil(timeDiff / (1000 * 3600 * 24));
+//      
+//      return {'start':date1.yyyymmmdd(),'finish':date2.yyyymmmdd(),'nigths': nigths};
     }
     /***************************/
     function fixedPrices(status){
@@ -64,6 +63,9 @@ $(document).ready(function() {
       var dates = getDatesBooking();
       
       var room  = $('#newroom').val();
+      var start_date  = $('#start').val();
+      var finish_date  = $('#finish').val();
+      var nigths  = $('.nigths').val();
       var pax   = $('.pax').val();
       var park  = $('.parking').val();
       var lujo  = $('select[name=type_luxury]').val();
@@ -84,8 +86,8 @@ $(document).ready(function() {
       var book_id = $('#book-id').val();
 
       $.get('/admin/api/reservas/getDataBook', {
-          start: dates.start,
-          finish: dates.finish,
+          start: start_date,
+          finish: finish_date,
           pax: pax,
           room: room,
           park: park,
@@ -98,8 +100,8 @@ $(document).ready(function() {
         if (!data) return null;
         
           $('#computed-data').html(JSON.stringify(data));
-            $('#minDay').removeClass('danger');
-            if (dates.nigths<data.aux.min_day){
+            $('#minDay').val(data.aux.min_day).removeClass('danger');
+            if (nigths<data.aux.min_day){
               $('#minDay').addClass('danger');
             }
       

@@ -83,4 +83,13 @@ $('.daterange1').on('change',function (event) {
       if (startContent) startContent.val(date1.yyyymmmdd());
       var endContent = content.find('.date_finish');
       if (endContent) endContent.val(date2.yyyymmmdd());
+      
+      
+
+      
+      var nigthContent = $(this).closest('form').find('.nigths');
+      if (nigthContent){
+        var timeDiff   = Math.abs(date2.getTime() - date1.getTime());
+        nigthContent.val(Math.ceil(timeDiff / (1000 * 3600 * 24)));
+      }
 });

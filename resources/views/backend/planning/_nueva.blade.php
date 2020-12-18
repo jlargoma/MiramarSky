@@ -145,11 +145,15 @@ $is_mobile = $mobile->isMobile();
                     </div>
                 </div>
                 <div class="col-md-1 col-xs-6 push-xs-10">
+                  <label>Min. Est.</label>
+                  <input class="form-control minimal" disabled  id="minDay" value="">
+                </div>
+                <div class="col-md-1 col-xs-6 push-xs-10">
                     <label>Noches</label>
                     <input type="text" class="form-control nigths" name="nigths" style="width: 100%" disabled <?php value_isset($data,'nigths'); ?> >
                     <input type="hidden" class="form-control nigths" name="nigths" style="width: 100%" <?php value_isset($data,'nigths'); ?> >
                 </div>
-                <div class="col-md-2 col-xs-6 push-xs-10">
+                <div class="col-md-1 col-xs-6 push-xs-10">
                     <label>Pax</label>
                     <select class=" form-control pax minimal recalc"  name="pax">
                         <?php for ($i=1; $i <= 14 ; $i++): ?>
