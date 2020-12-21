@@ -360,4 +360,10 @@ class PricesController extends AppController {
     
   }
   
+  function test($apto,$star,$end,$pax){
+//    dd(  $apto,$star,$end,$pax);
+    $room = \App\Rooms::find($apto);
+    $Costo = $room->defaultCostPrice($star, $end, $pax);
+    dd($Costo);
+  }
 }

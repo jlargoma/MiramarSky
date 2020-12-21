@@ -547,8 +547,9 @@ class Rooms extends Model {
     $result = [
         'price_limp'=>0,
         'pvp_init'=>0,'pvp'=>0,
-        'discount'=>0,'discount_pvp'=>0,
-        'promo_name'=>'','promo_pvp'=>0
+        'discount'=>0,'discount_pvp'=>0,'discount_name'=>'',
+        'promo_name'=>'','promo_pvp'=>0,
+        'PRIVEE'=>0,
     ];
     /*------------------------------------*/
     $costes = $this->priceLimpieza($this->sizeApto);
@@ -558,10 +559,19 @@ class Rooms extends Model {
     $pvp = $this->getPVP($startDate, $endDate,$pax);
     $pvp = round($oConfig->priceByChannel($pvp,99,$this->channel_group,false,$nigths),2); //Google Hotels price
     $result['pvp_init'] = round($pvp);
-    $result['discount'] = $this->getDiscount($startDate,$endDate);
-    $result['discount_pvp'] = round($pvp*( $result['discount']/100));
-
-    $pvp =  round($pvp-$result['discount_pvp']);
+    
+    // 15% DESCUENTO PROGRAMA PRIVÉE
+    $result['PRIVEE'] = round($pvp*0.15);
+    // promociones %
+    $disc = $this->getDiscount($startDate,$endDate);
+  
+    if ($disc['v']>0){
+      $result['discount'] = $disc['v'];
+      $result['discount_name'] = $disc['n'];
+      $result['discount_pvp'] = round($pvp*($disc['v']/100));
+      
+    }
+    $pvp =  round($pvp-$result['PRIVEE']-$result['discount_pvp']);
 
     // promociones tipo 7x4
     $hasPromo = '';
@@ -581,6 +591,7 @@ class Rooms extends Model {
     // promociones tipo 7x4  
           
     $result['pvp'] = round($pvp + $costes['price_limp'],2);
+//     dd($result);
     return $result;
   }
   

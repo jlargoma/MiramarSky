@@ -165,7 +165,10 @@
     Route::post('payment/process/{key_token}', 'PaylandsController@processPayment')->name('payland.process.payment');
     //});
     
-    Route::get('/paylands/payment', 'PaylandsController@paymentTest');
+    Route::get('/paylands/payment-test',function(){
+      return view('Paylands.test');
+    });
+    Route::get('/paylands/payment-test/{bID}', 'PaylandsController@paymentTest');
 
   
 

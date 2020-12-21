@@ -24,7 +24,7 @@ $appName = env('APP_APPLICATION');
                 $typeAux = 2; 
                 $currentAux = null; 
                 $posicion = 0;
-                $arrayLine = [7,17,18,24,30,31,32,33];
+                $arrayLine = [5,7,17,18,24,30,31,32,33];
                 ?>
                 <?php foreach ($roomscalendar as $key => $room): ?>
                   <?php $inicio = $inicioAux->copy() ?>

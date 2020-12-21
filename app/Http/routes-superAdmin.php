@@ -41,6 +41,8 @@ Route::group(['middleware' => 'authAdmin'], function () {
   
   Route::post('admin/precios/prepare-crom','PricesController@prepareYearPrices')->name('precios.prepare-cron');
   Route::post('admin/precios/prepare-crom-minStay','PricesController@prepareYearMinStay')->name('precios.prepare-cron-minStay');
+  
+  Route::get('admin/precios-test/{apto}/{star}/{end}/{pax}/','PricesController@test');
   // Prices
 
   // seasons

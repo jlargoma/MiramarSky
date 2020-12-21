@@ -84,7 +84,7 @@
     range.selectNode(typeof element === 'string' ? document.getElementById(element) : element);
     window.getSelection().addRange(range);
     document.execCommand('copy');
-    window.getSelection().removeAllRanges();
+//    window.getSelection().removeAllRanges();
   }
   
   $('#paymentDataContent').on("click", "#copyLinkStripe", function () {

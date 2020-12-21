@@ -125,7 +125,9 @@
             </button>
         </div>
     </form>
-    {!! $room->content_front !!}
+    <div class="clearfix" style="overflow: auto;padding: 1em;background-color: #FFF; margin: 1em;">
+      {!! $room->content_front !!}
+    </div>
 </div>
 
 <script type="text/javascript">

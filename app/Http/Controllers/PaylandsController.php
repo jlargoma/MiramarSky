@@ -51,15 +51,10 @@ class PaylandsController extends AppController
           return 'error 1';
 	}
         
-        public function paymentTest() {
-          $amount = 1;
-           $urlToRedirect = $this->generateOrderPaymentBooking(
-                          11,
-                          22,
-                          'test@tesset.com',
-                          'test',
-                          $amount
-                          );
+        public function paymentTest($bID) {
+         return  $this->getPaymentText('https://admin.apartamentosierranevada.net/',$bID,150);
+//         $content =  view('backend.home', [ 'content' => $content]);
+//         return view('Paylands.test', [ 'content' => $content]);
         }
 
     public function processPaymentBook(Request $request, $id, $payment)
@@ -149,6 +144,7 @@ class PaylandsController extends AppController
     
     private function getPaymentText($urlPay,$bookingID=false,$amount=null) {
       $texto = null;
+      $whatsapp = '';
       if ($bookingID){
         $oBooking = \App\Book::where('id',$bookingID)->with('room')->first();
         if ($oBooking && $oBooking->room){
@@ -156,9 +152,13 @@ class PaylandsController extends AppController
           $texto = str_replace('{payment_amount}', $amount, $texto);
           $texto = str_replace('{urlPayment}', $urlPay, $texto);
           
-          $whatsapp = str_replace('<strong>', '*', $texto);
+          $whatsapp = str_replace('&nbsp;', ' ', $texto);
+          $whatsapp = str_replace('<strong>', '*', $whatsapp);
           $whatsapp = str_replace('</strong>', '*', $whatsapp);
-          $whatsapp = str_replace('<br />', '&#10;', $whatsapp);
+          $whatsapp = str_replace('<br />', '%0D%0A', $whatsapp);
+          $whatsapp = str_replace('</p>', '%0D%0A', $whatsapp);
+          $whatsapp = strip_tags($whatsapp);
+//          var_dump($whatsapp); die;
           $textoUnformat = strip_tags(str_replace('<br />', '&#10;', $texto));
         }
       } 
@@ -171,10 +171,10 @@ class PaylandsController extends AppController
               <div id="textPayment">'.$texto.'</div>
               <div class="row text-center">
               
-                  <a href="whatsapp://send?text='. $whatsapp.'" data-action="share/whatsapp/share">
+                  <a style="margin: 15px;" href="whatsapp://send?text='. $whatsapp.'" data-action="share/whatsapp/share">
                       <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
                   </a>
-                  <span id="copyLinkStripe">
+                  <span id="copyLinkStripe" style="margin: 15px;">
                     <i class="fa fa-copy  fa-2x" aria-hidden="true"></i>
                   </span>  
                 <textarea type="text" id="cpy_link" style="display:none;border: none;color: #fff;">' . $textoUnformat . '</textarea>

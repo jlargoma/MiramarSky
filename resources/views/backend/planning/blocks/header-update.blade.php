@@ -56,11 +56,11 @@
               <i class="fa fa-file-invoice fa-2x"></i>
             </button>
           </div>
-          @if ($book->type_book == 2)
           <div class="icon-lst">
             <a href="{{ url('/admin/pdf/pdf-reserva/'.$book->id) }}" title="Descargar reserva" target="_black" class="btn" style="background-image: url(/img/pdf.png) !important;"></a>
           </div>
            
+          @if ($book->type_book == 2)
           <div class="icon-lst">
             <button class="btn open_modal_encuesta" type="button" data-id="{{$book->id}}" title="Enviar encuesta mail">
             </button>
