@@ -348,6 +348,8 @@ $is_mobile = $mobile->isMobile();
                 <div class="col-md-2 col-xs-4 box-info">
                   SUPL LIMP<br><span  id="publ_limp"></span>
                 </div>
+                <div class="col-md-12 col-xs-14 text-center" id="promos_aplic">
+                </div>
               </div>
             <div class="col-xs-12 bg-white padding-block">
                 <div class="col-md-4 col-xs-12">

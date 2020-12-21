@@ -1777,7 +1777,7 @@ class BookController extends AppController
         $noches = calcNights($start, $finish);
         
         if (!$loadedParking)
-          $data['costes']['parking']   = $this->getCostPark($request->park, $noches) * $room->num_garage;
+          $data['costes']['parking']   = round($this->getCostPark($request->park, $noches) * $room->num_garage);
         if (!$loadedCostRoom)
           $data['costes']['book']      = $room->getCostRoom($start, $finish, $pax)-$promotion;
         

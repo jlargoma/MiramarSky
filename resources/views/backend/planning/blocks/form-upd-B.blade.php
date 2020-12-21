@@ -14,7 +14,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
     </h4>
   </div>
   <div class="col-xs-12 row">
-    <div class="col-md-4 col-xs-9 push-10">
+    <div class="col-md-3 col-xs-9 push-10">
       <label>Entrada</label>
       <div class="input-prepend input-group input_dates">
         <?php
@@ -28,8 +28,12 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
       </div>
     </div>
     <div class="col-md-1 col-xs-3 push-10 p-l-0">
+      <label>Min. Est.</label>
+      <input class="form-control minimal" disabled="" id="minDay" value="0">
+    </div>
+    <div class="col-md-1 col-xs-3 push-10 p-l-0">
       <label>Noches</label>
-      <input type="number" class="form-control nigths" name="nigths" id="minDay" disabled value="<?php echo $book->nigths ?>">
+      <input type="number" class="form-control nigths" name="nigths" id="nigths" disabled value="<?php echo $book->nigths ?>">
     </div>
     <div class="col-md-2 col-xs-3">
       <label>Pax</label>

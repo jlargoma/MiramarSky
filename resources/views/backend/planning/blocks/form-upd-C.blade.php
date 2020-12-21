@@ -56,6 +56,15 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
       SUPL LIMP<br><span  id="publ_limp">{{$priceBook['price_limp']}}</span>
     </div>
   </div>
+  <div id="promos_aplic">
+    
+      @if ($priceBook['discount_pvp']>0)
+      <b>Descuento {{$priceBook['discount_name']}} ({{$priceBook['discount']}}%):</b> -{{$priceBook['discount_pvp']}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      @endif
+      @if ($priceBook['promo_pvp']>0)
+      <b>Descuento {{$priceBook['promo_name']}} :</b> -{{$priceBook['promo_pvp']}}
+      @endif
+  </div>
 <?php endif ?>
 
 <div class="col-md-12 col-xs-12 push-20 not-padding">

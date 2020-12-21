@@ -10,6 +10,10 @@ class Promotions extends Model {
 
   function getDiscount($startDate, $endDate, $ch_group) {
     $oPromotions = \App\Promotions::where('type', 'perc')->get();
+          
+    $maxDiscunt = 0;
+    $name = '';
+   
     if ($oPromotions) {
       $oneDay = 24 * 60 * 60;
       $startAux = strtotime($startDate);
@@ -20,7 +24,7 @@ class Promotions extends Model {
         $startAux += $oneDay;
       }
 
-      $maxDiscunt = 15;
+
       foreach ($oPromotions as $promo) {
         $rooms = unserialize($promo->rooms);
         
@@ -30,16 +34,13 @@ class Promotions extends Model {
         if (!in_array($ch_group, $rooms))
           continue;
         if( !$promo->inDays($days) ) continue;
-        
         if ($promo->value>$maxDiscunt)
           $maxDiscunt = $promo->value;
+          $name = $promo->name;
       }
-      
-      return $maxDiscunt;
-      
-    } else {
-      return 15;
     }
+    
+    return ['n'=>$name,'v'=>$maxDiscunt];
   }
 
   

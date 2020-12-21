@@ -30,7 +30,24 @@
           <td class="text-center"><b >{{moneda($room['pvp_1']+$room['extr_costs'])}}</b>
           <td class="text-center"><b >{{$room['price']}}</b></td>
           <td class="text-center text-danger"><b ><?php echo '-'.moneda($room['pvp_discount'],false); ?></b></td>
-          <td class="text-center text-danger"><b ><?php echo ($room['pvp_promo']>0)? '-'.moneda($room['pvp_promo'],false) : '--'; ?></b></td>
+          <td class="text-center text-danger">
+              <b >
+              <?php $tot_aux = ($room['pvp_promo']+$room['promo_discount_pvp']); ?>
+              <?php echo ($tot_aux>0)? '-'.moneda($tot_aux,false) : '--'; ?>
+              </b>
+               <i class="far fa-eye show_promo" style="color: #000;" aria-hidden="true">
+                   <div class="tooltiptext">
+                       @if($room['promo_discount_pvp']>0)
+               <p class="text-left promo">Promo: <b >{{$room['promo_discount_name']}}</b></p> 
+              @endif
+              @if($room['pvp_promo']>0)
+               <p class="text-left promo">Promo: <b >{{$room['promo_name']}}</b></p> 
+              @endif           
+                       
+               </div>
+              </i>
+            
+          </td>
           <td class="text-center"><b >{{moneda($room['extr_costs'])}}</b></td>
           
           </td>
@@ -131,7 +148,12 @@ td.minStay {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
-
+.show_promo .tooltiptext{display: none;}
+.show_promo:hover .tooltiptext{
+      display: block;
+    width: 160px;
+    background-color: rgba(0, 0, 0, 0.68);
+}
 
 @media (min-width: 1760px){
   .table-resumen.table-mobile_cr td.static-2 {
