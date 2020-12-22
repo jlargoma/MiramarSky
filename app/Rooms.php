@@ -272,7 +272,7 @@ class Rooms extends Model {
    * @param type $start
    * @param type $finish
    */
-  public function getPVP($start, $finish, $pax) {
+  public function getPVP($start, $finish, $pax,$all=false) {
     $defaults = $this->defaultCostPrice($start, $finish, $pax);
     $priceDay = $defaults['priceDay'];
     $oPrice = \App\DailyPrices::where('channel_group', $this->channel_group)
@@ -294,6 +294,7 @@ class Rooms extends Model {
           $priceDay[$p->date] = $p->price + $extra_pax;
       }
     }
+    if ($all)  return $priceDay;
     $price = 0;
     if (is_array($priceDay))
       foreach ($priceDay as $p) {

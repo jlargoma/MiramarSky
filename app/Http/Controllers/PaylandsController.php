@@ -550,7 +550,8 @@ class PaylandsController extends AppController
                 $room = '';
                 if ($book->room && $book->room->sizeRooms){
                   $room = $book->room->sizeRooms->name;
-                  $room .= ($book->type_luxury == 1) ? " Lujo" : " Estandar";
+                  if ( (strpos($room, 'Lujo') === false) && (strpos($room, 'standar') === false))
+                  $room .= ($book->type_luxury == 2) ? " Estandar" : " Lujo";
                 }
                 $name = $book->customer->name;
 

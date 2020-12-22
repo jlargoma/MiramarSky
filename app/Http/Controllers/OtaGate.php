@@ -63,10 +63,11 @@ class OtaGate extends Controller {
 //   $rooms = $oConfig->getRooms();
 //   dd($rooms);
     $conexion = $this->sOta;
-    if (!$conexion->conect()){
-      die('error de conexión');
-    }
-    $this->getBooking();
+//    if (!$conexion->conect()){
+//      die('error de conexión');
+//    }
+//    $this->getBooking();
+//    echo $this->oConfig->priceByChannel(100,99,'DDL',false,1,"2020-12-31");
 //    $this->createWebHook();
 //    $this->createRoom();
 //    $this->createRestrictionPlans();
