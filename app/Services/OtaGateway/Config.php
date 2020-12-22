@@ -75,7 +75,7 @@ class Config {
     return $params;
   }
 
-  public function priceByChannel($price, $channelId = null, $room = null, $text = false, $nights = 1) {
+  public function priceByChannel($price, $channelId = null, $room = null, $text = false, $nights = 1,$day=null) {
 
    
     if (!$price || !is_numeric($price)) {
@@ -85,9 +85,13 @@ class Config {
         return null;
     }
 
-    $roomsLst = $this->getRooms();
-    $agencyLst = $this->getAllAgency();
-
+    global $roomsLst,$agencyLst,$discounts;
+    
+    if (!$roomsLst)  $roomsLst = $this->getRooms();
+    if (!$agencyLst) $agencyLst = $this->getAllAgency();
+    if (!$discounts) $discounts = [];
+    if (!isset($discounts[$room])) $discounts[$room] = $this->getAllDiscounts($room);
+//dd($discounts,$day);
     if (is_numeric($room)) {
       $aux = array_search($room, $roomsLst);
       if ($aux)
@@ -115,6 +119,16 @@ class Config {
         
 
         if ($text)  return $priceText;
+        
+        /** BEGIN: descuento para GHotels */
+        if ( $day && $channelId == 99 ){
+          if (isset($discounts[$room]) && isset($discounts[$room][$day])){
+            $discount = $discounts[$room][$day];
+            if ($discount>0) $price = round($price - ($price*$discount/100));
+          }
+        }
+        /** END: descuento para GHotels */
+          
         return $price;
       }
       
@@ -181,6 +195,11 @@ class Config {
         'google-hotel' => 99,
         'agoda' => 98,
     ];
+  }
+  
+  public function getAllDiscounts($ota) {
+    $oPromo = new \App\Promotions();
+    return $oPromo->getAllDiscount($ota);
   }
 
   public function getAgency($id_chanel) {

@@ -215,6 +215,14 @@ class PromotionsController extends AppController {
     $oPromotion->exceptions  = serialize($exceptLst);
     $oPromotion->save();
 
+    /*******************************************************************************/
+    if($data['type'] == 'perc'){
+      $response = $this->sendToGHotel($chGroupSel,$start,$finish,$days);
+      if ($response) return redirect()->back()->with(['success'=>'Precios actualizados en OTA']);
+      return redirect()->back()->withErrors(['Error: Precios no enviados a OTA']);
+    }
+      
+    /*******************************************************************************/
     return redirect()->back();
     
   }
@@ -226,4 +234,37 @@ class PromotionsController extends AppController {
     return 'error';
   }
 
+  function sendToGHotel($chGroupSel,$start,$finish,$days){
+        
+    $enviado = false; 
+    
+    $OtaGateway = new \App\Services\OtaGateway\OtaGateway();
+    $oConfig = new \App\Services\OtaGateway\Config();
+    $prices = [];
+    foreach ($chGroupSel as $room){
+      $auxPrices = [];
+      $oRoom = \App\Rooms::where('channel_group',$room)->first();
+      $pvps = $oRoom->getPVP($start, $finish,$oRoom->minOcu,true);
+
+      foreach ($days as $d=>$v){
+        if ($v == 1){
+          if (isset($pvps[$d])){
+            $auxPrices[$d] = $pvps[$d];
+          }
+        }
+      
+      }
+      $prices[$room] = $auxPrices;
+    }
+    
+    $resp = null;
+    if (count($prices)>0){
+      if ($OtaGateway->conect() ){
+        $resp = $OtaGateway->setRatesGHotel(["price"=>$prices]);
+      }
+    }
+    
+    return $enviado;
+    
+  }
 }

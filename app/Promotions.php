@@ -42,8 +42,41 @@ class Promotions extends Model {
     
     return ['n'=>$name,'v'=>$maxDiscunt];
   }
-
   
+  
+  function getAllDiscount($ch_group) {
+    $oPromotions = \App\Promotions::where('type', 'perc')->get();
+
+    $result = [];
+
+    if ($oPromotions) {
+      foreach ($oPromotions as $promo) {
+        $rooms = unserialize($promo->rooms);
+        if (!is_array($rooms) || count($rooms) == 0)
+          continue;
+
+        $days = unserialize($promo->days);
+        if (!is_array($days) || count($days) == 0)
+          continue;
+
+        if (!in_array($ch_group, $rooms))
+          continue;
+
+        foreach ($days as $d => $v) {
+          if ($v == 1) {
+            if (isset($result[$d]) && $promo->value < $result[$d]) {
+              continue;
+            } else {
+              $result[$d] = $promo->value;
+            }
+          }
+        }
+      }
+    }
+
+    return $result;
+  }
+
   function getPromo($startDate, $endDate, $ch_group) {
     $oPromotions = \App\Promotions::where('type', 'nights')->get();
     if ($oPromotions) {

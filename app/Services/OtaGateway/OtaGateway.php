@@ -152,13 +152,20 @@ class OtaGateway {
 
     return ($this->responseCode);
   }
+  public function setRatesGHotel($params) {
+    $params['token'] = $this->token;
+    $params['account_id'] = $this->account_id;
+    $params['plan_id'] = $this->oConfig->Plans();
+    $this->setRatesOta($params,99);
+    return ($this->responseCode);
+  }
   public function setRatesOta($params,$ota_id) {
      $priceBase = $params['price'];
     /* SEND TO AirBnb */
     foreach ($priceBase as $room=>$prices){
       $aux = $params['price'][$room];
       foreach ($prices as $day=>$price){
-        $aux[$day] =$this->oConfig->priceByChannel($price,$ota_id,$room);
+        $aux[$day] =$this->oConfig->priceByChannel($price,$ota_id,$room,false,1,$day);
       }
       $params['price'][$room] = $aux;
     }

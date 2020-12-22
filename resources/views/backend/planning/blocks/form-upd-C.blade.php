@@ -58,7 +58,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
   </div>
   <div id="promos_aplic">
     
-      @if ($priceBook['discount_pvp']>0)
+      @if ($priceBook['discount_pvp']>0 && isset($priceBook['discount_name']))
       <b>Descuento {{$priceBook['discount_name']}} ({{$priceBook['discount']}}%):</b> -{{$priceBook['discount_pvp']}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
       @endif
       @if ($priceBook['promo_pvp']>0)
