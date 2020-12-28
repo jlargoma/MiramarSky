@@ -241,6 +241,7 @@ class PromotionsController extends AppController {
     $OtaGateway = new \App\Services\OtaGateway\OtaGateway();
     $oConfig = new \App\Services\OtaGateway\Config();
     $prices = [];
+    $roomsCode = $oConfig->getRooms();
     foreach ($chGroupSel as $room){
       $auxPrices = [];
       $oRoom = \App\Rooms::where('channel_group',$room)->first();
@@ -254,13 +255,14 @@ class PromotionsController extends AppController {
         }
       
       }
-      $prices[$room] = $auxPrices;
+      
+      if (isset($roomsCode[$room]))   $prices[$roomsCode[$room]] = $auxPrices;
     }
-    
     $resp = null;
     if (count($prices)>0){
       if ($OtaGateway->conect() ){
         $resp = $OtaGateway->setRatesGHotel(["price"=>$prices]);
+        if ($resp == 200) $enviado = true;
       }
     }
     

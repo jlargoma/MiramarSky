@@ -1456,6 +1456,14 @@ class BookController extends AppController
     }
 
     public function getCalendarMobileView($month=null){
+      return $this->getCalendarView($month,null);
+    }
+    public function getCalendarChannelView($chGr,$month=null){
+      $roomIDs = Rooms::where('channel_group',$chGr)->pluck('id');
+      return $this->getCalendarView($month,$roomIDs);
+    }
+    
+    public function getCalendarView($month=null,$roomIDs= null){
         $mes           = [];
         $arrayReservas = [];
         $arrayMonths   = [];
@@ -1479,9 +1487,14 @@ class BookController extends AppController
         $endAux = new Carbon(date('Y-m-d', strtotime('+1 months',$month)));
         $startAux->firstOfMonth();
         $endAux->lastOfMonth();
-        $books = \App\Book::where_book_times($startAux,$endAux)
-                ->whereNotIn('type_book', $type_book_not)->orderBy('start', 'ASC')->get();
+        $sqlBook = \App\Book::where_book_times($startAux,$endAux)
+                ->whereNotIn('type_book', $type_book_not);
         
+        if ($roomIDs){
+          $sqlBook->whereIn('room_id', $roomIDs);
+        }
+        
+        $books = $sqlBook->orderBy('start', 'ASC')->get();
         /****************************************/    
         $bookings_without_Cvc = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
         $bookings_without_Cvc = json_decode($bookings_without_Cvc->content);
@@ -1535,20 +1548,23 @@ class BookController extends AppController
 
         if (Auth::user()->role != "agente")
         {
-            $rooms         = \App\Rooms::where('state', '=', 1)->get();
-            $roomscalendar = \App\Rooms::where('state', '=', 1)->orderBy('order', 'ASC')->get();
+            $sqlRooms = \App\Rooms::where('state', '=', 1);
         } else
         {
             $roomsAgents   = \App\AgentsRooms::where('user_id', Auth::user()->id)->get(['room_id'])->toArray();
-            $rooms         = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order')->get();
-            $roomscalendar = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents)->orderBy('order', 'ASC')
-                                       ->get();
+            $sqlRooms = \App\Rooms::where('state', '=', 1)->whereIn('id', $roomsAgents);
         }
+        
+        if ($roomIDs){
+          $sqlRooms->whereIn('id', $roomIDs);
+        }
+        
+        $roomscalendar = $sqlRooms->orderBy('order', 'ASC')->get();
         $days = $arrayDays;
   
         
       $buffer = ob_html_compress(view('backend.planning.calendar.content', 
-              compact('arrayMonths', 'rooms',
+              compact('arrayMonths',
                       'roomscalendar', 'arrayReservas', 'mes', 
                       'days', 'startYear', 'endYear','currentM','startAux')));
       return view('backend.planning.calendar.index',['content'=>$buffer]);

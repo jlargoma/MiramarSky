@@ -167,7 +167,7 @@ class Book extends Model {
     $array[2] = "Trivago";
     $array[6] = "S.essence";
     $array[7] = "Cerogrados";
-    
+    $array[29] = 'HOMEREZ';
     for($i=1;$i<21;$i++){
       $array[7+$i] = 'Agencia-'.$i;
     }

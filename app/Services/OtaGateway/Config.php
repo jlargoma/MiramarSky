@@ -90,7 +90,7 @@ class Config {
     if (!$roomsLst)  $roomsLst = $this->getRooms();
     if (!$agencyLst) $agencyLst = $this->getAllAgency();
     if (!$discounts) $discounts = [];
-    if (!isset($discounts[$room])) $discounts[$room] = $this->getAllDiscounts($room);
+   
 //dd($discounts,$day);
     if (is_numeric($room)) {
       $aux = array_search($room, $roomsLst);
@@ -98,6 +98,8 @@ class Config {
         $room = $aux;
     }
 
+     
+    if (!isset($discounts[$room])) $discounts[$room] = $this->getAllDiscounts($room);
     $priceText = '';
     $prices_ota = \App\Settings::getContent('prices_ota');
     if ($prices_ota) {

@@ -31,6 +31,7 @@ class Kernel extends ConsoleKernel
         Commands\PricesSeason::class,
         Commands\MinStaySeason::class,
         Commands\ProcessMultipleRoomLock::class,
+        Commands\SendAvailibilityMonth::class,
 //        Commands\WubookGetBookings::class,
 //        Commands\ZodomusImport::class,
 //        Commands\RoomsPhotosMigrate::class,
@@ -50,6 +51,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('SafeBox:asignAndSend')->dailyAt('13:00')->timezone('Europe/Madrid');
         $schedule->command('SendPoll:sendEmails')->dailyAt('12:00')->timezone('Europe/Madrid');
         $schedule->command('FFSeasson:get')->dailyAt('4:00')->timezone('Europe/Madrid');
+        $schedule->command('OTAs:SendAvailibilityMonth')->dailyAt('2:00')->timezone('Europe/Madrid');
         $schedule->command('sendFFAdmin:sendForfaits')->dailyAt('6:45')->timezone('Europe/Madrid');
         $schedule->command('partee:sendSMS')->dailyAt('7:00')->timezone('Europe/Madrid');
         $schedule->command('secondPay:sendEmails')->dailyAt('7:00')->timezone('Europe/Madrid');

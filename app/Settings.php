@@ -158,6 +158,7 @@ class Settings extends Model {
   }
 
   static function getLenguaje($country) {
+    if (!$country) return 'es';
     $lngSP = ['AR', 'BO', 'CL', 'CO', 'CR', 'CU', 'EC', 'ES', 'SV', 'DO', 'GQ', 'GT', 'HN', 'MX', 'NI', 'PA', 'PE', 'PY', 'UY', 'VE'];
     if (in_array($country, $lngSP)) {
       return 'es';
