@@ -137,6 +137,14 @@
         <p class="alert alert-success" style="display:none;" id="success"></p>
       </div>
 
+      
+      <div class="row content-calendar push-20" style="min-height: 515px;">
+      <div class="col-xs-12 text-center sending" style="padding: 120px 15px;">
+        <i class="fa fa-spinner fa-5x fa-spin" aria-hidden="true"></i><br>
+        <h2 class="text-center">CARGANDO CALENDARIO</h2>
+      </div>
+      </div>
+      
     </div>
   </div>
 </div>
@@ -378,7 +386,37 @@ $(document).ready(function () {
     });
   });
 
+/**************************************************************************************/
 
+   var cal_move = false;
+   var moveCalendar = function(){
+      if(cal_move) return;
+      cal_move = true;
+      $('.btn-fechas-calendar').css({
+      'background-color': '#899098',
+      'color': '#fff'
+      });
+      $('#btn-active').css({
+        'background-color': '#10cfbd',
+        'color': '#fff'
+      });
+      var target = $('#btn-active').attr('data-month');
+      var targetPosition = $('.content-calendar #month-' + target).position();
+      $('.content-calendar').animate({scrollLeft: "+=" + targetPosition.left + "px"}, "slow");
+   }
+    setTimeout(function () { moveCalendar();},200);
+//   $('#btn-active').trigger('click');
+
+  $('.content-calendar').on('click','.reloadCalend', function(){
+    var time = $(this).attr('data-time');
+    cal_move = false;
+    $('.content-calendar').empty().load(
+            '/getCalendarChannel/{{$room}}/'+time, 
+            function(){ moveCalendar();}
+            );
+  });
+  
+  $('.content-calendar').empty().load('/getCalendarChannel/{{$room}}');
 
 //alert(now.toLocaleDateString("es-ES"));
 });
@@ -512,6 +550,10 @@ a.fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end.prices {
 }
 a.fc-day-grid-event.fc-h-event.fc-event.fc-start.fc-end.prices p.min-estanc {
     color: #6d5cae;
+}
+.row.content-calendar.push-20 {
+    width: 95%;
+    margin-left: 3%;
 }
 @media only screen and (max-width: 768px) {
     .calendar-blok{
