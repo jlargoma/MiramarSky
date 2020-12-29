@@ -205,6 +205,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista'], 'pre
 
 //  Route::get('/reservas/ff_change_status_popup/{id}/{status}', 'BookController@updateBookFFStatus');
     
+  Route::post('/reservas/save-creditCard', 'BookController@save_creditCard')->name('booking.save_creditCard');
   Route::post('/reservas/get-visa', 'BookController@getVisa')->name('booking.get_visa');
   Route::post('/reservas/upd-visa', 'BookController@updVisa')->name('booking.upd_visa');
   Route::post('/reservas/change-mail-notif', 'BookController@changeMailNotif')->name('booking.changeMailNotif');

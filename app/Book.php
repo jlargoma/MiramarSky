@@ -559,7 +559,8 @@ class Book extends Model {
     if(!$start) $start = $this->start;
     if(!$finish) $finish = $this->finish;
     if ($room){
-      $oRooms = Rooms::where('channel_group',$room->channel_group)->pluck('id')->toArray();
+//      $oRooms = Rooms::where('channel_group',$room->channel_group)->pluck('id')->toArray();
+      Rooms::RoomsCH_IDs($room->channel_group);
       if (!in_array($old_room,$oRooms)){
         $this->sendAvailibility($old_room,$start,$finish);
       } 
@@ -582,7 +583,7 @@ class Book extends Model {
     $room     = Rooms::find($room_id);
     
     if ($room){
-      $oRooms = Rooms::where('channel_group',$room->channel_group)->pluck('id')->toArray();
+      $oRooms = Rooms::RoomsCH_IDs($room->channel_group);
             
       $match1 = [['start','>=', $start ],['start','<=', $finish ]];
       $match2 = [['finish','>=', $start ],['finish','<=', $finish ]];
@@ -690,8 +691,7 @@ class Book extends Model {
    */
   public function getAvailibilityBy_channel($apto, $start, $finish,$return = false) {
 
-    $oRooms = Rooms::where('channel_group', $apto)->pluck('id')->toArray();
-
+    $oRooms = Rooms::RoomsCH_IDs($apto);
     $match1 = [['start', '>=', $start], ['start', '<=', $finish]];
     $match2 = [['finish', '>=', $start], ['finish', '<=', $finish]];
     $match3 = [['start', '<', $start], ['finish', '>', $finish]];

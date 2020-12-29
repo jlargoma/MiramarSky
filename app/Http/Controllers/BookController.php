@@ -545,12 +545,12 @@ class BookController extends AppController
         //END: Check low_profit alert
         
         $priceBook = $book->getMetaContent('price_detail');
-        
         if ($priceBook){
           $priceBook = unserialize($priceBook);
         } else {
           $priceBook = $book->room->getRoomPrice($book->start, $book->finish, $book->park);
         }
+        if (!isset($priceBook['PRIVEE'])) $priceBook['PRIVEE'] = 0;
 
         $email_notif = '';
         $send_notif = '';
@@ -560,6 +560,9 @@ class BookController extends AppController
         }
         
         $otaURL = $this->getOtaURL($book);
+        
+        $oBookData = \App\BookData::findOrCreate('creditCard',$book->id);
+        $creditCardData = $oBookData->content;
     
         return view('backend/planning/update'.$updateBlade, [
             'book'         => $book,
@@ -581,6 +584,7 @@ class BookController extends AppController
             'send_notif'   => $send_notif,
             'otaURL'       => $otaURL,
             'partee' => $partee,
+            'creditCardData' => $creditCardData,
         ]);
     }
 
@@ -2371,5 +2375,30 @@ class BookController extends AppController
       $isMobile = config('app.is_mobile');
       return view('backend/planning/_load-cvc',compact('bookLst','isMobile','aVisasCVCLst','aVisasNumLst'));
 
+  }   
+    public function save_creditCard(Request $request){
+      
+      $bookingID = $request->input('bID', null);
+      $creditCardData = $request->input('data', null);
+       
+
+      $book = Book::find($bookingID);
+      if (!$book){
+        return [
+                'status'   => 'danger',
+                'title'    => 'ERROR',
+                'response' => "RESERVA NO ENCONTRADA"
+            ];
+      }
+       
+      $oBookData = \App\BookData::findOrCreate('creditCard',$bookingID);
+      $oBookData->content = $creditCardData;
+      $oBookData->save();
+      
+              return [
+                'status'   => 'success',
+                'title'    => 'OK',
+                'response' => "REGISTRO GUARDADO"
+            ];
   }   
 }

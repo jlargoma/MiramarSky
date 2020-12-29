@@ -27,8 +27,17 @@
     <button onclick="_createPayment('form')" class="btn btn-success" type="button" id="_createPaymentForm">Pago</button>
     <button class="btn  @if(isset($hasVisa) && $hasVisa) btn-blue @else btn-info @endif" type="button" id="_getPaymentVisa">Visa</button>
   </div>
-  <div class="col-md-5 @if(isset($visaHtml) && $visaHtml) open @endif" id="visaDataContent">
-    {!!$visaHtml!!}
+  <div class="col-md-5 ">
+    <div class="@if(isset($visaHtml) && $visaHtml) open @endif" id="visaDataContent">
+      {!!$visaHtml!!}
+    </div>
+      <div class="text-left">
+    @if ($uRole != "agente" && $uRole != "limpieza")
+    <label>Datos Tarjeta</label>
+    <textarea id="creditCardData" class="form-control" rows="5">{{$creditCardData}}</textarea>
+    </div>
+    <div class="btn btn-blue mt-1em" type="button" id="save_creditCardData" data-id="{{$id}}">Guardar</div>
+    @endif
   </div>
   <div class="col-md-7" id="paymentDataContent"></div>
 </div>
@@ -123,6 +132,20 @@
 
   });
 
+  $('#save_creditCardData').on("click", function () {
+
+      var url = "{{route('booking.save_creditCard')}}";
+      var creditCardData = $('#creditCardData').val();
+      var _token = $('#payland_token').val();
+      var bID = $(this).data('id');
+      $.post(url, {
+        _token: _token,
+        data: creditCardData,
+        bID: bID,
+      }, function (data) {
+        window.show_notif(data.title,data.status,data.response);
+      });
+  });
   
 </script>
 <style>

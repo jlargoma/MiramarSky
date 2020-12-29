@@ -74,6 +74,12 @@ class Rooms extends Model {
   {
     return $this->hasOne('\App\RoomsType', 'channel_group', 'channel_group');
   }
+  
+  public static function RoomsCH_IDs($channel_group)
+  {
+    return self::where('channel_group',$channel_group)
+          ->where('state',1)->pluck('id')->toArray();
+  }
 
   public static function getPaxRooms($pax, $room) {
     $obj = self::select('minOcu')->where('id', $room)->first();

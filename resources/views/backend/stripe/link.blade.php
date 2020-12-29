@@ -22,6 +22,9 @@
   
   
 </div>
+<style>
+  div#textPayment { padding: 6px 10px; }
+</style>
 <script type="text/javascript">
 	$(document).ready(function() {
 
@@ -41,14 +44,15 @@
 
 		});
 
-		$('#paymentDataLink').on("click","#copy-link-stripe", function(){
-                 
-                  var link = $('#paymentDataLink').find('#cpy_link');
-                  link.show().select();
-                  document.execCommand("copy");
-                  link.hide();
-                  
-                });
+		$('#paymentDataLink').on("click","#copyLinkStripe", function(){
+    var element = 'textPayment';
+    window.getSelection().removeAllRanges();
+    let range = document.createRange();
+    range.selectNode(typeof element === 'string' ? document.getElementById(element) : element);
+    window.getSelection().addRange(range);
+    document.execCommand('copy');
+
+  });
 
 
 		

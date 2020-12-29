@@ -119,7 +119,7 @@ $(document).ready(function() {
           $('.beneficio-text').html(data.calculated.profit_percentage + '%');
           $('#real-price').html(data.calculated.real_price);
           $('#publ_price').html(data.public.pvp_init);
-          $('#publ_disc').html(data.public.PRIVEE);
+          $('#publ_disc').html(parseInt(data.public.PRIVEE)+parseInt(data.public.discount_pvp));
           $('#promos_aplic').html(promos);
           $('#publ_promo').html(data.public.promo_pvp+data.public.discount_pvp);
           $('#publ_limp').html(data.public.price_limp);
