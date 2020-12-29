@@ -387,7 +387,7 @@ $(document).ready(function () {
   });
 
 /**************************************************************************************/
-
+  window["URLCalendar"] = '/getCalendarChannel/{{$room}}/';
    var cal_move = false;
    var moveCalendar = function(){
       if(cal_move) return;
@@ -407,14 +407,7 @@ $(document).ready(function () {
     setTimeout(function () { moveCalendar();},200);
 //   $('#btn-active').trigger('click');
 
-  $('.content-calendar').on('click','.reloadCalend', function(){
-    var time = $(this).attr('data-time');
-    cal_move = false;
-    $('.content-calendar').empty().load(
-            '/getCalendarChannel/{{$room}}/'+time, 
-            function(){ moveCalendar();}
-            );
-  });
+
   
   $('.content-calendar').empty().load('/getCalendarChannel/{{$room}}');
 

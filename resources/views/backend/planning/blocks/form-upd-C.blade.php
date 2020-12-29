@@ -45,7 +45,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
     </div>
     <div class="col-md-2 col-xs-4 box-info">
       <input type="hidden" id="confirm_publ_disc" value="{{$priceBook['discount_pvp']}}">
-      DESC<br><span  id="publ_disc">{{$priceBook['discount_pvp']}}</span>
+      DESC<br><span  id="publ_disc">{{$priceBook['discount_pvp']+$priceBook['PRIVEE']}}</span>
     </div>
     <div class="col-md-2 col-xs-4 box-info">
       <input type="hidden" id="confirm_publ_promo" value="{{$priceBook['promo_pvp']}}">

@@ -1,3 +1,4 @@
+<a class="text-white btn btn-md btn-primary" href="/admin/channel-manager/index">DISPONIBILIDAD</a>
 @if (false)
 <div class="inline-block">
   @if( !(\App\ProcessedData::emptyContent('sentUPD_wubook')) )

@@ -203,16 +203,15 @@ class Forfaits extends Model
     $qry = Forfaits::select('forfaits_orders.*')
             ->join('forfaits_orders','forfaits.id','=','forfaits_orders.forfats_id');
     
-    
     if ($month){
       $qry->whereYear('forfaits_orders.created_at','=', $year)
               ->whereMonth('forfaits_orders.created_at','=', $month);
     } else {
       $activeYear = \App\Years::where('year', $year)->first();
       if (!$activeYear) return 0;
-      $startYear  = new Carbon($activeYear->start_date);
-      $endYear    = new Carbon($activeYear->end_date);
-      $qry->whereYear('forfaits_orders.created_at', '>=', $startYear)
+      $startYear  = $activeYear->start_date;
+      $endYear    = $activeYear->end_date;
+      $qry->where('forfaits_orders.created_at', '>=', $startYear)
               ->where('forfaits_orders.created_at', '<=', $endYear);
     }
       
@@ -237,8 +236,8 @@ class Forfaits extends Model
         }
       }
     }
-    
     if ($ffItems){
+//      dd($ffItems);
       $total += ForfaitsOrderItem::whereIn('order_id',$ffItems)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
     }
     return $total;

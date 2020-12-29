@@ -8,18 +8,18 @@
   }
   ?>
   <?php $arrayColors = [1 => 'bg-info', 2 => 'bg-complete', 3 => 'bg-primary',]; ?>
-  <?php $lastThreeSeason = \Carbon\Carbon::createFromFormat('Y', $year->year)->subYears(2) ?>
+  <?php $lastYearSeason = $year->year-2; ?>
   <?php for ($i = 1; $i < 4; $i++): ?>
-    <?php $totalPVP = \App\Rooms::getPvpByYear($lastThreeSeason->copy()->format('Y')); ?>
+    <?php $totalPVP = \App\Rooms::getPvpByYear($lastYearSeason); ?>
     <?php 
-    if ($showFF) $totalFF = App\Models\Forfaits\Forfaits::getTotalByYear($lastThreeSeason->copy()->format('Y')); ?>
+    if ($showFF) $totalFF = App\Models\Forfaits\Forfaits::getTotalByYear($lastYearSeason); ?>
     <div class="col-xs-4 m-b-10">
 
       <div class="widget-9 no-border <?php echo $arrayColors[$i] ?> widget-loader-bar">
         <div class="full-height d-flex flex-column">
           <div style="width: 94%;margin: 2px auto;">
             <h4 class="no-margin p-b-5 text-white ">
-              Temp  <b><?php echo $lastThreeSeason->copy()->format('y'); ?>-<?php echo $lastThreeSeason->copy()->addYear()->format('y'); ?></b>
+              Temp  <b><?php echo $lastYearSeason; ?>-<?php echo $lastYearSeason+1; ?></b>
             </h4>
             <div class="row">
               <div class="col-xs-10">
@@ -56,7 +56,7 @@
     </div>
     
     <?php $oldTotalPVP = $totalPVP; ?>
-    <?php $lastThreeSeason->addYear(); ?>
+    <?php $lastYearSeason++; ?>
 <?php endfor; ?>
 
 </div>

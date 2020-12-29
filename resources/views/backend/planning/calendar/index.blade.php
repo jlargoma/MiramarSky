@@ -24,7 +24,7 @@
     var time = $(this).attr('data-time');
     cal_move = false;
     $('.content-calendar').empty().load(
-            '/getCalendarMobile/'+time, 
+            window.URLCalendar+time, 
             function(){ moveCalendar();}
             );
   });

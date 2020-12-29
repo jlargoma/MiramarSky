@@ -63,6 +63,36 @@ class OtaGate extends Controller {
 //   $rooms = $oConfig->getRooms();
 //   dd($rooms);
     $conexion = $this->sOta;
+    
+    
+//    
+//    $data = '';
+//    $b = [];
+//    $a = json_decode($data);
+//    foreach ($a as $i){
+//    foreach ($i as $j){
+//      $b[] = ($j->number);
+//    }
+//    }
+    $b = ["KM77W_271220","P34LH_271220","5A6V6_261220",];
+          
+    $return = [
+        'data'=>[
+            'booking_numbers' =>$b
+        ]
+    ];
+    echo json_encode($return);
+    die;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 //    if (!$conexion->conect()){
 //      die('error de conexión');
 //    }
@@ -288,7 +318,7 @@ class OtaGate extends Controller {
     }
     
     if (isset($data)){
-      $data = $data['request']['data'];
+      $data = (isset($data['request'])) ?  $data['request']['data'] : $data;
       if (isset($data['booking_numbers'])){
          $this->sOta->conect();
          $this->loadBooking($data['booking_numbers']);

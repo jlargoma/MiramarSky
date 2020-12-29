@@ -144,7 +144,7 @@ class PaylandsController extends AppController
     
     private function getPaymentText($urlPay,$bookingID=false,$amount=null) {
       $texto = null;
-      $whatsapp = '';
+      $whatsapp = $textoUnformat = '';
       if ($bookingID){
         $oBooking = \App\Book::where('id',$bookingID)->with('room')->first();
         if ($oBooking && $oBooking->room){
@@ -163,7 +163,7 @@ class PaylandsController extends AppController
         }
       } 
       if (!$texto){
-        $texto = 'En este link podrás realizar el pago de la señal.<br> En el momento en que efectúes el pago, te legará un email';
+        $texto = 'En este link podrás realizar el pago de '.$amount.'€.<br> En el momento en que efectúes el pago, te legará un email.<br/>'.$urlPay;
       }
               
       $whatsapp = strip_tags($whatsapp);
