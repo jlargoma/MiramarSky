@@ -42,21 +42,22 @@ $uRole = Auth::user()->role;
 	            }
 	        }
         ?>
-        <?php $class = ucwords($book->getStatus($book->type_book)) ?>
-        <?php if ($class == "Contestado(EMAIL)"): ?>
-                    <?php $class = "contestado-email" ?>
-                <?php endif ?>
+        <?php 
+          $class = ucwords($book->getStatus($book->type_book));
+          if ($class == "Contestado(EMAIL)") $class = "contestado-email";
+        ?>
 
         <tr class="<?php echo $class;?>" data-id="{{$book->id}}" >
             <td class="fix-col td-b1" data-order="{{$book->id}}">
                <div class="fix-col-data">
+                @if($book->is_fastpayment == 1 || $book->customer->user_id == 98)
+                  <img class="img-agency" src="/pages/fastpayment.png" />
+                @else
                  @if($book->leads)<i class="fa fa-star" style="color: #c5cc00;"></i>@endif
+                @endif
                 <?php if ($book->agency != 0): ?>
                   <img class="img-agency" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png"/>
                 <?php endif ?>
-                @if($book->is_fastpayment == 1 || $book->type_book == 99 )
-                 <img class="img-agency" src="/pages/fastpayment.png" />
-                @endif
                 <?php if (isset($payment[$book->id])): ?>
                 <a class="update-book r" data-id="<?php echo $book->id ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                   <?php echo $book->customer['name']  ?>

@@ -32,6 +32,9 @@ $is_mobile = $mobile->isMobile();
         border: 1px solid red;
         box-shadow: 1px 1px 4px 1px red;
       }
+      .table.table-striped tbody tr.byWeb td {
+          background-color: #ffc2e1 !important;
+      }
     </style>
     <script src="{{ asset('/vendors/ckeditor/ckeditor.js') }}"></script>
 @endsection

@@ -649,6 +649,9 @@ trait BookEmailsStatus
     
     
     function getSafeBoxMensaje($book,$msgKey,$safebox){
+      if ($book->room_id == 144)
+        $msgKey = 'book_email_buzon_chalet';
+      
       $messageSMS = $this->getMailData($book,$msgKey);
       $content = str_replace('{buzon}', $safebox->box_name, $messageSMS);
       $content = str_replace('{buzon_key}', $safebox->keybox, $content);

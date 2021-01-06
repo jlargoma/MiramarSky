@@ -94,10 +94,13 @@ trait SafetyBox {
             }
 
             $messageSMS = $this->getSafeBoxMensaje($book,'book_email_buzon',$current);
-            $content = strip_tags($messageSMS,'<b><br><strong>');
-            $content = str_replace('<strong>', '*', $content);
-            $content = (str_replace('</strong>', '*', $content));
-            $messageSMS = html_entity_decode(str_replace ("<br />", "\r\n", $content));
+            $whatsapp = str_replace('&nbsp;', ' ', $messageSMS);
+            $whatsapp = str_replace('<strong>', '*', $whatsapp);
+            $whatsapp = str_replace('</strong>', '*', $whatsapp);
+            $whatsapp = str_replace('<br />', '%0D%0A', $whatsapp);
+            $whatsapp = str_replace('</p>', '%0D%0A', $whatsapp);
+            $whatsapp = strip_tags($whatsapp);
+            $messageSMS = html_entity_decode(str_replace ("<br />", "\r\n", $whatsapp));
           } 
           
         ?>
@@ -127,7 +130,7 @@ trait SafetyBox {
           </button>
         </div>
         <div class="col-md-6 col-xs-12 minH-4 mb-1em">
-          <a href="whatsapp://send?text=<?php echo $messageSMS; ?>"
+          <a href="whatsapp://send?text=<?php echo $whatsapp; ?>"
                  data-action="share/whatsapp/share"
                  data-original-title="Enviar Buzon link"
                  data-toggle="tooltip"
@@ -190,8 +193,19 @@ trait SafetyBox {
     $SafetyBox = new \App\SafetyBox();
     $oObject = $SafetyBox->getByBook($bookID);
     if ($oObject) {
+              
       //Get msg content
-      $content = $this->getSafeBoxMensaje($book,'SMS_buzon',$oObject);
+      $content = $this->getSafeBoxMensaje($book,'book_email_buzon',$oObject);
+      $content = html_entity_decode($content);
+      $content = strip_tags($content,'<b><br><strong>');
+      $content = str_replace('<strong>', '*', $content);
+      $content = (str_replace('</strong>', '*', $content));
+      $content = str_replace('&nbsp;', ' ', $content);
+
+//      $whatsapp = str_replace('<br />', '%0D%0A', $content);
+//      $whatsapp = str_replace('</p>', '%0D%0A', $whatsapp);
+//      $whatsapp = strip_tags($whatsapp);
+            
       die($content);
     } else {
       die('empty');

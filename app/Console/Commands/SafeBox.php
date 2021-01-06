@@ -46,6 +46,7 @@ class SafeBox extends Command {
    */
   public function handle() {
     $this->oSafetyBox = new SafetyBox();
+    $this->unassing();
     $this->process();
   }
 
@@ -95,6 +96,17 @@ class SafeBox extends Command {
           } 
         }
       }
+    }
+  }
+
+  private function unassing() {
+
+    $today = date('Y-m-d', strtotime('-1 days'));
+    $booksIDs = Book::whereIn('type_book', [1, 2])
+            ->where('start', '=', $today)
+            ->pluck('id');
+    if ($booksIDs) {
+      $this->oSafetyBox->unassingBookSafetyBox($booksIDs);
     }
   }
 

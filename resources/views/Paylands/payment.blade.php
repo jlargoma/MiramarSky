@@ -27,7 +27,7 @@
     <button onclick="_createPayment('form')" class="btn btn-success" type="button" id="_createPaymentForm">Pago</button>
     <button class="btn  @if(isset($hasVisa) && $hasVisa) btn-blue @else btn-info @endif" type="button" id="_getPaymentVisa">Visa</button>
   </div>
-  <div class="col-md-5 ">
+    <div class="col-md-5 " style="overflow: auto;">
     <div class="@if(isset($visaHtml) && $visaHtml) open @endif" id="visaDataContent">
       {!!$visaHtml!!}
     </div>

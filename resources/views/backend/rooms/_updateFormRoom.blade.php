@@ -36,7 +36,7 @@
                 </select>
             </div>
             <div class="col-md-3 col-xs-12 push-20">
-                <label for="sizeApto">Zodomus Apto.</label>
+                <label for="sizeApto">OTA Group</label>
                 <select class="form-control minimal" name="channel_group">
                     <option value=""> -- </option>
                     <?php foreach ($zodomusAptos as $id => $data): ?>                                   

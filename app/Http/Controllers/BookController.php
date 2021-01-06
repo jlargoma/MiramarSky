@@ -39,7 +39,7 @@ class BookController extends AppController
      */
     public function index()
     {
-      
+   
         $year      = $this->getActiveYear();
         $startYear = $year->start_date;
         $endYear   = $year->end_date;
