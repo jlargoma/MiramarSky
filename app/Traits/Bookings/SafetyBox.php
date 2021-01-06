@@ -94,12 +94,7 @@ trait SafetyBox {
             }
 
             $messageSMS = $this->getSafeBoxMensaje($book,'book_email_buzon',$current);
-            $whatsapp = str_replace('&nbsp;', ' ', $messageSMS);
-            $whatsapp = str_replace('<strong>', '*', $whatsapp);
-            $whatsapp = str_replace('</strong>', '*', $whatsapp);
-            $whatsapp = str_replace('<br />', '%0D%0A', $whatsapp);
-            $whatsapp = str_replace('</p>', '%0D%0A', $whatsapp);
-            $whatsapp = strip_tags($whatsapp);
+            $whatsapp = whatsappFormat($messageSMS);
             $messageSMS = html_entity_decode(str_replace ("<br />", "\r\n", $whatsapp));
           } 
           

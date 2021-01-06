@@ -152,19 +152,15 @@ class PaylandsController extends AppController
           $texto = str_replace('{payment_amount}', $amount, $texto);
           $texto = str_replace('{urlPayment}', $urlPay, $texto);
           
-          $whatsapp = str_replace('&nbsp;', ' ', $texto);
-          $whatsapp = str_replace('<strong>', '*', $whatsapp);
-          $whatsapp = str_replace('</strong>', '*', $whatsapp);
-          $whatsapp = str_replace('<br />', '%0D%0A', $whatsapp);
-          $whatsapp = str_replace('</p>', '%0D%0A', $whatsapp);
-          $whatsapp = strip_tags($whatsapp);
-//          var_dump($whatsapp); die;
-          $textoUnformat = strip_tags(str_replace('<br />', '&#10;', $texto));
+         
         }
       } 
       if (!$texto){
-        $texto = 'En este link podrás realizar el pago de '.$amount.'€.<br> En el momento en que efectúes el pago, te legará un email.<br/>'.$urlPay;
+        $texto = 'En este link podrás realizar el pago de '.$amount.'€.<br /> En el momento en que efectúes el pago, te legará un email.<br />'.$urlPay;
       }
+
+      $whatsapp = whatsappFormat($texto);
+      $textoUnformat = strip_tags(str_replace('<br />', '&#10;', $texto));
               
       $whatsapp = strip_tags($whatsapp);
       $response = '

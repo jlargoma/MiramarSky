@@ -317,6 +317,8 @@ trait Partee {
       $message = $this->getMailData($book, 'SMS_Partee_upload_dni');
       $message = str_replace('{partee}', $partee->link, $message);
       $message = $this->clearVars($message);
+      $message = whatsappFormat($message);
+      
     } else {
       ?>
       <p class="alert alert-warning">Partee no encontrado</p>
