@@ -1353,7 +1353,8 @@ class BookController extends AppController
             $qry_lst = Book::where_book_times($startYear, $endYear)->limit(50);
             break;
         }
-    
+        $toDay = new \DateTime();
+        $toDayEnd = date('Y-m-d');
         $lst = $qry_lst->whereIn('type_book',[1,2,7,8,98])
             ->with('room','payments','customer','leads')
             ->orderBy('updated_at','DESC')->get();
@@ -1395,9 +1396,20 @@ class BookController extends AppController
           $aux['toPay'] = $book->total_price-$paymentBook;
           $aux['percent'] = ($book->total_price>0) ? round(($paymentBook/$book->total_price)*100): 0;
           
+          $aux['retrasado'] = false;
+          //Pago retrasado
+          if (!in_array($book->type_book, [98,7,8])){
+            if ($toDayEnd >= $book->start) $aux['retrasado'] = true;
+            else {
+              $date2 = new \DateTime($book->start);
+              $diff = $date2->diff($toDay);
+              $aux['retrasado'] = ($diff->days<2) ? true : false;
+            }
+          }
+
           
           if($countPays > 0){
-              $aux['status'] = $countPays. 'º PAGO';
+              $aux['status'] = $countPays. 'º PAGO OK';
           } else {
             switch($book->type_book){
               case 1: $aux['status'] = 'RESERVADO'; break;
@@ -1501,7 +1513,7 @@ class BookController extends AppController
         $books = $sqlBook->orderBy('start', 'ASC')->get();
         /****************************************/    
         $bookings_without_Cvc = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
-        $bookings_without_Cvc = json_decode($bookings_without_Cvc->content);
+        $bookings_without_Cvc = json_decode($bookings_without_Cvc->content,true);
         if (!$bookings_without_Cvc || !is_array($bookings_without_Cvc)){
           $bookings_without_Cvc = [];
         }
@@ -2001,25 +2013,26 @@ class BookController extends AppController
       $titulo = '';
       $agency = '';
       if (!$isMobile){
-      $agency = ($book->agency != 0) ? "Agencia: ".$book->getAgency($book->agency) : "";
-      $titulo = $book->customer->name.'&#10'.
-              'Pax-real '.$book->real_pax.'&#10;'.
+      $agency = ($book->agency != 0) ? "Agencia: ".$book->getAgency($book->agency).'<br/>' : "";
+      $titulo = $book->customer->name.'<br/>'.
+              'Pax-real '.$book->real_pax.'<br/>'.
               Carbon::createFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b').
               ' - '.Carbon::createFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b')
-              .'&#10;'
-          . strtoupper($book->user->name).'&#10;';
+              .'<br/>'
+          . strtoupper($book->user->name).'<br/>';
       }
       $href = '';
       if ($uRole != "agente" && $uRole != "limpieza"){
-        $titulo .='PVP:'.$book->total_price.'&#10';
+        $titulo .='PVP:'.$book->total_price.'<br/>';
         $href = ' href="'.url ('/admin/reservas/update').'/'.$book->id.'" ';
       }
 
       $titulo .= $agency;
       if (in_array($book->id, $bookings_without_Cvc)){
-        $titulo.= '&#10;Falta CVC';
+        $titulo.= '<b class="text-danger">FALTAN DATOS VISA</b>';
+      } else {
+        if ( $book->agency == 1 ) $titulo.= '<b>OK DATOS VISA</b>';
       }
-      
       if ($isMobile) $titulo = '';
       $return = json_encode([
           'start' => $book->start,

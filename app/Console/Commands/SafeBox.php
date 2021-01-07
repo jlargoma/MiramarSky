@@ -46,7 +46,7 @@ class SafeBox extends Command {
    */
   public function handle() {
     $this->oSafetyBox = new SafetyBox();
-    $this->unassing();
+//    $this->unassing();
     $this->process();
   }
 

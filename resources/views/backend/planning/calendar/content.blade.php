@@ -14,7 +14,7 @@ $appName = env('APP_APPLICATION');
     <div class="tab-content" style="padding: 0px 5px;">
       <div class="tab-pane active" id="tab1">
         <div class="row">
-          <div class="table-responsive content-calendar">
+            <div class="table-responsive content-calendar" style="padding-bottom: 150px;">
             <table class="fc-border-separate calendar-table" style="width: 100%">
                   @include('backend.planning.calendar.months')
               

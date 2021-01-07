@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\SendPoll::class,
         Commands\SafeBox::class,
+        Commands\SafeBoxUnassing::class,
         Commands\CheckPartee::class,
         Commands\SendParteeSMS::class,
         Commands\CreateMonthLimpieza::class,
@@ -48,6 +49,7 @@ class Kernel extends ConsoleKernel
     {
       //Le quito 2 horas de diff
       
+        $schedule->command('SafeBoxUnassing:unasign')->dailyAt('6:00')->timezone('Europe/Madrid');
         $schedule->command('SafeBox:asignAndSend')->dailyAt('13:00')->timezone('Europe/Madrid');
         $schedule->command('SendPoll:sendEmails')->dailyAt('12:00')->timezone('Europe/Madrid');
         $schedule->command('FFSeasson:get')->dailyAt('4:00')->timezone('Europe/Madrid');

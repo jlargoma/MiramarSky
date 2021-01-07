@@ -743,6 +743,31 @@ i.fa.fa-unlock.openSafetyBox {
 .overAuto{
     overflow: auto;
 }
+
+a.tip {
+    text-decoration: none
+}
+a.tip:hover {
+    cursor: help;
+    position: relative
+}
+a.tip span {
+    display: none
+}
+a.tip:hover span {
+    padding: 5px 20px 5px 5px;
+    border-radius: 5px;
+    display: block;
+    color: #FFF;
+    z-index: 100;
+    background: black;
+    left: 0px;
+    margin: 10px;
+    width: 170px;
+    position: absolute;
+    top: 10px;
+    text-decoration: none;
+}
 /*****************************************************************************/
 /*****************************************************************************/
 /*****************************************************************************/

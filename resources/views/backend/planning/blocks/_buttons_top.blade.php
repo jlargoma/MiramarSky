@@ -40,6 +40,10 @@
           <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">COBROS PDTES</span>
           <span class="numPaymentLastBooks"><?php echo $alarms; ?></span>
         </button>
+        @else
+        <button id="lastBooksPendientes"  class="btn btn-grey btn-cons" type="button">
+          <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">COBROS PDTES</span>
+        </button>
         @endif
         <button class="btn btn-danger btn-cons btn-blink <?php if ($alert_lowProfits) echo 'btn-alarms'; ?> "  id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
 

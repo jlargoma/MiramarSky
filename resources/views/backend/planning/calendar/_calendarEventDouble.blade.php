@@ -11,17 +11,18 @@ else:
     if ($calendar->type_book != 5):
       
       if($calendar->finish == $inicio): ?>
-        <a <?php echo $calendar->href; ?> title="<?php echo $calendar->titulo ?>" >
-          <div class="<?php echo $calendar->class ;?> end" style="width: 45%;float: left;">  &nbsp; </div>
+        <a <?php echo $calendar->href; ?>  class="tip">
+          <div class="<?php echo $calendar->class ;?> end" style="width: 45%;float: left;">  &nbsp; </div><span><?php echo $calendar->titulo ?></span>
         </a>
       <?php elseif ($calendar->start == $inicio ): ?>
-        <a <?php echo $calendar->href; ?> title="<?php echo $calendar->titulo ?>" >
-          <div class="<?php echo $calendar->class ;?> start" style="width: 45%;float: right;">&nbsp;</div>
+        <a <?php echo $calendar->href; ?> class="tip">
+          <div class="<?php echo $calendar->class ;?> start" style="width: 45%;float: right;">&nbsp;</div><span><?php echo $calendar->titulo ?></span>
         </a>
       <?php else: ?>
           <?php if ($calendar->type_book != 9 ): ?>
-          <a <?php echo $calendar->href; ?> title="<?php echo $calendar->titulo ?>" >
+          <a <?php echo $calendar->href; ?> class="tip">
             <div class="<?php echo $calendar->class ;?> total">&nbsp;</div>
+            <span><?php echo $calendar->titulo ?></span>
           </a>
           <?php endif ?>
       <?php endif ?>
