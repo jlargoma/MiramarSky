@@ -53,11 +53,11 @@ class ProcessData extends Command
      */
     public function handle()
     {
-       $this->bookingsWithoutCvc();
-       $this->check_overbooking();
-       $this->check_pendienteCobro();
-       $this->check_customPricesOtaGateway();
-       $this->check_customMinStayOtaGateway();
+      $this->bookingsWithoutCvc();
+      $this->check_overbooking();
+      $this->check_pendienteCobro();
+      $this->check_customPricesOtaGateway();
+      $this->check_customMinStayOtaGateway();
     }
     
     private function check_overbooking(){
@@ -226,13 +226,19 @@ class ProcessData extends Command
     
     $finish = date('Y-m-d', strtotime('-2 days'));
     $lst = Book::where_type_book_reserved()
-            ->whereNotNull('external_id')
-            ->join('book_visa','book_id','=','book.id')
-            ->whereNull('cvc')
-            ->whereNull('cc_number')
-            ->where('finish', '>', $finish)
-            ->where('agency', '!=', 4)
-            ->pluck('book_id');
+          ->where('finish', '>', $finish)
+          ->where('agency', '!=', 4)->pluck('id')->toArray();
+    
+    if (count($lst)>0){
+      $loaded = \App\BookData::whereIn('book_id',$lst)
+          ->where('key','creditCard')->pluck('book_id')->toArray();
+   
+      if (count($loaded)>0){
+        foreach ($lst as $k=>$b){
+          if (in_array($b, $loaded)) unset($lst[$k]);
+        }
+      }
+    }
     $sentUPD = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
     $sentUPD->content = json_encode($lst);
     $sentUPD->save();

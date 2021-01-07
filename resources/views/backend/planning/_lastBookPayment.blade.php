@@ -22,7 +22,7 @@ $isMobile = $mobile->isMobile();
                   <button type="button" class="btn getAll <?= !$type ? 'active' : ''?>">TEMP</button>
                   <button type="button" class="btn getLastMonth <?= $type == 'month' ? 'active' : ''?>">Últ mes</button>
                   <button type="button" class="btn getLastWeek <?= $type == 'week'  ? 'active' : ''?>">Últ semana</button>
-                  <button type="button" class="btn getPending <?= $type == 'pendientes'  ? 'active' : ''?>">Pendientes (<?= count($alarmsPayment) ?>)</button>
+                  <button type="button" class="btn getPending <?= $type == 'pendientes'  ? 'active' : ''?> <?= count($alarmsPayment)>0 ? ' btn-danger ': '' ?>">Pendientes (<?= count($alarmsPayment) ?>)</button>
                 </td>
             </tr>
         </table>

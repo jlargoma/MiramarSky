@@ -52,7 +52,7 @@
           <span class="numPaymentLastBooks"><?php echo $parteeToActive; ?></span>
         </button>
         <button class="btn btn-success btn-orange @if($CustomersRequest>0) btn-alarms @endif" id="btnBookingsWithoutCvc">
-          <span class="bold">sin CVC</span>
+          <span class="bold">SIN VISA</span>
           @if($bookings_without_Cvc>0)
           <span class="numPaymentLastBooks" data-val="{{$bookings_without_Cvc}}">{{$bookings_without_Cvc}}</span>
           @endif

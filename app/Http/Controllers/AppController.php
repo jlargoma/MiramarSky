@@ -76,7 +76,12 @@ class AppController extends Controller
 
 //      LiquidacionController::addBank($data);
       if ($book->type_book != 2) {
-        $book->changeBook(2, "", $book);
+        // WEBDIRECT
+        if ($book->is_fastpayment == 1){
+          $book->type_book = 11;
+          $book->is_fastpayment = 0;
+          $book->save();
+        } else $book->changeBook(2, "", $book);
       }
       return true;
       

@@ -167,7 +167,7 @@ class BookController extends AppController
         /****************************************************************/
         /*bookings_without_Cvc*/
         $bookings_without_Cvc = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
-        $bookings_without_Cvc = json_decode($bookings_without_Cvc->content);
+        $bookings_without_Cvc = json_decode($bookings_without_Cvc->content,true);
         if ($bookings_without_Cvc){
           $bookings_without_Cvc = count($bookings_without_Cvc);
         } else {
@@ -2042,8 +2042,8 @@ class BookController extends AppController
     function updVisa(Request $request){
       $bookingID = $request->input('id', null);
       $clientID = $request->input('idCustomer', null);
-      $cc_cvc = $request->input('cc_cvc', null);
-      $cc_number = $request->input('cc_number', null);
+      $visa_data = $request->input('visa_data', null);
+//      $cc_number = $request->input('cc_number', null);
       
       $oUser = Auth::user();
       $response = [
@@ -2052,6 +2052,7 @@ class BookController extends AppController
                   'response' => 'Algo ha salido mal',
               ];
       if ( $oUser->role == "admin" || $oUser->role == "subadmin"){
+//        $visa_data
           $oVisa = DB::table('book_visa')
                     ->where('book_id',$bookingID)
                     ->where('customer_id',$clientID)
@@ -2353,27 +2354,25 @@ class BookController extends AppController
     public function getBooksWithoutCvc() {
 
       $bookings_without_Cvc = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
-      $bookings_without_Cvc = json_decode($bookings_without_Cvc->content);
-      $aVisasCVCLst = [];
-      $aVisasNumLst = [];
+      $bookings_without_Cvc = json_decode($bookings_without_Cvc->content,true);
+      $aVisasData = [];
       $bookLst = null;
       if ($bookings_without_Cvc){
         $bookLst = Book::whereIn('id',$bookings_without_Cvc)->with('customer')->get();
         
 
-        $oVisas = DB::table('book_visa')
+        $oVisas = \App\BookData::where('key','creditCard')
                     ->whereIn('book_id',$bookings_without_Cvc)
                     ->get();
 //        dd($oVisas);
         if ($oVisas){
             foreach ($oVisas as $visa){
-                $aVisasCVCLst[$visa->book_id] = $visa->cvc;
-                $aVisasNumLst[$visa->book_id] = $visa->cc_number;
+                $aVisasData[$visa->book_id] = $visa->content;
             }
         }
       }
       $isMobile = config('app.is_mobile');
-      return view('backend/planning/_load-cvc',compact('bookLst','isMobile','aVisasCVCLst','aVisasNumLst'));
+      return view('backend/planning/_load-cvc',compact('bookLst','isMobile','aVisasData'));
 
   }   
     public function save_creditCard(Request $request){
