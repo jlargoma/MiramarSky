@@ -2,6 +2,19 @@
     use \Carbon\Carbon;  
     setlocale(LC_TIME, "ES"); 
     setlocale(LC_TIME, "es_ES"); 
+    $data = [
+             'name'      => $request->name,
+             'email'     => $request->email,
+             'pax'       => $request->pax,
+             'phone'     => $request->phone,
+             'book_comments'   => $request->book_comments,
+             'date'      => $request->fechas,
+             'start'     => $request->start,
+             'finish'    => $request->finish,
+             'nigths'    => $request->nigths,
+             'luxury'    => $request->type_luxury,
+
+           ];
 ?>
 @extends('layouts.admin-master')
 
@@ -27,7 +40,7 @@
 
     </style>
 @endsection
-    
+   
 @section('content') 
     <div class="container">
         <div class="col-md-12 m-t-10">

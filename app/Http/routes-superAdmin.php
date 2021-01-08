@@ -186,7 +186,7 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
  
 });
 
-Route::group(['middleware' => ['auth','role:admin|subadmin|agente|recepcionista'], 'prefix' => 'admin',], function () {
+Route::group(['middleware' => ['auth','role:admin|subadmin|agente|recepcionista|conserje'], 'prefix' => 'admin',], function () {
   Route::get('/reservas/update/{id}', 'BookController@update')->name('book.update');
   Route::post('/reservas/saveUpdate/{id}', 'BookController@saveUpdate');
 });

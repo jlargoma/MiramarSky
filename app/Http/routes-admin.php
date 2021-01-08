@@ -28,7 +28,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], fun
   Route::post('/admin/multiple-room-lock-task', 'BookController@multipleRoomLock_tasks');
 });
 
-Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista']], function () {
+Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista|conserje']], function () {
   
   //LIMPIEZA
   Route::get('admin/limpieza', 'LimpiezaController@index');
@@ -37,7 +37,9 @@ Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionist
   Route::post('admin/limpiezasUpd/','LimpiezaController@upd_limpiezas');
   Route::post('admin/limpiezas/pdf','LimpiezaController@export_pdf_limpiezas');
   Route::post('admin/limpiezasUpd/','LimpiezaController@upd_limpiezas');
+});
 
+Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista']], function () {
    //Estadísticas XML
   Route::post('admin/INE', 'INEController@sendData')->name('INE.sendEncuesta');
   Route::get('admin/show-INE', 'INEController@index');

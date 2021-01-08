@@ -48,6 +48,7 @@
                                 <option value="agente">Agente</option>
                                 <option value="propietario">Propietario</option>
                                 <option value="recepcionista">Recepcionista</option>
+                                <option value="conserje">Conserje</option>
                             </select>
                         </div>
                         <br>

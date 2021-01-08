@@ -50,6 +50,7 @@ class User extends Authenticatable
           'propietario',
           'recepcionista',
           'subadmin',
+          'conserje'
       ];
     }
     

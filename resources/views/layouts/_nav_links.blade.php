@@ -7,6 +7,13 @@
   <?php if ($uRole == "propietario"): ?>
     @yield('nav_link')
   <?php endif ?>  
+    
+  <?php if ($uRole == "conserje"): ?>
+    <li class="{{ $pathRequest == 'admin/reservas' ? 'active' : '' }}">
+      <a href="{{ url('admin/reservas') }}" class="detailed">Reservas</a>
+    </li>
+  <?php endif ?> 
+    
   <?php if ($uRole == "recepcionista"): ?>
     <li class="{{ $pathRequest == 'admin/reservas' ? 'active' : '' }}">
       <a href="{{ url('admin/reservas') }}" class="detailed">Reservas</a>
@@ -96,7 +103,7 @@
     </li>
 <?php endif ?>
     
-<?php if ($uRole == "admin" || $uRole == "subadmin" || $uRole == "recepcionista"): ?>
+<?php if ($uRole == "admin" || $uRole == "subadmin" || $uRole == "recepcionista"  || $uRole == "conserje"): ?>
     <li class="{{ $pathRequest == 'admin/limpiezas' ? 'active' : '' }}">
         <a href="{{ url('admin/limpiezas/') }}" class="detailed">Limpiezas</a>
     </li>

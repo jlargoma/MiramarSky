@@ -1353,8 +1353,11 @@ class BookController extends AppController
             $qry_lst = Book::where_book_times($startYear, $endYear)->limit(50);
             break;
         }
+        
         $toDay = new \DateTime();
         $toDayEnd = date('Y-m-d');
+        $daysToCheck = \App\DaysSecondPay::find(1)->days;
+        
         $lst = $qry_lst->whereIn('type_book',[1,2,7,8,98])
             ->with('room','payments','customer','leads')
             ->orderBy('updated_at','DESC')->get();
@@ -1403,7 +1406,7 @@ class BookController extends AppController
             else {
               $date2 = new \DateTime($book->start);
               $diff = $date2->diff($toDay);
-              $aux['retrasado'] = ($diff->days<2) ? true : false;
+              $aux['retrasado'] = ($diff->days<$daysToCheck) ? true : false;
             }
           }
 
