@@ -68,4 +68,7 @@ class User extends Authenticatable
           'jaime',
           'limpieza','conserje']);
     }
+    function canSeeLiquidacion(){
+      return  in_array($this->role,['admin','subadmin','recepcionista']);
+    }
 }

@@ -26,17 +26,20 @@ class LiquidacionController extends AppController {
    */
   public function index() {
 
+    if (!Auth::user()->canSeeLiquidacion()){
+      return redirect('no-allowed');
+    }
     $oLiq = new Liquidacion();
     $data = $this->getTableData();
     $data['summary'] = $oLiq->summaryTemp();
 //    dd($data['summary']);
     $data['stripeCost'] = $oLiq->getTPV($data['books']);
     $data['total_stripeCost'] = array_sum($data['stripeCost']);
-    if (Auth::user()->role == "subadmin"){
-      return view('backend/sales/index-subadmin', $data);
+    
+    if (Auth::user()->role == "admin"){
+      return view('backend/sales/index', $data);
     }
-
-    return view('backend/sales/index', $data);
+    return view('backend/sales/index-subadmin', $data);
   }
 
   
