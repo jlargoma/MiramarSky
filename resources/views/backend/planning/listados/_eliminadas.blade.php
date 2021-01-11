@@ -125,7 +125,7 @@ $uRole = Auth::user()->role;
                         </td>
 
                         <td>                                                         
-                            <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary restoreBook" type="button" data-toggle="tooltip" title="" data-original-title="Restaurar Reserva" onclick="return confirm('¿Quieres restaurar la reserva?');">
+                            <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-primary restoreBook" type="button" data-toggle="tooltip" title="" data-original-title="Restaurar Reserva">
                                <i class="fa fa-undo" aria-hidden="true"></i>
                             </button>                            
 

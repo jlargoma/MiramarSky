@@ -376,6 +376,10 @@ $role = Auth::user()->role;
 	});
 
     $('.restoreBook').click(function(event) {
+    
+      if (!confirm('¿Quieres restaurar la reserva?')){
+        return '';
+      }
     	var id = $(this).attr('data-id');
     	$.get('/admin/reservas/restore/'+id, function(data) {
            	

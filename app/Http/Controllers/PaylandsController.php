@@ -454,7 +454,7 @@ class PaylandsController extends AppController
           $result['ERROR'][] = $r;
           $totals['ERROR'] += $r;
         }
-        if ($count['SUCCESS']<1) $count['SUCCESS'] = 0;
+        if ($count['SUCCESS']<1) $count['SUCCESS'] = 1;
         $average = $totals['SUCCESS']/$count['SUCCESS'];
 //        $totals['SUCCESS'] = number_format($totals['SUCCESS'], 2, ',', '.');
                 

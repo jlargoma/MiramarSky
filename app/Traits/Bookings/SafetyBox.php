@@ -99,6 +99,7 @@ trait SafetyBox {
           } 
           
         ?>
+  <style>.col-md-6.col-xs-12.minH-4.mb-1em {min-height: 40px;}</style>
   <p class="alert alert-warning">Los buzones se asignan de manera automática a las 13Hrs de cada día (check-in)</p>
         <div class="col-md-5 mb-1em">
           <b><?php echo $book->customer->name; ?></b>
@@ -114,12 +115,13 @@ trait SafetyBox {
         if(!is_null($messageSMS)):
           ?>
         <input type="hidden" value="<?php echo csrf_token(); ?>" id="buzon_csrf_token">
-        <div class="col-xs-6 minH-4">
+        <div class="row">
+        <div class="col-md-6 col-xs-12 minH-4 mb-1em">
           <button class="sendBuzonSMS btn btn-default <?php echo $disablePhone;?>" title="Enviar Texto Buzón por SMS" data-id="<?php echo $bookID;?>">
             <i class="sendSMSIcon"></i>Enviar SMS
           </button>
         </div>
-        <div class="col-xs-6 minH-4">
+        <div class="col-md-6 col-xs-12 minH-4 mb-1em">
           <button class="sendBuzonMail btn btn-default <?php echo $disableEmail;?>" title="Enviar Texto Buzón por Correo" data-id="<?php echo $bookID;?>">
             <i class="fa fa-inbox"></i> Enviar Email
           </button>
@@ -154,7 +156,7 @@ trait SafetyBox {
             ?>
           </select>
         </div>
-        
+        </div>
           <?php if($caja){ ?>
           <div class="safebox_msgSuccess col-xs-12">
             <p class="text-danger">OK CAJA ASIGNADA:</p>

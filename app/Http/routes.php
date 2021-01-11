@@ -123,10 +123,6 @@
     Route::get('admin/reservas/deleteCobro/{id}', 'BookController@deleteCobro');
    });
    
-   Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista|conserje'], 'prefix' => 'admin',], function () {
-    Route::get('/reservas', 'BookController@index')->name('dashboard.planning');
-   });
-  
     Route::get('admin/reservas/search/searchByName', 'BookController@searchByName');
 
     //PDFÂ´s

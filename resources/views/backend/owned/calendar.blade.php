@@ -107,10 +107,10 @@ $uRole = Auth::user()->role;
                                                    <!-- Si hay una reserva que sale y una que entra  -->
                           <?php if (count($calendars) > 1): ?>
                             <td style='border:1px solid grey;width: 24px; height: 20px;'>
-                              @include('backend.blocks._calendarEventDouble', ['calendars' => $calendars,'inicio'=>$inicio ])
+                              @include('backend.owned.blocks._calendarEventDouble', ['calendars' => $calendars,'inicio'=>$inicio ])
                             </td>
                           <?php else: ?>
-                              @include('backend.blocks._calendarEvent', ['calendars' => $calendars,'inicio'=>$inicio ])
+                              @include('backend.owned.blocks._calendarEvent', ['calendars' => $calendars,'inicio'=>$inicio ])
                           <?php endif ?>
                           <?php else: ?>
                           <!-- Si no existe nada para ese dia -->
