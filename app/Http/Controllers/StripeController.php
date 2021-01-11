@@ -328,7 +328,7 @@ class StripeController extends AppController
                         <h2 class="text-center" style="font-size: 18px; line-height: 18px; margin: 0;">
                                                             
                             <a href="whatsapp://send?text=En este link podrás realizar el pago de la señal por el 25% del total.&#10; En el momento en que efectúes el pago, te legará un email - http://www.miramarski.com/stripe/pagos/'.$importe.' data-action="share/whatsapp/share">
-                                <i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>
+                                <i class="fa fa-whatsapp fa-3x" aria-hidden="true"></i>2
                             </a>
                         </h2>
                     </div>

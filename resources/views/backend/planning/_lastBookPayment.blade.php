@@ -22,7 +22,7 @@ $isMobile = $mobile->isMobile();
                   <button type="button" class="btn getAll <?= !$type ? 'active' : ''?>">TEMP</button>
                   <button type="button" class="btn getLastMonth <?= $type == 'month' ? 'active' : ''?>">Últ mes</button>
                   <button type="button" class="btn getLastWeek <?= $type == 'week'  ? 'active' : ''?>">Últ semana</button>
-                  <button type="button" class="btn getPending <?= $type == 'pendientes'  ? 'active' : ''?>">Pendientes (<?= count($alarmsPayment) ?>)</button>
+                  <button type="button" class="btn getPending <?= $type == 'pendientes'  ? 'active' : ''?> <?= count($alarmsPayment)>0 ? ' btn-danger ': '' ?>">Pendientes (<?= count($alarmsPayment) ?>)</button>
                 </td>
             </tr>
         </table>
@@ -38,6 +38,7 @@ $isMobile = $mobile->isMobile();
         <th style="width: 50px; text-align: center;">PVP</th>
         <th style="width: 50px; text-align: center;">Pagado</th>
         <th style="width: 50px; text-align: center;">Pendiente</th>
+        <th style="width: 30px; text-align: center;"></th>
         <th style="width: 50px; text-align: center;">Enviar Mail</th>
     </tr>
     </thead>
@@ -84,8 +85,16 @@ $isMobile = $mobile->isMobile();
                         @if($b['percent']>99)
                         <td class="text-center"></td>
                         <td class="text-center"></td>
+                        <td class="text-center"></td>
                         @else
                         <td class="text-center text-danger" ><b><?= moneda($b['toPay']) ?></b></td>
+                        <td class="text-center text-danger" >
+                        @if($b['retrasado'])
+                        <div class="alert alert-danger">
+                            <i class="fa fa-bell " aria-hidden="true"></i>
+                        </div>  
+                        @endif
+                        </td>
                         <td class="text-center">
                             @if($b['tbook'] == 2 || $b['tbook'] == 1)
                           <button data-id="<?= $b['id']; ?>" class="btn btn-xs <?= $b['btn-send']; ?>  sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="0">

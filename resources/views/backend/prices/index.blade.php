@@ -134,7 +134,7 @@
           @include('backend.zodomus.sendToWubook')
           
         </div>
-        <div class="col-md-2 row">
+        <div class="col-md-2 row col-xs-12">
           @include('backend.years._selector', ['minimal' => true])
         </div>
       </div>

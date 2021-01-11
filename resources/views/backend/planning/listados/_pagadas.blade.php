@@ -33,7 +33,12 @@ endif
             </thead>
             <tbody>
                 <?php foreach ($books as $book): ?>
-                    <tr data-id="{{$book->id}}" >
+                
+                  <?php 
+                  $class = '';
+                  if ($book->user_id == 98 || $book->customer->user_id == 98) $class = " byWeb " 
+                  ?>
+                    <tr class="<?php echo $class;?>" data-id="{{$book->id}}" >
                       <td class="fix-col td-b1">
                         <div class="fix-col-data">
                             <?php if ($book->agency != 0): ?>

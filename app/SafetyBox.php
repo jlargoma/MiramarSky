@@ -60,6 +60,9 @@ class SafetyBox extends Model
     return \DB::table('book_safety_boxes')->where('id', $ID)
               ->update(['box_id'=>$value,'deleted' => null]);
   }
+  public function unassingBookSafetyBox($bookIDs) {
+    return \DB::table('book_safety_boxes')->whereIn('book_id', $bookIDs)->update(['deleted' => date('Y-m-d H:i:s')]);
+  }
   
 
   public function updLog($bookID,$value) {

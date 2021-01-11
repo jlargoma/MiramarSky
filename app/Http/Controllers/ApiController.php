@@ -215,14 +215,14 @@ class ApiController extends AppController
         $book->start         = $date_start;
         $book->finish        = $date_finish;
         $book->comment       = isset($cData['c_observ']) ? $cData['c_observ']: '';
-        $book->type_book     = 99;
         $book->pax           = $pax;
         $book->real_pax      = $pax;
         $book->nigths        = $nigths;
         $book->PVPAgencia    = 0;
-        $book->is_fastpayment = 0;//1;
+        $book->is_fastpayment = 1;
         $book->user_id = 98;
         $book->customer_id = $customer->id;
+        if (!$alreadyExist) $book->type_book     = 99;
         
         if (!$book->save())  return FALSE;
         

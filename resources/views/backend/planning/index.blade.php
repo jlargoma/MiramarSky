@@ -32,6 +32,9 @@ $is_mobile = $mobile->isMobile();
         border: 1px solid red;
         box-shadow: 1px 1px 4px 1px red;
       }
+      .table.table-striped tbody tr.byWeb td {
+          background-color: #ffc2e1 !important;
+      }
     </style>
     <script src="{{ asset('/vendors/ckeditor/ckeditor.js') }}"></script>
 @endsection
@@ -520,6 +523,36 @@ $is_mobile = $mobile->isMobile();
     });
   </script>
   <?php endif ?>
+  
+  
+  <script>
+    /**************************************************************/
+      /****   SEND VISA           **********************************/
+$(document).ready(function () {
+  var sendVisa = true;
+  $('body').on('change','.cc_upd',function(event) {
+    if (sendVisa){
+      sendVisa = false;
+      var that = $(this);
+      var bID  = that.data('book_id');
+      var idCustomer = that.data('customer_id');
+      $('#loadigPage').show('slow');
+
+      var params = {
+        data: $('#visa_'+bID).val(),
+        _token: "{{ csrf_token() }}",
+        bID: bID
+      };
+
+      $.post("{{route('booking.save_creditCard')}}",params, function (data) {
+        window.show_notif(data.title,data.status,data.response);
+        $('#loadigPage').hide('slow');
+        sendVisa = true;
+      });
+    }
+  });   
+});   
+</script>
 
 
 

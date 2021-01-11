@@ -93,7 +93,7 @@ trait CentroMensajeria {
          data-original-title="Enviar Partee link"
          data-toggle="tooltip"
          class="btn btn-default <?php echo $disablePhone; ?>">
-        <i class="fa  fa-whatsapp" aria-hidden="true" style="color: #000; margin-right: 7px;"></i>Enviar Whatsapp
+        <i class="fa  fa-whatsapp" aria-hidden="true" style="color: #000; margin-right: 7px;"></i>Enviar Whatsapp 3
       </a>
     </div>
     <div class="col-md-6 minH-4">
@@ -419,6 +419,7 @@ trait CentroMensajeria {
         }
       }
     }
+    $urlEncuesta = 'https://g.page/alquiler-apartamento-de-lujo-sie?gm';
     
     ?>
       <div class="box-new">
@@ -451,7 +452,7 @@ trait CentroMensajeria {
               </button>
             </div>
             <div class="col-md-4 col-xs-12 mb-1em">
-              <?php $text = "Hola, esperamos que hayas disfrutado de tu estancia con nosotros." . "\n" . "Nos gustaria que valorarás, para ello te dejamos este link : https://www.apartamentosierranevada.net/encuesta-satisfaccion/" . base64_encode($book->id); ?>
+              <?php $text = "Hola, esperamos que hayas disfrutado de tu estancia con nosotros." . "%0D%0A" . "Nos gustaria que valorarás, para ello te dejamos este link : " . $urlEncuesta; ?>
               <a href="whatsapp://send?text=<?php echo $text; ?>"
                  data-action="share/whatsapp/share"
                  data-original-title="Enviar encuesta de satisfacción"

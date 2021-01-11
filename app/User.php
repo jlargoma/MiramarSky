@@ -50,10 +50,22 @@ class User extends Authenticatable
           'propietario',
           'recepcionista',
           'subadmin',
+          'conserje'
       ];
     }
     
     static function getUsersNames(){
       return self::all()->pluck('name','id');
+    }
+    function canEditBooking(){
+      return  in_array($this->role,['admin','subadmin','recepcionista']);
+    }
+    function canSeeVisa(){
+      return  in_array($this->role,['admin','subadmin']);
+    }
+    function canSeePlanning(){
+      return  in_array($this->role,['admin','subadmin','recepcionista','agente',
+          'jaime',
+          'limpieza','conserje']);
     }
 }

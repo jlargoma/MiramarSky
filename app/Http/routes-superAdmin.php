@@ -186,7 +186,7 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
  
 });
 
-Route::group(['middleware' => ['auth','role:admin|subadmin|agente|recepcionista'], 'prefix' => 'admin',], function () {
+Route::group(['middleware' => ['auth','role:admin|subadmin|agente|recepcionista|conserje'], 'prefix' => 'admin',], function () {
   Route::get('/reservas/update/{id}', 'BookController@update')->name('book.update');
   Route::post('/reservas/saveUpdate/{id}', 'BookController@saveUpdate');
 });
@@ -331,7 +331,13 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   
   
   Route::get('/ical/importFromUrl', function () {
-      \Artisan::call('ical:import');
+    $dir = storage_path().'/ICals';
+    if (!file_exists($dir)) {
+        mkdir($dir, 0775, true);
+    }
+    file_put_contents($dir."/".time(),json_encode($_SERVER));
+    return 'No found';
+//      \Artisan::call('ical:import');
   });
   
   Route::get('/zodomus/import', function () {

@@ -40,6 +40,10 @@
           <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">COBROS PDTES</span>
           <span class="numPaymentLastBooks"><?php echo $alarms; ?></span>
         </button>
+        @else
+        <button id="lastBooksPendientes"  class="btn btn-grey btn-cons" type="button">
+          <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">COBROS PDTES</span>
+        </button>
         @endif
         <button class="btn btn-danger btn-cons btn-blink <?php if ($alert_lowProfits) echo 'btn-alarms'; ?> "  id="btnLowProfits" type="button" data-toggle="modal" data-target="#modalLowProfits">
 
@@ -52,7 +56,7 @@
           <span class="numPaymentLastBooks"><?php echo $parteeToActive; ?></span>
         </button>
         <button class="btn btn-success btn-orange @if($CustomersRequest>0) btn-alarms @endif" id="btnBookingsWithoutCvc">
-          <span class="bold">sin CVC</span>
+          <span class="bold">SIN VISA</span>
           @if($bookings_without_Cvc>0)
           <span class="numPaymentLastBooks" data-val="{{$bookings_without_Cvc}}">{{$bookings_without_Cvc}}</span>
           @endif
@@ -102,6 +106,14 @@
       <?php endif ?>
     </div>
   </div>
+  @else
+          <button class="btn btn-blue btn_intercambio btn-cons minimal" type="button">
+          <span class="bold">intercambio</span>
+        </button>
+        <button class="btn btn-danger btn-cons btn-blink"  id="btnBookBlockAll" >
+          <i class="fa fa-key" aria-hidden="true"></i>
+          <span class="bold hidden-mobile">Bloqueo</span>
+        </button>
   @endif
 </div>
  @if(is_array($urgentes) && count($urgentes)>0)

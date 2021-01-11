@@ -518,3 +518,13 @@ function removeIVA($price,$iva){
   if (!$price || !$iva) return 0;
   return round($price / (1 + $iva/100),2);
 }
+
+function whatsappFormat($texto){
+      $whatsapp = str_replace('&nbsp;', ' ', $texto);
+      $whatsapp = str_replace('<strong>', '*', $whatsapp);
+      $whatsapp = str_replace('</strong>', '*', $whatsapp);
+      $whatsapp = str_replace('<br />', '%0D%0A', $whatsapp);
+      $whatsapp = str_replace('</p>', '%0D%0A', $whatsapp);
+      $whatsapp = strip_tags($whatsapp);
+      return $whatsapp;
+}

@@ -39,12 +39,15 @@ class BookController extends AppController
      */
     public function index()
     {
-      
+ 
         $year      = $this->getActiveYear();
         $startYear = $year->start_date;
         $endYear   = $year->end_date;
-        
-        if (Auth::user()->role != "agente")
+        $oUser = Auth::user();
+        if (!$oUser->canSeePlanning()){
+          return redirect('no-allowed');
+        }
+        if ($oUser->role != "agente")
         {
           $rooms       = Rooms::orderBy('order')->get();
           $types       = Book::get_type_book_pending();
@@ -167,7 +170,7 @@ class BookController extends AppController
         /****************************************************************/
         /*bookings_without_Cvc*/
         $bookings_without_Cvc = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
-        $bookings_without_Cvc = json_decode($bookings_without_Cvc->content);
+        $bookings_without_Cvc = json_decode($bookings_without_Cvc->content,true);
         if ($bookings_without_Cvc){
           $bookings_without_Cvc = count($bookings_without_Cvc);
         } else {
@@ -450,7 +453,8 @@ class BookController extends AppController
       $visaHtml = null;
       $partee = null;
       $oUser = Auth::user();
-      if ( $oUser->role != "agente"){
+      $creditCardData = '';
+      if ( $oUser->canEditBooking()){
          
           $book  = \App\Book::with('payments')->find($id);
           $rooms = \App\Rooms::orderBy('order')->get();
@@ -494,7 +498,9 @@ class BookController extends AppController
               
               $visaHtml .=  '<div class="btn btn-blue" type="button" id="_getPaymentVisaForce">Refrescar datos</div>';
             }
-            
+                    
+            $oBookData = \App\BookData::findOrCreate('creditCard',$book->id);
+            $creditCardData = $oBookData->content;
           }
           
         if($book->type_book == 2 || $book->type_book == 1 ){
@@ -505,7 +511,7 @@ class BookController extends AppController
         }
           
        } else {
-         
+        if ( $oUser->role == "agente"){
           $updateBlade = '-agente';
           $roomsAgents = \App\AgentsRooms::where('user_id', $oUser->id)->get(['room_id'])->toArray();
           $rooms       = \App\Rooms::whereIn('id', $roomsAgents)->orderBy('order')->get();
@@ -515,6 +521,11 @@ class BookController extends AppController
                   ->whereIn('type_book',$types)
                   ->whereIn('room_id', $roomsAgents)
                   ->find($id);
+        } else {
+          $updateBlade = '-basic';
+          $rooms = \App\Rooms::orderBy('order')->get();
+          $book  = \App\Book::with('payments')->find($id);
+        }
        }
 
        if (!$book){
@@ -523,11 +534,6 @@ class BookController extends AppController
         $totalpayment = $book->sum_payments;
         
         $payment_pend = floatVal($book->total_price)-$totalpayment;
-       
-//dd($book->total_price,$totalpayment,$payment_pend);
-        // We are passing wrong data from this to view by using $book data, in order to correct data
-        // an AJAX call has been made after rendering the page.
-//        $hasFiance = \App\Fianzas::where('book_id', $book->id)->first();
         $hasFiance = null;
 
         /**
@@ -561,11 +567,11 @@ class BookController extends AppController
         
         $otaURL = $this->getOtaURL($book);
         
-        $oBookData = \App\BookData::findOrCreate('creditCard',$book->id);
-        $creditCardData = $oBookData->content;
+
     
         return view('backend/planning/update'.$updateBlade, [
             'book'         => $book,
+            'oUser'        => $oUser,
             'low_profit'   => $low_profit,
             'hasVisa'      => $hasVisa,
             'visaHtml'     => $visaHtml,
@@ -1149,8 +1155,12 @@ class BookController extends AppController
         $endYear   = new Carbon($year->end_date);
         $books     = [];
         $pullSent  = [];
+        $oUser     = Auth::user();
         $uRole     = getUsrRole();
 
+        if (!$oUser->canSeePlanning()){
+          return '<p><h2>Ups!! No tienes autorización para ver el contenido solicitado.</h2></p>';
+        }
         if ($uRole == "limpieza"){
           if (!($request->type == 'checkin' || $request->type == 'checkout')){
             $request->type = 'checkin';
@@ -1353,7 +1363,11 @@ class BookController extends AppController
             $qry_lst = Book::where_book_times($startYear, $endYear)->limit(50);
             break;
         }
-    
+        
+        $toDay = new \DateTime();
+        $toDayEnd = date('Y-m-d');
+        $daysToCheck = \App\DaysSecondPay::find(1)->days;
+        
         $lst = $qry_lst->whereIn('type_book',[1,2,7,8,98])
             ->with('room','payments','customer','leads')
             ->orderBy('updated_at','DESC')->get();
@@ -1395,9 +1409,20 @@ class BookController extends AppController
           $aux['toPay'] = $book->total_price-$paymentBook;
           $aux['percent'] = ($book->total_price>0) ? round(($paymentBook/$book->total_price)*100): 0;
           
+          $aux['retrasado'] = false;
+          //Pago retrasado
+          if (!in_array($book->type_book, [98,7,8])){
+            if ($toDayEnd >= $book->start) $aux['retrasado'] = true;
+            else {
+              $date2 = new \DateTime($book->start);
+              $diff = $date2->diff($toDay);
+              $aux['retrasado'] = ($diff->days<$daysToCheck) ? true : false;
+            }
+          }
+
           
           if($countPays > 0){
-              $aux['status'] = $countPays. 'º PAGO';
+              $aux['status'] = $countPays. 'º PAGO OK';
           } else {
             switch($book->type_book){
               case 1: $aux['status'] = 'RESERVADO'; break;
@@ -1501,7 +1526,7 @@ class BookController extends AppController
         $books = $sqlBook->orderBy('start', 'ASC')->get();
         /****************************************/    
         $bookings_without_Cvc = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
-        $bookings_without_Cvc = json_decode($bookings_without_Cvc->content);
+        $bookings_without_Cvc = json_decode($bookings_without_Cvc->content,true);
         if (!$bookings_without_Cvc || !is_array($bookings_without_Cvc)){
           $bookings_without_Cvc = [];
         }
@@ -2000,26 +2025,32 @@ class BookController extends AppController
       $classTd = ' class="td-calendar" ';
       $titulo = '';
       $agency = '';
+      
+      $vistaCompleta = in_array($uRole, ['admin','subadmin']);
       if (!$isMobile){
-      $agency = ($book->agency != 0) ? "Agencia: ".$book->getAgency($book->agency) : "";
-      $titulo = $book->customer->name.'&#10'.
-              'Pax-real '.$book->real_pax.'&#10;'.
+      $agency = ($book->agency != 0) ? "Agencia: ".$book->getAgency($book->agency).'<br/>' : "";
+      $titulo = $book->customer->name.'<br/>'.
+              'Pax-real '.$book->real_pax.'<br/>'.
               Carbon::createFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b').
               ' - '.Carbon::createFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b')
-              .'&#10;'
-          . strtoupper($book->user->name).'&#10;';
+              .'<br/>';
       }
+      
       $href = '';
-      if ($uRole != "agente" && $uRole != "limpieza"){
-        $titulo .='PVP:'.$book->total_price.'&#10';
+      if ($vistaCompleta){
+        $titulo .= strtoupper($book->user->name).'<br/>';
+        $titulo .='PVP:'.$book->total_price.'<br/>';
         $href = ' href="'.url ('/admin/reservas/update').'/'.$book->id.'" ';
       }
 
       $titulo .= $agency;
-      if (in_array($book->id, $bookings_without_Cvc)){
-        $titulo.= '&#10;Falta CVC';
+      if ($vistaCompleta){
+        if (in_array($book->id, $bookings_without_Cvc)){
+          $titulo.= '<b class="text-danger">FALTAN DATOS VISA</b>';
+        } else {
+          if ( $book->agency == 1 ) $titulo.= '<b>OK DATOS VISA</b>';
+        }
       }
-      
       if ($isMobile) $titulo = '';
       $return = json_encode([
           'start' => $book->start,
@@ -2042,8 +2073,8 @@ class BookController extends AppController
     function updVisa(Request $request){
       $bookingID = $request->input('id', null);
       $clientID = $request->input('idCustomer', null);
-      $cc_cvc = $request->input('cc_cvc', null);
-      $cc_number = $request->input('cc_number', null);
+      $visa_data = $request->input('visa_data', null);
+//      $cc_number = $request->input('cc_number', null);
       
       $oUser = Auth::user();
       $response = [
@@ -2052,6 +2083,7 @@ class BookController extends AppController
                   'response' => 'Algo ha salido mal',
               ];
       if ( $oUser->role == "admin" || $oUser->role == "subadmin"){
+//        $visa_data
           $oVisa = DB::table('book_visa')
                     ->where('book_id',$bookingID)
                     ->where('customer_id',$clientID)
@@ -2353,31 +2385,37 @@ class BookController extends AppController
     public function getBooksWithoutCvc() {
 
       $bookings_without_Cvc = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
-      $bookings_without_Cvc = json_decode($bookings_without_Cvc->content);
-      $aVisasCVCLst = [];
-      $aVisasNumLst = [];
+      $bookings_without_Cvc = json_decode($bookings_without_Cvc->content,true);
+      $aVisasData = [];
       $bookLst = null;
       if ($bookings_without_Cvc){
         $bookLst = Book::whereIn('id',$bookings_without_Cvc)->with('customer')->get();
         
 
-        $oVisas = DB::table('book_visa')
+        $oVisas = \App\BookData::where('key','creditCard')
                     ->whereIn('book_id',$bookings_without_Cvc)
                     ->get();
 //        dd($oVisas);
         if ($oVisas){
             foreach ($oVisas as $visa){
-                $aVisasCVCLst[$visa->book_id] = $visa->cvc;
-                $aVisasNumLst[$visa->book_id] = $visa->cc_number;
+                $aVisasData[$visa->book_id] = $visa->content;
             }
         }
       }
       $isMobile = config('app.is_mobile');
-      return view('backend/planning/_load-cvc',compact('bookLst','isMobile','aVisasCVCLst','aVisasNumLst'));
+      return view('backend/planning/_load-cvc',compact('bookLst','isMobile','aVisasData'));
 
   }   
     public function save_creditCard(Request $request){
       
+      $oUser = Auth::user();
+      if ( !( $oUser->role == "admin" || $oUser->role == "subadmin")){
+            return [
+                'status'   => 'danger',
+                'title'    => 'ERROR',
+                'response' => "No posees permisos"
+            ];
+      }
       $bookingID = $request->input('bID', null);
       $creditCardData = $request->input('data', null);
        

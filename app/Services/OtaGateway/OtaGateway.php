@@ -289,12 +289,32 @@ class OtaGateway {
     /*     * ******************************************************** */
 
     $book = new \App\Book();
-    $start = $reserv['start'];
-    $finish = $reserv['end'];
+    $schedule = $scheduleOut = null;
+    /////////////////////////////
+    $auxTime = explode(' ',$reserv['start']);
+    if (is_array($auxTime) && count($auxTime) == 2){
+      $start = $auxTime[0];
+      $aux2 =  explode(':',$auxTime[1]);
+      if (is_array($aux2))  $schedule = $aux2[0];
+    } else {
+      $start = $reserv['start'];
+    }
+    /////////////////////////////
+    $auxTime = explode(' ',$reserv['end']);   
+    if (is_array($auxTime) && count($auxTime) == 2){
+      $finish = $auxTime[0];
+      $aux2 =  explode(':',$auxTime[1]);
+      if (is_array($aux2))  $scheduleOut = $aux2[0];
+    } else {
+      $finish = $reserv['start'];
+    }
+    /////////////////////////////
     $nigths = calcNights($start, $finish);
     $reserv['start_date'] = $start;
     $reserv['end_date'] = $finish;
     $reserv['nigths'] = $nigths;
+    $reserv['schedule'] = $schedule;
+    $reserv['scheduleOut'] = $scheduleOut;
 
     /** UPDATE THE BOOKING * */
     if ($update) {
@@ -313,6 +333,10 @@ class OtaGateway {
         $customer->save();
       }
 
+      if (!in_array($alreadyExist->type_book,$alreadyExist->typeBooksReserv)){
+        $alreadyExist->changeBook(11, "", $alreadyExist);
+        $alreadyExist->type_book = 11; // por las dudas que falle
+      }
       $this->updBooking($alreadyExist, $reserv);
       return $update;
     }
@@ -391,6 +415,8 @@ class OtaGateway {
 
     $book->start = $reserv['start'];
     $book->finish = $reserv['end'];
+    $book->schedule = $reserv['schedule'];
+    $book->scheduleOut = $reserv['scheduleOut'];
     $book->nigths = $reserv['nigths'];
     $book->comment = $comment;
     $book->book_comments = $book_comments;

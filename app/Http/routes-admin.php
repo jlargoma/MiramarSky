@@ -28,7 +28,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], fun
   Route::post('/admin/multiple-room-lock-task', 'BookController@multipleRoomLock_tasks');
 });
 
-Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista']], function () {
+Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista|conserje']], function () {
   
   //LIMPIEZA
   Route::get('admin/limpieza', 'LimpiezaController@index');
@@ -37,7 +37,20 @@ Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionist
   Route::post('admin/limpiezasUpd/','LimpiezaController@upd_limpiezas');
   Route::post('admin/limpiezas/pdf','LimpiezaController@export_pdf_limpiezas');
   Route::post('admin/limpiezasUpd/','LimpiezaController@upd_limpiezas');
+  
+  //BUZON  
+  Route::get('/ajax/showSafetyBox/{bookID}', 'BookController@showSafetyBox');
+  Route::get('/ajax/editSafetyBox', 'BookController@editSafetyBox');
+  Route::get('/ajax/updSafetyBox/{bookID}/{value}/{min?}', 'BookController@updSafetyBox');
+  Route::get('/ajax/SafetyBoxMsg/{bookID}', 'BookController@getSafetyBoxMsg');
+  Route::post('/ajax/send-SafetyBox-sms', 'BookController@sendSafetyBoxSMS');
+  Route::post('/ajax/createSafetyBox', 'BookController@createSafetyBox');
+  Route::post('/ajax/SafetyBox-updKey', 'BookController@updKeySafetyBox');
+  Route::post('/ajax/send-SafetyBox-mail', 'BookController@sendSafetyBoxMail');
+  Route::get('admin/get-SafetyBox', 'BookController@getSafetyBoxLst');
+});
 
+Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista']], function () {
    //Estadísticas XML
   Route::post('admin/INE', 'INEController@sendData')->name('INE.sendEncuesta');
   Route::get('admin/show-INE', 'INEController@index');
@@ -62,15 +75,7 @@ Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionist
   // Route::get('/resume-by-book/{id}', 'ForfaitsItemController@getResumeBy_book');
   Route::get('/ajax/get-book-comm/{bookID}', 'BookController@getComment');
   
-  Route::get('/ajax/showSafetyBox/{bookID}', 'BookController@showSafetyBox');
-  Route::get('/ajax/editSafetyBox', 'BookController@editSafetyBox');
-  Route::get('/ajax/updSafetyBox/{bookID}/{value}/{min?}', 'BookController@updSafetyBox');
-  Route::get('/ajax/SafetyBoxMsg/{bookID}', 'BookController@getSafetyBoxMsg');
-  Route::post('/ajax/send-SafetyBox-sms', 'BookController@sendSafetyBoxSMS');
-  Route::post('/ajax/createSafetyBox', 'BookController@createSafetyBox');
-  Route::post('/ajax/SafetyBox-updKey', 'BookController@updKeySafetyBox');
-  Route::post('/ajax/send-SafetyBox-mail', 'BookController@sendSafetyBoxMail');
-  Route::get('admin/get-SafetyBox', 'BookController@getSafetyBoxLst');
+
   
 });
 Route::group(['middleware' => ['auth','role:admin|propietario'], 'prefix' => 'admin',], function () {

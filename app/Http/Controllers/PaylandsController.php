@@ -152,19 +152,15 @@ class PaylandsController extends AppController
           $texto = str_replace('{payment_amount}', $amount, $texto);
           $texto = str_replace('{urlPayment}', $urlPay, $texto);
           
-          $whatsapp = str_replace('&nbsp;', ' ', $texto);
-          $whatsapp = str_replace('<strong>', '*', $whatsapp);
-          $whatsapp = str_replace('</strong>', '*', $whatsapp);
-          $whatsapp = str_replace('<br />', '%0D%0A', $whatsapp);
-          $whatsapp = str_replace('</p>', '%0D%0A', $whatsapp);
-          $whatsapp = strip_tags($whatsapp);
-//          var_dump($whatsapp); die;
-          $textoUnformat = strip_tags(str_replace('<br />', '&#10;', $texto));
+         
         }
       } 
       if (!$texto){
-        $texto = 'En este link podrás realizar el pago de '.$amount.'€.<br> En el momento en que efectúes el pago, te legará un email.<br/>'.$urlPay;
+        $texto = 'En este link podrás realizar el pago de '.$amount.'€.<br /> En el momento en que efectúes el pago, te legará un email.<br />'.$urlPay;
       }
+
+      $whatsapp = whatsappFormat($texto);
+      $textoUnformat = strip_tags(str_replace('<br />', '&#10;', $texto));
               
       $whatsapp = strip_tags($whatsapp);
       $response = '
@@ -182,7 +178,7 @@ class PaylandsController extends AppController
       return $response;
     }    
 
-    public function thansYouPayment($key_token)
+    public function thansYouPayment($key_token,$redirect=true)
     {
       
       $bookOrder = BookOrders::where('key_token',$key_token)->whereNull('paid')->first();
@@ -233,7 +229,7 @@ class PaylandsController extends AppController
         }
          
       }
-      return redirect()->route('thanks-you');
+      if ($redirect)  return redirect()->route('thanks-you');
         
     }
     public function errorPayment($key_token)
@@ -252,6 +248,22 @@ class PaylandsController extends AppController
           mkdir($dir, 0775, true);
       }
       file_put_contents($dir."/$id-".time(), $id."\n". json_encode($request->all()));
+      $order = $request->input('order', null);
+      if ($order){//"amount":100000,"currency":"978","paid":true
+        $uuid = $order['uuid'];
+        $amount = $order['amount'];
+        $paid = $order['paid'];
+        if ($paid === true){
+          $bookOrder = BookOrders::where('order_uuid',$uuid)->whereNull('paid')->first();
+          if ($bookOrder){
+            
+            if ($bookOrder->amount == $amount){
+              $this->thansYouPayment($bookOrder->key_token,false);
+            }
+          }
+          
+        }
+      }
       die('ok');
 
     }
@@ -442,7 +454,7 @@ class PaylandsController extends AppController
           $result['ERROR'][] = $r;
           $totals['ERROR'] += $r;
         }
-        
+        if ($count['SUCCESS']<1) $count['SUCCESS'] = 1;
         $average = $totals['SUCCESS']/$count['SUCCESS'];
 //        $totals['SUCCESS'] = number_format($totals['SUCCESS'], 2, ',', '.');
                 

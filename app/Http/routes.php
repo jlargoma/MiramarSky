@@ -122,7 +122,7 @@
     Route::get('admin/reservas/saveCobro', 'BookController@saveCobro');
     Route::get('admin/reservas/deleteCobro/{id}', 'BookController@deleteCobro');
    });
-  
+   
     Route::get('admin/reservas/search/searchByName', 'BookController@searchByName');
 
     //PDFÂ´s

@@ -134,18 +134,6 @@ $is_mobile = $mobile->isMobile();
                  style="font-size: 48px;"></i>
             </a>
           </div>
-          <div class="col-md-2 col-xs-3 icon-lst hidden-lg hidden-md">
-            <h2 class="text-center"
-                style="font-size: 18px; line-height: 18px; margin: 0;">
-<?php $text = "En este link podrás realizar el pago de la señal por el 25% del total." . "\n" . " En el momento en que efectúes el pago, te legará un email confirmando tu reserva - https://www.apartamentosierranevada.net/reservas/stripe/pagos/" . base64_encode($book->id);
-?>
-
-              <a href="whatsapp://send?text=<?php echo $text; ?>"
-                 data-action="share/whatsapp/share">
-                <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
-              </a>
-            </h2>
-          </div>
         </div>
         <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">
           <div id="overlay" style="display: none;"></div>

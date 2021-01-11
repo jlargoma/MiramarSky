@@ -5,29 +5,32 @@ $calendar = ($calendars[0]) ? $calendars[0] : $calendars;
 //dd($calendar['start']);
 if ($calendar->start == $inicio):
   ?> 
-  <td title="<?php echo $calendar->titulo ?>"  <?php echo $calendar->classTd; ?>>
-    <a <?php echo $calendar->href; ?> title="<?php echo $calendar->titulo ?>" >
+  <td <?php echo $calendar->classTd; ?>>
+    <a <?php echo $calendar->href; ?>  class="tip">
       <div class="<?php echo $calendar->class; ?> start">&nbsp;</div>
+      <span><?php echo $calendar->titulo ?></span>
     </a>
   </td>
   <?php
 elseif ($calendar->finish == $inicio):
   ?>  
-  <td title="<?php echo $calendar->titulo ?>" <?php echo $calendar->classTd; ?>>
-    <a <?php echo $calendar->href; ?> title="<?php echo $calendar->titulo ?>" >
+  <td <?php echo $calendar->classTd; ?>>
+    <a <?php echo $calendar->href; ?> class="tip">
       <div class="<?php echo $calendar->class; ?> end">
         &nbsp;
       </div>
+      <span><?php echo $calendar->titulo ?></span>
     </a>
   </td>
 <?php else: ?>
-  <td   title="<?php echo $calendar->titulo ?> "  <?php echo $calendar->classTd; ?> >
+  <td   <?php echo $calendar->classTd; ?> >
     <?php if ($calendar->type_book == 9): ?>
       <div class="<?php echo $calendar->class; ?> total">
         &nbsp;
       </div>
     <?php else: ?>
-      <a <?php echo $calendar->href; ?> title="<?php echo $calendar->titulo ?>" class="<?php echo $calendar->class; ?>" style="display:block;">
+      <a <?php echo $calendar->href; ?> class="tip <?php echo $calendar->class; ?>" style="display:block;">
+          <span><?php echo $calendar->titulo ?></span>
         <div class="total">
           &nbsp;
         </div>
