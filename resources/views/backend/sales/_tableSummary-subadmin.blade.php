@@ -20,10 +20,10 @@
         </div>
         <div class="col-md-1 col-xs-12 pull-right">
             <label style="width: 100%; float:left;">Benef critico</label>
-            <input class="form-control text-black font-w400 text-center percentBenef" value="<?php echo $percentBenef ?>" style="border: none; font-size: 32px;margin: 10px 0;color:red!important; width: 70%; float:left;"/> <span class="font-w800" style="font-size: 32px">%</span>
+            <input class="form-control text-black font-w400 text-center" value="<?php echo $percentBenef ?>" style="border: none; font-size: 32px;margin: 10px 0;color:red!important; width: 70%; float:left;" disabled=""/> <span class="font-w800" style="font-size: 32px">%</span>
         </div>
         <div style="clear: both;"></div>
-        @include('backend.sales._tableSummaryBoxes-subadmin', ['totales' => $totales, 'books' => $books, 'data' => $data, 'year'=> $year])
+        @include('backend.sales._tableSummaryBoxes-subadmin', ['totales' => $totales, 'books' => $books, 'data' => $summary, 'year'=> $year])
     </div>
     <div class="col-xs-12">
         <div class="row push-10">
@@ -46,24 +46,10 @@
                     </th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">
                       BANCO<br/>
-                      <b>
-                        <?php $aux = $totales["bancoJorge"] + $totales["bancoJaime"]; ?>
-			<?php if ($aux == 0): ?>
-                        ----
-                        <?php else: ?>
-                        <?php echo number_format($aux,0,',','.') ?> €
-                        <?php endif ?>
-                      </b>
+                      <b>{{moneda($totales["banco"])}}</b>
                     </th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">CAJA<br/>
-                      <b>
-                        <?php $aux = $totales["jorge"] + $totales["jaime"]; ?>
-			<?php if ($aux == 0): ?>
-                        ----
-                        <?php else: ?>
-                        <?php echo number_format($aux,0,',','.') ?> €
-                        <?php endif ?>
-                      </b>
+                      <b>{{moneda($totales["caja"])}}</b>
                     </th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">
                       Pend<br/><b>{{ $totales['pendiente'] ? number_format($totales["pendiente"],0,',','.') . ' €' : '----' }}</b>
@@ -137,18 +123,14 @@
                             <td class="text-center coste" style="border-left: 1px solid black;">
                                 <input class="updatePVP" type="number" step="0.01" value="<?php echo round($book->total_price);?>" data-idBook="<?php echo $book->id; ?>"/>
                             </td>
-                            <td class="text-center coste banco" style="border-left: 1px solid black;">
-                              <?php $aux = $book->getPayment(2) + $book->getPayment(3); ?>
-                              <?php echo ($aux == 0)? '---' : number_format($aux,0,',','.').' €'; ?>
-                            </td>
+                            <td class="text-center coste banco" style="border-left: 1px solid black;">{{moneda($books_payments[$book->id]['banco'],false)}}</td>
                             <td class="text-center coste caja" style="border-left: 1px solid black;">
-                              <?php $aux = $book->getPayment(0) + $book->getPayment(1); ?>
-                              <?php echo ($aux == 0)? '---' : number_format($aux,0,',','.').' €'; ?>
+                                {{moneda($books_payments[$book->id]['caja'],false)}}
                             </td>
                             <td class="text-center coste pagos pendiente red <?php if($book->pending > 0){ echo
                             'alert-limp'; }?>" style="border-left: 1px solid black;" >
 
-                                {{ $book->pending > 0 ? number_format( $book->pending,0,',','.') . ' €' : '----' }}
+                             {{ $book->pending > 0 ? number_format( $book->pending,0,',','.') . ' €' : '----' }}
 
                             </td>
                         </tr>
