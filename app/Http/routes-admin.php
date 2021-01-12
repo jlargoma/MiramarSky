@@ -101,6 +101,7 @@ Route::group(['middleware' => ['auth','role:admin|propietario'], 'prefix' => 'ad
   Route::get('/propietario/{name?}/descuentos', 'OwnedController@descuentosOwned');
   Route::get('/propietario/{name?}/fiscalidad', 'OwnedController@fiscalidadOwned');
   Route::get('/propietario/{name?}/facturas', 'OwnedController@facturasOwned');
+//  Route::get('/propietario/facturas/ver/{id}', 'InvoicesController@viewProp')->name('invoice.prop.view');
   Route::get('/propietario/{name?}', 'OwnedController@index');
   Route::get('/propietario/create/password/{email}', 'UsersController@createPasswordUser');
   Route::post('/propietario/create/password/{email}', 'UsersController@createPasswordUser');
