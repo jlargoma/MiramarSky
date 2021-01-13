@@ -559,7 +559,9 @@ th.table-cancel-xml{
     margin-top: 5px;
     margin-bottom: 5px;
 }
-
+.bordander .Pagada-la-señal.end {
+    border-left: 5px solid red;
+}
 
 @media only screen and (max-width: 991px){
   button.btn.changeStatus,

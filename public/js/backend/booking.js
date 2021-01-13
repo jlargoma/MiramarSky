@@ -449,7 +449,7 @@ $(document).ready(function() {
           function(data) {
               window.show_notif(data.title,data.status,data.response);
               if (data.status == "success") {
-                  location.reload();
+                setTimeout(function(){window.location.reload();},150);
               }
               $('.loading-div').hide();
           });

@@ -2025,33 +2025,43 @@ class BookController extends AppController
       $classTd = ' class="td-calendar" ';
       $titulo = '';
       $agency = '';
+      $href = '';
       
       $vistaCompleta = in_array($uRole, ['admin','subadmin']);
       if (!$isMobile){
-      $agency = ($book->agency != 0) ? "Agencia: ".$book->getAgency($book->agency).'<br/>' : "";
-      $titulo = $book->customer->name.'<br/>'.
+        $agency = ($book->agency != 0) ? "Agencia: ".$book->getAgency($book->agency).'<br/>' : "";
+        $titulo = $book->customer->name.'<br/>'.
               'Pax-real '.$book->real_pax.'<br/>'.
               Carbon::createFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b').
               ' - '.Carbon::createFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b')
               .'<br/>';
-      }
       
-      $href = '';
-      if ($vistaCompleta){
-        $titulo .= strtoupper($book->user->name).'<br/>';
-        $titulo .='PVP:'.$book->total_price.'<br/>';
-        $href = ' href="'.url ('/admin/reservas/update').'/'.$book->id.'" ';
-      }
+        if ($vistaCompleta){
+          $titulo .= strtoupper($book->user->name).'<br/>';
+          $titulo .='PVP:'.$book->total_price.'<br/>';
+          $href = ' href="'.url ('/admin/reservas/update').'/'.$book->id.'" ';
+        }
 
-      $titulo .= $agency;
-      if ($vistaCompleta){
-        if (in_array($book->id, $bookings_without_Cvc)){
-          $titulo.= '<b class="text-danger">FALTAN DATOS VISA</b>';
-        } else {
-          if ( $book->agency == 1 ) $titulo.= '<b>OK DATOS VISA</b>';
+        $titulo .= $agency;
+        if ($vistaCompleta && $book->agency == 1){
+          if (in_array($book->id, $bookings_without_Cvc)){
+            $titulo.= '<b class="text-danger">FALTAN DATOS VISA</b><br />';
+          } else {
+            $titulo.= '<b>OK DATOS VISA</b><br />';
+          }
+        }
+        if ($vistaCompleta && $book->type_book == 2){
+            $amount = $book->payments->pluck('import')->sum();
+            $falta = intval($book->total_price) - $amount;
+            if ($falta>5){
+               $titulo.= '<b class="text-danger">PENDIENTE PAGO: '. $falta .'€</b>';
+               $classTd = ' class="td-calendar bordander" ';
+            } else {
+              $titulo.= '<b>PENDIENTE PAGO: '. $falta .'€</b>';
+            }
         }
       }
-      if ($isMobile) $titulo = '';
+      
       $return = json_encode([
           'start' => $book->start,
           'finish' => $book->finish,
