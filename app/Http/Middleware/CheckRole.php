@@ -16,8 +16,14 @@ class CheckRole
   public function handle($request, Closure $next, $role)
   {
     if (!Auth::guest()) {
+      $uRole = $request->user()->role;
+      if ($uRole === 'propietario'){
+        if (!str_contains($request->getRequestUri(),'admin/propietario'))
+        return redirect()->guest('/admin/propietario/');
+      }
+      
       $roles = explode('|', $role);
-      if (!in_array($request->user()->role,$roles)) {
+      if (!in_array($uRole,$roles)) {
         if($request->ajax()){
           ?>
           <p><h2>Ups!! No tienes autorización para ver el contenido solicitado.</h2></p>

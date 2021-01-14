@@ -225,7 +225,7 @@ class ProcessData extends Command
   public function bookingsWithoutCvc() {
     
     $finish = date('Y-m-d', strtotime('-2 days'));
-    $lst = Book::where_type_book_reserved()
+    $lst = Book::whereIn('type_book',[1,2])
           ->where('finish', '>', $finish)
           ->where('agency', '!=', 4)->pluck('id')->toArray();
     

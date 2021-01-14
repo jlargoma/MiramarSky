@@ -415,8 +415,8 @@ class OtaGateway {
 
     $book->start = $reserv['start'];
     $book->finish = $reserv['end'];
-    $book->schedule = $reserv['schedule'];
-    $book->scheduleOut = $reserv['scheduleOut'];
+//    $book->schedule = $reserv['schedule'];
+//    $book->scheduleOut = $reserv['scheduleOut'];
     $book->nigths = $reserv['nigths'];
     $book->comment = $comment;
     $book->book_comments = $book_comments;

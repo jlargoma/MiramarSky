@@ -292,17 +292,10 @@ class OwnedController extends AppController {
 
   public function facturasOwned($name) {
     $room = \App\Rooms::where('nameRoom', $name)->first();
-
-    if ($room->owned == Auth::user()->id) {
-
-
-      $room = \App\Rooms::where('nameRoom', $name)->first();
-    } elseif (Auth::user()->role == 'admin') {
-
-      $room = \App\Rooms::where('nameRoom', $name)->first();
-    } else {
-
-      return view('errors.owned-access');
+    if ($room->owned !== Auth::user()->id) {
+      if (Auth::user()->role !== 'admin') {
+         return view('errors.owned-access');
+      }
     }
     
     $year = $this->getYearData(date('Y'));

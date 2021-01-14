@@ -71,7 +71,9 @@ $is_mobile = $mobile->isMobile();
             </div>
                 <div class="col-xs-12" id="resultSearchBook" style="display: none; padding-left: 0;"></div>
                 <div class="col-xs-12 content-tables" style="padding-left: 0;">
+                  @if (in_array($uRole, ['admin','subadmin','recepcionista']))
                     @include('backend.planning._table', ['type'=> 'pendientes'])
+                  @endif
                 </div>
 
             </div>
@@ -262,7 +264,9 @@ $is_mobile = $mobile->isMobile();
             </div>
             <div class="row" id="resultSearchBook" style="display: none;"></div>
             <div class="row content-tables" >
+              @if (in_array($uRole, ['admin','subadmin','recepcionista']))
                 @include('backend.planning._table', ['type'=> 'pendientes'])
+              @endif
             </div>
             <div class="col-md-5" style="overflow: auto;">
                 <div class="row content-calendar calendar-mobile" style="min-height: 485px;">
@@ -551,6 +555,9 @@ $(document).ready(function () {
       });
     }
   });   
+  
+  setTimeout(function(){ $('.automatic_click').trigger('click');}, 150);
+
 });   
 </script>
 

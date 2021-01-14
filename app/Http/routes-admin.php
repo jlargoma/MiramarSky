@@ -13,11 +13,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], fun
   Route::get('/admin/getCustomerRequestBook/{bID}', 'BookController@getCustomersRequest_book');
   
   Route::get('/admin/get-books-without-cvc', 'BookController@getBooksWithoutCvc');
-  
-  
-  Route::get('/admin/reservas/help/calculateBook','AppController@calculateBook');
-  Route::post('/admin/reservas/help/calculateBook','AppController@calculateBook');
-  
+ 
   //informes
   Route::get('admin/sales/{year?}','InformesController@sales_index');
   Route::post('admin/salesLst/','InformesController@get_sales_list');
@@ -29,6 +25,10 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], fun
 });
 
 Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista|conserje']], function () {
+  
+  // CALCULAR RESERVAS
+  Route::get('/admin/reservas/help/calculateBook','AppController@calculateBook');
+  Route::post('/admin/reservas/help/calculateBook','AppController@calculateBook');
   
   //LIMPIEZA
   Route::get('admin/limpieza', 'LimpiezaController@index');
@@ -101,6 +101,7 @@ Route::group(['middleware' => ['auth','role:admin|propietario'], 'prefix' => 'ad
   Route::get('/propietario/{name?}/descuentos', 'OwnedController@descuentosOwned');
   Route::get('/propietario/{name?}/fiscalidad', 'OwnedController@fiscalidadOwned');
   Route::get('/propietario/{name?}/facturas', 'OwnedController@facturasOwned');
+//  Route::get('/propietario/facturas/ver/{id}', 'InvoicesController@viewProp')->name('invoice.prop.view');
   Route::get('/propietario/{name?}', 'OwnedController@index');
   Route::get('/propietario/create/password/{email}', 'UsersController@createPasswordUser');
   Route::post('/propietario/create/password/{email}', 'UsersController@createPasswordUser');

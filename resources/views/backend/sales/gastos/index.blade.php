@@ -554,6 +554,11 @@ $(document).ready(function () {
       });
       
 
+      hTable.on('change','.tSelect',function (e) {
+        var id = $(this).closest('tr').data('id');
+        var input = $(this).find('input');
+        updValues(id,input.attr('class'),input.val(),$(this));
+      });
       hTable.on('keyup','.tSelect',function (e) {
         if (e.keyCode == 13) {
           var id = $(this).closest('tr').data('id');

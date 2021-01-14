@@ -287,4 +287,62 @@ class InvoicesController extends AppController {
     return 'error';
   }
 
+  
+  /*****************************************************************/
+  // Propietario
+  
+  public function viewProp($data)
+    {
+        $data = base64_decode($data);
+        $data = explode('-', $data);
+
+        $id = $data[0];
+        $book = \App\Book::find($id);
+
+        $num = $data[1];
+
+        return view('backend/invoices/propietarios/invoice', compact('book', 'num'));
+
+    }
+
+    public function downloadProp($data)
+    {
+        $data = base64_decode($data);
+        $data = explode('-', $data);
+
+        $id = $data[0];
+        $book = \App\Book::find($id);
+
+        $num = $data[1];
+
+        $numFact = substr($book->room->nameRoom , 0,2).Carbon::CreateFromFormat('Y-m-d',$book->start)->format('Y').str_pad($num, 5, "0", STR_PAD_LEFT);
+        $pdf = PDF::loadView('backend/invoices/propietarios/invoice', [ 'book' => $book, 'num' => $num]);
+        return $pdf->stream('factura-'.$numFact.'-'.str_replace(' ', '-', strtolower($book->customer->name)).'.pdf');
+    }
+    public function downloadAllProp($year='', $id)
+    {
+        set_time_limit (0);
+        ini_set('memory_limit', '1024M');
+        $room = \App\Rooms::find($id);
+
+        $year = Carbon::createFromFormat('Y',$year);
+        $start = new Carbon('first day of September '.$year->format('Y'));
+
+        $books = \App\Book::where('room_id', $room->id)
+                            ->whereIn('type_book',[2])
+                            ->where('start','>=',$start->copy())
+                            ->where('start','<=',$start->copy()->addYear())
+                            ->orderBy('start','ASC')
+                            ->get();
+//        $books = \App\Book::where('start','>',$start->copy()->subMonth())
+//            ->where('finish','<',$start->copy()->addYear())
+//            ->where('room_id', $id)
+//            ->where('type_book',2)
+//            ->orderBy('created_at','ASC')
+//            ->get();
+
+        $pdf = PDF::loadView('backend/invoices/propietarios/invoices', [ 'books' => $books, 'forProps' => 1]);
+        return $pdf->stream('facturas-'.$year.'-'.$room->nameRoom.'.pdf');
+
+    }
 }

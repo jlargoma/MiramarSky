@@ -500,7 +500,8 @@ class PaymentsProController extends AppController {
           
       
       $roomID = $book->room_id;
-      $costTotal = $book->get_costeTotal();
+      $costTotal = $book->get_costProp();
+//      $costTotal = $book->get_costeTotal();
       
       $date = date('ym', strtotime($book->start));
       if (!isset($roomLst[$roomID])) $roomLst[$roomID] = [$date=>$costTotal];

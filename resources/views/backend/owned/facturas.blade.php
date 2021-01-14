@@ -84,7 +84,7 @@
 	                        </td>
 	                        <td class="text-center font-s16">
 	                            <div class="btn-group">
-	                                <a href="{{ url ('/admin/facturas/ver') }}/<?php echo base64_encode($book->id."-".$num) ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>
+	                                <a href="{{ url ('/admin/propietario/facturas/ver') }}/<?php echo base64_encode($book->id."-".$num) ?>" class="btn btn-sm btn-primary"><i class="fa fa-eye"></i>
 	                                </a>
 	                                <a href="{{ url ('/admin/facturas/descargar') }}/<?php echo base64_encode($book->id."-".$num) ?>" class="btn btn-sm btn-success">    <i class="fa fa-download"></i>
 	                                </a>
