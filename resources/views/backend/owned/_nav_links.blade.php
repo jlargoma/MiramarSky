@@ -11,4 +11,3 @@ $uri_propiet = url('admin/propietario').'/'.$room->nameRoom ;
 <li class="btn-nav btn-content"  data-url="{{ $uri_propiet }}/tarifas">Tarifas</li>
 <li class="btn-nav btn-content"  data-url="{{ $uri_propiet }}/descuentos">Descuentos</li>
 <li class="btn-nav btn-content"  data-url="{{ $uri_propiet }}/fiscalidad">Fiscalidad</li>
-<li class="btn-nav btn-content"  data-url="{{ $uri_propiet }}/facturas">Facturas</li>

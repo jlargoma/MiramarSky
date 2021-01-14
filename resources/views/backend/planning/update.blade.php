@@ -40,6 +40,7 @@ $is_mobile = $mobile->isMobile();
         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
         <input type="hidden" name="customer_id" value="<?php echo $book->customer->id ?>">
         <input type="hidden" id="update_php" value="1">
+        <input type="hidden" id="current_url" value="{{Request::url()}}">
         
         @include('backend.planning.blocks.form-upd-A')
         @include('backend.planning.blocks.form-upd-B')

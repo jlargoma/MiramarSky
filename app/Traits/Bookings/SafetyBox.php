@@ -100,7 +100,7 @@ trait SafetyBox {
           
         ?>
   <style>.col-md-6.col-xs-12.minH-4.mb-1em {min-height: 40px;}</style>
-  <p class="alert alert-warning">Los buzones se asignan de manera automática a las 13Hrs de cada día (check-in)</p>
+<!--  <p class="alert alert-warning">Los buzones se asignan de manera automática a las 13Hrs de cada día (check-in)</p>-->
         <div class="col-md-5 mb-1em">
           <b><?php echo $book->customer->name; ?></b>
         </div>

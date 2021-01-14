@@ -1,3 +1,4 @@
+<?php if (in_array($uRole, ['admin','subadmin','recepcionista'])): ?>
 <?php if (!$is_mobile): ?>
   <div class="lst-tabs-btn">
     <button class="btn btn-primary  btn-blue btn-tables btn-cons" type="button" data-type="pendientes">
@@ -130,5 +131,21 @@
       </span>
     </button>
   <?php endif ?>
+<?php endif ?>
+<?php else: ?>
+<?php if ($uRole == 'conserje'): ?>
+  <button class="btn btn-success btn-tables btn-cons automatic_click" type="button" data-type="checkin">
+    <span class="bold">Check IN</span>
+    <span class="text-black text-cont" >
+      {{ $booksCount['checkin'] }}
+    </span>
+  </button>
 
+  <button class="btn btn-primary btn-tables btn-cons" type="button" data-type="checkout">
+    <span class="bold">Check OUT</span>
+    <span class="text-black text-cont" >
+      {{ $booksCount['checkout'] }}
+    </span>
+  </button>
+<?php endif ?>
 <?php endif ?>

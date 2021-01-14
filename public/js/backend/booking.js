@@ -115,8 +115,6 @@ $(document).ready(function() {
           $('.cost').val(data.calculated.total_cost);
           $('.costApto').val(data.costes.book);
           $('.costParking').val(data.costes.parking);
-          $('.beneficio').val(data.calculated.profit);
-          $('.beneficio-text').html(data.calculated.profit_percentage + '%');
           $('#real-price').html(data.calculated.real_price);
           $('#publ_price').html(data.public.pvp_init);
           $('#publ_disc').html(parseInt(data.public.PRIVEE)+parseInt(data.public.discount_pvp));
@@ -124,6 +122,15 @@ $(document).ready(function() {
           $('#publ_promo').html(data.public.promo_pvp+data.public.discount_pvp);
           $('#publ_limp').html(data.public.price_limp);
           $('#publ_total').html(data.public.pvp);
+          $('#publ_beneficio').html(data.calculated.profit);
+          $('#publ_beneficio_perc').html(data.calculated.profit_percentage+ '%');
+          
+          
+          var total_pvp = $('#total_pvp').val();
+          var benef = total_pvp - data.calculated.total_cost;
+          $('.beneficio').val(benef);
+          var profit_percentage = (total_pvp>0) ? parseInt((benef / total_pvp) * 100) : 0;
+          $('.beneficio-text').html(profit_percentage + '%');
       });
       $('.loading-div').hide();
     }
@@ -449,7 +456,10 @@ $(document).ready(function() {
           function(data) {
               window.show_notif(data.title,data.status,data.response);
               if (data.status == "success") {
-                setTimeout(function(){window.location.reload();},150);
+                var current_url = $('#current_url').val();
+                if (current_url){
+                setTimeout(function(){location.href = current_url;},150);
+                }
               }
               $('.loading-div').hide();
           });

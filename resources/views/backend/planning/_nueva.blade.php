@@ -333,10 +333,10 @@ $is_mobile = $mobile->isMobile();
             </div>
             <div class="row col-xs-12 bg-white">
               <p class="text-center">Precio que se muestra al público</p>
-                <div class="col-md-3 col-xs-6 box-info">
+                <div class="col-md-2 col-xs-6 box-info">
                   PVP Final<br><span  id="publ_total"></span>
                 </div>
-                <div class="col-md-3 col-xs-6 box-info">
+                <div class="col-md-2 col-xs-6 box-info">
                   PVP Inicial<br><span  id="publ_price"></span>
                 </div>
                 <div class="col-md-2 col-xs-4 box-info">
@@ -347,6 +347,10 @@ $is_mobile = $mobile->isMobile();
                 </div>
                 <div class="col-md-2 col-xs-4 box-info">
                   SUPL LIMP<br><span  id="publ_limp"></span>
+                </div>
+                <div class="col-md-2 col-xs-4 box-info">
+                  Benef<br>
+                  <span  id="publ_beneficio">-</span> | <span  id="publ_beneficio_perc">%</span>
                 </div>
                 <div class="col-md-12 col-xs-14 text-center" id="promos_aplic">
                 </div>

@@ -297,8 +297,9 @@ class BookController extends AppController
         $date_finish  = $request->input('finish',null);
         if (!$date_start || !$date_finish ) die('error');
         // 4 es el extra correspondiente a el obsequio
-        $extraPrice = \App\Extras::find(4)->price;
-        $extraCost  = \App\Extras::find(4)->cost;
+        $extraPrice = 0; // Es solo un coste
+//        $extraCost  = \App\Extras::find(4)->cost;
+        $extraCost  = Rooms::GIFT_COST;
         
         //createacion del cliente
         $customer          = new \App\Customers();
@@ -427,7 +428,7 @@ class BookController extends AppController
                           }
                         }
                         // MailController::sendEmailBookSuccess( $book, 0);
-                        return redirect('admin/reservas');
+                        return redirect(route('book.update',$book->id));
 
                     }
                 }

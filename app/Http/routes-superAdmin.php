@@ -239,41 +239,10 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista'], 'pre
   Route::get('/orders-payland', 'PaylandsController@lstOrders');
   Route::post('/getOrders-payland', 'PaylandsController@getOrders');
   Route::get('/get-summary-payland', 'PaylandsController@getSummary');
-  
 
-    
-  // OTAS  
-  Route::get('/channel-manager/disponibilidad/{apto}/{start}/{end}','ZodomusController@listDisponibilidad');
-  Route::get('/channel-manager/price/{apto?}','OtaGate@calendRoom')->name('channel.price.cal');
-  Route::post('/channel-manager/price/{apto?}','OtaGate@calendRoomUPD')->name('channel.price.cal.upd');
-  Route::get('/channel-manager/price/precios/list/{apto}','OtaGate@listBy_room')->name('channel.price.cal.list');
-  Route::get('/channel-manager/list/{apto}','ZodomusController@listBy_apto')->name('channel.cal.list');
-  Route::get('/channel-manager/config', 'ZodomusController@generate_config');
-  
-  Route::get('/channel-manager/price-site/{site?}/{month?}/{year?}','OtaGate@calendSite')->name('channel.price.site');
-  Route::post('/channel-manager/upd-price-site/','OtaGate@calendSiteUpd')->name('channel.price.site.upd');
-  Route::get('/channel-manager/promocion/{promoID?}','PromotionsController@getItem')->name('channel.promotions.get');
-  Route::get('/channel-manager/promociones/','PromotionsController@index')->name('channel.promotions');
-  Route::post('/channel-manager/promociones/create','PromotionsController@create')->name('channel.promotions.new');
-  Route::post('/channel-manager/promociones/upd','PromotionsController@update')->name('channel.promotions.upd');
-  Route::delete('/channel-manager/promociones','PromotionsController@delete')->name('channel.promotions.delete');
-  Route::post('/Wubook/sendMinStay', 'WubookController@sendMinStayGroup')->name('Wubook.sendMinStay');  
-  Route::get('/channel-manager/ZODOMUS', 'ZodomusController@zodomusTest');
-  Route::get('/channel-manager/index', 'ZodomusController@index')->name('channel.index');
-  Route::get('/channel-manager/forceImport', 'ZodomusController@forceImport')->name('channel.forceImport');
-  Route::post('/channel-manager/send-avail/{apto}', 'ZodomusController@sendAvail')->name('channel.sendAvail');
-  Route::get('/channel-manager', 'ZodomusController@calendRoom')->name('channel');
-  
-  
-  // WUBOOK
-  Route::get('/Wubook', 'WubookController@index');
-  Route::post('/Wubook/sendPrices', 'WubookController@sendPricesGroup')->name('Wubook.sendPrices');
-  Route::get('/Wubook/createAvails', 'WubookController@createAvails')->name('Wubook.createAvails');
-  Route::get('/Wubook/sendAvails', 'WubookController@sendAvails')->name('Wubook.sendAvails');
-  Route::get('/Wubook/processHook', 'WubookController@processHook')->name('Wubook.processHook');
   
   Route::get('/liquidacion', 'LiquidacionController@index');
-    Route::get('/liquidacion-apartamentos', 'LiquidacionController@apto');
+  Route::get('/liquidacion-apartamentos', 'LiquidacionController@apto');
   Route::get('/liquidacion/export/excel', 'LiquidacionController@exportExcel');
 });
   
@@ -328,6 +297,40 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/pagos-propietarios/get/historic_production/{room_id}', 'PaymentsProController@getHistoricProduction');
   Route::post('/pagos-propietarios', 'PaymentsProController@indexByDate');
   Route::post('/paymentspro/seeLiquidationProp', 'PaymentsProController@seeLiquidationProp');
+  
+  
+    
+
+    
+  // OTAS  
+  Route::get('/channel-manager/disponibilidad/{apto}/{start}/{end}','ZodomusController@listDisponibilidad');
+  Route::get('/channel-manager/price/{apto?}','OtaGate@calendRoom')->name('channel.price.cal');
+  Route::post('/channel-manager/price/{apto?}','OtaGate@calendRoomUPD')->name('channel.price.cal.upd');
+  Route::get('/channel-manager/price/precios/list/{apto}','OtaGate@listBy_room')->name('channel.price.cal.list');
+  Route::get('/channel-manager/list/{apto}','ZodomusController@listBy_apto')->name('channel.cal.list');
+  Route::get('/channel-manager/config', 'ZodomusController@generate_config');
+  
+  Route::get('/channel-manager/price-site/{site?}/{month?}/{year?}','OtaGate@calendSite')->name('channel.price.site');
+  Route::post('/channel-manager/upd-price-site/','OtaGate@calendSiteUpd')->name('channel.price.site.upd');
+  Route::get('/channel-manager/promocion/{promoID?}','PromotionsController@getItem')->name('channel.promotions.get');
+  Route::get('/channel-manager/promociones/','PromotionsController@index')->name('channel.promotions');
+  Route::post('/channel-manager/promociones/create','PromotionsController@create')->name('channel.promotions.new');
+  Route::post('/channel-manager/promociones/upd','PromotionsController@update')->name('channel.promotions.upd');
+  Route::delete('/channel-manager/promociones','PromotionsController@delete')->name('channel.promotions.delete');
+  Route::post('/Wubook/sendMinStay', 'WubookController@sendMinStayGroup')->name('Wubook.sendMinStay');  
+  Route::get('/channel-manager/ZODOMUS', 'ZodomusController@zodomusTest');
+  Route::get('/channel-manager/index', 'ZodomusController@index')->name('channel.index');
+  Route::get('/channel-manager/forceImport', 'ZodomusController@forceImport')->name('channel.forceImport');
+  Route::post('/channel-manager/send-avail/{apto}', 'ZodomusController@sendAvail')->name('channel.sendAvail');
+  Route::get('/channel-manager', 'ZodomusController@calendRoom')->name('channel');
+  
+  
+  // WUBOOK
+  Route::get('/Wubook', 'WubookController@index');
+  Route::post('/Wubook/sendPrices', 'WubookController@sendPricesGroup')->name('Wubook.sendPrices');
+  Route::get('/Wubook/createAvails', 'WubookController@createAvails')->name('Wubook.createAvails');
+  Route::get('/Wubook/sendAvails', 'WubookController@sendAvails')->name('Wubook.sendAvails');
+  Route::get('/Wubook/processHook', 'WubookController@processHook')->name('Wubook.processHook');
   
   
   Route::get('/ical/importFromUrl', function () {

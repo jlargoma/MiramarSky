@@ -35,11 +35,11 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
 <?php if ($uRole != "agente"): ?>
   <p class="text-center">Precio que se muestra al público</p>
   <div class="col-md-12 col-xs-12 push-20 not-padding" >
-    <div class="col-md-3 col-xs-6 box-info">
+    <div class="col-md-2 col-xs-6 box-info">
       <input type="hidden" id="confirm_publ_total" value="{{$priceBook['pvp']}}">
       PVP Final<br><span  id="publ_total">{{$priceBook['pvp']}}</span>
     </div>
-    <div class="col-md-3 col-xs-6 box-info">
+    <div class="col-md-2 col-xs-6 box-info">
       <input type="hidden" id="confirm_publ_price" value="{{$priceBook['pvp_init']}}">
       PVP Inicial<br><span  id="publ_price">{{$priceBook['pvp_init']}}</span><br/>
     </div>
@@ -54,6 +54,10 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
     <div class="col-md-2 col-xs-4 box-info">
       <input type="hidden" id="confirm_publ_limp" value="{{$priceBook['price_limp']}}">
       SUPL LIMP<br><span  id="publ_limp">{{$priceBook['price_limp']}}</span>
+    </div>
+    <div class="col-md-2 col-xs-4 box-info">
+      Benef<br>
+      <span  id="publ_beneficio">{{$priceBook['profit'] ?? '--'}}</span> | <span  id="publ_beneficio_perc">{{$priceBook['profit_percentage'] ?? ''}}%</span>
     </div>
   </div>
   <div id="promos_aplic">

@@ -75,15 +75,9 @@
       <a href="{{ url('admin/encuestas') }}" class="detailed">Encuestas</a>
     </li>
     @endif
-
-    <!--                    <li class="{{ $pathRequest == 'admin/supermercado' ? 'active' : '' }}">
-                            <a href="#" class="detailed">Super</a>
-                        </li>-->
- @if (env('APP_APPLICATION') != "riad")
     <li class="{{ $pathRequest == 'admin/forfaits/orders' ? 'active' : '' }}">
       <a href="{{ url('admin/forfaits/orders') }}" class="detailed">Forfaits</a>
     </li>
- @endif
     <li class="{{ $pathRequest == 'admin/settings' ? 'active' : '' }}">
       <a href="{{ url('admin/settings') }}" class="detailed">Settings</a>
     </li>
@@ -103,18 +97,16 @@
     </li>
 <?php endif ?>
     
-<?php if ($uRole == "admin" || $uRole == "subadmin" || $uRole == "recepcionista"  || $uRole == "conserje"): ?>
+<?php if ($uRole == "admin" || $uRole == "subadmin" || $uRole == "recepcionista"): ?>
     <li class="{{ $pathRequest == 'admin/limpiezas' ? 'active' : '' }}">
         <a href="{{ url('admin/limpiezas/') }}" class="detailed">Limpiezas</a>
     </li>
 <?php endif ?>
     
 <?php if ($uRole == "subadmin"): ?>
-    @if (env('APP_APPLICATION') != "riad")
         <li class="{{ $pathRequest == 'admin/forfaits/orders' ? 'active' : '' }}">
           <a href="{{ url('admin/forfaits/orders') }}" class="detailed">Forfaits</a>
         </li>
-     @endif
     <li class="{{ $pathRequest == 'admin/orders-payland' ? 'active' : '' }}">
           <a href="{{ url('admin/orders-payland') }}" class="detailed">PAYLAND</a>
     </li>

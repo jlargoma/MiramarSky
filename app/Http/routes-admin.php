@@ -13,11 +13,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], fun
   Route::get('/admin/getCustomerRequestBook/{bID}', 'BookController@getCustomersRequest_book');
   
   Route::get('/admin/get-books-without-cvc', 'BookController@getBooksWithoutCvc');
-  
-  
-  Route::get('/admin/reservas/help/calculateBook','AppController@calculateBook');
-  Route::post('/admin/reservas/help/calculateBook','AppController@calculateBook');
-  
+ 
   //informes
   Route::get('admin/sales/{year?}','InformesController@sales_index');
   Route::post('admin/salesLst/','InformesController@get_sales_list');
@@ -29,6 +25,10 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], fun
 });
 
 Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista|conserje']], function () {
+  
+  // CALCULAR RESERVAS
+  Route::get('/admin/reservas/help/calculateBook','AppController@calculateBook');
+  Route::post('/admin/reservas/help/calculateBook','AppController@calculateBook');
   
   //LIMPIEZA
   Route::get('admin/limpieza', 'LimpiezaController@index');
