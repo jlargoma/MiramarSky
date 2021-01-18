@@ -788,7 +788,7 @@ class Book extends Model {
     $this->cost_total = ($room->sizeApto == 1) ? 30 : 40;
     $this->total_price = $this->real_price;
       
-    \App\Expenses::setExpenseLimpieza($this->id, $room, $this->finish,$this->cost_limp);
+//    \App\Expenses::setExpenseLimpieza($this->id, $room, $this->finish,$this->cost_limp);
                 
   }
   

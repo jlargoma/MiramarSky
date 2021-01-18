@@ -406,7 +406,10 @@ class BookController extends AppController
                     if ($book->save())
                     {
 
-                                    
+                            
+                      if($book->type_book == 7){ // Si es propietario, le asigno el costo
+                        \App\Expenses::setExpenseLimpieza($book->id, $room, $book->finish,$book->cost_limp);
+                      }
                       $meta_price = $room->getRoomPrice($book->start, $book->finish, $book->park);
                       $book->setMetaContent('price_detail', serialize($meta_price));
                       $book->sendAvailibilityBy_dates($book->start,$book->finish);
@@ -1091,9 +1094,8 @@ class BookController extends AppController
         $notification->delete();
       }
 
-      if ($book->type_book == 7) {
-        \App\Expenses::delExpenseLimpieza($book->id);
-      }
+      //Borro el gasto generado por la limpieza
+      \App\Expenses::delExpenseLimpieza($book->id);
 
 
       $book->type_book = 0;
