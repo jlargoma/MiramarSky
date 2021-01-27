@@ -215,8 +215,12 @@ class Liquidacion
       $aExpensesPending['prop_pay']  += $book->get_costProp();
       $aExpensesPending['agencias']  += $book->PVPAgencia;
       $aExpensesPending['amenities'] += $book->extraCost;
-      $aExpensesPending['limpieza']  += ($book->cost_limp - 10);
-      $aExpensesPending['lavanderia'] += 10;
+      if ($book->cost_limp > 10){
+        $aExpensesPending['limpieza']  += ($book->cost_limp - 10);
+        $aExpensesPending['lavanderia'] += 10;
+      } else {
+        $aExpensesPending['lavanderia'] += $book->cost_limp;
+      }
     }
 
     $stripeCost = $this->getTPV($books);
