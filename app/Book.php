@@ -301,15 +301,17 @@ class Book extends Model {
    * 
    * @return Object Query
    */
-  static function where_book_times($startYear,$endYear) {
+  static function where_book_times($start,$finish) {
     
-     return self::where(function ($query) use ($startYear,$endYear) {
-       $query->where(function ($query2) use ($startYear,$endYear) {
-          $query2->where('start', '>=', $startYear)->Where('start', '<=', $endYear);
-        })->orWhere(function ($query2) use ($startYear,$endYear) {
-          $query2->where('finish', '>=', $startYear)->Where('finish', '<=', $endYear);
-        });
-      });
+    $match1 = [['start', '>=', $start], ['start', '<=', $finish]];
+    $match2 = [['finish', '>=', $start], ['finish', '<=', $finish]];
+    $match3 = [['start', '<', $start], ['finish', '>', $finish]];
+
+    return self::where(function ($query) use ($match1, $match2, $match3) {
+                      $query->where($match1)
+                      ->orWhere($match2)
+                      ->orWhere($match3);
+                    });
   }
   
 
