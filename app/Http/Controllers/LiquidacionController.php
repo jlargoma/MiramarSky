@@ -293,7 +293,7 @@ class LiquidacionController extends AppController {
         'ventas' => 0,
         ];
     /*************************************************************************/
-    $books = \App\Book::where_type_book_sales(true,false,true)
+    $books = \App\Book::where_type_book_sales(true)
             ->where('start', '>=', $startYear)
             ->where('start', '<=', $endYear)->get();
     $aExpensesPending = $oLiq->getExpensesEstimation($books);
@@ -953,6 +953,7 @@ class LiquidacionController extends AppController {
     }
 
     if ($gasto->save()) {
+      if ($request->has('back')) return redirect()->back();
       return "ok";
     }
   }
@@ -1805,7 +1806,7 @@ class LiquidacionController extends AppController {
 
           if ($pay->type == 0 || $pay->type == 1) {
             $metalico += $pay->import;
-          } else if ($pay->type == 2 || $pay->type == 3) {
+          } else  {
             $banco += $pay->import;
           }
         }
@@ -1815,7 +1816,7 @@ class LiquidacionController extends AppController {
       $value = $book->total_price;
       $vendido += $book->total_price;
     }
-    
+
     $totBooks = count($books);
     //First chart PVP by months
     $dataChartMonths = [];

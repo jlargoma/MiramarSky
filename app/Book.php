@@ -953,7 +953,7 @@ class Book extends Model {
   
   static function getBy_temporada(){
     $activeYear = Years::getActive();
-    return Book::where_type_book_sales()
+    return Book::where_type_book_sales(true)
             ->where('start', '>=', $activeYear->start_date)
             ->where('start', '<=', $activeYear->end_date)->get();
   }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use \Carbon\Carbon;
 use App\Classes\Mobile;
+use App\Rooms;
 
 class PaymentsProController extends AppController {
 
@@ -37,7 +38,7 @@ class PaymentsProController extends AppController {
   }
   
   private  function getItems($year,$startYear,$endYear) {
-    $rooms = \App\Rooms::orderBy('order', 'ASC')->get();
+    $rooms = Rooms::orderBy('order', 'ASC')->get();
 
     /* Calculamos los ingresos por reserva y room */
     $data = array();
@@ -206,7 +207,7 @@ class PaymentsProController extends AppController {
   public function update($id, $month = "", Request $request) {
     $typePayment = new \App\Paymentspro();
     $total = $apto = $park = $lujo = $deuda = $pagado = 0;
-    $room = \App\Rooms::find($id);
+    $room = Rooms::find($id);
 
     $date = empty($month) ? Carbon::now() : Carbon::createFromFormat('Y', $month);
 
@@ -321,7 +322,7 @@ class PaymentsProController extends AppController {
               ->orderBy('start', 'ASC')
               ->get();
       
-      $oRoom = \App\Rooms::find($idRoom);
+      $oRoom = Rooms::find($idRoom);
       $nameRoom = $oRoom->name;
     }
     
@@ -350,7 +351,7 @@ class PaymentsProController extends AppController {
     $lujo = 0;
 
     if ($request->idRoom != 'all') {
-      $room = \App\Rooms::find($request->idRoom);
+      $room = Rooms::find($request->idRoom);
       $books = \App\Book::where_type_book_prop()->where('room_id', $room->id)
               ->where('start', '>=', $start)
               ->where('finish', '<=', $finish)
@@ -426,6 +427,105 @@ class PaymentsProController extends AppController {
     
   }
 
+  
+   public function getLiquidationByRooms(Request $request) {
+    $start = $request->input('filter_startDate',null);
+    $finish = $request->input('filter_endDate',null);
+    $roomID = $request->input('roomID',null);
+    $year = self::getActiveYear();
+    if (!($start && $finish)){
+      $year = self::getActiveYear();
+      $start = date('Y-m-d', strtotime($year->start_date));
+      $finish =date('Y-m-d', strtotime($year->end_date));
+    }
+         
+    $total = 0;
+    $apto = 0;
+    $park = 0;
+    $lujo = 0;
+    $costeProp = 0;
+    $pagototal = 0;
+    $lstRooms = Rooms::where('state',1)->orderBy('nameRoom')->pluck('nameRoom','id')->toArray();
+    if ($roomID){
+      $room = Rooms::find($roomID);
+    } else {
+      $room = Rooms::where('state',1)->first();
+      $roomID = $room->id;
+    }
+    $books = \App\Book::where_type_book_prop()->where('room_id', $roomID)
+            ->where('start', '>=', $start)
+            ->where('finish', '<=', $finish)
+            ->orderBy('start', 'ASC')
+            ->get();
+    if ($books){
+      foreach ($books as $book) {
+        $total += $book->get_costProp();
+        $apto += $book->cost_apto;
+        $park += $book->cost_park;
+        $lujo += $book->get_costLujo();
+      }
+    }
+
+    
+    $startExp = date('Y-m-d', strtotime($year->start_date));
+    $finishExp =date('Y-m-d', strtotime($year->end_date));
+      
+    $pagos = \App\Expenses::where('date', '>=', $startExp)
+            ->where('date', '<=', $finishExp)
+            ->where('PayFor', 'LIKE', '%' . $roomID . '%')
+            ->orderBy('date', 'ASC')
+            ->get();
+    $payProp = 0;
+    if ($pagos)
+    foreach ($pagos as $pago) {
+      $pagototal += $pago->import;
+      
+      $divisor = 0;
+      if ( preg_match( '/,/' , $pago->PayFor ) ) {
+       $aux = explode( ',' , $pago->PayFor );
+       for ( $i = 0 ; $i < count( $aux ) ; $i++ ) {
+        if ( !empty( $aux[ $i ] ) ) {
+         $divisor++;
+        }
+       }
+
+      } else {
+       $divisor = 1;
+      }
+      $payProp += ($pago->import / $divisor);
+          
+    }
+    
+
+    $data = [
+        'books' => $books,
+        'costeProp' => $costeProp,
+        'apto' => $apto,
+        'park' => $park,
+        'lujo' => $lujo,
+        'total' => $total,
+        'room' => $room,
+        'startDate' => date('d M Y', strtotime($start)),
+        'finishDate' => date('d M Y', strtotime($finish)),
+        'dates' => [
+            'start' => $start,
+            'finish' => $finish,
+        ],
+        'mobile' => new Mobile(),
+        'pagos' => $pagos,
+        'pagototal' => $pagototal,
+        'pagototalProp' => $payProp,
+        'rooms'  => $lstRooms,
+        'roomID' => $roomID,
+        'gType' => \App\Expenses::getTypes(),
+        'typePayment' => \App\Expenses::getTypeCobro()
+    ];
+    
+
+    return view('backend/paymentspro/liquidationByRooms',$data);
+    
+  }
+
   public static function getHistoricProduction($room_id, Request $request) {
 
     $return = [];
@@ -433,7 +533,7 @@ class PaymentsProController extends AppController {
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
     
-    $oRoom = \App\Rooms::find($room_id);
+    $oRoom = Rooms::find($room_id);
     
     $CostProp = $oRoom->getCostPropByYear($year->year);
     
@@ -475,7 +575,7 @@ class PaymentsProController extends AppController {
     
     $lstMonths = getArrayMonth($startYear,$endYear,true);
     
-    $rooms = \App\Rooms::where('state',1)->orderBy('order', 'ASC')->get();
+    $rooms = Rooms::where('state',1)->orderBy('order', 'ASC')->get();
     $roomLujo = [];
     $lstRooms = [];
     $roomsIDs = [];
@@ -552,7 +652,7 @@ class PaymentsProController extends AppController {
     
     
     if ($id != "all") {
-      $room = \App\Rooms::find($id);
+      $room = Rooms::find($id);
       $gastos = \App\Expenses::where('date', '>=', $start)
                       ->Where('date', '<=', $end)
                       ->Where('PayFor', 'LIKE', '%' . $id . '%')->orderBy('date', 'DESC')->get();
@@ -648,5 +748,60 @@ class PaymentsProController extends AppController {
         'pagototal' => $pagototal,
         'mobile' => new Mobile(),
     ]);
+  }
+  
+  function getHistorico_temp($roomID){
+    $roomID=115;
+    $html = "";
+    $oYears = \App\Years::orderBy('year')->get();
+    foreach ($oYears as $year){
+      $start = date('Y-m-d', strtotime($year->start_date));
+      $finish =date('Y-m-d', strtotime($year->end_date));
+
+
+      $total = 0;
+      $books = \App\Book::where_type_book_prop()->where('room_id', $roomID)
+              ->where('start', '>=', $start)
+              ->where('finish', '<=', $finish)
+              ->get();
+      if ($books){
+        foreach ($books as $book) {
+          $total += $book->get_costProp();
+        }
+      }
+      $pagos = \App\Expenses::where('date', '>=', $start)
+              ->where('date', '<=', $finish)
+              ->where('PayFor', 'LIKE', '%' . $roomID . '%')
+              ->get();
+      $payProp = 0;
+      if ($pagos)
+      foreach ($pagos as $pago) {
+        $divisor = 0;
+        if ( preg_match( '/,/' , $pago->PayFor ) ) {
+         $aux = explode( ',' , $pago->PayFor );
+         for ( $i = 0 ; $i < count( $aux ) ; $i++ ) {
+          if ( !empty( $aux[ $i ] ) ) {
+           $divisor++;
+          }
+         }
+
+        } else {
+         $divisor = 1;
+        }
+        $payProp += ($pago->import / $divisor);
+
+      }
+      
+      
+      $html .= "<tr>"
+          . '<td>'.date('Y', strtotime($year->start_date)). ' - ' .date('Y', strtotime($year->end_date)).'</td>'
+          . '<td>'. moneda($total) .'</td>'
+          . '<td>'. moneda($payProp) .'</td>'
+          . '<td>'. moneda($total-$payProp) .'</td>'
+          . "</tr>";
+      
+    }
+    
+    echo $html;
   }
 }

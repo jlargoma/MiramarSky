@@ -425,7 +425,7 @@ $isMobile = $mobile->isMobile();
               row += '<td class="editable selects spayment" data-type="payment" data-current="'+ val.typePayment_v +'" >' + val.typePayment + '</td>';
               row += '<td class="editable" data-type="price">' + val.import+ '</td>';
               row += '<td class="sapto" data-current="'+ val.aptos_v +'" >' + val.aptos + '</td>';
-              row += '<td><button data-id="' + val.id + '" type="button" class="del_expense btn btn-danger btn-xs"><i class="fa fa-trash"></i></button>';
+              row += '<td><button data-id="' + val.id + '" type="button" class="del_expense btn btn-danger btn-xs"><i class="fa fa-trash"></i></button></td>';
               row += '<td class="editable" data-type="comm">' + val.comment + '</td>';
               $('#tableItems').append(row);
             });

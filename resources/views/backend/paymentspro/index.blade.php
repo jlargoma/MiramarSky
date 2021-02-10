@@ -18,6 +18,7 @@ $isMobile = $mobile->isMobile()
 <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css" rel="stylesheet" type="text/css" />
 <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="/assets/js/canvasjs/canvasjs.min.js"></script>
+<script type="text/javascript" src="{{ asset('/js/datePicker01.js')}}"></script>
 <style>
 
   td{      
@@ -116,16 +117,25 @@ use \Carbon\Carbon; ?>
     <div class="col-md-3 col-xs-12 text-center">
       <form method="POST" id="form_filterByRange"> 
         <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
-        <input type="hidden" id="filter_startDate" name="filter_startDate" value="">
-        <input type="hidden" id="filter_endDate" name="filter_endDate" value="">
+        <input type="hidden" id="sent" name="sent" value="0">
       <h5 class="text-center push-10">FILTRAR LIQUIDACIONES:</h5>
       <button class="btn btn-xs btn-primary" type="button" id="refreshFilters" dat title="Limpiar filtros">
         <i class="fa fa-trash"></i>
       </button>
-      <input type="text" class="form-control dateRange" id="dateRangefilter" name="dateRangefilter" required="" readonly="">
-      <button class="btn btn-xs btn-primary"  title="Liquidacion total" id="filterByRange">
-        <i class="fa fa-eye"></i>
-      </button>
+      <div>
+        <input type="text" class="form-control daterange03" id="dateRangefilter" name="dateRangefilter" required="" readonly="">
+        <input type="hidden" class="filter_startDate" name="filter_startDate" value="">
+        <input type="hidden" class="filter_endDate" name="filter_endDate" value="">
+      </div>
+      </form>
+        
+       <form method="POST" action="/admin/paymentspro/getLiquidationByRooms">   
+        <input type="hidden" class="filter_startDate" name="start" value="">
+        <input type="hidden" class="filter_endDate" name="end" value="">
+        <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+        <button class="btn btn-xs btn-primary"  title="Liquidacion total" id="filterByRange">
+          <i class="fa fa-eye"></i> Liquidación por Apto
+        </button>
       </form>
     </div>
     <div class="col-md-2 col-md-offset-1 col-xs-12 text-center">
@@ -319,7 +329,7 @@ use \Carbon\Carbon; ?>
               <td class="text-left costeApto bordes ">
               @endif
                     <button class="btn-transparent liquidationByRoom nowrap" data-id="<?php echo $room->id ?>" data-costeProp="{{moneda($data[$room->id]['coste_prop'])}}" data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer; font-weight: 600" title="Liquidación de <?php echo $room->nameRoom ?>">
-                      {{moneda($data[$room->id]['coste_prop'])}}
+                  {{moneda($data[$room->id]['coste_prop'])}}
                     </button>
                   </td>
                   <td class="text-center"  style="padding: 10px 5px ; background: #89cfff;">
@@ -606,52 +616,9 @@ use \Carbon\Carbon; ?>
 <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 
 <script type="text/javascript">
-$(function () {
-$(".dateRange").daterangepicker({
-"buttonClasses": "button button-rounded button-mini nomargin",
-"applyClass": "button-color",
-"cancelClass": "button-light",
+var startDate = new Date("{{$startYear}}");
+var endDate = new Date("{{$endYear}}");
 
-//endYear
-"startDate": new Date("{{$startYear}}"),
-"endDate": new Date("{{$endYear}}"),
-//                "startDate": '01 Nov, <?php // echo $date->copy()->format('y')  ?>',
-//                "endDate": '01 Nov, <?php // echo $date->copy()->addYear()->format('y')  ?>',
-locale: {
-format: 'DD MMM, YY',
-"applyLabel": "Aplicar",
-"cancelLabel": "Cancelar",
-"fromLabel": "From",
-"toLabel": "To",
-"customRangeLabel": "Custom",
-"daysOfWeek": [
-"Do",
-"Lu",
-"Mar",
-"Mi",
-"Ju",
-"Vi",
-"Sa"
-],
-"monthNames": [
-"Enero",
-"Febrero",
-"Marzo",
-"Abril",
-"Mayo",
-"Junio",
-"Julio",
-"Agosto",
-"Septiembre",
-"Octubre",
-"Noviembre",
-"Diciembre"
-],
-"firstDay": 1,
-},
-
-});
-});
 $(document).ready(function () {
 
 $('.update-payments').click(function (event) {
@@ -707,15 +674,20 @@ $('.contentBookRoom').empty().append(data);
 $('#refreshFilters').click(function (event) {
   window.location = window.location.href;
 });
-$('#filterByRange').click(function (event) {
-  event.preventDefault();
-  var date = $('#dateRangefilter').val();
-  var start = window.formatDate($('#dateRangefilter').data('daterangepicker').startDate._d);
-  var end = window.formatDate($('#dateRangefilter').data('daterangepicker').endDate._d);
-  $('#filter_startDate').val(start);
-  $('#filter_endDate').val(end);
-  $('#form_filterByRange').submit();
+
+
+$('#costeByMonths').on('click', function(){
+  $('#modalCosteByMonths').find('.modal-body').load('/admin/paymentspro/getLiquidationByMonth');
+  $('#modalCosteByMonths').modal('show');   
 });
+
+$('.seePropLiquidation').on('click', function(){
+  $('#modalLiquidation').find('.modal-body').load('/admin/paymentspro/seeLiquidationProp',{id:$(this).data('id')});
+  $('#modalLiquidation').modal('show');   
+});
+
+
+
 $('button.liquidationByRoom').click(function (event) {
 event.preventDefault();
 var date = $('#dateRange').val();
@@ -729,15 +701,5 @@ $('.contentLiquidationByRoom').empty().append(data);
 });
 
 });
-$('#costeByMonths').on('click', function(){
-  $('#modalCosteByMonths').find('.modal-body').load('/admin/paymentspro/getLiquidationByMonth');
-  $('#modalCosteByMonths').modal('show');   
-});
-
-$('.seePropLiquidation').on('click', function(){
-  $('#modalLiquidation').find('.modal-body').load('/admin/paymentspro/seeLiquidationProp',{id:$(this).data('id')});
-  $('#modalLiquidation').modal('show');   
-});
-
 </script>
 @endsection
