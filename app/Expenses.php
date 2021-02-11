@@ -95,7 +95,9 @@ class Expenses extends Model
         3 => "Banco",//"Banco Jorge",
     ];
 
-    if (!is_null($typePayment)) return $typePayment = $array[$typePayment];
+    if (!is_null($typePayment)){
+      return isset($array[$typePayment]) ? $array[$typePayment] : $typePayment;
+    }
     
     return $array;
   }

@@ -189,22 +189,30 @@
       var temporada_start = null;
       var temporada_end = null;
       
-      function saveTemporadaRange(){
+      function saveTemporadaRange(that){
         temporada_start = $('#temporada_start').val();
         temporada_end = $('#temporada_end').val();
-        var yearMonths  =  temporada_start+' - '+temporada_end;
-        $.post("{{ route('years.change.month') }}", {dates: yearMonths}).done(function (data) {
-          window.location.reload();
+        var data = {
+          start: temporada_start,
+          end: temporada_end,
+          years: that.closest('.temporadas').find('#years').val()
+        }
+        $.post("{{ route('years.change.month') }}", data).done(function (resp) {
+          if (resp == 'OK'){
+           window.show_notif('','success','temporada cambiada');
+          } else {
+           window.show_notif('','danger','No se pudo modificar la temporada');
+         }
         });
       }
       $("#temporada_start").change(function() {
         if (temporada_start != $(this).val() && $(this).val() != ''){
-          saveTemporadaRange();
+          saveTemporadaRange($(this));
         }
       });
       $("#temporada_end").change(function() {
         if (temporada_end != $(this).val() && $(this).val() != ''){
-          saveTemporadaRange();
+          saveTemporadaRange($(this));
         }
       });
       
