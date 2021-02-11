@@ -404,8 +404,11 @@ class OtaGateway {
     foreach ($reserv['extra_array'] as $k => $v) {
       if ($k == 'Cc')
         $Cc = $v;
-      if ($k == 'Ota commission')
+      if ($k == 'Ota commission'){
         $reserv['comision'] = $v;
+        if ($reserv['channel'] == 'airbnb')
+          $reserv['totalPrice'] += $v;
+      }
     }
 
 

@@ -265,11 +265,12 @@ class Book extends Model {
    * 
    * @return Object Query
    */
-  static function where_type_book_sales($reservado_stripe=false,$ota=false) {
+  static function where_type_book_sales($reservado_stripe=false,$ota=false,$overbooking=false) {
     
     $types = [2, 7, 8];
     if ($reservado_stripe) $types[] = 1;
     if ($ota) $types[] = 11;
+    if ($overbooking) $types[] = 10;
     //Pagada-la-señal / Reserva Propietario / ATIPICAS
                 
     return self::whereIn('type_book',$types);
@@ -300,15 +301,17 @@ class Book extends Model {
    * 
    * @return Object Query
    */
-  static function where_book_times($startYear,$endYear) {
+  static function where_book_times($start,$finish) {
     
-     return self::where(function ($query) use ($startYear,$endYear) {
-       $query->where(function ($query2) use ($startYear,$endYear) {
-          $query2->where('start', '>=', $startYear)->Where('start', '<=', $endYear);
-        })->orWhere(function ($query2) use ($startYear,$endYear) {
-          $query2->where('finish', '>=', $startYear)->Where('finish', '<=', $endYear);
-        });
-      });
+    $match1 = [['start', '>=', $start], ['start', '<=', $finish]];
+    $match2 = [['finish', '>=', $start], ['finish', '<=', $finish]];
+    $match3 = [['start', '<', $start], ['finish', '>', $finish]];
+
+    return self::where(function ($query) use ($match1, $match2, $match3) {
+                      $query->where($match1)
+                      ->orWhere($match2)
+                      ->orWhere($match3);
+                    });
   }
   
 
@@ -788,7 +791,7 @@ class Book extends Model {
     $this->cost_total = ($room->sizeApto == 1) ? 30 : 40;
     $this->total_price = $this->real_price;
       
-    \App\Expenses::setExpenseLimpieza($this->id, $room, $this->finish,$this->cost_limp);
+//    \App\Expenses::setExpenseLimpieza($this->id, $room, $this->finish,$this->cost_limp);
                 
   }
   
@@ -950,7 +953,7 @@ class Book extends Model {
   
   static function getBy_temporada(){
     $activeYear = Years::getActive();
-    return Book::where_type_book_sales()
+    return Book::where_type_book_sales(true)
             ->where('start', '>=', $activeYear->start_date)
             ->where('start', '<=', $activeYear->end_date)->get();
   }

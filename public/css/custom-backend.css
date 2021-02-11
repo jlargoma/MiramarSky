@@ -229,7 +229,6 @@ button#refreshFilters {
 button#filterByRange {
   float: left;
   height: 35px;
-  width: 35px;
   margin-left: 1px;
   font-size: 1.2em;
 }
@@ -367,6 +366,9 @@ input#dateRangefilter {
 }
 .mt-1em{
   margin-top: 1em;
+}
+.mt-2em{
+  margin-top: 2em;
 }
 .mY-1em{
   margin-top: 1em;
@@ -767,6 +769,21 @@ a.tip:hover span {
     position: absolute;
     top: 10px;
     text-decoration: none;
+}
+
+i.icon-chevron-left,
+i.icon-chevron-right{
+  font-weight: 900;
+  font-family: "Font Awesome 5 Free";
+}
+i.icon-chevron-left:before {
+  content: "\f060";
+}
+i.icon-chevron-right:before {
+  content: "\f061";
+}
+.datepicker thead tr .next, .datepicker thead tr .prev{
+    font-size: 11px !important;
 }
 /*****************************************************************************/
 /*****************************************************************************/

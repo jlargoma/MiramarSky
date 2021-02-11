@@ -5,117 +5,66 @@ namespace App\Services;
 class SMSService
 {
     public $response;
-    protected   $api;
-    protected   $usr;
-    protected   $psw;
-    protected   $JWT;
-    protected   $MENSAGIA_URL;
-    protected   $API_VERSION;
+    public $code;
+    protected   $SMS_URL;
     protected   $ENDPOINT;
-    protected   $API_CONFIGURATION_NAME;
-    
 
     public function __construct()
     {
-      $this->MENSAGIA_URL = env('MENSAGIA_BASE_URI');
-      // Set the API SEND CONFIGURATION
-      // Manage and create new configurations at https://mensagia.com/api/configurations
-      $this->API_CONFIGURATION_NAME = env('MENSAGIA_API_CONFIGURATION_NAME');
-      $this->API_VERSION = 'v1';
-      $this->ENDPOINT = $this->MENSAGIA_URL.'/'.$this->API_VERSION;
-      $this->JWT = null;
-  
+      $this->SMS_URL = env('SMS_BASE_URI');
+      $this->ENDPOINT = $this->SMS_URL.'/sms/push/sendPush';
     }
-    
-    public function conect(){
-      
-      $data = array("email" =>  env('MENSAGIA_USR'), "password" => env('MENSAGIA_PSW'));                                                                    
-      $data_string = http_build_query($data);
-      
-      $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, $this->ENDPOINT.'/login');
-      curl_setopt($ch, CURLOPT_POST, 1);                                                                
-      curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);                                                                  
-      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);                                                                      
-      $result = curl_exec($ch);
-      curl_exec($ch);
-      curl_close($ch);
-      
-      $output = json_decode($result, true);
-      if ( ! isset( $output['error'] ) )
-      {
-          // Successful authentication.
-          // We keep the response for use in API requests
-          $this->JWT = $output['data']['token'];
-          return TRUE;
-      }
-      else
-      {
-        $this->response = $output['error']['message'];
-        return false;
-      }
-    }
-    
-    
-    public function sendSMS( $msg,$phone)
-    {
-      if(!$this->JWT) 
-      { 
-        $this->response = 'Token required';
-        return FALSE; 
-      } 
-      
+    public function sendSMS( $msg,$phone){
+
       $phone = preg_replace('/[^0-9]+/', '', $phone); //just numbers
       
       if (empty(trim($phone))){
         $this->response = 'Phone number required';
         return FALSE;
       }
-
-      // Add authorization header to the request
-      // It contains the authorization for the request
-      $headers = array(
-      'Authorization: Bearer '.$this->JWT
-      );
-
       // Post variables to add to the request.
       $push_simple = array(
-          'configuration_name'  =>  $this->API_CONFIGURATION_NAME,
-          'message'             =>  $msg,
-          'numbers'             =>  $phone
+          'idCliente' => env('SMS_ID'),
+          'clave' => env('SMS_PSW'),
+          'ruta' => env('SMS_RUTA'),
+          'alfabeto' => 0, //GSM
+          'remitente' => env('SMS_NAME'),
+          'destinatarios' => $phone,
+          'texto' => $msg,
+          'wappush' => '0',
+//          'internacional' => '',
       );
 
-      
+      //https://ws1.premiumnumbers.es/sms/push/sendPush?idCliente=99&-clave=kkk&remitente=test&destinatarios=600000000&texto=mensaje%20de%20texto&ruta=
       // CURL REQUEST FOR SIMPLE PUSH
-      $ch2 = curl_init();
-      curl_setopt($ch2, CURLOPT_URL,$this->ENDPOINT.'/push/simple');
-      curl_setopt($ch2, CURLOPT_POST, 1);
-      curl_setopt($ch2, CURLOPT_POSTFIELDS, $push_simple);
-      curl_setopt($ch2, CURLOPT_HTTPHEADER, $headers);
-      curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
-      $result = curl_exec ($ch2);
-      curl_close ($ch2);
-      $result = json_decode($result, true);
-
-
+      $url = $this->ENDPOINT;
+      $param = [];
+      foreach ($push_simple as $k => $d) {
+        $param[] = "$k=".urlencode($d);
+      }
+      $url .= '?' . implode('&', $param);
+      $ch = curl_init();
+      curl_setopt($ch, CURLOPT_URL, $url); 
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+      curl_setopt($ch, CURLOPT_HEADER, 0); 
+      curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 7); //Timeout after 7 seconds
+      curl_setopt($ch, CURLOPT_TIMEOUT, 10); //  CURLOPT_TIMEOUT => 10,
+      $result = curl_exec($ch);
+      $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+      curl_close($ch);
+            
       // CHECK THE REQUEST
-      if (isset($result['data']))
-      {
-        $this->response = json_encode($result['data']);
-        return true;
+      $this->response = 'No hay repuesta del servidor';
+      if ($result){
+        $aResult = explode('#',$result);
+        if (is_array($aResult) && count($aResult)>1){
+          $this->response = $aResult[1];
+          if ($aResult[0] == 0){
+            return true;
+          }
+        }
       }
-      else if (isset($result['error']))
-      {
-        //Api request failed
-        $return  = $result['error']['message'];
-
-        if (isset($result['error']['validation_errors']))
-          $return .= json_encode($result['error']['validation_errors']);
-
-        $this->response = $return;
-        return FALSE;
-      }
-
+      return FALSE;
     }
  
 }

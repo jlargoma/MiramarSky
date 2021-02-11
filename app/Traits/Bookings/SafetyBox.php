@@ -27,7 +27,7 @@ trait SafetyBox {
     if ($book) {
       $otherBooks = Book::where('start', $book->start)
                       ->join('book_safety_boxes', 'book_id', '=', 'book.id')
-                      ->where('box_id', $value)->count();
+                      ->where('box_id', $value)->whereNull('deleted')->count();
       if ($otherBooks > 0) {
         return 'overlap';
       }
@@ -363,17 +363,16 @@ trait SafetyBox {
     if ($oObject) {
       //Send SMS
       $SMSService = new \App\Services\SMSService();
-      if ($SMSService->conect()) {
-        $messageSMS = $this->getSafeBoxMensaje($book,'SMS_buzon',$oObject);
-        $message = strip_tags($messageSMS);
-        if ($SMSService->sendSMS($message, $phone)) {
-          $BookSafetyBox->log = $BookSafetyBox->log . "," . time() . '-' . 'sentSMS';
-          $BookSafetyBox->save();
-          return [
-              'status' => 'success',
-              'response' => "Registro enviado",
-          ];
-        }
+      $messageSMS = $this->getSafeBoxMensaje($book,'SMS_buzon',$oObject);
+      $phone = $book->customer->phone;
+      $message = strip_tags($messageSMS);
+      if ($SMSService->sendSMS($message, $phone)) {
+        $BookSafetyBox->log = $BookSafetyBox->log . "," . time() . '-' . 'sentSMS- '.$SMSService->response;
+        $BookSafetyBox->save();
+        return [
+            'status' => 'success',
+            'response' => "Registro enviado",
+        ];
       }
 
       return [

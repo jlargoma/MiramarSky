@@ -293,6 +293,9 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/pagos-propietarios/update/{id}/{month?}', 'PaymentsProController@update');
   Route::get('/paymentspro/getBooksByRoom/{idRoom}', 'PaymentsProController@getBooksByRoom');
   Route::get('/paymentspro/getLiquidationByRoom', 'PaymentsProController@getLiquidationByRoom');
+  Route::post('/paymentspro/getLiquidationByRooms', 'PaymentsProController@getLiquidationByRooms');
+  Route::get('/paymentspro/getLiquidationByRooms', 'PaymentsProController@getLiquidationByRooms');
+  Route::get('/paymentspro/historico_temp/{roomID}', 'PaymentsProController@getHistorico_temp');
   Route::get('/paymentspro/getLiquidationByMonth', 'PaymentsProController@getLiquidationByMonth');
   Route::get('/pagos-propietarios/get/historic_production/{room_id}', 'PaymentsProController@getHistoricProduction');
   Route::post('/pagos-propietarios', 'PaymentsProController@indexByDate');

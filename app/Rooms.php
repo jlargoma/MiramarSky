@@ -138,7 +138,7 @@ class Rooms extends Model {
     $startYear = new Carbon($activeYear->start_date);
     $endYear = new Carbon($activeYear->end_date);
 
-    $total = \App\Book::whereIn('type_book', [2, 7, 8])
+    $total = \App\Book::where_type_book_sales(true)
             ->where('start', '>=', $startYear)
             ->where('start', '<=', $endYear)
             ->orderBy('start', 'ASC')

@@ -328,6 +328,11 @@ trait ForfaitsPaymentsTraits {
           }
           
         
+        $oPay = ForfaitsOrderPayments::where('order_id', $order->id)
+            ->where('paid',1)->orderBy('id','DESC')->first();
+        if ($oPay){
+          $urlPayland = '/alreadyPayment.html';
+        } else {
         $urlPayland = $this->generateOrderPaymentForfaits(
                 $payment->book_id,
                 $payment->order_id,
@@ -336,7 +341,7 @@ trait ForfaitsPaymentsTraits {
                 $payment->amount,
                 $payment->last_item_id
                 );
-
+        }
         if (env('APP_APPLICATION') == "riad"){
           $background = assetV('img/riad/lockscreen.jpg');
         } else {
@@ -1066,6 +1071,39 @@ trait ForfaitsPaymentsTraits {
       return response()->json(['status' => 'error3']);
     }
     
+    
+    
+    function setOrderStatus(Request $req) {
+      $status = $req->input('status',null);
+      $key = $req->input('key', null);
+      $oID = $req->input('oID', null);
+               
+      $token = $req->header('token-ff');
+      $client = $req->header('client');
+      if (!$this->checkUserAdmin($token,$client)) response()->json(['status' => 'error0']);
+    
+      $oForfait = Forfaits::getByKey($key);
+      if (!$oForfait) {
+        return response()->json(['status' => 'error1 --- '.$key]);
+      }
+      
+      if ($oForfait){
+          $order = ForfaitsOrders::where('forfats_id',$oForfait->id)->where('id',$oID)->first();
+          if (!$order || $order->status != 1) {
+            return response()->json(['status' => 'error2']);
+          }
+          
+          $order->status = 2;
+          $order->save();
+          $oPay = ForfaitsOrderPayments::where('order_id', $order->id)->orderBy('id','DESC')->first();
+          $oPay->paid = 1;
+          $oPay->save();
+          return response()->json(['status' => 'ok']);
+      }
+          
+      
+      return response()->json(['status' => 'error3']);
+     }
     /**
      * Send email to the Forfait-admin with the canceled Item
      * 
