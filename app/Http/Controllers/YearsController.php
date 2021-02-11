@@ -42,7 +42,7 @@ class YearsController extends AppController {
     if ($oYear->save())
       return new Response("OK", 200);
     else
-      return new Response("Error undefined", 500);
+      return new Response("Error", 200);
   }
 
   function getYear(Request $request) {

@@ -4,8 +4,10 @@ $(document).on('mouseover','[data-toggle="tooltip"]',function(){
 
 $(document).ready(function() { 
   window["show_notif"] = function(title,status,message){
+      var titleHtml = '';
+      if (title != '') titleHtml = '<strong>'+title+'</strong>, ';
     $.notify({
-          title: '<strong>'+title+'</strong>, ',
+          title: titleHtml,
           icon: 'glyphicon glyphicon-star',
           message: message
       },{

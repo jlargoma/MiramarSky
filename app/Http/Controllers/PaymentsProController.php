@@ -37,7 +37,7 @@ class PaymentsProController extends AppController {
     return $this->index();
   }
   
-  private  function getItems($year,$startYear,$endYear) {
+  private  function getItems($year,$start,$end) {
     $rooms = Rooms::orderBy('order', 'ASC')->get();
 
     /* Calculamos los ingresos por reserva y room */
@@ -69,8 +69,8 @@ class PaymentsProController extends AppController {
 //      $booksByRoom = \App\Book::where_type_book_prop(true)->where('room_id', $room->id)
       $booksByRoom = \App\Book::where_type_book_prop()
               ->where('room_id', $room->id)
-              ->where('start', '>=', $startYear)
-              ->where('start', '<=', $endYear)
+              ->where('start', '>=', $start)
+              ->where('start', '<=', $end)
               ->get();
 
       foreach ($booksByRoom as $book) {
@@ -100,7 +100,11 @@ class PaymentsProController extends AppController {
         $summary['totalPVP'] += $book->total_price;
       }
 
-      $gastos = \App\Expenses::getListByRoom($startYear->format('Y-m-d'),$endYear->format('Y-m-d'),$room->id);
+      $year2 = self::getActiveYear();
+      $startYear = $year->start_date;
+      $endYear = $year->end_date;
+    
+      $gastos = \App\Expenses::getListByRoom($startYear,$endYear,$room->id);
       if (count($gastos) > 0) {
 
         foreach ($gastos as $gasto) {
@@ -754,7 +758,9 @@ class PaymentsProController extends AppController {
     $roomID=115;
     $html = "";
     $oYears = \App\Years::orderBy('year')->get();
+    $current = date('Y');
     foreach ($oYears as $year){
+      if ($year->year > $current) continue;
       $start = date('Y-m-d', strtotime($year->start_date));
       $finish =date('Y-m-d', strtotime($year->end_date));
 
