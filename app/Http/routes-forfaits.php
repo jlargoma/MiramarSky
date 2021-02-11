@@ -33,6 +33,7 @@
     Route::post('/api/forfaits/remove-order', 'ForfaitsItemController@removeOrder');
     Route::post('/api/forfaits/orders-history', 'ForfaitsItemController@ordersHistory');
     Route::post('/api/forfaits/get-payment', 'ForfaitsItemController@getPayment');
+    Route::post('/api/forfaits/setOrderStatus', 'ForfaitsItemController@setOrderStatus');
 //    Route::get('/aaaa', 'ForfaitsItemController@aaaa');
     
     

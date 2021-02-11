@@ -6,10 +6,10 @@
           <table class="table">
             <thead >
               <th class="text-center bg-complete text-white col-md-1"">Fecha</th>
-              <th class="text-center bg-complete text-white col-md-2">Concepto</th>
-              <th class="text-center bg-complete text-white col-md-2">Tipo</th>
-              <th class="text-center bg-complete text-white col-md-1">Método de pago            </th>
-              <th class="text-center bg-complete text-white col-md-2">Importe</th>
+              <th class="bg-complete text-white col-md-2">Concepto</th>
+              <th class="bg-complete text-white col-md-2">Tipo</th>
+              <th class="bg-complete text-white col-md-1">Método de pago            </th>
+              <th class="text-right bg-complete text-white col-md-2">Importe</th>
               <th class="text-center bg-complete text-white col-md-2">Comentario</th>
               <th class="text-center bg-complete text-white">#</th>
             </thead>
@@ -33,12 +33,12 @@
                    ?>
                 <tr data-id="{{$pago->id}}" data-import="{{$paymentAux}}">
                   <td>{{convertDateToShow_text($pago->date)}}</td>
-                  <td class="editable" data-type="concept">{{$pago->concept}}</td>
-                  <td class="editable selects stype" data-type="type" data-current="{{$pago->type}}">
+                  <td class="editable text-left" data-type="concept">{{$pago->concept}}</td>
+                  <td class="editable text-left selects stype" data-type="type" data-current="{{$pago->type}}">
                       {{ show_isset($gType,$pago->type)}}</td>
                   <td class="editable selects spayment" data-type="payment" data-current="{{$pago->typePayment}}" >{{$pago->getTypeCobro($pago->typePayment)}}</td>
                   
-                  <td class="editable" data-type="price" >{{moneda($paymentAux)}}</td>
+                  <td class="editable text-right" data-type="price" >{{moneda($paymentAux)}}</td>
                   <td class="editable" data-type="comm">{{$pago->comment}}</td>
                   <td><button data-id="{{$pago->id}}" type="button" class="del_expense btn btn-danger btn-xs"><i class="fa fa-trash"></i></button></td>
                 </tr>
