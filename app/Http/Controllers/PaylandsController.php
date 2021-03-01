@@ -232,6 +232,47 @@ class PaylandsController extends AppController
       if ($redirect)  return redirect()->route('thanks-you');
         
     }
+    
+    
+    
+    public function widgetPayment($key_token)
+    {
+      
+      $bookOrder = BookOrders::where('key_token',$key_token)->whereNull('paid')->first();
+      if ($bookOrder){
+        $bookOrder->paid = true;
+        $bookOrder->save();
+        $amount = ($bookOrder->amount/100).' €';
+        \App\BookLogs::saveLogStatus($bookOrder->book_id,null,$bookOrder->cli_email,"Pago de $amount ($key_token)");
+        $book = \App\Book::find($bookOrder->book_id);
+        if ($book){
+          
+           //temporalmente no envíe los mails
+          $book->customer->send_mails = false;
+          $book->customer->save();
+          $this->payBook($bookOrder->book_id, $bookOrder->amount);
+          $book->type_book = 11;
+          $book->save();
+          $book->customer->send_mails = 1;
+          $book->customer->save();
+          
+          $this->sendEmail_WidgetPayment($book,floatval($amount));
+        }
+          
+        return view('frontend.stripe.widget');
+         
+      }
+      
+      die("La información que solicitó ya no se encuentra disponible.");
+        
+    }
+    
+    
+    
+    
+    
+    
+    
     public function errorPayment($key_token)
     {
       $bookOrder = BookOrders::where('key_token',$key_token)->first();

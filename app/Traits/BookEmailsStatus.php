@@ -685,4 +685,37 @@ trait BookEmailsStatus
       }
       return $sended;
     }
+    
+    
+      public function sendEmail_WidgetPayment($book,$amount)
+    {
+       
+      $subject = 'Nueva reserva desde web pública';
+      
+      $body = 'Hola, un nuevo usuario ha pagado el 50% de la reserva hecha desde la web pública:<br/><br/>';
+       
+      $customer = $book->customer;
+      $body .= '<b>Nombre:</b>: '.$customer->name.'<br/><br/>';
+      $body .= '<b>e-mail:</b>: '.$customer->email.'<br/><br/>';
+      $body .= '<b>Teléfono:</b>: '.$customer->phone.'<br/><br/>';
+      $body .= '<b>Habitación:</b> '.$book->room->name.'<br/><br/>';
+      $body .= '<b>PVP:</b>: '.number_format($book->total_price, 0, '', '.').'<br/><br/>';
+      $body .= '<b>Pagado:</b> '. moneda($amount).'<br/><br/>';
+      $body .= '<b>Fechas:</b> '.convertDateToShow_text($book->start).' - '. convertDateToShow_text($book->finish).'<br/><br/>';
+      $body .= '<b>Noches:</b> '.$book->nigths.'<br/><br/>';
+      $body .= '<b>Paxs:</b> '.$book->pax.'<br/><br/>';
+      $body .= '<b>Comtentarios:</b> '.$book->book_comments.'<br/><br/>';
+      
+       $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $body,
+            'title'       => $subject
+        ], function ($message) use ($book, $subject) {
+            $message->from(config('mail.from.address'));
+            $message->to("reservas@apartamentosierranevada.net");
+            $message->subject($subject);
+            $message->replyTo(config('mail.from.address'));
+        });
+        
+        return $sended;
+    }
 }
