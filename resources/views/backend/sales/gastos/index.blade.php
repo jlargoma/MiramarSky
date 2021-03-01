@@ -555,6 +555,7 @@ $(document).ready(function () {
       
 
       hTable.on('change','.tSelect',function (e) {
+        if ($(this).hasClass('selects')) return;
         var id = $(this).closest('tr').data('id');
         var input = $(this).find('input');
         updValues(id,input.attr('class'),input.val(),$(this));
@@ -581,8 +582,10 @@ $(document).ready(function () {
             $(this).text($(this).data('value')).removeClass('tSelect');
           });
         }
-        
+      var sendUpdValues = 0;  
       var updValues = function(id,type,value,obj,text=null){
+        if (sendUpdValues) return;
+        sendUpdValues = 1;
         var url = "/admin/gastos/update";
         $.ajax({
           type: "POST",
@@ -596,10 +599,14 @@ $(document).ready(function () {
               window.show_notif('OK','success','Registro Actualizado');
               if (text) obj.text(text);
               else  obj.text(value);
+              sendUpdValues = 0;
             } else {
               window.show_notif('Error','danger','Registro NO Actualizado');
+              sendUpdValues = 0;
             }
-          }
+          },
+        }).always(function() {
+          sendUpdValues = 0;
         });
     
       }

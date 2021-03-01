@@ -50,7 +50,7 @@
         ?>
     </head>
     <body class="fixed-header   windows desktop pace-done sidebar-visible menu-pin" style="padding-top:0px!important">
-            <nav class="navbar navbar-inverse" role="navigation" style="<?php if (env('APP_APPLICATION') == "riad"): ?>background-color: #6d5cae!important; <?php else:?> background-color: #295d9b!important;<?php endif; ?>">
+            <nav class="navbar navbar-inverse" role="navigation" style="background-color: #295d9b!important;">
                 <a class="navbar-brand" href="{{ route('dashboard.planning') }}" style="max-width: 155px;">
                     <img src="{{ assetV('img/miramarski/logo_miramar.png') }}" alt="" style="width: 100%;     margin-top: -5px;">
                 </a>

@@ -58,6 +58,10 @@ $isMobile = $mobile->isMobile()
   #expencesByRoom .col-md-8.col-xs-12.not-padding{
     padding-right: 20px !important;
   }
+  #ifrLiquidationByRoom{
+  width: 100%;
+    min-height: 90vh;
+    }
   @media screen and (max-width: 767px){
     .modal-big{
       width: 100%;
@@ -315,20 +319,14 @@ use \Carbon\Carbon; ?>
                 @else
                 <td class="text-left">
                 @endif
-                    <a class="update-payments" data-debt="<?php echo $pendiente ?>"
-                       data-month="{{ $year->year }}" data-id="<?php echo $room->id ?>"
-                       data-toggle="modal"
-                       data-target="#payments">
-                      <?php echo (isset($room->user->name)) ? ucfirst($room->user->name): '-' ?> (<?php echo $room->nameRoom ?>)
-                    </a>
-                <i class="fa fa-eye seePropLiquidation" data-id="{{$room->id}}"></i>
+                <?php echo (isset($room->user->name)) ? ucfirst($room->user->name): '-' ?> (<?php echo $room->nameRoom ?>)
                   </td>
                    @if($isMobile)
                   <td class="text-center  costeApto bordes first-col" style="padding-right:13px !important;padding-left: 135px!important">   
               @else
               <td class="text-left costeApto bordes ">
               @endif
-                    <button class="btn-transparent liquidationByRoom nowrap" data-id="<?php echo $room->id ?>" data-costeProp="{{moneda($data[$room->id]['coste_prop'])}}" data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer; font-weight: 600" title="Liquidación de <?php echo $room->nameRoom ?>">
+                    <button class="btn-transparent liquidationByRoom nowrap" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer; font-weight: 600" title="Liquidación de <?php echo $room->nameRoom ?>">
                   {{moneda($data[$room->id]['coste_prop'])}}
                     </button>
                   </td>
@@ -537,8 +535,14 @@ use \Carbon\Carbon; ?>
 <div class="modal fade slide-up disable-scroll in" id="liquidationByRoom" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg" style="width: 95%;">
     <div class="modal-content-wrapper" >
+       
       <div class="modal-content" style="padding: 15px 5px;">
-        <div class="modal-body contentLiquidationByRoom"></div>
+        <div class="modal-body">
+           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+            <i class="fa fa-close fa-2x"></i>
+          </button>
+            <iframe id="ifrLiquidationByRoom"></iframe>
+        </div>
       </div>
     </div>
     <!-- /.modal-content -->
@@ -690,16 +694,14 @@ $('.seePropLiquidation').on('click', function(){
 
 $('button.liquidationByRoom').click(function (event) {
 event.preventDefault();
-var date = $('#dateRange').val();
-
 var idRoom = $(this).attr('data-id');
-var costeProp = $(this).attr('data-costeProp');
-var startDate = "{{$startYear}}";
-var endDate = "{{$endYear}}";
-$.get('/admin/paymentspro/getLiquidationByRoom', {idRoom: idRoom,costeProp: costeProp,start:startDate,end:endDate}, function (data) {
-$('.contentLiquidationByRoom').empty().append(data);
+var obj = $('#ifrLiquidationByRoom');
+obj.hide().attr('src','/admin/paymentspro/getLiquidationByRooms?modal=1&roomID='+idRoom);
 });
-
+    
+$('#ifrLiquidationByRoom').on('load',function () {
+//    $('#bkgDetailLoading').hide();
+    $(this).show();
 });
 </script>
 @endsection

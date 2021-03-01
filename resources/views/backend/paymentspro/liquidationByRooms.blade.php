@@ -1,4 +1,4 @@
-@extends('layouts.admin-master')
+@extends($is_modal ? 'layouts.admin-onlybody' : 'layouts.admin-master')
 
 @section('title') Administrador de reservas MiramarSKI @endsection
 
@@ -6,6 +6,7 @@
 <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
 <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
 <script type="text/javascript" src="{{asset('/frontend/js/components/moment.js')}}"></script>
+<script type="text/javascript" src="{{asset('/frontend/js/components/datepicker.js')}}"></script>
 <script type="text/javascript" src="{{asset('/frontend/js/components/daterangepicker.js')}}"></script>
 <script type="text/javascript" src="{{ asset('/js/datePicker01.js')}}"></script>
 
@@ -36,7 +37,8 @@
      <div class="container padding-5 sm-padding-10">
         <div class="row bg-white">
             <form method="GET" id="form_filterByRange"  class="col-md-12 col-xs-12"> 
-                <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                <input type="hidden" name="modal" value="<?php echo $is_modal; ?>">
                 <div class="col-md-3 col-md-offset-1 col-xs-12">
                     <h2 class="text-center">Liquidación Prop.</h2>
                 </div>
@@ -221,10 +223,13 @@ $(document).ready(function () {
           success: function (response)
           {
             if (response == 'ok') {
+              if (type == 'price') location.reload();
               clearAll();
               window.show_notif('OK','success','Registro Actualizado');
               if (text) obj.text(text);
               else  obj.text(value);
+              
+              
             } else {
               window.show_notif('Error','danger','Registro NO Actualizado');
             }
@@ -250,8 +255,10 @@ $(document).ready(function () {
   $('.toggle_formNewExpense').on('click',function(){
     $('#formNewExpense').toggle('slow');
   });
-   $('#fecha').datepicker();
-   $('#summaryTemps').load('/admin/paymentspro/historico_temp/{{$roomID}}');
+   $('#fecha').datepicker({
+    format: 'dd/mm/yy',
+   });
+  $('#summaryTemps').load('/admin/paymentspro/historico_temp/{{$roomID}}');
 });
         
 </script>

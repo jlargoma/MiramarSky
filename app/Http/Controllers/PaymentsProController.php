@@ -436,6 +436,7 @@ class PaymentsProController extends AppController {
     $start = $request->input('filter_startDate',null);
     $finish = $request->input('filter_endDate',null);
     $roomID = $request->input('roomID',null);
+    $is_modal = $request->input('modal',null);
     $year = self::getActiveYear();
     if (!($start && $finish)){
       $year = self::getActiveYear();
@@ -521,6 +522,7 @@ class PaymentsProController extends AppController {
         'pagototalProp' => $payProp,
         'rooms'  => $lstRooms,
         'roomID' => $roomID,
+        'is_modal' => $is_modal,
         'gType' => \App\Expenses::getTypes(),
         'typePayment' => \App\Expenses::getTypeCobro()
     ];
@@ -755,7 +757,6 @@ class PaymentsProController extends AppController {
   }
   
   function getHistorico_temp($roomID){
-    $roomID=115;
     $html = "";
     $oYears = \App\Years::orderBy('year')->get();
     $current = date('Y');
