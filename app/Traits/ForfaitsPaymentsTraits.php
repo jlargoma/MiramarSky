@@ -1093,9 +1093,13 @@ trait ForfaitsPaymentsTraits {
             return response()->json(['status' => 'error2']);
           }
           
+          $oPay = ForfaitsOrderPayments::where('order_id', $order->id)->orderBy('id','DESC')->first();
+          if (!$oPay || $oPay->paid == 1) {
+            return response()->json(['status' => 'error4']);
+          }
+          
           $order->status = 2;
           $order->save();
-          $oPay = ForfaitsOrderPayments::where('order_id', $order->id)->orderBy('id','DESC')->first();
           $oPay->paid = 1;
           $oPay->save();
           return response()->json(['status' => 'ok']);

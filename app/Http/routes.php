@@ -160,6 +160,7 @@
 //         ->name('payland.proccess.payment.book.customer');
     Route::get('payment/thansk-you/{key_token}', 'PaylandsController@thansYouPayment')->name('payland.thanks.payment');
     Route::get('payment/thansk-you-deferred/{key_token}', 'PaylandsController@thansYouPaymentDeferred')->name('payland.thanks.deferred');
+    Route::get('payment/thansk-you-payment/{key_token}', 'PaylandsController@widgetPayment')->name('widget.thanks.payment');
    
     Route::get('payment/error/{key_token}', 'PaylandsController@errorPayment')->name('payland.error.payment');
     Route::get('payment/process/{key_token}', 'PaylandsController@processPayment')->name('payland.process.payment');

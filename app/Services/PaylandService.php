@@ -125,6 +125,25 @@ class PaylandService {
     }
   }
 
+  public function generateOrderPaymentBooking($bookingID, $clientID, $client_email, $description, $amount, $is_deferred = false,$is_widget=false) {
+    
+    $key_token = md5($bookingID . '-' . time() . '-' . $clientID);    
+    $data = [
+      'key_token' => $key_token, 
+      'url_ok'    => route('payland.thanks.payment', $key_token),
+      'url_ko'    => route('payland.error.payment', $key_token),
+      'url_post'  => route('payland.process.payment', $key_token),
+    ];
+    
+    if ($is_deferred)
+      $data['url_ok'] = route('payland.thanks.deferred', $key_token);
+    
+    if ($is_widget)
+      $data['url_ok'] = route('widget.thanks.payment', $key_token);
+    
+    
+    return $this->generateOrderPayment($bookingID, $clientID, $client_email, $description, $amount, $is_deferred,$data);
+  }
   /**
    * Create link to new Payland
    * 
@@ -135,9 +154,9 @@ class PaylandService {
    * @param type $amount
    * @return type
    */
-  public function generateOrderPaymentBooking($bookingID, $clientID, $client_email, $description, $amount, $is_deferred = false) {
+  public function generateOrderPayment($bookingID, $clientID, $client_email, $description, $amount, $is_deferred = false,$data) {
 
-    $key_token = md5($bookingID . '-' . time() . '-' . $clientID);
+    $key_token = $data['key_token']; 
     $type = $is_deferred ? 'DEFERRED' : 'AUTHORIZATION';
     $amount = ($amount * 100); // esto hay que revisar
     $response['_token'] = null;
@@ -148,15 +167,10 @@ class PaylandService {
     $response['signature'] = env('PAYLAND_SIGNATURE');
     $response['service'] = env('PAYLAND_SERVICE');
     $response['description'] = $description;
-    $response['url_ok'] = route('payland.thanks.payment', $key_token);
-    $response['url_ko'] = route('payland.error.payment', $key_token);
-    $response['url_post'] = route('payland.process.payment', $key_token);
+    $response['url_ok'] = $data['url_ok'];
+    $response['url_ko'] = $data['url_ko'];
+    $response['url_post'] = $data['url_post'];
 
-    if ($is_deferred)
-      $response['url_ok'] = route('payland.thanks.deferred', $key_token);
-
-    
-  
     $orderPayment = $this->payment($response);
 
     if ($is_deferred)

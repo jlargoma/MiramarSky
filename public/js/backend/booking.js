@@ -94,7 +94,7 @@ $(document).ready(function() {
 //          var isEdited = $('.total').attr('data-edited');
           if (data.public.promo_pvp<1) {
 //              $('.promociones').val('');
-              $('.book_owned_comments').empty();
+//              $('.book_owned_comments').empty();
               $('.content_image_offert').hide();
           } else {
 //              $('.promociones').val(data.public.promo_pvp);

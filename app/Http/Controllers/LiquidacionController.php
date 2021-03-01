@@ -940,9 +940,14 @@ class LiquidacionController extends AppController {
 
   
   public function gastoCreate(Request $request) {
+    
+    $date = Carbon::createFromFormat('d/m/Y', $request->input('fecha'));
+    if ($date->format('Y')<2000){
+      $date = Carbon::createFromFormat('d/m/y', $request->input('fecha'));
+    }
     $gasto = new \App\Expenses();
     $gasto->concept = $request->input('concept');
-    $gasto->date = Carbon::createFromFormat('d/m/Y', $request->input('fecha'))->format('Y-m-d');
+    $gasto->date = $date->format('Y-m-d');
     $gasto->import = $request->input('import');
     $gasto->typePayment = $request->input('type_payment');
     $gasto->type = $request->input('type');
@@ -993,10 +998,9 @@ class LiquidacionController extends AppController {
         if ($gasto->save()) {
           return "ok";
         }
+        return 'error';
       }
     }
-
-    return 'error';
  
   }
 

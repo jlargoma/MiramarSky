@@ -307,7 +307,7 @@ class ApiController extends AppController
           ];
           $oPaylands    = new \App\Services\PaylandService($paylandConfig);
           $urlPayland = $oPaylands->generateOrderPaymentBooking(
-                  $book->id, $book->customer->id, $client_email, $description, $amount
+                  $book->id, $book->customer->id, $client_email, $description, $amount, false, 1
           );
 
           return $urlPayland;
