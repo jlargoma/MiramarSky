@@ -24,7 +24,7 @@
 				</table>
 </div>
 
-<table class="table table-bordered no-footer">
+<!--<table class="table table-bordered no-footer">
     <tr>
         <td class="text-center white" style="background-color: #48b0f7;">
             <h5 class="text-center white" style="margin-top: 0">GENERADO</h5>
@@ -39,7 +39,59 @@
             <strong>{{moneda(($total - $pagototalProp),false)}}</strong>
         </td>
     </tr>
-</table>
+</table>-->
+
+<div class="row">
+ <h2 class="text-center font-w800">Liquidación</h2>
+</div>
+<?php $pendiente = $total; ?>
+<div class="table-responsive">
+  <table class="table">
+    <thead >
+      <th class="text-center bg-complete text-white col-md-1"">FECHA</th>
+      <th class="bg-complete text-white col-md-2">CONCEPTO</th>
+      <th class="bg-complete text-center text-white col-md-1">GENERADO</th>
+      <th class="bg-green text-center col-md-1">PAGADO</th>
+      <th class="bg-red text-center col-md-1">PENDIENTE</th>
+    </thead>
+    <tbody id="tableItems" class="text-center">
+        <tr>
+            <td>-</td>
+            <td class="text-left"><b>Ingresos Prop.</b></td>
+            <td><b>{{moneda($pendiente)}}</b></td>
+            <td></td>
+            <td></td>
+        </tr>
+        @if( count( $pagos ) > 0)
+        @foreach($pagos as $pago)<!-- comment -->
+        
+        <?php
+          $paymentAux = isset($lstPagos[$pago->id]) ? $lstPagos[$pago->id] : 0;
+        ?>
+        <tr>
+          <td>{{convertDateToShow_text($pago->date)}}</td>
+          <td class="text-left">{{$pago->concept}}</td>
+          <td></td>
+          <td class="text-right">{{moneda($paymentAux)}}</td>
+          <?php $pendiente -= $paymentAux; ?>
+          <td class="text-right">{{moneda($pendiente)}}</td>
+        </tr>
+        @endforeach
+        @endif
+
+    </tbody>
+  </table>
+  <table class="table">
+    <thead >
+      <th class="bg-complete text-white text-center">GENERADO</th>
+      <th class="bg-complete text-white text-center"><b>{{moneda($total)}}</b></th>
+      <th class="bg-green text-center">PAGADO</th>
+      <th class="bg-green text-center"><b>{{moneda($pagototalProp)}}</b></th>
+      <th class="bg-red text-center">PENDIENTE</th>
+      <th class="bg-red text-center"><b>{{moneda($pendiente)}}</b></th>
+    </thead>
+  </table>
+</div>
 <div class="addExpence">
     <button type="button" class="toggle_formNewExpense btn btn-success">
         <i class="fa fa-plus-circle"></i> Añadir Gastos

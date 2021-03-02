@@ -785,6 +785,18 @@ i.icon-chevron-right:before {
 .datepicker thead tr .next, .datepicker thead tr .prev{
     font-size: 11px !important;
 }
+
+th.bg-green,
+td.bg-green {
+  background-color: #10cfbd;
+  color: #fff !important;
+}
+th.bg-red,
+td.bg-red {
+  background-color: #f55753;
+  color: #fff !important;
+}
+
 /*****************************************************************************/
 /*****************************************************************************/
 /*****************************************************************************/

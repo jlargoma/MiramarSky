@@ -319,16 +319,18 @@ use \Carbon\Carbon; ?>
                 @else
                 <td class="text-left">
                 @endif
+                <a href="#" class=" liquidationByRoom" data-toggle="modal" data-target="#liquidationByRoom"  data-id="{{$room->id}}" >
                 <?php echo (isset($room->user->name)) ? ucfirst($room->user->name): '-' ?> (<?php echo $room->nameRoom ?>)
+                
+                <i class="fa fa-eye"></i>
+                </a>
                   </td>
                    @if($isMobile)
                   <td class="text-center  costeApto bordes first-col" style="padding-right:13px !important;padding-left: 135px!important">   
               @else
               <td class="text-left costeApto bordes ">
               @endif
-                    <button class="btn-transparent liquidationByRoom nowrap" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#liquidationByRoom" style="cursor: pointer; font-weight: 600" title="Liquidación de <?php echo $room->nameRoom ?>">
                   {{moneda($data[$room->id]['coste_prop'])}}
-                    </button>
                   </td>
                   <td class="text-center"  style="padding: 10px 5px ; background: #89cfff;">
 
@@ -692,7 +694,7 @@ $('.seePropLiquidation').on('click', function(){
 
 
 
-$('button.liquidationByRoom').click(function (event) {
+$('.liquidationByRoom').click(function (event) {
 event.preventDefault();
 var idRoom = $(this).attr('data-id');
 var obj = $('#ifrLiquidationByRoom');

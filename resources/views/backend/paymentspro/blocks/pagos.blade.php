@@ -17,19 +17,7 @@
                 @if( count( $pagos ) > 0)
                 @foreach($pagos as $pago)
                   <?php
-                    $divisor = 0;
-                    if ( preg_match( '/,/' , $pago->PayFor ) ) {
-                     $aux = explode( ',' , $pago->PayFor );
-                     for ( $i = 0 ; $i < count( $aux ) ; $i++ ) {
-                      if ( !empty( $aux[ $i ] ) ) {
-                       $divisor++;
-                      }
-                     }
-
-                    } else {
-                     $divisor = 1;
-                    }
-                    $paymentAux = $pago->import / $divisor;
+                    $paymentAux = isset($lstPagos[$pago->id]) ? $lstPagos[$pago->id] : 0;
                    ?>
                 <tr data-id="{{$pago->id}}" data-import="{{$paymentAux}}">
                   <td>{{convertDateToShow_text($pago->date)}}</td>
