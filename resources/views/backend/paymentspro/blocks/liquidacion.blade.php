@@ -72,24 +72,22 @@
           <td>{{convertDateToShow_text($pago->date)}}</td>
           <td class="text-left">{{$pago->concept}}</td>
           <td></td>
-          <td class="text-right">{{moneda($paymentAux)}}</td>
+          <td>{{moneda($paymentAux)}}</td>
           <?php $pendiente -= $paymentAux; ?>
-          <td class="text-right">{{moneda($pendiente)}}</td>
+          <td>{{moneda($pendiente)}}</td>
         </tr>
         @endforeach
         @endif
 
     </tbody>
-  </table>
-  <table class="table">
-    <thead >
-      <th class="bg-complete text-white text-center">GENERADO</th>
-      <th class="bg-complete text-white text-center"><b>{{moneda($total)}}</b></th>
-      <th class="bg-green text-center">PAGADO</th>
-      <th class="bg-green text-center"><b>{{moneda($pagototalProp)}}</b></th>
-      <th class="bg-red text-center">PENDIENTE</th>
-      <th class="bg-red text-center"><b>{{moneda($pendiente)}}</b></th>
-    </thead>
+    
+    <tfoot >
+    <th class="bg-complete text-center text-white col-md-1" colspan="2"><b>TOTALES</b></th>
+      <th class="bg-complete text-center text-white col-md-1"><b>{{moneda($total)}}</b></th>
+      <th class="bg-green text-center col-md-1"><b>{{moneda($pagototalProp)}}</b></th>
+      <th class="bg-red text-center col-md-1"><b>{{moneda($pendiente)}}</b></th>
+    </tfoot>
+    
   </table>
 </div>
 <div class="addExpence">
