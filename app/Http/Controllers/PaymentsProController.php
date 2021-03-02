@@ -481,6 +481,7 @@ class PaymentsProController extends AppController {
             ->orderBy('date', 'ASC')
             ->get();
     $payProp = 0;
+    $lstPagos = [];
     if ($pagos)
     foreach ($pagos as $pago) {
       $pagototal += $pago->import;
@@ -497,7 +498,9 @@ class PaymentsProController extends AppController {
       } else {
        $divisor = 1;
       }
-      $payProp += ($pago->import / $divisor);
+      $amount   = ($pago->import / $divisor);
+      $payProp += $amount;
+      $lstPagos[$pago->id] = $amount;
           
     }
     
@@ -520,6 +523,7 @@ class PaymentsProController extends AppController {
         'pagos' => $pagos,
         'pagototal' => $pagototal,
         'pagototalProp' => $payProp,
+        'lstPagos' => $lstPagos,
         'rooms'  => $lstRooms,
         'roomID' => $roomID,
         'is_modal' => $is_modal,
