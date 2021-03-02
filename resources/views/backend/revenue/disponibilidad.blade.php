@@ -226,15 +226,15 @@ sendFormRevenue();
         <label>Mes</label>
         <select name="month" id="month" class="form-control">
           @foreach($lstMonths as $k=>$n)
-          <option value="{{$k}}" @if($month == $k) selected @endif>{{$n}}</option>
+          <option value="{{$k}}" @if($month_key == $k) selected @endif>{{getMonthsSpanish($n['m'],false)}}</option>
           @endforeach
         </select>
       </div>
     </form>
     <div >
       <form method="post" action="{{route('revenue.donwlDisponib')}}">
-        <input id="month" name="month" value="{{$month}}"  type="hidden">
-        <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+        <input name="month_key" value="{{$month_key}}"  type="hidden">
+        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
         <button class="btn btn-primary">Descargar</button>
       </form>
     </div>

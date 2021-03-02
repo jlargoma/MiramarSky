@@ -11,11 +11,11 @@
 </form>
 <div class="clearfix"><br/></div>
  <div class="month_select-box">
-@for($i=1;$i<13;$i++)
-<a class="month_select @if($month == $i) active @endif" data-month="{{$i}}">
-  {{getMonthsSpanish($i)}}
+@foreach($lstMonhs as $k=>$m)
+<a class="month_select @if($month == $k) active @endif" data-month="{{$k}}">
+  {{$m['name']}}
 </a>
-@endfor
+@endforeach
 </div>
 <div class="clearfix"><br/></div>
 <br/>
