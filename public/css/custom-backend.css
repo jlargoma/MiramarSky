@@ -796,6 +796,10 @@ td.bg-red {
   background-color: #f55753;
   color: #fff !important;
 }
+.contenedor {
+    max-width: 92%;
+    margin: 1em auto;
+}
 
 /*****************************************************************************/
 /*****************************************************************************/
@@ -831,6 +835,10 @@ td.bg-red {
   .mobil-pad-x3{
     padding: 0 18px !important;
   }
+  .contenedor {
+    max-width: 98%;
+    margin: 1em auto;
+    }
 }
 @media only screen and (max-width: 425px) {
   .hidden-mobile{

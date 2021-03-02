@@ -122,6 +122,9 @@
     <li class="{{  (preg_match('/\/channel-manager/i',$pathRequest) || $pathRequest == 'admin/precios')  ? 'active' : '' }}">
         <a href="{{ url('/admin/precios') }}" class="detailed">CHANNEL</a>
     </li>
+     <li class="{{  (preg_match('/\/revenue/i',$pathRequest))  ? 'active' : '' }}">
+        <a href="{{ url('/admin/revenue/DASHBOARD') }}" class="detailed">Revenue</a>
+    </li>
 <?php endif ?>
     
 <?php if ($uRole == "admin" ): ?>

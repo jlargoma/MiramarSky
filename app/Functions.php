@@ -528,3 +528,20 @@ function whatsappFormat($texto){
       $whatsapp = strip_tags($whatsapp);
       return $whatsapp;
 }
+
+function firstDayMonth($year,$month){
+  // First day of a specific month
+  $d = new \DateTime($year . '-' . $month . '-01');
+  $d->modify('first day of this month');
+  return $d->format('Y-m-d');
+}
+function lastDayMonth($year,$month){
+      // last day of a specific month
+      $d = new \DateTime($year . '-' . $month . '-01');
+      $d->modify('last day of this month');
+      return $d->format('Y-m-d');
+}
+function configOtasAptosName(){
+  $otaConfig = new \App\Services\OtaGateway\Config();
+  return  $otaConfig->getRoomsName();
+}

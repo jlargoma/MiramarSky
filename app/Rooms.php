@@ -629,4 +629,26 @@ class Rooms extends Model {
     }
    
   }
+  
+  
+  public function getPrices_byRange($startDate,$endDate) {
+    
+    $defaults = $this->defaultCostPrice( $startDate, $endDate,$this->minOcu);
+    $priceDay = $defaults['priceDay'];
+    $oPrice = \App\DailyPrices::where('channel_group',$this->channel_group)
+                ->where('date','>=',$startDate)
+                ->where('date','<=',$endDate)
+                ->get();
+   
+    
+    if ($oPrice) {
+        foreach ($oPrice as $p) {
+          if (isset($priceDay[$p->date]) && $p->price)
+            $priceDay[$p->date] = $p->price;
+        }
+      }
+      
+     return $priceDay;
+  }
+
 }
