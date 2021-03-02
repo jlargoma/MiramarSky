@@ -19,18 +19,21 @@ class RevenueController extends AppController
   public function index(Request $req){
     
     $season   = $this->getActiveYear();
-    $start  = $season->start_date;
-    $finish = $season->end_date;
+    $start_carb  = new Carbon($season->start_date);
+    $finish_carb = new Carbon($season->end_date);
     $year   = $season->year;
     
     $month  = $req->input('month',null);
     $ch  = $req->input('ch_sel',null);
     $start  = $req->input('start',null);
     $finish = $req->input('finish',null);
-  
-    if ($month<13 && $month>0){
-      $start = $year.'-'.date("m-d", mktime(0, 0, 0, $month, 1));
-      $finish = date("Y-m-d", strtotime($start. '+1 months'));
+    $lstMonhs = lstMonths($start_carb,$finish_carb,'y.m',true);
+    if ($month){
+      $aux = explode('.', $month);
+      if (count($aux)==2){
+        $start = '20'.$aux[0].'-'.date("m-d", mktime(0, 0, 0, $aux[1], 1));
+        $finish = date("Y-m-d", strtotime($start. '+1 months'));
+      }
     }
     
     if (!$start) $start  = $season->start_date;
@@ -111,6 +114,7 @@ class RevenueController extends AppController
       'finish'=>$finish,
       'channels' => $allChannels,
       'ch_sel' => $ch,
+      'lstMonhs' => $lstMonhs,
       'range'=>date('d M, y', strtotime($start)).' - '.date('d M, y', strtotime($finish)),
     ]);
     
@@ -124,15 +128,24 @@ class RevenueController extends AppController
   
   public function disponibilidad(Request $req){
     
-    $season   = $this->getActiveYear();
-    $lstMonths = getMonthsSpanish(null,FALSE, TRUE);
-    $start  = $req->input('start',null);
-    $finish = $req->input('finish',null);
-    $month = $req->input('month',date('m'));
-    $start  = firstDayMonth($season->year, $month);
-    $finish = lastDayMonth($season->year, $month);
-    
     $chNames = configOtasAptosName();
+    
+    $season   = $this->getActiveYear();
+    $start_carb  = new Carbon($season->start_date);
+    $finish_carb = new Carbon($season->end_date);
+    $year   = $season->year;
+    $month_key = $req->input('month',date('y.m'));
+    $lstMonths = lstMonths($start_carb,$finish_carb,'y.m');
+    $aux = explode('.', $month_key);
+    if (count($aux)==2){
+      $month  =  $aux[1];
+      $start  = firstDayMonth('20'.$aux[0], $month);
+      $finish = lastDayMonth('20'.$aux[0], $month);
+    } else {
+      $month  = date('m');
+      $start  = firstDayMonth($season->year, $month);
+      $finish = lastDayMonth($season->year, $month);
+    }
     /************************************************************/
     /********   Prepare days array               ****************/
     $startAux = strtotime($start);
@@ -198,8 +211,8 @@ class RevenueController extends AppController
       $totalMonthOcc = 0;
       foreach ($books as $book){
         $summaryPVP += $book->total_price;
-        if (date('m',strtotime($book->start)) == $month || date('m',strtotime($book->finish)) == $month){
-          $pvpPerNigh = $book->total_price/$book->nigths;
+        if (date('y.m',strtotime($book->start)) == $month_key || date('y.m',strtotime($book->finish)) == $month_key){
+          $pvpPerNigh = ($book->nigths>0) ? ($book->total_price/$book->nigths) : $book->total_price;
           $startAux = strtotime($book->start);
           $finishAux = strtotime($book->finish);
           while ($startAux<=$finishAux){
@@ -212,12 +225,6 @@ class RevenueController extends AppController
         }
       }
     }
-//    //Total by month
-//    foreach ($listDaysOtas as $ota=>$avail){
-//      foreach ($avail as $day=>$num){
-//        $totalMonthOcc -= $num;
-//      }
-//    }
     //Total by seasson
     $totalSummaryOcc = \App\Book::whereIn('type_book', [1,2,11])
           ->where([['start','>=', $season->start_date ],['finish','<=', $season->end_date ]])
@@ -257,7 +264,7 @@ class RevenueController extends AppController
       'totalOtas'=>$totalOtas,
       'listDaysOtasTotal'=>$listDaysOtasTotal,
       'lstMonths' => $lstMonths,
-      'month_key' => $season->year.'_'.$month,
+      'month_key' => $month_key,
       'month' => intVal($month),
       'totalMonthOcc' => $totalMonthOcc,
       'totalSummaryOcc' => $totalSummaryOcc,
@@ -324,11 +331,18 @@ class RevenueController extends AppController
     $season   = $this->getActiveYear();
     $lstMonths = getMonthsSpanish(null,FALSE, TRUE);
     $site_id  =1;
-    $month = $req->input('month',date('m'));
-    $start  = firstDayMonth($season->year, $month);
-    $finish = lastDayMonth($season->year, $month);
+    $month_key = $req->input('month_key',date('y.m'));
     
-
+    $aux = explode('.', $month_key);
+    if (count($aux)==2){
+      $month  =  $aux[1];
+      $start  = firstDayMonth('20'.$aux[0], $month);
+      $finish = lastDayMonth('20'.$aux[0], $month);
+    } else {
+      $month  = date('m');
+      $start  = firstDayMonth($season->year, $month);
+      $finish = lastDayMonth($season->year, $month);
+    }
     $chNames = configOtasAptosName();
     /************************************************************/
     /********   Prepare days array               ****************/
