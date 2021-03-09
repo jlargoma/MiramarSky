@@ -146,6 +146,7 @@ class RevenueController extends AppController
       $start  = firstDayMonth($season->year, $month);
       $finish = lastDayMonth($season->year, $month);
     }
+
     /************************************************************/
     /********   Prepare days array               ****************/
     $startAux = strtotime($start);
@@ -157,7 +158,6 @@ class RevenueController extends AppController
       $aLstDays[date('d',$startAux)] = $dw[date('w',$startAux)];
       $startAux+=$oneDay;
     }
-      
     /************************************************************/
     /********   Get Roooms                      ****************/
     $qry_ch = \App\Rooms::where('state',1);
@@ -183,7 +183,7 @@ class RevenueController extends AppController
     $listDaysOtas = [];
     $oBook = new \App\Book();
     foreach ($otas as $apto=>$v){
-      $listDaysOtas[$apto] = $oBook->getAvailibilityBy_channel($apto, $start, $finish);
+      $listDaysOtas[$apto] = $oBook->getAvailibilityBy_channel($apto, $start, $finish,false,true);
     }
     $listDaysOtasTotal = null;
     foreach ($listDaysOtas as $k=>$v){

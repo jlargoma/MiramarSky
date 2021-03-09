@@ -692,14 +692,18 @@ class Book extends Model {
    * Get Availibility Room By channel
    * @param type $available
    */
-  public function getAvailibilityBy_channel($apto, $start, $finish,$return = false) {
+  public function getAvailibilityBy_channel($apto, $start, $finish,$return = false,$justSale=false) {
 
     $oRooms = Rooms::RoomsCH_IDs($apto);
     $match1 = [['start', '>=', $start], ['start', '<=', $finish]];
     $match2 = [['finish', '>=', $start], ['finish', '<=', $finish]];
     $match3 = [['start', '<', $start], ['finish', '>', $finish]];
 
-    $books = self::where_type_book_reserved()->whereIn('room_id', $oRooms)
+    
+    if ($justSale) $sqlBooks = self::where_type_book_sales();
+    else  $sqlBooks = self::where_type_book_reserved();
+    
+    $books = $sqlBooks->whereIn('room_id', $oRooms)
                     ->where(function ($query) use ($match1, $match2, $match3) {
                       $query->where($match1)
                       ->orWhere($match2)
@@ -725,18 +729,26 @@ class Book extends Model {
         //Resto los días reservados
         $startAux = strtotime($book->start);
         $endAux = strtotime($book->finish);
-
-        while ($startAux < $endAux) {
+        if ($startAux == $endAux){
           $auxTime = date('Y-m-d', $startAux);
           $keyControl = $book->room_id.'-'.$auxTime;
           if (!in_array($keyControl, $control)){
             if (isset($aLstDays[$auxTime]))
-              $aLstDays[$auxTime] --;
-            
+              $aLstDays[$auxTime]--;
             $control[] = $keyControl;
           }
+        } else {
+          while ($startAux < $endAux) {
+            $auxTime = date('Y-m-d', $startAux);
+            $keyControl = $book->room_id.'-'.$auxTime;
+            if (!in_array($keyControl, $control)){
+              if (isset($aLstDays[$auxTime]))
+                $aLstDays[$auxTime]--;
+              $control[] = $keyControl;
+            }
 
-          $startAux += $oneDay;
+            $startAux += $oneDay;
+          }
         }
       }
     }
