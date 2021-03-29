@@ -31,9 +31,10 @@ class ProcessPickUp {
     }
     
     //Reservas del periodo
-    $books = Book::whereIn('type_book', [1,2])
-          ->where([['start','>=', $start ],['finish','<=', $finish ]])
-          ->whereIn('room_id',$roomsID)->get();
+//    $books = Book::whereIn('type_book', [1,2])
+    $books = Book::where_type_book_sales(true, true)
+            ->where([['start','>=', $start ],['finish','<=', $finish ]])
+            ->whereIn('room_id',$roomsID)->get();
     
     $oneDay = 24*60*60;
       

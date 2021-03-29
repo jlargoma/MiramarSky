@@ -80,10 +80,18 @@ function lstMonths($startYear,$endYear,$format='ym',$name=false){
   if (is_numeric($diff) && $diff>0){
     $aux = strtotime('first day of '.$startYear);
     while ($diff>0){
-      if ($name)
-        $lstMonths[date($format,$aux)] =['m' => date('n',$aux), 'y' => date('y',$aux),'name'=> getMonthsSpanish(date('n',$aux))];
-      else
-        $lstMonths[date($format,$aux)] =['m' => date('n',$aux), 'y' => date('y',$aux)];
+        switch ($name){
+            case 'short':
+                $lstMonths[date($format,$aux)] =['m' => date('n',$aux), 'y' => date('y',$aux),'name'=> getMonthsSpanish(date('n',$aux))];
+                break;
+            case 'long':
+                $lstMonths[date($format,$aux)] =['m' => date('n',$aux), 'y' => date('y',$aux),'name'=> getMonthsSpanish(date('n',$aux),false)];
+                break;
+            default :
+                $lstMonths[date($format,$aux)] =['m' => date('n',$aux), 'y' => date('y',$aux)];
+                break;
+                
+        }
       $aux = strtotime('next month', $aux);
       $diff--;
     }

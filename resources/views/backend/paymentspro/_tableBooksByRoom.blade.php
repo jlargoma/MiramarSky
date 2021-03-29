@@ -1,4 +1,18 @@
-<h1>{{$nameRoom}}</h1>
+<div class="row">
+    <div class="col-md-8">
+        <h1>{{$nameRoom}}</h1>
+    </div>
+    <div class="col-md-4">
+        <select class="form-control" id="changeBookRoom_PVP">
+            <?php 
+            foreach ($allRooms as $rID=>$rName){
+                $selected = ($rID == $idRoom) ? 'selected' : '';
+                echo '<option '.$selected.' value="'.$rID.'">'.$rName.'</option>';
+            }
+            ?>
+        </select>
+    </div>
+</div>
 @include('backend.sales._tableSummaryBoxes',['hide'=>['t_day_1']])
 
 <div class="col-xs-12" style="overflow-y: auto; max-height: 650px;">

@@ -690,11 +690,11 @@ trait BookEmailsStatus
       public function sendEmail_WidgetPayment($book,$amount)
     {
        
-      $subject = 'Nueva reserva desde web pública';
       
       $body = 'Hola, un nuevo usuario ha pagado el 50% de la reserva hecha desde la web pública:<br/><br/>';
        
       $customer = $book->customer;
+      $subject = 'RESERVA WEBDIRECT : '.$customer->name;
       $body .= '<b>Nombre:</b>: '.$customer->name.'<br/><br/>';
       $body .= '<b>e-mail:</b>: '.$customer->email.'<br/><br/>';
       $body .= '<b>Teléfono:</b>: '.$customer->phone.'<br/><br/>';

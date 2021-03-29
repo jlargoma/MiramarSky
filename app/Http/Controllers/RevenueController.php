@@ -9,6 +9,8 @@ use \Carbon\Carbon;
 use App\Http\Controllers\INEController;
 use App\Revenue;
 use App\RevenuePickUp;
+use App\Rooms;
+use App\Book;
 use App\Services\Wubook\RateChecker;
 use Excel;
 
@@ -42,7 +44,7 @@ class RevenueController extends AppController
 
     
     
-    $qry_ch = \App\Rooms::where('state',1);
+    $qry_ch = Rooms::where('state',1);
     $allChannels = $qry_ch->where('channel_group','!=','')
             ->groupBy('channel_group')->pluck('channel_group')->all();
     
@@ -128,42 +130,39 @@ class RevenueController extends AppController
   
   public function disponibilidad(Request $req){
     
-    $chNames = configOtasAptosName();
-    
-    $season   = $this->getActiveYear();
-    $start_carb  = new Carbon($season->start_date);
-    $finish_carb = new Carbon($season->end_date);
-    $year   = $season->year;
+    $year   = $this->getActiveYear();
     $month_key = $req->input('month',date('y.m'));
-    $lstMonths = lstMonths($start_carb,$finish_carb,'y.m');
     $aux = explode('.', $month_key);
     if (count($aux)==2){
       $month  =  $aux[1];
       $start  = firstDayMonth('20'.$aux[0], $month);
       $finish = lastDayMonth('20'.$aux[0], $month);
     } else {
-      $month  = date('m');
-      $start  = firstDayMonth($season->year, $month);
-      $finish = lastDayMonth($season->year, $month);
+        $month_key = date('y.m');
+        $month = date('m');
+        $start  = firstDayMonth(date('Y'), $month);
+        $finish = lastDayMonth(date('Y'), $month);
     }
+    $chNames = configOtasAptosName();
+    $lstMonths = lstMonths(new Carbon($year->start_date), new Carbon($year->end_date),"y.m",'long');
     /************************************************************/
     /********   Prepare days array               ****************/
-    $startAux = strtotime($start);
-    $endAux = strtotime($finish);
+    $startTime = strtotime($start);
+    $endTime = strtotime($finish);
     $aLstDays = [];
     $oneDay = 24*60*60;
     $dw = listDaysSpanish(true);
-    while ($startAux<=$endAux){
+    $dwMin = ['D','L','M','M','J','V','S'];
+    $startAux = $startTime;
+    while ($startAux<=$endTime){
       $aLstDays[date('d',$startAux)] = $dw[date('w',$startAux)];
+      $aLstDaysMin[date('j',$startAux)] = $dwMin[date('w',$startAux)];
       $startAux+=$oneDay;
     }
       
     /************************************************************/
     /********   Get Roooms                      ****************/
-    $qry_ch = \App\Rooms::where('state',1);
-    $allRooms = $qry_ch->where('channel_group','!=','')->get();
-    
-
+    $allRooms = Rooms::where('state',1)->get();
     $otas = [];
     $roomsID = [];
     $totalOtas = 0;
@@ -176,15 +175,64 @@ class RevenueController extends AppController
       $totalOtas++;
       $roomsID[] = $room->id;
     }
-    
-    
     /************************************************************/
+    /********   Get RESUMENES                    ****************/ 
+    $lstBySite = [];
+    $oRooms = Rooms::where('state',1)->pluck('id')->toArray();
+    $sqlbooks = Book::where_type_book_reserved(true)
+            ->whereIn('room_id', $oRooms);
+    $sqlbooks = Book::w_book_times($sqlbooks,$start,$finish);
+    $books    = $sqlbooks->get();
+
+    $avail = count($oRooms);
+    $startAux = $startTime;
+    $aLstNight = [];
+    while ($startAux <= $endTime) {
+      $aLstNight[date('j', $startAux)] = 0;
+      $startAux += $oneDay;
+    }
+
+    $tNigh = 0;
+    $tPvp  = 0;
+
+    $control = [];
+    if ($books) {
+      foreach ($books as $book) {
+        $b_start = strtotime($book->start);
+        $b_finish = strtotime($book->finish);
+
+        while ($b_start < $b_finish) {
+            if (date('m', $b_start) == $month) {
+                $auxTime = date('j', $b_start);
+                $keyControl = $book->room_id . '-' . $auxTime;
+                if (!in_array($keyControl, $control) || true) {
+                    if (isset($aLstNight[$auxTime]))
+                        $aLstNight[$auxTime]++;
+                    $control[] = $keyControl;
+                }
+            }
+            $b_start += $oneDay;
+        }
+
+        $tPvp  += $book->total_price;
+      }
+    }
+
+    $lstBySite = [
+        'days'=>$aLstNight,
+        'avail'=>$avail,
+        'tNigh'=>array_sum($aLstNight),
+        'tPvp'=>$tPvp,
+    ];
+
+    /*****************************************************************/
     /********   Get Bookings                     ****************/  
     $listDaysOtas = [];
-    $oBook = new \App\Book();
+    $oBook = new Book();
     foreach ($otas as $apto=>$v){
-      $listDaysOtas[$apto] = $oBook->getAvailibilityBy_channel($apto, $start, $finish);
+      $listDaysOtas[$apto] = $oBook->getAvailibilityBy_channel($apto, $start, $finish,false,false,true);
     }
+
     $listDaysOtasTotal = null;
     foreach ($listDaysOtas as $k=>$v){
       if (!$listDaysOtasTotal) $listDaysOtasTotal = $v;
@@ -194,29 +242,30 @@ class RevenueController extends AppController
         }
       }
     }
+//    dd($listDaysOtasTotal);
     /*********************************************************************/
     /**********   SUMMARY                                 ****************/
     $totalMonth = $totalMonthOcc = $totalOtas*count($aLstDays);
-    $nightsTemp = calcNights($season->start_date,$season->end_date);
+    $nightsTemp = calcNights($year->start_date,$year->end_date);
     $totalSummary = $totalOtas*$nightsTemp;
     $totalSummaryOcc = 0;
     $monthPVP = $summaryPVP = 0; 
-    //Reservas del periodo
-    $books = \App\Book::whereIn('type_book', [1,2,11])
-          ->where([['start','>=', $season->start_date ],['finish','<=', $season->end_date ]])
-          ->whereIn('room_id',$roomsID)->get();
+
+    $sqlBooks = Book::where_type_book_sales()->whereIn('room_id',$roomsID);
+    $books = Book::w_book_times($sqlBooks, $start, $finish)->get();
+                    
     if ($books){
       $startMonth = strtotime($start);
       $endMonth = strtotime($finish);
       $totalMonthOcc = 0;
       foreach ($books as $book){
         $summaryPVP += $book->total_price;
-        if (date('y.m',strtotime($book->start)) == $month_key || date('y.m',strtotime($book->finish)) == $month_key){
-          $pvpPerNigh = ($book->nigths>0) ? ($book->total_price/$book->nigths) : $book->total_price;
+        if (date('m',strtotime($book->start)) == $month || date('m',strtotime($book->finish)) == $month){
+          $pvpPerNigh = $book->total_price/$book->nigths;
           $startAux = strtotime($book->start);
           $finishAux = strtotime($book->finish);
-          while ($startAux<=$finishAux){
-            if ($startAux>=$startMonth && $startAux<=$endMonth){
+          while ($startAux<$finishAux){
+            if (date('m',$startAux) == $month){
               $monthPVP += $pvpPerNigh;
               $totalMonthOcc++;
             }
@@ -226,8 +275,8 @@ class RevenueController extends AppController
       }
     }
     //Total by seasson
-    $totalSummaryOcc = \App\Book::whereIn('type_book', [1,2,11])
-          ->where([['start','>=', $season->start_date ],['finish','<=', $season->end_date ]])
+    $totalSummaryOcc = Book::whereIn('type_book', [1,2,11])
+          ->where([['start','>=', $year->start_date ],['finish','<=', $year->end_date ]])
           ->whereIn('room_id',$roomsID)->sum('nigths');
 
     $occupPerc = ($totalMonth>0) ? (round($totalMonthOcc/$totalMonth*100)) : 0;
@@ -242,8 +291,8 @@ class RevenueController extends AppController
         'foresc_n_hab'=>0,'foresc_n_hab_perc'=>0,'foresc_med_pvp'=>0,'foresc_pvp'=>0
         ];
     
-    $sSummarySeasson = \App\Settings::findOrCreate('revenue_disponibilidad_'.$season->year, 1);
-    $sSummaryMonth = \App\Settings::findOrCreate('revenue_disponibilidad_'.$season->year.'_'.$month, 1);
+    $sSummarySeasson = \App\Settings::findOrCreate('revenue_disponibilidad_'.$year->year);
+    $sSummaryMonth = \App\Settings::findOrCreate('revenue_disponibilidad_'.$year->year.'_'.$month);
     $sSummarySeasson = json_decode($sSummarySeasson->content,true);
     $sSummaryMonth = json_decode($sSummaryMonth->content,true);
     $sSummarySeasson = $sSummarySeasson ? array_merge($sKeys,$sSummarySeasson) : $sKeys;
@@ -256,7 +305,7 @@ class RevenueController extends AppController
         
     /************************************************************/
     return view('backend.revenue.disponibilidad',[
-      'year' => $season,
+      'year' => $year,
       'otas' => $otas,
       'chNames' => $chNames,
       'aLstDays' => $aLstDays,
@@ -278,6 +327,8 @@ class RevenueController extends AppController
         'medPVPSession' => $medPVPSession,
         'sSummarySeasson' => $sSummarySeasson,
         'sSummaryMonth' => $sSummaryMonth,
+        'lstBySite'=>$lstBySite,
+        'aLstDaysMin'=>$aLstDaysMin,
     ]);
   }
  
@@ -330,9 +381,8 @@ class RevenueController extends AppController
     
     $season   = $this->getActiveYear();
     $lstMonths = getMonthsSpanish(null,FALSE, TRUE);
-    $site_id  =1;
     $month_key = $req->input('month_key',date('y.m'));
-    
+
     $aux = explode('.', $month_key);
     if (count($aux)==2){
       $month  =  $aux[1];
@@ -358,10 +408,7 @@ class RevenueController extends AppController
       
     /************************************************************/
     /********   Get Roooms                      ****************/
-    $qry_ch = \App\Rooms::where('state',1);
-    $allRooms = $qry_ch->where('channel_group','!=','')->get();
-    
-
+    $allRooms = Rooms::where('state',1)->get();
     $otas = [];
     $roomsID = [];
     $totalOtas = 0;
@@ -378,10 +425,11 @@ class RevenueController extends AppController
     /************************************************************/
     /********   Get Bookings                     ****************/  
     $listDaysOtas = [];
-    $oBook = new \App\Book();
+    $oBook = new Book();
     foreach ($otas as $apto=>$v){
-      $listDaysOtas[$apto] = $oBook->getAvailibilityBy_channel($apto, $start, $finish);
+      $listDaysOtas[$apto] = $oBook->getAvailibilityBy_channel($apto, $start, $finish,false,false,true);
     }
+    
     $listDaysOtasTotal = null;
     foreach ($listDaysOtas as $k=>$v){
       if (!$listDaysOtasTotal) $listDaysOtasTotal = $v;
@@ -441,7 +489,6 @@ class RevenueController extends AppController
     ////////////////////////////////////////////////  
      
     $name = 'PickUp_'. $start.'_al_'.$finish;
-//    dd($rowTit,$listMonth);
     \Excel::create($name, function($excel)  use($rowTit,$listMonth)  {
        $excel->sheet("Mensual", function($sheet) use($rowTit,$listMonth) {
             $sheet->freezeFirstColumn();
@@ -542,7 +589,7 @@ class RevenueController extends AppController
     if (!$finish) $finish = $season->end_date;
     
     
-    $qry_ch = \App\Rooms::where('state',1);
+    $qry_ch = Rooms::where('state',1);
     $allChannels = $qry_ch->where('channel_group','!=','')
             ->groupBy('channel_group')->pluck('channel_group')->all();
     
@@ -584,6 +631,29 @@ class RevenueController extends AppController
       }
     }
     
+    $oLiquidacion = new \App\Liquidacion();
+    if ($ch) $roomsID = Rooms::where('channel_group',$ch)->pluck('id');
+    else  $roomsID = Rooms::where('state',1)->pluck('id');
+    $dataSeason = $oLiquidacion->getBookingAgencyDetailsBy_date($start,$finish,$roomsID);
+    
+    $agencyBooks    = [
+                'fp'   => 'FAST PAYMENT',
+                'wd'   => 'WEBDIRECT',
+                'vd'   => 'V. Directa',
+                'b'    => 'Booking',
+                'ab'   => 'AirBnb',
+                't'    => 'Trivago',
+                'ag'   => 'Agoda',
+                'ex'   => 'Expedia',
+                'gh'   => 'GHotel',
+                'bs'   => 'Bed&Snow',
+                'jd'   => "Jaime Diaz",
+                'se'   => 'S.essence',
+                'c'    => 'Cerogrados',
+                'h'    => 'HOMEREZ',
+                'none' => 'Otras'
+        ];
+    
     
     return view('backend.revenue.pickUp',[
       'year' => $season,
@@ -598,6 +668,9 @@ class RevenueController extends AppController
       'channels' => $allChannels,
       'ch_sel' => $ch,
       'range'=>date('d M, y', strtotime($start)).' - '.date('d M, y', strtotime($finish)),
+      'totalSeason' => $dataSeason['totals'],
+      'dataSeason' => $dataSeason['data'],
+      'agencyBooks' => $agencyBooks,
     ]);
   }
   
@@ -727,4 +800,158 @@ class RevenueController extends AppController
     return 'OK';
   }
   /****************************************************************************/
+  /****************************************************************************/
+  /****************************************************************************/
+  
+  /****************************************************************************/
+  function daily(Request $req){
+    
+    $year   = $this->getActiveYear();
+    $ch  = $req->input('ch_sel',null);
+    $start  = $req->input('start',null);
+    $finish = $req->input('finish',null);
+    if (!$start) $start  = $year->start_date;
+    if (!$finish) $finish = $year->end_date;
+    return view('backend.revenue.vtas-dia',
+            $this->get_dailyData($year,$start,$finish,$ch));
+  }
+  
+  function get_dailyData($year,$start,$finish,$ch_gr){
+    
+    $qry_rooms = Rooms::where('state',1);
+    $query2 = clone $qry_rooms;
+    
+    $allChannels = $query2->where('channel_group','!=','')
+            ->groupBy('channel_group')->pluck('channel_group')->all();
+    
+    /***********************************************************/
+    $roomsID = null;
+    if ($ch_gr){
+        $roomsID = Rooms::where('channel_group',$ch_gr)->pluck('id');
+        $lstRooms = Rooms::where('channel_group',$ch_gr)->pluck('name','id');
+    }
+    if (!$roomsID) $lstRooms = Rooms::pluck('name','id');
+    /***********************************************************/
+    $agency = Book::listAgency();
+    $oCountry = new \App\Countries();
+    /***********************************************************/
+    
+    $oBooks = new Book();
+    $qBooks = Book::where('type_book','!=',0)->where('type_book','!=',4)
+            ->where([['created_at', '>=', $start], ['created_at', '<=', $finish]]);
+    if ($roomsID) $qBooks->whereIn('room_id',$roomsID);
+    $oBoks = $qBooks->orderBy('created_at')->get();
+     
+    $lstResul = [];
+    $lstResulID = [];
+    $t_n = 0;
+    $t_tp = 0;
+    $t_adr = 0;
+    if ($oBoks){
+        foreach ($oBoks as $b){
+            
+            $time = strtotime($b->created_at);
+            $day = date('Ymd',$time);
+            if (isset($lstResulID[$day])) $lstResulID[$day]= [];
+            $lstResulID[$day][] = $b->id;
+            
+            $n  = $b->nigths;
+            $tp = $b->total_price;
+            $adr = ($n>0) ? $b->total_price/$n : $b->total_price;
+            
+            $t_n += $n;
+            $t_tp += $tp;
+            $t_adr += $adr;
+            
+            switch ($b->type_book){
+                case 1:
+                case 2:
+                case 7:
+                case 8:
+                    $status = 'Aceptada';
+                    break;
+                case 3:
+                case 5:
+                case 9:
+                case 11:
+                case 99:
+                    $status = 'En espera';
+                    break;
+                case 4: $status = 'Bloqueado'; break;
+                case 6: $status = 'Denegada'; break;
+                case 10: $status = 'Overbooking'; break;
+                case 98: $status = 'cancel-XML'; break;
+                case 0: $status = 'ELIMINADA'; break;
+                default:$status = ' - '; break;
+            }
+            
+            if ($b->user_id == 98) $ch = 'WEBDIRECT';
+            else $ch = isset($agency[$b->agency]) ? $agency[$b->agency] : 'Directa';
+                
+            $lstResul[$b->id] = [
+                'create' => convertDateToShow_text(date('Y-m-d',$time),true),
+                'name' => $b->customer->name,
+                'in'=>convertDateToShow_text($b->start,true),
+                'end'=>convertDateToShow_text($b->finish,true),
+                'nigth'=> $n,
+                'adr'=> round($adr),
+                'price'=> round($tp),
+                'status'=> $status,
+                'ch'=> $ch,
+                'country'=> $oCountry->getCountry($b->customer->country),
+                
+            ];
+            
+        }
+    }
+        return [
+            'year' => $year,
+            'lstResul' => $lstResul,
+            'start'=>$start,
+            'finish'=>$finish,
+            'channels' => $allChannels,
+            'ch_sel' => $ch_gr,
+            'range'=>date('d M, y', strtotime($start)).' - '.date('d M, y', strtotime($finish)),
+            't_n'=>$t_n,
+            't_tp'=>$t_tp,
+            't_adr'=>$t_adr,
+        ];
+    }
+    
+    function donwlDaily(Request $req){
+         
+        $year   = $this->getActiveYear();
+        $ch  = $req->input('ch_sel',null);
+        $start  = $req->input('start',null);
+        $finish = $req->input('finish',null);
+        if (!$start) $start  = $year->start_date;
+        if (!$finish) $finish = $year->end_date;
+        
+        
+        
+    $data = $this->get_dailyData($year,$start,$finish,$ch);   
+    $name = 'Ventas-dia-'. $start.'-al-'.$finish;
+    if ($data['ch_sel']) $name.= '-'.$data['ch_sel'];
+    
+    $lstResul = $data['lstResul'];
+    $rowTit = [
+        'Creada','CLIENTE','Check In',
+        'Check Out','Nº NOCHES',
+        'ADR','PVP RVA','ESTADO DE RESERVA',
+        'CANAL','ORIGEN: Cliente'
+    ];
+    \Excel::create($name, function($excel)  use($rowTit,$lstResul)  {
+       $excel->sheet("Mensual", function($sheet) use($rowTit,$lstResul) {
+            $sheet->freezeFirstColumn();
+            $sheet->row(1, $rowTit);
+            $index = 2;
+            foreach($lstResul as $r) {
+                $sheet->row($index, $r); 
+                $index++;
+            }
+            
+        });
+        })->export('xlsx');
+    }
+
 }

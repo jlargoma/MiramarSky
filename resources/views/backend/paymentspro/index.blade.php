@@ -677,6 +677,17 @@ $('.contentBookRoom').empty().append(data);
 });
 
 });
+$('.contentBookRoom').on('click','#changeBookRoom_PVP',function () {
+    var year = $('#fechas').val();
+    var startDate = "{{$startYear}}";
+    var idRoom = $(this).val();
+    var endDate = "{{$endYear}}";
+    $.get('/admin/paymentspro/getBooksByRoom/' + idRoom, {idRoom: idRoom, year: year,start:startDate,end:endDate}, function (data) {
+    $('.contentBookRoom').empty().append(data);
+    });
+});
+
+
 $('#refreshFilters').click(function (event) {
   window.location = window.location.href;
 });
