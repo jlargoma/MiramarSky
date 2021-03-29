@@ -47,41 +47,42 @@
 @endsection
 
 @section('content')
-<div class="box-btn-contabilidad">
-  <div class="row bg-white">
-    <div class="col-md-12 col-xs-12">
+<div class="row">
 
-      <div class="col-md-3 col-md-offset-3 col-xs-6 text-right">
+    <div class="col-md-4 col-xs-12 mt-3em">
+      <div class="col-xs-12">
+        @include('backend.revenue.pick-up._actions')
+        @include('backend.revenue.pick-up._filters')
+      </div>
+    </div>
+    <div class="col-md-4 col-xs-12">
+  <div class="row bg-white">
+      <div class="col-md-6 col-xs-6 text-right">
         <h2 class="text-center">
           Revenue
         </h2>
       </div>
-      <div class="col-md-2 col-xs-4 sm-padding-10" style="padding: 10px">
+      <div class="col-md-4 col-xs-4 sm-padding-10" style="padding: 10px">
         @include('backend.years._selector')
       </div>
+      <div class="col-md-12 mb-1em text-center">
+        @include('backend.revenue._buttons')
+       </div>
+      <div class="col-md-12 mb-1em text-center">
+        @include('backend.revenue.pick-up._summary')
+       </div>
     </div>
   </div>
-  <div class="row mb-1em text-center">
-    @include('backend.revenue._buttons')
-  </div>
+    <div class="col-md-4 col-xs-12 mt-3em">
+        @include('backend.revenue.pick-up.byAgenci')
+    </div>
+  
 </div>
 <div class=" contenedor c-pickup">
   <div class="row">
-     <div class="col-md-6">
-       @include('backend.revenue.pick-up._filters');
-    </div>
-    <div class=" col-md-6">
-      <div class="text-right">
-         @include('backend.revenue.pick-up._actions');
-      </div>
-      <div class="clearfix text-right">
-      @include('backend.revenue.pick-up._summary');
-      </div>
-    </div>
-  </div>
-  <div class="row">
     @include('backend.revenue.pick-up._tableItems');
   </div>
+  Reservado - stripe / Pagada-la-señal / Reserva Propietario / ATIPICAS / Blocked-ical
 </div>
 @endsection
 
@@ -222,6 +223,12 @@
         filterTable();
 
       });
+      $('#s_sitio').on('change', function(){
+        var value = $(this).val();
+        filters.site = value;
+        filterTable();
+
+      });
       
       $('.month_select').on('click', function(){
         $('#s_sitio').val(-1);
@@ -241,6 +248,20 @@
 </script>
 
 <style>
+      
+  .table-vta-agenc tbody tr td{
+    text-align: center;
+  }
+  .table-vta-agenc thead tr th {
+    background-color: #295d9b;
+    color: #fff;
+    text-align: center;
+  }
+  .table-vta-agenc tbody tr td:first-child,
+  .table-vta-agenc thead tr th:first-child{
+    text-align: left;
+  }
+
 @media only screen and (max-width: 767px) {
   .summary{
     padding: 7px 0;

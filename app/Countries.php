@@ -12,4 +12,14 @@ class Countries extends Model
     {
         return $this->hasMany('\App\Cities', 'code', 'code_country');
     }
+    
+    public function getCountry($code){
+        global $lstCountries;
+        if (!$lstCountries){
+            $lstCountries = $this::all()->pluck('country','code');
+        }
+        
+        $code = strtoupper($code);
+        return isset($lstCountries[$code]) ? $lstCountries[$code] : '-';
+    }
 }

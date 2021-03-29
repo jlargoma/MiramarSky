@@ -188,4 +188,6 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], fun
   Route::post('admin/revenue/generatePickUp', 'RevenueController@generatePickUp')->name('revenue.generatePickUp');
   Route::post('admin/revenue/donwlPickUp', 'RevenueController@donwlPickUp')->name('revenue.donwlPickUp');
   Route::post('admin/revenue/PickUp/update', 'RevenueController@updPickUp')->name('revenue.updPickUp');
+  Route::get('admin/revenue/VENTAS-POR-DIA', 'RevenueController@daily')->name('revenue.daily');
+  Route::post('admin/revenue/donwlVtasDia', 'RevenueController@donwlDaily')->name('revenue.donwlVtasDia');
 });

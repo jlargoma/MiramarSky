@@ -81,12 +81,14 @@
          <div class="">
              <div class="table-responsive">
               <table class="table summary-temp table-bordered">
+                  <thead>
                   <tr>
-                      <th>TEMPORADA</th>
-                      <th>GENERADO</th>
-                      <th>PAGADO</th>
-                      <th>PENDIENTE</th>
+                      <th class="bg-complete text-white">TEMPORADA</th>
+                      <th class="bg-complete text-white">GENERADO</th>
+                      <th class="bg-complete text-white">PAGADO</th>
+                      <th class="bg-complete text-white">PENDIENTE</th>
                   </tr>
+                  </thead>
                   <tbody id="summaryTemps">
                     
                   </tbody>

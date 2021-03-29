@@ -220,6 +220,7 @@ class ApiController extends AppController
         $book->nigths        = $nigths;
         $book->PVPAgencia    = 0;
         $book->is_fastpayment = 1;
+        $book->agency = 31;
         $book->user_id = 98;
         $book->customer_id = $customer->id;
         if (!$alreadyExist) $book->type_book     = 99;

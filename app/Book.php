@@ -155,7 +155,7 @@ class Book extends Model {
 //    return $array;
     
     $array = [
-        0 => "",
+        0 => "Directa",
         1 => "Booking",
         4 => "AirBnb"
         ];
@@ -168,10 +168,12 @@ class Book extends Model {
     $array[6] = "S.essence";
     $array[7] = "Cerogrados";
     $array[29] = 'HOMEREZ';
+    $array[31] = "WEBDIRECT";
     for($i=1;$i<21;$i++){
       $array[7+$i] = 'Agencia-'.$i;
     }
      $array[999999] = 'Google (no usar)' ;
+    
     return $array;
     
     
@@ -267,12 +269,7 @@ class Book extends Model {
    */
   static function where_type_book_sales($reservado_stripe=false,$ota=false,$overbooking=false) {
     
-    $types = [2, 7, 8];
-    if ($reservado_stripe) $types[] = 1;
-    if ($ota) $types[] = 11;
-    if ($overbooking) $types[] = 10;
-    //Pagada-la-señal / Reserva Propietario / ATIPICAS
-                
+    $types = self::get_type_book_sales($reservado_stripe,$ota,$overbooking);
     return self::whereIn('type_book',$types);
     
   }
@@ -284,8 +281,18 @@ class Book extends Model {
    * 
    * @return Object Query
    */
-  static function where_type_book_reserved() {
+  static function where_type_book_reserved($real=false) {
+    if ($real) return self::whereIn('type_book', [1,2,7,8,9,10,11]);
     return self::whereIn('type_book', [1,2,4,7,8,9,10,11]);
+  }
+  
+  static function get_type_book_sales($reservado_stripe=false,$ota=false,$overbooking=false) {
+     $types = [2, 7, 8];
+    if ($reservado_stripe) $types[] = 1;
+    if ($ota) $types[] = 11;
+    if ($overbooking) $types[] = 10;
+    //Pagada-la-señal / Reserva Propietario / ATIPICAS
+    return $types;
   }
   
   static function get_type_book_reserved() {
@@ -314,7 +321,23 @@ class Book extends Model {
                     });
   }
   
-
+  /**
+   * Get object Book that has status 2,7,8
+   * 
+   * @return Object Query
+   */
+  static function w_book_times($qry,$start,$finish) {
+      
+    $match1 = [['start', '>=', $start], ['start', '<=', $finish]];
+    $match2 = [['finish', '>=', $start], ['finish', '<=', $finish]];
+    $match3 = [['start', '<', $start], ['finish', '>', $finish]];
+    return $qry->where(function ($query) use ($match1, $match2, $match3) {
+                      $query->where($match1)
+                      ->orWhere($match2)
+                      ->orWhere($match3);
+                    });
+  }
+  
 
   /**
    * Send the Booking to Partee
@@ -692,8 +715,7 @@ class Book extends Model {
    * Get Availibility Room By channel
    * @param type $available
    */
-  public function getAvailibilityBy_channel($apto, $start, $finish,$return = false,$justSale=false) {
-
+  public function getAvailibilityBy_channel($apto, $start, $finish,$return = false,$justSale=false,$real=false) {
     $oRooms = Rooms::RoomsCH_IDs($apto);
     $match1 = [['start', '>=', $start], ['start', '<=', $finish]];
     $match2 = [['finish', '>=', $start], ['finish', '<=', $finish]];
@@ -701,7 +723,7 @@ class Book extends Model {
 
     
     if ($justSale) $sqlBooks = self::where_type_book_sales();
-    else  $sqlBooks = self::where_type_book_reserved();
+    else  $sqlBooks = self::where_type_book_reserved($real);
     
     $books = $sqlBooks->whereIn('room_id', $oRooms)
                     ->where(function ($query) use ($match1, $match2, $match3) {

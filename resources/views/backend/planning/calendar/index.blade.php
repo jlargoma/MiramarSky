@@ -39,9 +39,12 @@
       $('#modalRoomImages .modal-content').empty().append(data);
     });
   });
-  });
-
  
+  $('.content-calendar .tip').hover(function(event){
+    $(this).find('span').css('top', (event.screenY-120));
+    $(this).find('span').css('left', (event.pageX-100));
+  });
+   });
 </script>
 <style>
   .content-calendar .td-calendar{

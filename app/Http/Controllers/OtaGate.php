@@ -13,6 +13,7 @@ use App\DailyPrices;
 use App\ChannelManagerQueues;
 use App\Traits\OtasTraits;
 
+
 class OtaGate extends Controller {
 
   use OtasTraits;
@@ -63,6 +64,7 @@ class OtaGate extends Controller {
 //   $rooms = $oConfig->getRooms();
 //   dd($rooms);
     $conexion = $this->sOta;
+//    $conexion = $this->loadBooking(null);
     
     
 //    
@@ -347,6 +349,11 @@ class OtaGate extends Controller {
     foreach ($oBookings as $oBooking){
       $channel_group = $oConfig->getChannelByRoom($oBooking->roomtype_id);
       
+      $extra_array = is_string($oBooking->extra_array) ? json_decode($oBooking->extra_array) : $oBooking->extra_array;
+      if (isset($extra_array->from_google) && $extra_array->from_google){
+          $oBooking->ota_id = 'google-hotel';
+      }
+      
       $reserv = [
                 'channel' => $oBooking->ota_id,
                 'bkg_number' => $oBooking->number,
@@ -364,13 +371,43 @@ class OtaGate extends Controller {
                 'totalPrice' => $oBooking->amount,
                 'adults' => $oBooking->adults,
                 'children' => $oBooking->children,
-                'extra_array' => is_string($oBooking->extra_array) ? json_decode($oBooking->extra_array) : $oBooking->extra_array,
-//                    'currency' => $oBooking->currency,
+                'extra_array' => $extra_array,
                 'start' => $oBooking->arrival,
                 'end' => $oBooking->departure,
               ];
       
       $bookID = $this->sOta->addBook($channel_group,$reserv);
+      
+      
+    if ($bookID && $oBooking->ota_id == 'google-hotel'){
+        
+      $book = \App\Book::find($bookID);
+      $body = 'Hola, ha entrado una nueva reserva desde Google Hotel:<br/><br/>';
+       
+      $customer = $book->customer;
+      $subject = 'RESERVA GOOGLEHOTELS : '.$customer->name;
+      $body .= '<b>Nombre:</b>: '.$customer->name.'<br/><br/>';
+      $body .= '<b>e-mail:</b>: '.$customer->email.'<br/><br/>';
+      $body .= '<b>Teléfono:</b>: '.$customer->phone.'<br/><br/>';
+      $body .= '<b>Habitación:</b> '.$book->room->name.'<br/><br/>';
+      $body .= '<b>PVP:</b>: '.number_format($book->total_price, 0, '', '.').'<br/><br/>';
+      $body .= '<b>Fechas:</b> '.convertDateToShow_text($book->start).' - '. convertDateToShow_text($book->finish).'<br/><br/>';
+      $body .= '<b>Noches:</b> '.$book->nigths.'<br/><br/>';
+      $body .= '<b>Paxs:</b> '.$book->pax.'<br/><br/>';
+      $body .= '<b>Comtentarios:</b> '.$book->book_comments.'<br/><br/>';
+      
+       $sended = \Illuminate\Support\Facades\Mail::send('backend.emails.base', [
+            'mailContent' => $body,
+            'title'       => $subject
+        ], function ($message) use ($book, $subject) {
+            $message->from(config('mail.from.address'));
+            $message->to("reservas@apartamentosierranevada.net");
+            $message->subject($subject);
+            $message->replyTo(config('mail.from.address'));
+        });
+        
+    }
+    
 //      var_dump($reserv,$oBooking);
     }
     

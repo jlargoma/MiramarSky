@@ -54,7 +54,7 @@
       <th class="bg-green text-center col-md-1">PAGADO</th>
       <th class="bg-red text-center col-md-1">PENDIENTE</th>
     </thead>
-    <tbody id="tableItems" class="text-center">
+    <tbody  class="text-center">
         <tr>
             <td>-</td>
             <td class="text-left"><b>Ingresos Prop.</b></td>

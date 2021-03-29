@@ -335,11 +335,14 @@ class PaymentsProController extends AppController {
 
     $totBooks = (count($books) > 0) ? count($books) : 1;
 
+    $allRooms = Rooms::where('state',1)->orderBy('nameRoom')->pluck('nameRoom','id');
     return view('backend/paymentspro/_tableBooksByRoom', [
         'summary' => $summary,
         'books' => $books,
         'mobile' => new Mobile(),
         'nameRoom' => $nameRoom,
+        'allRooms' => $allRooms,
+        'idRoom' => $idRoom,
     ]);
   }
 

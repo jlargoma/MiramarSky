@@ -26,7 +26,7 @@ $route = \Request::route()->getName();
 $lstBtn = [
     'revenue'=>'DASHBOARD',
     'revenue.pickUpNew'=>'PICK UP',
-//    'revenue.rate'=>'RATE SHOPPER',
+    'revenue.daily'=>'X Día',
     'revenue.disponibilidad'=>'DISPONIBLIDAD x ALOJAMIENTO',
 ];
 
