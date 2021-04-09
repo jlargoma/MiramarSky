@@ -150,6 +150,7 @@
     //Route::group(['middleware' => 'authAdmin'], function () {
     Route::post('/paylands/payment', 'PaylandsController@payment')->name('payland.payment');
     Route::post('/paylands/get-payment-by-type', 'PaylandsController@getPaymentByType')->name('payland.get_payment');
+    Route::post('/paylands/send-payment-SMS', 'PaylandsController@sendPaymentSMS')->name('payland.send_payment_sms');
 //    Route::get('/proccess/payment/book/{id}/{payment?}', 'PaylandsController@processPaymentBook')
 //         ->name('payland.proccess.payment.book');
 //    Route::post('/proccess/payment/book/{id}/{payment?}', 'PaylandsController@processPaymentBook')

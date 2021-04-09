@@ -34,7 +34,7 @@ class SMSService
           'wappush' => '0',
 //          'internacional' => '',
       );
-
+ 
       //https://ws1.premiumnumbers.es/sms/push/sendPush?idCliente=99&-clave=kkk&remitente=test&destinatarios=600000000&texto=mensaje%20de%20texto&ruta=
       // CURL REQUEST FOR SIMPLE PUSH
       $url = $this->ENDPOINT;

@@ -7,7 +7,6 @@
       <th>Pick Up</th>
       <th>Cancelaciones</th>
       <th>PVP</th>
-      <th>Comp. Set</th>
       <th>LIBRES</th>
       <th>Nº Hab</th>
       <th>% Ocup</th>
@@ -24,7 +23,6 @@
         <td>{{$r->ocupacion+$r->llegada}}</td>
         <td @if($r->cancelaciones>0) class="text-danger" @endif>{{$r->cancelaciones}}</td>
         <td>{{moneda($r->pvp,false)}}</td>
-        <td></td>
         <td>{{$r->get_libre()}}</td>
         <td>{{$r->disponibilidad}}</td>
         <td>{{$r->get_ocup_percent()}}</td>

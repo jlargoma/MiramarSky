@@ -105,7 +105,7 @@ sendFormRevenue();
         font-weight: 800;
     }
     .table-excel  td.avails.number {
-        background-color: #69ff69;
+        background-color: #c0ddff;
         color: #383838;
     }
     th.thSpecial {

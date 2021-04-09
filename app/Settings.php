@@ -92,6 +92,7 @@ class Settings extends Model {
         'send_encuesta' => 'Mail de Encuestas',
         'send_encuesta_subject' => 'Asunto de Encuestas',
         'text_payment_link'     =>'Texto GENERADOR DE LINKS',
+        'SMS_payment_link'     =>'SMS GENERADOR DE LINKS',
         'widget_observations'      =>'Widget: Observaciones de su reserva',
         'widget_alert_cancelation' =>'Widget: Popover Cancelación gratuita',
     ];

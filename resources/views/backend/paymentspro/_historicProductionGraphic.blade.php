@@ -44,7 +44,7 @@ setlocale(LC_TIME, "es_ES");
                 <?php $dataChartYear = \App\Rooms::getCostPropByMonth(($year->year - 1) ,$room_id) ?>
                 <?php $dataChartPrevYear = \App\Rooms::getCostPropByMonth(($year->year - 2),$room_id) ?>
 
-                <canvas id="barChartTemp" style="width: 100%; height: 250px;"></canvas>
+                <canvas id="barChartTemp" style="max-height: 350px;"></canvas>
             </div>
         </div>
 
@@ -95,7 +95,7 @@ setlocale(LC_TIME, "es_ES");
                 options: {
                   title: {
                     display: false,
-                    text: 'World population per region (in millions)'
+                    text: ''
                   }
                 }
             });

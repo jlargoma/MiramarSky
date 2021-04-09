@@ -2,7 +2,7 @@
   <table class="table table-resumen summary-month">
     <thead>
       <tr class="resume-head">
-        <th class="static"></th>
+        <th class="static">Ocupadas</th>
         <th class="first-col"></th>
           @if($aLstDaysMin)
           @foreach($aLstDaysMin as $d=>$w)
