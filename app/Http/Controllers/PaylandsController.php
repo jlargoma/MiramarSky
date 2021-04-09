@@ -172,6 +172,9 @@ class PaylandsController extends AppController
                   </a>
                   <span id="copyLinkStripe" style="margin: 15px;">
                     <i class="fa fa-copy  fa-2x" aria-hidden="true"></i>
+                  </span> 
+                  <span id="sendSms" style="margin: 15px;" data-amount="'.$amount.'" data-url="'.$urlPay.'" data-bkg="'.$bookingID.'">
+                    <i class="fa fa-sms  fa-2x" aria-hidden="true"></i>
                   </span>  
                 <textarea type="text" id="cpy_link" style="display:none;border: none;color: #fff;">' . $textoUnformat . '</textarea>
           </div>';
@@ -752,4 +755,47 @@ class PaylandsController extends AppController
           return '';
         
     }
+    
+     
+  /**
+   * Send Payment link by SMS
+   * @param Request $request
+   * @return type
+   */
+  public function sendPaymentSMS(Request $request) {
+      
+    $urlPayment = $request->input('url', null);
+    $totalPayment = $request->input('amount', null);
+    $bookID = $request->input('bkg', null);
+
+    $book = \App\Book::find($bookID);
+    if ($book) {
+        if (trim($book->customer->phone) == ''){
+            return [
+                'status' => 'danger',
+                'msg' => "Cliente sin teléfono."
+            ];
+        }
+        //Send SMS
+        $SMSService = new \App\Services\SMSService();
+        $message = $this->getMailData($book, 'SMS_payment_link');
+        $message = str_replace('{urlPayment}', $urlPayment, $message);
+        $message = str_replace('{payment_amount}', $totalPayment, $message);
+        $phone = $book->customer->phone;
+        $message = $this->clearVars($message);
+        $message = strip_tags($message);
+        
+        if ($SMSService->sendSMS($message, $phone)) {
+            \App\BookLogs::saveLog($bookID,$book->room_id,$book->customer->email,'sms','SMS de pago '.$phone,$message);
+            return [
+              'status' => 'success',
+              'msg' => "SMS enviado",
+            ];
+        }
+    }
+    return [
+        'status' => 'danger',
+        'msg' => "Registro no encontrado."
+    ];
+  }
 }

@@ -26,35 +26,35 @@
   div#textPayment { padding: 6px 10px; }
 </style>
 <script type="text/javascript">
-	$(document).ready(function() {
+$(document).ready(function() {
 
-		$('#btnGenerate').click(function(event) {
-                    var importe = $('#importe_stripe').val();
-                    var subject = $('#subject_payment').val();
-                    var book = $('#book').val();
+    $('#btnGenerate').click(function(event) {
+        var importe = $('#importe_stripe').val();
+        var subject = $('#subject_payment').val();
+        var book = $('#book').val();
 
-			if (importe == '') {
-				alert('Rellena el importe a generar');
-			}else{
+            if (importe == '') {
+                    alert('Rellena el importe a generar');
+            }else{
 
-				$.get('/admin/links-payland-single',{ importe: importe,subject: subject, book: book }, function(data) {
-					$('.content-importe-stripe').empty().append(data);
-				});
-			}
+                    $.get('/admin/links-payland-single',{ importe: importe,subject: subject, book: book }, function(data) {
+                            $('.content-importe-stripe').empty().append(data);
+                    });
+            }
 
-		});
+    });
 
-		$('#paymentDataLink').on("click","#copyLinkStripe", function(){
-    var element = 'textPayment';
-    window.getSelection().removeAllRanges();
-    let range = document.createRange();
-    range.selectNode(typeof element === 'string' ? document.getElementById(element) : element);
-    window.getSelection().addRange(range);
-    document.execCommand('copy');
+    $('#paymentDataLink').on("click","#copyLinkStripe", function(){
+        var element = 'textPayment';
+        window.getSelection().removeAllRanges();
+        let range = document.createRange();
+        range.selectNode(typeof element === 'string' ? document.getElementById(element) : element);
+        window.getSelection().addRange(range);
+        document.execCommand('copy');
 
-  });
+    });
 
 
 		
-	});
+});
 </script>

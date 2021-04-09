@@ -87,6 +87,7 @@ setlocale(LC_TIME, "es_ES");
               || $k == 'SMS_fianza' || $k == 'SMS_fianza_en' 
               || $k == 'SMS_forfait' || $k == 'SMS_forfait_en' 
               || $k == 'SMS_buzon' || $k == 'SMS_buzon_en'
+              || $k == 'SMS_payment_link' || $k == 'SMS_payment_link_en'
               || $k == 'send_encuesta_subject' || $k == 'send_encuesta_subject_en'
             )
               $ckeditor = false;

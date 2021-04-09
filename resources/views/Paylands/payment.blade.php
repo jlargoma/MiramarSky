@@ -149,6 +149,17 @@
       });
   });
   
+    $('#paymentDataContent').on("click","#sendSms", function(){
+        $.post("{{route('payland.send_payment_sms')}}", {
+            _token: "{{csrf_token()}}",
+            url: $(this).data('url'),
+            amount: $(this).data('amount'),
+            bkg: $(this).data('bkg'),
+          }).done(function (response) {
+                window.show_notif('',response.status,response.msg);
+          });
+    });
+  
 </script>
 <style>
   #visaDataContent{
