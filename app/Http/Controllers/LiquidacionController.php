@@ -383,11 +383,7 @@ class LiquidacionController extends AppController {
     /***
      * Payment prop van todos los gastos específicos
      */
-    $gastos = \App\Expenses::where('date', '>=', $startYear)
-                    ->Where('date', '<=', $endYear)
-                    ->WhereNotNull('PayFor')
-                    ->orderBy('date', 'DESC')->get();
-//                    ->Where('type','=','prop_pay')
+    $gastos = \App\Expenses::getPaymentToProp($startYear,$endYear);
     if ($gastos){
       foreach ($gastos as $g){
         $m = date('ym', strtotime($g->date));
@@ -775,11 +771,21 @@ class LiquidacionController extends AppController {
     $typePayment = \App\Expenses::getTypeCobro();
     $qry = \App\Expenses::where('date', '>=', $year->start_date)
             ->Where('date', '<=', $year->end_date)
-            ->Where('type',$key)->orderBy('date', 'DESC');
+            ->orderBy('date', 'DESC');
             
             
-    if ($key != 'prop_pay')
-      $qry->WhereNull('PayFor');
+    if ($key == 'prop_pay'){
+        $qry->where(function ($query) {
+        $query->WhereNotNull('PayFor')
+              ->Where('PayFor', '!=', '');
+        });
+    } else {
+        $qry->where(function ($query) {
+        $query->WhereNull('PayFor')
+              ->orWhere('PayFor', '=', '');
+        })->Where('type',$key);
+    }
+    
     
     $expense = $qry->orderBy('date', 'DESC')->get();
     $total = $qry->sum('import');

@@ -38,8 +38,7 @@ class PaymentsProController extends AppController {
   }
   
   private  function getItems($year,$start,$end) {
-    $rooms = Rooms::orderBy('order', 'ASC')->get();
-
+    $rooms = Rooms::where('state',1)->orderBy('order', 'ASC')->get();
     /* Calculamos los ingresos por reserva y room */
     $data = array();
     $summary = [
@@ -100,34 +99,37 @@ class PaymentsProController extends AppController {
         $summary['totalPVP'] += $book->total_price;
       }
 
-      $year2 = self::getActiveYear();
-      $startYear = $year->start_date;
-      $endYear = $year->end_date;
-    
-      $gastos = \App\Expenses::getListByRoom($startYear,$endYear,$room->id);
-      if (count($gastos) > 0) {
-
-        foreach ($gastos as $gasto) {
-          $divisor = 0;
-
-          if (preg_match('/,/', $gasto->PayFor)) {
-            $aux = explode(',', $gasto->PayFor);
-            for ($i = 0; $i < count($aux); $i++) {
-              if (!empty($aux[$i])) {
-                $divisor++;
-              }
-            }
-          } else {
-            $divisor = 1;
-          }
-
-          $data[$room->id]['pagos'] += ($gasto->import / $divisor);
-          $summary['pagos'] += ($gasto->import / $divisor);
-        }
-      }
+      
     }
     
+    $year2 = self::getActiveYear();
+    $startYear = $year->start_date;
+    $endYear = $year->end_date;
+    /**************************************************/
+    $oPayments = \App\Expenses::getPaymentToProp($startYear,$endYear);
+    if (count($oPayments) > 0) {
 
+        foreach ($oPayments as $pay) {
+            $divisor = 0;
+
+            $aux = explode(',', $pay->PayFor);
+            foreach ($aux as $k => $i) {
+                if (empty($i)) {
+                    unset($aux[$k]);
+                }
+            }
+            $divisor = count($aux);
+            if ($divisor > 0) {
+                $byRoom = ($pay->import / $divisor);
+                foreach ($aux as $i) {
+                    if (isset($data[$i])) $data[$i]['pagos'] += $byRoom;
+                    else echo $i;
+                }
+            }
+            $summary['pagos'] += $pay->import;
+        }
+    }
+    /**************************************************/   
     $gastos = \App\Expenses::where('date', '>=', $startYear)
                     ->Where('date', '<=', $endYear)
                     ->whereNull('book_id')
@@ -161,12 +163,43 @@ class PaymentsProController extends AppController {
         $t_limpProp += $book->cost_limp;
       } 
     }
-      
+
+    $summary_liq = [
+        'prop_cost'=>0,
+        'total_pvp'=>0,
+        'total_cost'=>0,
+        'apto'=>0,
+        'park'=>0,
+        'lujo'=>0,
+        'agency'=>0,
+        'limp'=>0,
+        'prop_payment'=>$summary['pagos'],
+        'benef'=>0,
+        'benef_inc'=>0,
+        ];
+            
+    foreach ($data as $rID=>$d){
+       
+        $summary_liq['prop_cost'] += round($d['totales']['totalApto'] +
+                                    $d['totales']['totalParking'] +
+                                    $d['totales']['totalLujo']);
+        $summary_liq['total_pvp'] += round($d['totales']['totalPVP']);
+        $summary_liq['total_cost'] += round($d['totales']['totalCost']);
+        $summary_liq['apto'] += $d['totales']['totalApto'];
+        $summary_liq['park'] += $d['totales']['totalParking'];
+        $summary_liq['lujo'] += $d['totales']['totalLujo'];
+        $summary_liq['agency'] += $d['totales']['totalAgencia'];
+        $summary_liq['limp'] += $d['totales']['totalLimp'];
+
+    }
     
-    
-    $oLiq = new \App\Liquidacion();
-    $summary_liq = $oLiq->summaryTemp();
-    
+    $summary_liq['benef'] = $summary_liq['total_pvp'] - $summary_liq['total_cost'];
+    $divisor = ($summary_liq['total_pvp'] == 0) ? 1 : $summary_liq['total_pvp'];
+    $summary_liq['benef_inc'] = round(( $summary_liq['benef'] / $divisor ) * 100);
+                    
+                    
+                    
+                    
     return view('backend/paymentspro/index', [
         'year' => $year,
         'gastos' => $gastos,

@@ -196,7 +196,7 @@ use \Carbon\Carbon; ?>
           <tbody>
             <tr class="table-summary">
               <td class="text-center costeApto bordes" style="background: #89cfff;">
-                <b>{{moneda($summary_liq['costes']['prop_pay'])}}</b>
+                <b>{{moneda($summary_liq['prop_cost'])}}</b>
               </td>
               <td  style="padding: 8px;background: #89cfff;">
                  <b>{{moneda($summary_liq['total_pvp'])}}</b>
@@ -205,19 +205,19 @@ use \Carbon\Carbon; ?>
                  <b>{{moneda($summary_liq['total_cost'])}}</b>
               </td>
               <td >
-                 <b>{{moneda($summary_liq['totals']['apto'])}}</b>
+                 <b>{{moneda($summary_liq['apto'])}}</b>
               </td>
               <td >
-                {{moneda($summary_liq['totals']['park'])}}
+                {{moneda($summary_liq['park'])}}
               </td>
               <td >
-                {{moneda($summary_liq['totals']['lujo'])}}
+                {{moneda($summary_liq['lujo'])}}
               </td>
               <td >
-                {{moneda($summary_liq['totals']['agency'])}}
+                {{moneda($summary_liq['agency'])}}
               </td>
               <td >
-                {{moneda($summary_liq['totals']['limp'])}}
+                {{moneda($summary_liq['limp'])}}
               </td>
               <td >
                 <b class="<?php echo ($summary_liq['benef'] > 0) ? 'text-success' : 'text-danger';?> font-w800">{{moneda($summary_liq['benef'])}}</b>
@@ -230,7 +230,7 @@ use \Carbon\Carbon; ?>
               </td>
               <td class="text-center pendiente bordes" style="padding: 8px;">
                  <b class="text-danger font-w800">
-                   {{moneda($summary_liq['costes']['prop_pay']-$summary_liq['prop_payment'])}}
+                   {{moneda($summary_liq['prop_cost']-$summary_liq['prop_payment'])}}
                  </b>
               </td>
             </tr>

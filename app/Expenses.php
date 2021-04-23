@@ -109,10 +109,18 @@ class Expenses extends Model
             ->orderBy('date', 'DESC')
             ->get();
   }
+  static function getPaymentToProp($start,$end){
+    return self::where('date', '>=', $start)
+                    ->Where('date', '<=', $end)
+                    ->WhereNotNull('PayFor')
+                    ->Where('PayFor', '!=','') 
+                    ->orderBy('date', 'DESC')->get();
+  }
   static function getTotalPaymentToProp($start,$end){
     return self::where('date', '>=', $start)
             ->Where('date', '<=', $end)
             ->WhereNotNull('PayFor')       
+            ->Where('PayFor', '!=','')       
             ->sum('import');
   }
   
