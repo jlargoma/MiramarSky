@@ -44,7 +44,7 @@ class UsersController extends AppController
         $user->role = $request->input('role');
         $user->remember_token = str_random(60);
         $user->password = bcrypt($request->input('password'));
-        $user->role = $request->input('role');
+        $user->iban = $request->input('iban');
 
         if ($user->save()) {
             return redirect()->action('UsersController@index');
@@ -88,7 +88,7 @@ class UsersController extends AppController
         $userUpadate->nif_business = $request->input('nif_business');
         $userUpadate->address_business = $request->input('address_business');
         $userUpadate->zip_code_business = $request->input('zip_code_business');
-
+        $userUpadate->iban = $request->input('iban');
 
         if ($userUpadate->save()) {
             return redirect()->action('UsersController@index');

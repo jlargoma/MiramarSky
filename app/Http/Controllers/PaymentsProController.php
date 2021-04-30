@@ -105,6 +105,8 @@ class PaymentsProController extends AppController {
     $year2 = self::getActiveYear();
     $startYear = $year->start_date;
     $endYear = $year->end_date;
+    $startYear = $start;
+    $endYear = $end;
     /**************************************************/
     $oPayments = \App\Expenses::getPaymentToProp($startYear,$endYear);
     if (count($oPayments) > 0) {
@@ -123,7 +125,7 @@ class PaymentsProController extends AppController {
                 $byRoom = ($pay->import / $divisor);
                 foreach ($aux as $i) {
                     if (isset($data[$i])) $data[$i]['pagos'] += $byRoom;
-                    else echo $i;
+//                    else echo $i.'-';
                 }
             }
             $summary['pagos'] += $pay->import;
@@ -197,7 +199,37 @@ class PaymentsProController extends AppController {
     $divisor = ($summary_liq['total_pvp'] == 0) ? 1 : $summary_liq['total_pvp'];
     $summary_liq['benef_inc'] = round(( $summary_liq['benef'] / $divisor ) * 100);
                     
-                    
+                  
+    /*****************************************************************/
+    /***********  TXT Prop      */
+    $roomOwned = [];
+    $txtProp = null;
+    foreach ($rooms as $r){
+      $roomOwned[$r->id] = $r->owned;
+    }
+    $tTxtProp = 0;
+    $txtUser = [];
+    foreach ($data as $rID=>$d){
+      $pendiente = $d['coste_prop'] - $d['pagos'];
+      if ($pendiente>1 && isset($roomOwned[$rID])){
+        if (!isset($txtUser[$roomOwned[$rID]])) $txtUser[$roomOwned[$rID]] = 0;
+        $txtUser[$roomOwned[$rID]] += $pendiente;
+        $tTxtProp+=$pendiente;
+      }
+    }
+    if (count($txtUser)>0){
+      $txtProp = [];
+      $lstUser = \App\User::whereIn('id', array_keys($txtUser))->get();
+      foreach ($lstUser as $u){
+        $txtProp[] = [
+          'name'=>$u->name,
+          'mount'=>$txtUser[$u->id],
+          'iban'=>$u->iban
+        ];
+      }
+    }
+    
+    /*****************************************************************/
                     
                     
     return view('backend/paymentspro/index', [
@@ -210,7 +242,9 @@ class PaymentsProController extends AppController {
         'startYear' => $startYear,
         'endYear' => $endYear,
         'limp_prop' => $limp_prop,
-        't_limpProp' => $t_limpProp
+        't_limpProp' => $t_limpProp,
+        'txtProp' => $txtProp,
+        'tTxtProp'=>$tTxtProp
     ]);
   }
 
@@ -510,7 +544,8 @@ class PaymentsProController extends AppController {
     
     $startExp = date('Y-m-d', strtotime($year->start_date));
     $finishExp =date('Y-m-d', strtotime($year->end_date));
-      
+    $startExp = $start;
+    $finishExp = $finish;
     $pagos = \App\Expenses::where('date', '>=', $startExp)
             ->where('date', '<=', $finishExp)
             ->where('PayFor', 'LIKE', '%' . $roomID . '%')
