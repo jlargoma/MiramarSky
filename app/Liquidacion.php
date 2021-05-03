@@ -38,7 +38,10 @@ class Liquidacion
      * 
      * @return type
      */
-    public function summaryTemp() {
+    public function summaryTemp($qry=false) {
+        if ($qry){
+          return $this->get_summary($qry->get(),true);
+        }
       return $this->get_summary(Book::getBy_temporada(),true);
     }
 
@@ -262,7 +265,9 @@ class Liquidacion
     $gastos = \App\Expenses::where('date', '>=', $activeYear->start_date)
                     ->Where('date', '<=', $activeYear->end_date)
                     ->WhereIn('type',array_keys($aExpensesPayment))
-                    ->WhereNull('PayFor')
+                    ->where(function ($query) {
+                        $query->WhereNull('PayFor')->orWhere('PayFor', '=', '');
+                    })
                     ->Where('type','!=','prop_pay')
                     ->orderBy('date', 'DESC')->get();
     
@@ -325,11 +330,7 @@ class Liquidacion
       foreach ($books as $key => $book) {
         $total += $book->get_costProp();
       }
-      $gastos = \App\Expenses::where('date', '>=',$startYear)
-              ->where('date', '<=', $endYear)
-              ->WhereNotNull('PayFor')   
-              ->orderBy('date', 'DESC')->get();
-      
+      $gastos = \App\Expenses::getPaymentToProp($startYear,$endYear);
       foreach ($gastos as $payment) {
         switch ($payment->typePayment){
           case 0:

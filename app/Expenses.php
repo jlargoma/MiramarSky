@@ -109,10 +109,18 @@ class Expenses extends Model
             ->orderBy('date', 'DESC')
             ->get();
   }
+  static function getPaymentToProp($start,$end){
+    return self::where('date', '>=', $start)
+                    ->Where('date', '<=', $end)
+                    ->WhereNotNull('PayFor')
+                    ->Where('PayFor', '!=','') 
+                    ->orderBy('date', 'DESC')->get();
+  }
   static function getTotalPaymentToProp($start,$end){
     return self::where('date', '>=', $start)
             ->Where('date', '<=', $end)
             ->WhereNotNull('PayFor')       
+            ->Where('PayFor', '!=','')       
             ->sum('import');
   }
   
@@ -163,10 +171,8 @@ class Expenses extends Model
   
   static function delExpenseLimpieza($book_id) {
     if ($book_id>0){
-      $obj = \App\Expenses::where('book_id',$book_id)->where('type','limpieza')->first();
-      if ($obj){
-        $obj->delete();
-      }
+      \App\Expenses::where('book_id',$book_id)->where('type','limpieza')->delete();
+      \App\Incomes::where('book_id',$book_id)->where('type','limp_prop')->delete();
     }
   }
   
@@ -176,28 +182,22 @@ class Expenses extends Model
       $obj = \App\Expenses::where('book_id',$book_id)->where('type','limpieza')->first();
       if ($obj){
         $obj->date = $date;
-        if ($obj->save()) {
-          return true;
-        } else {
-          return false;
-        }
+        $obj->save();
+      } else {
+        //create
+        $obj = new \App\Expenses();
+        $obj->concept = "LIMPIEZA RESERVA PROP. " . $room->nameRoom;
+        $obj->date = $date;
+        $obj->import = $amount;
+        $obj->typePayment = 3;
+        $obj->book_id = $book_id;
+        $obj->type = 'limpieza';
+        $obj->comment = "LIMPIEZA RESERVA PROPIETARIO " . $room->nameRoom;
+        $obj->PayFor = $room->id;
+        $obj->save();
       }
     }
-    //create
-    $obj = new \App\Expenses();
-    $obj->concept = "LIMPIEZA RESERVA PROPIETARIO " . $room->nameRoom;
-    $obj->date = $date;
-    $obj->import = $amount;
-    $obj->typePayment = 3;
-    $obj->book_id = $book_id;
-    $obj->type = 'limpieza';
-    $obj->comment = "LIMPIEZA RESERVA PROPIETARIO " . $room->nameRoom;
-    $obj->PayFor = $room->id;
-    if ($obj->save()) {
-      return true;
-    } else {
-      return false;
-    }
+    return true;
   }
   
   

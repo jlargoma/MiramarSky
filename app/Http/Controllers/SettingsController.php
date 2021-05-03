@@ -235,4 +235,19 @@ class SettingsController extends AppController
       return redirect()->back()->with('success','Precio por PAX estras guardado.');
     }
     
+    
+    public function updIva(Request $request) {
+      $key = $request->input('key');
+      $val = $request->input('val');
+
+      $obj = Settings::where('key',$key)->first();
+      if (!$obj){
+        $obj = new Settings();
+        $obj->key =  $key;
+      }
+      $obj->value = intval($val);
+      if ($obj->save()) return 'OK';
+      return 'error';
+    }
+    
 }

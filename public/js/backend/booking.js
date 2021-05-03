@@ -21,23 +21,9 @@ $(document).ready(function() {
         return true;
       }
       if ( status == 7) {
-        if (sizeApto == 1) {
-          $('.total').empty().val(30);
-          $('.cost').empty().val(30);
-          $('.beneficio').empty().val(0);
-          return true;
-        }
-
-        if (sizeApto == 3 || sizeApto == 4){
-          $('.total').empty().val(100);
-          $('.cost').empty().val(70);
-          $('.beneficio').empty().val(30);
-          return true;
-        }
-
-        $('.total').empty().val(50);
-        $('.cost').empty().val(40);
-        $('.beneficio').empty().val(10);
+        $('.total').empty().val(0);
+        $('.cost').empty().val(0);
+        $('.beneficio').empty().val(0);
         return true;
       }
       return false;

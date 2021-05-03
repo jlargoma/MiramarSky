@@ -87,6 +87,11 @@ tr.table-summary td{
   text-align: center;
   white-space: nowrap;
 }
+#txtProp_filter{display: none;}
+button.btn.btn-primary.btn-txt{    float: left;
+    height: 35px;
+    margin-left: 9px;
+    font-size: 1.2em;}
 </style>
 
 <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
@@ -118,7 +123,7 @@ use \Carbon\Carbon; ?>
 
 <div class="container-fluid padding-25 sm-padding-10">
   <div class="row push-20">
-    <div class="col-md-3 col-xs-12 text-center">
+    <div class="col-md-4 col-xs-12 text-center">
       <form method="POST" id="form_filterByRange"> 
         <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
         <input type="hidden" id="sent" name="sent" value="0">
@@ -141,6 +146,7 @@ use \Carbon\Carbon; ?>
           <i class="fa fa-eye"></i> Liquidación por Apto
         </button>
       </form>
+      <button class="btn btn-primary btn-txt" type="button" data-toggle="modal" data-target="#modalTXT">Ver TXT</button>
     </div>
     <div class="col-md-2 col-md-offset-1 col-xs-12 text-center">
       <h2 class="font-w300">Pagos a <span class="font-w800">propietarios</span> </h2>
@@ -196,7 +202,7 @@ use \Carbon\Carbon; ?>
           <tbody>
             <tr class="table-summary">
               <td class="text-center costeApto bordes" style="background: #89cfff;">
-                <b>{{moneda($summary_liq['costes']['prop_pay'])}}</b>
+                <b>{{moneda($summary_liq['prop_cost'])}}</b>
               </td>
               <td  style="padding: 8px;background: #89cfff;">
                  <b>{{moneda($summary_liq['total_pvp'])}}</b>
@@ -205,19 +211,19 @@ use \Carbon\Carbon; ?>
                  <b>{{moneda($summary_liq['total_cost'])}}</b>
               </td>
               <td >
-                 <b>{{moneda($summary_liq['totals']['apto'])}}</b>
+                 <b>{{moneda($summary_liq['apto'])}}</b>
               </td>
               <td >
-                {{moneda($summary_liq['totals']['park'])}}
+                {{moneda($summary_liq['park'])}}
               </td>
               <td >
-                {{moneda($summary_liq['totals']['lujo'])}}
+                {{moneda($summary_liq['lujo'])}}
               </td>
               <td >
-                {{moneda($summary_liq['totals']['agency'])}}
+                {{moneda($summary_liq['agency'])}}
               </td>
               <td >
-                {{moneda($summary_liq['totals']['limp'])}}
+                {{moneda($summary_liq['limp'])}}
               </td>
               <td >
                 <b class="<?php echo ($summary_liq['benef'] > 0) ? 'text-success' : 'text-danger';?> font-w800">{{moneda($summary_liq['benef'])}}</b>
@@ -230,7 +236,7 @@ use \Carbon\Carbon; ?>
               </td>
               <td class="text-center pendiente bordes" style="padding: 8px;">
                  <b class="text-danger font-w800">
-                   {{moneda($summary_liq['costes']['prop_pay']-$summary_liq['prop_payment'])}}
+                   {{moneda($summary_liq['prop_cost']-$summary_liq['prop_payment'])}}
                  </b>
               </td>
             </tr>
@@ -307,12 +313,10 @@ use \Carbon\Carbon; ?>
           <tbody>
             <?php foreach ($rooms as $room): ?>
               <?php if ($room->state == 1): ?>
-    <?php
-    $costPropTot = $data[$room->id]['totales']['totalApto'] +
-            $data[$room->id]['totales']['totalParking'] +
-            $data[$room->id]['totales']['totalLujo']
-    ?>
-                      <?php $pendiente = $costPropTot - $data[$room->id]['pagos'] ?>
+                <?php
+                $costPropTot = $data[$room->id]['coste_prop'];
+                $pendiente = $costPropTot - $data[$room->id]['pagos'];
+                ?>
                 <tr>
                 @if($isMobile)
                   <td class="text-left static" style="width: 130px;color: black;overflow-x: scroll;   margin-top: 4px; ">  
@@ -431,7 +435,7 @@ use \Carbon\Carbon; ?>
 
                   <td class="text-center pendiente bordes"  style="padding: 10px 5px ;">
 
-                <?php if ($pendiente <= 0): ?>
+                <?php if ($pendiente <= 1): ?>
                       <span class="text-success font-w800"><?php echo number_format($pendiente, 0, ',', '.') ?>€</span>
                 <?php else: ?>
                       <span class="text-danger font-w800"><?php echo number_format($pendiente, 0, ',', '.') ?>€</span>
@@ -608,6 +612,40 @@ use \Carbon\Carbon; ?>
   </div>
 <!-- /.modal-dialog -->
 </div>
+<div class="modal fade" id="modalTXT" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document" style="max-width: 98%; width: 660px;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong class="modal-title" style="font-size: 1.4em;">TXT LIQUIDACION ( {{convertDateToShow($startYear)}} al {{convertDateToShow($endYear)}}) TOTAL: {{moneda($tTxtProp)}}</strong>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table id="txtProp" class="table" style="width:100%">
+        <thead>
+            <tr>
+                <th>Nombre de Beneficiaron</th>
+                <th class="text-center">Cuenta Abono</th>
+                <th class="text-right">Importe</th>
+            </tr>
+        </thead>
+        <tbody>
+          @if($txtProp)
+            @foreach($txtProp as $t)
+            <tr>
+              <td>{{$t['name']}}</td>
+              <td class="text-center">{{$t['iban']}}</td>
+              <td class="text-right" data-order="{{$t['mount']}}">{{moneda($t['mount'])}}</td>
+            </tr>
+            @endforeach
+          @endif
+        </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('scripts')
@@ -649,6 +687,11 @@ var month = $(this).val();
 window.location = '/admin/pagos-propietarios/' + month;
 });
 
+ $('#txtProp').DataTable({
+    "paging":   false,
+    search: false,
+    "info":     false
+ });
 
 });
 

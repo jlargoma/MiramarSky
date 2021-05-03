@@ -10,6 +10,7 @@
       <th class="text-center bg-complete text-white col-md-1">Método de pago</th>
       <th class="text-center bg-complete text-white col-md-2">Importe</th>
       <th class="text-center bg-complete text-white col-md-2">Comentario</th>
+      <th class="text-center bg-complete text-white col-md-2">Tipo</th>
       </thead>
       <tbody id="tableItems" class="text-center">
         @if($items)
@@ -20,6 +21,7 @@
             <td><?php echo isset($typePayment[$item->typePayment]) ? $typePayment[$item->typePayment] : '--'; ?></td>
             <td>{{moneda($item->import)}}</td>
             <td>{{$item->comment}}</td>
+            <td>{{$item->type}}</td>
           </tr>
           @endforeach
         @endif

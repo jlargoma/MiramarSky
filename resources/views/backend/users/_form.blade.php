@@ -70,6 +70,12 @@
                         </div>
                         <br>
                         <div class="input-group">
+                            <label>Cta. Cte.</label>
+                            <input type="text" class="form-control" name="iban" placeholder="Cta.Cte./IBAN" value="<?php echo $user->iban?>">
+
+                        </div>
+                        <br>
+                        <div class="input-group">
                             <label>Dirección</label>
                             <input type="text" class="form-control" name="address_business" placeholder="Dirección"value="<?php echo $user->address_business?>">
                         </div>
