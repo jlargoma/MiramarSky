@@ -166,6 +166,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
   //SETTINGS
   Route::post('/settings/createUpdate', 'SettingsController@createUpdateSetting')->name('settings.createUpdate');
   Route::post('settings/updExtraPaxPrice','SettingsController@updExtraPaxPrice')->name('settings.extr_pax_price');
+  Route::post('settings/updIva','SettingsController@updIva')->name('settings.updIva');
   //PAYMENTS
 //  Route::post('/', 'SettingsController@createUpdateSetting')->name('settings.createUpdate');
   Route::get('/links-payland', 'PaylandsController@link');

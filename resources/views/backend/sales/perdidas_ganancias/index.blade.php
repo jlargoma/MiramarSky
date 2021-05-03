@@ -22,6 +22,13 @@ setlocale(LC_TIME, "es_ES");
     }
   }
 
+  .updIVA{
+    background-color: transparent;
+    border: none;
+    text-align: right;
+    padding: 0;
+    width: 2em;
+  }
   td{
     height: 3em !important;
     padding: 7px 9px !important;
@@ -462,6 +469,35 @@ $('#iva_jorge').on('keyup', function (e) {
       $('#modalShowDetail').find('.modal-body').empty().append(data);
     });
    });
+   
+   
+   
+    
+$('.updIVA').on('change',function(){
+    var url = "/admin/settings/updIva";
+    var _data = {
+      key: $(this).data('k'),
+      val: $(this).val(),
+      _token: "{{ csrf_token() }}"
+    }
+    
+      $.ajax({
+        type: "POST",
+        method : "POST",
+        url: url,
+        data: _data,
+        success: function (response)
+        {
+          if (response == 'OK') {
+            location.reload();
+          } else {
+            clearAll();
+            window.show_notif('Error','danger','Registro NO Actualizado');
+          }
+        }
+      });
+    });
+    
 });
 </script>
 @endsection

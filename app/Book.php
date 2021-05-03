@@ -819,10 +819,20 @@ class Book extends Model {
     $this->sup_lujo    = 0;
     $this->cost_lujo   = 0;
     $this->cost_apto   = 0;
-    $this->sup_limp  = ($room->sizeApto == 1) ? 30 : 50;
-    $this->cost_limp = is_null($room->limp_prop) ? 30 : $room->limp_prop;
-    $this->real_price = ($room->sizeApto == 1) ? 30 : 50;
-    $this->cost_total = ($room->sizeApto == 1) ? 30 : 40;
+    $this->sup_limp    = 0;
+    $this->cost_limp   = 0;
+    $this->real_price  = 0;
+    $this->cost_total  = 0;
+    $this->total_ben   = 0;
+    $this->inc_percent = 0;
+    $this->ben_jorge   = 0;
+    $this->ben_jaime   = 0;
+//      
+//      
+//    $this->sup_limp  = ($room->sizeApto == 1) ? 30 : 50;
+//    $this->cost_limp = is_null($room->limp_prop) ? 30 : $room->limp_prop;
+//    $this->real_price = ($room->sizeApto == 1) ? 30 : 50;
+//    $this->cost_total = ($room->sizeApto == 1) ? 30 : 40;
     $this->total_price = $this->real_price;
       
 //    \App\Expenses::setExpenseLimpieza($this->id, $room, $this->finish,$this->cost_limp);

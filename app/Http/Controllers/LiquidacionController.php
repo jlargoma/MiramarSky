@@ -515,20 +515,28 @@ class LiquidacionController extends AppController {
     
     $iva_jorge = 0;
     $iva_soportado = 0;
-    $ivaTemp = \App\Settings::getKeyValue('IVA_'.$data['year']->year);
-    if ($ivaTemp){
-      $ivaTemp = json_decode($ivaTemp);
-      $iva_soportado = $ivaTemp[0];
-      $iva_jorge     = $ivaTemp[1];
-    }
-    $resultIVA_modif = $iva_jorge+$iva_soportado;
+
     /*****************************************************************/
     /******   FORMULAS EXCEL                          ***************/
+    $ivas = [
+        'ing_iva'=>21,
+        'ff_FFExpress'=>10,
+        'ff_ClassesMat'=>21,
+        'otros_ingr'=>21,
+        'ff_ClassesMat_expense'=>10,
+        'gasto_operativo'=>21,
+    ];
+    $oIvas = \App\Settings::whereIn('key', array_keys($ivas))->get();
+    if ($oIvas){
+      foreach ($oIvas as $iva){
+        $ivas[$iva->key] = $iva->value;
+      }
+    }
     //INGRESOS POR VENTAS DE RESERVAS
 //    dd($data);
 //    $vtas_reserva = $data['lstT_ing']['ventas'];
     $ingr_reservas = $data['lstT_ing']['ventas']-$tPayProp;
-    $ing_baseImp   = $ingr_reservas/1.21;
+    $ing_baseImp   = $ingr_reservas/(1+($ivas['ing_iva']/100));
     $ing_iva       = $ingr_reservas-$ing_baseImp;
     
     
@@ -549,22 +557,22 @@ class LiquidacionController extends AppController {
 //            +$data['lstT_ing']['rappel_forfaits']
 //            +$data['lstT_ing']['rappel_alq_material']
 //            +$data['lstT_ing']['others'];
-    $data['otros_ingr_base'] = $data['otros_ingr']/1.21;
+    $data['otros_ingr_base'] = $data['otros_ingr']/(1+($ivas['otros_ingr']/100));
     $data['otros_ingr_iva']  = $data['otros_ingr']-$data['otros_ingr_base'];
     
     
     
     
     //INGRESOS POR VENTAS DE FORFAITS
-   
-    
-    $_ff_FFExpress_baseImp   = ($data['ff_FFExpress']>0) ? $data['ff_FFExpress']/1.1 : 0;
+//    $_ff_FFExpress_baseImp   = ($data['ff_FFExpress']>0) ? $data['ff_FFExpress']/1.1 : 0;
+    $_ff_FFExpress_baseImp   = ($data['ff_FFExpress']>0) ? $data['ff_FFExpress']/(1+($ivas['ff_FFExpress']/100)) : 0;
     $_ff_FFExpress_iva       = $data['ff_FFExpress']-$_ff_FFExpress_baseImp;
-    $_ff_ClassesMat_baseImp  = ($data['ff_ClassesMat']>0) ? $data['ff_ClassesMat']/1.21 : 0;
+//    $_ff_ClassesMat_baseImp  = ($data['ff_ClassesMat']>0) ? $data['ff_ClassesMat']/1.21 : 0;
+    $_ff_ClassesMat_baseImp  = ($data['ff_ClassesMat']>0) ? $data['ff_ClassesMat']/(1+($ivas['ff_ClassesMat']/100)) : 0;
     $_ff_ClassesMat_iva      = $data['ff_ClassesMat']-$_ff_ClassesMat_baseImp;
     
     $ing_comision_baseImp   = ($data['lstT_ing']['rappel_forfaits']>0) ? $data['lstT_ing']['rappel_forfaits']/1.21 : 0;
-    $ing_comision_iva       = ($ing_comision_baseImp>0) ? $ing_comision_baseImp/1.21 : 0;
+    $ing_comision_iva       = ($ing_comision_baseImp>0) ? $ing_comision_baseImp/(1+($ivas['ff_ClassesMat']/100)) : 0;
     
     //TOTAL GASTOS PROV FORFAITS/CLASES
     
@@ -594,7 +602,18 @@ class LiquidacionController extends AppController {
       $tGastos_operativos += $data['lstT_gast'][$k] + floatval ($data['aExpensesPending'][$k]);
 
     
+    $iva_soportado = round(($tGastos_operativos*($ivas['gasto_operativo']/100)),2);
     $gasto_operativo_iva     = $iva_soportado;
+    $ivaTemp = \App\Settings::getKeyValue('IVA_'.$data['year']->year);
+    if ($ivaTemp){
+      $ivaTemp = json_decode($ivaTemp);
+      if ($ivaTemp[0]>0)  $iva_soportado = $ivaTemp[0];
+      
+      $iva_jorge     = $ivaTemp[1];
+      $gasto_operativo_iva     = $iva_soportado;
+    }
+    $resultIVA_modif = $iva_jorge+$iva_soportado;
+    
     $gasto_operativo_baseImp = $tGastos_operativos-$gasto_operativo_iva;
     
     
@@ -639,6 +658,7 @@ class LiquidacionController extends AppController {
     $data['t_ingrTabl_iva']   = $vtas_alojamiento_iva+$ing_ff_iva+$data['otros_ingr_iva'];
     $data['t_gastoTabl_base'] = $tPayProp+$gasto_ff_baseImp+$gasto_operativo_baseImp;
     $data['t_gastoTabl_iva']  = $gasto_ff_iva+$gasto_operativo_iva;
+    $data['ivas']  = $ivas;
  
     
     

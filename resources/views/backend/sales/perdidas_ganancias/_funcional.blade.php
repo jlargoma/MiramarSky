@@ -56,7 +56,7 @@
       <tr class="white border">
         <td >VTAS INTERM INMOB</td>
         <td >{{moneda($ing_baseImp)}}</td>
-        <td >21%</td>
+        <td ><input value="{{$ivas['ing_iva']}}" min="0" max="22" data-k="ing_iva" class="updIVA">%</td>
         <td >{{moneda($ing_iva)}}</td>
         <td >{{moneda($ingr_reservas)}}</td>
       </tr>
@@ -113,28 +113,28 @@
       <tr class="border">
         <td >VTAS ALOJAMIENTO</td>
         <td >{{moneda($vtas_alojamiento_base)}}</td>
-        <td >21%</td>
+        <td ><input value="{{$ivas['ing_iva']}}" min="0" max="22" data-k="ing_iva" class="updIVA">%</td>
         <td >{{moneda($vtas_alojamiento_iva)}}</td>
         <td >{{moneda($vtas_alojamiento)}}</td>
       </tr>
       <tr class="border">
         <td >VTAS FORFAITS </td>
         <td >{{moneda($_ff_FFExpress_baseImp)}}</td>
-        <td >10%</td>
+        <td ><input value="{{$ivas['ff_FFExpress']}}" min="0" max="22" data-k="ff_FFExpress" class="updIVA">%</td>
         <td >{{moneda($_ff_FFExpress_iva)}}</td>
         <td >{{moneda($_ff_FFExpress_iva+$_ff_FFExpress_baseImp)}}</td>
       </tr>
       <tr class="border">
         <td >VTAS CLASES/OTROS</td>
         <td >{{moneda($_ff_ClassesMat_baseImp)}}</td>
-        <td >21%</td>
+        <td ><input value="{{$ivas['ff_ClassesMat']}}" min="0" max="22" data-k="ff_ClassesMat" class="updIVA">%</td>
         <td >{{moneda($_ff_ClassesMat_iva)}}</td>
         <td >{{moneda($_ff_ClassesMat_iva+$_ff_ClassesMat_baseImp)}}</td>
       </tr>
       <tr class="border">
         <td >OTROS INGRESOS</td>
         <td >{{moneda($otros_ingr_base)}}</td>
-        <td >21%</td>
+        <td ><input value="{{$ivas['otros_ingr']}}" min="0" max="22" data-k="otros_ingr" class="updIVA">%</td>
         <td >{{moneda($otros_ingr_iva)}}</td>
         <td >{{moneda($otros_ingr)}}</td>
       </tr>
@@ -166,21 +166,21 @@
       <tr class="border">
         <td >PROV FORFAITS </td>
         <td >{{moneda($_ff_FFExpress_baseImp)}}</td>
-        <td >10%</td>
+        <td ><input value="{{$ivas['ff_FFExpress']}}" min="0" max="22" data-k="ff_FFExpress" class="updIVA">%</td>
         <td >{{moneda($_ff_FFExpress_iva)}}</td>
         <td >{{moneda($_ff_FFExpress_iva+$_ff_FFExpress_baseImp)}}</td>
       </tr>
       <tr class="border">
         <td >PROV CLASES/OTROS</td>
         <td >{{moneda($_ff_ClassesMat_baseImp)}}</td>
-        <td >21%</td>
+        <td ><input value="{{$ivas['ff_ClassesMat']}}" min="0" max="22" data-k="ff_ClassesMat" class="updIVA">%</td>
         <td >{{moneda($_ff_ClassesMat_iva)}}</td>
         <td >{{moneda($_ff_ClassesMat_iva+$_ff_ClassesMat_baseImp)}}</td>
       </tr>
       <tr class="border">
         <td >GASTOS OPERATIVOS</td>
          <td >{{moneda($gasto_operativo_baseImp)}}</td>
-        <td >21%</td>
+        <td ><input value="{{$ivas['gasto_operativo']}}" min="0" max="22" data-k="gasto_operativo" class="updIVA">%</td>
         <td >{{moneda($gasto_operativo_iva)}}</td>
         <td >{{moneda($tGastos_operativos)}}</td>
       </tr>
