@@ -812,8 +812,14 @@ class Book extends Model {
       return $costBook;
   }
 
+
   public function bookingProp($room) {
-    
+    $sup_limp  = ($room->sizeApto == 1) ? 30 : 50;
+    $cost_limp = is_null($room->limp_prop) ? 30 : $room->limp_prop;
+    \App\Expenses::setExpenseLimpieza($this->id, $room, $this->finish,$cost_limp);
+    \App\Incomes::setPropLimpieza($this->id, $room, $this->finish,$sup_limp);
+  }
+  public function bookingFree() {    
     $this->sup_park    = 0;
     $this->cost_park   = 0;
     $this->sup_lujo    = 0;
@@ -827,16 +833,8 @@ class Book extends Model {
     $this->inc_percent = 0;
     $this->ben_jorge   = 0;
     $this->ben_jaime   = 0;
-//      
-//      
-//    $this->sup_limp  = ($room->sizeApto == 1) ? 30 : 50;
-//    $this->cost_limp = is_null($room->limp_prop) ? 30 : $room->limp_prop;
-//    $this->real_price = ($room->sizeApto == 1) ? 30 : 50;
-//    $this->cost_total = ($room->sizeApto == 1) ? 30 : 40;
-    $this->total_price = $this->real_price;
-      
-//    \App\Expenses::setExpenseLimpieza($this->id, $room, $this->finish,$this->cost_limp);
-                
+    $this->total_price = 0;
+         
   }
   
   // Funcion para cambiar la reserva de estado
@@ -853,6 +851,16 @@ class Book extends Model {
         return $response;
     }
     
+    if ($status == 7){
+      /* Asiento automatico para reservas subcomunidad*/
+      $this->bookingFree();
+      $this->bookingProp(\App\Rooms::find($this->room_id));
+      $this->save();
+    } else {
+      //Remove automatic expenses
+      \App\Expenses::delExpenseLimpieza($this->id);
+    }
+        
     if ($status == 3 || $status == 10 || $status == 12 || $status == 6 || $status == 98) {
       $this->type_book = $status;
       $this->save();
@@ -874,7 +882,7 @@ class Book extends Model {
         if ($status == 2) {
           $this->sendToPartee();
         }
-        
+            
         if ($this->customer->email == "") {
           $this->save();
           \App\BookLogs::saveLogStatus($this->id, $this->room_id, $this->customer->email, $this->getStatus($status));
@@ -898,14 +906,7 @@ class Book extends Model {
                 break;
             }
             
-            if ($status == 7){
-              /* Asiento automatico para reservas subcomunidad*/
-              $this->bookingProp(\App\Rooms::find($this->room_id));
-            } else {
-              //Remove automatic expenses
-              \App\Expenses::delExpenseLimpieza($this->id);
-            }
-            
+
             if ($this->save()) {
               $response['status'] = "success";
               $response['changed'] = true;

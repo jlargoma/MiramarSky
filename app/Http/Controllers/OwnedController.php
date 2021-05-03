@@ -264,16 +264,9 @@ class OwnedController extends AppController {
       $book->nigths = $diff;
       $book->type_book = 7;
  
-      $book->bookingProp($room);
-      
-      $book->total_ben = $book->total_price - $book->get_costeTotal();
-      $book->inc_percent = $book->get_inc_percent();
-      $book->ben_jorge = $book->total_ben * $room->typeAptos->PercentJorge / 100;
-      $book->ben_jaime = $book->total_ben * $room->typeAptos->PercentJaime / 100;
-
-
+      $book->bookingFree();
       if ($book->save()) {
-        \App\Expenses::setExpenseLimpieza($book->id, $room, $finish,$book->cost_limp);
+        $book->bookingProp($room);
         $book->sendAvailibilityBy_dates($book->start,$book->finish);
         /* Cliente */
         Mail::send(['html' => 'backend.emails.bloqueoPropietario'], ['book' => $book], function ($message) use ($book) {

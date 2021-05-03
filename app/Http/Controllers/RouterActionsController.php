@@ -184,7 +184,16 @@ class RouterActionsController extends AppController {
   
   function gastos_delete(Request $request) {
     $id = $request->input('id');
-    if (\App\Expenses::find($id)->delete()) {
+    $oExpense = \App\Expenses::find($id);
+    if (!$oExpense) return 'error';
+    
+    if ($oExpense->type == 'limpieza' && $oExpense->book_id>0){
+      \App\Incomes::where('book_id',$oExpense->book_id)
+              ->where('type','limp_prop')->delete();
+ 
+    }
+    
+    if ($oExpense->delete()) {
       return 'ok';
     } else {
       return 'error';
