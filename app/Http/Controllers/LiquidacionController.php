@@ -626,10 +626,9 @@ class LiquidacionController extends AppController {
     $data['t_gastoTabl_base'] = $tPayProp+$gasto_ff_baseImp+$gasto_operativo_baseImp;
     $data['t_gastoTabl_iva']  = $gasto_ff_iva+$gasto_operativo_iva;
     $data['ivas']  = $ivas;
- 
+    $data['t_iva'] = $data['t_ingrTabl_iva'] - $data['t_gastoTabl_iva'] + $data['ivaTemp'];
     
-    
-        $data['_ff_mat_baseImp'] = $_ff_mat_baseImp;
+    $data['_ff_mat_baseImp'] = $_ff_mat_baseImp;
     $data['_ff_mat_iva'] = $_ff_mat_iva;
     $data['_ff_prov_baseImp'] = $_ff_prov_baseImp;
     $data['_ff_prov_iva'] = $_ff_prov_iva;
