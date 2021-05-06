@@ -34,12 +34,12 @@
       </tr>
       <tr>
         <td>IVA A PAGAR</td>
-        <td>{{moneda($repartoTemp_fix_iva1)}}</td>
+        <td>{{moneda($t_iva)}}</td>
         <td class="empty"></td>
       </tr>
       <tr>
         <th>DIV A REPARTIR</th>
-        <th>{{moneda($repartoTemp_fix-$repartoTemp_fix_iva1)}}</th>
+        <th>{{moneda($repartoTemp_fix-$t_iva)}}</th>
         <td class="empty"></td>
       </tr>
       <tr><td class="empty" colspan="2"></td></tr>
