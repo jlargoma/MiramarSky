@@ -213,8 +213,8 @@ class LiquidacionController extends AppController {
       $data['repartoTemp_fix_iva1'] = $data['t_ingrTabl_iva']-$data['gasto_ff_iva']-$data['iva_soportado'];
       $data['repartoTemp_fix_iva2'] = $data['repartoTemp_fix_iva1']-$data['iva_jorge'];
 
-      $repartoTemp_total1 = $data['repartoTemp_fix']-$data['repartoTemp_fix_iva1'];
-      $repartoTemp_total2 = $data['repartoTemp_fix']-$data['repartoTemp_fix_iva2'];
+      $repartoTemp_total1 = $data['repartoTemp_fix']-$data['t_iva'];
+      $repartoTemp_total2 = $data['repartoTemp_fix']-$data['t_iva'];
 
       $data['repartoTemp_jorge1'] = $repartoTemp_total1*$benefJorge_perc;
       $data['repartoTemp_jaime1'] = $repartoTemp_total1*$benefJaime_perc;
