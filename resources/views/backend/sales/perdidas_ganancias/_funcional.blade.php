@@ -111,11 +111,18 @@
         <td >{{moneda($t_gastoTabl_base)}}</td>
         <td >{{moneda($t_gastoTabl_iva)}}</td>
         <td >{{moneda($t_gastoTabl_base+$t_gastoTabl_iva)}}</td>
+      </tr>
+      <tr class="border">
+        <td >ARQUEO</td>
+        <td ></td>
+        <td >{{moneda($ivaTemp)}}</td>
+        <td >-</td>
+      </tr>
      <tr class="border">
         <th>Total</th>
         <th>{{moneda($t_ingrTabl_base-$t_gastoTabl_base)}}</th>
-        <th>{{moneda($t_ingrTabl_iva-$t_gastoTabl_iva)}}</th>
-        <th>{{moneda( ($t_ingrTabl_base+$t_ingrTabl_iva) - ($t_gastoTabl_base+$t_gastoTabl_iva) )}}</th>
+        <th>{{moneda($t_iva)}}</th>
+        <th>{{moneda( ($t_ingrTabl_base-$t_gastoTabl_base) + $t_iva )}}</th>
       </tr>
     </table>
   </div>
@@ -161,7 +168,7 @@
       </tr>
       <tr class="border">
         <th class="text-left">IVA SOPORTADO</th>
-        <td>{{moneda($iva_soportado)}}</td>
+        <td>{{moneda($t_gastoTabl_iva)}}</td>
       </tr>
       <tr class="border">
         <th class="text-left">ARQUEO IVA</th>
@@ -172,7 +179,7 @@
       </tr>
       <tr class="border">
         <th class="text-left">IVA A PAGAR</th>
-        <th>{{moneda($iva_soportado+$t_ingrTabl_iva+$ivaTemp)}}</th>
+        <th>{{moneda($t_ingrTabl_iva-$t_gastoTabl_iva+$ivaTemp)}}</th>
       </tr>
     </table>
     <span id="message_iva"></span>
