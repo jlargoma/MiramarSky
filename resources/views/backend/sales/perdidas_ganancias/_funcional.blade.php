@@ -1,105 +1,4 @@
 <div class="row tabla-funcional">
-  <div class="col-md-4 resultado">
-    <div class="row">
-      <div class="col-md-6">
-        <table>
-          <tr>
-            <td>RTDO VENTA ALOJAMIENTOS</td>
-            <td>{{moneda($ingr_reservas-$tGastos_operativos)}}</td>
-          </tr>
-          <tr class="white border">
-            <td>VTA INTERMEDIACION INMOB</td>
-            <td>{{moneda($ingr_reservas)}}</td>
-          </tr>
-          <tr class="white border">
-            <td>GASTOS OPERATIVOS</td>
-            <td >{{moneda($tGastos_operativos)}}</td>
-          </tr>
-        </table>
-      </div>
-      <div class="col-md-6">
-        <table>
-          <tr>
-            <td>OTROS INGRESOS</td>
-            <td>{{moneda($otros_ingr)}}</td>
-          </tr>
-        </table>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-4 resultado">
-    <table>
-          <tr>
-            <th>RTDO OPERTIVO BRUTO</th>
-            <th>{{moneda($ingr_reservas-$tGastos_operativos+$otros_ingr)}}</th>
-          </tr>
-        </table>
-  </div>
-</div>
-<div class="row tabla-funcional">
-  <div class="col-md-4 ingresos">
-    <h5>TOTAL VENTAS POR ALOJAMIENTO</h5>
-     <table>
-      <tr class="border">
-        <th></th>
-        <th>BASE IMP</th>
-        <th colspan="2">IVA REPERCIDO</th>
-        <th>TOTAL</th>
-      </tr>
-      <tr class="white border">
-        <td >VTAS PARA PROPIETARIOS</td>
-        <td >{{moneda($tPayProp)}}</td>
-        <td >0%</td>
-        <td >0 €</td>
-        <td >{{moneda($tPayProp)}}</td>
-      </tr>
-      <tr class="white border">
-        <td >VTAS INTERM INMOB</td>
-        <td >{{moneda($ing_baseImp)}}</td>
-        <td ><input value="{{$ivas['ing_iva']}}" min="0" max="22" data-k="ing_iva" class="updIVA">%</td>
-        <td >{{moneda($ing_iva)}}</td>
-        <td >{{moneda($ingr_reservas)}}</td>
-      </tr>
-      <tr>
-        <th></th>
-        <th colspan="3">TOTAL VENTAS ALOJAMIENTO</th>
-        <th>{{moneda($lstT_ing['ventas'])}}</th>
-      </tr>
-    </table>
-  </div>
-  @if(isset($repartoTemp_fix))
-  <div class="col-md-4 ingresos">
-    <h5>VARIABLES A MODIFICAR MANUALMENTE</h5>
-    <div class="row">
-      <div class="col-xs-7">
-        <div class="row iva-1">
-        <div class="col-xs-7">IVA SOPORTADO</div>
-        <div class="col-xs-5">
-          <input type="text" id="iva_soportado" value="{{$iva_soportado}}"> 
-          <span>€</span>
-        </div>
-        </div>
-        <div class="row iva-2">
-        <div class="col-xs-7">ARQUEO</div>
-        <div class="col-xs-5">
-          <input type="text" id="iva_jorge" value="{{$iva_jorge}}">
-          <span>€</span>
-        </div>
-        </div>
-      </div>
-      <div class="col-xs-5 iva-3" > <span id="resultIVA_modif">{{moneda($resultIVA_modif)}}</span></div>
-    </div>
-    <span id="message_iva"></span>
-   </div>
-   <div class="col-md-4">
-  
-  <button class="btn btn-primary btn-reparto" type="button" data-toggle="modal" data-target="#modalRepartoBenefTemp">
-    <i class="fa fa-eye"></i>
-  </button>
-  </div>
-  @endif
-</div>
-<div class="row tabla-funcional">
   <div class="col-md-4 ingresos">
    
     <h5>DESGLOSE DE LOS INGRESOS</h5>
@@ -112,10 +11,10 @@
       </tr>
       <tr class="border">
         <td >VTAS ALOJAMIENTO</td>
-        <td >{{moneda($vtas_alojamiento_base)}}</td>
+        <td >{{moneda($ing_baseImp)}}</td>
         <td ><input value="{{$ivas['ing_iva']}}" min="0" max="22" data-k="ing_iva" class="updIVA">%</td>
-        <td >{{moneda($vtas_alojamiento_iva)}}</td>
-        <td >{{moneda($vtas_alojamiento)}}</td>
+        <td >{{moneda($ing_iva)}}</td>
+        <td >{{moneda($ingr_reservas)}}</td>
       </tr>
       <tr class="border">
         <td >VTAS FORFAITS </td>
@@ -165,17 +64,17 @@
      
       <tr class="border">
         <td >PROV FORFAITS </td>
-        <td >{{moneda($_ff_FFExpress_baseImp)}}</td>
-        <td ><input value="{{$ivas['ff_FFExpress']}}" min="0" max="22" data-k="ff_FFExpress" class="updIVA">%</td>
-        <td >{{moneda($_ff_FFExpress_iva)}}</td>
-        <td >{{moneda($_ff_FFExpress_iva+$_ff_FFExpress_baseImp)}}</td>
+        <td >{{moneda($_ff_prov_baseImp)}}</td>
+        <td ><input value="{{$ivas['ff_FFExpress_expense']}}" min="0" max="22" data-k="ff_FFExpress_expense" class="updIVA">%</td>
+        <td >{{moneda($_ff_prov_iva)}}</td>
+        <td >{{moneda($_ff_prov_baseImp+$_ff_prov_iva)}}</td>
       </tr>
       <tr class="border">
         <td >PROV CLASES/OTROS</td>
-        <td >{{moneda($_ff_ClassesMat_baseImp)}}</td>
-        <td ><input value="{{$ivas['ff_ClassesMat']}}" min="0" max="22" data-k="ff_ClassesMat" class="updIVA">%</td>
-        <td >{{moneda($_ff_ClassesMat_iva)}}</td>
-        <td >{{moneda($_ff_ClassesMat_iva+$_ff_ClassesMat_baseImp)}}</td>
+        <td >{{moneda($_ff_mat_iva)}}</td>
+        <td ><input value="{{$ivas['ff_ClassesMat_exp']}}" min="0" max="22" data-k="ff_ClassesMat_exp" class="updIVA">%</td>
+        <td >{{moneda($_ff_mat_baseImp)}}</td>
+        <td >{{moneda($_ff_mat_baseImp+$_ff_mat_iva)}}</td>
       </tr>
       <tr class="border">
         <td >GASTOS OPERATIVOS</td>
@@ -221,7 +120,71 @@
     </table>
   </div>
 </div>
-
+<div class="row tabla-funcional">
+  <div class="col-md-4 ingresos">
+    <h5>TOTAL VENTAS POR ALOJAMIENTO</h5>
+     <table>
+      <tr class="border">
+        <th></th>
+        <th>BASE IMP</th>
+        <th colspan="2">IVA REPERCIDO</th>
+        <th>TOTAL</th>
+      </tr>
+      <tr class="white border">
+        <td >VTAS PARA PROPIETARIOS (Pagos a Prop.)</td>
+        <td >{{moneda($tPayProp)}}</td>
+        <td >0%</td>
+        <td >0 €</td>
+        <td >{{moneda($tPayProp)}}</td>
+      </tr>
+      <tr class="white border">
+        <td >VTAS INTERM INMOB</td>
+        <td >{{moneda($ing_baseImp)}}</td>
+        <td ><input value="{{$ivas['ing_iva']}}" min="0" max="22" data-k="ing_iva" class="updIVA">%</td>
+        <td >{{moneda($ing_iva)}}</td>
+        <td >{{moneda($ingr_reservas)}}</td>
+      </tr>
+      <tr>
+        <th></th>
+        <th colspan="3">TOTAL VENTAS ALOJAMIENTO</th>
+        <th>{{moneda($lstT_ing['ventas'])}}</th>
+      </tr>
+    </table>
+  </div>
+  @if(isset($repartoTemp_fix))
+  <div class="col-md-4 resultado">
+    <h5>IVA</h5>
+    <table>
+      <tr class="border">
+        <th class="text-left">IVA REPERCUTIDO</th>
+        <td>{{moneda($t_ingrTabl_iva)}}</td>
+      </tr>
+      <tr class="border">
+        <th class="text-left">IVA SOPORTADO</th>
+        <td>{{moneda($iva_soportado)}}</td>
+      </tr>
+      <tr class="border">
+        <th class="text-left">ARQUEO IVA</th>
+        <td>
+          <input type="text" id="ivaTemp" value="{{$ivaTemp}}">
+          <span>€</span>
+        </td>
+      </tr>
+      <tr class="border">
+        <th class="text-left">IVA A PAGAR</th>
+        <th>{{moneda($iva_soportado+$t_ingrTabl_iva+$ivaTemp)}}</th>
+      </tr>
+    </table>
+    <span id="message_iva"></span>
+   </div>
+   <div class="col-md-4">
+  
+  <button class="btn btn-primary btn-reparto" type="button" data-toggle="modal" data-target="#modalRepartoBenefTemp">
+    <i class="fa fa-eye"></i> Ver resultado de la temporada
+  </button>
+  </div>
+  @endif
+</div>
 @if(isset($repartoTemp_fix))
 @include('backend.sales.perdidas_ganancias.__repartoBenefTemp')
 @endif

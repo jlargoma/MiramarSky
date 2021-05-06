@@ -814,10 +814,9 @@ class Book extends Model {
 
 
   public function bookingProp($room) {
-    $sup_limp  = ($room->sizeApto == 1) ? 30 : 50;
     $cost_limp = is_null($room->limp_prop) ? 30 : $room->limp_prop;
     \App\Expenses::setExpenseLimpieza($this->id, $room, $this->finish,$cost_limp);
-    \App\Incomes::setPropLimpieza($this->id, $room, $this->finish,$sup_limp);
+    \App\Incomes::setPropLimpieza($this->id, $room, $this->finish,$cost_limp);
   }
   public function bookingFree() {    
     $this->sup_park    = 0;

@@ -32,7 +32,6 @@ class LiquidacionController extends AppController {
     $oLiq = new Liquidacion();
     $data = $this->getTableData();
     $data['summary'] = $oLiq->summaryTemp();
-//    dd($data['summary']);
     $data['stripeCost'] = $oLiq->getTPV($data['books']);
     $data['total_stripeCost'] = array_sum($data['stripeCost']);
     
@@ -211,8 +210,6 @@ class LiquidacionController extends AppController {
 
       $data['repartoTemp_fix']=$data['ingr_reservas']+$data['otros_ingr']-
               ($data['gasto_operativo_baseImp']+$data['gasto_operativo_iva']);
-      //O29-J30-N23
-//      dd($data['t_ingrTabl_iva'],$data['gasto_ff_iva'],$data['iva_soportado']);
       $data['repartoTemp_fix_iva1'] = $data['t_ingrTabl_iva']-$data['gasto_ff_iva']-$data['iva_soportado'];
       $data['repartoTemp_fix_iva2'] = $data['repartoTemp_fix_iva1']-$data['iva_jorge'];
 
@@ -232,7 +229,6 @@ class LiquidacionController extends AppController {
   public function perdidasGananciasFuncional() {
     $data = $this->get_perdidasGanancias();
     
-//        dd($data);
     $expensesToDel = [
       "sueldos",
       "seg_social",
@@ -325,7 +321,7 @@ class LiquidacionController extends AppController {
     $auxFF = $oLiq->getFF_Data($startYear, $endYear);
     $ingresos['ff'] = $emptyMonths;
     $ingrType['ff'] = 'FORFAITs';
-    $lstT_ing['ff'] = $auxFF['total'];
+    $lstT_ing['ff'] = $auxFF['pay'];
 //    $lstT_ing['ff_FFExpress'] = $auxFF['totalFFExpress'];
 //    $lstT_ing['ff_ClassesMat'] = $auxFF['totalClassesMat'];
     $aIngrPending['ff'] = 0;
@@ -431,40 +427,18 @@ class LiquidacionController extends AppController {
     
     if (!isset($expenses_fix['impuestos'])) $expenses_fix['impuestos'] = 0;
     if (!isset($expenses_fix['iva']))       $expenses_fix['iva'] = 0;
- 
-//    $impuestos = $listGastos['impuestos'];
-//    unset($listGastos['prop_pay']);
+
     unset($listGastos['comisiones']);
     $totalPendingImp = 0;
-//    $impEstimado = [];
-//    
-//    $gTypesImp = \App\Expenses::getTypesImp();
-//    if ($gTypesImp){
-//      foreach ($lstMonths as $k_m=>$m){
-//        $impuestoM = 0;
-//        foreach ($gTypesImp as $k_t=>$v){
-//          $impuestoM += $listGastos[$k_t][$k_m];
-//        }
-//        
-//        $impEstimado[$k_m] = ($tIngByMonth[$k_m]* 0.21 ) - ($impuestoM*0.21);
-//        
-//      }
-//      
-//    }
-//      
-//    $totalPendingImp = array_sum($impEstimado)-$lstT_gast['impuestos'];
-//    ( T ingr * 0.21 ) - ( TGasto *0.21 )
-
     /*****************************************************************/
     
     $totalIngr = array_sum($lstT_ing);
     $totalGasto = array_sum($lstT_gast);
     
-    
     $summary = $oLiq->summaryTemp();
   
     
-    
+//    dd($totalGasto,$lstT_gast);
     return ([
         'summary' =>$summary,
         'lstT_ing' => $lstT_ing,
@@ -506,11 +480,11 @@ class LiquidacionController extends AppController {
       }
     }
     
-    $tPayProp = $data['lstT_gast']['prop_pay']+$data['aExpensesPending']['prop_pay'];
+    $tPayProp = $data['lstT_gast']['prop_pay'];//+$data['aExpensesPending']['prop_pay'];
     $data['tGastByMonth'] = $tGastByMonth;
     
-    $data['totalGasto'] = array_sum($data['lstT_gast']);
-    $data['ingr_bruto'] = $data['totalIngr']-$data['totalGasto'];
+//    $data['totalGasto'] = array_sum($data['lstT_gast']);
+//    $data['ingr_bruto'] = $data['totalIngr']-$data['totalGasto'];
     
     
     $iva_jorge = 0;
@@ -522,6 +496,8 @@ class LiquidacionController extends AppController {
         'ing_iva'=>21,
         'ff_FFExpress'=>10,
         'ff_ClassesMat'=>21,
+        'ff_FFExpress_expense'=>10,
+        'ff_ClassesMat_exp'=>21,
         'otros_ingr'=>21,
         'ff_ClassesMat_expense'=>10,
         'gasto_operativo'=>21,
@@ -533,15 +509,14 @@ class LiquidacionController extends AppController {
       }
     }
     //INGRESOS POR VENTAS DE RESERVAS
-//    dd($data);
 //    $vtas_reserva = $data['lstT_ing']['ventas'];
     $ingr_reservas = $data['lstT_ing']['ventas']-$tPayProp;
     $ing_baseImp   = $ingr_reservas/(1+($ivas['ing_iva']/100));
     $ing_iva       = $ingr_reservas-$ing_baseImp;
     
     
-    $vtas_alojamiento = $data['lstT_ing']['ventas'];
-    $vtas_alojamiento_base = $ing_baseImp+$tPayProp;
+    $vtas_alojamiento = $ingr_reservas;
+    $vtas_alojamiento_base = $ing_baseImp;
     $vtas_alojamiento_iva  = $ing_iva;
     
     //EXTRAORDINARIOS + RAPPEL CLASES + RAPPEL FORFAITS
@@ -552,24 +527,24 @@ class LiquidacionController extends AppController {
          $data['otros_ingr'] += $data['lstT_ing'][$k];
       }
     }
-//    $data['otros_ingr'] = $data['lstT_ing']['extr']
-//            +$data['lstT_ing']['rappel_clases']
-//            +$data['lstT_ing']['rappel_forfaits']
-//            +$data['lstT_ing']['rappel_alq_material']
-//            +$data['lstT_ing']['others'];
     $data['otros_ingr_base'] = $data['otros_ingr']/(1+($ivas['otros_ingr']/100));
     $data['otros_ingr_iva']  = $data['otros_ingr']-$data['otros_ingr_base'];
-    
-    
-    
     
     //INGRESOS POR VENTAS DE FORFAITS
 //    $_ff_FFExpress_baseImp   = ($data['ff_FFExpress']>0) ? $data['ff_FFExpress']/1.1 : 0;
     $_ff_FFExpress_baseImp   = ($data['ff_FFExpress']>0) ? $data['ff_FFExpress']/(1+($ivas['ff_FFExpress']/100)) : 0;
     $_ff_FFExpress_iva       = $data['ff_FFExpress']-$_ff_FFExpress_baseImp;
+    $g_excursion = $data['lstT_gast']['excursion'];
+    $_ff_prov_baseImp   = ($g_excursion>0) ? $g_excursion/(1+($ivas['ff_FFExpress_expense']/100)) : 0;
+    $_ff_prov_iva       = $g_excursion-$_ff_prov_baseImp;
+    
+    
 //    $_ff_ClassesMat_baseImp  = ($data['ff_ClassesMat']>0) ? $data['ff_ClassesMat']/1.21 : 0;
     $_ff_ClassesMat_baseImp  = ($data['ff_ClassesMat']>0) ? $data['ff_ClassesMat']/(1+($ivas['ff_ClassesMat']/100)) : 0;
     $_ff_ClassesMat_iva      = $data['ff_ClassesMat']-$_ff_ClassesMat_baseImp;
+    $g_material = $data['lstT_gast']['prov_material'];
+    $_ff_mat_baseImp   = ($g_material>0) ? $g_material/(1+($ivas['ff_ClassesMat_exp']/100)) : 0;
+    $_ff_mat_iva       = $g_material-$_ff_mat_baseImp;
     
     $ing_comision_baseImp   = ($data['lstT_ing']['rappel_forfaits']>0) ? $data['lstT_ing']['rappel_forfaits']/1.21 : 0;
     $ing_comision_iva       = ($ing_comision_baseImp>0) ? $ing_comision_baseImp/(1+($ivas['ff_ClassesMat']/100)) : 0;
@@ -580,14 +555,10 @@ class LiquidacionController extends AppController {
     $ing_ff_baseImp   = $_ff_ClassesMat_baseImp+$_ff_FFExpress_baseImp;
     $ing_ff_iva       = $_ff_FFExpress_iva+$_ff_ClassesMat_iva;
     
-    $gasto_ff = $data['ff_FFExpress']+$data['ff_ClassesMat'];
-    $gasto_ff_baseImp = $_ff_ClassesMat_baseImp+$_ff_FFExpress_baseImp;
-    $gasto_ff_iva     = $_ff_FFExpress_iva+$_ff_ClassesMat_iva;
-//    $gasto_ff = $data['lstT_gast']['excursion'] + floatval ($data['aExpensesPending']['excursion']);
-//    $gasto_ff_baseImp = $gasto_ff/1.1;
-//    $gasto_ff_iva     = $gasto_ff-$gasto_ff_baseImp;
-    
-    
+    $gasto_ff = $g_excursion+$g_material;
+    $gasto_ff_baseImp = $_ff_prov_baseImp+$_ff_mat_baseImp;
+    $gasto_ff_iva     = $_ff_prov_iva+$_ff_mat_iva;
+
     $gasto_operativo_baseImp = $gasto_operativo_iva = 0;
     $gastos_operativos = [
               "agencias",
@@ -599,23 +570,14 @@ class LiquidacionController extends AppController {
             ];
     $tGastos_operativos = 0;
     foreach ($gastos_operativos as $k)
-      $tGastos_operativos += $data['lstT_gast'][$k] + floatval ($data['aExpensesPending'][$k]);
+      $tGastos_operativos += $data['lstT_gast'][$k];// + floatval ($data['aExpensesPending'][$k]);
 
     
     $iva_soportado = round(($tGastos_operativos*($ivas['gasto_operativo']/100)),2);
     $gasto_operativo_iva     = $iva_soportado;
-    $ivaTemp = \App\Settings::getKeyValue('IVA_'.$data['year']->year);
-    if ($ivaTemp){
-      $ivaTemp = json_decode($ivaTemp);
-      if ($ivaTemp[0]>0)  $iva_soportado = $ivaTemp[0];
-      
-      $iva_jorge     = $ivaTemp[1];
-      $gasto_operativo_iva     = $iva_soportado;
-    }
-    $resultIVA_modif = $iva_jorge+$iva_soportado;
-    
     $gasto_operativo_baseImp = $tGastos_operativos-$gasto_operativo_iva;
-    
+    $ivaTemp = \App\Settings::getKeyValue('IVA_'.$data['year']->year);
+    if (!is_numeric($ivaTemp)) $ivaTemp = 0;
     
     $data['ingr_reservas'] = $ingr_reservas;
     $data['ing_baseImp'] = $ing_baseImp;
@@ -626,6 +588,11 @@ class LiquidacionController extends AppController {
     $data['_ff_FFExpress_iva'] = $_ff_FFExpress_iva;
     $data['_ff_ClassesMat_baseImp'] = $_ff_ClassesMat_baseImp;
     $data['_ff_ClassesMat_iva'] = $_ff_ClassesMat_iva;
+    
+    $data['_ff_mat_baseImp'] = $_ff_mat_baseImp;
+    $data['_ff_mat_iva'] = $_ff_mat_iva;
+    $data['_ff_prov_baseImp'] = $_ff_prov_baseImp;
+    $data['_ff_prov_iva'] = $_ff_prov_iva;
     
     $data['ing_comision_baseImp'] = $ing_comision_baseImp;
     $data['ing_comision_iva'] = $ing_comision_iva;
@@ -645,7 +612,7 @@ class LiquidacionController extends AppController {
     
     $data['iva_jorge'] = $iva_jorge;
     $data['iva_soportado'] = $iva_soportado;
-    $data['resultIVA_modif'] = $resultIVA_modif;
+    $data['ivaTemp'] = $ivaTemp;
     
     $data['vtas_alojamiento']  = $vtas_alojamiento;
     $data['vtas_alojamiento_base']  = $vtas_alojamiento_base;
@@ -661,6 +628,11 @@ class LiquidacionController extends AppController {
     $data['ivas']  = $ivas;
  
     
+    
+        $data['_ff_mat_baseImp'] = $_ff_mat_baseImp;
+    $data['_ff_mat_iva'] = $_ff_mat_iva;
+    $data['_ff_prov_baseImp'] = $_ff_prov_baseImp;
+    $data['_ff_prov_iva'] = $_ff_prov_iva;
     
     
     /******   FORMULAS EXCEL                          ***************/
@@ -703,8 +675,8 @@ class LiquidacionController extends AppController {
   }
   
   public function perdidasGananciasUpdIVA(Request $request) {
-    $soportado   = floatVal($request->input('soportado'));
-    $jorge       = floatVal($request->input('jorge'));
+    $val   = floatVal($request->input('val'));
+//    $jorge       = floatVal($request->input('jorge'));
     $temporada   = floatVal($request->input('temporada'));
     
     $key = 'IVA_'.$temporada;
@@ -715,7 +687,7 @@ class LiquidacionController extends AppController {
       $objt->name = 'IVAs tempo. '.$key;
     }
         
-    $objt->value = json_encode(['0'=>$soportado,'1'=>$jorge]);
+    $objt->value = $val;
     if ($objt->save()) return 'OK';
     return 'error';
   }
@@ -887,11 +859,7 @@ class LiquidacionController extends AppController {
       }
     }
     $totalYear=[$year->year=>$totalYearAmount];
-              
-              
-//dd($listGastos,$listGastos_g);
-
-    
+        
     $auxYear = ($year->year)-1;
     $totalYear[$auxYear] = 0;
     $activeYear = \App\Years::where('year', $auxYear)->first();
@@ -1047,7 +1015,6 @@ class LiquidacionController extends AppController {
     }else{
       $oYear = \App\Years::where('year', $year)->first();
       $qry = \App\Expenses::where('date', '>=', $oYear->start_date)->Where('date', '<=', $oYear->end_date);
-//    dd($startYear,$endYear,$oYear);
     }
     
     
@@ -1388,7 +1355,7 @@ class LiquidacionController extends AppController {
             }
           }
         }
-//        dd($yearLst,$agencyBooks);
+
         echo json_encode(array(
                              'status'      => 'true',
                              'agencyBooks' => $agencyBooks,
@@ -1789,7 +1756,6 @@ class LiquidacionController extends AppController {
     }
     //*******************************************************************//
     $ffData = $oLiq->getFF_Data($startYear,$endYear);
-//    dd($ffData);
     $months_ff = null;
     $cachedRepository  = new \App\Repositories\CachedRepository();
     $ForfaitsItemController = new \App\Http\Controllers\ForfaitsItemController($cachedRepository);
@@ -1978,8 +1944,6 @@ class LiquidacionController extends AppController {
         $sheet->loadView('backend.sales._tableExcelExport',$data);
       });
     })->download('xlsx');
-    
-    dd($data);
   }
   
   function arqueoCreate(Request $request){
@@ -2052,7 +2016,6 @@ class LiquidacionController extends AppController {
         }
       }
     }      
-//    dd($info);
     /***************************************************/
     $expensesType = \App\Expenses::getTypes();
     $aRooms = \App\Rooms::getRoomList()->toArray();
