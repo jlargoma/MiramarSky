@@ -12,6 +12,7 @@ class Expenses extends Model
     return [
         'prop_pay' => 'PAGO PROPIETARIOS',
         'excursion' => 'PROVEEDORES EXCURSIÓN',
+        'prov_material' => 'PROV. MATERIALES EXCURSIÓN',
         'agencias' => 'AGENCIAS',
         'amenities' => 'AMENITIES',
         'comision_tpv' => 'COMSION TPV',
@@ -44,6 +45,7 @@ class Expenses extends Model
         'amenities' => 'AMENITIES',
 //        'comisiones' => 'COMISIONES COMERCIALES',
         'excursion' => 'PROV. EXCURSIÓN',
+        'prov_material' => 'PROV. MATERIALES EXCURSIÓN',
         'comision_tpv' => 'COMSION TPV',
         'equip_deco' => 'EQUIPACION Y DECORACION',
         'bancario' => 'GASTOS BANCARIOS',
@@ -83,6 +85,7 @@ class Expenses extends Model
                 'sueldos'    => 'empleados',
                 'suministros'=> 'suministros',
                 'excursion'=> 'otros',
+                'prov_material'=> 'otros',
             ]];
         
   }

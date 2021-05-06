@@ -22,7 +22,7 @@ setlocale(LC_TIME, "es_ES");
     }
   }
 
-  .updIVA{
+  .updIVA,#ivaTemp{
     background-color: transparent;
     border: none;
     text-align: right;
@@ -149,7 +149,8 @@ setlocale(LC_TIME, "es_ES");
             <h5 class="no-margin p-b-5 text-white ">
               <b>RTDO OPERTIVO BRUTO</b>
             </h5>
-            <?php $ingr_bruto = $ingr_reservas-$tGastos_operativos+$otros_ingr; ?>
+            <?php //$ingr_bruto = $ingr_reservas-$tGastos_operativos+$otros_ingr; ?>
+            <?php $ingr_bruto = $totalIngr-$totalGasto; ?>
             {{moneda($ingr_bruto)}}
             <?php if ($ingr_bruto > 0 ): ?>
                     <i class="fa fa-arrow-up text-success result"></i>
@@ -232,28 +233,11 @@ $(document).ready(function () {
   @if(isset($repartoTemp_fix))
     /** edit iva*/
          
-  $('#iva_soportado').on('keyup', function (e) {
+  $('#ivaTemp').on('keyup', function (e) {
     var c_val = $(this).val().replace( /[^\d|^-]/g , '' );
     if (e.keyCode == 13) {
       saveIVA();
     } else {
-      $(this).val(c_val);
-       var total = parseInt($('#iva_jorge').val())+parseInt($('#iva_soportado').val());
-      $('#resultIVA_modif').text(window.formatterEuro.format(total));
-      $('#message_iva').addClass('alert alert-warning').text('Recuerde dar ENTER para guardar');
-      
-      e.preventDefault();
-      return false;
-    }
-  });
-$('#iva_jorge').on('keyup', function (e) {
-    var c_val = $(this).val().replace( /[^\d|^-]/g , '' );
-    if (e.keyCode == 13) {
-      saveIVA();
-    } else {
-      $(this).val(c_val);
-      var total = parseInt($('#iva_jorge').val())+parseInt($('#iva_soportado').val());
-      $('#resultIVA_modif').text(window.formatterEuro.format(total));
       $('#message_iva').addClass('alert alert-warning').text('Recuerde dar ENTER para guardar');
       e.preventDefault();
       return false;
@@ -264,8 +248,7 @@ $('#iva_jorge').on('keyup', function (e) {
   var saveIVA = function(val){
     var url = "/admin/perdidas-ganancias/upd-iva";
     var _data = {
-      soportado: parseInt($('#iva_soportado').val()),
-      jorge: parseInt($('#iva_jorge').val()),
+      val: parseInt($('#ivaTemp').val()),
       temporada: {{$year->year}},
       _token: "{{ csrf_token() }}"
     }
