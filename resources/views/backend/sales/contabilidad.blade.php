@@ -256,12 +256,16 @@ $isMobile = $mobile->isMobile();
 
                 <div class="col-md-12 col-xs-12">
                   <h3>Resumen Forfaits</h3>
+                  <?php 
+                  $tableTotal = 0;
+                  foreach($months_ff as $item) $tableTotal += array_sum($item['data']);
+                  ?>
                   <div class=" table-responsive">
                   <table class="table table-resumen">
                     <thead>
                       <tr class="resume-head">
                         <th class="static">Concepto</th>
-                        <th class="first-col">Total</th>
+                        <th class="first-col" style="padding-top: 0 !important; text-align: center;">Total <br/>{{numero($tableTotal)}}</th>
                         @foreach($months_ff as $item)
                         <th>{{$item['name']}} {{$item['year']}}</th>
                          <?php 

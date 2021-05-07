@@ -9,12 +9,16 @@ $rappel_alq_material = isset($ingrMonths['rappel_alq_material']) ? round($ingrMo
 <div class="row">
   <div class="col-md-8 col-xs-12">
     <h3>Resumen Forfaits</h3>
+    <?php 
+    $tableTotal = 0;
+    foreach($months_ff as $item) $tableTotal += array_sum($item['data']);
+    ?>
     <div class=" table-responsive">
       <table class="table table-resumen">
         <thead>
           <tr class="resume-head">
             <th class="static">Concepto</th>
-            <th class="first-col">Total</th>
+            <th class="first-col" style="padding-top: 0 !important; text-align: center;">Total <br/>{{numero($tableTotal)}}</th>
             <th >%</th>
             @foreach($months_ff as $item)
             <th>{{$item['name']}} {{$item['year']}}</th>

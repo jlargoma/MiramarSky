@@ -479,8 +479,7 @@ class LiquidacionController extends AppController {
         if(isset($tGastByMonth[$m])) $tGastByMonth[$m] +=$v;
       }
     }
-    
-    $tPayProp = $data['lstT_gast']['prop_pay'];//+$data['aExpensesPending']['prop_pay'];
+    $tPayProp = $data['lstT_gast']['prop_pay']+$data['aExpensesPending']['prop_pay'];
     $data['tGastByMonth'] = $tGastByMonth;
     
 //    $data['totalGasto'] = array_sum($data['lstT_gast']);

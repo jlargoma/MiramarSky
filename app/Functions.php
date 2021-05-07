@@ -402,6 +402,13 @@ function moneda($mount,$cero=true,$decimals=0){
   return '--';
   
 }
+function numero($mount,$cero=true,$decimals=0){
+  if ($cero)  return number_format($mount, $decimals, ',', '.' );
+  
+  if ($mount != 0) return number_format($mount, $decimals, ',', '.' );
+  return '--';
+  
+}
 function getUsrRole(){
   global $uRole;
   
