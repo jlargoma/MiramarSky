@@ -370,11 +370,9 @@ class BookController extends AppController
                   $book->customer_id         = $customer->id;
                   if ($book->type_book == 8){
                       $book->bookingFree();
-                      $book->extraCost   = 0;
                     }elseif ($book->type_book == 7){
-                      $book->extraPrice = 0;
-                      $book->extraCost  = 0;
-                      $book->bookingFree();                      
+                      $book->bookingFree();    
+                      $book->total_price = $request->input('total');
                     }else{
                       $book->total_price = $request->input('total');
                       $book->cost_apto = ($request->input('costApto')) ? $request->input('costApto') : $room->getCostRoom($date_start,$date_finish,$book->pax);
@@ -398,7 +396,7 @@ class BookController extends AppController
                     if ($book->save())
                     {
                       if ($book->type_book == 7){
-                        $book->bookingProp($room);
+                        $book->bookingProp();
                       }
                       $meta_price = $room->getRoomPrice($book->start, $book->finish, $book->park);
                       $book->setMetaContent('price_detail', serialize($meta_price));
@@ -699,7 +697,7 @@ class BookController extends AppController
                 }
               }
             }
-            if ($book->type_book == 8){
+            if ($book->type_book == 8 || $book->type_book == 7){
                 $book->bookingFree();
             }
             

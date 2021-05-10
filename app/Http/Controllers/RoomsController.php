@@ -1191,7 +1191,21 @@ class RoomsController extends AppController {
     return 'Registro no encontrado';
     
   }
-
+  public function getRoomsCostProp($id){
+    $room = \App\Rooms::find($id);
+    $price_limp = 30;
+    $cost_limp  = 9;
+    if ($room){
+      if(!is_null($room->limp_prop))
+        $price_limp = $room->limp_prop;
+      
+      $costes = $room->priceLimpieza($room->sizeApto);
+      $cost_limp = $costes['cost_limp'];
+      
+    }
+//    $cost_limp += Rooms::GIFT_COST;
+    return [$cost_limp,$price_limp];
+  }
   
   //http://miramarski.virtual/fixNameImages
 //  public function fixNameImages() {

@@ -102,7 +102,8 @@ class Book extends Model {
         1 => "CASH",// "Metalico Jaime",
         2 => "TPV",//"Banco Jorge",
         3 => "TPV",//"Banco Jaime"
-        4 => "REINTEGRO"//Devoluciones
+        4 => "REINTEGRO",//Devoluciones
+        5 => "BANCO"//BANCO
     ];
 
     if (!is_null($typePayment)) return $typePayment = $array[$typePayment];
@@ -585,7 +586,7 @@ class Book extends Model {
     if(!$start) $start = $this->start;
     if(!$finish) $finish = $this->finish;
     if ($room){
-//      $oRooms = Rooms::where('channel_group',$room->channel_group)->pluck('id')->toArray();
+      $oRooms = Rooms::where('channel_group',$room->channel_group)->pluck('id')->toArray();
       Rooms::RoomsCH_IDs($room->channel_group);
       if (!in_array($old_room,$oRooms)){
         $this->sendAvailibility($old_room,$start,$finish);
@@ -813,10 +814,18 @@ class Book extends Model {
   }
 
 
-  public function bookingProp($room) {
+  public function bookingProp() {
+    $room = $this->room;
     $cost_limp = is_null($room->limp_prop) ? 30 : $room->limp_prop;
     \App\Expenses::setExpenseLimpieza($this->id, $room, $this->finish,$cost_limp);
-    \App\Incomes::setPropLimpieza($this->id, $room, $this->finish,$cost_limp);
+    $pagoAut = new Payments();
+    $pagoAut->import = $cost_limp;
+    $pagoAut->book_id = $this->id;
+    $pagoAut->datePayment = $this->finish;
+    $pagoAut->comment = 'Automatíco - Resrv. Prop.';
+    $pagoAut->type = 5;
+    $pagoAut->save();
+//    \App\Incomes::setPropLimpieza($this->id, $room, $this->finish,$cost_limp);
   }
   public function bookingFree() {    
     $this->sup_park    = 0;
@@ -825,14 +834,16 @@ class Book extends Model {
     $this->cost_lujo   = 0;
     $this->cost_apto   = 0;
     $this->sup_limp    = 0;
-    $this->cost_limp   = 0;
+    $this->extraCost   = 0;
+    $this->extraPrice  = 0;
+//    $this->cost_limp   = 0;
     $this->real_price  = 0;
-    $this->cost_total  = 0;
+//    $this->cost_total  = 0;
     $this->total_ben   = 0;
     $this->inc_percent = 0;
     $this->ben_jorge   = 0;
     $this->ben_jaime   = 0;
-    $this->total_price = 0;
+//    $this->total_price = 0;
          
   }
   
@@ -850,15 +861,15 @@ class Book extends Model {
         return $response;
     }
     
-    if ($status == 7){
-      /* Asiento automatico para reservas subcomunidad*/
-      $this->bookingFree();
-      $this->bookingProp(\App\Rooms::find($this->room_id));
-      $this->save();
-    } else {
-      //Remove automatic expenses
-      \App\Expenses::delExpenseLimpieza($this->id);
-    }
+//    if ($status == 7){  LO SACO PARA NO HACER PROBLEMAS - DEBEN ELIMINAR LA RESERVA Y CREARLA COMO RESERV PROP
+//      /* Asiento automatico para reservas subcomunidad*/
+//      $this->bookingFree();
+//      $this->bookingProp(\App\Rooms::find($this->room_id));
+//      $this->save();
+//    } else {
+//      //Remove automatic expenses
+//      \App\Expenses::delExpenseLimpieza($this->id);
+//    }
         
     if ($status == 3 || $status == 10 || $status == 12 || $status == 6 || $status == 98) {
       $this->type_book = $status;

@@ -147,7 +147,7 @@ class LiquidacionController extends AppController {
       $totales["costeApto"] += $book->cost_apto;
       $totales["costePark"] += $book->cost_park;
       
-      $banco = $book->getPayment(2) + $book->getPayment(3);
+      $banco = $book->getPayment(2) + $book->getPayment(3) + $book->getPayment(5);
       $caja  = $book->getPayment(0) + $book->getPayment(1);
       $totales["banco"]+= $banco;
       $totales["caja"] += $caja;
