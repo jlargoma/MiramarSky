@@ -102,9 +102,9 @@
       </tr>
       <tr class="border">
         <td >INGRESOS</td>
-        <td >{{moneda($t_ingrTabl_base)}}</td>
+        <td >{{moneda($t_ingrTabl_base+$tPayProp)}}</td>
         <td >{{moneda($t_ingrTabl_iva)}}</td>
-        <td >{{moneda($t_ingrTabl_base+$t_ingrTabl_iva)}}</td>
+        <td >{{moneda($t_ingrTabl_base+$t_ingrTabl_iva+$tPayProp)}}</td>
       </tr>
       <tr class="border">
         <td >GASTOS</td>
@@ -120,9 +120,9 @@
       </tr>
      <tr class="border">
         <th>Total</th>
-        <th>{{moneda($t_ingrTabl_base-$t_gastoTabl_base)}}</th>
+        <th>{{moneda($t_ingrTabl_base-$t_gastoTabl_base+$tPayProp)}}</th>
         <th>{{moneda($t_iva)}}</th>
-        <th>{{moneda( ($t_ingrTabl_base-$t_gastoTabl_base) + $t_iva )}}</th>
+        <th>{{moneda( ($t_ingrTabl_base-$t_gastoTabl_base) + $t_iva +$tPayProp)}}</th>
       </tr>
     </table>
   </div>

@@ -1,12 +1,16 @@
 <div class="row">
   <div class="col-md-8 col-xs-12">
     <h3>Resumen Ingresos / Mes</h3>
+    <?php 
+      $tableTotal = $t_all_rooms;
+      foreach($ingrMonths as $item) $tableTotal += $item[0];
+    ?>
     <div class=" table-responsive">
       <table class="table table-resumen">
         <thead>
           <tr class="resume-head">
             <th class="static">Concepto</th>
-            <th class="static-2 nowrap">Total</th>
+            <th class="static-2 nowrap" style="padding-top: 0 !important; text-align: center;">Total <br/>{{numero($tableTotal)}}</th>
             <?php $first = TRUE; ?>
             @foreach($lstMonths as $k => $month)
             <th @if($first) class="first-col" @endif>{{getMonthsSpanish($month['m'])}}</th>

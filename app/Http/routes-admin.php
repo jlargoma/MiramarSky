@@ -117,6 +117,7 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
   Route::get('/apartamentos/getPaxPerRooms/{id}', 'RoomsController@getPaxPerRooms');
   Route::get('/apartamentos/getLuxuryPerRooms/{id}', 'RoomsController@getLuxuryPerRooms');
   Route::get('/api/reservas/getDataBook', 'BookController@getAllDataToBook');
+  Route::get('/api/reservas/getRoomsCostProp/{id}', 'RoomsController@getRoomsCostProp');
   Route::get('/update/seasonsDays/{val}', 'RouterActionsController@seasonsDays');
   Route::get('/update/percentBenef/{val}', 'LiquidacionController@changePercentBenef');
   Route::post('/reservas/help/getTotalBook', 'BookController@getTotalBook');

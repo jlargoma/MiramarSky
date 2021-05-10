@@ -263,10 +263,15 @@ class OwnedController extends AppController {
       $book->finish = $finishDate;
       $book->nigths = $diff;
       $book->type_book = 7;
- 
+      
+      /****************************/
+      $costes = $room->priceLimpieza($room->sizeApto);
+      $book->cost_limp = $costes['cost_limp'];
+      /****************************/
+      $book->total_price =  is_null($book->room->limp_prop) ? 30 : $book->room->limp_prop;
       $book->bookingFree();
       if ($book->save()) {
-        $book->bookingProp($room);
+        $book->bookingProp();
         $book->sendAvailibilityBy_dates($book->start,$book->finish);
         /* Cliente */
         Mail::send(['html' => 'backend.emails.bloqueoPropietario'], ['book' => $book], function ($message) use ($book) {

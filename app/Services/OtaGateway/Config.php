@@ -205,6 +205,7 @@ class Config {
   }
 
   public function getAgency($id_chanel) {
+    if (!$id_chanel) return 99;
     // airbnb => 4,
     //booking => 1
     $chanels = $this->getAllAgency();

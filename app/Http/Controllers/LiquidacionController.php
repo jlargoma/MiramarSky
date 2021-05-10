@@ -147,7 +147,7 @@ class LiquidacionController extends AppController {
       $totales["costeApto"] += $book->cost_apto;
       $totales["costePark"] += $book->cost_park;
       
-      $banco = $book->getPayment(2) + $book->getPayment(3);
+      $banco = $book->getPayment(2) + $book->getPayment(3) + $book->getPayment(5);
       $caja  = $book->getPayment(0) + $book->getPayment(1);
       $totales["banco"]+= $banco;
       $totales["caja"] += $caja;
@@ -479,8 +479,7 @@ class LiquidacionController extends AppController {
         if(isset($tGastByMonth[$m])) $tGastByMonth[$m] +=$v;
       }
     }
-    
-    $tPayProp = $data['lstT_gast']['prop_pay'];//+$data['aExpensesPending']['prop_pay'];
+    $tPayProp = $data['lstT_gast']['prop_pay']+$data['aExpensesPending']['prop_pay'];
     $data['tGastByMonth'] = $tGastByMonth;
     
 //    $data['totalGasto'] = array_sum($data['lstT_gast']);

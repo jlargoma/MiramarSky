@@ -21,9 +21,24 @@ $(document).ready(function() {
         return true;
       }
       if ( status == 7) {
-        $('.total').empty().val(0);
-        $('.cost').empty().val(0);
-        $('.beneficio').empty().val(0);
+        var room  = $('#newroom').val();
+        $.get('/admin/api/reservas/getRoomsCostProp/'+room)
+            .done(function( data ) {
+              if (!data) return null;
+              var coste = data[0];
+              var price = data[1];
+              $('.total').empty().val(price);
+              $('.cost').empty().val(coste);
+              $('.beneficio').empty().val(price-coste);
+            });
+//                  $('.total').empty().val(100);
+//          $('.cost').empty().val(70);
+//          $('.beneficio').empty().val(30);
+//          
+//          
+//        $('.total').empty().val(0);
+//        $('.cost').empty().val(0);
+//        $('.beneficio').empty().val(0);
         return true;
       }
       return false;
