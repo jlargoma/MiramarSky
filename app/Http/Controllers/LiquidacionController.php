@@ -289,7 +289,8 @@ class LiquidacionController extends AppController {
         'ventas' => 0,
         ];
     /*************************************************************************/
-    $books = \App\Book::where_type_book_sales(true)
+    /** @ToSee estimaciones sólo de las reservas vendidas */
+    $books = \App\Book::where_type_book_sales()
             ->where('start', '>=', $startYear)
             ->where('start', '<=', $endYear)->get();
     $aExpensesPending = $oLiq->getExpensesEstimation($books);
@@ -324,7 +325,7 @@ class LiquidacionController extends AppController {
     $lstT_ing['ff'] = $auxFF['pay'];
 //    $lstT_ing['ff_FFExpress'] = $auxFF['totalFFExpress'];
 //    $lstT_ing['ff_ClassesMat'] = $auxFF['totalClassesMat'];
-    $aIngrPending['ff'] = 0;
+    $aIngrPending['ff'] = $auxFF['to_pay']+$auxFF['to_pay_mat'];;
     /*************************************************************************/
     
     $ingresos['others'] = $emptyMonths;
@@ -398,8 +399,9 @@ class LiquidacionController extends AppController {
         $aExpensesPending[$k] = 0;
       }
     }
-
-    $aExpensesPending['excursion'] = $lstT_ing['ff']-$lstT_gast['excursion'];
+//dd($aExpensesPending);
+    $aExpensesPending['excursion'] =  $auxFF['totalFFExpress']+$auxFF['to_pay']-$lstT_gast['excursion'];
+    $aExpensesPending['prov_material'] = $auxFF['totalClassesMat']+$auxFF['to_pay_mat']-$lstT_gast['prov_material'];
     $aExpensesPendingOrig = $aExpensesPending;
     
     $oData = \App\ProcessedData::findOrCreate('PyG_Hide');
@@ -479,7 +481,8 @@ class LiquidacionController extends AppController {
         if(isset($tGastByMonth[$m])) $tGastByMonth[$m] +=$v;
       }
     }
-    $tPayProp = $data['lstT_gast']['prop_pay']+$data['aExpensesPending']['prop_pay'];
+    /** @toSee pagos a propietarios no realizado aún? */
+    $tPayProp = $data['lstT_gast']['prop_pay'];//+$data['aExpensesPending']['prop_pay'];
     $data['tGastByMonth'] = $tGastByMonth;
     
 //    $data['totalGasto'] = array_sum($data['lstT_gast']);
@@ -509,7 +512,7 @@ class LiquidacionController extends AppController {
     }
     //INGRESOS POR VENTAS DE RESERVAS
 //    $vtas_reserva = $data['lstT_ing']['ventas'];
-    $ingr_reservas = $data['lstT_ing']['ventas']-$tPayProp;
+    $ingr_reservas = $data['lstT_ing']['ventas']-$tPayProp-$data['aExpensesPending']['prop_pay'];
     $ing_baseImp   = $ingr_reservas/(1+($ivas['ing_iva']/100));
     $ing_iva       = $ingr_reservas-$ing_baseImp;
     
@@ -568,9 +571,17 @@ class LiquidacionController extends AppController {
               "mantenimiento"
             ];
     $tGastos_operativos = 0;
-    foreach ($gastos_operativos as $k)
+    $otherExpenses = $data['lstT_gast'];
+    unset($otherExpenses['prop_pay']);
+    unset($otherExpenses['excursion']);
+    unset($otherExpenses['prov_material']);
+    foreach ($gastos_operativos as $k){
       $tGastos_operativos += $data['lstT_gast'][$k];// + floatval ($data['aExpensesPending'][$k]);
-
+      unset($otherExpenses[$k]);
+    }
+    
+    $otherExpenses = array_sum($otherExpenses);
+//    $tGastos_operativos
     
     $iva_soportado = round(($tGastos_operativos*($ivas['gasto_operativo']/100)),2);
     $gasto_operativo_iva     = $iva_soportado;
@@ -601,6 +612,7 @@ class LiquidacionController extends AppController {
     $data['gasto_operativo_baseImp'] = $gasto_operativo_baseImp;
     $data['gasto_operativo_iva'] = $gasto_operativo_iva;
     $data['tGastos_operativos'] = $tGastos_operativos;
+    $data['otherExpenses'] = $otherExpenses;
     $data['tPayProp'] = $tPayProp;
     
     $data['tIngr_base']   = $ing_baseImp+$ing_ff_baseImp+$ing_comision_baseImp;
@@ -620,7 +632,7 @@ class LiquidacionController extends AppController {
     
     
     
-    $data['t_ingrTabl_base']  = $vtas_alojamiento_base+$ing_ff_baseImp+$data['otros_ingr_base'];
+    $data['t_ingrTabl_base']  = $vtas_alojamiento_base+$ing_ff_baseImp+$data['otros_ingr_base']+$tPayProp+$data['aExpensesPending']['prop_pay'];
     $data['t_ingrTabl_iva']   = $vtas_alojamiento_iva+$ing_ff_iva+$data['otros_ingr_iva'];
     $data['t_gastoTabl_base'] = $tPayProp+$gasto_ff_baseImp+$gasto_operativo_baseImp;
     $data['t_gastoTabl_iva']  = $gasto_ff_iva+$gasto_operativo_iva;

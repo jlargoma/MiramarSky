@@ -14,7 +14,7 @@
         <td >{{moneda($ing_baseImp)}}</td>
         <td ><input value="{{$ivas['ing_iva']}}" min="0" max="22" data-k="ing_iva" class="updIVA">%</td>
         <td >{{moneda($ing_iva)}}</td>
-        <td >{{moneda($ingr_reservas)}}</td>
+        <td >{{moneda($ingr_reservas+$tPayProp+$aExpensesPending['prop_pay'])}}</td>
       </tr>
       <tr class="border">
         <td >VTAS FORFAITS </td>
@@ -55,7 +55,7 @@
         <th>TOTAL</th>
       </tr>
       <tr class="border">
-        <td >TOTAL PAGO PROPIETARIOS</td>
+        <td >TOTAL PAGO PROPIETARIOS <br/><smal>¿sólo lo pagado?</smal></td>
         <td >{{moneda($tPayProp)}}</td>
         <td >0%</td>
         <td >0 €</td>
@@ -84,10 +84,17 @@
         <td >{{moneda($tGastos_operativos)}}</td>
       </tr>
       <tr class="border">
+        <td >GASTOS OTROS</td>
+         <td >{{moneda($otherExpenses)}}</td>
+        <td ></td>
+        <td ></td>
+        <td >{{moneda($otherExpenses)}}</td>
+      </tr>
+      <tr class="border">
         <th>Total</th>
          <th>{{moneda($t_gastoTabl_base)}}</th>
         <th colspan="2">{{moneda($t_gastoTabl_iva)}}</th>
-        <th>{{moneda($t_gastoTabl_base+$t_gastoTabl_iva)}}</th>
+        <th>{{moneda($t_gastoTabl_base+$t_gastoTabl_iva+$otherExpenses)}}</th>
       </tr>
     </table>
   </div>
@@ -102,15 +109,15 @@
       </tr>
       <tr class="border">
         <td >INGRESOS</td>
-        <td >{{moneda($t_ingrTabl_base+$tPayProp)}}</td>
+        <td >{{moneda($t_ingrTabl_base)}}</td>
         <td >{{moneda($t_ingrTabl_iva)}}</td>
-        <td >{{moneda($t_ingrTabl_base+$t_ingrTabl_iva+$tPayProp)}}</td>
+        <td >{{moneda($t_ingrTabl_base+$t_ingrTabl_iva)}}</td>
       </tr>
       <tr class="border">
         <td >GASTOS</td>
         <td >{{moneda($t_gastoTabl_base)}}</td>
         <td >{{moneda($t_gastoTabl_iva)}}</td>
-        <td >{{moneda($t_gastoTabl_base+$t_gastoTabl_iva)}}</td>
+        <td >{{moneda($t_gastoTabl_base+$t_gastoTabl_iva+$otherExpenses)}}</td>
       </tr>
       <tr class="border">
         <td >ARQUEO</td>
@@ -119,10 +126,22 @@
         <td >-</td>
       </tr>
      <tr class="border">
-        <th>Total</th>
-        <th>{{moneda($t_ingrTabl_base-$t_gastoTabl_base+$tPayProp)}}</th>
+        <th>SubTotal</th>
+        <th>{{moneda($t_ingrTabl_base-$t_gastoTabl_base)}}</th>
         <th>{{moneda($t_iva)}}</th>
-        <th>{{moneda( ($t_ingrTabl_base-$t_gastoTabl_base) + $t_iva +$tPayProp)}}</th>
+        <th>{{moneda( ($t_ingrTabl_base-$t_gastoTabl_base-$otherExpenses) + $t_iva)}}</th>
+      </tr>
+     <tr class="border">
+        <th>Gasto Pend.</th>
+        <th></th>
+        <th></th>
+        <th>{{moneda(array_sum($aExpensesPending))}}</th>
+      </tr>
+    <tr class="border">
+        <th>Total</th>
+        <th></th>
+        <th></th>
+        <th>{{moneda( ($t_ingrTabl_base-$t_gastoTabl_base-$otherExpenses-array_sum($aExpensesPending)) + $t_iva)}}</th>
       </tr>
     </table>
   </div>
@@ -139,10 +158,10 @@
       </tr>
       <tr class="white border">
         <td >VTAS PARA PROPIETARIOS (Pagos a Prop.)</td>
-        <td >{{moneda($tPayProp)}}</td>
+        <td >{{moneda($tPayProp+$aExpensesPending['prop_pay'])}}</td>
         <td >0%</td>
         <td >0 €</td>
-        <td >{{moneda($tPayProp)}}</td>
+        <td >{{moneda($tPayProp+$aExpensesPending['prop_pay'])}}</td>
       </tr>
       <tr class="white border">
         <td >VTAS INTERM INMOB</td>
