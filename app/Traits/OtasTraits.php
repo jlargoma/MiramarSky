@@ -176,7 +176,7 @@ trait OtasTraits
         }
         if($min_estancia && $min_estancia>0){
           $oPrice->min_estancia = $min_estancia;
-          $aMinStay[$dateItem] = $min_estancia;
+          $aMinStay[$dateItem] = ['min_stay'=> intval($min_estancia)];
         }
         $oPrice->user_id = $uID;
         $oPrice->save();

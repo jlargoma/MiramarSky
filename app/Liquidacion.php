@@ -152,6 +152,7 @@ class Liquidacion
       
     $totalPrice = $forfaits = $totalToPay = $totalToPay = $totalPayment = 0;
     $totalFFExpress = $totalClassesMat = 0;
+    $toPayFF = $toPayMat = 0;
     $forfaitsIDs = $ordersID = $common_ordersID = array();
     if ($allForfaits){
       foreach ($allForfaits as $forfait){
@@ -167,32 +168,52 @@ class Liquidacion
             }
             $totalPrice += $order->total;
             $ordersID[] = $order->id;
+            
+            
+            if ($order->status == 2){
+              $totalPayment += $order->total;
+              if ($order->type == 'forfaits'){
+                 $totalFFExpress += $order->total;
+              } else {
+                $totalClassesMat += $order->total;
+//                echo $order->total.' '.$order->forfats_id.'<br>';
+              }
+            }
+            if ($order->status != 2){
+              if ($order->type == 'forfaits'){
+                 $toPayFF += $order->total;
+              } else {
+                $toPayMat += $order->total;
+              }
+            }
           }
         }
         $forfaitsIDs[] = $forfait->id;
       }
+  
       /*--------------------------------*/
-      if (count($ordersID)>0){
-        $totalPayment = ForfaitsOrderPayments::whereIn('order_id', $ordersID)->where('paid',1)->sum('amount');
-        if ($totalPayment>0){
-          $totalPayment = $totalPayment/100;
-          $totalClassesMat += $totalPayment;
-        }
-        $totalPayment2 =  ForfaitsOrderPayments::whereIn('forfats_id', $forfaitsIDs)->where('paid',1)->sum('amount');
-
-        if ($totalPayment2>0){
-          $totalPayment += $totalPayment2/100;
-          $totalFFExpress += round($totalPayment2/100,2);
-        }
-      }
+//      if (count($ordersID)>0){
+//        $totalPayment = ForfaitsOrderPayments::whereIn('order_id', $ordersID)->where('paid',1)->sum('amount');
+//        if ($totalPayment>0){
+//          $totalPayment = $totalPayment/100;
+//          $totalClassesMat += $totalPayment;
+//        }
+//        $totalPayment2 =  ForfaitsOrderPayments::whereIn('forfats_id', $forfaitsIDs)->where('paid',1)->sum('amount');
+//
+//        if ($totalPayment2>0){
+//          $totalPayment += $totalPayment2/100;
+//          $totalFFExpress += round($totalPayment2/100,2);
+//        }
+//      }
       $totalToPay = $totalPrice - $totalPayment;
      //---------------------------------------------------------/ 
     }
-    
     if ($totalToPay<0) $totalToPay = 0;
+//    dd($totalClassesMat);
     return [
         'q'=>count($ordersID),
-        'to_pay'=>$totalToPay,
+        'to_pay'=>$toPayFF,
+        'to_pay_mat'=>$toPayMat,
         'total'=>$totalPrice,
         'pay'=>$totalPayment,
         'totalFFExpress'=>$totalFFExpress,

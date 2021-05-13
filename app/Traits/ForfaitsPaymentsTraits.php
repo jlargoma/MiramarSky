@@ -468,6 +468,9 @@ trait ForfaitsPaymentsTraits {
               } else {
                 $common_ordersID[] = $order->id;
               }
+              if ($order->status == 2){
+                $totalPayment += $order->total;
+              }
                 
               $ordersID[] = $order->id;
               $totalPrice += $order->total;
@@ -481,16 +484,16 @@ trait ForfaitsPaymentsTraits {
             
             if (count($ordersID)>0){
               
-              $totalPayment =  ForfaitsOrderPayments::whereIn('order_id', $ordersID)->where('paid',1)->sum('amount');
-              
-              if ($totalPayment>0){
-                $totalPayment = $totalPayment/100;
-              }
-              $totalPayment2 =  ForfaitsOrderPayments::where('forfats_id', $forfait->id)->where('paid',1)->sum('amount');
-              
-              if ($totalPayment2>0){
-                $totalPayment += $totalPayment2/100;
-              }
+//              $totalPayment =  ForfaitsOrderPayments::whereIn('order_id', $ordersID)->where('paid',1)->sum('amount');
+//              
+//              if ($totalPayment>0){
+//                $totalPayment = $totalPayment/100;
+//              }
+//              $totalPayment2 =  ForfaitsOrderPayments::where('forfats_id', $forfait->id)->where('paid',1)->sum('amount');
+//              
+//              if ($totalPayment2>0){
+//                $totalPayment += $totalPayment2/100;
+//              }
               
               $ff_sent = ForfaitsOrderItem::where('order_id', $order->id)
                       ->where('type', 'forfaits')
@@ -537,7 +540,7 @@ trait ForfaitsPaymentsTraits {
           }
       }
       $rooms = \App\Rooms::all();
-      
+    
       $obj1  = $this->getMonthlyData($year);
       
       $balance = $this->getBalance();

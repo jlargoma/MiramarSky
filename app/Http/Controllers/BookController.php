@@ -2004,9 +2004,10 @@ class BookController extends AppController
       $titulo = '';
       $agency = '';
       $href = '';
-      
+      $href = 'href="'.url ('/admin/reservas/update').'/'.$book->id.'" ';
       $vistaCompleta = in_array($uRole, ['admin','subadmin']);
-      if (!$isMobile){
+//      if (!$isMobile){
+      if (true){
         $agency = ($book->agency != 0) ? "Agencia: ".$book->getAgency($book->agency).'<br/>' : "";
         $titulo = $book->customer->name.'<br/>'.
               'Pax-real '.$book->real_pax.'<br/>'.
@@ -2017,7 +2018,6 @@ class BookController extends AppController
         if ($vistaCompleta){
           $titulo .= strtoupper($book->user->name).'<br/>';
           $titulo .='PVP:'.$book->total_price.'<br/>';
-          $href = ' href="'.url ('/admin/reservas/update').'/'.$book->id.'" ';
         }
 
         $titulo .= $agency;
@@ -2040,6 +2040,10 @@ class BookController extends AppController
         }
       }
       
+      if ($isMobile){
+        $titulo .= '<div class="calLink" data-'.$href.'>IR</div>';
+        $href = '#';
+      }
       $return = json_encode([
           'start' => $book->start,
           'finish' => $book->finish,
