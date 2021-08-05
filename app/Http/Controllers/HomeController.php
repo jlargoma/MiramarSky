@@ -24,7 +24,7 @@ class HomeController extends AppController
     public function index(Request $request)
     {
       
-//      return redirect()->route('dashboard.planning');
+      return redirect()->route('dashboard.planning');
         /* Detectamos el tipo de dispositivo*/
       
       global $mobile,$is_mobile;

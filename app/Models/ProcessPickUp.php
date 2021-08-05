@@ -49,7 +49,7 @@ class ProcessPickUp {
     
     while ($startAux<=$endAux){
         $aLstDays[date('Y-m-d',$startAux)] = $auxDay;
-        $startAux+=$oneDay;
+        $startAux = strtotime("+1 day", $startAux);
       }
     $recidencias = $aLstDays;
     $ocupaciones = $aLstDays;
@@ -94,7 +94,7 @@ class ProcessPickUp {
             $llegada[$day][$ch]++;
             $ingresos[$day][$ch] += $priceNigths; 
             $extras[$day][$ch] += $extraPrice; 
-            $startAux+=$oneDay;
+            $startAux = strtotime("+1 day", $startAux);
           }
           //start in the second day
           while ($startAux<$endAux){
@@ -106,7 +106,7 @@ class ProcessPickUp {
               $extras[$day][$ch] += $extraPrice; 
             }
             
-            $startAux+=$oneDay;
+            $startAux = strtotime("+1 day", $startAux);
           }
           
            if (isset($salida[date('Y-m-d',$endAux)]))
@@ -130,7 +130,7 @@ class ProcessPickUp {
             if (isset($aLstDays[$day][$ch])){
               $cancelaciones[$day][$ch] += 1; 
             }
-            $startAux+=$oneDay;
+            $startAux = strtotime("+1 day", $startAux);
           }
         }
       }

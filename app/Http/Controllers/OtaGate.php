@@ -142,7 +142,8 @@ class OtaGate extends Controller {
       $ogAvail = [];
       while ($startAux<$endAux){
         $ogAvail[date('Y-m-d',$startAux)] = 1;
-        $startAux+=$oneDay;
+//        $startAux+=$oneDay;
+        $startAux = strtotime("+1 day", $startAux);
       }
     $return = $this->sOta->sendAvailability(['availability'=>[47077=>$ogAvail]]);
       dd($return,$this->sOta->response);

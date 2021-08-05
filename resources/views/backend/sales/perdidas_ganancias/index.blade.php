@@ -22,12 +22,15 @@ setlocale(LC_TIME, "es_ES");
     }
   }
 
-  .updIVA,#ivaTemp{
+  .updIVA,#ivaTemp,#ivaSoportado{
     background-color: transparent;
     border: none;
     text-align: right;
     padding: 0;
     width: 2em;
+  }
+  #ivaTemp,#ivaSoportado{
+    width: 4em;
   }
   td{
     height: 3em !important;
@@ -236,7 +239,17 @@ $(document).ready(function () {
   $('#ivaTemp').on('keyup', function (e) {
     var c_val = $(this).val().replace( /[^\d|^-]/g , '' );
     if (e.keyCode == 13) {
-      saveIVA();
+      saveIVA(parseInt($(this).val()),1);
+    } else {
+      $('#message_iva').addClass('alert alert-warning').text('Recuerde dar ENTER para guardar');
+      e.preventDefault();
+      return false;
+    }
+  });
+  $('#ivaSoportado').on('keyup', function (e) {
+    var c_val = $(this).val().replace( /[^\d|^-]/g , '' );
+    if (e.keyCode == 13) {
+      saveIVA(parseInt($(this).val()),2);
     } else {
       $('#message_iva').addClass('alert alert-warning').text('Recuerde dar ENTER para guardar');
       e.preventDefault();
@@ -245,10 +258,11 @@ $(document).ready(function () {
   });
   
  
-  var saveIVA = function(val){
+  var saveIVA = function(val,type){
     var url = "/admin/perdidas-ganancias/upd-iva";
     var _data = {
-      val: parseInt($('#ivaTemp').val()),
+      val: val,
+      type: type,
       temporada: {{$year->year}},
       _token: "{{ csrf_token() }}"
     }

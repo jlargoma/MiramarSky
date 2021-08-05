@@ -157,7 +157,7 @@ trait Hoteles {
       while ($startAux<=$endAux){
         $aLstDays[date('Y-m-d',$startAux)] = $auxDay;
         $roomsType[date('Y-m-d',$startAux)] = $auxRooms;
-        $startAux+=$oneDay;
+        $startAux = strtotime("+1 day", $startAux);
       }
       
       
@@ -223,7 +223,7 @@ trait Hoteles {
               $nigths++;
             }
             
-            $startAux+=$oneDay;
+            $startAux = strtotime("+1 day", $startAux);
           }
       
           if ($nigths > 0){

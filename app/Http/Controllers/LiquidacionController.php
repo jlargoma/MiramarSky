@@ -485,9 +485,8 @@ class LiquidacionController extends AppController {
     $tPayProp = $data['lstT_gast']['prop_pay'];//+$data['aExpensesPending']['prop_pay'];
     $data['tGastByMonth'] = $tGastByMonth;
     
-//    $data['totalGasto'] = array_sum($data['lstT_gast']);
+    $data['totalGasto'] = array_sum($data['lstT_gast']);
 //    $data['ingr_bruto'] = $data['totalIngr']-$data['totalGasto'];
-    
     
     $iva_jorge = 0;
     $iva_soportado = 0;
@@ -637,7 +636,13 @@ class LiquidacionController extends AppController {
     $data['t_gastoTabl_base'] = $tPayProp+$gasto_ff_baseImp+$gasto_operativo_baseImp;
     $data['t_gastoTabl_iva']  = $gasto_ff_iva+$gasto_operativo_iva;
     $data['ivas']  = $ivas;
-    $data['t_iva'] = $data['t_ingrTabl_iva'] - $data['t_gastoTabl_iva'] + $data['ivaTemp'];
+    
+    
+    $ivaSoportado = \App\Settings::getKeyValue('IVA_SOP'.$data['year']->year);
+    if (!$ivaSoportado) $ivaSoportado = round($data['t_gastoTabl_iva']);
+    $data['ivaSoportado'] = $ivaSoportado;
+    
+    $data['t_iva'] = $data['t_ingrTabl_iva'] - $ivaSoportado + $data['ivaTemp'];
     
     $data['_ff_mat_baseImp'] = $_ff_mat_baseImp;
     $data['_ff_mat_iva'] = $_ff_mat_iva;
@@ -686,10 +691,12 @@ class LiquidacionController extends AppController {
   
   public function perdidasGananciasUpdIVA(Request $request) {
     $val   = floatVal($request->input('val'));
+    $type  = ($request->input('type'));
 //    $jorge       = floatVal($request->input('jorge'));
     $temporada   = floatVal($request->input('temporada'));
+    if ($type == 1) $key = 'IVA_'.$temporada;
+    if ($type == 2) $key = 'IVA_SOP'.$temporada;
     
-    $key = 'IVA_'.$temporada;
     $objt = \App\Settings::where('key',$key)->first();
     if (!$objt){
       $objt = new \App\Settings();

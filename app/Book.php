@@ -634,7 +634,8 @@ class Book extends Model {
       $aLstDays = [];
       while ($startAux<$endAux){
         $aLstDays[date('Y-m-d',$startAux)] = $avail;
-        $startAux+=$oneDay;
+//        $startAux+=$oneDay;
+        $startAux = strtotime("+1 day", $startAux);
       }
       
       $control = [];
@@ -653,8 +654,8 @@ class Book extends Model {
 
               $control[] = $keyControl;
             }
-
-            $startAux += $oneDay;
+            $startAux = strtotime("+1 day", $startAux);
+//            $startAux += $oneDay;
           }
         }
       }
@@ -667,7 +668,7 @@ class Book extends Model {
           $resultLst[] = [
                 "avail" => $v,
                 "start" => $d,
-                "end" => date('Y-m-d', strtotime($d)+$oneDay),
+                "end" => date('Y-m-d', strtotime("+1 day", strtotime($d)))
             ];
           //Wubook Items: just to RIAD and HotelRosa
           if ($room->site_id != 3)
@@ -687,7 +688,8 @@ class Book extends Model {
             $resultLst[] = [
                 "avail" => $value,
                 "start" => $startAux2,
-                "end" => date('Y-m-d', strtotime($end)+$oneDay),
+                "end" => date('Y-m-d', strtotime("+1 day", strtotime($end))),
+//                "end" => date('Y-m-d', strtotime($end)+$oneDay),
             ];
 
             $value = $v;
@@ -742,7 +744,8 @@ class Book extends Model {
     $aLstDays = [];
     while ($startAux <= $endAux) {
       $aLstDays[date('Y-m-d', $startAux)] = $avail;
-      $startAux += $oneDay;
+      $startAux = strtotime("+1 day", $startAux);
+//      $startAux += $oneDay;
     }
 
 
@@ -769,8 +772,8 @@ class Book extends Model {
                 $aLstDays[$auxTime]--;
               $control[] = $keyControl;
             }
-
-            $startAux += $oneDay;
+            $startAux = strtotime("+1 day", $startAux);
+//            $startAux += $oneDay;
           }
         }
       }

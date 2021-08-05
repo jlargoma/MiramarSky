@@ -87,7 +87,8 @@ class ProcessData extends Command
 
           while ($startAux<$endAux){
             $aLstDays[date('Y-m-d',$startAux)][] = $b->id;
-            $startAux+=$oneDay;
+            $startAux = strtotime("+1 day", $startAux);
+//            $startAux+=$oneDay;
           }
 
         }
