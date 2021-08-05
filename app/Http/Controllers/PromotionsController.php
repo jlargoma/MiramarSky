@@ -156,7 +156,7 @@ class PromotionsController extends AppController {
         
         while ($startAux<=$endAux){
           $exceptions[] = date('Y-m-d',$startAux);
-          $startAux+=$oneDay;
+          $startAux = strtotime("+1 day", $startAux);
         }
       }
     }
@@ -185,7 +185,7 @@ class PromotionsController extends AppController {
         }
       }
       $days[$dateAux] = $active;
-      $startAux+=$oneDay;
+      $startAux = strtotime("+1 day", $startAux);
     }
         
     /***********************************/

@@ -170,7 +170,7 @@ class OtaGateway {
       $params['price'][$room] = $aux;
     }
     $params['plan_id'] = $this->oConfig->Plans($ota_id);
-    $this->call('prices', 'POST', $params);
+    if ($params['plan_id']>0)  $this->call('prices', 'POST', $params);
   }
   
   public function setMinStay($params) {

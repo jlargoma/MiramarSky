@@ -145,7 +145,7 @@ trait Apartamentos {
       while ($startAux<=$endAux){
         $aLstDays[date('Y-m-d',$startAux)] = $auxDay;
         $roomsType[date('Y-m-d',$startAux)] = $auxRooms;
-        $startAux+=$oneDay;
+        $startAux = strtotime("+1 day", $startAux);
       }
       
       //Obtengo los paices y provincias para generar el listado
@@ -215,7 +215,7 @@ trait Apartamentos {
               $nigths++;
             }
             
-            $startAux+=$oneDay;
+            $startAux = strtotime("+1 day", $startAux);
           }
       
           if ($nigths > 0){

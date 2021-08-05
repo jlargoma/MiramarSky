@@ -9,6 +9,7 @@
       </div>
       <div class="modal-body">
         <div class="table-responsive tabla-funcional-resultados">
+        <h1 class="alert alert-danger">En Revisión</h1>
   <div class="">
     <table>
       <thead>

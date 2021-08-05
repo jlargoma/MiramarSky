@@ -46,9 +46,7 @@
     <li class="{{ $pathRequest == 'admin/pagos-propietarios'  ? 'active' : '' }}">
       <a href="{{ url('admin/pagos-propietarios') }}" class="detailed">Pagos a propietarios</a>
     </li>
-    <li class="{{ $pathRequest == 'admin/contabilidad'  ? 'active' : '' }}">
-      <a href="{{ url('admin/contabilidad') }}" class="detailed">Contabilidad</a>
-    </li>
+
   <?php endif ?>
     
   <?php if ($uRole == "admin"): ?>
@@ -89,6 +87,9 @@
     <li class="{{ $pathRequest == 'admin/orders-payland' ? 'active' : '' }}">
           <a href="{{ url('admin/orders-payland') }}" class="detailed">PAYLAND</a>
     </li>
+    <li class="{{  (preg_match('/\/show-INE/i',$pathRequest))  ? 'active' : '' }}">
+        <a href="{{ url('/admin/show-INE') }}" class="detailed">Estad. INE</a>
+    </li>
 <?php endif ?>
     
 <?php if ($uRole == "limpieza"): ?>
@@ -111,25 +112,18 @@
           <a href="{{ url('admin/orders-payland') }}" class="detailed">PAYLAND</a>
     </li>
 <?php endif ?>
-    <?php if (  $uRole == "admin"): ?>
-    <li class="{{  (preg_match('/\/contents-home/i',$pathRequest))  ? 'active' : '' }}">
-      <a href="{{ url('/admin/contents-home') }}" class="detailed">Contenidos Front</a>
-    </li>
-    <?php endif ?>
-
- 
     <?php if ($uRole == "admin" || $uRole == "subadmin" || $uRole == "recepcionista"): ?>
-    <li class="{{  (preg_match('/\/channel-manager/i',$pathRequest) || $pathRequest == 'admin/precios')  ? 'active' : '' }}">
-        <a href="{{ url('/admin/precios') }}" class="detailed">CHANNEL</a>
-    </li>
      <li class="{{  (preg_match('/\/revenue/i',$pathRequest))  ? 'active' : '' }}">
         <a href="{{ url('/admin/revenue/DASHBOARD') }}" class="detailed">Revenue</a>
+    </li>
+    <li class="{{  (preg_match('/\/channel-manager/i',$pathRequest) || $pathRequest == 'admin/precios')  ? 'active' : '' }}">
+        <a href="{{ url('/admin/precios') }}" class="detailed">CHANNEL</a>
     </li>
 <?php endif ?>
     
 <?php if ($uRole == "admin" ): ?>
-    <li class="{{  (preg_match('/\/show-INE/i',$pathRequest))  ? 'active' : '' }}">
-        <a href="{{ url('/admin/show-INE') }}" class="detailed">Estad. INE</a>
+    <li class="{{ $pathRequest == 'admin/contabilidad'  ? 'active' : '' }}">
+      <a href="{{ url('admin/contabilidad') }}" class="detailed">CONTABILIDAD</a>
     </li>
 <?php endif ?>
     

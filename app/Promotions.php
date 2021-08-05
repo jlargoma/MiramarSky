@@ -21,7 +21,7 @@ class Promotions extends Model {
       $days = [];
       while ($startAux < $endAux) {
         $days[] = date('Y-m-d', $startAux);
-        $startAux += $oneDay;
+        $startAux = strtotime("+1 day", $startAux);
       }
 
 
@@ -86,7 +86,7 @@ class Promotions extends Model {
       $days = [];
       while ($startAux < $endAux) {
         $days[] = date('Y-m-d', $startAux);
-        $startAux += $oneDay;
+        $startAux = strtotime("+1 day", $startAux);
       }
 
       foreach ($oPromotions as $promo) {

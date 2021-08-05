@@ -157,7 +157,7 @@ class RevenueController extends AppController
     while ($startAux<=$endTime){
       $aLstDays[date('d',$startAux)] = $dw[date('w',$startAux)];
       $aLstDaysMin[date('j',$startAux)] = $dwMin[date('w',$startAux)];
-      $startAux+=$oneDay;
+      $startAux = strtotime("+1 day", $startAux);
     }
       
     /************************************************************/
@@ -269,7 +269,7 @@ class RevenueController extends AppController
               $monthPVP += $pvpPerNigh;
               $totalMonthOcc++;
             }
-            $startAux+=$oneDay;
+            $startAux = strtotime("+1 day", $startAux);
           }
         }
       }
@@ -403,7 +403,7 @@ class RevenueController extends AppController
     $dw = listDaysSpanish(true);
     while ($startAux<=$endAux){
       $aLstDays[date('d',$startAux)] = $dw[date('w',$startAux)];
-      $startAux+=$oneDay;
+      $startAux = strtotime("+1 day", $startAux);
     }
       
     /************************************************************/
