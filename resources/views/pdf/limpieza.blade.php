@@ -48,7 +48,7 @@
         padding: 0;
       }
       table, th, td {
-        border: 1px solid #cecece;
+        border-bottom:  1px solid #cecece;
       }
       th, td {
         padding: 8px;
@@ -69,6 +69,9 @@
       .text-rigth{
         text-align: right;
       }
+      th.header.text-left {
+          text-align: left;
+      }
     </style>
   <body>
     <header>
@@ -84,14 +87,14 @@
         <table class="table">
           <thead >
             <tr>
-              <th class ="header">Nombre</th>
+              <th class ="header text-left">Nombre</th>
               <th class ="header text-center">T</th>
               <th class ="header text-center">Pax</th>
               <th class ="header text-center">apto</th>
               <th class ="header text-center">checkIn - checkOut</th>
               <th class ="header text-center">N</th>
-              <th class ="header text-center">Limpieza<br><b>&#8364;&nbsp;{{$total_limp}}</b></th>
-              <th class ="header text-center">Extras<br><b>&#8364;&nbsp;{{$total_extr}}</b></th>
+              <th class ="header text-rigth">Limpieza<br><b>&#8364;&nbsp;{{$total_limp}}</b></th>
+              <th class ="header text-rigth">Extras<br><b>&#8364;&nbsp;{{$total_extr}}</b></th>
             </tr>
           </thead>
           <tbody >
@@ -104,6 +107,7 @@
             @endforeach
            
             @foreach($respo_list as $item)
+            @if ($item['limp']>0 || $item['extra']>0)
             <tr>
               <td>{{$item['name']}}</td>
               <td class="text-center">{{$item['type']}}</td>
@@ -112,8 +116,9 @@
               <td class="text-center">{{$item['check_in']}} - {{$item['check_out']}}</td>
               <td class="text-center">{{$item['nigths']}}</td>
               <td class="text-rigth">{{moneda($item['limp'])}}</td>
-              <td class="text-rigth">{{moneda($item['pax'])}}</td>
+              <td class="text-rigth">{{moneda($item['extra'])}}</td>
             </tr>
+            @endif
             @endforeach
             <tr>
               <td colspan="8"></td>

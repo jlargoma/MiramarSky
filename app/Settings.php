@@ -88,7 +88,8 @@ class Settings extends Model {
 //        'fianza_confirm_deferred' => 'Confirmación de Fianza',
 //        'SMS_fianza' => 'SMS Fianza',
         'SMS_Partee_msg' => 'Mensaje Partee (enviar por plataforma de terceros)',
-        'SMS_Partee_upload_dni' => 'SMS Partee (subir dni para el control diario de huéspedes)',
+//        'SMS_Partee_upload_dni' => 'SMS Partee (subir dni para el control diario de huéspedes)',
+        'MAIL_Partee'   =>'Mail Partee', // SMS_Partee_upload_dni
         'send_encuesta' => 'Mail de Encuestas',
         'send_encuesta_subject' => 'Asunto de Encuestas',
         'text_payment_link'     =>'Texto GENERADOR DE LINKS',

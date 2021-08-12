@@ -187,6 +187,7 @@ class LimpiezaController extends AppController {
     $month_cost = [];
     $total_limp = 0; //start with the monthly cost
     $total_extr = 0;
+    $count = 0;
 
     if (!$year) {
       return response()->json(['status' => 'wrong']);
@@ -245,6 +246,7 @@ class LimpiezaController extends AppController {
 
       $total_limp += floatval($book->cost_limp);
       $total_extr += floatval($book->extraCost);
+      if ($book->cost_limp>0) $count++;
     }
 
     $response = [
@@ -253,6 +255,8 @@ class LimpiezaController extends AppController {
         'respo_list' => $respo_list,
         'total_limp' => moneda($total_limp),
         'total_extr' => moneda($total_extr),
+        'total_summ' => moneda($total_limp+$total_extr),
+        'count'      => $count
     ];
     if ($isAjax) {
       return response()->json($response);

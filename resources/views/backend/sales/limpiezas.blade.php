@@ -16,7 +16,17 @@ setlocale(LC_TIME, "es_ES");
 <script type="text/javascript" src="{{asset('/js/bootbox.min.js')}}"></script>
 <style>
  
- 
+ #limpieza_summ th{
+  text-align: center;
+  background-color: #48b0f7;
+      color: #FFF;
+}
+#limpieza_summ td{
+  text-align: center;
+      text-align: center;
+    font-weight: 800;
+    padding: 4px !important;
+}
   @media only screen and (max-width: 991px){
 
     .table-resumen .fix-col-data{
@@ -61,7 +71,7 @@ setlocale(LC_TIME, "es_ES");
               <input type="hidden" id="year" name="year" value="1999">
               <input type="hidden" id="month" name="month" value="1">
               <input type="hidden" id="_token" name="_token" value="{{csrf_token()}}">
-              <button class="btn-pdf" title="Exportar a PDF"><i class="fa fa-file-pdf-o" aria-hidden="true"></i></button>
+              <button class="btn-pdf" title="Exportar a PDF"><i class="fa fa-file-pdf" aria-hidden="true"></i></button>
             </form>
           </h2>
         </div>
@@ -79,6 +89,22 @@ setlocale(LC_TIME, "es_ES");
         @foreach($months_obj as $m)
         <div class="month_select" id="ms_{{$m['id']}}" data-month="{{$m['month']}}" data-year="{{$m['year']}}">{{$m['name']}} {{$m['year']}}</div>
         @endforeach
+        </div>
+        <div class="table-responsive" id="limpieza_summ">
+          <table class="table">
+            <tr>
+              <th>Acumulado Limpieza</th>
+              <th>Acumulado Extras</th>
+              <th>TOTAL MES EN CURSO</th>
+              <th>Nro de Reservas</th>
+            </tr>
+            <tr>
+              <td class="sum_limp"></td>
+              <td class="sum_ext"></td>
+              <td class="sum_total"></td>
+              <td class="sum_count"></td>
+            </tr>
+          </table>
         </div>
         <div class="table-responsive" id="limpieza_table">
           <table class="table">
@@ -225,6 +251,11 @@ setlocale(LC_TIME, "es_ES");
             $('#monthly_extr').text(0);
             $('#tableItems').html('');
             
+            var summ = $('#limpieza_summ');
+            summ.find('.sum_limp').text(response.total_limp);
+            summ.find('.sum_ext').text(response.total_extr);
+            summ.find('.sum_total').text(response.total_summ);
+            summ.find('.sum_count').text(response.count);
             
             
             $.each((response.month_cost), function(index, val) {

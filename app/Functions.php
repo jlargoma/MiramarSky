@@ -560,3 +560,7 @@ function configOtasAptosName(){
   $otaConfig = new \App\Services\OtaGateway\Config();
   return  $otaConfig->getRoomsName();
 }
+function get_shortlink($url){
+  $sS_urls = new \App\Services\ShortUrlService();
+  return $sS_urls->create($url);
+}
