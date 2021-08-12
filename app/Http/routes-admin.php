@@ -193,3 +193,5 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], fun
   Route::get('admin/revenue/VENTAS-POR-DIA', 'RevenueController@daily')->name('revenue.daily');
   Route::post('admin/revenue/donwlVtasDia', 'RevenueController@donwlDaily')->name('revenue.donwlVtasDia');
 });
+
+Route::get('test-text/{lng}/{key?}/{ota?}', 'SettingsController@testText');
