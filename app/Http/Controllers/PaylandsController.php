@@ -413,74 +413,45 @@ class PaylandsController extends AppController
         
         public function getSummary() {
           
-          $year = $this->getActiveYear();
-          $d = str_replace('-','', $year->start_date);
-          $startDate = $d.'0000';
-          $d = str_replace('-','', $year->end_date);
-          $endDate = $d.'2359';
-      
-          $today = date('Ymd');
-          $totalToday = 0;
-          $SUCCESS = $REFUSED = $ERROR = [];
-          // prepare the chart
+         $year = $this->getActiveYear();
           $startYear = new Carbon($year->start_date);
           $endYear   = new Carbon($year->end_date);
-          $diff      = $startYear->diffInMonths($endYear) + 1;
-          $aux = $startYear->format('n');
-          $auxY = $startYear->format('y');
-          for ($i=0; $i<$diff;$i++){
-            $c_month = $aux+$i;
-            if ($c_month == 13){
-              $auxY++;
-            }
-            if ($c_month>12){
-              $c_month -= 12;
-            }
-            $SUCCESS[$auxY.'_'.$c_month] = 0;
-            $REFUSED[$auxY.'_'.$c_month] = 0;
-            $ERROR[$auxY.'_'.$c_month] = 0;
+          $today = date('Y-m-d');
+          $months = [];
+          
+          while ($startYear<$endYear && $startYear<$today){
+            $months[] = $startYear->format('Y-m');
+            $startYear->addMonth();
           }
-          
-          $orderPayment = $this->getPaylandApiClient()->getOrders($startDate,$endDate);
-          
+          $SUCCESS = $REFUSED = $ERROR = [];
           $count = [
                   'SUCCESS' => 0,
                   'REFUSED' => 0,
                   'ERROR' => 0,
               ];
-          if ($orderPayment){
-          if ($orderPayment->message == 'OK')
-          foreach ($orderPayment->transactions as $order){
-            
-            $time = strtotime($order->created);
-            $month = date('y_n',$time);
-            $amount = $order->amount/100;
-            switch ($order->status){
-              case 'SUCCESS':
-                $SUCCESS[$month] += $amount;
-                if (date('Ymd',$time) == $today){
-                  $totalToday +=$amount;
-                }
-                break;
-              case 'REFUSED':
-                $REFUSED[$month] += $amount;
-                break;
-              case 'ERROR':
-                $ERROR[$month] += $amount;
-                break;
+          
+          foreach ($months as $m){
+            $SUCCESS[$m] = 0;
+            $REFUSED[$m] = 0;
+            $ERROR[$m]   = 0;
+            $oItem = \App\PaylandsSummary::where('date_ym',$m)->first();
+            if ($oItem){
+              $SUCCESS[$m] = $oItem->p_success;
+              $REFUSED[$m] = $oItem->p_refused;
+              $ERROR[$m]   = $oItem->p_error;
+              $aux = json_decode($oItem->counts,true);
+              if (isset($aux['SUCCESS'])) $count['SUCCESS'] += $aux['SUCCESS'];
+              if (isset($aux['REFUSED'])) $count['REFUSED'] += $aux['REFUSED'];
+              if (isset($aux['ERROR'])) $count['ERROR'] += $aux['ERROR'];
             }
-            $count[$order->status]++;
+    
           }
-        }
-        
+          
         $totals = [
                 'SUCCESS' => 0,
                 'REFUSED' => 0,
                 'ERROR' => 0,
             ];
-        
-        
-        
         $result = [
             'SUCCESS' => [],
             'REFUSED' => [],
@@ -498,19 +469,18 @@ class PaylandsController extends AppController
           $result['ERROR'][] = $r;
           $totals['ERROR'] += $r;
         }
-        if ($count['SUCCESS']<1) $count['SUCCESS'] = 1;
-        $average = $totals['SUCCESS']/$count['SUCCESS'];
-//        $totals['SUCCESS'] = number_format($totals['SUCCESS'], 2, ',', '.');
-                
+        
+        $average = ($count['SUCCESS']) ? $totals['SUCCESS']/$count['SUCCESS'] : 0;
+        $totalToday = 0;
         $response = [
                 'status'     => 'true',
                 'result' => $result,
-                'today' => number_format($totalToday, 0, ',', '.'),
+                'today' => '--',
                 'average' => number_format($average, 0, ',', '.'),
-                'season' => number_format($totals['SUCCESS'], 0, ',', '.'),
+                'season' => moneda($totals['SUCCESS']),
                 'count' => $count,
                 'totals' => $totals,
-                'comision' => number_format(paylandCost($totals['SUCCESS']), 0, ',', '.'),
+                'comision' => ceil(paylandCost($totals['SUCCESS'])),
             ];
           
 
