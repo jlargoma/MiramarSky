@@ -100,7 +100,7 @@ $(document).ready(function () {
         var nigthContent = $(this).closest('form').find('.nigths');
         if (nigthContent) {
             var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-            nigthContent.val(Math.ceil(timeDiff / (1000 * 3600 * 24)));
+            nigthContent.val(Math.round(timeDiff / (1000 * 3600 * 24)));
         }
     });
 

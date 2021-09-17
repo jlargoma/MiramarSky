@@ -1093,34 +1093,66 @@ class BookController extends AppController
     }
   }
     
-  public function searchByName(Request $request){
+    public function searchByName(Request $request)
+    {
         if ($request->searchString == '')
+        {
             return response()->json('', JsonResponse::HTTP_UNPROCESSABLE_ENTITY);
+        }
 
         $year     = $this->getActiveYear();
-        $dateFrom = new Carbon($year->start_date);
-        $dateTo   = new Carbon($year->end_date);
+        $dateFrom = $year->start_date;
+        $dateTo   = $year->end_date;
 
-        $customerIds = \App\Customers::where('name', 'LIKE', '%' . $request->searchString . '%')->pluck('id')
-                                     ->toArray();
+        $aCustomer = explode(' ', $request->searchString);
+        $customerIds = [];
+        if (is_array($aCustomer)){
+          $sql = \App\Customers::whereNotNull('id');
+          foreach ($aCustomer as $name)
+            $sql->where('name', 'LIKE', '%' . $name . '%');
+          
+          $customerIds = $sql->pluck('id')->toArray();
+        }
 
         if (count($customerIds) <= 0)
         {
+          $otaID = intval($request->searchString);
+          if ($otaID>1){
+            $books = Book::with('payments')
+                ->where('external_id', $otaID)
+                ->orderBy('start', 'ASC')->get();
+            if (count($books)==0){
+              return "<h2>No hay reservas para este término '" . $request->searchString . "'</h2>";
+            }
+          } else {
             return "<h2>No hay reservas para este término '" . $request->searchString . "'</h2>";
+          }
+        } else {
+          $books = Book::with('payments')
+                ->whereIn('customer_id', $customerIds)
+                ->where('start', '>=', $dateFrom)
+                ->where('start', '<=', $dateTo)
+                ->where('type_book', '!=', 9)->where('type_book', '!=', 0)
+                ->orderBy('start', 'ASC')->get();
         }
-
-        $books = \App\Book::with('payments')->whereIn('customer_id', $customerIds)->where('start', '>=', $dateFrom)
-                          ->where('start', '<=', $dateTo)->where('type_book', '!=', 9)->where('type_book', '!=', 0)
-                          ->orderBy('start', 'ASC')->get();
 
         $payments = [];
-        foreach ($books as $book){
-            $payments[$book->id] = $book->payments->pluck('import')->sum();
+        $paymentStatus = array();
+        foreach ($books as $book)
+        {
+          $amount = $book->payments->pluck('import')->sum();
+          $payments[$book->id] = $amount;
+          if ($amount>=$book->total_price) $paymentStatus[$book->id] = 'paid';
+           else {
+             if ($amount>=($book->total_price/2)) $paymentStatus[$book->id] = 'medium-paid';
+           }
         }
-
+        
+        
         return view('backend/planning/listados/_resultSearch', [
             'books'   => $books,
-            'payment' => $payments
+            'payment' => $payments,
+            'paymentStatus'=>$paymentStatus
         ]);
 
     }

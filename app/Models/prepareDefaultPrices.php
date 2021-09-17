@@ -81,7 +81,6 @@ class prepareDefaultPrices {
                 ->where('finish','<=',$this->endDate)
                 ->get();
     $ssDays = [];
-    $day = 24*60*60;
     
     if ($oSS){
       foreach ($oSS as $item){
@@ -91,7 +90,7 @@ class prepareDefaultPrices {
         
         while ($startTime<=$endTime){
           $ssDays[date('Y-m-d',$startTime)] = $item->minDays;
-          $startTime += $day;
+          $startTime = strtotime('+1 day', $startTime);
         }
       }
     }

@@ -239,6 +239,17 @@ class OtaGateway {
     return $this->response;
   }
 
+  function getBookingsCheckin($date) {
+    $params = [
+        'arrival_from' => $date,
+        'token' => $this->token,
+        'account_id' => $this->account_id,
+      ];
+    $this->call('bookings', 'GET', $params);
+    return $this->response;
+  }
+
+  
   public function calculateRoomToFastPayment($apto, $start, $finish, $roomID = null) {
 
     $room = new \App\Rooms();
@@ -454,7 +465,7 @@ class OtaGateway {
     $book->sendAvailibility($book->room_id, $reserv['start_date'], $reserv['end_date']);
 
 
-    if ($Cc) {
+    if (false) { //no usamos mas los datos de la Visa
       $oVisa = DB::table('book_visa')
               ->where('book_id', $book->id)
               ->where('customer_id', $book->customer_id)

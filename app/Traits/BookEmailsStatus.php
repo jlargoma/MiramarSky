@@ -70,8 +70,10 @@ trait BookEmailsStatus
 
                 if ($BookPartee && $BookPartee->partee_id > 0)
                 {
-                    $linkPartee = $BookPartee->link;
+                  $link = get_shortlink($BookPartee->link);
+                  $linkPartee = '<a href="'.$link.'" title="link partee">'.$link.'</a>';
                 }
+                
                 $mailClientContent = str_replace('{partee}', $linkPartee, $mailClientContent);
                 $mailClientContent = str_replace('{LastPayment}', number_format($book->getLastPayment(), 2, ',', '.'), $mailClientContent);
                 break;
@@ -576,7 +578,8 @@ trait BookEmailsStatus
         $linkPartee = null;
         $BookPartee = BookPartee::where('book_id', $book->id)->first();
         if ($BookPartee && $BookPartee->partee_id > 0){
-            $linkPartee = $BookPartee->link;
+          $link = get_shortlink($BookPartee->link);
+          $linkPartee = '<a href="'.$link.'" title="link partee">'.$link.'</a>';
         }
         $mailClientContent = str_replace('{partee}', $linkPartee, $mailClientContent);
                 

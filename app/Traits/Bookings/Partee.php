@@ -29,7 +29,8 @@ trait Partee {
     if ($BookPartee) {
       //Get msg content
       $content = $this->getMailData($book, 'SMS_Partee_msg');
-      $content = str_replace('{partee}', $BookPartee->link, $content);
+      $url = get_shortlink($BookPartee->link);
+      $content = str_replace('{partee}', $url, $content);
       $content = $this->clearVars($content);
       die($content);
     } else {
@@ -138,9 +139,11 @@ trait Partee {
             'response' => "El registro Partee ya se encuentra finalizado."
         ];
       }
-      $link = '<a href="' . $BookPartee->link . '" title="Ir a Partee">' . $BookPartee->link . '</a>';
+//      $link = '<a href="' . $BookPartee->link . '" title="Ir a Partee">' . $BookPartee->link . '</a>';
+      $url = get_shortlink($BookPartee->link);
+      $link = '<a href="'.$url.'" title="Ir a Partee">'.$url.'</a>';
       $subject = translateSubject('Recordatorio para Completado de Partee', $book->customer->country);
-      $message = $this->getMailData($book, 'SMS_Partee_upload_dni');
+      $message = $this->getMailData($book, 'MAIL_Partee');
       $message = str_replace('{partee}', $link, $message);
       $message = $this->clearVars($message);
 //            $message = strip_tags($message);
@@ -155,7 +158,7 @@ trait Partee {
                 $message->replyTo(env('MAIL_FROM'));
               });
 
-      \App\BookLogs::saveLog($book->id, $book->room_id, $book->customer->email, 'SMS_Partee_upload_dni', $subject, $message);
+      \App\BookLogs::saveLog($book->id, $book->room_id, $book->customer->email, 'MAIL_Partee', $subject, $message);
       if ($sended) {
         $BookPartee->sentSMS = 2;
         $BookPartee->log_data = $BookPartee->log_data . "," . time() . '-' . 'sentMail';
@@ -221,8 +224,11 @@ trait Partee {
         $SMSService = new \App\Services\SMSService();
         if ($SMSService->conect()) {
 
-          $message = $this->getMailData($book, 'SMS_Partee_upload_dni');
-          $message = str_replace('{partee}', $BookPartee->link, $message);
+          $message = $this->getMailData($book, 'MAIL_Partee');
+          
+          $url = get_shortlink($BookPartee->link);
+          $message = str_replace('{partee}', $url, $message);
+//          $message = str_replace('{partee}', $BookPartee->link, $message);
           $phone = $book->customer['phone'];
           $message = $this->clearVars($message);
           $message = strip_tags($message);
@@ -314,8 +320,11 @@ trait Partee {
       $link = '<a href="' . $partee->link . '" title="Ir a Partee">' . $partee->link . '</a>';
 
       $subject = translateSubject('Recordatorio para Completado de Partee', $book->customer->country);
-      $message = $this->getMailData($book, 'SMS_Partee_upload_dni');
-      $message = str_replace('{partee}', $partee->link, $message);
+      $message = $this->getMailData($book, 'MAIL_Partee');
+      
+      $url = get_shortlink($partee->link);
+      $link = '<a href="'.$url.'" title="Ir a Partee">'.$url.'</a>';
+      $message = str_replace('{partee}',$link, $message);
       $message = $this->clearVars($message);
       $message = whatsappFormat($message);
       
