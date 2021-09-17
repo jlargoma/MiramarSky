@@ -43,7 +43,7 @@ class SMSService
         $param[] = "$k=".urlencode($d);
       }
       $url .= '?' . implode('&', $param);
-      dd($url);
+//      dd($url);
       $ch = curl_init();
       curl_setopt($ch, CURLOPT_URL, $url); 
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 

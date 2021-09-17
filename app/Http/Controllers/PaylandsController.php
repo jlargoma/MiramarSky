@@ -151,7 +151,7 @@ class PaylandsController extends AppController
           $texto = $this->getMailData($oBooking, 'text_payment_link');
           $texto = str_replace('{payment_amount}', $amount, $texto);
           $texto = str_replace('{urlPayment}', $urlPay, $texto);
-          
+          if ($oBooking->customer->phone) $phone=$oBooking->customer->phone;
          
         }
       } 
@@ -159,18 +159,31 @@ class PaylandsController extends AppController
         $texto = 'En este link podrás realizar el pago de '.$amount.'€.<br /> En el momento en que efectúes el pago, te legará un email.<br />'.$urlPay;
       }
 
+       
       $whatsapp = whatsappFormat($texto);
+//      $whatsapp = ($texto);
       $textoUnformat = strip_tags(str_replace('<br />', '&#10;', $texto));
-              
-      $whatsapp = strip_tags($whatsapp);
+      
+     
+      
+//      str_replace('<br>', '&#10;',$texto)
+//      $whatsapp = nl2br(strip_tags($whatsapp));  
+      if (config('app.is_mobile') || !$phone){
+        $linkWSP = 'href="whatsapp://send?text='.$whatsapp.'"
+             data-action="share/whatsapp/share"';
+      } else {
+        $linkWSP = 'href="https://web.whatsapp.com/send?phone='.$phone.'&text='.$whatsapp.'" target="_blank"';
+      }
+            
+      
       $response = '
-              <div id="textPayment">'.$texto.'</div>
+              <div id="textPayment">'.whatsappUnFormat($texto).'</div>
               <div class="row text-center">
               
-                  <a style="margin: 15px;" href="whatsapp://send?text='. $whatsapp.'" data-action="share/whatsapp/share">
+                  <a style="margin: 15px;" '.$linkWSP.'>
                       <i class="fab fa-whatsapp fa-2x" aria-hidden="true"></i>
                   </a>
-                  <span id="copyLinkStripe" style="margin: 15px;">
+                  <span style="margin: 15px;" id="copyLinkStripe">
                     <i class="fa fa-copy  fa-2x" aria-hidden="true"></i>
                   </span> 
                   <span id="sendSms" style="margin: 15px;" data-amount="'.$amount.'" data-url="'.$urlPay.'" data-bkg="'.$bookingID.'">
@@ -178,6 +191,7 @@ class PaylandsController extends AppController
                   </span>  
                 <textarea type="text" id="cpy_link" style="display:none;border: none;color: #fff;">' . $textoUnformat . '</textarea>
           </div>';
+      
       return $response;
     }    
 
