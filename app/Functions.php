@@ -540,6 +540,7 @@ function removeIVA($price,$iva){
 }
 
 function whatsappFormat($texto){
+      $texto = nl2br($texto);
       $whatsapp = str_replace('&nbsp;', ' ', $texto);
       $whatsapp = str_replace('<strong>', '*', $whatsapp);
       $whatsapp = str_replace('</strong>', '*', $whatsapp);
@@ -549,6 +550,16 @@ function whatsappFormat($texto){
       return $whatsapp;
 }
 
+function whatsappUnFormat($text){
+      $string = htmlentities($text, null, 'utf-8');
+      $content = str_replace("&nbsp;", " ", $string);
+      $text = html_entity_decode($content);
+      $text = str_replace(' *', ' <b>', $text);
+      $text = str_replace("* ", '</b> ', $text);
+      $text = nl2br($text);
+      $text = str_replace('*', ' <b>', $text);
+      return $text;
+}
 function firstDayMonth($year,$month){
   // First day of a specific month
   $d = new \DateTime($year . '-' . $month . '-01');
