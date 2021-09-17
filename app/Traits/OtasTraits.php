@@ -181,7 +181,8 @@ trait OtasTraits
         $oPrice->user_id = $uID;
         $oPrice->save();
       }
-      $startTimeAux += $day;
+      
+      $startTimeAux = strtotime('+1 day', $startTimeAux);
     }
     
     
@@ -330,9 +331,9 @@ trait OtasTraits
     
     
     $day = 24*60*60;
-    $dateTime -= $day;
+    $dateTime = strtotime('-1 day', $dateTime);
     for($i=0;$i<35;$i++){
-      $dateTime += $day;
+      $dateTime = strtotime('+1 day', $dateTime);
       
       $days[date('Y-m-d',$dateTime)] = [
           'day' => date('d',$dateTime),

@@ -10,8 +10,10 @@ else:
   foreach ($calendars as $calendar):
     if ($calendar->type_book != 5):
       
-      if($calendar->finish == $inicio): ?>
-        <a <?php echo $calendar->href; ?>  class="tip">
+      if($calendar->finish == $inicio): 
+        $class = str_contains($calendar->classTd,'bordander') ? 'bordander' : '';
+      ?>
+        <a <?php echo $calendar->href; ?>  class="tip <?php echo $class; ?>">
           <div class="<?php echo $calendar->class ;?> end" style="width: 45%;float: left;">  &nbsp; </div><span><?php echo $calendar->titulo ?></span>
         </a>
       <?php elseif ($calendar->start == $inicio ): ?>

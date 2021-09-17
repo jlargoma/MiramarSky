@@ -59,12 +59,12 @@ class PrepareMinStay {
     $startTime = strtotime($this->startDate);
     $endTime = strtotime($this->endDate);
     $aDays = [];
-    $day = 24*60*60;
+    
     while ($startTime<$endTime){
       $aux = date('Y-m-d',$startTime);
       $md = isset($this->specialSegment[$aux]) ? $this->specialSegment[$aux] : 0;
       $aDays[$aux] = $md;
-      $startTime += $day;
+      $startTime = strtotime('+1 day', $startTime);
     }
       
     $oPrice = \App\DailyPrices::where('channel_group',$oRoom->channel_group)
@@ -88,7 +88,7 @@ class PrepareMinStay {
                 ->where('finish','<=',$this->endDate)
                 ->get();
     $ssDays = [];
-    $day = 24*60*60;
+//    $day = 24*60*60;
     if ($oSS){
       foreach ($oSS as $item){
         
@@ -97,7 +97,7 @@ class PrepareMinStay {
         
         while ($startTime<=$endTime){
           $ssDays[date('Y-m-d',$startTime)] = $item->minDays;
-          $startTime += $day;
+          $startTime = strtotime('+1 day', $startTime);
         }
       }
     }

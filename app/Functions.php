@@ -393,6 +393,11 @@ function configZodomusAptos(){
 }
 
 function calcNights($start,$end) {
+  $date1 = date_create_from_format('Y-m-d', date('Y-m-d', strtotime($start)));
+  $date2 = date_create_from_format('Y-m-d', date('Y-m-d', strtotime($end)));
+  $diff = date_diff($date1, $date2);
+  return $diff->days;
+  
   return intval(ceil((strtotime($end)-strtotime($start))/(24*60*60)));
 }
 function moneda($mount,$cero=true,$decimals=0){
