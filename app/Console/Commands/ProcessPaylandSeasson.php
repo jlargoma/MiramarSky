@@ -89,7 +89,6 @@ class ProcessPaylandSeasson extends Command {
     $orderPayment = $this->paylandClient->getOrders($start,$end);
     $SUCCESS = $REFUSED = $ERROR = 0;
     $count = ['SUCCESS' => 0,'REFUSED' => 0,'ERROR' => 0];
-    dd($orderPayment);
     if ($orderPayment){
       if ($orderPayment->message == 'OK')
         foreach ($orderPayment->transactions as $order){
