@@ -88,6 +88,22 @@ class OG_ImportAll extends Command {
          
     
     foreach ($oBookings->bookings as $oBooking){
+      
+      //BEGIN: si es una cancelación por modificación -> la salto
+      if ($oBooking->modified_to){
+        \Illuminate\Support\Facades\Mail::send('backend.emails.base-admin', [
+            'content' => 'La reserva '.$oBooking->number.' / '.$channel_group.
+             ' fue modificada por bkg_number '.$oBooking->modified_to,
+         ], function ($message){
+             $message->from(env('MAIL_FROM'));
+             $message->to('pingodevweb@gmail.com');
+             $message->subject('Actualización de reservas - MiramarSky');
+         });
+
+         continue;
+      }
+      //END: si es una cancelación por modificación -> la salto
+      
       $channel_group = $oConfig->getChannelByRoom($oBooking->roomtype_id);
       
       $reserv = [
@@ -111,6 +127,8 @@ class OG_ImportAll extends Command {
 //                    'currency' => $oBooking->currency,
                 'start' => $oBooking->arrival,
                 'end' => $oBooking->departure,
+                'modified_from' => $oBooking->modified_from,
+                'modified_to' => $oBooking->modified_to,
               ];
       $this->result[] = $reserv;
       $bookID = $OtaGateway->addBook($channel_group,$reserv);

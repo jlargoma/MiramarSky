@@ -127,8 +127,6 @@
         </div>
         <div class="col-xs-12 col-md-7">
           @include('backend.prices._navs')
-          @include('backend.zodomus.sendToWubook')
-          
         </div>
         <div class="col-md-2 row col-xs-12">
           @include('backend.years._selector', ['minimal' => true])
