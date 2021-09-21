@@ -163,7 +163,7 @@ class LiquidacionController extends AppController {
       $totales["costeLimp"] += $book->cost_limp;
       $totales["costeAgencia"] += $book->PVPAgencia;
       $totales["limpieza"] += $book->sup_limp;
-      $totales["stripe"] += $book->stripeCost;
+      $totales["stripe"] += paylandCost($book->getPayment(2));
       $totales["obs"] += $book->extraCost;
       $totales["pendiente"] += $book->pending;
 
@@ -290,23 +290,20 @@ class LiquidacionController extends AppController {
         ];
     /*************************************************************************/
     /** @ToSee estimaciones sólo de las reservas vendidas */
-    $books = \App\Book::where_type_book_sales()
-            ->where('start', '>=', $startYear)
-            ->where('start', '<=', $endYear)->get();
-    $aExpensesPending = $oLiq->getExpensesEstimation($books);
     $aux = $emptyMonths;
-    $vta_agency = $vta_prop = $tCosts = 0;
-    $t_books = count($books);
-    foreach ($books as $key => $book) {
-      $m = date('ym', strtotime($book->start));
-      $value = $book->total_price;
-      $tCosts += $book->get_costeTotal();
+    $lstRvs = \App\BookDay::where_type_book_sales()
+            ->where('date', '>=', $startYear)
+            ->where('date', '<=', $endYear)->get();
+     
+    foreach ($lstRvs as $key => $b) {
+      $m = date('ym', strtotime($b->date));
+      $value = $b->pvp;
       if (isset($aux[$m])) $aux[$m] += $value;
       if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $value;
       $lstT_ing['ventas'] += $value;
-      if ($book->agency != 0) $vta_agency++;
-
+//      if ($b->agency != 0) $vta_agency++;
     }
+    //--------------------------------------------------------------------------------------------//
     $ingresos['ventas'] = $aux;
     
     
