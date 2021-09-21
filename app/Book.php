@@ -548,8 +548,8 @@ class Book extends Model {
   
   static function getMonthSum($field,$filter,$date1,$date2) {
     
-    $typeBooks = '(2,7,8)';
-  
+    $typeBooks = '(1,2,4,7,8,11)';
+    
     return DB::select('SELECT new_date, SUM('.$field.') as total '
             . ' FROM ('
             . '        SELECT '.$field.',DATE_FORMAT('.$filter.', "%m-%y") new_date '
@@ -561,6 +561,12 @@ class Book extends Model {
             . ' GROUP BY temp_1.new_date'
             );
     
+  }
+   
+  public function getCustomerName() {
+    $cust = $this->customer;
+    if ($cust) return $cust->name;
+    return '--';
   }
     
   /**
@@ -624,7 +630,6 @@ class Book extends Model {
             })->get();
             
       $avail  = count($oRooms);
-      $oneDay = 24*60*60;
       
       //Prepara la disponibilidad por día de la reserva
       $today = strtotime(date('Y-m-d'));
@@ -634,7 +639,6 @@ class Book extends Model {
       $aLstDays = [];
       while ($startAux<$endAux){
         $aLstDays[date('Y-m-d',$startAux)] = $avail;
-//        $startAux+=$oneDay;
         $startAux = strtotime("+1 day", $startAux);
       }
       
@@ -655,7 +659,6 @@ class Book extends Model {
               $control[] = $keyControl;
             }
             $startAux = strtotime("+1 day", $startAux);
-//            $startAux += $oneDay;
           }
         }
       }
@@ -689,7 +692,6 @@ class Book extends Model {
                 "avail" => $value,
                 "start" => $startAux2,
                 "end" => date('Y-m-d', strtotime("+1 day", strtotime($end))),
-//                "end" => date('Y-m-d', strtotime($end)+$oneDay),
             ];
 
             $value = $v;
@@ -736,7 +738,6 @@ class Book extends Model {
                     })->get();
 
     $avail = count($oRooms);
-    $oneDay = 24 * 60 * 60;
 
     //Prepara la disponibilidad por día de la reserva
     $startAux = strtotime($start);
@@ -745,7 +746,6 @@ class Book extends Model {
     while ($startAux <= $endAux) {
       $aLstDays[date('Y-m-d', $startAux)] = $avail;
       $startAux = strtotime("+1 day", $startAux);
-//      $startAux += $oneDay;
     }
 
 
@@ -773,7 +773,6 @@ class Book extends Model {
               $control[] = $keyControl;
             }
             $startAux = strtotime("+1 day", $startAux);
-//            $startAux += $oneDay;
           }
         }
       }

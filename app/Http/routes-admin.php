@@ -31,12 +31,14 @@ Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionist
   Route::post('/admin/reservas/help/calculateBook','AppController@calculateBook');
   
   //LIMPIEZA
-  Route::get('admin/limpieza', 'LimpiezaController@index');
+  Route::post('admin/limpieza/bloquear', 'LimpiezaController@bloqueos');
+  Route::get('admin/limpieza/delete-block/{id}', 'LimpiezaController@bloqueos_delete');
   Route::get('admin/limpiezas/{year?}','LimpiezaController@limpiezas');
   Route::post('admin/limpiezasLst/','LimpiezaController@get_limpiezas');
   Route::post('admin/limpiezasUpd/','LimpiezaController@upd_limpiezas');
   Route::post('admin/limpiezas/pdf','LimpiezaController@export_pdf_limpiezas');
   Route::post('admin/limpiezasUpd/','LimpiezaController@upd_limpiezas');
+  Route::get('admin/limpieza', 'LimpiezaController@index');
   
   //BUZON  
   Route::get('/ajax/showSafetyBox/{bookID}', 'BookController@showSafetyBox');

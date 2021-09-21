@@ -560,7 +560,11 @@ $(document).ready(function () {
 
 });   
 </script>
-
-
+  <script type="text/javascript">
+     window["csrf_token"] = "{{ csrf_token() }}";
+     window["uRole"] = "{{ $uRole }}";
+     window["URLCalendar"] = '/getCalendarMobile/';
+  </script>
+  @include('backend.planning.calendar.scripts');
 
 @endsection

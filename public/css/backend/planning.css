@@ -563,6 +563,10 @@ th.table-cancel-xml{
     border-left: 5px solid red;
 }
 
+div.dataTables_filter {
+  display: none;
+}
+
 @media only screen and (max-width: 991px){
   button.btn.changeStatus,
   button.btn.changeRoom {

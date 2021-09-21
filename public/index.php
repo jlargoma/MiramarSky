@@ -35,6 +35,9 @@ require __DIR__.'/../bootstrap/autoload.php';
 */
 
 $app = require_once __DIR__.'/../bootstrap/app.php';
+use App\Classes\Mobile;
+$mobile = new Mobile();
+define('_IS_MOBILE',$mobile->isMobile() || $mobile->isTablet());
 
 /*
 |--------------------------------------------------------------------------

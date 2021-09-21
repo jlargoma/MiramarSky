@@ -743,7 +743,7 @@ i.fa.fa-unlock.openSafetyBox {
 }
 
 .modal-lg{
-    width: 1400px !important;
+    width: 1910px !important;
     max-width: 95vw !important;
     overflow: auto;
 }
@@ -768,6 +768,7 @@ a.tip:hover span {
     color: #FFF;
     z-index: 100;
     background: black;
+    opacity: 0.8;
     left: 0px;
     margin: 10px;
     width: 210px;

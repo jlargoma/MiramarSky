@@ -81,7 +81,7 @@ class CheckBookingsCheckin extends Command {
     if (count($resultado) > 0) {
       $this->result[$siteID] = [];
       foreach ($resultado as $v) {
-        $this->result[$siteID][] = $v;
+        if ($v)  $this->result[$siteID][] = $v;
       }
     }
   }
@@ -91,7 +91,7 @@ class CheckBookingsCheckin extends Command {
     $resultado = array_diff($aControl, $exist);
     if (count($resultado) > 0) {
       foreach ($resultado as $v) {
-        $this->resultIDs[] = $v;
+        if ($v)  $this->resultIDs[] = $v;
       }
     }
   }
@@ -120,7 +120,7 @@ class CheckBookingsCheckin extends Command {
         ], function ($message) use ($subject) {
             $message->from(config('mail.from.address'));
             $message->to(config('mail.from.address'));
-            $message->cc('pingodevweb@gmaill.com');
+            $message->cc('pingodevweb@gmail.com');
             $message->subject($subject);
         });
   

@@ -1117,16 +1117,14 @@ class BookController extends AppController
         if (count($customerIds) <= 0)
         {
           $otaID = intval($request->searchString);
-          if ($otaID>1){
             $books = Book::with('payments')
                 ->where('external_id', $otaID)
+                ->orWhere('bkg_number', $otaID)
+                ->orWhere('id', $otaID)
                 ->orderBy('start', 'ASC')->get();
             if (count($books)==0){
               return "<h2>No hay reservas para este término '" . $request->searchString . "'</h2>";
             }
-          } else {
-            return "<h2>No hay reservas para este término '" . $request->searchString . "'</h2>";
-          }
         } else {
           $books = Book::with('payments')
                 ->whereIn('customer_id', $customerIds)
@@ -1526,7 +1524,7 @@ class BookController extends AppController
         $endAux = new Carbon(date('Y-m-d', strtotime('+1 months',$month)));
         $startAux->firstOfMonth();
         $endAux->lastOfMonth();
-        $sqlBook = \App\Book::where_book_times($startAux,$endAux)
+        $sqlBook = Book::where_book_times($startAux,$endAux)
                 ->whereNotIn('type_book', $type_book_not);
         
         if ($roomIDs){

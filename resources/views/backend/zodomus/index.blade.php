@@ -19,8 +19,14 @@
   @endif
   <div class="row">
     <div class="col-md-10 col-md-offset-1 ">
-      
-      <h3>Listado de Apartamentos:</h3>
+      <div class="row">
+        <div class="col-md-3 col-xs-12">
+          <h3>Listado de Apartamentos:</h3>
+        </div>
+        <div class="col-xs-12 col-md-7">
+          @include('backend.prices._navs')
+        </div>
+      </div>
       <div class="row">
         <div class="form-material pt-1 col-xs-12">
 

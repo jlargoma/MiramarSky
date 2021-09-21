@@ -98,7 +98,8 @@ trait Apartamentos {
   
     $obj = $obj['APARTAMENTOS'];
 //    $days  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-    $days  = ((strtotime($finish)-strtotime($start))/(24*60*60));
+//    $days  = ((strtotime($finish)-strtotime($start))/(24*60*60));
+    $days  = calcNights($start,$finish);
     $obj['CABECERA']['FECHA_REFERENCIA']['MES'] = $month;
     $obj['CABECERA']['FECHA_REFERENCIA']['ANYO'] = $year;
     $obj['CABECERA']['DIAS_ABIERTO_MES_REFERENCIA'] = $days;
@@ -129,8 +130,6 @@ trait Apartamentos {
                       ->orWhere($match3);
             })->whereIn('room_id',$roomsID)->get();
           
-      $oneDay = 24*60*60;
-      
       //Prepara la disponibilidad por día de la reserva
       $startAux = strtotime($start);
       $endAux = strtotime($finish);

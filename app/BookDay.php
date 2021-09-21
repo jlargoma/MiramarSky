@@ -28,7 +28,17 @@ ORDER BY `book_days`.`date` DESC*/
       $b_start = strtotime($b->start);
       $b_finish = strtotime($b->finish);
       $nigth = 0; //control de noches
-      $pvp = ($b->nigths>0) ? $b->total_price / $b->nigths : $b->total_price;
+      $pvp = $b->total_price;
+      $cost_apto = $b->cost_apto;
+      $cost_park = $b->cost_park;
+      $lujo = $b->get_costLujo();
+      $PVPAgencia = $b->PVPAgencia;
+      $cost_limp = $b->cost_limp;
+      $extraCost = $b->extraCost;
+      if($b->nigths>0){
+        $pvp = $pvp / $b->nigths;
+        $cost_apto = $cost_apto / $b->nigths;
+      }
       
       $extrs = '';
       $tCosts = $b->get_costeTotal();
@@ -44,11 +54,24 @@ ORDER BY `book_days`.`date` DESC*/
               'pvp'=>$pvp,
               'extrs'=>$extrs,
               'costs'=>$tCosts,
+              'type'=>$b->type_book,
+              'apto'=>$cost_apto,
+              'lujo'=>$lujo,
+              'park'=>$cost_park,
+              'pvpAgenc'=>$PVPAgencia,
+              'limp'=>$cost_limp,
+              'extr'=>$extraCost,
           ];
         
         $b_start = strtotime('+1 day', $b_start);
         $nigth++;
         $tCosts = 0;
+        $cost_park = 0;
+        $lujo = 0;
+        $PVPAgencia = 0;
+        $cost_limp = 0;
+        $extraCost = 0;
+      
       }
       
       if ($nigth != $b->nigths){
