@@ -21,8 +21,8 @@ class ProcessPickUp {
   
   public function byChannel($start,$finish) {
 
-    $roomsID = Rooms::where('state',1)->pluck('id')->all();
-    $roomsChannels = Rooms::where('state',1)->pluck('channel_group','id')->all();
+    $roomsChannels = Rooms::where('channel_group','!=','')->pluck('channel_group','id')->all();
+    $roomsID = array_keys($roomsChannels);
     
     $dispByCh = []; //disponibilidad por channels
     foreach ($roomsChannels as $r=>$ch){
@@ -32,12 +32,10 @@ class ProcessPickUp {
     
     //Reservas del periodo
 //    $books = Book::whereIn('type_book', [1,2])
-    $books = Book::where_type_book_sales(true, true)
+    $books = Book::whereIn('type_book',\App\BookDay::get_type_book_sales(true,true))
             ->where([['start','>=', $start ],['finish','<=', $finish ]])
             ->whereIn('room_id',$roomsID)->get();
     
-    $oneDay = 24*60*60;
-      
     //Prepara la disponibilidad por día de la reserva
     $startAux = strtotime($start);
     $endAux = strtotime($finish);

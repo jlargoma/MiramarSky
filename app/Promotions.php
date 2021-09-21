@@ -15,7 +15,6 @@ class Promotions extends Model {
     $name = '';
    
     if ($oPromotions) {
-      $oneDay = 24 * 60 * 60;
       $startAux = strtotime($startDate);
       $endAux = strtotime($endDate);
       $days = [];
@@ -80,7 +79,6 @@ class Promotions extends Model {
   function getPromo($startDate, $endDate, $ch_group) {
     $oPromotions = \App\Promotions::where('type', 'nights')->get();
     if ($oPromotions) {
-      $oneDay = 24 * 60 * 60;
       $startAux = strtotime($startDate);
       $endAux = strtotime($endDate);
       $days = [];

@@ -64,7 +64,6 @@ class ProcessData extends Command
       
       $endDate = date('Y-m-d', strtotime('+6 month'));
       $startDate = date('Y-m-d', strtotime('-1 week'));
-      $oneDay = 24*60*60;
       $overbooking = [];
       
       
@@ -88,7 +87,6 @@ class ProcessData extends Command
           while ($startAux<$endAux){
             $aLstDays[date('Y-m-d',$startAux)][] = $b->id;
             $startAux = strtotime("+1 day", $startAux);
-//            $startAux+=$oneDay;
           }
 
         }

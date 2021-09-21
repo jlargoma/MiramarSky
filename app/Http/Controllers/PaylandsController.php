@@ -143,7 +143,7 @@ class PaylandsController extends AppController
     }
     
     private function getPaymentText($urlPay,$bookingID=false,$amount=null) {
-      $texto = null;
+      $texto = $phone = null;
       $whatsapp = $textoUnformat = '';
       if ($bookingID){
         $oBooking = \App\Book::where('id',$bookingID)->with('room')->first();

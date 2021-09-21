@@ -44,11 +44,7 @@ td.border-1{
           <h3>Porcentajes OTAs:</h3>
         </div>
         <div class="col-xs-12 col-md-7">
-          <a class="text-white btn btn-md btn-primary" href="{{route('precios.base')}}">PRECIO BASE X TEMP</a>
-          <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.cal')}}">UNITARIA</a>
-          <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.site')}}">EDIFICIO</a>
-          <a class="text-white btn btn-md btn-primary" href="{{route('channel.promotions')}}">PROMOCIONES</a>
-          <button class="btn btn-md btn-primary active"  disabled>PRECIOS OTAs</button>
+         @include('backend.prices._navs')
         </div>
         <div class="col-md-2 col-xs-12 row"></div>
         @if (Auth::user()->email == "jlargo@mksport.es")

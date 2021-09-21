@@ -135,14 +135,12 @@ class OtaGate extends Controller {
   function sendAvail(){
     
      //Prepara la disponibilidad por día de la reserva
-    $oneDay = 24*60*60;
-    //desde el 28-03-2021
+        //desde el 28-03-2021
       $startAux = strtotime('2021-03-28');//time();
       $endAux = strtotime('2021-03-28'. ' +1 year');
       $ogAvail = [];
       while ($startAux<$endAux){
         $ogAvail[date('Y-m-d',$startAux)] = 1;
-//        $startAux+=$oneDay;
         $startAux = strtotime("+1 day", $startAux);
       }
     $return = $this->sOta->sendAvailability(['availability'=>[47077=>$ogAvail]]);
@@ -324,7 +322,17 @@ class OtaGate extends Controller {
       $data = (isset($data['request'])) ?  $data['request']['data'] : $data;
       if (isset($data['booking_numbers'])){
          $this->sOta->conect();
-         $this->loadBooking($data['booking_numbers']);
+         //BEGIN: getBookings
+          $response = $this->sOta->getBooking($data['booking_numbers']);
+          $oBookings = null;
+          if ( isset($response->booking) )  $oBookings = [$response->booking];
+          if ( isset($response->bookings) )  $oBookings = $response->bookings;
+          if (!$oBookings){
+            var_dump('booking no found',$data['booking_numbers']);
+          } else {
+           $this->loadBooking($oBookings);
+          }
+         //END: getBookings
          $this->sOta->disconect();
       } else {
         var_dump('empty data',$data);
@@ -335,25 +343,30 @@ class OtaGate extends Controller {
     return response('',200);
   }
   
-  private function loadBooking($booking_numbers) {
-
-    $response = $this->sOta->getBooking($booking_numbers);
-    $oBookings = null;
-    if ( isset($response->booking) )  $oBookings = [$response->booking];
-    if ( isset($response->bookings) )  $oBookings = $response->bookings;
-    if (!$oBookings){
-      var_dump('booking no found',$booking_numbers);
-      return null;
-    }
-    
+  private function loadBooking($oBookings) {
     $oConfig = new oConfig();
+   
     foreach ($oBookings as $oBooking){
       $channel_group = $oConfig->getChannelByRoom($oBooking->roomtype_id);
-      
       $extra_array = is_string($oBooking->extra_array) ? json_decode($oBooking->extra_array) : $oBooking->extra_array;
       if (isset($extra_array->from_google) && $extra_array->from_google){
           $oBooking->ota_id = 'google-hotel';
       }
+     
+      //BEGIN: si es una cancelación por modificación -> la salto
+      if ($oBooking->modified_to){
+        \Illuminate\Support\Facades\Mail::send('backend.emails.base-admin', [
+            'content' => 'La reserva '.$oBooking->number.' / '.$channel_group.
+             ' fue modificada por bkg_number '.$oBooking->modified_to,
+         ], function ($message){
+             $message->from(env('MAIL_FROM'));
+             $message->to('pingodevweb@gmail.com');
+             $message->subject('Actualización de reservas - MiramarSky');
+         });
+
+         continue;
+      }
+      //END: si es una cancelación por modificación -> la salto
       
       $reserv = [
                 'channel' => $oBooking->ota_id,
@@ -375,42 +388,43 @@ class OtaGate extends Controller {
                 'extra_array' => $extra_array,
                 'start' => $oBooking->arrival,
                 'end' => $oBooking->departure,
+                'modified_from' => $oBooking->modified_from,
+                'modified_to' => $oBooking->modified_to,
               ];
       
       $bookID = $this->sOta->addBook($channel_group,$reserv);
+//      dd($bookID);
+//      var_dump($reserv,$oBooking); die;
       
-      
-    if ($bookID && $oBooking->ota_id == 'google-hotel'){
+        if ($bookID && $oBooking->ota_id == 'google-hotel'){
+
+          $book = \App\Book::find($bookID);
+          $body = 'Hola, ha entrado una nueva reserva desde Google Hotel:<br/><br/>';
+
+          $customer = $book->customer;
+          $subject = 'RESERVA GOOGLEHOTELS : '.$customer->name;
+          $body .= '<b>Nombre:</b>: '.$customer->name.'<br/><br/>';
+          $body .= '<b>e-mail:</b>: '.$customer->email.'<br/><br/>';
+          $body .= '<b>Teléfono:</b>: '.$customer->phone.'<br/><br/>';
+          $body .= '<b>Habitación:</b> '.$book->room->name.'<br/><br/>';
+          $body .= '<b>PVP:</b>: '.number_format($book->total_price, 0, '', '.').'<br/><br/>';
+          $body .= '<b>Fechas:</b> '.convertDateToShow_text($book->start).' - '. convertDateToShow_text($book->finish).'<br/><br/>';
+          $body .= '<b>Noches:</b> '.$book->nigths.'<br/><br/>';
+          $body .= '<b>Paxs:</b> '.$book->pax.'<br/><br/>';
+          $body .= '<b>Comtentarios:</b> '.$book->book_comments.'<br/><br/>';
+
+           $sended = \Illuminate\Support\Facades\Mail::send('backend.emails.base', [
+                'mailContent' => $body,
+                'title'       => $subject
+            ], function ($message) use ($book, $subject) {
+                $message->from(env('MAIL_FROM'));
+                $message->to(env('MAIL_FROM'));
+                $message->subject($subject);
+            });
         
-      $book = \App\Book::find($bookID);
-      $body = 'Hola, ha entrado una nueva reserva desde Google Hotel:<br/><br/>';
-       
-      $customer = $book->customer;
-      $subject = 'RESERVA GOOGLEHOTELS : '.$customer->name;
-      $body .= '<b>Nombre:</b>: '.$customer->name.'<br/><br/>';
-      $body .= '<b>e-mail:</b>: '.$customer->email.'<br/><br/>';
-      $body .= '<b>Teléfono:</b>: '.$customer->phone.'<br/><br/>';
-      $body .= '<b>Habitación:</b> '.$book->room->name.'<br/><br/>';
-      $body .= '<b>PVP:</b>: '.number_format($book->total_price, 0, '', '.').'<br/><br/>';
-      $body .= '<b>Fechas:</b> '.convertDateToShow_text($book->start).' - '. convertDateToShow_text($book->finish).'<br/><br/>';
-      $body .= '<b>Noches:</b> '.$book->nigths.'<br/><br/>';
-      $body .= '<b>Paxs:</b> '.$book->pax.'<br/><br/>';
-      $body .= '<b>Comtentarios:</b> '.$book->book_comments.'<br/><br/>';
-      
-       $sended = \Illuminate\Support\Facades\Mail::send('backend.emails.base', [
-            'mailContent' => $body,
-            'title'       => $subject
-        ], function ($message) use ($book, $subject) {
-            $message->from(config('mail.from.address'));
-            $message->to("reservas@apartamentosierranevada.net");
-            $message->subject($subject);
-            $message->replyTo(config('mail.from.address'));
-        });
-        
-    }
-    
-//      var_dump($reserv,$oBooking);
+        }
     }
     
   }
+  
 }

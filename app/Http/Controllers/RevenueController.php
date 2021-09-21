@@ -150,7 +150,6 @@ class RevenueController extends AppController
     $startTime = strtotime($start);
     $endTime = strtotime($finish);
     $aLstDays = [];
-    $oneDay = 24*60*60;
     $dw = listDaysSpanish(true);
     $dwMin = ['D','L','M','M','J','V','S'];
     $startAux = $startTime;
@@ -189,7 +188,7 @@ class RevenueController extends AppController
     $aLstNight = [];
     while ($startAux <= $endTime) {
       $aLstNight[date('j', $startAux)] = 0;
-      $startAux += $oneDay;
+      $startAux = strtotime("+1 day", $startAux);
     }
 
     $tNigh = 0;
@@ -211,7 +210,7 @@ class RevenueController extends AppController
                     $control[] = $keyControl;
                 }
             }
-            $b_start += $oneDay;
+            $b_start = strtotime("+1 day", $b_start);      
         }
 
         $tPvp  += $book->total_price;

@@ -155,7 +155,6 @@ trait OtasTraits
     
     $uID = Auth::user()->id;
     
-    $day = 24*60*60;
     $startTimeAux = $startTime;
     $aPrices = $aMinStay = [];
     while ($startTimeAux<=$endTime){
@@ -308,7 +307,7 @@ trait OtasTraits
    *
    * @return \Illuminate\Http\Response
    */
-  function calendSite($site = 1,$month=null,$year=null) {
+  function calendSite($month=null,$year=null) {
 
     
     
@@ -330,7 +329,6 @@ trait OtasTraits
     $start = date('Y-m-d',$dateTime);
     
     
-    $day = 24*60*60;
     $dateTime = strtotime('-1 day', $dateTime);
     for($i=0;$i<35;$i++){
       $dateTime = strtotime('+1 day', $dateTime);
@@ -393,7 +391,6 @@ trait OtasTraits
 
     return view('backend/zodomus/cal-sites', [
         'rooms' => $rooms,
-        'site' => $site,
         'dw' => $dw,
         'days' => $days,
         'month' => $month,

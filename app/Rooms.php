@@ -368,12 +368,11 @@ class Rooms extends Model {
       $priceDay = [];
       $costDay = [];
       $seassonDay = [];
-      $day = 24 * 60 * 60;
       while ($startTime < $endTime) {
         $priceDay[date('Y-m-d', $startTime)] = 600;
         $costDay[date('Y-m-d', $startTime)] = 1;
         $seassonDay[date('Y-m-d', $startTime)] = 1;
-        $startTime += $day;
+        $startTime = strtotime("+1 day", $startTime);
       }
 
 
@@ -402,7 +401,7 @@ class Rooms extends Model {
             $s_auxDate = date('Y-m-d', $s_start);
             if (isset($seassonDay[$s_auxDate]))
               $seassonDay[$s_auxDate] = $s_type;
-            $s_start += $day;
+            $s_start = strtotime("+1 day", $s_start);
           }
         }
       }

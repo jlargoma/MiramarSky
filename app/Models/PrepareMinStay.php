@@ -88,7 +88,6 @@ class PrepareMinStay {
                 ->where('finish','<=',$this->endDate)
                 ->get();
     $ssDays = [];
-//    $day = 24*60*60;
     if ($oSS){
       foreach ($oSS as $item){
         

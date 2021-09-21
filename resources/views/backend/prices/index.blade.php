@@ -126,11 +126,7 @@
           <h3>Precios de Temporadas:</h3>
         </div>
         <div class="col-xs-12 col-md-7">
-          <button class="btn btn-md btn-primary active"  disabled>PRECIO BASE X TEMP</button>
-          <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.cal')}}">UNITARIA</a>
-          <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.site')}}">EDIFICIO</a>
-          <a class="text-white btn btn-md btn-primary" href="{{route('channel.promotions')}}">PROMOCIONES</a>
-          <a class="text-white btn btn-md btn-primary" href="{{route('precios.pricesOTAs')}}">PRECIOS OTAs</a>
+          @include('backend.prices._navs')
           @include('backend.zodomus.sendToWubook')
           
         </div>

@@ -42,7 +42,7 @@ class Liquidacion
         if ($qry){
           return $this->get_summary($qry->get(),true);
         }
-      return $this->get_summary(Book::getBy_temporada(),true);
+      return $this->get_summary(BookDay::getBy_temporada(),true);
     }
 
     /**
@@ -50,74 +50,57 @@ class Liquidacion
      * @param type $books
      * @return type
      */
-    public function get_summary($books,$temporada=false) {
+    public function get_summary($lstRvs,$temporada=false) {
+      $bLstID = [];
       $t_pax = $t_nights = $t_pvp = $t_cost = $vta_agency = 0;
-      $t_books = count($books);
-      
-      $cost_prop = $cost_limp = $extraCost = 0;
-      $PVPAgencia = $t_paymentTPV = 0;
-      $totals = ['park'=>0,'apto'=>0,'lujo'=>0,'agency'=>0,'limp'=>0,'extra'=>0,'TPV'=>0];
-      if ($t_books){
-        foreach ($books as $book){
-          /* Nº inquilinos */
-          $t_pax += $book->pax;
-          /* Dias ocupados */
-          $t_nights += $book->nigths;
-          
-          $t_pvp  += $book->total_price;
-          $totals['apto']   += $book->cost_apto;
-          $totals['park']   += $book->cost_park;
-          $totals['lujo']   += $book->get_costLujo();
-          $totals['agency'] += $book->PVPAgencia;
-          $totals['limp']   += $book->cost_limp;
-          $totals['extra']  += $book->extraCost;
-          $totals['TPV']    += paylandCost($book->getPayment(2));
-          
-          //CTE PROPIETARO = CTE APTO + CTE PARKING + CTE SUP LUJO
-          $cost_prop  += $book->get_costProp();
-          if ($book->agency != 0)  $vta_agency++;
+      foreach ($lstRvs as $key => $b) {
+        $m = date('ym', strtotime($b->date));
+        $t_pvp += $b->pvp;
+        $t_nights++;
+        if (!isset($bLstID[$b->book_id])){
+          $bLstID[$b->book_id] = 1;
+          if ($b->agency != 0) $vta_agency++;
+          $t_pax += $b->pax;
         }
+        $t_cost += $b->costs;
       }
-       
-      
-        /***************************************/
-       /*****    COSTOS                ********/
+   
+      //------------------------------------
+      /***************************************/
+      /*****    COSTOS                ********/
        // COSTE TOTAL= CTE PROPIETARIO + AGENCIAS(cta pyg) + 
        // AMENITIES (cta pyg)  + TPV (cta pyg) + LAVANDERIA (cta pyg) 
        // + LIMPIEZA (cta pyg) +REPARACION Y CONSERVACION (cta pyg)
-      
-      $expensesEstimate = $this->getExpensesEstimation($books);
+      $expensesEstimate = $this->getExpensesEstimation($lstRvs);
       $expensesEstimate = $this->filterEstimates($expensesEstimate);
-      $t_cost = $cost_prop;
+      $t_cost = 0;
       if ($temporada){
         $expensesPay = $this->getExpensesPayments();
         //Utilizo el mayor entre lo estimado y lo pagado
         $costes = [];
         foreach ($expensesPay as $type=>$val){
-          if( $expensesEstimate[$type] > $val) $costes[$type] = $expensesEstimate[$type];
-          else $costes[$type] =  $val;
+          if( $expensesEstimate[$type] > $val)
+            $costes[$type] = $expensesEstimate[$type];
+          else 
+            $costes[$type] =  $val;
         }
       } else {
         $costes = $expensesEstimate;
       }
        /*****    COSTOS                ********/
       /***************************************/
-      
-      
-      $t_cost = round(array_sum($costes));
+      $t_cost = array_sum($costes);
+      $t_books = count($bLstID);
       $t_pvp = round($t_pvp);
       $benef = $benef_inc = 0;
       if($t_books>0){
         $benef = $t_pvp-$t_cost;
         $benef_inc = round(($benef)/$t_pvp*100);
       }
+      
       $summary = [
           'total'=>$t_books,
           'total_pvp'=>$t_pvp,
-          'cost_prop'=>$cost_prop,
-          'costes'=>$costes,
-          'prop_payment'=>$this->getTotalPaymentsProp(),
-          'totals'=>$totals,
           'total_cost'=>$t_cost,
           'benef'=>$benef,
           'benef_inc'=>$benef_inc,
@@ -133,8 +116,6 @@ class Liquidacion
         $summary['vta_prop'] = 100-$summary['vta_agency'];    
       }
      
-//      var_dump($summary);
-
       return $summary;
     }
     
@@ -237,19 +218,16 @@ class Liquidacion
     
     foreach ($books as $key => $book) {
       $aExpensesPending['prop_pay']  += $book->get_costProp();
-      $aExpensesPending['agencias']  += $book->PVPAgencia;
-      $aExpensesPending['amenities'] += $book->extraCost;
-      if ($book->cost_limp > 10){
-        $aExpensesPending['limpieza']  += ($book->cost_limp - 10);
+      $aExpensesPending['agencias']  += $book->pvpAgenc;
+      $aExpensesPending['amenities'] += $book->extr;
+      $aExpensesPending['comision_tpv'] += $book->pvpComm;
+      if ($book->limp > 10){
+        $aExpensesPending['limpieza']  += ($book->limp - 10);
         $aExpensesPending['lavanderia'] += 10;
       } else {
-        $aExpensesPending['lavanderia'] += $book->cost_limp;
+        $aExpensesPending['lavanderia'] += $book->limp;
       }
     }
-
-    $stripeCost = $this->getTPV($books);
-    $aExpensesPending['comision_tpv'] = array_sum($stripeCost);
- 
       
     return $aExpensesPending;
   }
@@ -282,7 +260,6 @@ class Liquidacion
     $aExpensesPayment = Expenses::getExpensesBooks();
     
     $activeYear = Years::getActive();
-    
     $gastos = \App\Expenses::where('date', '>=', $activeYear->start_date)
                     ->Where('date', '<=', $activeYear->end_date)
                     ->WhereIn('type',array_keys($aExpensesPayment))
@@ -299,14 +276,13 @@ class Liquidacion
     // Payment prop van con los gastos específicos
     $gastos = \App\Expenses::where('date', '>=', $activeYear->start_date)
                     ->Where('date', '<=', $activeYear->end_date)
-                    ->Where('type','=','prop_pay')
+                    ->WhereNotNull('PayFor')->Where('PayFor', '!=', '')
                     ->orderBy('date', 'DESC')->get();
     if ($gastos){
       foreach ($gastos as $g) {
-        $aExpensesPayment[$g->type] += $g->import;
+        $aExpensesPayment['prop_pay'] += $g->import;
       }
     }
-    
     return $aExpensesPayment;
   }
 
@@ -457,8 +433,20 @@ class Liquidacion
             ->where('start', '>=', $start)
             ->where('start', '<=', $end);
         
-      if ($roomsID) $books->whereIn('room_id',$roomsID);
+      if ($roomsID && count($roomsID)>0) $books->whereIn('room_id',$roomsID);
       $books = $books->get();
+      
+      //-------------------------------
+      $oPVPAgencia = \App\Book::whereIn('id',$sqlBooks->groupBy('book_id')->pluck('book_id'))
+              ->get();
+      $commAge = [];
+      if ($oPVPAgencia){
+        foreach ($oPVPAgencia as $b){
+          $commAge[$b->id] = ($b->nigths>0) ? $b->PVPAgencia / $b->nigths : $b->PVPAgencia;
+        }
+      }
+      //-------------------------------
+      
       if ($books){
       foreach ($books as $book){
         $agency_name = 'none';
@@ -489,13 +477,14 @@ class Liquidacion
             
           break;
         }
+        $PVPAgencia = isset($commAge[$book->book_id]) ? $commAge[$book->book_id] : 0;
         $t = round(floatval($book->total_price), 2);
         $data[$agency_name]['total']        += $t;
         $data[$agency_name]['reservations'] += 1;
-        $data[$agency_name]['commissions']  += str_replace(',', '.', $book->PVPAgencia);
+        $data[$agency_name]['commissions']  += $PVPAgencia;
         $totals['total']        += $t;
         $totals['reservations'] += 1;
-        $totals['commissions']  += str_replace(',', '.', $book->PVPAgencia);
+        $totals['commissions']  += $PVPAgencia;
         
         
         }

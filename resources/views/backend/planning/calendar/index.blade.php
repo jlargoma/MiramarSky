@@ -1,65 +1,48 @@
 {!! $content!!}
 <script type="text/javascript">
  $(document).ready(function() {
-   var cal_move = false;
-   var moveCalendar = function(){
-      if(cal_move) return;
-      cal_move = true;
-      $('.btn-fechas-calendar').css({
-      'background-color': '#899098',
-      'color': '#fff'
-      });
-      $('#btn-active').css({
-        'background-color': '#10cfbd',
-        'color': '#fff'
-      });
-      var target = $('#btn-active').attr('data-month');
-      var targetPosition = $('.content-calendar #month-' + target).position();
-      $('.content-calendar').animate({scrollLeft: "+=" + targetPosition.left + "px"}, "slow");
-   }
-    setTimeout(function () { moveCalendar();},200);
-//   $('#btn-active').trigger('click');
-
-  $('.content-calendar').on('click','.reloadCalend', function(){
-    var time = $(this).attr('data-time');
-    cal_move = false;
-    $('.content-calendar').empty().load(
-            window.URLCalendar+time, 
-            function(){ moveCalendar();}
-            );
-  });
-
-
-
-  // Ver imagenes por piso
-
-  $('.getImages').click(function (event) {
-    var idRoom = $(this).attr('data-id');
-    $.get('/admin/rooms/api/getImagesRoom/' + idRoom, function (data) {
-      $('#modalRoomImages .modal-content').empty().append(data);
-    });
-  });
- 
   $('.content-calendar .tip').on('click','.calLink',function(event){
     location.href = $(this).data('href');
   });
   $('.content-calendar .tip').hover(function(event){
-    console.log(event.screenY,event.pageY,screen.width);
+    var span = $(this).find('span');
     if (screen.width<768){
-      $(this).find('span').css('top','auto');
-      $(this).find('span').css('bottom','-9px');
-      $(this).find('span').css('left', 'auto');
-      $(this).find('span').css('right', '3px');
-    
+      span.css('top','auto');
+      span.css('bottom','-9px');
+      span.css('left', 'auto');
+      span.css('right', '3px');
     } else {
-      $(this).find('span').css('top', (event.screenY-120));
-      $(this).find('span').css('left', (event.pageX-100));
+      span.css('top', (event.screenY-120));
+      span.css('left', (event.pageX-100));
+      console.log(event.screenY-120,event.pageX-100)
     }
   });
    });
 </script>
 <style>
-  .content-calendar .td-calendar{
+  .calLink {
+    background-color: #0173ff;
+    color: #dadada;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .btn-fechas-calendar {
+    color: #fff;
+    background-color: #899098;
+  }
+  #btn-active {
+    background-color: #10cfbd;
+  }
+  
+      
+  .content-calendar .tip:hover .end,
+  .content-calendar .tip:hover .start,
+  .content-calendar .tip:hover .total{
+    background-color: red !important;
+  }
+  
+    .content-calendar .td-calendar{
     border:1px solid grey;width: 24px; height: 20px;
   }
   .content-calendar .no-event{
@@ -82,11 +65,5 @@
     text-align: center;
     min-width: 25px;
   }
-  .calLink {
-    background-color: #0173ff;
-    color: #dadada;
-    font-weight: bold;
-    text-align: center;
-  }
+
 </style>
-  

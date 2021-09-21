@@ -58,11 +58,7 @@
           <h3>Promociones de Temporadas:</h3>
         </div>
         <div class="col-xs-12 col-md-7">
-          <a class="text-white btn btn-md btn-primary" href="{{route('precios.base')}}">PRECIO BASE X TEMP</a>
-          <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.cal')}}">UNITARIA</a>
-          <a class="text-white btn btn-md btn-primary" href="{{route('channel.price.site')}}">EDIFICIO</a>
-          <button class="btn btn-md btn-primary active"  disabled>PROMOCIONES</button>
-          <a class="text-white btn btn-md btn-primary" href="{{route('precios.pricesOTAs')}}">PRECIOS OTAs</a>
+          @include('backend.prices._navs')
         </div>
         <div class="col-md-2 col-xs-12 row">
           @include('backend.years._selector', ['minimal' => true])

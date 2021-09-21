@@ -135,9 +135,6 @@ class PromotionsController extends AppController {
   public function create(Request $request) {
     
     $data = $request->all();
-    $oneDay = 24*60*60;
-    
-
     /***********************************/
     /***    Exceptions   *************/
     $exceptions = [];

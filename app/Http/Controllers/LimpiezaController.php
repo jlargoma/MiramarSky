@@ -6,27 +6,60 @@ use App\Classes\Mobile;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\Book;
+use Illuminate\Support\Facades\Auth;
 
 class LimpiezaController extends AppController {
 
-   public function index(Request $request, $year = "") {
+    public function index(Request $req, $year = "") {
     
-    $now = Carbon::now();
-    $start = $now->copy()->subDays(3);
-    $finish = $now->copy()->addMonth(3);
+    $start = null;
+    $dates = $req->input('filter');
+    if ($dates){
+      $dates = explode(' - ', $dates);
+      if (count($dates) == 2){
+        $start = Carbon::createFromFormat('d M, y', $dates[0]);
+        $finish = Carbon::createFromFormat('d M, y', $dates[1]);
+      }
+    }
+    if (!$start){
+      $now = Carbon::now();
+      $start = $now->copy()->subDays(3);
+      $finish = $now->copy()->addMonth(3);
+    }
     
+    $dateFiltrer = $start->format('d M, y').' - '.$finish->format('d M, y');
+    $start = $start->format('Y-m-d');
+    $finish = $finish->format('Y-m-d');
+    
+
+    $noRooms = \App\Rooms::where('channel_group','')->pluck('id');
     $rooms = \App\Rooms::all();
-    $checkin = \App\Book::where('start', '>=', $start)->where('start', '<=', $finish)
+    $checkin =Book::where('start', '>=', $start)->where('start', '<=', $finish)
                 ->with('room','customer')
-                ->whereIn('type_book',[1,2])->orderBy('start', 'ASC')->get();
+                ->whereNotIn('room_id',$noRooms)
+                ->whereIn('type_book',[1,2,7,8])->orderBy('start', 'ASC')->get();
         
     
-    
-    $checkout = \App\Book::where('finish', '>=', $start)
-                ->where('finish', '<', $finish)->where('type_book', 2)
+    $checkout =Book::where('finish', '>=', $start)
+                ->where('finish', '<=', $finish)->whereIn('type_book',[1,2,7,8])
                 ->with('room','customer')
+                ->whereNotIn('room_id',$noRooms)
                 ->orderBy('finish', 'ASC')->get();
-        
+    
+    
+    
+    
+    //BEGIN: BLOQUEOS
+    $sqlBooksBlocks =Book::where('finish', '>=', $start)
+                ->where('finish', '<=', $finish)->where('type_book', 4)
+                ->with('room','customer')
+                ->whereNotIn('room_id',$noRooms);
+    $noCustomer = \App\Customers::whereIn('id',$sqlBooksBlocks->pluck('customer_id'))
+            ->where('name','Bloqueo automatico')->pluck('id');
+    $bloqueada = $sqlBooksBlocks->whereNotIn('customer_id',$noCustomer)
+            ->orderBy('finish', 'ASC')->get();
+    //END: BLOQUEOS -
 
     $isMobile = config('app.is_mobile');
     $uRole = getUsrRole();
@@ -36,9 +69,11 @@ class LimpiezaController extends AppController {
         'mobile' => new Mobile(),
         'checkin' => $checkin,
         'checkout' => $checkout,
+        'bloqueada' => $bloqueada,
         'rooms' => $rooms,
         'isMobile' => $isMobile,
         'uRole' => $uRole,
+        'dateFiltrer' => $dateFiltrer,
     ]);
   }
 
@@ -85,6 +120,7 @@ class LimpiezaController extends AppController {
     }
     $totalCostBooks = 0;
     $monthlyCost = \App\Book::getMonthSum('cost_limp', 'finish', $startYear, $endYear);
+//    dd($monthlyCost);
     if (count($monthlyCost)) {
       foreach ($monthlyCost as $item) {
         if (isset($t_month[$item->new_date])) {
@@ -207,10 +243,7 @@ class LimpiezaController extends AppController {
       $endYear = $oYear->end_date;
     }
 
-    $lstBooks = \App\Book::where('finish', '>=', $startYear)
-                    ->where('finish', '<=', $endYear)
-                    ->whereIn('type_book', [2,7])
-                    ->orderBy('finish', 'ASC')->get();
+    $lstBooks = \App\Services\Bookings\GetBooksLimp::getBooks($startYear,$endYear);
     foreach ($lstBooks as $key => $book) {
       $agency = ($book->agency != 0) ? '/pages/' . strtolower($book->getAgency($book->agency)) . '.png' : null;
       $type_book = null;
@@ -336,4 +369,77 @@ class LimpiezaController extends AppController {
     return $pdf->download($file_name . '.pdf');
   }
 
+  
+   public function bloqueos(Request $request) {
+
+    $start   = $request->input('start', null);
+    $finish  = $request->input('finish', null);
+    $newroom = $request->input('newroom', null);
+    
+    
+    
+    $oBookings = new Book();
+    $customerID = null;
+    $oRooms = \App\Rooms::find($newroom);
+    if (!$oRooms) {
+      return back()->withErrors(['Apartamento no encontrado']);
+    }
+    $oUser = Auth::user();
+    if (!$oBookings->availDate($start, $finish, $oRooms->id))
+      return back()->withErrors(['Apartamento no disponible']);
+    
+    
+    $oCustomers = new \App\Customers();
+    $oCustomers->user_id = $oUser ? $oUser->id : 1;
+    $oCustomers->name = 'Bloqueo ' . ($oUser ? $oUser->name : 'Limpieza');
+    $oCustomers->save();
+    $customerID = $oCustomers->id;
+          
+
+    $book = new Book();
+    $book->user_id = $oUser ? $oUser->id : 1;
+    $book->customer_id = $customerID;
+    $book->room_id = $oRooms->id;
+    $book->start = $start;
+    $book->finish = $finish;
+    $book->book_comments = $request->input('book_comments', null);
+    $book->nigths = calcNights($start, $finish);
+    $book->type_book = 4;
+    $book->save();
+
+
+    $oBookings->sendAvailibility($oRooms->id, $start, $finish);
+    
+    return back()->with(['success'=>'Bloqueo realizado']);
+  }
+  
+   public function bloqueos_delete($id) {
+
+    try {
+      $book = Book::find($id);
+      if ($book->type_book != 4){
+        return [
+            'status' => 'danger',
+            'title' => 'Error:',
+            'response' => "La Reserva no es un bloqueo."
+        ];
+      }
+      $book->type_book = 0;
+      if ($book->save()) {
+        $book->sendAvailibilityBy_status($book->start,$book->finish);
+        return [
+            'status' => 'success',
+            'title' => 'OK',
+            'response' => "Reserva enviada a eliminadas"
+        ];
+      }
+    } catch (Exception $e) {
+
+      return [
+          'status' => 'danger',
+          'title' => 'Error',
+          'response' => "No se ha podido borrar la reserva error: " . $e->message()
+      ];
+    }
+  }
 }
