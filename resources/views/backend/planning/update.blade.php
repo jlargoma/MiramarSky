@@ -5,7 +5,7 @@ use App\Classes\Mobile;
 $uRole = getUsrRole();
 $is_mobile = $mobile->isMobile();
 ?>
-@section('title') Administrador de reservas MiramarSKI @endsection
+@section('title') Reserva @endsection
 
 @section('externalScripts')
 @include('backend.planning.blocks.styles-update')

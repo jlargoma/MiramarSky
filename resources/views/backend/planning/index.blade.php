@@ -6,7 +6,7 @@ $is_mobile = $mobile->isMobile();
 ?>
 @extends('layouts.admin-master')
 
-@section('title') Administrador de reservas MiramarSKI @endsection
+@section('title') Planning @endsection
 
 @section('externalScripts')
 
