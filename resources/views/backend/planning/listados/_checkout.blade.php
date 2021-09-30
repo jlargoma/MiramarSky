@@ -29,13 +29,12 @@
                 <tr class="<?php echo $class; ?>" data-id="{{$book->id}}" >
                   
                     <td class="text-left sm-p-t-10 sm-p-b-10" data-filter="site{{$book->room->site_id}}">
-                      @if($book->leads)<i class="fa fa-star" style="color: #c5cc00;"></i>@endif
+                       <?php if ($book->agency != 0): ?>
+                                <img src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" class="img-agency"/>
+                            <?php endif ?>
                         <a class="update-book" data-id="<?php echo $book->id ?>"  title="Editar Reserva"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                             <?php echo substr($book->customer->name, 0, 10) ?>
                         </a> 
-                    @if($book->is_fastpayment == 1 || $book->type_book == 99 )
-                    <img style="width: 30px;margin: 0 auto;" src="/pages/fastpayment.png" align="center"/>
-                    @endif
                     </td>
                     @if($isMobile)
                     <td class="text-center" style="max-width: 10px !important;">

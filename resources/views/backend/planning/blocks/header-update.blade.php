@@ -39,6 +39,7 @@
               }
             }?>
             <span style="display: none">{{$book->bkg_number}}</span>
+            
           </h5>
           
         </div>
@@ -66,12 +67,6 @@
             </button>
           </div>
           @endif
-          <div class="icon-lst">
-            <button class="btn" id="open_CustomerRequest" type="button" data-id="{{$book->id}}" title="LEADs" style="padding: 4px;">
-              <?php $color = $book->leads ? 'color: #c5cc00;' : ''; ?>
-              <i class="fa fa-star fa-2x" style="{{$color}}"></i>
-            </button>
-          </div> 
           @if($partee)
           <div class="icon-lst partee-icon">
           <?php echo $partee->print_status($book->id, $book->start, $book->pax, true); ?>
@@ -105,6 +100,7 @@
             </a>
             <div class="FF_resume tooltiptext"></div>
           </div>
+          <?php $book->printExtraIcon();?>
         </div>
         </div>
         <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">

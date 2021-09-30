@@ -1,9 +1,8 @@
 <?php
-$tDays = count($lstBySite['days']);
-$tNigh = $lstBySite['tNigh'];
-$tavail = $lstBySite['avail'];
-$tPvp = $lstBySite['tPvp'];
-
+$tDays = count($lstDisp['days']);
+$tNigh = $lstDisp['tNigh'];
+$tavail= $lstDisp['avail'];
+$tPvp  = $lstDisp['tPvp'];
 ?>
 <div class="table-responsive ">
   <table class="table table-resumen summary">
@@ -11,19 +10,19 @@ $tPvp = $lstBySite['tPvp'];
       <tr class="resume-head">
         <th class="static"></th>
         <th class="first-col"></th>
-        <th>TOTAL</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       <tr>
         <td class="static text-left">Nº NOCHES</td>
         <td class="first-col"></td>
-        <td>{{$tNigh}} ({{$tavail*$tDays}})</td>
+        <td>{{$tNigh}}</td>
       </tr>
       <tr>
         <td class="static text-left">% OCUPACION</td>
         <td class="first-col"></td>
-        <td>{{ceil($tNigh/($tavail*$tDays)*100)}}%</td>
+        <td>{{round($tNigh/($tavail*$tDays)*100)}}%</td>
       </tr>
       <tr>
         <td class="static text-left">ADR</td>
@@ -31,11 +30,11 @@ $tPvp = $lstBySite['tPvp'];
         <td>@if($tNigh) {{moneda($tPvp/$tNigh)}} @endif</td>
       </tr>
       <tr>
-        <td class="static text-left">TOTAL PVP</td>
-        <td class="first-col"></td>
-        <td>{{moneda($tPvp)}}</td>
+        <td class="static text-left"><b>TOTAL PVP</b></td>
+        <th class="first-col"></th>
+        <th>{{moneda($tPvp)}}</th>
       </tr>
     </tbody>
   </table>
 </div>
-<p><small>Reservas SIN contar bloqueos</small></p>
+<p><small>Reservas SIN contar bloqueos, ni OVERBOOKING</small></p>

@@ -25,15 +25,10 @@
   <div class="col-md-4 col-xs-6 push-20">
     <button onclick="_createPayment('link')" class="btn btn-success" type="button" id="_createPaymentLink">Link</button>
     <button onclick="_createPayment('form')" class="btn btn-success" type="button" id="_createPaymentForm">Pago</button>
-    @if ($oUser->canSeeVisa())
-    <button class="btn  @if(isset($hasVisa) && $hasVisa) btn-blue @else btn-info @endif" type="button" id="_getPaymentVisa">Visa</button>
-    @endif
+    
   </div>
     <div class="col-md-5 " style="overflow: auto;">
     @if ($oUser->canSeeVisa())
-      <div class="@if(isset($visaHtml) && $visaHtml) open @endif" id="visaDataContent">
-        {!!$visaHtml!!}
-      </div>
         <div class="text-left">
       <label>Datos Tarjeta</label>
       <textarea id="creditCardData" class="form-control" rows="5">{{$creditCardData}}</textarea>

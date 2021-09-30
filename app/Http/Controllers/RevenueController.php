@@ -11,6 +11,7 @@ use App\Revenue;
 use App\RevenuePickUp;
 use App\Rooms;
 use App\Book;
+use App\BookDay;
 use App\Services\Wubook\RateChecker;
 use Excel;
 
@@ -20,148 +21,292 @@ class RevenueController extends AppController
 
   public function index(Request $req){
     
-    $season   = $this->getActiveYear();
-    $start_carb  = new Carbon($season->start_date);
-    $finish_carb = new Carbon($season->end_date);
-    $year   = $season->year;
+    $oYear  = $this->getActiveYear();
+//    \App\BookDay::createSeasson($oYear->start_date,$oYear->end_date);
     
-    $month  = $req->input('month',null);
-    $ch  = $req->input('ch_sel',null);
-    $start  = $req->input('start',null);
-    $finish = $req->input('finish',null);
-    $lstMonhs = lstMonths($start_carb,$finish_carb,'y.m',true);
-    if ($month){
-      $aux = explode('.', $month);
-      if (count($aux)==2){
-        $start = '20'.$aux[0].'-'.date("m-d", mktime(0, 0, 0, $aux[1], 1));
-        $finish = date("Y-m-d", strtotime($start. '+1 months'));
-      }
-    }
-    
-    if (!$start) $start  = $season->start_date;
-    if (!$finish) $finish = $season->end_date;
-    
-
-    
-    
-    $qry_ch = Rooms::where('state',1);
-    $allChannels = $qry_ch->where('channel_group','!=','')
-            ->groupBy('channel_group')->pluck('channel_group')->all();
-    
-    
-    $qryRevenue = RevenuePickUp::where([['day','>=', $start ],['day','<=', $finish ]]);
-    $qryRevenueANUAL = RevenuePickUp::where([['day','>=', $season->start_date ],['day','<=', $season->end_date ]]);
-    if ($ch){
-      $qryRevenue->where('channel',$ch);
-      $qryRevenueANUAL->where('channel',$ch);
-    }
-    
-    $allRevenue = $qryRevenue->get();
-    $allRevenueANUAL = $qryRevenueANUAL->get();
-    
-   
-    if (!$ch){
-      if (count($allRevenue)){
-        $ProcessPickUp = new \App\Models\ProcessPickUp();
-        $allRevenue = $ProcessPickUp->compactRevenue($allRevenue);
-        $allRevenueANUAL = $ProcessPickUp->compactRevenue($allRevenueANUAL);
-      }
-    }
-    
-    $summary = [];
-    $tOcup = 0;
-    $tDisp = 0;
-    $tIng = 0;
-    if (count($allRevenue))
-      foreach ($allRevenue as $r){
-        $tOcup += $r->ocupacion+$r->llegada;
-        $tDisp += $r->disponibilidad;
-        $tIng  += $r->ingresos;
-      }
-    $tOcupANUAL = 0;
-    $tDispANUAL = 0;
-    $tIngANUAL = 0;
-    if (count($allRevenueANUAL))
-      foreach ($allRevenueANUAL as $r){
-        $tOcupANUAL += $r->ocupacion+$r->llegada;
-        $tDispANUAL += $r->disponibilidad;
-        $tIngANUAL  += $r->ingresos;
-      }
-    
-      
-      
-      
-    $PickUpEvents = \App\RevenuePickUpEvents::where([['date','>=', $start ],['date','<=', $finish ]])->get();
-    $lstPickUpEvents = [];
-    if ($PickUpEvents){
-      foreach ($PickUpEvents as $item){
-        $lstPickUpEvents[$item->date] = $item->event;
-      }
-    }
-    
-    
-    return view('backend.revenue.index',[
-      'year' => $year,
-      'month' => $month,
-      'allRevenue' => $allRevenue,
-      'lstPickUpEvents' => $lstPickUpEvents,
-      'tOcup' => $tOcup,
-      'tDisp' => ($tDisp>0) ? $tDisp : 1,
-      'tIng' => $tIng,
-      'tOcupANUAL' => $tOcupANUAL,
-      'tDispANUAL' => ($tDispANUAL>0) ? $tDispANUAL : 1,
-      'tIngANUAL' => $tIngANUAL,
-      'site' => -1,
-      'start'=>$start,
-      'finish'=>$finish,
-      'channels' => $allChannels,
-      'ch_sel' => $ch,
-      'lstMonhs' => $lstMonhs,
-      'range'=>date('d M, y', strtotime($start)).' - '.date('d M, y', strtotime($finish)),
+    $year   = $oYear->year;
+    $month  = $req->input('month',date('n'));
+    $month  = 0;
+    $oServ = new \App\Services\RevenueService();
+    $oServ->setDates($year.'.'.$month,$oYear);
+    $monthStart = $oServ->start;
+    $monthFinish = $oServ->finish;
+    $oServ->setBook();
+    $oServ->setRooms();
+    $oServ->createDaysOfMonths($year);
+    $ADR_finde = $oServ->getADR_finde();
+    $datosMes = view('backend.revenue.dashboard.mes',[
+        'books' => $oServ->books,
+        'roomCh' => $oServ->rChannel,
+        'roomSite' => null,
+        'aSites' => null,
+        'days' => $oServ->days,
+        'months' => $oServ->months,
+        'lstMonths' => $oServ->lstMonths,
+        'month' =>$month,
+        'nights'=>$oServ->countNightsSite(),
+        'rvas'=>$oServ->countBookingsSite(),
+        'ADR_finde'=>$ADR_finde,
     ]);
     
-
+    /*************************************************************/
+    $oLiquidacion = new \App\Liquidacion();
+    $dataSeason = $oLiquidacion->getBookingAgencyDetailsBy_date($oYear->start_date,$oYear->end_date);
+    $agencias = view('backend.revenue.dashboard.agencias',[
+        'data' => $dataSeason,
+        'agencyBooks' => $oLiquidacion->getArrayAgency()
+    ]);
+    /*************************************************************/
+    $disponiblidad = $this->data_disponibilidad($oYear,null,$month,$oServ->start,$oServ->finish,true,$oServ->lstMonths);
+    
+    /*************************************************************/
+    $oServ->start  = $oYear->start_date;
+    $oServ->finish = $oYear->end_date;
+    /*************************************************************/
+    $oServ->setBook(); 
+    $bookingCount = $oServ->countBookingsSiteMonths();
+    $ADR_finde = $oServ->getADR_finde();
+    $auxADR = $ADR_finde;
+    $aRatios = $oServ->getRatios($oYear->year);
+    $auxADR = $aRatios[0];
+    $ADR_semana = $auxADR['c_s'] > 0 ? $auxADR['t_s'] / $auxADR['c_s'] : $auxADR['t_s'];
+    $ADR_finde  = $auxADR['c_f'] > 0 ? $auxADR['t_f'] / $auxADR['c_f'] : $auxADR['t_f'];
+    
+    $viewRatios = [
+        'books' => $oServ->books,
+        'aRatios' => $aRatios,
+        'roomCh' => $oServ->rChannel,
+        'days' => $oServ->days,
+        'lstMonths' => $oServ->lstMonths,
+        'year' =>$oYear->year,
+        'mDays' =>$oServ->mDays,
+        'yDays' =>$oServ->mDays[0],
+        'time_start' => strtotime($oYear->start_date),
+        'time_end' =>strtotime($oYear->end_date),
+        'rvas'=>$oServ->countBookingsSite(),
+        'summary' => $oLiquidacion->summaryTemp(),
+        'ADR_semana'=>moneda($ADR_semana),
+        'ADR_finde'=>moneda($ADR_finde),
+    ];
+    $ratios = view('backend.revenue.dashboard.ratios',$viewRatios);
+    /*************************************************************/
+    // COMPARATIVA INGRS ANUALES
+    $viewRatios['comparativaAnual'] = $oServ->comparativaAnual(date('Y'));
+    $oServ->setDates(null,$oYear);
+    $oServ->setBook();
+    $comp_ingresos_anuales = view('backend.revenue.dashboard.comp_ingresos_anuales',$viewRatios);
+    /*************************************************************/
+    $oFixCosts = \App\FixCosts::getByRang($oYear->start_date,$oYear->end_date);
+    $oFCItems = \App\FixCosts::getLst();
+    $fixCosts  = [];
+    $fixCostsMonths  = [0=>0];
+    foreach ($oServ->lstMonths as $k=>$v) $fixCostsMonths[$k] = 0;
+    foreach ($oFixCosts as $fc){
+      if (!isset($fixCosts[$fc->concept])){
+        $fixCosts[$fc->concept] = $fixCostsMonths;
+      }
+      $date = date('y.m', strtotime($fc->date));
+      $fixCosts[$fc->concept][$date] = intval($fc->content);
+    }    
+    foreach ($oFCItems as $k=>$v){
+      if (isset($fixCosts[$k]))  $fixCosts[$k][0] = array_sum($fixCosts[$k]);
+      else $fixCosts[$k][0] = 0;
+    }
+    
+    $presupuesto = view('backend.revenue.dashboard.presupuesto',[
+        'aRatios' => $aRatios,
+        'months' => $oServ->months,
+        'year' =>$oYear->year,
+        'days' => $oServ->days,
+        'mDays' =>$oServ->mDays,
+        'lstMonths' =>$oServ->lstMonths,
+        'fixCosts' => $fixCosts,
+        'FCItems' => $oFCItems,
+        'time_start' => strtotime($oYear->start_date),
+        'time_end' =>strtotime($oYear->end_date),
+        'month' =>$month,
+        'bookingCount'=>$bookingCount,
+        'monthlyLimp'=>$oServ->getMonthSum('cost_limp', 'finish', $oYear->start_date, $oYear->end_date),
+        'monthlyOta'=>$oServ->getMonthSum('PVPAgencia', 'finish', $oYear->start_date, $oYear->end_date),
+        'comisionesTPV' => $oServ->commisionTPVBookingsSiteMonths()
+    ]);
+    
+    $presupuesto_head = view('backend.revenue.dashboard.presupuesto_head',[
+        'month' =>$month,
+        'months' => $oServ->months,
+        'presupuesto' => $presupuesto,
+        'lstMonths' =>$oServ->lstMonths,
+        ]);
+    
+    
+    /*************************************************************/
+    $oYear = $this->getActiveYear();
+    $liq = LiquidacionController::static_prepareTables($oYear);
+//    dd($liq['chRooms']);
+    $liq['months']        = $oServ->months;
+    $liq['ingrMonths']    = $oServ->getIngrMonths($liq['chRooms']);
+    $ingrMes = view('backend.revenue.dashboard.ingresos',$liq);
+    /*************************************************************/
+    $balance = view('backend.revenue.dashboard.balance',[
+          'lstMonths'=>$oServ->lstMonths,
+          'ingr'=>$liq['ingrMonths'],
+          'gastos'=>$oServ->getExpenses(),
+          'year'=>$oYear,
+          'ingrExt'=>$oServ->getIncomesYear($year)
+          ]);
+    /*************************************************************/    
+    
+    return view('backend.revenue.dashboard',[
+        'datosMes' => $datosMes,
+        'year' => $year,
+        'month' =>$month,
+        'disponiblidad' => $disponiblidad,
+        'ingrMes' => $ingrMes,
+        'balance' => $balance,
+        'ratios' => $ratios,
+        'presupuesto_head' => $presupuesto_head,
+        'agencias' => $agencias,
+        'comp_ingresos_anuales' => $comp_ingresos_anuales,
+      ]);
+    
   }
   
+  function getMonthKPI($month){
+    $oYear   = $this->getActiveYear();
+    $oServ = new \App\Services\RevenueService();
+    if ($month > 0){
+      $oServ->setDates($month,$oYear);
+    } else {
+      $oServ->setDates(null,$oYear);
+    }
+    $oServ->setBook();
+    $oServ->setRooms();
+    $ADR_finde = $oServ->getADR_finde();
     
+    return view('backend.revenue.dashboard.mes',[
+        'books' => $oServ->books,
+        'roomCh' => $oServ->rChannel,
+        'days' => $oServ->days,
+        'months' => $oServ->months,
+        'lstMonths' => $oServ->lstMonths,
+        'month' =>$month,
+        'nights'=>$oServ->countNightsSite(),
+        'rvas'=>$oServ->countBookingsSite(),
+        'ADR_finde'=>$ADR_finde,
+    ]);
+  }
+  
+  function updOverview(Request $req){
+    $year = $req->input('y');
+    $month = $req->input('m');
+    $key = $req->input('k');
+    $value = $req->input('v');
+    $site = $req->input('s');
+    $monthSelect = $req->input('ms');
+    $d = [];
+    
+    if ($month>0){
+      $sSummary = \App\Settings::findOrCreate('revenue_disponibilidad_'.$year.'_'.$month, $site);
+    } else {
+      $sSummary = \App\Settings::findOrCreate('revenue_disponibilidad_'.$year, $site);
+    }
+    $d = json_decode($sSummary->content, true);
+    if (!is_array($d)) $d = [];
+    $d[$key] = $value;
+    
+    $sSummary->content = json_encode($d);
+    $sSummary->save();
+    
+    return $this->getOverview($monthSelect);
+  }
+  function getOverview($month){
+    $oYear   = $this->getActiveYear();
+    $oServ = new \App\Services\RevenueService();
+    $oServ->setDates($month,$oYear);
+    $oServ->start  = $oYear->start_date;
+    $oServ->finish = $oYear->end_date;
+    $oServ->setRooms();
+    $oServ->createDaysOfMonths($oYear->year);
+    $oServ->setBook();
+    $oFixCosts = \App\FixCosts::getByRang($oYear->start_date,$oYear->end_date);
+    $oFCItems = \App\FixCosts::getLst();
+    $fixCosts  = [];
+    $fixCostsMonths  = [0=>0];
+    foreach ($oServ->lstMonths as $k=>$v) $fixCostsMonths[$k] = 0;
+    foreach ($oFixCosts as $fc){
+      if (!isset($fixCosts[$fc->concept])){
+        $fixCosts[$fc->concept] = $fixCostsMonths;
+      }
+      $date = date('y.m', strtotime($fc->date));
+      $fixCosts[$fc->concept][$date] = intval($fc->content);
+    } 
+    foreach ($oFCItems as $k=>$v){
+      if (isset($fixCosts[$k]))  $fixCosts[$k][0] = array_sum($fixCosts[$k]);
+      else $fixCosts[$k][0] = 0;
+    }
+    return view('backend.revenue.dashboard.presupuesto',[
+        'aRatios' => $oServ->getRatios($oYear->year),
+        'lstMonths' => $oServ->lstMonths,
+        'year' =>$oYear->year,
+        'days' => $oServ->days,
+        'mDays' =>$oServ->mDays,
+        'fixCosts' => $fixCosts,
+        'FCItems' => $oFCItems,
+        'time_start' => strtotime($oYear->start_date),
+        'time_end' =>strtotime($oYear->end_date),
+        'month' =>$month,
+        'ratios' => $oServ->getRatios(null),
+        'bookingCount'=>$oServ->countBookingsSiteMonths(),
+        'monthlyLimp'=>$oServ->getMonthSum('cost_limp', 'finish', $oYear->start_date, $oYear->end_date),
+        'monthlyOta'=>$oServ->getMonthSum('PVPAgencia', 'finish', $oYear->start_date, $oYear->end_date),
+        'comisionesTPV' => $oServ->commisionTPVBookingsSiteMonths()
+    ]);
+  }
+  
+  function getMonthDisp($date){
+    $oYear   = $this->getActiveYear();
+    $oServ = new \App\Services\RevenueService();
+    $oServ->setDates($date,$oYear);
+    $month = explode('.',$date);
+    $month = $month[1];
+    return $this->data_disponibilidad($oYear,null,$month,$oServ->start,$oServ->finish,true,$oServ->lstMonths);
+  }
+
   /*******************************************************************************/
   /*******************************************************************************/
   /*******************************************************************************/
   
-  public function disponibilidad(Request $req){
-    
-    $year   = $this->getActiveYear();
-    $month_key = $req->input('month',date('y.m'));
-    $aux = explode('.', $month_key);
-    if (count($aux)==2){
-      $month  =  $aux[1];
-      $start  = firstDayMonth('20'.$aux[0], $month);
-      $finish = lastDayMonth('20'.$aux[0], $month);
-    } else {
-        $month_key = date('y.m');
-        $month = date('m');
-        $start  = firstDayMonth(date('Y'), $month);
-        $finish = lastDayMonth(date('Y'), $month);
-    }
-    $chNames = configOtasAptosName();
-    $lstMonths = lstMonths(new Carbon($year->start_date), new Carbon($year->end_date),"y.m",'long');
+  public function disponibilidad(Request $req,$return=false){
+    die('error');
+    $oYear   = $this->getActiveYear();
+    $site_id  = $req->input('site',2);
+    $month = $req->input('month',date('m'));
+    $start  = firstDayMonth($oYear->year, $month);
+    $finish = lastDayMonth($oYear->year, $month);
+    return $this->data_disponibilidad($oYear,$site_id,$month,$start,$finish,false);
+  }
+  
+  function data_disponibilidad($oYear,$site_id,$month,$start,$finish,$return=false,$lstMonths){
+    $chNames = configOtasAptosName(null);
+    $aMonths = getMonthsSpanish(null,FALSE, TRUE);
     /************************************************************/
     /********   Prepare days array               ****************/
     $startTime = strtotime($start);
     $endTime = strtotime($finish);
     $aLstDays = [];
+    
     $dw = listDaysSpanish(true);
     $dwMin = ['D','L','M','M','J','V','S'];
     $startAux = $startTime;
     while ($startAux<=$endTime){
-      $aLstDays[date('d',$startAux)] = $dw[date('w',$startAux)];
-      $aLstDaysMin[date('j',$startAux)] = $dwMin[date('w',$startAux)];
+      $aLstDays[date('j_m_y',$startAux)] = $dw[date('w',$startAux)];
+      $aLstDaysMin[date('j_m_y',$startAux)] = $dwMin[date('w',$startAux)];
       $startAux = strtotime("+1 day", $startAux);
     }
-      
     /************************************************************/
     /********   Get Roooms                      ****************/
-    $allRooms = Rooms::where('state',1)->get();
+    $allRooms = \App\Rooms::where('state',1)
+            ->where('channel_group','!=','')->get();
     $otas = [];
     $roomsID = [];
     $totalOtas = 0;
@@ -174,64 +319,46 @@ class RevenueController extends AppController
       $totalOtas++;
       $roomsID[] = $room->id;
     }
+    
+    
     /************************************************************/
-    /********   Get RESUMENES                    ****************/ 
     $lstBySite = [];
-    $oRooms = Rooms::where('state',1)->pluck('id')->toArray();
-    $sqlbooks = Book::where_type_book_reserved(true)
-            ->whereIn('room_id', $oRooms);
-    $sqlbooks = Book::w_book_times($sqlbooks,$start,$finish);
-    $books    = $sqlbooks->get();
-
-    $avail = count($oRooms);
     $startAux = $startTime;
-    $aLstNight = [];
+    $aLstNightEmpty = [];
     while ($startAux <= $endTime) {
-      $aLstNight[date('j', $startAux)] = 0;
+      $aLstNightEmpty[date('j_m_y', $startAux)] = 0;
       $startAux = strtotime("+1 day", $startAux);
     }
+    $books  = BookDay::where_book_times($start,$finish)
+            ->whereIn('type', Book::get_type_book_sales(true,true))
+            ->get();
+    $aLstNight = $aLstNightEmpty;
 
     $tNigh = 0;
     $tPvp  = 0;
 
     $control = [];
     if ($books) {
-      foreach ($books as $book) {
-        $b_start = strtotime($book->start);
-        $b_finish = strtotime($book->finish);
-
-        while ($b_start < $b_finish) {
-            if (date('m', $b_start) == $month) {
-                $auxTime = date('j', $b_start);
-                $keyControl = $book->room_id . '-' . $auxTime;
-                if (!in_array($keyControl, $control) || true) {
-                    if (isset($aLstNight[$auxTime]))
-                        $aLstNight[$auxTime]++;
-                    $control[] = $keyControl;
-                }
-            }
-            $b_start = strtotime("+1 day", $b_start);      
-        }
-
-        $tPvp  += $book->total_price;
+      foreach ($books as $b) {
+        $auxTime = date('j_m_y', strtotime($b->date));
+        if (isset($aLstNight[$auxTime]))  $aLstNight[$auxTime]++;
+        $tPvp  += $b->pvp;
       }
     }
 
-    $lstBySite = [
+    $lstDisp = [
         'days'=>$aLstNight,
-        'avail'=>$avail,
+        'avail'=> Rooms::avail(),
         'tNigh'=>array_sum($aLstNight),
         'tPvp'=>$tPvp,
     ];
-
     /*****************************************************************/
     /********   Get Bookings                     ****************/  
     $listDaysOtas = [];
-    $oBook = new Book();
+    $oBook = new \App\Book();
     foreach ($otas as $apto=>$v){
       $listDaysOtas[$apto] = $oBook->getAvailibilityBy_channel($apto, $start, $finish,false,false,true);
     }
-
     $listDaysOtasTotal = null;
     foreach ($listDaysOtas as $k=>$v){
       if (!$listDaysOtasTotal) $listDaysOtasTotal = $v;
@@ -241,17 +368,16 @@ class RevenueController extends AppController
         }
       }
     }
-//    dd($listDaysOtasTotal);
     /*********************************************************************/
     /**********   SUMMARY                                 ****************/
     $totalMonth = $totalMonthOcc = $totalOtas*count($aLstDays);
-    $nightsTemp = calcNights($year->start_date,$year->end_date);
+    $nightsTemp = calcNights($oYear->start_date,$oYear->end_date);
     $totalSummary = $totalOtas*$nightsTemp;
     $totalSummaryOcc = 0;
     $monthPVP = $summaryPVP = 0; 
 
-    $sqlBooks = Book::where_type_book_sales()->whereIn('room_id',$roomsID);
-    $books = Book::w_book_times($sqlBooks, $start, $finish)->get();
+    $sqlBooks = \App\Book::where_type_book_sales(true,true)->whereIn('room_id',$roomsID);
+    $books = \App\Book::w_book_times($sqlBooks, $start, $finish)->get();
                     
     if ($books){
       $startMonth = strtotime($start);
@@ -260,7 +386,7 @@ class RevenueController extends AppController
       foreach ($books as $book){
         $summaryPVP += $book->total_price;
         if (date('m',strtotime($book->start)) == $month || date('m',strtotime($book->finish)) == $month){
-          $pvpPerNigh = $book->total_price/$book->nigths;
+          $pvpPerNigh = ($book->nigths>0) ? $book->total_price/$book->nigths : 0;
           $startAux = strtotime($book->start);
           $finishAux = strtotime($book->finish);
           while ($startAux<$finishAux){
@@ -274,8 +400,8 @@ class RevenueController extends AppController
       }
     }
     //Total by seasson
-    $totalSummaryOcc = Book::whereIn('type_book', [1,2,11])
-          ->where([['start','>=', $year->start_date ],['finish','<=', $year->end_date ]])
+    $totalSummaryOcc = \App\Book::whereIn('type_book', [1,2,11])
+          ->where([['start','>=', $oYear->start_date ],['finish','<=', $oYear->end_date ]])
           ->whereIn('room_id',$roomsID)->sum('nigths');
 
     $occupPerc = ($totalMonth>0) ? (round($totalMonthOcc/$totalMonth*100)) : 0;
@@ -290,8 +416,8 @@ class RevenueController extends AppController
         'foresc_n_hab'=>0,'foresc_n_hab_perc'=>0,'foresc_med_pvp'=>0,'foresc_pvp'=>0
         ];
     
-    $sSummarySeasson = \App\Settings::findOrCreate('revenue_disponibilidad_'.$year->year);
-    $sSummaryMonth = \App\Settings::findOrCreate('revenue_disponibilidad_'.$year->year.'_'.$month);
+    $sSummarySeasson = \App\Settings::findOrCreate('revenue_disponibilidad_'.$oYear->year, $site_id);
+    $sSummaryMonth = \App\Settings::findOrCreate('revenue_disponibilidad_'.$oYear->year.'_'.$month, $site_id);
     $sSummarySeasson = json_decode($sSummarySeasson->content,true);
     $sSummaryMonth = json_decode($sSummaryMonth->content,true);
     $sSummarySeasson = $sSummarySeasson ? array_merge($sKeys,$sSummarySeasson) : $sKeys;
@@ -303,8 +429,12 @@ class RevenueController extends AppController
     $sSummaryMonth['foresc_n_hab_perc'] = ($totalMonth>0) ? (round($sSummaryMonth['foresc_n_hab']/$totalMonth*100)) : 0;
         
     /************************************************************/
-    return view('backend.revenue.disponibilidad',[
-      'year' => $year,
+    $mmonths = getMonthsSpanish(null,true,true);
+    unset($mmonths[0]);
+    /************************************************************/
+    
+    $data = [
+      'year' => $oYear,
       'otas' => $otas,
       'chNames' => $chNames,
       'aLstDays' => $aLstDays,
@@ -312,7 +442,8 @@ class RevenueController extends AppController
       'totalOtas'=>$totalOtas,
       'listDaysOtasTotal'=>$listDaysOtasTotal,
       'lstMonths' => $lstMonths,
-      'month_key' => $month_key,
+      'mmonths' => $mmonths,
+      'month_key' => $oYear->year.'_'.$month,
       'month' => intVal($month),
       'totalMonthOcc' => $totalMonthOcc,
       'totalSummaryOcc' => $totalSummaryOcc,
@@ -326,9 +457,11 @@ class RevenueController extends AppController
         'medPVPSession' => $medPVPSession,
         'sSummarySeasson' => $sSummarySeasson,
         'sSummaryMonth' => $sSummaryMonth,
-        'lstBySite'=>$lstBySite,
+        'lstDisp'=>$lstDisp,
         'aLstDaysMin'=>$aLstDaysMin,
-    ]);
+    ];
+    if ($return)  return view('backend.revenue.dashboard.disponibilidad',$data );
+    return view('backend.revenue.disponibilidad',$data );
   }
  
   /**
@@ -339,7 +472,7 @@ class RevenueController extends AppController
     $key = $req->input('key',null);
     $id  = $req->input('id',null);
     $val = $req->input('input',0);
-    $site = 1;
+    $site = $req->input('site',1);
     
     if (!$key || !$id ){
       return response()->json(['status'=>'error','msg'=>'las claves no existen']);
@@ -378,27 +511,20 @@ class RevenueController extends AppController
    */
   public function donwlDisponib(Request $req) {
     
-    $season   = $this->getActiveYear();
+    $oYear   = $this->getActiveYear();
     $lstMonths = getMonthsSpanish(null,FALSE, TRUE);
-    $month_key = $req->input('month_key',date('y.m'));
-
-    $aux = explode('.', $month_key);
-    if (count($aux)==2){
-      $month  =  $aux[1];
-      $start  = firstDayMonth('20'.$aux[0], $month);
-      $finish = lastDayMonth('20'.$aux[0], $month);
-    } else {
-      $month  = date('m');
-      $start  = firstDayMonth($season->year, $month);
-      $finish = lastDayMonth($season->year, $month);
-    }
-    $chNames = configOtasAptosName();
+    $site_id  = $req->input('site',2);
+    $month = $req->input('month',date('m'));
+    $start  = firstDayMonth($oYear->year, $month);
+    $finish = lastDayMonth($oYear->year, $month);
+    
+    $chNames = configOtasAptosName($site_id);
     /************************************************************/
     /********   Prepare days array               ****************/
     $startAux = strtotime($start);
     $endAux = strtotime($finish);
     $aLstDays = [];
-    $oneDay = 24*60*60;
+    
     $dw = listDaysSpanish(true);
     while ($startAux<=$endAux){
       $aLstDays[date('d',$startAux)] = $dw[date('w',$startAux)];
@@ -407,7 +533,13 @@ class RevenueController extends AppController
       
     /************************************************************/
     /********   Get Roooms                      ****************/
-    $allRooms = Rooms::where('state',1)->get();
+    $qry_ch = \App\Rooms::where('state',1);
+    if ($site_id>0){
+      $qry_ch->where('site_id',$site_id);
+    }
+    $allRooms = $qry_ch->where('channel_group','!=','')->get();
+    
+
     $otas = [];
     $roomsID = [];
     $totalOtas = 0;
@@ -424,11 +556,10 @@ class RevenueController extends AppController
     /************************************************************/
     /********   Get Bookings                     ****************/  
     $listDaysOtas = [];
-    $oBook = new Book();
+    $oBook = new \App\Book();
     foreach ($otas as $apto=>$v){
       $listDaysOtas[$apto] = $oBook->getAvailibilityBy_channel($apto, $start, $finish,false,false,true);
     }
-    
     $listDaysOtasTotal = null;
     foreach ($listDaysOtas as $k=>$v){
       if (!$listDaysOtasTotal) $listDaysOtasTotal = $v;
@@ -443,50 +574,49 @@ class RevenueController extends AppController
    
     $rowTit = ['',''];
     $listMonth = [];
-    foreach($aLstDays as $d=>$w) $rowTit[] = $d.'';
+    foreach($aLstDays as $d=>$w) $rowTit[] = $d;
     
     
     foreach($otas as $ch=>$nro){
       $chName = isset($chNames[$ch]) ? $chNames[$ch] : '-';
       $aux = [$chName,'Total'];
       foreach($aLstDays as $d=>$w){
-        $aux[] = $nro.'';
+        $aux[] = $nro;
       }
       $listMonth[] = $aux;
       ////////////////////////////////////////////////
       $aux = ['','Libres'];
       foreach($listDaysOtas[$ch] as $avail){
-        $aux[] = ($avail>0) ? strval($avail) : '-';
+        $aux[] = ($avail>0) ? $avail : '-';
       }
       $listMonth[] = $aux;
       ////////////////////////////////////////////////
       $aux = ['','Ocupadas'];
       foreach($listDaysOtas[$ch] as $avail){
-        $aux[] = strval($nro-$avail);
+        $aux[] = $nro-$avail;
       }
       $listMonth[] = $aux;
     }
-    
     ////////////////////////////////////////////////
     $aux = ['TOTAL','Total'];
     foreach($aLstDays as $d=>$w){
-      $aux[] = strval($totalOtas);
+      $aux[] = $totalOtas;
     }
     $listMonth[] = $aux;
     ////////////////////////////////////////////////
     $aux = ['','Libres'];
     foreach($listDaysOtasTotal as $v){
-      $aux[] = strval($v);
+      $aux[] = $v;
     }
     $listMonth[] = $aux;
     ////////////////////////////////////////////////
     $aux = ['','Ocupadas'];
     foreach($listDaysOtasTotal as $v){
-      $aux[] = strval($totalOtas-$v);
+      $aux[] = $totalOtas-$v;
     }
     $listMonth[] = $aux;
     ////////////////////////////////////////////////  
-     
+    
     $name = 'PickUp_'. $start.'_al_'.$finish;
     \Excel::create($name, function($excel)  use($rowTit,$listMonth)  {
        $excel->sheet("Mensual", function($sheet) use($rowTit,$listMonth) {
@@ -539,16 +669,15 @@ class RevenueController extends AppController
     }
     /********************/
     $range = [];
-    $oneDay = 24*60*60;
+    $oneDay = 24 * 60 * 60;
     $wDay = listDaysSpanish(true);
     for($i=0;$i<$oRateChecker->maxRange;$i++){
       $time = $oRateChecker->startRange+($oneDay*$i)+1;
       $range[date('Ymd',$time)] = $wDay[date('w',$time)].' '.date('d/m',$time);
     }
-    $year = $this->getActiveYear();
-//    dd($byRoom);
+    $oYear = $this->getActiveYear();
     return view('backend.revenue.rate-shopper',[
-      'year' => $year,
+      'year' => $oYear,
       'competitors' => $Competitors,
       'byRoom' => $byRoom,
       'competitorsID' => $competitorsID,
@@ -572,56 +701,86 @@ class RevenueController extends AppController
   /****************************************************************************/
   
   
-  public function pickUpNew(Request $req){
+  public function pickUp(Request $req){
     
-    $season   = $this->getActiveYear();
-    $start  = $season->start_date;
-    $finish = $season->end_date;
-    $months = null;
+    $oYear   = $this->getActiveYear();
+    $months = getMonthsSpanish(null,false,true);
 
     
     $ch  = $req->input('ch_sel',null);
+    $site_id  = $req->input('site',null);
     $start  = $req->input('start',null);
     $finish = $req->input('finish',null);
-//    
-    if (!$start) $start  = $season->start_date;
-    if (!$finish) $finish = $season->end_date;
-    
-    
-    $qry_ch = Rooms::where('state',1);
+    $sel_mes = $req->input('sel_mes',date('m'));
+    if ($sel_mes) {
+      $mesAux = $oYear->year.'-'.$sel_mes.'-01';
+      $start = $mesAux;
+      $d = \DateTime::createFromFormat('Y-m-d',$mesAux);
+      $finish = $d->modify('last day of this month')->format('Y-m-d');
+    }
+    $qry_ch = \App\Rooms::where('state',1);
+    if ($site_id>0){
+      $qry_ch->where('site_id',$site_id);
+    }
     $allChannels = $qry_ch->where('channel_group','!=','')
             ->groupBy('channel_group')->pluck('channel_group')->all();
     
     
     $qryRevenue = RevenuePickUp::where([['day','>=', $start ],['day','<=', $finish ]]);
+    
+    if ($site_id>0){
+      $qryRevenue->where('site_id',$site_id);
+    }
     if ($ch){
       $qryRevenue->where('channel',$ch);
     }
     
     $allRevenue = $qryRevenue->get();
     
-   
     if (!$ch){
       if (count($allRevenue)){
         $ProcessPickUp = new \App\Models\ProcessPickUp();
         $allRevenue = $ProcessPickUp->compactRevenue($allRevenue);
       }
     }
-    
+       
     $summary = [];
     $tOcup = 0;
     $tDisp = 0;
     $tIng = 0;
-    if (count($allRevenue))
-      foreach ($allRevenue as $r){
+        
+    $qrySumm = RevenuePickUp::whereYear('day','=',$oYear->year);
+    if ($site_id>0) $qrySumm->where('site_id',$site_id);
+    if ($ch) $qrySumm->where('channel',$ch);
+    $allSummay = $qrySumm->get();
+    $sM = [];
+    if (count($allSummay))
+      foreach ($allSummay as $r){
+        $m = date('n', strtotime($r->day));
+        if (!isset($sM[$m])) $sM[$m] = ['tOcup'=>0,'tDisp'=>0,'tIng'=>0];
+        
+        $sM[$m]['tOcup'] += $r->ocupacion+$r->llegada;
+        $sM[$m]['tDisp'] += $r->disponibilidad;
+        $sM[$m]['tIng']  += $r->ingresos;
+        
         $tOcup += $r->ocupacion+$r->llegada;
         $tDisp += $r->disponibilidad;
         $tIng  += $r->ingresos;
       }
+      
+    /************************************************************************/  
+     if (count($sM))
+      foreach ($sM as $m=>$v){
+        $sM[$m]['perc'] = round( $v['tOcup']*100/ $v['tDisp']);
+        $sM[$m]['pm']   = ($v['tOcup']>0) ? moneda($v['tIng']/$v['tOcup']) : '-';
+        $sM[$m]['tIng'] = moneda($v['tIng']);
+        
+      }  
+    /************************************************************************/
+      
+      
+      
     
-      
-      
-      
     $PickUpEvents = \App\RevenuePickUpEvents::where([['date','>=', $start ],['date','<=', $finish ]])->get();
     $lstPickUpEvents = [];
     if ($PickUpEvents){
@@ -630,38 +789,26 @@ class RevenueController extends AppController
       }
     }
     
+    
     $oLiquidacion = new \App\Liquidacion();
-    if ($ch) $roomsID = Rooms::where('channel_group',$ch)->pluck('id');
-    else  $roomsID = Rooms::where('state',1)->pluck('id');
+    if ($ch) $roomsID = \App\Rooms::where('channel_group',$ch)->pluck('id');
+    else  $roomsID = \App\Rooms::where('site_id',$site_id)->pluck('id');
+    
     $dataSeason = $oLiquidacion->getBookingAgencyDetailsBy_date($start,$finish,$roomsID);
     
-    $agencyBooks    = [
-                'fp'   => 'FAST PAYMENT',
-                'wd'   => 'WEBDIRECT',
-                'vd'   => 'V. Directa',
-                'b'    => 'Booking',
-                'ab'   => 'AirBnb',
-                't'    => 'Trivago',
-                'ag'   => 'Agoda',
-                'ex'   => 'Expedia',
-                'gh'   => 'GHotel',
-                'bs'   => 'Bed&Snow',
-                'jd'   => "Jaime Diaz",
-                'se'   => 'S.essence',
-                'c'    => 'Cerogrados',
-                'h'    => 'HOMEREZ',
-                'none' => 'Otras'
-        ];
-    
+    $agencyBooks = $oLiquidacion->getArrayAgency();
     
     return view('backend.revenue.pickUp',[
-      'year' => $season,
+      'year' => $oYear,
+      'sel_mes' => $sel_mes,
       'months' => $months,
       'allRevenue' => $allRevenue,
       'lstPickUpEvents' => $lstPickUpEvents,
       'tOcup' => $tOcup,
       'tDisp' => ($tDisp>0) ? $tDisp : 1,
       'tIng' => $tIng,
+      'summMonth' => $sM,
+      'site' => $site_id,
       'start'=>$start,
       'finish'=>$finish,
       'channels' => $allChannels,
@@ -680,18 +827,19 @@ class RevenueController extends AppController
    */
   public function donwlPickUp(Request $req) {
     
-    $season   = $this->getActiveYear();
-    $start  = $season->start_date;
-    $finish = $season->end_date;
+    $oYear   = $this->getActiveYear();
+    $start  = $oYear->start_date;
+    $finish = $oYear->end_date;
    
     
 //    $ch  = $req->input('ch_sel',null);
     $ProcessPickUp = new \App\Models\ProcessPickUp();
+    $site_id  = $req->input('site',2);
     $start  = $req->input('start',null);
     $finish = $req->input('finish',null);
     
-    if (!$start) $start  = $season->start_date;
-    if (!$finish) $finish = $season->end_date;
+    if (!$start) $start  = $oYear->start_date;
+    if (!$finish) $finish = $oYear->end_date;
 
     
     $qryRevenue = RevenuePickUp::where([['day','>=', $start ],['day','<=', $finish ]]);
@@ -705,65 +853,43 @@ class RevenueController extends AppController
     /******************************************************/
     
     $name = 'PickUp_'. $start.'_al_'.$finish;
-    \Excel::create($name, function($excel)  use($oRevenue)  {
-       $excel->sheet('PickUp MiramarSki', function($sheet) use($oRevenue) {
-            $sheet->freezeFirstColumn();
-            $sheet->row(1, [
-                'Fecha','Llegadas','Ocupadas','Salidas','Hab. Vend.',
-                'Hab. Disp.','Ocup.','Hab. Canceladas.','Prod. Hab.',
-                'Prod. Pen.','Prod. Extra','Total',
-                'PUP','ADR','Revenue','ADR ACTUAL','ADR PREVIO' 
-
-            ]);
-
-            $index = 2;
-            foreach($oRevenue as $r) {
-              $day = date('m/d/Y', strtotime($r->day));
-              $ADR = $r->get_ADR();
-              if (!$ADR) $ADR = '';
-           
-              $fields= [
-                  "ocupacion"=>'',
-                  "llegada"=>'',
-                  "salida"=>'',
-                  "disponibilidad"=>'',
-                  "ingresos"=>'',
-                  "extras"=>'',
-                  "cancelaciones"=>'',
-                  "pvp"=>'',
-                ];
+    $exelData = [
+        [$site_1,$oRevenue_1],
+        [$site_2,$oRevenue_2],
+        [$site_3,$oRevenue_3],
+        [$site_5,$oRevenue_5],
+            ];
     
-              foreach ($fields as $k=>$v){
-                $fields[$k] = $r->$k.'';
-              }
-              
-              $vendida = ($r->llegada+$r->ocupacion);
-              $ocup_percent = $r->get_ocup_percent();
-              $total =  ($r->ingresos+$r->extras);
-              
-              $result = [
-                    $day,
-                    $fields['llegada'],
-                    $fields['ocupacion'],
-                    $fields['salida'],
-                    $vendida.'',
-                    $fields['disponibilidad'],
-                    $ocup_percent.'',
-                    $fields['cancelaciones'],
-                    $fields['ingresos'],
-                    '-',
-                    $fields['extras'],
-                    $total.'',
-                    $fields['disponibilidad'],
-                    $ADR.'',
-                    $fields['ingresos'],
-                    $ADR.'',''
-                ]; 
-                $sheet->row($index,$result);
-                $index++;
-            }
+    \Excel::create($name, function($excel)  use($exelData)  {
+        foreach ($exelData as $item){
             
-        });
+            $site = $item[0];
+            $oRevenue = $item[1];
+            $excel->sheet($site, function($sheet) use($oRevenue) {
+                $sheet->freezeFirstColumn();
+                $sheet->row(1, [
+                    'Fecha','Llegadas','Ocupadas','Salidas','Hab. Vend.','Hab. Disp.','Ocup.','Hab. Canceladas.','Prod. Hab.','Prod. Pen.','Prod. Extra','Total',
+                    'PUP','ADR','Revenue','ADR ACTUAL','ADR PREVIO' 
+
+                ]);
+
+                $index = 2;
+                foreach($oRevenue as $r) {
+                    $day = date('d/m/Y', strtotime($r->day));
+                    $sheet->row($index, [
+                        $day,$r->llegada,$r->ocupacion,$r->salida,$r->llegada+$r->ocupacion,
+                        $r->disponibilidad,$r->get_ocup_percent(),$r->cancelaciones,
+                        ($r->ingresos),'-',($r->extras),($r->ingresos+$r->extras),
+                        $r->disponibilidad,$r->get_ADR(),($r->ingresos),$r->get_ADR(),''
+                    ]); 
+                    $index++;
+                }
+
+            });
+            
+        }
+      
+         
         })->export('xlsx');
   }
    /**
@@ -773,9 +899,9 @@ class RevenueController extends AppController
    */
   public function generatePickUp(Request $req) {
     
-    $season = $this->getActiveYear();
-    $start  = $season->start_date;
-    $finish = $season->end_date;
+    $oYear   = $this->getActiveYear();
+    $start  = $oYear->start_date;
+    $finish = $oYear->end_date;
     $ProcessPickUp = new \App\Models\ProcessPickUp();
     $ProcessPickUp->byChannel($start,$finish);
     return back()->with('success','Registros generados');
@@ -799,25 +925,28 @@ class RevenueController extends AppController
     return 'OK';
   }
   /****************************************************************************/
-  /****************************************************************************/
-  /****************************************************************************/
-  
-  /****************************************************************************/
   function daily(Request $req){
     
-    $year   = $this->getActiveYear();
+    $oYear   = $this->getActiveYear();
     $ch  = $req->input('ch_sel',null);
+    $site_id  = $req->input('site',0);
     $start  = $req->input('start',null);
     $finish = $req->input('finish',null);
-    if (!$start) $start  = $year->start_date;
-    if (!$finish) $finish = $year->end_date;
+    $sel_mes = $req->input('sel_mes',date('m'));
+    
+    if (!$start) $start  = $oYear->start_date;
+    if (!$finish) $finish = $oYear->end_date;
     return view('backend.revenue.vtas-dia',
-            $this->get_dailyData($year,$start,$finish,$ch));
+            $this->get_dailyData($oYear,$sel_mes,$ch,$site_id));
   }
   
-  function get_dailyData($year,$start,$finish,$ch_gr){
+  function get_dailyData($oYear,$sel_mes,$ch,$site_id){
     
-    $qry_rooms = Rooms::where('state',1);
+    $months = getMonthsSpanish(null,false,true);
+    $qry_rooms = \App\Rooms::where('state',1);
+    if ($site_id>0){
+      $qry_rooms->where('site_id',$site_id);
+    }
     $query2 = clone $qry_rooms;
     
     $allChannels = $query2->where('channel_group','!=','')
@@ -825,27 +954,31 @@ class RevenueController extends AppController
     
     /***********************************************************/
     $roomsID = null;
-    if ($ch_gr){
-        $roomsID = Rooms::where('channel_group',$ch_gr)->pluck('id');
-        $lstRooms = Rooms::where('channel_group',$ch_gr)->pluck('name','id');
+    if ($ch){
+        $roomsID = \App\Rooms::where('channel_group',$ch)->pluck('id');
+        $lstRooms = \App\Rooms::where('channel_group',$ch)->pluck('name','id');
     }
-    if (!$roomsID) $lstRooms = Rooms::pluck('name','id');
+    if ($site_id>0){
+        $roomsID = \App\Rooms::where('site_id',$site_id)->pluck('id');
+        $lstRooms = \App\Rooms::where('site_id',$site_id)->pluck('name','id');
+    }
+    if (!$roomsID) $lstRooms = \App\Rooms::pluck('name','id');
     /***********************************************************/
-    $agency = Book::listAgency();
+    $allSites = \App\Sites::allSites();
+    /***********************************************************/
+    $agency = \App\Book::listAgency();
     $oCountry = new \App\Countries();
     /***********************************************************/
-    
-    $oBooks = new Book();
-    $qBooks = Book::where('type_book','!=',0)->where('type_book','!=',4)
-            ->where([['created_at', '>=', $start], ['created_at', '<=', $finish]]);
-    if ($roomsID) $qBooks->whereIn('room_id',$roomsID);
+    $oBooks = new \App\Book();
+    $qBooks = \App\Book::where('type_book','!=',0)->where('type_book','!=',4)
+            ->whereYear('created_at', '=', $oYear->year)
+            ->whereMonth('created_at', '=', $sel_mes);
+ 
+    if ($roomsID && count($roomsID)>0) $qBooks->whereIn('room_id',$roomsID);
     $oBoks = $qBooks->orderBy('created_at')->get();
      
     $lstResul = [];
     $lstResulID = [];
-    $t_n = 0;
-    $t_tp = 0;
-    $t_adr = 0;
     if ($oBoks){
         foreach ($oBoks as $b){
             
@@ -857,11 +990,6 @@ class RevenueController extends AppController
             $n  = $b->nigths;
             $tp = $b->total_price;
             $adr = ($n>0) ? $b->total_price/$n : $b->total_price;
-            
-            $t_n += $n;
-            $t_tp += $tp;
-            $t_adr += $adr;
-            
             switch ($b->type_book){
                 case 1:
                 case 2:
@@ -903,39 +1031,90 @@ class RevenueController extends AppController
             
         }
     }
+    
+    
+    
+    /*************************************************************************/
+    /****   SUMMARY YEAR                             *************************/
+    $oYear   = $this->getActiveYear();
+    $start_year  = $oYear->start_date;
+    $finish_year = $oYear->end_date;
+        
+    
+    $qBooks = \App\Book::where('type_book','!=',0)->where('type_book','!=',4)
+            ->where([['created_at', '>=', $start_year], ['created_at', '<=', $finish_year]]);
+    if ($roomsID && count($roomsID)>0) $qBooks->whereIn('room_id',$roomsID);
+    $oBoks = $qBooks->orderBy('created_at')->get();
+    
+    $t_n = 0;
+    $t_tp = 0;
+    $aTotal = [];
+    for($i=1;$i<13;$i++){
+      $aTotal[$i] = ['n'=>0,'tp'=>0,'adr'=>0,];
+    }
+    if ($oBoks){
+      foreach ($oBoks as $b){
+        $month = date('n', strtotime($b->created_at));
+        $n = $b->nigths;
+        $tp = $b->total_price;
+        $t_n += $n;
+        $t_tp += $tp;
+        $aTotal[$month]['n'] += $n;
+        $aTotal[$month]['tp'] += $tp;
+      }
+    }
+    
+    foreach ($aTotal as $k=>$v){
+      $aTotal[$k]['adr'] = ($v['n']>0) ? moneda($v['tp']/$v['n']) : '--';
+      $aTotal[$k]['tp'] = moneda($v['tp']);
+    }
+    
+    $t_adr = ($t_n>0) ? ($t_tp/$t_n) : 0;
+    
+    /****   SUMMARY YEAR                             *************************/
+    /*************************************************************************/
         return [
-            'year' => $year,
+            'year' => $oYear,
             'lstResul' => $lstResul,
-            'start'=>$start,
-            'finish'=>$finish,
+            'site' => $site_id,
+            'sel_mes' => $sel_mes,
+            'months' => $months,
+            'start'=>null,
+            'finish'=>null,
             'channels' => $allChannels,
-            'ch_sel' => $ch_gr,
-            'range'=>date('d M, y', strtotime($start)).' - '.date('d M, y', strtotime($finish)),
+            'ch_sel' => $ch,
+            'allSites'=> $allSites,
+            'range'=>null,
             't_n'=>$t_n,
             't_tp'=>$t_tp,
             't_adr'=>$t_adr,
+            'aTotal'=>$aTotal,
         ];
     }
     
     function donwlDaily(Request $req){
          
-        $year   = $this->getActiveYear();
+        $oYear   = $this->getActiveYear();
         $ch  = $req->input('ch_sel',null);
+        $site_id  = $req->input('site',0);
         $start  = $req->input('start',null);
         $finish = $req->input('finish',null);
-        if (!$start) $start  = $year->start_date;
-        if (!$finish) $finish = $year->end_date;
+        if (!$start) $start  = $oYear->start_date;
+        if (!$finish) $finish = $oYear->end_date;
         
         
         
-    $data = $this->get_dailyData($year,$start,$finish,$ch);   
+    $data = $this->get_dailyData($oYear,$start,$finish,$ch,$site_id);   
     $name = 'Ventas-dia-'. $start.'-al-'.$finish;
+    if (is_numeric($data['site']) && isset($data['allSites'][$data['site']])){
+        $name.= '-'. str_replace(' ','-', $data['allSites'][$data['site']]);
+    }
     if ($data['ch_sel']) $name.= '-'.$data['ch_sel'];
     
     $lstResul = $data['lstResul'];
     $rowTit = [
         'Creada','CLIENTE','Check In',
-        'Check Out','Nº NOCHES',
+        'Check Out','Edificio','Nº NOCHES',
         'ADR','PVP RVA','ESTADO DE RESERVA',
         'CANAL','ORIGEN: Cliente'
     ];
@@ -953,4 +1132,113 @@ class RevenueController extends AppController
         })->export('xlsx');
     }
 
+  
+    function updFixedcosts(Request $req){
+     
+      $key = $req->input('key');
+      $val = $req->input('val');
+      if (!is_numeric($val)){
+        return 'Valor no válido';
+      }
+      
+      
+      $aux = explode('_', $req->input('m'));
+      $date = '20'.$aux[0].'-'.$aux[1].'-01';
+              
+      $oObject = \App\FixCosts::where('date',$date)
+              ->where('concept',$key)
+              ->first();
+      if (!$oObject){
+        $oObject = new \App\FixCosts();
+        $oObject->date    = $date;
+        $oObject->concept = $key;
+      }
+      $oObject->content = $val;
+      $oObject->save();
+      
+      $totalSite =  \App\FixCosts::where('date',$date)
+              ->sum('content');
+      $totalYear =  0;
+      return response()->json([
+          'status'=>'OK',
+          'totam_mensual'=> intVal($totalSite),
+          'total_year'=> intVal($totalYear),
+          ]);
+    }
+    
+    function getComparativaAnual($year){
+      $oYear = \App\Years::where('year', $year)->first();
+      if (!$oYear) die('Temporada no existente');
+      $oServ = new \App\Services\RevenueService();
+      $oServ->setDates(null,$oYear);
+      $oServ->setRooms();
+      $oServ->setBook();
+      $oServ->createDaysOfMonths($year);
+      $aRatios = $oServ->getRatios($year);
+      $auxADR = $aRatios[0];
+      $ADR_semana = $auxADR['c_s'] > 0 ? $auxADR['t_s'] / $auxADR['c_s'] : $auxADR['t_s'];
+      $ADR_finde  = $auxADR['c_f'] > 0 ? $auxADR['t_f'] / $auxADR['c_f'] : $auxADR['t_f'];
+      $oLiquidacion = new \App\Liquidacion();
+          
+     $viewRatios = [
+        'books' => $oServ->books,
+        'aRatios' => $aRatios,
+        'roomCh' => $oServ->rChannel,
+        'days' => $oServ->days,
+        'lstMonths' => $oServ->lstMonths,
+        'year' =>$oYear->year,
+        'mDays' =>$oServ->mDays,
+        'yDays' =>$oServ->mDays[0],
+        'time_start' => strtotime($oYear->start_date),
+        'time_end' =>strtotime($oYear->end_date),
+        'rvas'=>$oServ->countBookingsSite(),
+        'summary' => $oLiquidacion->summaryTemp(),
+        'ADR_semana'=>moneda($ADR_semana),
+        'ADR_finde'=>moneda($ADR_finde),
+    ];
+      /*************************************************************/
+      // COMPARATIVA INGRS ANUALES
+      $viewRatios['comparativaAnual'] = $oServ->comparativaAnual($year);
+      return view('backend.revenue.dashboard.comp_ingresos_anuales',$viewRatios);
+    }
+    
+    
+    function getFixedcostsAnual($year){
+      $oYear = \App\Years::where('year', $year)->first();
+      if (!$oYear) die('Temporada no existente');
+      
+      $oServ = new \App\Services\RevenueService();
+      $oServ->setDates(null,$oYear);
+      $oFixCosts = \App\FixCosts::getByRang($oYear->start_date,$oYear->end_date);
+      $oFCItems = \App\FixCosts::getLst();
+      $fixCosts  = [];
+      $fixCostsMonths  = [0=>0];
+      $lstMonths = [];
+      foreach ($oServ->lstMonths as $k=>$v){
+        $aux = explode('.', $k);
+        $lstMonths[$aux[0].'_'.$aux[1]] = $v .' '.$aux[0];
+      }
+      foreach ($lstMonths as $k=>$v)  $fixCostsMonths[$k] = 0;
+      
+      foreach ($oFixCosts as $fc){
+        if (!isset($fixCosts[$fc->concept])){
+          $fixCosts[$fc->concept] = $fixCostsMonths;
+        }
+        $date = date('y_m', strtotime($fc->date));
+        $fixCosts[$fc->concept][$date] = intval($fc->content);
+      }    
+      foreach ($oFCItems as $k=>$v){
+        if (isset($fixCosts[$k]))  $fixCosts[$k][0] = array_sum($fixCosts[$k]);
+        else $fixCosts[$k] = $fixCostsMonths;
+      }
+    
+      
+      return view('backend.revenue.dashboard.presupuesto-modal',[
+          'lstMonths' => $lstMonths,
+          'year' =>$oYear->year,
+          'days' => $oServ->days,
+          'fixCosts' => $fixCosts,
+          'FCItems' => $oFCItems
+      ]);
+    }
 }

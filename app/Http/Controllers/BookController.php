@@ -104,7 +104,7 @@ class BookController extends AppController
         $booksCount['checkin']      = $this->getCounters('checkin');
         $booksCount['checkout']     = $this->getCounters('checkout');
 
-        $books = $booksQry->with('room','payments','customer','leads')->whereIn('type_book', $types)->orderBy('created_at', 'DESC')->get();
+        $books = []; 
         $stripe = null;
        
         $lastBooksPayment = \App\Payments::where('created_at', '>=', Carbon::today()->toDateString())
@@ -139,13 +139,6 @@ class BookController extends AppController
         //END: Processed data
         
         $ff_mount = null;
-        /*****/
-        $CustomersRequest = \App\CustomersRequest::where('status',0)->whereNull('user_id')
-                ->where('updated_at','>=',date('Y-m-d', strtotime('-7 days')))
-                ->count();
-        
-        /*****/
-       
         $urgentes = null;
         if ($parteeToActive > 0){
           $urgentes[] = [
@@ -176,14 +169,13 @@ class BookController extends AppController
         } else {
           $bookings_without_Cvc = 0;
         }
-         
         /****************************************************************/
         return view('backend/planning/index',
                 compact('books', 'mobile', 'stripe', 'rooms', 
                         'booksCount', 'alarms','lowProfits',
                         'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment',
                         'ff_pendientes','ff_mount','totalReserv','amountReserv','overbooking',
-                        'CustomersRequest','urgentes','bookings_without_Cvc')
+                        'urgentes','bookings_without_Cvc')
 		);
     }
 
@@ -1312,18 +1304,14 @@ class BookController extends AppController
 
         $type = $request->type;
         $payment = array();
-        if ($request->type == 'confirmadas' || $request->type == 'checkin' || $request->type == 'ff_pdtes')
-        {
-            
-            $paymentStatus = array();
-            foreach ($books as $book){
-              $amount = $book->payments->pluck('import')->sum();
-              $payment[$book->id] = $amount;
-              if ($amount>=$book->total_price) $paymentStatus[$book->id] = 'paid';
-               else {
-                 if ($amount>=($book->total_price/2)) $paymentStatus[$book->id] = 'medium-paid';
-               }
-            }
+        $paymentStatus = array();
+        foreach ($books as $book){
+          $amount = $book->payments->pluck('import')->sum();
+          $payment[$book->id] = $amount;
+          if ($amount>=$book->total_price) $paymentStatus[$book->id] = 'paid';
+           else {
+             if ($amount>=($book->total_price/2)) $paymentStatus[$book->id] = 'medium-paid';
+           }
         }
            
         return view('backend/planning/_table', compact('books', 'rooms', 'type', 'mobile','pullSent','payment'));

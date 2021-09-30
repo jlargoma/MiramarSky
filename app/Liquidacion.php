@@ -412,7 +412,6 @@ class Liquidacion
             'total_rate'        => 0
         ];
       $data = [
-                'fp'   => $dataNode, //  FAST PAYMENT
                 'vd'   => $dataNode, // V. Directa
                 'b'    => $dataNode, //Booking
                 'ab'   => $dataNode, // AirBnb
@@ -424,17 +423,15 @@ class Liquidacion
                 'jd'   => $dataNode, // "Jaime Diaz",
                 'se'   => $dataNode, // S.essence
                 'c'    => $dataNode, //Cerogrados
-                'wd'   => $dataNode, //WEBDIRECT
                 'h'    => $dataNode, //HOMEREZ
                 'none' => $dataNode, // none
             ];
       $totals = ['total' => 0,'reservations' => 0,'commissions' => 0];
-      $books = \App\Book::where_type_book_sales(true, true)->with('payments')
-            ->where('start', '>=', $start)
-            ->where('start', '<=', $end);
-        
-      if ($roomsID && count($roomsID)>0) $books->whereIn('room_id',$roomsID);
-      $books = $books->get();
+      $sqlBooks = \App\BookDay::where_type_book_sales(true,true)
+            ->where('date', '>=', $start)
+            ->where('date', '<=', $end);
+      if ($roomsID && count($roomsID)>0) $sqlBooks->whereIn('room_id',$roomsID);
+      $books = $sqlBooks->get();
       
       //-------------------------------
       $oPVPAgencia = \App\Book::whereIn('id',$sqlBooks->groupBy('book_id')->pluck('book_id'))
@@ -463,16 +460,16 @@ class Liquidacion
            case 6: $agency_name = 'se';  break;
            case 7: $agency_name = 'c';  break;
            case 29: $agency_name = 'h';  break;
-           case 31: $agency_name = 'wd';  break;
+           case 31: $agency_name = 'vd';  break;
            case 999999: $agency_name = 'gh';  break; 
            default :
           
             if ($book->agency>0) $agency_name = 'none';
             else {
               if ($book->type_book == 99 || $book->is_fastpayment) // fastpayment
-                  $agency_name = 'fp';
+                  $agency_name = 'vd';
               else
-                $agency_name = 'vd';
+                $agency_name = 'none';
             }
             
           break;
@@ -498,5 +495,24 @@ class Liquidacion
         
       }
       return  ['totals' => $totals,'data'=>$data];
+    }
+    
+     function getArrayAgency(){
+      return [
+                'fp'   => 'FAST PAYMENT',
+                'vd'   => 'V. Directa',
+                'b'    => 'Booking',
+                'ab'   => 'AirBnb',
+                't'    => 'Trivago',
+                'ag'   => 'Agoda',
+                'ex'   => 'Expedia',
+                'gh'   => 'GHotel',
+                'bs'   => 'Bed&Snow',
+                'jd'   => "Jaime Diaz",
+                'se'   => 'S.essence',
+                'c'    => 'Cerogrados',
+                'h'    => 'HOMEREZ',
+                'none' => 'Otras',
+            ];
     }
 }

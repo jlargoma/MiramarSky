@@ -649,5 +649,9 @@ class Rooms extends Model {
       
      return $priceDay;
   }
-
+  
+  static function avail(){
+    return Rooms::where('channel_group','!=','')->count();
+      
+  }
 }

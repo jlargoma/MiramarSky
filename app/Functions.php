@@ -495,7 +495,7 @@ function value_isset($array,$index){
   }
 }
 function colors(){
-  return ['#9b59ff','#295d9b','#10cfbd','red','#871282','#066572','#a7dae7','#1fa7c0','#b2d33d','#3aaa49'];
+  return ['#9b59ff','#295d9b','#FCD000','red','#7d3d25','#47CF73','#a7dae7','#1fa7c0','#b2d33d','#3aaa49'];
 }
 
 function printColor($id){
@@ -503,10 +503,12 @@ function printColor($id){
   $count = count($lst);
   if ($id<$count) return $lst[$id];
   
-  $id = $id/$count;
+  $id2 = $id/$count;
+  if ($id2<$count) return $lst[$id2];
+  
+  $id = intval($id%$count);
   return $lst[$id];
 }
-
 
 function convertBold($detail){
   $detail = trim(nl2br($detail));

@@ -12,7 +12,7 @@
           <th class="th-bookings text-center th-2 static">Disp.</th>
           <th class="th-bookings static-2" >Apto.</th>
           <th class="first-col"></th>
-          <th class="th-bookings text-center th-2">Precio Final</th>
+          <th class="th-bookings text-center th-2 BRight">Precio Final</th>
           <th class="th-bookings text-center th-2">Precio Inicial</th>
           <th class="th-bookings text-center th-2">Desc</th>
           <th class="th-bookings text-center th-2">Promo</th>
@@ -27,7 +27,7 @@
           <td class="static">{{$room['availiable']}}</td>
           <td class="static-2">{{$room['title']}}</td>
           <td class="first-col"></td>
-          <td class="text-center"><b >{{moneda($room['pvp_1']+$room['extr_costs'])}}</b>
+          <td class="text-center BRight"><b >{{moneda($room['pvp_1']+$room['extr_costs'])}}</b>
           <td class="text-center"><b >{{$room['price']}}</b></td>
           <td class="text-center text-danger"><b ><?php echo '-'.moneda($room['pvp_discount'],false); ?></b></td>
           <td class="text-center text-danger">
@@ -70,7 +70,8 @@
         </tr>
           @if($room['minStay']>$nigths)
           <tr>
-              <td colspan="9" class="minStay"><p class="text-danger">Estadía mínima {{$room['minStay']}}</p></td>
+              <td colspan="2" class="minStay BRight"><p class="text-danger">Estadía mínima {{$room['minStay']}}</p></td>
+              <td colspan="6"></td>
           </tr>
           @endif
         @endforeach
@@ -153,6 +154,9 @@ td.minStay {
       display: block;
     width: 160px;
     background-color: rgba(0, 0, 0, 0.68);
+}
+.BRight{
+  border-right: 1px solid;
 }
 
 @media (min-width: 1760px){

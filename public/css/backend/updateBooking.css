@@ -397,6 +397,27 @@ div#dialog-confirm {
     position: absolute;
     margin-top: 4em;
 }
+icon i {
+    font-size: 28px;
+    margin: 15px 5px;
+}
+.col-1,.col-2 ,.col-3,.col-4 {
+    height: 6em;
+    float: left;
+    margin-right: 1em;
+}
+.col-1 {
+    width: 190px;
+}
+.col-2 {
+   width: 74px;
+}
+.col-3 {
+   width: 85px;
+}
+.col-4 {
+   width: 135px;
+}
 @media screen and (max-width: 767px) {
   .daterangepicker {
     position: fixed;

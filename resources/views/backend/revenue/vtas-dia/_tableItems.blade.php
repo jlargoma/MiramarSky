@@ -6,6 +6,7 @@
       <th>CLIENTE</th>
       <th>Check In</th>
       <th>Check Out</th>
+      <th>Edificio</th>
       <th>Nº NOCHES</th>
       <th>ADR</th>
       <th>PVP RVA</th>
@@ -25,6 +26,7 @@
         <td class="text-left">{{$r['name']}}</td>
         <td>{{$r['in']}}</td>
         <td>{{$r['end']}}</td>
+        <td>{{$r['site_id']}}</td>
         <td>{{$r['nigth']}}</td>
         <td>{{moneda($r['adr'])}}</td>
         <td>{{moneda($r['price'])}}</td>

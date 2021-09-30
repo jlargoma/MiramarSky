@@ -112,7 +112,7 @@ class Book extends Model {
   }
 
   //Para poner nombre al parking de la reserva//
-  static function getParking($parking) {
+  static function getParking($iten) {
     $array = [
         1 => "Si",
         2 => "No",
@@ -120,7 +120,7 @@ class Book extends Model {
         4 => "50 %"
     ];
 
-    return $parking = $array[$parking];
+    return isset($array[$iten]) ? $array[$iten] : 'No';
   }
 
   // Para poner nombre al suplemento de lujo en la reserva
@@ -132,7 +132,7 @@ class Book extends Model {
         4 => "50 %"
     ];
 
-    return $supLujo = $array[$lujo];
+    return isset($array[$lujo]) ? $array[$lujo] : 'No';
   }
 
    //Para poner nombre a la agencia//
@@ -1015,6 +1015,53 @@ class Book extends Model {
             ->where('start', '<=', $activeYear->end_date)->get();
   }
   
+  
+  
+  /**
+   * Show the price cell in plannings
+   * @param type $payment
+   */
+  public function showPricePlanning($payment) {
+    $pay = isset($payment[$this->id]) ? $payment[$this->id] : null;
+    $color = (intval($this->total_price-$pay)<1)? ' style="color:green"' : ' style="color:red" ';
+    
+    echo '<div class="col-xs-6 not-padding">'.round($this->total_price) . '€';
+    if ($pay !== null)
+      echo '<p '.$color.'>'.round($pay).'€</p>';
+    echo '</div>';
+     if ($pay){ 
+        $bg = '';
+        if ($pay && $pay > 0 && $this->total_price > 0)
+          $total = number_format(100 / ($this->total_price / $pay), 0);
+        else {
+          $total = 0;
+          $bg = 'bg-success';
+        }
+        
+        echo '<div class="col-xs-6 pay-percent '.$bg.'">
+                <b '.$color.'>'.$total.'%</b>
+              </div>';
+        
+     } else { 
+       
+       echo '<div class="col-xs-6 pay-percent bg-success">
+                  <b style="color: red;">0%</b>
+                </div>';
+     }
+           
+  }
+  
+  
+  function printExtraIcon(){
+    
+    $lujo = $this->getSupLujo($this->type_luxury);
+    $parking = $this->getParking($this->type_park);
+    
+    if ($parking != 'No')
+       echo '<icon><i class="fas fa-parking" title="Parking ('.$parking.')"></i></icon>';
+    if ($lujo != 'No')
+       echo '<icon><i class="fas fa-star" title="Supl Lujo ('.$lujo.')"></i></icon>';
+  }
   /**********************************************************************/
   /////////  book_meta //////////////
   public function setMetaContent($key,$content) {

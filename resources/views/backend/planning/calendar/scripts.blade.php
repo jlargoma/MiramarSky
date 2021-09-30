@@ -2,21 +2,6 @@
   $(document).ready(function () {
     window["cal_move"] = false;
 
-    var hideCalendarSite = function () {
-      var siteID = $('#cal_site_id').val();
-      
-      if (siteID > 0) {
-        var classFilter = 'site' + siteID;
-        $('.contentCalendar tbody tr').each(function (v, i) {
-          if ($(this).hasClass(classFilter)) {
-            $(this).show();
-          } else {
-            $(this).hide();
-          }
-        });
-      }
-    }
-
     var moveCalendar = function () {
       if (window.cal_move)
         return;
@@ -26,13 +11,13 @@
       var target = $('#btn-active').attr('data-month');
       var targetPosition = $('.contentCalendar #month-' + target).position();
       $('.contentCalendar').animate({scrollLeft: "+=" + targetPosition.left + "px"}, "slow");
-      hideCalendarSite();
+      
     }
 
 
 
     window["moveCalendar"] = moveCalendar;
-//    setTimeout(function () { moveCalendar();},500);
+    
 //   $('#btn-active').trigger('click');
 
     $('.content-calendar').on('click', '.reloadCalend', function (Event) {
@@ -41,7 +26,8 @@
       $('.content-calendar').empty().load(
               window.URLCalendar + time,
               function () {
-                moveCalendar();
+                setTimeout(function () { moveCalendar();},700);
+//                moveCalendar();
               }
       );
       Event.stopPropagation()
@@ -62,7 +48,7 @@
     setTimeout(function () {
       $('.content-calendar').empty().load('/getCalendarMobile',
               function () {
-                moveCalendar();
+                setTimeout(function () { moveCalendar();},700);
               });
     }, 1500);
 

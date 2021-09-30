@@ -2,7 +2,7 @@
         setlocale(LC_TIME, "ES"); 
         setlocale(LC_TIME, "es_ES"); 
         $isMobile = $mobile->isMobile();
-
+        $uRole = Auth::user()->role;
 ?>
 
 <div class="tab-pane " id="tabEspeciales">
@@ -16,11 +16,11 @@
             </th>
               <th class ="text-center Reserva Propietario text-white" style="width: 7%!important">   Pax         </th>
               <th class ="text-center Reserva Propietario text-white" style="width: 10%!important">   Apart       </th>
+              <th class ="text-center Reserva Propietario text-white" style="width: 17%!important">   Estado      </th>
               <th class ="text-center Reserva Propietario text-white" style="width: 6%!important">   IN     </th>
               <th class ="text-center Reserva Propietario text-white" style="width: 8%!important">   OUT      </th>
               <th class ="text-center Reserva Propietario text-white" style="width: 6%!important">  <i class="fa fa-moon-o"></i> </th>
               <th class ="text-center Reserva Propietario text-white" >   Precio      </th>
-              <th class ="text-center Reserva Propietario text-white" style="width: 17%!important">   Estado      </th>
               <th class ="text-center Reserva Propietario text-white" style="width: 6%!important">A</th>
           </tr>
       </thead>
@@ -80,6 +80,11 @@
               }
               ?>
                       </td>
+                       <td >
+                        <button type="button" class="btn changeStatus" data-c="{{$book->type_book}}">
+                          {{$book->getStatus($book->type_book)}}
+                        </button>
+                      </td>
                        <td class="td-date" data-order="{{$book->start}}">
               <?php echo dateMin($book->start) ?>
             </td>
@@ -88,16 +93,13 @@
             </td>
                       <td ><?php echo $book->nigths ?></td>
                       <td >
-                          <?php echo round($book->total_price)."€" ?><br>
-                          <?php if (isset($payment[$book->id])): ?>
-                              <?php echo "<p style='color:red'>".$payment[$book->id]."</p>" ?>
-                          <?php endif ?>
+                          <?php 
+                            if ($uRole != "limpieza"):
+                              echo $book->showPricePlanning($payment);
+                            endif;
+                            ?>
                       </td>
-                      <td >
-                        <button type="button" class="btn changeStatus" data-c="{{$book->type_book}}">
-                          {{$book->getStatus($book->type_book)}}
-                        </button>
-                      </td>
+                     
                       <td > 
                           <button data-id="<?php echo $book->id ?>" class="btn btn-xs btn-danger deleteBook" type="button" data-toggle="tooltip" title="" data-original-title="Eliminar Reserva" >
                               <i class="fa fa-trash"></i>

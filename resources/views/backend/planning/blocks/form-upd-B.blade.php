@@ -6,15 +6,15 @@ $uRole = getUsrRole();
 $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
 ?>
 <!-- DATOS DE LA RESERVA -->
-<div class="row col-xs-12 padding-block" style="padding-bottom:0">
-  <div class="col-xs-12 bg-black push-20">
+<div class="col-xs-12 padding-block" style="padding-bottom:0">
+  <div class="row bg-black push-20">
     <h4 class="text-center white">
       DATOS DE LA RESERVA
       <i class="fas fa-sync-alt" id="reset" style="cursor:pointer; position:absolute; right:2rem"></i>
     </h4>
   </div>
-  <div class="col-xs-12 row">
-    <div class="col-md-3 col-xs-9 push-10">
+  <div class="">
+    <div class="col-1">
       <label>Entrada</label>
       <div class="input-prepend input-group input_dates">
         <?php
@@ -27,15 +27,15 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
         <input type="hidden" class="date_finish" id="finish" name="finish" value="{{$book->finish}}">
       </div>
     </div>
-    <div class="col-md-1 col-xs-3 push-10 p-l-0">
+    <div class="col-2">
       <label>Min. Est.</label>
       <input class="form-control minimal" disabled="" id="minDay" value="0">
     </div>
-    <div class="col-md-1 col-xs-3 push-10 p-l-0">
+    <div class="col-2">
       <label>Noches</label>
       <input type="number" class="form-control nigths" name="nigths" id="nigths" disabled value="<?php echo $book->nigths ?>">
     </div>
-    <div class="col-md-2 col-xs-3">
+    <div class="col-2">
       <label>Pax</label>
       <select class=" form-control pax minimal" name="pax" {{$disabl_limp}}>
           <?php for ($i = 1; $i <= 14; $i++): ?>
@@ -45,7 +45,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
 <?php endfor; ?>
       </select>
     </div>
-    <div class="col-md-2 col-xs-3 ">
+    <div class="col-2 ">
       <label style="color: red">Pax-Real</label>
       <select class=" form-control real_pax minimal" name="real_pax" {{$disabl_limp}}>
                 <?php for ($i = 1; $i <= 14; $i++): ?>
@@ -58,7 +58,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
 <?php endfor; ?>
       </select>
     </div>
-    <div class="col-md-3 col-xs-6 push-10">
+    <div class="col-1">
       <label>ALOJAMIENTO</label>
       <select class="form-control full-width minimal newroom" name="newroom" {{$disabl_limp}}
               id="newroom" <?php
@@ -75,9 +75,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
 <?php endforeach ?>
       </select>
     </div>
-  </div>
-  <div class="col-xs-12 row">
-    <div class="col-md-2 col-xs-6 push-10">
+    <div class="col-3">
       <label>Parking</label>
       <select class=" form-control parking recalc minimal" name="parking" {{$disabl_limp}}>
         <?php $sel = ($book->type_park) ? $book->type_park : 2; ?>
@@ -86,7 +84,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
 <?php endfor; ?>
       </select>
     </div>
-    <div class="col-md-2 col-xs-6 push-10">
+    <div class="col-3">
       <label>Sup. Lujo</label>
         <?php $sel = ($book->type_luxury) ? $book->type_luxury : 2;?>
       <select class=" form-control full-width type_luxury recalc minimal" name="type_luxury" {{$disabl_limp}}>
@@ -95,7 +93,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
 <?php endfor; ?>
       </select>
     </div>
-    <div class="col-md-2 col-xs-6 push-10">
+    <div class="col-2">
       <label>IN</label>
       <select id="schedule" class="form-control minimal" style="width: 100%;" name="schedule" {{$disabl_limp}}>
         <option>-- Sin asignar --</option>
@@ -119,7 +117,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
 <?php endfor ?>
       </select>
     </div>
-    <div class="col-md-2 col-xs-6 push-10">
+    <div class="col-2">
       <label>Out</label>
       <select id="scheduleOut" class="form-control minimal" name="scheduleOut" {{$disabl_limp}}>
         <option>-- Sin asignar --</option>
@@ -141,14 +139,13 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
       </select>
     </div>
   </div>
-  <div class="col-xs-12 row">
-    <div class="col-md-3 col-xs-6 push-10">
+  <div class="col-1">
       <label>Agencia</label>
       <select class="form-control full-width agency recalc minimal" name="agency" >
         @include('backend.blocks._select-agency', ['agencyID'=>$book->agency,'book' => $book])
       </select>
     </div>
-    <div class="col-md-3 col-xs-6 push-10">
+    <div class="col-4">
       <label>Cost Agencia</label>
 <?php if ($book->PVPAgencia == 0.00): ?>
         <input type="number" step='0.01' class="agencia form-control recalc" name="agencia" value="" {{$disabl_limp}}>
@@ -157,7 +154,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
                value="<?php echo $book->PVPAgencia ?>">
 <?php endif ?>
     </div>
-    <div class="col-md-3 col-xs-6 push-20 ">
+    <div class="col-4 ">
       <label title="Descuento al propietario">Desc. al prop.</label>
       <input type="number" step='0.01' class="promociones recalc only-numbers form-control " {{$disabl_limp}}
              name="promociones"
@@ -168,4 +165,3 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
         <img src="/pages/oferta.png" style="width: 90px;">
       </div>
   </div>
-</div>

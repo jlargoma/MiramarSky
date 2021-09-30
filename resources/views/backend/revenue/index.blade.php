@@ -91,7 +91,7 @@
               }
            ?>
          </h3>
-       @include('backend.revenue.pick-up._summary')
+       @include('backend.revenue.dashboard._summary')
        </div>
        <div class="clearfix text-center">
          <h3>Anual</h3>

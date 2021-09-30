@@ -12,14 +12,16 @@
         </thead>
         <tbody>
             @foreach($dataSeason as $k=>$v)
+            @if ($v['total']>0)
             <tr>
                 <td>{{show_isset($agencyBooks,$k)}}</td>
                 <td>{{moneda($v['total'])}}</td>
-                <td>{{$v['total_rate']}}</td>
+                <td>{{$v['total_rate']}}%</td>
                 <td>{{$v['reservations']}}</td>
-                <td>{{$v['reservations_rate']}}</td>
+                <td>{{$v['reservations_rate']}}%</td>
                 <td>{{moneda($v['commissions'])}}</td>
             </tr>
+            @endif
             @endforeach
         </tbody>
         <tfoot>

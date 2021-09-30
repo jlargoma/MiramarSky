@@ -215,4 +215,17 @@ class Expenses extends Model
         'mantenimiento' => 0,
       ];
   }
+  
+   static function getTotalByYear($year) {
+    $oYear = \App\Years::where('year', $year)->first();
+    if (!$oYear)
+      return 0;
+
+    $total = self::where('date', '>=', $oYear->start_date)
+            ->where('date', '<=', $oYear->end_date)
+            ->sum('import');
+
+
+    return $total;
+  }
 }
