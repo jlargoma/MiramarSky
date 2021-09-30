@@ -62,7 +62,7 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::get('admin/pagos', 'PaymentsController@index');
 
   //Liquidacion
-  Route::get('admin/perdidas-ganancias/{year?}','LiquidacionController@perdidasGanancias');
+  Route::get('admin/perdidas-ganancias/{year?}','LiquidacionController@perdidasGanancias')->name('pyg');
   Route::get('admin/perdidas-ganancias/show-detail/{key}','LiquidacionController@perdidasGananciasShowDetail');
   Route::post('admin/perdidas-ganancias/show-hide','LiquidacionController@perdidasGananciasShowHide');
   Route::post('admin/perdidas-ganancias/upd-ingr','LiquidacionController@perdidasGananciasUpdIngr');

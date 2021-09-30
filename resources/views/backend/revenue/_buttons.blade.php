@@ -29,7 +29,7 @@ $lstBtn = [
     'revenue.daily'=>'X Día',
     'revenue.disponibilidad'=>'DISPONIBLIDAD x ALOJAMIENTO',
 //    'revenue.sales'=>'INFORMES EMPLEADOS',
-//    'pyg'=>'CTA P&G',
+    'pyg'=>'CTA P&G',
 ];
 
 ?>

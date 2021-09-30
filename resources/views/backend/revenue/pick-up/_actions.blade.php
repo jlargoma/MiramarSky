@@ -4,7 +4,6 @@
 </form>
 <form action="{{route('revenue.donwlPickUp')}}" method="post" style="display: inline-block">
   <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
-  <input type="hidden" name="site" value="{{$site}}">
   <input type="hidden" name="start" value="{{$start}}">
   <input type="hidden" name="finish" value="{{$finish}}">
   <button class="btn btn-complete" >Excel</button>
