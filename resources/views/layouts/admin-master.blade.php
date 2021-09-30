@@ -4,7 +4,7 @@
 
         <meta http-equiv="content-type" content="text/html;charset=UTF-8"/>
         <meta charset="utf-8"/>
-        <title>@yield('title')</title>
+        <title>MiramarSKI - @yield('title')</title>
         <meta name="viewport"
               content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no"/>
         <meta name="TWpUeE0zeDhNZkQ2STF3ZU1mVHhjcT0y" value="1003272df3af89e0ab299138ff66db15"/>
