@@ -513,10 +513,10 @@ input.beneficio,
   color: limegreen;
 }
 
-.fa-arrow-down {
+/*.fa-arrow-down {
   font-size: 8rem;
   color: red;
-}
+}*/
 
 .selectCash.selected{
   border: 2px solid #48b0f7;

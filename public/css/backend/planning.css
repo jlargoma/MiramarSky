@@ -56,6 +56,36 @@ and open the template in the editor.
 .showBookComm{
   cursor: pointer;
   padding: 2px;
+  width: 16px;
+  margin-top: -5px;
+}
+div#contentEmailing {
+  overflow: auto !important;
+  max-height: 88vh !important;
+}
+#modalLastBooks .btn.active{
+  background-color: #1e416c;
+  color: #FFF;
+}
+#modalLastBooks tr.cancel,
+#modalLastBooks tr.cancel a{
+  color: red;
+}
+input#minDay.danger {
+  border: 1px solid red;
+  box-shadow: 1px 1px 4px 1px red;
+}
+.table.table-striped tbody tr.byWeb td {
+  background-color: #ffc2e1 !important;
+}
+icon {
+  float: left;
+  width: 17px;
+    text-align: center;
+}
+button.btn.btn-xs.getImagesCustomer {
+    float: left;
+    margin-left: 3px;
 }
 .BookComm.tooltiptext {
   color: #fff;
@@ -89,10 +119,16 @@ select.status.form-control.minimal {
   position: relative;
 }
 .getImagesCustomer.a{
-  border: none; background-color:transparent!important; color: lightgray; padding: 0;
+  border: none;
+  background-color:transparent!important;
+  color: lightgray;
+  padding: 0;
 }
 .getImagesCustomer.b{
-  border: none; background-color: transparent!important; color:black; padding: 0;
+  border: none;
+  background-color: transparent!important;
+  color:black;
+  padding: 0;
 }
 
 button.btn.changeStatus,
@@ -157,14 +193,14 @@ div.dataTables_length {
   text-align: center;
 }
 .table-mobile th.th-bookings.static {
-    height: 42px;
-    padding: 10px !important;
+  height: 42px;
+  padding: 10px !important;
 }
 
 .checkout .table-icon-row {
-    width: 2em;
-    float: right;
-    position: relative;
+  width: 2em;
+  float: right;
+  position: relative;
 }
 .content-tables table.dataTable thead .sorting:after,
 .content-tables table.dataTable thead .sorting_asc:after,
@@ -176,42 +212,42 @@ div.dataTables_length {
 }
 .contentNewBook{
   overflow-y: auto;
-    max-height: 97%;
+  max-height: 97%;
 }
 .box-alerts-popup {
-    position: fixed;
-    z-index: 100;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.35);
+  position: fixed;
+  z-index: 100;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.35);
 }
 .box-alerts-popup .content-alerts {
-    background-color: #FFF;
-    width: 500px;
-    max-width: 100%;
-    margin: 17vh auto;
-    padding: 15px;
-    box-shadow: 3px 2px 9px #505050;
-    border-radius: 7px;
-    position: relative;
+  background-color: #FFF;
+  width: 500px;
+  max-width: 100%;
+  margin: 17vh auto;
+  padding: 15px;
+  box-shadow: 3px 2px 9px #505050;
+  border-radius: 7px;
+  position: relative;
 }
 .box-alerts-popup h2 {
-    color: red;
-    text-align: center;
+  color: red;
+  text-align: center;
 }
 button#closeUrgente {
-    top: 0;
-    position: absolute;
-    right: 9px;
+  top: 0;
+  position: absolute;
+  right: 9px;
 }
 .box-alerts-popup button.btn.btn-danger {
-    margin: 0 auto;
-    font-size: 11px;
-    padding: 0px 8px !important;
-    max-width: 2.5em;
-    border-radius: 4px !important;
+  margin: 0 auto;
+  font-size: 11px;
+  padding: 0px 8px !important;
+  max-width: 2.5em;
+  border-radius: 4px !important;
 }
 /******************************************************************************/
 
@@ -229,7 +265,8 @@ button#closeUrgente {
   }
 
   .fix-col-data{
-    width:120px;overflow-x: scroll;
+    width:120px;
+    overflow-x: scroll;
     white-space: nowrap;
   }
   .tooltip-2 {
@@ -246,7 +283,7 @@ button#closeUrgente {
     display: block;
     margin: 6em auto;
   }
-  .title-year-selector{    
+  .title-year-selector{
     margin-top: -14px;
     font-weight: 800;
   }
@@ -336,25 +373,41 @@ button#closeUrgente {
   transition: box-shadow 150ms ease!important;
 }
 .content-calendar .td-calendar{
-  border:1px solid grey;width: 24px; height: 20px;
+  border:1px solid grey;
+  width: 24px;
+  height: 20px;
 }
 .content-calendar .no-event{
-  border:1px solid grey;width: 24px; height: 20px;
+  border:1px solid grey;
+  width: 24px;
+  height: 20px;
 }
 .content-calendar .ev-doble{
-  border:1px solid grey;width: 24px; height: 20px;
+  border:1px solid grey;
+  width: 24px;
+  height: 20px;
 }
 .content-calendar .start{
-  width: 45%;float: right; cursor: pointer;
+  width: 45%;
+  float: right;
+  cursor: pointer;
 }
 .content-calendar .end{
-  width: 45%;float: left; cursor: pointer;
+  width: 45%;
+  float: left;
+  cursor: pointer;
 }
 .content-calendar .total{
-  width: 100%;height: 100%; cursor: pointer;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
 }
 .content-calendar .td-month{
-  border:1px solid black;width: 24px; height: 20px;font-size: 10px;padding: 5px!important;
+  border:1px solid black;
+  width: 24px;
+  height: 20px;
+  font-size: 10px;
+  padding: 5px!important;
   text-align: center;
   min-width: 25px;
 }
@@ -478,10 +531,16 @@ select.status.form-control.minimal {
   position: relative;
 }
 .getImagesCustomer.a{
-  border: none; background-color:transparent!important; color: lightgray; padding: 0;
+  border: none;
+  background-color:transparent!important;
+  color: lightgray;
+  padding: 0;
 }
 .getImagesCustomer.b{
-  border: none; background-color: transparent!important; color:black; padding: 0;
+  border: none;
+  background-color: transparent!important;
+  color:black;
+  padding: 0;
 }
 
 button.btn.changeStatus,
@@ -532,8 +591,8 @@ th.table-reservadas{
   /*color: #FFF !important;*/
 }
 th.table-blocks {
-    background-color: #478eff;
-    color: #FFF !important;
+  background-color: #478eff;
+  color: #FFF !important;
 }
 th.table-cancel-xml{
   background-color: #f55753;
@@ -544,9 +603,12 @@ th.table-cancel-xml{
 .btn-sites{
   /*margin-top: 1em;*/
   margin-bottom: -20px;
-} 
+}
 .btn-tables .text-cont{
-  background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;
+  background-color: white;
+  font-weight: 600;
+  border-radius: 100%;
+  padding: 5px;
 }
 .btn-tabs{
   overflow-x:auto;
@@ -556,16 +618,17 @@ th.table-cancel-xml{
   margin-top: 10px;
 }
 .my-5px {
-    margin-top: 5px;
-    margin-bottom: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 .bordander .Pagada-la-señal.end {
-    border-left: 5px solid red;
+  border-left: 5px solid red;
 }
 
 div.dataTables_filter {
   display: none;
 }
+
 
 @media only screen and (max-width: 991px){
   button.btn.changeStatus,
@@ -580,7 +643,8 @@ div.dataTables_filter {
   }
 
   .fix-col-data{
-    width:120px;overflow-x: scroll;
+    width:120px;
+    overflow-x: scroll;
     white-space: nowrap;
   }
   .tooltip-2 {
@@ -589,7 +653,7 @@ div.dataTables_filter {
   .btn-tabs{
     min-width: 900px;
   }
-  .btn-tables, .btn-calMobile{ 
+  .btn-tables, .btn-calMobile{
     width: 85px;
     padding: 10px 5px;
   }
@@ -601,11 +665,22 @@ div.dataTables_filter {
     display: block;
     margin: 6em auto;
   }
-  .title-year-selector{    
+  .title-year-selector{
     margin-top: -14px;
     font-weight: 800;
   }
   .btn-tables .text-black{
-    background-color: white; font-weight: 600; border-radius: 100%; padding: 5px;font-size: 10px
+    background-color: white;
+    font-weight: 600;
+    border-radius: 100%;
+    padding: 5px;
+    font-size: 10px
   }
+}
+@media only screen and (max-width: 540px){
+  .buttonsTops button.btn {
+   padding: 8px 3px;
+    margin: 2px 0px 4px;
+}
+
 }

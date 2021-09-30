@@ -48,8 +48,9 @@
                   echo convertDateToShow_text($payment->datePayment);
                   ?>
                 </td>
-                <td class="text-center">
-                  <input class="editable payment-{{$payment->id}} m-t-5 only-numbers" type="text" name="cost"  data-id="{{$payment->id}}" value="{{$payment->import}}">€
+                <td class="text-center nowrap">
+                  <input class="editable payment-{{$payment->id}} m-t-5 only-numbers" type="text" name="cost"  data-id="{{$payment->id}}" value="{{$payment->import}}">
+                  <span>€</span>
                 </td>
                 <td class="text-center p-t-25"><?php echo $book->getTypeCobro($payment->type) ?> </td>
 
@@ -74,8 +75,7 @@
               <input class="importe m-t-5 only_numbers_n" type="text" name="importe" style="border: 1px solid #dedede;">
             </td>
             <td class="text-center">
-              <select class="full-width input-payment type_payment"
-                      data-init-plugin="select2" name="type_payment" tabindex="-1" aria-hidden="true">
+              <select class="full-width input-payment type_payment" name="type_payment">
                 <option value="2"><?php echo $book->getTypeCobro(2) ?></option>
                 <option value="0"><?php echo $book->getTypeCobro(0) ?></option>
                 <option value="4"><?php echo $book->getTypeCobro(4) ?></option>
@@ -178,5 +178,6 @@
   .importe{
     border-style: none;
     text-align: center;
+    width: 85px;
   }
 </style>

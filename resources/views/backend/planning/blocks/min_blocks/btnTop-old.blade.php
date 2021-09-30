@@ -17,14 +17,6 @@
         <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalLinkStrip">
           <i class="fas fa-dollar-sign" aria-hidden="true"></i> <span class="bold hidden-mobile">Cobros TPV</span>
         </button>
-        
-        <button class="btn btn-success btn-orange @if($CustomersRequest>0) btn-alarms @endif" id="btnCustomersRequest">
-          <span class="bold">LEADS</span>
-          @if($CustomersRequest>0)
-          <span class="numPaymentLastBooks" data-val="{{$CustomersRequest}}">{{$CustomersRequest}}</span>
-          @endif
-        </button>
-        
       <?php endif ?>
       <button class="btn btn-success btn-calcuteBook btn-cons" type="button">
         <span class="bold hidden-mobile"><i class="fa fa-calendar-alt" aria-hidden="true"></i>&nbsp;Calcular reserva</span>
@@ -55,7 +47,7 @@
           <i class="fa fa-bell" aria-hidden="true"></i> <span class="bold">PARTEE</span>
           <span class="numPaymentLastBooks"><?php echo $parteeToActive; ?></span>
         </button>
-        <button class="btn btn-success btn-orange @if($CustomersRequest>0) btn-alarms @endif" id="btnBookingsWithoutCvc">
+        <button class="btn btn-success btn-orange @if($bookings_without_Cvc>0) btn-alarms @endif" id="btnBookingsWithoutCvc">
           <span class="bold">SIN VISA</span>
           @if($bookings_without_Cvc>0)
           <span class="numPaymentLastBooks" data-val="{{$bookings_without_Cvc}}">{{$bookings_without_Cvc}}</span>

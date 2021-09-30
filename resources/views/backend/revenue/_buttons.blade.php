@@ -17,7 +17,7 @@
     padding-top: 1em;
   }
   .buttons-lst{
-    width: 42em;
+    width: 70em;
   }
 }
 </style>
@@ -25,9 +25,11 @@
 $route = \Request::route()->getName();
 $lstBtn = [
     'revenue'=>'DASHBOARD',
-    'revenue.pickUpNew'=>'PICK UP',
+    'revenue.pickUp'=>'PICK UP',
     'revenue.daily'=>'X Día',
     'revenue.disponibilidad'=>'DISPONIBLIDAD x ALOJAMIENTO',
+//    'revenue.sales'=>'INFORMES EMPLEADOS',
+//    'pyg'=>'CTA P&G',
 ];
 
 ?>

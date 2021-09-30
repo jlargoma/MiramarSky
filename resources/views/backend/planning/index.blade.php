@@ -15,27 +15,6 @@ $is_mobile = $mobile->isMobile();
     <link rel="stylesheet" href="{{ asset('/frontend/css/components/daterangepicker.css')}}" type="text/css" />
     <link rel="stylesheet" href="{{ assetV('/css/backend/planning.css')}}" type="text/css" />
     <script type="text/javascript" src="{{ assetV('/js/backend/buzon.js')}}"></script>
-    <style>
-      div#contentEmailing {
-          overflow: auto !important;
-          max-height: 88vh !important;
-      }
-      #modalLastBooks .btn.active{
-        background-color: #1e416c;
-        color: #FFF;
-      }
-      #modalLastBooks tr.cancel,
-      #modalLastBooks tr.cancel a{
-          color: red;
-      }
-      input#minDay.danger {
-        border: 1px solid red;
-        box-shadow: 1px 1px 4px 1px red;
-      }
-      .table.table-striped tbody tr.byWeb td {
-          background-color: #ffc2e1 !important;
-      }
-    </style>
     <script src="{{ asset('/vendors/ckeditor/ckeditor.js') }}"></script>
 @endsection
 
@@ -61,9 +40,8 @@ $is_mobile = $mobile->isMobile();
         <div class="col-md-7">
                 <?php if ( $uRole != "agente" ): ?>
             <div class="row push-10">
-                    <div class="col-md-5 col-xs-12">
-                        <input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
-                    </div>
+
+              <input id="nameCustomer" type="text" name="searchName" class="searchabled form-control" placeholder="nombre del cliente" />
                 </div>
             <?php endif ?>
           <div class="btn-tabs">
@@ -71,9 +49,6 @@ $is_mobile = $mobile->isMobile();
             </div>
                 <div class="col-xs-12" id="resultSearchBook" style="display: none; padding-left: 0;"></div>
                 <div class="col-xs-12 content-tables" style="padding-left: 0;">
-                  @if (in_array($uRole, ['admin','subadmin','recepcionista']))
-                    @include('backend.planning._table', ['type'=> 'pendientes'])
-                  @endif
                 </div>
 
             </div>
@@ -519,15 +494,11 @@ $is_mobile = $mobile->isMobile();
   <script src="/assets/js/notifications.js" type="text/javascript"></script>
   <script src="{{assetV('/js/backend/planning.js')}}" type="text/javascript"></script>
   <script src="{{assetV('/js/backend/booking_script.js')}}" type="text/javascript"></script>
-  <?php if (Auth::user()->defaultTable != ''): ?>
   <script type="text/javascript">
     $(document).ready(function() {
-      var type = '<?php echo Auth::user()->defaultTable ?>';
-      $('button[data-type="'+type+'"]').trigger('click');
+      $('button[data-type="pendientes"]').trigger('click');
     });
   </script>
-  <?php endif ?>
-  
   
   <script>
     /**************************************************************/

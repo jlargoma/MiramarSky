@@ -178,22 +178,58 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
 
 
 Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], function () {
+//  Route::get('admin/revenue/getRateCheckWubook', 'RevenueController@getRateCheckWubook');
+//  Route::get('admin/revenue/PICK-UP/{apto?}', 'RevenueController@pickUp')->name('revenue.pickUp');
+//  Route::get('admin/revenue/PICK-UP/{apto?}/{range?}', 'RevenueController@pickUp');
+//  Route::get('admin/revenue/DISPONIBLIDAD-x-ALOJAMIENTO/{apto?}/{range?}', 'RevenueController@disponibilidad')->name('revenue.disponibilidad');
+//  Route::post('admin/revenue/descargar-disponibilidad', 'RevenueController@donwlDisponib')->name('revenue.donwlDisponib');
+//  Route::post('admin/revenue/upd-disponibl', 'RevenueController@updDisponib');
+//  Route::get('admin/revenue/PICK-UP-new/{month?}', 'RevenueController@pickUpNew')->name('revenue.pickUpNew');
+//  Route::get('admin/revenue/RATE-SHOPPER', 'RevenueController@rate_shopper')->name('revenue.rate');
+//  Route::get('admin/revenue/RATE-SHOPPER/generate', 'RevenueController@setRateCheckWubook');
+//  Route::get('admin/revenue/DASHBOARD', 'RevenueController@index')->name('revenue');
+//  Route::post('admin/revenue/generate', 'RevenueController@generate')->name('revenue.generate');
+//  Route::post('admin/revenue/generatePickUp', 'RevenueController@generatePickUp')->name('revenue.generatePickUp');
+//  Route::post('admin/revenue/donwlPickUp', 'RevenueController@donwlPickUp')->name('revenue.donwlPickUp');
+//  Route::post('admin/revenue/PickUp/update', 'RevenueController@updPickUp')->name('revenue.updPickUp');
+//  Route::get('admin/revenue/VENTAS-POR-DIA', 'RevenueController@daily')->name('revenue.daily');
+//  Route::post('admin/revenue/donwlVtasDia', 'RevenueController@donwlDaily')->name('revenue.donwlVtasDia');
+  
+  
+  
   Route::get('admin/revenue/getRateCheckWubook', 'RevenueController@getRateCheckWubook');
-  Route::get('admin/revenue/PICK-UP/{apto?}', 'RevenueController@pickUp')->name('revenue.pickUp');
-  Route::get('admin/revenue/PICK-UP/{apto?}/{range?}', 'RevenueController@pickUp');
-  Route::get('admin/revenue/DISPONIBLIDAD-x-ALOJAMIENTO/{apto?}/{range?}', 'RevenueController@disponibilidad')->name('revenue.disponibilidad');
+  Route::get('admin/revenue/DISPONIBLIDAD-x-ALOJAMIENTO/{apto?}/{site?}/{range?}', 'RevenueController@disponibilidad')->name('revenue.disponibilidad');
   Route::post('admin/revenue/descargar-disponibilidad', 'RevenueController@donwlDisponib')->name('revenue.donwlDisponib');
   Route::post('admin/revenue/upd-disponibl', 'RevenueController@updDisponib');
-  Route::get('admin/revenue/PICK-UP-new/{month?}', 'RevenueController@pickUpNew')->name('revenue.pickUpNew');
+  Route::get('admin/revenue/PICK-UP/{month?}', 'RevenueController@pickUp')->name('revenue.pickUp');
   Route::get('admin/revenue/RATE-SHOPPER', 'RevenueController@rate_shopper')->name('revenue.rate');
+  Route::get('admin/revenue/VENTAS-POR-DIA', 'RevenueController@daily')->name('revenue.daily');
+  Route::post('admin/revenue/donwlVtasDia', 'RevenueController@donwlDaily')->name('revenue.donwlVtasDia');
   Route::get('admin/revenue/RATE-SHOPPER/generate', 'RevenueController@setRateCheckWubook');
   Route::get('admin/revenue/DASHBOARD', 'RevenueController@index')->name('revenue');
   Route::post('admin/revenue/generate', 'RevenueController@generate')->name('revenue.generate');
   Route::post('admin/revenue/generatePickUp', 'RevenueController@generatePickUp')->name('revenue.generatePickUp');
   Route::post('admin/revenue/donwlPickUp', 'RevenueController@donwlPickUp')->name('revenue.donwlPickUp');
   Route::post('admin/revenue/PickUp/update', 'RevenueController@updPickUp')->name('revenue.updPickUp');
-  Route::get('admin/revenue/VENTAS-POR-DIA', 'RevenueController@daily')->name('revenue.daily');
-  Route::post('admin/revenue/donwlVtasDia', 'RevenueController@donwlDaily')->name('revenue.donwlVtasDia');
+  Route::get('admin/revenue/getMonthKPI/{mes}', 'RevenueController@getMonthKPI');
+  Route::get('admin/revenue/getMonthDisp/{mes}', 'RevenueController@getMonthDisp');
+  Route::get('admin/revenue/getOverview/{mes}', 'RevenueController@getOverview');
+  Route::post('admin/revenue/upd-Overview', 'RevenueController@updOverview');
+  Route::post('admin/revenue/upd-fixedcosts', 'RevenueController@updFixedcosts');
+  Route::get('admin/revenue/getComparativaAnual/{year}', 'RevenueController@getComparativaAnual');
+  Route::get('admin/revenue/getFixedcostsAnual/{year}', 'RevenueController@getFixedcostsAnual');
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 });
 
 Route::get('test-text/{lng}/{key?}/{ota?}', 'SettingsController@testText');

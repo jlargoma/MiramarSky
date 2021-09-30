@@ -21,32 +21,24 @@ endif
                     <th class ="{{$classTH}}" style="width: 25px">   Pax         </th>
                     <th class ="{{$classTH}}" style="width: 30px"> </th>
                     <th class ="{{$classTH}}" style="width: 100px">   Apart       </th>
-                    <th class ="{{$classTH}}" style="width: 25px">  <i class="fa fa-moon-o"></i> </th>
+                    @if($uRole != "agente" )
+                    <th class ="{{$classTH}}" style="width: 10%">   Estado      </th>
+                    @endif
+                    <th class ="{{$classTH}}" style="width: 25px">  <i class="fa fa-moon"></i> </th>
                     <th class ="{{$classTH}}" style="width: 80px">   IN     </th>
                     <th class ="{{$classTH}}" style="width: 80px">   OUT      </th>
                     <th class ="{{$classTH}}" style="min-width: 120px;">   Precio      </th>
                     <th class ="{{$classTH}}" style="width:25px">   &nbsp;      </th>
-                    @if($uRole != "agente" )
-                    <th class ="{{$classTH}}" style="width: 10%">   Estado      </th>
-                    @endif
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($books as $book): ?>
-                
-                  <?php 
-                  $class = '';
-                  if ($book->user_id == 98 || $book->customer->user_id == 98) $class = " byWeb " 
-                  ?>
-                    <tr class="<?php echo $class;?>" data-id="{{$book->id}}" >
+                    <tr data-id="{{$book->id}}" >
                       <td class="fix-col td-b1">
                         <div class="fix-col-data">
                             <?php if ($book->agency != 0): ?>
                         <img src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" class="img-agency" />
                             <?php endif;?>
-                            @if($book->is_fastpayment || $book->type_book == 99 )
-                              <img src="/pages/fastpayment.png" class="img-agency"/>
-                            @endif
                             <?php if (isset($payment[$book->id])): ?>
                             <a class="update-book r" data-id="<?php echo $book->id ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                               <?php echo $book->customer['name']  ?></a>
@@ -110,6 +102,13 @@ endif
                           }
                           ?>
                         </td>
+                          @if($uRole != "agente" )
+                        <td>
+                          <button type="button" class="btn changeStatus" data-c="{{$book->type_book}}">
+                            {{$book->getStatus($book->type_book)}}
+                          </button>
+                        </td>
+                        @endif
                         <td class ="text-center"><?php echo $book->nigths ?></td>
                         <td class="td-date" data-order="{{$book->start}}">
                           <?php echo dateMin($book->start) ?>
@@ -118,39 +117,11 @@ endif
                           <?php echo dateMin($book->finish) ?>
                         </td>
                         <td>
-                                <div class="col-xs-6">
-                                    <?php echo round($book->total_price) . "€" ?><br>
-                                    <?php if (isset($payment[$book->id])): ?>
-                                        <?php echo "<p style='color:red'>" . $payment[$book->id] . "</p>" ?>
-                                    <?php else: ?>
-                                    <?php endif ?>
-                                </div>
-
-                                <?php if (isset($payment[$book->id])): ?>
-                                    <?php if ($payment[$book->id] == 0): ?>
-                                    <div class="col-xs-6 bg-success m-t-10">
-                                        <b style="color: red;font-weight: bold">0%</b>
-                                    </div>
-                                    <?php else:?>
-                                    <div class="col-xs-6">
-                                        <p class="text-white m-t-10">
-                                          <b  style="color: red;font-weight: bold">
-                                            <?php 
-                                            if (isset($payment[$book->id]) && $payment[$book->id]>0 && $book->total_price>0)
-                                              echo number_format(100 / ($book->total_price / $payment[$book->id]), 0) . '%';
-                                            else echo '0%';
-                                            ?>
-                                          </b>
-                                        </p>
-                                    </div>
-
-                                    <?php endif; ?>
-                                <?php else: ?>
-                                    <div class="col-xs-5 bg-success">
-                                        <b style="color: red;font-weight: bold">0%</b>
-                                    </div>
-                                <?php endif ?>
-
+                            <?php 
+                            if ($uRole != "limpieza"):
+                              echo $book->showPricePlanning($payment);
+                            endif;
+                            ?>
                         </td>
                         <td>
                                 <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
@@ -161,13 +132,7 @@ endif
                             <?php endif ?>
                                 
                         </td>
-                        @if($uRole != "agente" )
-                        <td>
-                          <button type="button" class="btn changeStatus" data-c="{{$book->type_book}}">
-                            {{$book->getStatus($book->type_book)}}
-                          </button>
-                        </td>
-                        @endif
+                      
                     </tr>
                 <?php endforeach ?>
             </tbody>

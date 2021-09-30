@@ -15,9 +15,7 @@ $(document).ready(function () {
 var sendFormRevenue = function () {
 $('#revenu_filters').submit();
 }
-$('#site').on('change', function (event) {
-sendFormRevenue();
-});
+
 $('#month').on('change', function (event) {
 sendFormRevenue();
 });
@@ -105,7 +103,7 @@ sendFormRevenue();
         font-weight: 800;
     }
     .table-excel  td.avails.number {
-        background-color: #c0ddff;
+        background-color: #69ff69;
         color: #383838;
     }
     th.thSpecial {
@@ -136,16 +134,6 @@ sendFormRevenue();
         font-weight: 800;
         background-color: #51b1f7;
     }
-    .filter-field {
-        float: left;
-        margin-right: 1em;
-    }
-    #revenu_filters{
-        clear: both;
-        width: 100%;
-        overflow: auto;
-        margin: 1em auto;
-    }
     input.editable {
         width: 25px;
         text-align: center;
@@ -162,6 +150,11 @@ sendFormRevenue();
     .summary-month .s-orange{background-color: orange;}
     .summary-month .s-green{background-color: #beffbe;}
     
+    .select_site{
+      background: #6d5cae;
+      border-color: #6d5cae;
+    }
+    
     @media only screen and (max-width: 768px){
         .contenedor{
             max-width: 98%;
@@ -173,7 +166,7 @@ sendFormRevenue();
             margin-top: 15px;
         }
         .filter-field {
-            max-width: 49%;
+            max-width: 9em;
         }
 
         .contenedor.mt-2em {
@@ -210,11 +203,8 @@ sendFormRevenue();
 @section('content')
 
 <div class="row">
-
     <div class="col-md-4 col-xs-12 mt-3em">
-        <div class="col-xs-12">
-            @include('backend.revenue.disponibilidad._filters')
-        </div>
+      @include('backend.revenue.disponibilidad._filters')
     </div>
     <div class="col-md-8 col-xs-12">
         <div class="row bg-white mt-2em">
@@ -226,27 +216,21 @@ sendFormRevenue();
             <div class="col-md-4 col-xs-4 sm-padding-10" style="padding: 10px">
                 @include('backend.years._selector')
             </div>
-            <div class="col-md-12 mb-1em text-center">
+            <div class="col-md-12 col-xs-12 mb-1em text-center">
                 @include('backend.revenue._buttons')
-            </div>
-            <div class="col-md-12 mb-1em text-center">
-
             </div>
         </div>
     </div>
-    <div class="col-md-4 col-xs-12 mt-3em">
-    </div>
-
 </div>
 
 <div class=" contenedor  mt-2em">
     <div class="col-md-5 col-xs-12">
         @include('backend.revenue.disponibilidad.summary')
     </div>
-    <div class="col-md-6 col-xs-10">
+    <div class="col-md-6 col-xs-12">
         @include('backend.revenue.disponibilidad.summary-month')
     </div>
-    <div class="col-md-1 col-xs-2">
+    <div class="col-md-1 col-xs-12">
         <button class="btn btn-complete btn-inline" type="button" data-toggle="modal" data-target="#yoi">
             <i class="fa fa-eye"></i>
         </button>
@@ -260,15 +244,19 @@ sendFormRevenue();
             <div class="modal-content">
                 <div class="block">
                     <div class="block-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            <i class="pg-close fs-14"></i>
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute;right: 0;z-index: 3;">
+                            <i class="pg-close"></i>
                         </button>
-                        <h2 class="text-center">
-                        </h2>
                     </div>
-                    <div class="block block-content" style="padding:20px">
+                    <div class="block block-content" style="padding:20px;max-width: 100vw;">
+                      <div class="row">
+                        <div class="col-md-6">
                         @include('backend.revenue.disponibilidad.summary-YOI-1')
+                        </div>
+                        <div class="col-md-6">
                         @include('backend.revenue.disponibilidad.summary-YOI-2')
+                        </div>
+                      </div>
                     </div>
                 </div>
             </div>
@@ -292,7 +280,7 @@ sendFormRevenue();
     type: "POST",
             method : "POST",
             url: "/admin/revenue/upd-disponibl",
-            data: {_token: "{{ csrf_token() }}", key: key, id: id, input: input },
+            data: {_token: "{{ csrf_token() }}", key: key, id: id, input: input},
             success: function (response)
             {
             if (response.status == 'OK') {

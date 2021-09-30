@@ -15,13 +15,13 @@ $uRole = Auth::user()->role;
         <th class="table-{{$type}}" style="width: 7%!important"> Pax</th>
         <th class="table-{{$type}}" style="width: 5%!important"></th>
         <th class="table-{{$type}}" style="width: 10%!important"> Apart</th>
-        <th class="table-{{$type}}" style="width: 30px !important"> IN</th>
-        <th class="table-{{$type}}" style="width: 30px !important"> OUT</th>
-        <th class="table-{{$type}}" style="width: 6%!important"><i class="fa fa-moon-o"></i></th>
-        <th class="table-{{$type}}"> Precio</th>
         @if($uRole != "agente" )
         <th class="table-{{$type}}" style="width: 12%!important"> Estado</th>
         @endif
+        <th class="table-{{$type}}" style="width: 30px !important"> IN</th>
+        <th class="table-{{$type}}" style="width: 30px !important"> OUT</th>
+        <th class="table-{{$type}}" style="width: 6%!important"><i class="fa fa-moon"></i></th>
+        <th class="table-{{$type}}"> Precio</th>
         <th class="table-{{$type}}" style="max-width:30px !important;">&nbsp;</th>
 		<?php if ($uRole != "agente" ): ?>
         <th class="table-{{$type}}" style="width: 65px!important">Acciones</th>
@@ -48,21 +48,9 @@ $uRole = Auth::user()->role;
           
           $icon = '';
           $bType = $book->type_book;
-          
-          if($book->leads){
-            $icon = '<i class="fa fa-star" style="color: ';
-            $icon .=  $book->type_book == 11 ? '#f6ff00;' : '#c5cc00;';
-            $icon .=  '"></i>';
-          }
           if ($book->agency != 0){
             $icon = '<img class="img-agency" src="/pages/'.strtolower($book->getAgency($book->agency)).'.png"/>';
           }
-                  
-          if($book->is_fastpayment == 1 
-              || $bType == 99 
-              || ($bType == 5 && $book->customer->user_id == 98) ){
-            $icon = '<img class="img-agency" src="/pages/fastpayment.png" />';
-          } 
         ?>
 
         <tr class="<?php echo $class;?>" data-id="{{$book->id}}" >
@@ -106,20 +94,21 @@ $uRole = Auth::user()->role;
             </td>
             <td>
                 <?php if ($book->hasSendPicture()): ?>
-                <button class="btn btn-xs getImagesCustomer a" type="button" data-toggle="modal" data-target="#modalRoomImages" data-id="<?php echo $book->room->id ?>" data-idCustomer="<?php echo $book->id ?>" onclick="return confirm('¿Quieres reenviar las imagenes');">
+                <button class="btn btn-xs getImagesCustomer a pull-left" type="button" data-toggle="modal" data-target="#modalRoomImages" data-id="<?php echo $book->room->id ?>" data-idCustomer="<?php echo $book->id ?>" onclick="return confirm('¿Quieres reenviar las imagenes');">
                     <i class="fa fa-eye"></i>
                 </button>
                 <?php else: ?>
-                <button class="btn btn-xs getImagesCustomer b" type="button" data-toggle="modal" data-target="#modalRoomImages" data-id="<?php echo $book->room->id ?>" data-idCustomer="<?php echo $book->id ?>">
+                <button class="btn btn-xs getImagesCustomer b pull-left" type="button" data-toggle="modal" data-target="#modalRoomImages" data-id="<?php echo $book->room->id ?>" data-idCustomer="<?php echo $book->id ?>">
                     <i class="fa fa-eye"></i>
                 </button>
                 <?php endif ?>
                 <?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
-                    <div data-booking="<?php echo $book->id; ?>" class="showBookComm" >
+                    <div data-booking="<?php echo $book->id; ?>" class="showBookComm pull-left" >
                       <i class="far fa-comment-dots" style="color: #000;" aria-hidden="true"></i>
                       <div class="BookComm tooltiptext"></div>
                     </div>
                 <?php endif ?>
+                <?php $book->printExtraIcon();?>
             </td>
             <td>
               <?php 
@@ -133,6 +122,13 @@ $uRole = Auth::user()->role;
               }
               ?>
             </td>
+             @if($uRole != "agente" )
+            <td>
+              <button type="button" class="btn changeStatus" data-c="{{$book->type_book}}">
+                {{$book->getStatus($book->type_book)}}
+              </button>
+            </td>
+             @endif
             <td class="td-date" data-order="{{$book->start}}">
               <?php echo dateMin($book->start) ?>
             </td>
@@ -140,15 +136,16 @@ $uRole = Auth::user()->role;
               <?php echo dateMin($book->finish) ?>
             </td>
             <td><?php echo $book->nigths ?></td>
-            <td><?php echo round($book->total_price) . "€" ?><br>
-            </td>
-            @if($uRole != "agente" )
+            
             <td>
-              <button type="button" class="btn changeStatus" data-c="{{$book->type_book}}">
-                {{$book->getStatus($book->type_book)}}
-              </button>
+            <?php 
+            if ($uRole != "limpieza"):
+              echo $book->showPricePlanning($payment);
+            endif;
+            ?>
+              <br>
             </td>
-             @endif
+           
              <td class="text-center" style="max-width:30px !important;">
                 <?php if (!empty($book->book_owned_comments) && $book->promociones != 0 ): ?>
                 <span class="icons-comment" data-class-content="content-commentOwned-<?php echo $book->id?>">

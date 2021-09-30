@@ -1838,9 +1838,14 @@ class LiquidacionController extends AppController {
         'summary' => $summary,
         ]);
   }
+  
   public function prepareTables() {
-      
     $year = $this->getActiveYear();
+    return self::static_prepareTables($year);
+  }
+  
+  static function static_prepareTables($year) {
+      
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
     

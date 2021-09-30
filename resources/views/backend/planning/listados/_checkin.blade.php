@@ -18,8 +18,8 @@ $lstSafetyBox = \App\BookSafetyBox::$keys_name;
                     </th>
                     <th class="th-bookings th-2">Pax</th>
                     <th class="th-bookings" style="min-width:136px !important;">Apart</th>
-                    <th class="th-bookings th-3">  <i class="fa fa-moon-o"></i> </th>
-                    <th class="th-bookings th-3"> <i class="fa fa-clock-o"></i></th>
+                    <th class="th-bookings th-3">  <i class="fa fa-moon"></i> </th>
+                    <th class="th-bookings th-3"> <i class="fa fa-clock"></i></th>
                     <th class="th-bookings th-4">IN</th>
                     <th class="th-bookings th-4">OUT</th>
                     <th class="th-bookings th-4"><i class="fa fa-lock"></i></th>
@@ -90,15 +90,9 @@ $lstSafetyBox = \App\BookSafetyBox::$keys_name;
 
                             <?php endif ?>
 
-
-
                             <?php if ($book->agency != 0): ?>
                                 <img src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" class="img-agency"/>
                             <?php endif ?>
-                            @if($book->is_fastpayment == 1 || $book->type_book == 99 )
-                            <img  src="/pages/fastpayment.png" class="img-agency"/>
-                            @endif
-
                             <?php if (isset($payment[$book->id])): ?>
                                 <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
                             <?php else: ?>
@@ -204,43 +198,11 @@ $lstSafetyBox = \App\BookSafetyBox::$keys_name;
                         </td>
 
                         <td>
-                            <?php if ($uRole != "limpieza"): ?>
-                                <div class="col-xs-6 not-padding">
-                                <?php echo round($book->total_price)."€" ?><br>
-                                    <?php if (isset($payment[$book->id])): ?>
-                                    <p style="color: <?php if ($book->total_price == $payment[$book->id]):?>#008000<?php else: ?>red<?php endif ?>;">
-                                            <?php echo $payment[$book->id] ?> €
-                                        </p>
-                                    <?php else: ?>
-                                <?php endif ?>
-                            </div>
-
-                                <?php if (isset($payment[$book->id])): ?>
-                                <?php if ($payment[$book->id] == 0): ?>
-                                <div class="col-xs-6 not-padding bg-success">
-                                    <b style="color: red;font-weight: bold">0%</b>
-                                    </div>
-                                <?php else:?>
-                                <div class="col-xs-6 not-padding">
-                                  <?php 
-                                  if (isset($payment[$book->id]) && $payment[$book->id]>0 && $book->total_price>0)
-                                    $total = number_format(100/($book->total_price/$payment[$book->id]),0);
-                                  else $total = 0;
-                                  ?>
-                                    <p class="text-white m-t-10">
-                                            <b style="color: <?php if ($total == 100):?>#008000<?php else: ?>red<?php endif ?>;font-weight: bold"><?php echo $total.'%' ?></b>
-                                        </p>
-                                    </div>
-
-                                <?php endif; ?>
-                                <?php else: ?>
-                                <div class="col-xs-6 not-padding bg-success">
-                                    <b style="color: red;font-weight: bold">0%</b>
-                                    </div>
-                                <?php endif ?>
-                            <?php else: ?>
-                                <?php echo round($book->total_price)."€" ?>
-                            <?php endif ?>
+                            <?php 
+                            if ($uRole != "limpieza"):
+                              echo $book->showPricePlanning($payment);
+                            endif;
+                            ?>
                         </td>
 
                         <td class="text-center sm-p-t-10 sm-p-b-10">

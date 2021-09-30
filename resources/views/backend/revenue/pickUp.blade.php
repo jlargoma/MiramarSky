@@ -14,7 +14,6 @@
 <script type="text/javascript">
   $(document).ready(function () {
     var sendFormRevenue = function(){
-      $('.daterange02').remove()
       $('#revenu_filters').submit();
     }
     $('.daterange02').on('change',function (event) {
@@ -34,6 +33,13 @@
     $('#site').on('change',function (event) {
       sendFormRevenue();
     });
+    $('#sel_mes').on('change',function (event) {
+      sendFormRevenue();
+    });
+    $('.sm').on('click',function (event) {
+      $('#sel_mes').val($(this).data('k'));
+       sendFormRevenue();
+    });
     $('.tabChannels').on('click',function (event) {
       
       $('#ch_sel').val($(this).data('k'));
@@ -47,27 +53,54 @@
 @endsection
 
 @section('content')
-<div class="row">
 
-    <div class="col-md-4 col-xs-12 mt-3em">
-      <div class="col-xs-12">
-        @include('backend.revenue.pick-up._actions')
-        @include('backend.revenue.pick-up._filters')
-      </div>
-    </div>
-    <div class="col-md-4 col-xs-12">
+<div class="box-btn-contabilidad">
   <div class="row bg-white">
-      <div class="col-md-6 col-xs-6 text-right">
+    <div class="col-md-12 col-xs-12">
+
+      <div class="col-md-3 col-md-offset-3 col-xs-7 text-right">
         <h2 class="text-center">
           Revenue
         </h2>
       </div>
-      <div class="col-md-4 col-xs-4 sm-padding-10" style="padding: 10px">
+      <div class="col-md-2 col-xs-4 sm-padding-10" style="padding: 10px">
         @include('backend.years._selector')
       </div>
-      <div class="col-md-12 mb-1em text-center">
-        @include('backend.revenue._buttons')
-       </div>
+    </div>
+  </div>
+  <div class="row mb-1em text-center">
+    @include('backend.revenue._buttons')
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-3 col-xs-12 mt-1em">
+    <div class="text-center">
+          @include('backend.revenue.pick-up._actions')
+        </div>
+  </div>
+  <div class="col-md-9 col-xs-12 ">
+  <div class="table-responsive">
+  <table class="tableMonths" >
+    <tr>
+      @foreach($months as $k=>$v)
+      @if($k>0)
+      <td data-k="{{$k}}" class="sm <?php if($sel_mes == $k) echo 'active' ?> ">{{$v}}</td>
+      @endif
+      @endforeach
+    </tr>
+  </table>  
+    </div>
+</div>
+</div>
+<div class="row">
+
+    <div class="col-md-3 col-xs-12">
+        <div class="text-center clearfix mt-3em">
+          @include('backend.revenue.pick-up._filters')
+      </div>
+    </div>
+    <div class="col-md-5 col-xs-12">
+  <div class="row bg-white">
       <div class="col-md-12 mb-1em text-center">
         @include('backend.revenue.pick-up._summary')
        </div>
@@ -75,12 +108,13 @@
   </div>
     <div class="col-md-4 col-xs-12 mt-3em">
         @include('backend.revenue.pick-up.byAgenci')
+        @include('backend.revenue.pick-up.graf')
     </div>
   
 </div>
 <div class=" contenedor c-pickup">
   <div class="row">
-    @include('backend.revenue.pick-up._tableItems');
+    @include('backend.revenue.pick-up._tableItems')
   </div>
   Reservado - stripe / Pagada-la-señal / Reserva Propietario / ATIPICAS / Blocked-ical
 </div>
@@ -248,20 +282,24 @@
 </script>
 
 <style>
-      
-  .table-vta-agenc tbody tr td{
-    text-align: center;
+  #summaryLeft,
+  #summaryRigth{
+   cursor: pointer;
   }
-  .table-vta-agenc thead tr th {
-    background-color: #295d9b;
-    color: #fff;
-    text-align: center;
+    table.tableMonths {
+    margin: 1em 0;
+    border: 1px solid;
+}
+table.tableMonths tr td {
+    padding: 7px !important;
+    font-weight: bold;
+    cursor: pointer;
+}
+  table.tableMonths tr td:hover,
+  table.tableMonths tr td.active {
+  background-color: #6d5cae;
+    color: #FFF;
   }
-  .table-vta-agenc tbody tr td:first-child,
-  .table-vta-agenc thead tr th:first-child{
-    text-align: left;
-  }
-
 @media only screen and (max-width: 767px) {
   .summary{
     padding: 7px 0;
