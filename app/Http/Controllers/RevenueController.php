@@ -57,7 +57,7 @@ class RevenueController extends AppController
         'agencyBooks' => $oLiquidacion->getArrayAgency()
     ]);
     /*************************************************************/
-    $disponiblidad = $this->data_disponibilidad($oYear,null,$month,$oServ->start,$oServ->finish,true,$oServ->lstMonths);
+    $disponiblidad = $this->data_disponibilidad($oYear,$month,$oServ->start,$oServ->finish,true,$oServ->lstMonths);
     
     /*************************************************************/
     $oServ->start  = $oYear->start_date;
@@ -269,7 +269,7 @@ class RevenueController extends AppController
     $oServ->setDates($date,$oYear);
     $month = explode('.',$date);
     $month = $month[1];
-    return $this->data_disponibilidad($oYear,null,$month,$oServ->start,$oServ->finish,true,$oServ->lstMonths);
+    return $this->data_disponibilidad($oYear,$month,$oServ->start,$oServ->finish,true,$oServ->lstMonths);
   }
 
   /*******************************************************************************/
@@ -277,20 +277,38 @@ class RevenueController extends AppController
   /*******************************************************************************/
   
   public function disponibilidad(Request $req,$return=false){
-    die('error');
     $oYear   = $this->getActiveYear();
-    $site_id  = $req->input('site',2);
-    $month = $req->input('month',date('m'));
+    $defaultMonth = ($oYear->year-2000).'.'.date('m');
+    $month = $req->input('month',$defaultMonth);
     $start  = firstDayMonth($oYear->year, $month);
     $finish = lastDayMonth($oYear->year, $month);
-    return $this->data_disponibilidad($oYear,$site_id,$month,$start,$finish,false);
+     //-------------------------------------
+    $lstMonths = [];
+    $aux = strtotime($oYear->start_date);
+    $auxEnd = strtotime($oYear->end_date);
+    $aMonths = getMonthsSpanish(null,FALSE, TRUE);
+    while ($aux <= $auxEnd){
+      $lstMonths[date('y.m',$aux)] = $aMonths[date('n',$aux)];
+      $aux = strtotime('+1 months' , $aux);
+    }
+    //-------------------------------------
+    return $this->data_disponibilidad($oYear,$month,null,null,false,$lstMonths);
   }
   
-  function data_disponibilidad($oYear,$site_id,$month,$start,$finish,$return=false,$lstMonths){
+  function data_disponibilidad($oYear,$month,$start,$finish,$return=false,$lstMonths){
     $chNames = configOtasAptosName(null);
     $aMonths = getMonthsSpanish(null,FALSE, TRUE);
     /************************************************************/
     /********   Prepare days array               ****************/
+    if (!($start && $finish)){
+      $d1 = new \DateTime('20'. str_replace('.', '-', $month).'-01');
+      $d2 = clone $d1;
+      $d1->modify('first day of this month');
+      $d2->modify('last day of this month');
+      $start = $d1->format("Y-m-d");
+      $finish = $d2->format("Y-m-d");
+    }
+     
     $startTime = strtotime($start);
     $endTime = strtotime($finish);
     $aLstDays = [];
@@ -378,19 +396,18 @@ class RevenueController extends AppController
 
     $sqlBooks = \App\Book::where_type_book_sales(true,true)->whereIn('room_id',$roomsID);
     $books = \App\Book::w_book_times($sqlBooks, $start, $finish)->get();
-                    
     if ($books){
       $startMonth = strtotime($start);
       $endMonth = strtotime($finish);
       $totalMonthOcc = 0;
       foreach ($books as $book){
         $summaryPVP += $book->total_price;
-        if (date('m',strtotime($book->start)) == $month || date('m',strtotime($book->finish)) == $month){
+        if (date('y.m',strtotime($book->start)) == $month || date('y.m',strtotime($book->finish)) == $month){
           $pvpPerNigh = ($book->nigths>0) ? $book->total_price/$book->nigths : 0;
           $startAux = strtotime($book->start);
           $finishAux = strtotime($book->finish);
           while ($startAux<$finishAux){
-            if (date('m',$startAux) == $month){
+            if (date('y.m',$startAux) == $month){
               $monthPVP += $pvpPerNigh;
               $totalMonthOcc++;
             }
@@ -416,8 +433,8 @@ class RevenueController extends AppController
         'foresc_n_hab'=>0,'foresc_n_hab_perc'=>0,'foresc_med_pvp'=>0,'foresc_pvp'=>0
         ];
     
-    $sSummarySeasson = \App\Settings::findOrCreate('revenue_disponibilidad_'.$oYear->year, $site_id);
-    $sSummaryMonth = \App\Settings::findOrCreate('revenue_disponibilidad_'.$oYear->year.'_'.$month, $site_id);
+    $sSummarySeasson = \App\Settings::findOrCreate('revenue_disponibilidad_'.$oYear->year);
+    $sSummaryMonth = \App\Settings::findOrCreate('revenue_disponibilidad_'.$oYear->year.'_'.$month);
     $sSummarySeasson = json_decode($sSummarySeasson->content,true);
     $sSummaryMonth = json_decode($sSummaryMonth->content,true);
     $sSummarySeasson = $sSummarySeasson ? array_merge($sKeys,$sSummarySeasson) : $sKeys;
@@ -444,7 +461,7 @@ class RevenueController extends AppController
       'lstMonths' => $lstMonths,
       'mmonths' => $mmonths,
       'month_key' => $oYear->year.'_'.$month,
-      'month' => intVal($month),
+      'month' => $month,
       'totalMonthOcc' => $totalMonthOcc,
       'totalSummaryOcc' => $totalSummaryOcc,
       'totalMonth' => $totalMonth,
@@ -513,12 +530,16 @@ class RevenueController extends AppController
     
     $oYear   = $this->getActiveYear();
     $lstMonths = getMonthsSpanish(null,FALSE, TRUE);
-    $site_id  = $req->input('site',2);
-    $month = $req->input('month',date('m'));
-    $start  = firstDayMonth($oYear->year, $month);
-    $finish = lastDayMonth($oYear->year, $month);
-    
-    $chNames = configOtasAptosName($site_id);
+    $defaultMonth = ($oYear->year-2000).'.'.date('m');
+    $month = $req->input('month',$defaultMonth);
+    $d1 = new \DateTime('20'. str_replace('.', '-', $month).'-01');
+    $d2 = clone $d1;
+    $d1->modify('first day of this month');
+    $d2->modify('last day of this month');
+    $start = $d1->format("Y-m-d");
+    $finish = $d2->format("Y-m-d");
+      
+    $chNames = configOtasAptosName();
     /************************************************************/
     /********   Prepare days array               ****************/
     $startAux = strtotime($start);
@@ -534,9 +555,6 @@ class RevenueController extends AppController
     /************************************************************/
     /********   Get Roooms                      ****************/
     $qry_ch = \App\Rooms::where('state',1);
-    if ($site_id>0){
-      $qry_ch->where('site_id',$site_id);
-    }
     $allRooms = $qry_ch->where('channel_group','!=','')->get();
     
 
@@ -708,7 +726,6 @@ class RevenueController extends AppController
 
     
     $ch  = $req->input('ch_sel',null);
-    $site_id  = $req->input('site',null);
     $start  = $req->input('start',null);
     $finish = $req->input('finish',null);
     $sel_mes = $req->input('sel_mes',date('m'));
@@ -719,18 +736,11 @@ class RevenueController extends AppController
       $finish = $d->modify('last day of this month')->format('Y-m-d');
     }
     $qry_ch = \App\Rooms::where('state',1);
-    if ($site_id>0){
-      $qry_ch->where('site_id',$site_id);
-    }
     $allChannels = $qry_ch->where('channel_group','!=','')
             ->groupBy('channel_group')->pluck('channel_group')->all();
     
-    
     $qryRevenue = RevenuePickUp::where([['day','>=', $start ],['day','<=', $finish ]]);
     
-    if ($site_id>0){
-      $qryRevenue->where('site_id',$site_id);
-    }
     if ($ch){
       $qryRevenue->where('channel',$ch);
     }
@@ -750,7 +760,6 @@ class RevenueController extends AppController
     $tIng = 0;
         
     $qrySumm = RevenuePickUp::whereYear('day','=',$oYear->year);
-    if ($site_id>0) $qrySumm->where('site_id',$site_id);
     if ($ch) $qrySumm->where('channel',$ch);
     $allSummay = $qrySumm->get();
     $sM = [];
@@ -792,7 +801,7 @@ class RevenueController extends AppController
     
     $oLiquidacion = new \App\Liquidacion();
     if ($ch) $roomsID = \App\Rooms::where('channel_group',$ch)->pluck('id');
-    else  $roomsID = \App\Rooms::where('site_id',$site_id)->pluck('id');
+    else  $roomsID = \App\Rooms::where('channel_group','!=','')->pluck('id');
     
     $dataSeason = $oLiquidacion->getBookingAgencyDetailsBy_date($start,$finish,$roomsID);
     
@@ -808,7 +817,6 @@ class RevenueController extends AppController
       'tDisp' => ($tDisp>0) ? $tDisp : 1,
       'tIng' => $tIng,
       'summMonth' => $sM,
-      'site' => $site_id,
       'start'=>$start,
       'finish'=>$finish,
       'channels' => $allChannels,
@@ -929,24 +937,27 @@ class RevenueController extends AppController
     
     $oYear   = $this->getActiveYear();
     $ch  = $req->input('ch_sel',null);
-    $site_id  = $req->input('site',0);
-    $start  = $req->input('start',null);
-    $finish = $req->input('finish',null);
-    $sel_mes = $req->input('sel_mes',date('m'));
-    
-    if (!$start) $start  = $oYear->start_date;
-    if (!$finish) $finish = $oYear->end_date;
+    $defaultMonth = ($oYear->year-2000).'.'.date('m');
+    $sel_mes = $req->input('sel_mes',$defaultMonth);
     return view('backend.revenue.vtas-dia',
-            $this->get_dailyData($oYear,$sel_mes,$ch,$site_id));
+            $this->get_dailyData($oYear,$sel_mes,$ch));
   }
   
-  function get_dailyData($oYear,$sel_mes,$ch,$site_id){
+  function get_dailyData($oYear,$sel_mes,$ch){
     
+    //-------------------------------------
+    $lstMonths = [];
+    $aux = strtotime($oYear->start_date);
+    $auxEnd = strtotime($oYear->end_date);
     $months = getMonthsSpanish(null,false,true);
-    $qry_rooms = \App\Rooms::where('state',1);
-    if ($site_id>0){
-      $qry_rooms->where('site_id',$site_id);
+    while ($aux <= $auxEnd){
+      $lstMonths[date('y.m',$aux)] = $months[date('n',$aux)];
+      $aux = strtotime('+1 months' , $aux);
     }
+    //-------------------------------------
+      
+      
+    $qry_rooms = \App\Rooms::where('state',1);
     $query2 = clone $qry_rooms;
     
     $allChannels = $query2->where('channel_group','!=','')
@@ -958,29 +969,22 @@ class RevenueController extends AppController
         $roomsID = \App\Rooms::where('channel_group',$ch)->pluck('id');
         $lstRooms = \App\Rooms::where('channel_group',$ch)->pluck('name','id');
     }
-    if ($site_id>0){
-        $roomsID = \App\Rooms::where('site_id',$site_id)->pluck('id');
-        $lstRooms = \App\Rooms::where('site_id',$site_id)->pluck('name','id');
-    }
     if (!$roomsID) $lstRooms = \App\Rooms::pluck('name','id');
-    /***********************************************************/
-    $allSites = \App\Sites::allSites();
     /***********************************************************/
     $agency = \App\Book::listAgency();
     $oCountry = new \App\Countries();
     /***********************************************************/
-    $oBooks = new \App\Book();
+    $aSelMes = explode('.', $sel_mes);
     $qBooks = \App\Book::where('type_book','!=',0)->where('type_book','!=',4)
-            ->whereYear('created_at', '=', $oYear->year)
-            ->whereMonth('created_at', '=', $sel_mes);
+            ->whereYear('created_at', '=', (2000+$aSelMes[0]))
+            ->whereMonth('created_at', '=', $aSelMes[1]);
  
     if ($roomsID && count($roomsID)>0) $qBooks->whereIn('room_id',$roomsID);
-    $oBoks = $qBooks->orderBy('created_at')->get();
-     
+    $oBooks = $qBooks->orderBy('created_at')->get();
     $lstResul = [];
     $lstResulID = [];
-    if ($oBoks){
-        foreach ($oBoks as $b){
+    if ($oBooks){
+        foreach ($oBooks as $b){
             
             $time = strtotime($b->created_at);
             $day = date('Ymd',$time);
@@ -1012,8 +1016,8 @@ class RevenueController extends AppController
                 default:$status = ' - '; break;
             }
             
-            if ($b->user_id == 98) $ch = 'WEBDIRECT';
-            else $ch = isset($agency[$b->agency]) ? $agency[$b->agency] : 'Directa';
+            if ($b->user_id == 98) $agency = 'WEBDIRECT';
+            else $agency = isset($agency[$b->agency]) ? $agency[$b->agency] : 'Directa';
                 
             $lstResul[$b->id] = [
                 'create' => convertDateToShow_text(date('Y-m-d',$time),true),
@@ -1024,15 +1028,13 @@ class RevenueController extends AppController
                 'adr'=> round($adr),
                 'price'=> round($tp),
                 'status'=> $status,
-                'ch'=> $ch,
+                'ch'=> $agency,
                 'country'=> $oCountry->getCountry($b->customer->country),
                 
             ];
             
         }
     }
-    
-    
     
     /*************************************************************************/
     /****   SUMMARY YEAR                             *************************/
@@ -1076,14 +1078,13 @@ class RevenueController extends AppController
         return [
             'year' => $oYear,
             'lstResul' => $lstResul,
-            'site' => $site_id,
             'sel_mes' => $sel_mes,
             'months' => $months,
+            'lstMonths' => $lstMonths,
             'start'=>null,
             'finish'=>null,
             'channels' => $allChannels,
             'ch_sel' => $ch,
-            'allSites'=> $allSites,
             'range'=>null,
             't_n'=>$t_n,
             't_tp'=>$t_tp,
@@ -1096,19 +1097,11 @@ class RevenueController extends AppController
          
         $oYear   = $this->getActiveYear();
         $ch  = $req->input('ch_sel',null);
-        $site_id  = $req->input('site',0);
-        $start  = $req->input('start',null);
-        $finish = $req->input('finish',null);
-        if (!$start) $start  = $oYear->start_date;
-        if (!$finish) $finish = $oYear->end_date;
+        $sel_mes  = $req->input('sel_mes',null);
         
-        
-        
-    $data = $this->get_dailyData($oYear,$start,$finish,$ch,$site_id);   
-    $name = 'Ventas-dia-'. $start.'-al-'.$finish;
-    if (is_numeric($data['site']) && isset($data['allSites'][$data['site']])){
-        $name.= '-'. str_replace(' ','-', $data['allSites'][$data['site']]);
-    }
+    $data = $this->get_dailyData($oYear,$sel_mes,$ch); 
+    $aSelMes = explode('.', $sel_mes);
+    $name = 'Ventas-dia-del-mes-'. $aSelMes[1].'-'.(2000+$aSelMes[0]);
     if ($data['ch_sel']) $name.= '-'.$data['ch_sel'];
     
     $lstResul = $data['lstResul'];

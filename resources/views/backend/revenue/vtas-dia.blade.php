@@ -17,23 +17,6 @@
       $('.daterange02').remove()
       $('#revenu_filters').submit();
     }
-    $('.daterange02').on('change',function (event) {
-      var date = $(this).val();
-
-      var arrayDates = date.split('-');
-      var res1 = arrayDates[0].replace("Abr", "Apr");
-      var date1 = new Date(res1);
-      var start = date1.getTime();
-      var res2 = arrayDates[1].replace("Abr", "Apr");
-      var date2 = new Date(res2);
-
-      $('#start').val(date1.yyyymmmdd());
-      $('#finish').val(date2.yyyymmmdd());
-      sendFormRevenue();
-    });
-    $('#site').on('change',function (event) {
-      sendFormRevenue();
-    });
     $('.tabChannels').on('click',function (event) {
       
       $('#ch_sel').val($(this).data('k'));
@@ -82,7 +65,7 @@
           <div class="table-responsive">
             <table class="tableMonths" >
               <tr>
-                @foreach($months as $k=>$v)
+                @foreach($lstMonths as $k=>$v)
                 @if($k>0)
                 <td data-k="{{$k}}" class="sm <?php if($sel_mes == $k) echo 'active' ?> ">{{$v}}</td>
                 @endif

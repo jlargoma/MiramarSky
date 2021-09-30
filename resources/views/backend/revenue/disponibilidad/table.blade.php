@@ -9,27 +9,6 @@
     }
   }
 </style>
-
-
-
-<div class="box-btn-sites col-xs-12">
-  <div class="btn-sites">
-    <?php 
-    $bSite = \App\Sites::all();
-    $s_active=''; 
-    ?>
-    <button class="btn btn-info select_site active" data-k="0">
-      TODOS
-    </button>
-    @foreach($bSite as $item)
-    <button class="btn btn-info select_site" data-k="{{$item->id}}">
-      <?php echo $item->name ?>
-    </button>
-    @endforeach
-  </div>
-</div>
-
-
 <div class="contenedor">
   <div class="table-responsive ">
     <table class="table table-resumen table-excel">
@@ -50,8 +29,7 @@
       </thead>
       <tbody>
         @foreach($otas as $ch=>$nro)
-        <?php $sID = 'disponib_'.$otaSite[$ch]; ?>
-        <tr class="tDispon disponib_0 {{$sID}}">
+        <tr class="tDispon disponib_0">
           <td rowspan="3" class="tdSpecial td1">{{show_isset($chNames,$ch)}}</td>
           <td class="tdSpecial td2 totals">Total</td>
           <td class="totals first-col"></td>
@@ -59,14 +37,14 @@
           <td class="totals vals" data-v="{{$nro}}">{{$nro}}</td>
           @endforeach
         </tr>
-        <tr class="tDispon disponib_0 {{$sID}}">
+        <tr class="tDispon disponib_0">
           <td class="tdSpecial td2">Libres</td>
           <td class="first-col"></td>
           @foreach($listDaysOtas[$ch] as $avail)
           <td class="avails {{($avail>0) ? 'number' : ''}}" data-v="{{$avail}}">{{($avail>0) ? $avail : '-'}}</td>
           @endforeach
         </tr>
-        <tr class="tDispon disponib_0 {{$sID}}">
+        <tr class="tDispon disponib_0">
           <td class="tdSpecial td2">Ocupadas</td>
           <td class="first-col"></td>
           @foreach($listDaysOtas[$ch] as $avail)
