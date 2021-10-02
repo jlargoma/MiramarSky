@@ -17,9 +17,9 @@ class PricesController extends AppController {
    * @return \Illuminate\Http\Response
    */
   public function index() {
-    $year = $this->getActiveYear();
-    $startYear = new Carbon($year->start_date);
-    $endYear = new Carbon($year->end_date);
+    $oYear = $this->getActiveYear();
+    $startYear = new Carbon($oYear->start_date);
+    $endYear = new Carbon($oYear->end_date);
     $diff = $startYear->diffInMonths($endYear) + 1;
    
     $seasonTemp = \App\Seasons::where('start_date', '>=', $startYear)
@@ -57,7 +57,7 @@ class PricesController extends AppController {
       }
     }
     
-    $sentData = \App\ProcessedData::findOrCreate('create_baseSeason_'.$year->id);
+    $sentData = \App\ProcessedData::findOrCreate('create_baseSeason_'.$oYear->id);
     $sendDataInfo = 'No ha sido enviado aún';
     if ($sentData->content){
       $sentData->content = json_decode($sentData->content);
@@ -65,7 +65,7 @@ class PricesController extends AppController {
       $sendDataInfo .= "\n".'Por '.$sentData->content->u;
     }
     
-    $sentData = \App\ProcessedData::findOrCreate('send_minStaySeason_'.$year->id);
+    $sentData = \App\ProcessedData::findOrCreate('send_minStaySeason_'.$oYear->id);
     $sendDataInfo_minStay = 'No ha sido enviado aún';
     if ($sentData->content){
       $sentData->content = json_decode($sentData->content);
@@ -101,6 +101,12 @@ class PricesController extends AppController {
       }
     }
     /************************************************************************/
+    $oYear = $this->getActiveYear();
+    $sRates = new \App\Services\Bookings\RatesRoom();
+    $sRates->setDates($oYear);
+    $sRates->setSeassonDays();
+    
+    /************************************************************************/
      
     return view('backend/prices/index', [
         'seasons' => $oSeasonType,
@@ -109,7 +115,7 @@ class PricesController extends AppController {
         'logMinStays' => $logMinStays,
         'newtypeSeasonsTemp' => $oSeasonType,
         'typeSeasonsTemp' => $oSeasonType,
-        'year' => $year,
+        'year' => $oYear,
         'diff' => $diff,
         'dw' => $dw,
         'startYear' => $startYear,
@@ -122,6 +128,9 @@ class PricesController extends AppController {
         'priceExtrPax' => $priceExtrPax,
         'settingsBooks' => $oSetting->settingsForBooks(),
         'extras'          => \App\Extras::all(),
+        'calendar' => $sRates->getCalendar(),
+        'sessionTypes' => $sRates->getSessionTypes(),
+        'calStyles' => $sRates->getStyles(),
     ]);
   }
 

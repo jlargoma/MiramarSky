@@ -162,6 +162,9 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
   Route::post('/apartamentos/uploadFile/{id}', 'RoomsController@uploadFile');
   Route::get('/apartamentos/assingToBooking', 'RoomsController@assingToBooking');
   Route::get('/apartamentos/download/contrato/{userId}', 'RoomsController@downloadContractoUser');
+  Route::get('/apartamentos/get-contrato/{roomID?}', 'RoomsController@getContractoRoom')->name('contracts.getByRoom');
+  Route::post('/apartamentos/contrato-guardar', 'RoomsController@saveContractoUser')->name('contracts.save');
+  Route::post('/apartamentos/contrato-send', 'RoomsController@sendContractoUser')->name('contracts.send');
 
   // Clientes
   Route::get('/clientes/update', 'CustomersController@update');

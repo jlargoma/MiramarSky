@@ -10,9 +10,9 @@
 
     </tr>
     </thead>
-    <tbody>
+    <tbody id="tableUsers">
 	<?php foreach ($users as $key => $user): ?>
-    <tr>
+    <tr data-role="{{$user->role}}">
         <td class="text-center">
 			<?php echo $key + 1; ?>
         </td>

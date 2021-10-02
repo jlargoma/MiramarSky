@@ -157,7 +157,18 @@
     @include('backend.prices.blocks._seasons')
     </div>
     <div class="col-md-7">
-    @include('backend.seasons.calendar')
+
+    <?php
+    echo $sessionTypes;
+    echo $calStyles;
+    ?>
+    <div class="rateCalendar">
+    <?php 
+     foreach ($calendar as $c){
+       echo '<div class="item">'.$c.'</div>';
+     }
+    ?>
+    </div>
     <div class="clearfix"></div>
     <div class="row">
       <div class="col-md-6">

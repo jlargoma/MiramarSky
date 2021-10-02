@@ -25,6 +25,46 @@
     color: black;
     font-weight: 800;
   }
+    .showVars{
+      background-color: #2b579a;
+      color: #FFF;
+      font-weight: bold;
+      padding: 8px;
+      margin: 0;
+    }
+    .showVars i{
+      float: right;
+    }
+    .delSing{
+      background-color: #fd9191;
+    padding: 12px;
+    color: #131313;
+    font-size: 18px;
+    font-weight: bold;
+    }
+    .delSing input[type="checkbox"] {
+      min-width: 24px !important;
+      margin: -7px 6px 0;
+      float: left;
+  }
+  .singBox {
+    border: 1px solid;
+    margin-top: 25px;
+    padding: 8px;
+  }
+  button.btn.btnContract {
+    border-radius: 8px;
+  }
+  
+  button.btn.btnContract.firmado {
+    background-color: #2cad2c;
+    color: #FFF;
+}
+button.btn.btnContract.enviado {
+    background-color: #ff9c21;
+    color: #FFF;
+}
+
 </style>
 @endsection
 
@@ -35,20 +75,12 @@
     <div class="col-md-12 text-center">
       <h2>LISTADO DE <span class="font-w800">APARTAMENTOS</span></h2>
     </div>
-    <div class="col-md-12 text-center">
-      @if($errors->any())
-      <p class="alert alert-danger">{{$errors->first()}}</p>
-      @endif
-      @if (\Session::has('success'))
-      <p class="alert alert-success">{!! \Session::get('success') !!}</p>
-      @endif
-    </div>
     <div class="col-md-2 col-xs-6 push-20">
       <input type="text" id="searchRoomByName" class="form-control" placeholder="Buscar..." />
     </div>
     <div class="col-md-2 col-xs-6 push-20">
       <select class="form-control minimal" id="channel_group" placeholder="ZODOMUS Apto">
-        <option value=""> - ZODOMUS Apto -</option>
+        <option value=""> - CHANNELs -</option>
         <?php foreach ($zodomusAptos as $id=>$data): ?>                                   
           <option value="{{$id}}" <?php echo ($id == $channel_group) ? "selected" : "" ?>>
             {{$data->name}}
@@ -56,24 +88,22 @@
         <?php endforeach ?>
       </select>
     </div>
-    <div class="col-md-1 col-xs-4 push-20">
+    <div class="col-md-8 col-xs-12 push-20">
       <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewSize">
         <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Crear tamaño</span>
       </button>
-    </div>
-    <div class="col-md-1 col-xs-4 push-20">
       <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewTypeApto">
         <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Tipo Apto.</span>
       </button>
-    </div>
-    <div class="col-md-1 col-xs-4 push-20">
+  
       <button class="btn btn-success btn-cons" type="button" data-toggle="modal" data-target="#modalNewApto">
         <i class="fa fa-plus-square" aria-hidden="true"></i> <span class="bold">Nuevo Apto.</span>
       </button>
-    </div>
-    <div class="col-md-1 col-xs-4 push-20 m-l-15">
       <button class="btn btn-success btnRoomsTypes" type="button" data-toggle="modal" data-target="#modalRoomTypes">
         <span class="bold">Widget de Habitaciones</span>
+      </button>
+      <button class="btn btn-success btnContract" type="button" data-id="">
+        <span class="bold">Contratos</span>
       </button>
     </div>
 
@@ -453,7 +483,7 @@
   </div>
   <button class="btn btn-success show-notification " id="boton">Show</button>
 </form>-->
-
+@include('backend.rooms.contratos.modal')
 
 @endsection
 
@@ -586,6 +616,16 @@ $(document).ready(function () {
       } else {
         window.show_notif(resp,'danger','');
       }
+    });
+  });
+  
+    
+  $('.btnContract').click(function (event) {
+    var id = $(this).attr('data-id');
+    if (id) id = '/'+id;
+    $.get('{{route("contracts.getByRoom")}}' + id, function (data) {
+      $('#modalContratos .modal-content').empty().append(data);
+      $('#modalContratos').modal();
     });
   });
 });

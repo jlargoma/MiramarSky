@@ -9,6 +9,8 @@ use Auth;
 use Mail;
 use App\Classes\Mobile;
 use App\Book;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class OwnedController extends AppController {
 
@@ -199,30 +201,23 @@ class OwnedController extends AppController {
   }
 
   public function tarifasOwned($name) {
-    $room = \App\Rooms::where('nameRoom', $name)->first();
-
-    if ($room->owned == Auth::user()->id) {
-
-
-      $room = \App\Rooms::where('nameRoom', $name)->first();
-    } elseif (Auth::user()->role == 'admin') {
-
-      $room = \App\Rooms::where('nameRoom', $name)->first();
-    } else {
-
+    $oRoom = \App\Rooms::where('nameRoom', $name)->first();
+    $oUsr = Auth::user();
+    if ($oRoom->owned != $oUsr->id && $oUsr->role != 'admin') {
       return view('errors.owned-access');
     }
-    $year = $this->getActiveYear();
-    $startYear = new Carbon($year->start_date);
-    $endYear = new Carbon($year->end_date);
-    $diff = $startYear->diffInMonths($endYear);
-//                dd($diff);
+    
+    $oYear = $this->getActiveYear();
+    $sRates = new \App\Services\Bookings\RatesRoom();
+    $sRates->setDates($oYear);
+    $sRates->setSeassonDays();
     return view('backend.owned.tarifa', [
         'mobile' => new Mobile(),
-        'room' => $room,
-        'startYear' => $startYear,
-        'endYear' => $endYear,
-        'diff' => $diff,
+        'room' => $oRoom,
+        'calendar' => $sRates->getCalendar(),
+        'sessionTypes' => $sRates->getSessionTypes(),
+        'calStyles' => $sRates->getStyles(),
+        'tarifas' => $sRates->getTarifas($oRoom),
     ]);
   }
 
@@ -314,4 +309,156 @@ class OwnedController extends AppController {
     ]);
   }
 
+  function getContracts($id){
+     $oContr = \App\RoomsContracts::find($id);
+    if (!$oContr) return redirect('404')->withErrors(['Contrato no encontrado']);
+    
+    $oRoom = \App\Rooms::find($oContr->room_id);
+    
+    // Controls -------------------------------------------------------
+    $oUsr = Auth::user();
+    $oUsrRoom = null;
+    if ($oRoom){
+      if($oRoom->id != $oContr->room_id) 
+        return redirect('404')->withErrors(['Contrato no encontrado']);
+      
+      if ($oRoom->owned != $oUsr->id && $oUsr->role != 'admin')
+        return view('errors.owned-access');
+      
+      $oUsrRoom = \App\User::find($oRoom->owned);
+    } else {
+      if ($oUsr->role != 'admin') 
+        return redirect('404')->withErrors(['Contrato no encontrado']);
+    }
+    // Controls -------------------------------------------------------
+    $content = $oContr->content;
+    
+        
+    $oYear = $this->getActiveYear();
+    $sRates = new \App\Services\Bookings\RatesRoom();
+    $sRates->setDates($oYear);
+    $sRates->setSeassonDays();
+    
+    
+    $fileName = $oContr->sign;
+    $sign = false;
+    if ($fileName){
+      $path = storage_path('/app/' . $fileName);
+      $sign = File::exists($path);
+      if ($sign){
+        $fileName = str_replace('signs/','', $fileName);
+      }
+    }
+    
+    
+    
+    $date= '';
+      $aux = explode('-',$oContr->updated_at);
+      if (is_array($aux) && count($aux)==3){
+        $date= 'a '.$aux[2].' días de '.getMonthsSpanish($aux[1]).' del año '.$aux[0];
+      }
+    
+    
+    
+    return[
+        'id' => $oContr->id,
+        'text' => $oContr->getText($oRoom,$oUsrRoom,$sRates),
+        'date' => $date,
+        'room' => $oRoom,
+        'signFile' => $fileName,
+        'sign' => $sign,
+        'calStyles' => $sRates->getStyles(),
+    ];
+  }
+  function seeContracts($id){
+   return view('backend.owned.contratos',$this->getContracts($id));
+  }
+  
+  
+  
+
+  function downlContract($id) {
+    $data = $this->getContracts($id);
+    $text = $data['text'];
+//    dd($data);
+    //contratosDownl
+//    $view = $this->seeContracts($id);
+    
+    
+    $oYear = $this->getActiveYear();
+    $sRates = new \App\Services\Bookings\RatesRoom();
+    $sRates->setDates($oYear);
+    $sRates->setSeassonDays();
+    $view = $sRates->printCalendar();
+            
+//      $return = '<table ><tr>';
+//    $count = 0;
+//    foreach ($this->getCalendar() as $c) {
+//      $count++;
+//      if ($count == 3) $return .='</tr></tr>';
+//      $return .=  '<td >' . $c . '</td>';
+//    }
+//    $return .= '</tr></table>';
+//    return $return;
+            
+//    $view = str_replace('class="rateCalendar"', 'style="display: block;width: 100%;clear: both;"', $text);
+//    $view = str_replace('class="item"', 'style="width: 100px; display: block;padding: 7px;text-align: center;""', $text);
+//    
+//    
+//    $view = view('backend.owned.contratosDownl',$data);
+    
+    
+    
+    
+    
+    
+//            $fileName = str_replace(' ','-','liquidacion '.$aData['mes'].' '. strtoupper($user->name));
+//        $routePdf = storage_path('/app/liquidaciones/'. urlencode($fileName).'.pdf');
+//        $pdf = PDF::loadView('pdfs.liquidacion', $aData);
+//        $pdf->save($routePdf);
+        
+//    $pdf = \Barryvdh\DomPDF\Facade::loadHTML($sRates);
+    $pdf = \Barryvdh\DomPDF\Facade::loadHTML($view);
+//    return $pdf->download('invoice.pdf');
+        return $pdf->stream();
+        
+  }
+  function getSign($file) {
+
+    $path = storage_path('/app/signs/' .$file);
+    if (!File::exists($path)) {
+      abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = \Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+  }
+  function setSign(Request $req){
+    $contrID = $req->input('ID');
+    
+    $oUsr = Auth::user();
+    $oContr = \App\RoomsContracts::find($contrID);
+    if (!$oContr) return redirect('404')->withErrors(['Contrato no encontrado']);
+    
+    $sign = $req->input('sign');
+    $encoded_image = explode(",", $sign)[1];
+    $decoded_image = base64_decode($encoded_image);
+    
+    $fileName = 'signs/' .$contrID.'-'. $oUsr->id .'-'.time().'.png';
+    $path = storage_path('/app/' . $fileName);
+    
+    $oContr->sign = $fileName;
+    $oContr->save();
+    $storage = \Illuminate\Support\Facades\Storage::disk('local');
+    $storage->put($fileName, $decoded_image);
+    
+    return back()->with(['success' => 'Firma Guardada']);
+  }
+  
+  
 }

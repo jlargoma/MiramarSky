@@ -35,8 +35,18 @@ class RoomsController extends AppController {
    * @return \Illuminate\Http\Response
    */
   public function index() {
-    
+    $oYear      = $this->getActiveYear();
     $zConfig = new \App\Services\Zodomus\Config();
+
+    $lstContr = \App\RoomsContracts::where('year_id',$oYear->id)->get();
+    $aContrs = [];
+    if($lstContr){
+      foreach ($lstContr as $c){
+        if($c->send) $aContrs[$c->room_id] = 'enviado';
+        if($c->sign) $aContrs[$c->room_id] = 'firmado';
+      }
+    }
+  
     return view('backend/rooms/index', [
 //        'rooms' => Rooms::where('state', "!=", 0)->orderBy('order', 'ASC')->get(),
         'rooms' => Rooms::orderBy('order', 'ASC')->get(),
@@ -44,10 +54,12 @@ class RoomsController extends AppController {
         'sizes' => \App\SizeRooms::all(),
         'types' => \App\TypeApto::all(),
         'tipos' => \App\TypeApto::all(),
+        'oYear' => $oYear,
         'owners' => \App\User::all(),
         'typesApto' => \App\TypeApto::all(),
         'zodomusAptos' => configZodomusAptos(),
         'channel_group' => null,
+        'aContrs'=>$aContrs
     ]);
   }
 
@@ -1206,32 +1218,84 @@ class RoomsController extends AppController {
 //    $cost_limp += Rooms::GIFT_COST;
     return [$cost_limp,$price_limp];
   }
+  function getContractoRoom($roomID=null){
+       
+    $oYear = $this->getActiveYear();
+    $sRates = new \App\Services\Bookings\RatesRoom();
+    $sRates->setDates($oYear);
+    $sRates->setSeassonDays();
+    
+    $oContr = \App\RoomsContracts::getContract($oYear->id,$roomID);
+    $fileName = $oContr->sign;
+    $sign = false;
+    if ($fileName){
+      $path = storage_path('/app/' . $fileName);
+      $sign = File::exists($path);
+      if ($sign){
+        $fileName = str_replace('signs/','', $fileName);
+      }
+    }
+    
+    return view('backend.rooms.contratos.modal_content', [
+        'oYear'=>$oYear,
+        'contract' => $oContr,
+        'calendar' => $sRates->getCalendar(),
+        'sessionTypes' => $sRates->getSessionTypes(),
+        'calStyles' => $sRates->getStyles(),
+        'roomTarifas' => $sRates->getTarifas(),
+        'signFile' => $fileName,
+        'sign' => $sign,
+        ]);
+                    
+  }
   
-  //http://miramarski.virtual/fixNameImages
-//  public function fixNameImages() {
-//    $rooms = Rooms::all();
-//    foreach ($rooms as $room){
-//    
-//      $path = public_path() . '/img/miramarski/apartamentos/' . $room->nameRoom . '/';
-//      $images = RoomsPhotos::where('room_id','>',0)->orderBy('position')->get();
-//      if ($images){
-//        foreach ($images as $img){
-//          if (substr($img->file_name, -4) == '-jpg' || true) {
-//            if (file_exists($path . $img->file_name)){
-//              $file_name = str_replace('-jpg', '.jpg', $img->file_name);
-//              rename($path.$img->file_name,$path.$file_name);
-//              if (file_exists($path .'/thumbnails/'. $img->file_name))
-//                rename($path.'/thumbnails/'.$img->file_name,$path.'/thumbnails/'.$file_name);
-//              
-//              $img->file_name = $file_name;
-//              $img->save();
-//            }
-//          }
-//        }
-//      }
-//      
-//    }
-//  }
-
-
+  function saveContractoUser(Request $req){
+    $id = $req->input('id');
+    $oContr = \App\RoomsContracts::find($id);
+    if (!$oContr) return redirect ()->back()->withErrors (['Contrato no encontrado']);
+    $oContr->content = $req->input('contract_main_content');
+    if($req->input('delSign')=='on'){
+      $oContr->sign = null;
+    }
+    $oContr->save();
+    return redirect()->back()->with(['success'=>'Contrato Guardado']);
+  }
+  function sendContractoUser(Request $req){
+    $id = $req->input('id');
+    $oContr = \App\RoomsContracts::find($id);
+    if (!$oContr) return 'Contrato no encontrado';
+    
+    $oRoom = Rooms::where('id',$oContr->room_id)->with('user')->first();
+    if (!$oRoom) return 'Apto no encontrado';
+    
+    
+    $oYear = \App\Years::find($oContr->year_id);
+    if (!$oYear) return 'Temporada no encontrada';
+    $seasson = $oYear->year.' - '.($oYear->year+1);
+    
+    $url = route('contract.see',[$oContr->id]);
+    $subject = 'Contrato de Propietario';
+    $mailContent = 'Hola '.$oRoom->user->name.', <br/><br/>';
+    $mailContent .= '<p>Ya tienes el contrato para la comercialización del apartamento <b>'.$oRoom->nameRoom.'</b> para la temporada <b>'.$seasson.'</b></p>';
+    $mailContent .= '<p>Solo necesitamos que agregues tu firma en el siguente link:</p>';
+    $mailContent .= '<a href="'.$url.'" alt="Link al contrato">'.$url.'</a>';
+    $mailContent .= '<br/><br/><br/><p>Muchas Gracias.!</p>';
+    $email = $oRoom->user->email;
+    try{
+    Mail::send('backend.emails.base', [
+            'mailContent' => $mailContent,
+            'title'       => $subject
+        ], function ($message) use ($subject,$email) {
+            $message->from(config('mail.from.address'));
+            $message->to(config('mail.from.address'));
+            $message->subject($subject);
+        });
+        
+    $oContr->send = 1;
+    $oContr->save();
+    return 'OK';
+    } catch (\Exception $e){
+      return $e->getMessage();
+    }
+  }
 }
