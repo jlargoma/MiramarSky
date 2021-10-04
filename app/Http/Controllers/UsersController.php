@@ -81,7 +81,8 @@ class UsersController extends AppController
         $userUpadate->remember_token = str_random(60);
         
         $psw = $request->input('password',null);
-        if ($psw && trim($psw) != '')
+        $re_psw = $request->input('repassword',null);
+        if ($psw && trim($psw) != '' && $re_psw == $psw)
           $userUpadate->password = bcrypt($psw);
 
         $userUpadate->name_business = $request->input('name_business');
