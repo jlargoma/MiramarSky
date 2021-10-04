@@ -551,25 +551,7 @@ $(document).ready(function () {
     });
 <?php endif ?>
 
-  $('#searchRoomByName').keyup(function (event) {
-    var searchString = $(this).val();
-
-    $.get('/admin/rooms/search/searchByName', {searchString: searchString}, function (data) {
-
-      $('.content-table-rooms').empty().append(data);
-
-    });
-  });
   
-   $('#channel_group').on('change',function (event) {
-    var channel_group = $(this).val();
-
-    $.get('/admin/rooms/search/searchByName', {channel_group: channel_group}, function (data) {
-
-      $('.content-table-rooms').empty().append(data);
-
-    });
-  });
   
   CKEDITOR.replace('apto_descript',
           {
@@ -636,6 +618,57 @@ $(document).ready(function () {
       $('#modalContratos').modal();
     });
   });
+  
+  
+    $('#channel_group').change(function () {
+      var chn = $(this).val();
+      $('#searchRoomByName').val('');
+      if (chn == '') $('#lstRooms tr').show();
+      else {
+        $('#lstRooms tr').each(function(){
+          if ($(this).data('chn') == chn)  $(this).show();
+          else $(this).hide();
+        });
+      }
+
+    });
+    
+    $('#searchRoomByName').keydown(function (e) {
+      var search = $(this).val();
+      $('#channel_group').val('');
+      if (search == '') $('#lstRooms tr').show();
+      else {
+        $('#lstRooms tr').each(function(){
+          if ($(this).data('name').includes(search))  $(this).show();
+          else $(this).hide();
+        });
+      }
+    });
+        
+        
+//        $('#searchRoomByName').keyup(function (event) {
+//    var searchString = $(this).val();
+//
+//    $.get('/admin/rooms/search/searchByName', {searchString: searchString}, function (data) {
+//
+//      $('.content-table-rooms').empty().append(data);
+//
+//    });
+//  });
+//  
+//   $('#channel_group').on('change',function (event) {
+//    var channel_group = $(this).val();
+//
+//    $.get('/admin/rooms/search/searchByName', {channel_group: channel_group}, function (data) {
+//
+//      $('.content-table-rooms').empty().append(data);
+//
+//    });
+//  });
+//        
+        
+        
+        
 });
 </script>
 @endsection

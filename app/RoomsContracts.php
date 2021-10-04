@@ -37,7 +37,7 @@ class RoomsContracts extends Model
     $text = $this->content;
     if ($oUser){
       $text = str_replace('{usuario_nombre}', $oUser->name, $text);
-      $text = str_replace('{usuario_dni}', $oUser->nif_business, $text);
+      $text = str_replace('{usuario_dni}', $oUser->nif, $text);
       if ($oUser->nif_business){
         $text = str_replace('{usuario_representacion}', 
                 ' en nombre y representación de '.$oUser->name_business

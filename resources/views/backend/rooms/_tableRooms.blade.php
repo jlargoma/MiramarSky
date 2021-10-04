@@ -73,7 +73,7 @@ $mobile = new Mobile();
     <thead>
       <tr>
         <th>#</th>
-        <th>Nombre APTO</th>
+        <th>Nombre tRooms APTO</th>
         <th>Contr</th>
         <th>Lujo</th>
         <th>OCU. MIN</th>
@@ -82,9 +82,9 @@ $mobile = new Mobile();
         <th>Acc</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="lstRooms">
 <?php foreach ($rooms as $room): ?>
-        <tr>
+        <tr data-name="{{strtolower($room->name.' '.$room->nameRoom)}}" data-chn="{{$room->channel_group}}">
           <td class="text-center" >
             <input class="orden order-<?php echo $room->id ?>" type="number" name="orden" data-id="<?php echo $room->id ?>" value="<?php echo $room->order ?>" style="width: 100%;text-align: center;border-style: none none">
           </td>
@@ -116,23 +116,12 @@ $mobile = new Mobile();
             </span>
           </td>
           <td class="text-center nowrap" >
-            @if($room->user)
-            <a class="btn btn-default btn-pdf btn-sm" href="{{ url
-  							('/admin/apartamentos/download/contrato/'.$room->user->id) }}">
-              <i class="fa fa-file-pdf"></i>
-            </a>
-            @endif
             <a type="button" class="btn btn-default btn-sm" href="https://www.apartamentosierranevada.net/fotos/<?php echo $room->nameRoom ?>" target="_blank" data-original-title="Enlace de Apartamento" data-toggle="tooltip">
               <i class="fa fa-paperclip"></i>
             </a>
             <button type="button" class="btn btn-success btn-sm uploadFile action-rooms-table" data-toggle="modal" data-target="#modalFiles" data-id="<?php echo $room->nameRoom ?>" title="Subir imagenes aptos">
                     <i class="fa fa-upload" aria-hidden="true"></i>
             </button> 
-            @if($room->user)
-            <button class="btn btn-default btn-emiling btn-sm" type="button" data-toggle="modal" data-target="#modalEmailing" data-id="<?php echo $room->user->id ?>">
-              <i class=" pg-mail"></i>
-            </button>
-            @endif
           </td>
         </tr>
 <?php endforeach ?>

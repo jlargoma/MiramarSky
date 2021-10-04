@@ -78,6 +78,7 @@ class UsersController extends AppController
         $userUpadate->email = $request->input('email');
         $userUpadate->phone = $request->input('phone');
         $userUpadate->role = $request->input('role');
+        $userUpadate->nif = $request->input('nif');
         $userUpadate->remember_token = str_random(60);
         
         $psw = $request->input('password',null);

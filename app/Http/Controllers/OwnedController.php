@@ -363,9 +363,10 @@ class OwnedController extends AppController {
     // Already Signed  -------------------------------------------
    
     $date= '';
-    $aux = explode('-',$oContr->updated_at);
+    $aux = explode(' ',$oContr->updated_at);
+    $aux = explode('-',$aux[0]);
     if (is_array($aux) && count($aux)==3){
-      $date= 'a '.$aux[2].' días de '.getMonthsSpanish($aux[1]).' del año '.$aux[0];
+      $date= ', '.$aux[2].' de '.getMonthsSpanish($aux[1],false).' '.$aux[0];
     }
     
     if ($pdf){
@@ -386,6 +387,7 @@ class OwnedController extends AppController {
         'text' => $oContr->getText($oRoom,$oUsrRoom,$sRates,$calendar),
         'date' => $date,
         'room' => $oRoom,
+        'seasson'=>$sRates->seasson,
         'sign' => false,
         'calStyles' => $sRates->getStyles(),
     ];
@@ -455,7 +457,7 @@ class OwnedController extends AppController {
     $pdf->loadView('backend.owned.contratosDownl',$data);
     $output = $pdf->output();
 //        return $pdf->download('invoice.pdf');
-//    return $pdf->stream();
+    return $pdf->stream();
         
     //save document
     $fileName = 'contracts/' .$contrID.'-'. $oUsr->id .'-'.time().'.pdf';
@@ -489,9 +491,9 @@ class OwnedController extends AppController {
             'mailContent' => $mailContent,
             'title'       => $subject
         ], function ($message) use ($subject,$email,$path,$fileName) {
-            $message->from(config('mail.from.address'));
-            $message->to(config('mail.from.address'));
+            $message->from(env('MAIL_FROM'),env('MAIL_FROM_NAME'));
             $message->subject($subject);
+            $message->to($email);
             $message->attach( $path, array(
                             'as' => $fileName.'.pdf', 
                             'mime' => 'application/pdf'));
