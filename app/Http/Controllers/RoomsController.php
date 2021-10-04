@@ -1289,8 +1289,8 @@ class RoomsController extends AppController {
             'mailContent' => $mailContent,
             'title'       => $subject
         ], function ($message) use ($subject,$email) {
-            $message->from(config('mail.from.address'));
-            $message->to(config('mail.from.address'));
+            $message->from(env('MAIL_FROM'),env('MAIL_FROM_NAME'));
+            $message->to($email);
             $message->subject($subject);
         });
         

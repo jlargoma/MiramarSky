@@ -68,7 +68,7 @@
 @section('content')
 
 <div class="contratoBox">
-  <h1>CONTRATO DE COMERCIALIZACIÓN DE VIVIENDA PARTICULAR</h1>
+  <h1>CONTRATO DE COMERCIALIZACIÓN DE VIVIENDA TEMP {{$seasson}}</h1>
   <h3>Sierra Nevada {{$date}}</h3>
   <div class="body">
     <?php echo $text; ?>
@@ -87,7 +87,7 @@
     </tr>
     <tr>
       <td >Firma Propietario</td>
-      <td >Firma MiramarSki</td>
+      <td >Firma ISDE S.L.</td>
     </tr>
   </table>
 </div>

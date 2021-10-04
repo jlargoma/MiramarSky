@@ -29,14 +29,7 @@
     text-align: center;
     display: inline-block;
   }
-  table.signs{
-    width: 100%;
-  }
-  table.signs td{
-    width: 49%;
-      text-align: center;
-  }
-  table.signs td img {
+  .signs img {
     width: 330px;
 }
 .contratoBox h1 {
@@ -56,26 +49,60 @@
   /*text-indent: 5px;*/
   text-align: justify;
 }
+@media only screen and (max-width: 540px) {
+  .contratoBox{
+    padding: 30px 15px;
+  }
+  .contratoBox h1{
+    margin-left: 0px;
+    line-height: 1.5;
+  }
+  .contratoBox h2 {
+    font-size: 15px;
+    line-height: 1;
+    letter-spacing: 1px;
+    margin: 1em 4px;
+  }
+  .rateCalendar .item {
+    width: 48%;
+  }
+  .sessionType {
+    overflow: auto;
+    margin: 1em auto;
+  }
+  .sessionType table td {
+    padding: 5px 10px !important;
+    font-size: 13px;
+    text-align: center;
+  }
+  .rateCost table th {
+    font-size: 10px;
+    min-width: 46px !important;
+}
+.rateCost table td {
+    font-size: 10px !important;
+}
+  .rateCost {
+    width: 100%;
+    overflow: auto;
+  }
+}
 </style>
 
 
 <div class="contratoBox">
-  <h1>CONTRATO DE COMERCIALIZACIÓN DE VIVIENDA PARTICULAR</h1>
+  <h1>CONTRATO DE COMERCIALIZACIÓN DE VIVIENDA TEMP {{$seasson}}</h1>
   <h3>Sierra Nevada {{$date}}</h3>
   <div class="body">
     <?php echo $text; ?>
   </div>
-  <table class="signs">
-    <tr>
-      <td >
-        @if($sign)
-        <h4>Firma</h4>        
-        @else
-        <form  action="{{ route('contract.sign') }}" method="post" style="width: 325px; margin: 1em auto;"> 
+  <div class="row signs">
+    <div class="col-md-6 text-center">
+      <form  action="{{ route('contract.sign') }}" method="post" style="width: 325px; margin: 1em auto;"> 
           <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
           <input type="hidden" name="sign"  id="sign" value="">
           <input type="hidden" name="ID"  id="ID" value="{{$id}}">
-          <h5>Firma</h5>
+          <h5 >Firma Propietario</h5>
           <div class="sing-box">
             <canvas width="320" height="300" id="cSign"></canvas>
           </div>
@@ -86,17 +113,12 @@
             <i class="fa fa-trash" aria-hidden="true"></i> Limpiar
           </button>
         </form>
-        @endif
-      </td>
-      <td>
-        <img src="/admin/propietario/contrato/sign/contratos.png" >
-      </td>
-    </tr>
-    <tr>
-      <td >Firma Propietario</td>
-      <td >Firma MiramarSki</td>
-    </tr>
-  </table>
+    </div>
+    <div class="col-md-6">
+      <h5 class="text-center">Firma ISDE SL</h5>
+      <img src="/admin/propietario/contrato/sign/contratos.png" >
+    </div>
+  </div>
 </div>
  @if($sign)
  <div class="text-center mY-1em">
