@@ -9,6 +9,8 @@ use Auth;
 use Mail;
 use App\Classes\Mobile;
 use App\Book;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class OwnedController extends AppController {
 
@@ -199,30 +201,23 @@ class OwnedController extends AppController {
   }
 
   public function tarifasOwned($name) {
-    $room = \App\Rooms::where('nameRoom', $name)->first();
-
-    if ($room->owned == Auth::user()->id) {
-
-
-      $room = \App\Rooms::where('nameRoom', $name)->first();
-    } elseif (Auth::user()->role == 'admin') {
-
-      $room = \App\Rooms::where('nameRoom', $name)->first();
-    } else {
-
+    $oRoom = \App\Rooms::where('nameRoom', $name)->first();
+    $oUsr = Auth::user();
+    if ($oRoom->owned != $oUsr->id && $oUsr->role != 'admin') {
       return view('errors.owned-access');
     }
-    $year = $this->getActiveYear();
-    $startYear = new Carbon($year->start_date);
-    $endYear = new Carbon($year->end_date);
-    $diff = $startYear->diffInMonths($endYear);
-//                dd($diff);
+    
+    $oYear = $this->getActiveYear();
+    $sRates = new \App\Services\Bookings\RatesRoom();
+    $sRates->setDates($oYear);
+    $sRates->setSeassonDays();
     return view('backend.owned.tarifa', [
         'mobile' => new Mobile(),
-        'room' => $room,
-        'startYear' => $startYear,
-        'endYear' => $endYear,
-        'diff' => $diff,
+        'room' => $oRoom,
+        'calendar' => $sRates->getCalendar(),
+        'sessionTypes' => $sRates->getSessionTypes(),
+        'calStyles' => $sRates->getStyles(),
+        'tarifas' => $sRates->getTarifas($oRoom),
     ]);
   }
 
@@ -313,5 +308,200 @@ class OwnedController extends AppController {
         'room' => $room
     ]);
   }
+/*
+ * -----------------------------------------------------------
+ *  CONTRATOS
+ * -----------------------------------------------------------
+ */
+  
+  
+  /*
+   * If the contract is signed, show the PDF
+   */
+  function getContracts($id,$pdf=false){
+    $oContr = \App\RoomsContracts::find($id);
+    if (!$oContr) return ['error'=>'Contrato no encontrado'];
+    $oRoom = \App\Rooms::find($oContr->room_id);
+    
+    // Controls -------------------------------------------------------
+    $oUsr = Auth::user();
+    $oUsrRoom = null;
+    if ($oRoom){
+      if($oRoom->id != $oContr->room_id) 
+         return ['error'=>'Contrato no encontrado'];
+      
+      if ($oRoom->owned != $oUsr->id && $oUsr->role != 'admin')
+        return ['error'=>'Contrato no encontrado'];
+      
+      $oUsrRoom = \App\User::find($oRoom->owned);
+    } else {
+      if ($oUsr->role != 'admin') 
+        return ['error'=>'Contrato no encontrado'];
+    }
+    // Controls -------------------------------------------------------   
+  
+    $content = $oContr->content;
+    
+        
+    $oYear = $this->getActiveYear();
+    $sRates = new \App\Services\Bookings\RatesRoom();
+    $sRates->setDates($oYear);
+    $sRates->setSeassonDays();
+    
+    // Already Signed  -------------------------------------------
+    $fileName = $oContr->file;
+    $path = storage_path('app/'.$fileName);
+    if (!$pdf && $fileName && File::exists($path)){
+      return[
+          'id' => $oContr->id,
+          'path' => $path,
+          'seasson' => $sRates->seasson,
+          'file_name'=>'contrato MiramarSKY: Temporada'.$sRates->seasson.'.pdf',
+          'sign' => true,
+      ];
+    }
+    // Already Signed  -------------------------------------------
+   
+    $date= '';
+    $aux = explode('-',$oContr->updated_at);
+    if (is_array($aux) && count($aux)==3){
+      $date= 'a '.$aux[2].' días de '.getMonthsSpanish($aux[1]).' del año '.$aux[0];
+    }
+    
+    if ($pdf){
+      $count = 0;
+      $calendar = '';
+      foreach ($sRates->getCalendar2() as $c) {
+        if ($count == 3){
+          $calendar .='<div></div>';
+          $count = 0;
+        }
+        $count++;
+        $calendar .=  '<div class="dt2" >' . $c . '</div>';
+      }
+    } else  $calendar = $sRates->printCalendar();
+    
+    return[
+        'id' => $oContr->id,
+        'text' => $oContr->getText($oRoom,$oUsrRoom,$sRates,$calendar),
+        'date' => $date,
+        'room' => $oRoom,
+        'sign' => false,
+        'calStyles' => $sRates->getStyles(),
+    ];
+  }
+  
+  function seeContracts($id){
+    
+    $data = $this->getContracts($id);
+    if (isset($data['error'])){
+      return redirect('404')->withErrors([$data['error']]);
+    }
+    if ($data['sign']){
+      return response()->file($data['path'], [
+        'Content-Disposition' => str_replace('%name', $data['file_name'], "inline; filename=\"%name\"; filename*=utf-8''%name"),
+        'Content-Type'        => 'application/pdf'
+      ]);
+    }
+   return view('backend.owned.contratos',$data);
+  }
+  
+  
+  
 
+  function downlContract($id) {
+    $data = $this->getContracts($id,true);
+    if ($data['sign']){
+      return response()->download($data['path'], 'contrato-MiramarSKY.pdf', [], 'inline');
+    } 
+    
+    return back()->withErrors(['contrato no encontrado']);
+        
+  }
+  
+
+  
+  /*
+   * Set Sign, create the PDF and send mail
+   */
+  function setSign(Request $req){
+    
+    $contrID = $req->input('ID');
+    
+    $oUsr = Auth::user();
+    $oContr = \App\RoomsContracts::find($contrID);
+    if (!$oContr) return redirect('404')->withErrors(['Contrato no encontrado']);
+    
+    $sign = $req->input('sign');
+    $encoded_image = explode(",", $sign)[1];
+    $decoded_image = base64_decode($encoded_image);
+
+    //Data ---------------------------------------------------
+    $data = $this->getContracts($contrID,true);
+    if (isset($data['error'])){
+      return redirect('404')->withErrors([$data['error']]);
+    }
+    $text = $data['text'];
+    
+    //Signs -------------------------------------------
+    $data['signFile'] = $encoded_image;
+    $path = storage_path('/app/signs/contratos.png');
+    $file = File::get($path);
+    $data['signAdmin'] = base64_encode($file);
+    
+    //PDF -------------------------------------------
+    $pdf = \App::make('dompdf.wrapper');
+    $pdf->getDomPDF()->set_option("enable_php", true);
+    $pdf->loadView('backend.owned.contratosDownl',$data);
+    $output = $pdf->output();
+//        return $pdf->download('invoice.pdf');
+//    return $pdf->stream();
+        
+    //save document
+    $fileName = 'contracts/' .$contrID.'-'. $oUsr->id .'-'.time().'.pdf';
+    $path = storage_path('/app/' . $fileName);
+    
+    $oContr->file = $fileName;
+    $oContr->save();
+    $storage = \Illuminate\Support\Facades\Storage::disk('local');
+    $storage->put($fileName, $output);
+    
+    //---------------------------------------------------
+    // Send Mail
+    $oRoom = \App\Rooms::where('id',$oContr->room_id)->with('user')->first();
+    if (!$oRoom) return 'Apto no encontrado';
+    
+    
+    $oYear = \App\Years::find($oContr->year_id);
+    if (!$oYear) return 'Temporada no encontrada';
+    $seasson = $oYear->year.' - '.($oYear->year+1);
+    
+    $subject = 'Contrato de Propietario';
+    $mailContent = 'Hola '.$oRoom->user->name.', <br/><br/>';
+    $mailContent .= '<p>Gracias por firmar su contrato para la comercialización del apartamento <b>'.$oRoom->nameRoom.'</b> para la temporada <b>'.$seasson.'</b></p>';
+    $mailContent .= '<p>Le adjuntamos el documento firmado y tambíen podrá acceder al mismo desde su panel de administración de MiramarSki</p>';
+    $mailContent .= '<br/><br/><br/><p>Muchas Gracias.!</p>';
+    $email = $oRoom->user->email;
+    
+    try{
+      $fileName = "Contrato $seasson";
+      Mail::send('backend.emails.base', [
+            'mailContent' => $mailContent,
+            'title'       => $subject
+        ], function ($message) use ($subject,$email,$path,$fileName) {
+            $message->from(config('mail.from.address'));
+            $message->to(config('mail.from.address'));
+            $message->subject($subject);
+            $message->attach( $path, array(
+                            'as' => $fileName.'.pdf', 
+                            'mime' => 'application/pdf'));
+        });
+        
+      return back()->with(['success' => 'Firma Guardada']);
+    } catch (\Exception $e){
+      return $e->getMessage();
+    }
+    //---------------------------------------------------
+  }
+  
 }

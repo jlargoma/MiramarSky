@@ -108,6 +108,11 @@ Route::group(['middleware' => ['auth','role:admin|propietario'], 'prefix' => 'ad
   Route::get('/propietario/create/password/{email}', 'UsersController@createPasswordUser');
   Route::post('/propietario/create/password/{email}', 'UsersController@createPasswordUser');
   
+  Route::get('/propietario/contrato/sign/{file?}', 'RouterActionsController@getSign');
+  Route::post('/propietario/contrato/sign', 'OwnedController@setSign')->name('contract.sign');
+  Route::get('/propietario/contrato/downl/{id}', 'OwnedController@downlContract')->name('contract.downl');
+  Route::get('/propietario/contrato/{id}', 'OwnedController@seeContracts')->name('contract.see');
+  
 });
 
 /** Moved form routers */

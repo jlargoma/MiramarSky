@@ -10,9 +10,9 @@
 
     </tr>
     </thead>
-    <tbody>
+    <tbody id="tableUsers">
 	<?php foreach ($users as $key => $user): ?>
-    <tr>
+    <tr data-role="{{$user->role}}" data-name="{{strtolower($user->name.' '.$user->email)}}">
         <td class="text-center">
 			<?php echo $key + 1; ?>
         </td>
@@ -35,7 +35,7 @@
                 <button class="btn btn-tag btn-complete update-user" type="button"
                         data-id="<?php
 				        echo $user->id ?>" data-toggle="modal" data-target="#updateUser" title="Editar
-                                         Usuario" style="background-color: #48b0f7;!important; color:white!important;">
+                                         Usuario" style="background-color: #48b0f7; color:white!important;">
                     <i class="fa fa-edit"></i>
                 </button>
             </div>

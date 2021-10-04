@@ -56,18 +56,30 @@ $mobile = new Mobile();
     border: none;
     font-weight: 800;
   }
+    table.tRooms thead th {
+    background-color: #48b0f7;
+    color: #FFF;
+    /*white-space: nowrap;*/
+    padding: 8px 4px;
+  }
+  table.tRooms input.room_editable {
+    width: 3em;
+    padding: 0 !important;
+    min-width: 0;
+  }
 </style>
 <div class="table-responsive">
-  <table class="table ">
+  <table class="table tRooms">
     <thead>
       <tr>
-        <th class ="text-center bg-complete text-white font-s12" style="width:7px">#</th>
-        <th class ="text-center bg-complete text-white font-s12" style="min-width: 20%;">Nombre APTO</th>
-        <th class ="text-center bg-complete text-white font-s12" style="min-width: 10px">Lujo</th>
-        <th class ="text-center bg-complete text-white font-s12" style="min-width: 10%;">OCU. MIN</th>
-        <th class ="text-center bg-complete text-white font-s12" style="min-width: 10%;">OCU. MAX</th>
-        <th class ="text-center bg-complete text-white font-s12">Estado</th>
-        <th class ="text-center bg-complete text-white font-s12" style="min-width:145px">Acc</th>
+        <th>#</th>
+        <th>Nombre APTO</th>
+        <th>Contr</th>
+        <th>Lujo</th>
+        <th>OCU. MIN</th>
+        <th>OCU. MAX</th>
+        <th>Estado</th>
+        <th>Acc</th>
       </tr>
     </thead>
     <tbody>
@@ -80,6 +92,12 @@ $mobile = new Mobile();
             <a class="aptos" data-id="<?php echo $room->id ?>" style="cursor: pointer;">
   <?php echo $room->name ?> (<?php echo $room->nameRoom ?>)
             </a>
+          </td>
+          <td class="text-center">
+            <?php $status = (isset($aContrs[$room->id])) ? $aContrs[$room->id] : ""; ?>
+            <button class="btn btnContract  {{$status}}" data-id="{{$room->id}}" title="Contrato {{$status}}">
+              <i class="fa fa-file"></i>
+            </button>
           </td>
           <td class="text-center" >
             <span class="input-group-addon bg-transparent">
@@ -97,7 +115,7 @@ $mobile = new Mobile();
               <input type="checkbox" class="estado status_<?php echo $room->id ?>" data-id="<?php echo $room->id ?>" name="state" data-init-plugin="switchery" data-size="small" data-color="success" <?php echo ($room->state == 0) ? "" : "checked" ?>> 
             </span>
           </td>
-          <td class="text-center" >
+          <td class="text-center nowrap" >
             @if($room->user)
             <a class="btn btn-default btn-pdf btn-sm" href="{{ url
   							('/admin/apartamentos/download/contrato/'.$room->user->id) }}">

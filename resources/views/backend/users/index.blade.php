@@ -3,13 +3,6 @@
 @section('title') Administrador de reservas MiramarSKI @endsection
 
 @section('externalScripts')
-    <link href="/assets/css/font-icons.css" rel="stylesheet" type="text/css"/>
-    <link href="/assets/plugins/jquery-datatable/media/css/dataTables.bootstrap.min.css" rel="stylesheet"
-          type="text/css"/>
-    <link href="/assets/plugins/jquery-datatable/extensions/FixedColumns/css/dataTables.fixedColumns.min.css"
-          rel="stylesheet" type="text/css"/>
-    <link href="/assets/plugins/datatables-responsive/css/datatables.responsive.css" rel="stylesheet" type="text/css"
-          media="screen"/>
 
 @endsection
 
@@ -22,12 +15,24 @@
                             class="font-w800" style="font-weight: 800;">Usuarios</span></h2>
             </div>
             <div class="col-md-12">
-                <div class="col-md-9 col-xs-12">
+                <div class="col-md-6 col-xs-12">
                     <div class="col-md-3 col-xs-12">
                         <input type="text" class="form-control" placeholder="Bucar..." id="searchUser"/>
                         <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
                     </div>
                 </div>
+                <div class="col-md-3 col-xs-12">
+                  <select class="form-control" id="findRole">
+                    <option value="" default>Cargo / Tipo</option>
+                    <option value="admin">admin</option>
+                    <option value="subadmin">SubAdmin</option>
+                    <option value="limpieza">Limpieza</option>
+                    <option value="agente">Agente</option>
+                    <option value="propietario">Propietario</option>
+                    <option value="recepcionista">Recepcionista</option>
+                    <option value="conserje">Conserje</option>
+                  </select>
+                  </div>
                 <div class="col-md-3 col-xs-12">
                     <button class="btn btn-primary" style="float:right; margin: 0 5px" type="button" data-toggle="modal"
                             data-target="#newUser">
@@ -159,6 +164,17 @@
             $('.update-content').empty().append(data);
           });
         });
+        $('#findRole').change(function () {
+          var role = $(this).val();
+          if (role == '') $('#tableUsers tr').show();
+          else {
+            $('#tableUsers tr').each(function(){
+              if ($(this).data('role') == role)  $(this).show();
+              else $(this).hide();
+            });
+          }
+        
+        });
 
         $('.editables').change(function (event) {
           var id = $(this).attr('data-id');
@@ -173,13 +189,13 @@
 
         $('#searchUser').keydown(function (e) {
           var search = $(this).val();
-          var token = $('#_token').val();
-
-          $.post('/admin/usuarios/search', {search: search, _token: token}).done(function
-              (data) {
-            $('#content-table-user').empty().append(data);
-          });
-
+          if (search == '') $('#tableUsers tr').show();
+          else {
+            $('#tableUsers tr').each(function(){
+              if ($(this).data('name').includes(search))  $(this).show();
+              else $(this).hide();
+            });
+          }
         });
       });
     </script>
