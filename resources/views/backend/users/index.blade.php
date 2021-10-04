@@ -166,7 +166,6 @@
         });
         $('#findRole').change(function () {
           var role = $(this).val();
-          console.log(role,'aaaaaaaaaaaaa');
           if (role == '') $('#tableUsers tr').show();
           else {
             $('#tableUsers tr').each(function(){
@@ -190,13 +189,13 @@
 
         $('#searchUser').keydown(function (e) {
           var search = $(this).val();
-          var token = $('#_token').val();
-
-          $.post('/admin/usuarios/search', {search: search, _token: token}).done(function
-              (data) {
-            $('#content-table-user').empty().append(data);
-          });
-
+          if (search == '') $('#tableUsers tr').show();
+          else {
+            $('#tableUsers tr').each(function(){
+              if ($(this).data('name').includes(search))  $(this).show();
+              else $(this).hide();
+            });
+          }
         });
       });
     </script>

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class RouterActionsController extends AppController {
   /*   * ************************************************************** */
@@ -230,4 +232,22 @@ class RouterActionsController extends AppController {
     $day->save();
   }
 
+    
+  function getSign($file) {
+
+    $path = storage_path('/app/signs/' .$file);
+   
+    if (!File::exists($path)) {
+      abort(404);
+    }
+
+    $file = File::get($path);
+    $type = File::mimeType($path);
+
+    $response = \Response::make($file, 200);
+    $response->header("Content-Type", $type);
+
+    return $response;
+  }
+  
 }

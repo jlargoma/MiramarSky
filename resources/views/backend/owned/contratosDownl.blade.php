@@ -37,7 +37,7 @@
       text-align: center;
   }
   table.signs td img {
-    width: 160px;
+    max-width: 230px;
 }
 .contratoBox h1 {
     font-size: 20px;
@@ -56,6 +56,13 @@
   /*text-indent: 5px;*/
   text-align: justify;
 }
+.sessionType{
+  display: none;
+}
+.month {
+    height: 20px;
+    font-weight: bold;
+}
 </style>
 @endsection
 @section('content')
@@ -66,15 +73,16 @@
   <div class="body">
     <?php echo $text; ?>
   </div>
+  @for($i=0; $i<15;$i++)
+  <br/>
+  @endfor
   <table class="signs">
     <tr>
       <td >
-        @if($sign)
-        <img src="/admin/contrato/sign/{{$signFile}}" >
-        @endif
+        <img src="data:image/png;base64,{{$signFile}}" >
       </td>
       <td>
-        <img src="/admin/contrato/sign/contratos.png" >
+        <img src="data:image/png;base64,{{$signAdmin}}" >
       </td>
     </tr>
     <tr>

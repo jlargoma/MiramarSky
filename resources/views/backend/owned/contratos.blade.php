@@ -37,7 +37,7 @@
       text-align: center;
   }
   table.signs td img {
-    width: 160px;
+    width: 330px;
 }
 .contratoBox h1 {
     font-size: 20px;
@@ -69,8 +69,7 @@
     <tr>
       <td >
         @if($sign)
-        <img src="/admin/contrato/sign/{{$signFile}}" >
-        
+        <h4>Firma</h4>        
         @else
         <form  action="{{ route('contract.sign') }}" method="post" style="width: 325px; margin: 1em auto;"> 
           <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
@@ -90,7 +89,7 @@
         @endif
       </td>
       <td>
-        <img src="/admin/contrato/sign/contratos.png" >
+        <img src="/admin/propietario/contrato/sign/contratos.png" >
       </td>
     </tr>
     <tr>

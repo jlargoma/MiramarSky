@@ -6,7 +6,7 @@ $temporada = $oYear->year . ' - ' . ($oYear->year + 1);
   <div class="block-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
     </button>
-    <h2 class="text-center">Contrato <a href="{{route('contract.see',[$contract->id])}}" title="Ver contrato" ><i class="fa fa-eye"></i></a> <i class="fa fa-paper-plane  sendContrato"></i></h2>
+    <h2 class="text-center">Contrato <a href="{{route('contract.see',[$contract->id])}}" title="Ver contrato"  target="_black" ><i class="fa fa-eye"></i></a> <i class="fa fa-paper-plane  sendContrato"></i></h2>
     <h2 class="text-center">Temporada {{$temporada}}</h2>
   </div>
   <div class="px-1em">
@@ -14,6 +14,19 @@ $temporada = $oYear->year . ' - ' . ($oYear->year + 1);
       <input type="hidden" name="id" id="idContr" value="{{$contract->id}}">
       <input type="hidden" name="_token" id="tokenContr" value="<?php echo csrf_token(); ?>">
       <div class="row">
+      @if($sign)
+        <input type="hidden" name="alreadySing" value="1">
+        <div class="col-md-12">
+          <div class="box-signed">
+            <h5>Documento ya firmado</h5>
+            <a href="{{route('contract.see',[$contract->id])}}" title="Ver contrato" target="_black" ><i class="fa fa-eye"></i> Ver Contrato</a>
+            <div class="delSing">
+            <input type="checkbox" name="delSign">Eliminar documento
+            </div>
+          </div>
+        </div>
+      @else
+      
         <div class="col-md-9">
           <textarea class="form-control" name="contract_main_content" id="contract_main_content"><?php echo $contract->content; ?></textarea>
         </div>
@@ -27,16 +40,10 @@ $temporada = $oYear->year . ' - ' . ($oYear->year + 1);
             <li>{temporada_calendario} (calendario temporada)</li>
             <li>{temporada_costos} (tabla de costos)</li>
             <li>{temporada_rango} (rango en Años de la temporada)</li>
+            <li>{break} (sallto de linea)</li>
           </u>
           <div class="singBox">
-          @if($sign)
-          <h5>Firma</h5>
-            <img src="/admin/contrato/sign/{{$signFile}}" >
-            <div class="delSing">
-            <input type="checkbox" name="delSign">Borrar Firma
-            </div>
-            
-          @else
+          @if(!$sign)
           <p>Documento no firmado</p>
           @endif
           </div>
@@ -58,9 +65,10 @@ $temporada = $oYear->year . ' - ' . ($oYear->year + 1);
         <div class="col-md-5 rateCost  mt-1em">
           <?php echo $roomTarifas; ?>
         </div>
-
+        @endif
         <div class="col-md-12 text-center">
           <button type="submit" class="btn btn-success">Guardar</button>
+          <br/><br/>
         </div>
       </div>
     </form>

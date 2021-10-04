@@ -156,7 +156,8 @@ class RatesRoom {
           font-size: 12px;
           border: 1px solid #dadada;
         }
-        .rateCalendar .item table th{
+        .rateCalendar .item table th,
+        .dt.day{
           background-color: #dadada;
           padding: 4px;
         }
@@ -198,12 +199,14 @@ class RatesRoom {
         }
         .rateCalendar .item table td.s1,
         .sessionType table td.s1,
+        .dt.s1,
         .rateCost table th.s1{
           /*.Alta*/
           background: #f0513c;
           color: white;
         }
         .rateCalendar .item table td.s2,
+        .dt.s2,
         .sessionType table td.s2,
         .rateCost table th.s2{
           /*.Media*/
@@ -212,6 +215,8 @@ class RatesRoom {
         }
         .rateCalendar .item table td.s0,
         .rateCalendar .item table td.s3,
+        .dt.s0,
+        .dt.s3,
         .sessionType table td.s3,
         .rateCost table th.s3{
           /*.Baja*/
@@ -219,6 +224,7 @@ class RatesRoom {
           background-color: #91b85d;
         }
         .rateCalendar .item table td.s4,
+        .dt.s4,
         .sessionType table td.s4,
         .rateCost table th.s4{
           /*.Premium*/
@@ -226,6 +232,7 @@ class RatesRoom {
           color: white;
         }
         .rateCalendar .item table td.s5,
+        .dt.s5,
         .sessionType table td.s5,
         .rateCost table th.s5{
           /*Verano*/
@@ -288,5 +295,67 @@ class RatesRoom {
   function printTarifas($oRoom){
     return $this->getSessionTypes()
             .'<div class="rateCost">'.$this->getTarifas($oRoom).'</div>';
+  }
+  
+  
+  function getCalendar2() {
+
+    $inicio = new DateTime($this->start);
+    $iMonth = new DateInterval('P1M');
+    $iDay = new DateInterval('P1D');
+    $fin = new DateTime($this->end);
+    $periodo = new DatePeriod($inicio, $iMonth, $fin);
+    $months = getMonthsSpanish(null, false, true);
+    $div = '<div class="dt ';
+    $header = '<div>'
+            . $div.' day">L</div>'
+            . $div.' day">M</div>'
+            . $div.' day">M</div>'
+            . $div.' day">J</div>'
+            . $div.' day">V</div>'
+            . $div.' day">S</div>'
+            . $div.' day">D</div>'
+            . '</div>';
+
+    $return = [];
+    foreach ($periodo as $date) {
+      $start = clone $date;
+      $start->modify('first day of this month');
+      $end = clone $date;
+      $end->modify('last day of this month');
+      $end->modify('+1 Days');
+      $days = new DatePeriod($start, $iDay, $end);
+
+      
+       $html = '<div class="month">' . $months[$date->format('n')] . ' ' . $date->format('Y') . '</div>'
+             . $header . '<div>';
+       
+//      $html = $header . '<div>';
+
+      $N = $start->format('N')-1;
+      for($i=0;$i<$N;$i++)  $html .= $div.'"></div>';
+      $w = $start->format('W');
+      $countTR = 0;
+      if ($start->format('N') > 7) $countTR--; //ajusto las que comienzan el lunes
+      foreach ($days as $d) {
+        if ($d->format('N')==1) {
+          $html .= '</div><div>';
+          $countTR++;
+        }
+        $class = $this->allDay[$d->format('Ymd')];
+        $html .= $div.' s' . $class . '">' . $d->format('d') . '</div>';
+      }
+      
+      $N = 7-$end->format('N')+1;
+      for($i=0;$i<$N;$i++)  $html .= $div.'"></div>';
+      
+      $rest = substr($html, -5);
+      if ($rest != '</div>')
+        $html .= '</div>';
+      
+      $return[] =  $html;
+    }
+    
+    return $return;
   }
 }

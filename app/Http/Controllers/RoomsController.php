@@ -40,10 +40,15 @@ class RoomsController extends AppController {
 
     $lstContr = \App\RoomsContracts::where('year_id',$oYear->id)->get();
     $aContrs = [];
+    $pathFile = storage_path('app/');
     if($lstContr){
       foreach ($lstContr as $c){
         if($c->send) $aContrs[$c->room_id] = 'enviado';
-        if($c->sign) $aContrs[$c->room_id] = 'firmado';
+
+        $fileName = $c->file;
+        if ($fileName && File::exists($pathFile.$fileName)){
+          $aContrs[$c->room_id] = 'firmado';
+        }
       }
     }
   
@@ -1226,15 +1231,13 @@ class RoomsController extends AppController {
     $sRates->setSeassonDays();
     
     $oContr = \App\RoomsContracts::getContract($oYear->id,$roomID);
-    $fileName = $oContr->sign;
     $sign = false;
-    if ($fileName){
-      $path = storage_path('/app/' . $fileName);
-      $sign = File::exists($path);
-      if ($sign){
-        $fileName = str_replace('signs/','', $fileName);
-      }
-    }
+    
+    
+    //  Already Created ---------------------------------------------------
+    $fileName = $oContr->file;
+    $path = storage_path('app/'.$fileName);
+    $sign = ($fileName && File::exists($path));
     
     return view('backend.rooms.contratos.modal_content', [
         'oYear'=>$oYear,
@@ -1243,7 +1246,6 @@ class RoomsController extends AppController {
         'sessionTypes' => $sRates->getSessionTypes(),
         'calStyles' => $sRates->getStyles(),
         'roomTarifas' => $sRates->getTarifas(),
-        'signFile' => $fileName,
         'sign' => $sign,
         ]);
                     
@@ -1253,13 +1255,14 @@ class RoomsController extends AppController {
     $id = $req->input('id');
     $oContr = \App\RoomsContracts::find($id);
     if (!$oContr) return redirect ()->back()->withErrors (['Contrato no encontrado']);
-    $oContr->content = $req->input('contract_main_content');
+    if ($req->has('contract_main_content'))   $oContr->content = $req->input('contract_main_content');
     if($req->input('delSign')=='on'){
-      $oContr->sign = null;
+      $oContr->file = null;
     }
     $oContr->save();
     return redirect()->back()->with(['success'=>'Contrato Guardado']);
   }
+  
   function sendContractoUser(Request $req){
     $id = $req->input('id');
     $oContr = \App\RoomsContracts::find($id);

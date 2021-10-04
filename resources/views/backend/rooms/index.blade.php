@@ -25,27 +25,30 @@
     color: black;
     font-weight: 800;
   }
-    .showVars{
-      background-color: #2b579a;
-      color: #FFF;
-      font-weight: bold;
-      padding: 8px;
-      margin: 0;
-    }
-    .showVars i{
-      float: right;
-    }
-    .delSing{
-      background-color: #fd9191;
+  .showVars{
+    background-color: #2b579a;
+    color: #FFF;
+    font-weight: bold;
+    padding: 8px;
+    margin: 0;
+  }
+  .showVars i{
+    float: right;
+  }
+  .delSing{
+    background-color: #fd9191;
     padding: 12px;
     color: #131313;
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
-    }
-    .delSing input[type="checkbox"] {
-      min-width: 24px !important;
-      margin: -7px 6px 0;
-      float: left;
+    text-align: left;
+    margin-top: 1em;
+    border-radius: 11px;
+  }
+  .delSing input[type="checkbox"] {
+    min-width: 24px !important;
+    margin: -7px 6px 0;
+    float: left;
   }
   .singBox {
     border: 1px solid;
@@ -63,6 +66,11 @@
 button.btn.btnContract.enviado {
     background-color: #ff9c21;
     color: #FFF;
+}
+.box-signed{
+  width: 310px;
+  margin: 1em auto;
+  text-align: center;
 }
 
 </style>

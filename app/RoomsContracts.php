@@ -33,11 +33,11 @@ class RoomsContracts extends Model
     return $obj;
   }
   
-  function getText($oRoom,$oUser,$sRates){
+  function getText($oRoom,$oUser,$sRates, $calendar){
     $text = $this->content;
     if ($oUser){
       $text = str_replace('{usuario_nombre}', $oUser->name, $text);
-      $text = str_replace('{usuario_dni}', $oUser->nif, $text);
+      $text = str_replace('{usuario_dni}', $oUser->nif_business, $text);
       if ($oUser->nif_business){
         $text = str_replace('{usuario_representacion}', 
                 ' en nombre y representación de '.$oUser->name_business
@@ -50,8 +50,9 @@ class RoomsContracts extends Model
     if($oRoom) $text = str_replace('{room_name}', $oRoom->nameRoom, $text);
     
     $text = str_replace('{temporada_rango}', $sRates->seasson, $text);
-    $text = str_replace('{temporada_calendario}', $sRates->printCalendar(), $text);
+    $text = str_replace('{temporada_calendario}', $calendar, $text);
     $text = str_replace('{temporada_costos}', $sRates->printTarifas($oRoom), $text);
+    $text = str_replace('{break}', '<div class="break"></div>', $text);
     $text = preg_replace('/\{(\w+)\}/i', '', $text);
     
     return $text;
