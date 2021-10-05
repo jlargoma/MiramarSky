@@ -109,7 +109,7 @@ class CheckPartee extends Command {
       }
     } else {
       //Can't conect to partee
-      Log::error("Error Conect Partee " . $apiPartee->response);
+//      Log::error("Error Conect Partee " . $apiPartee->response);
       echo $apiPartee->response;
     }
   }
