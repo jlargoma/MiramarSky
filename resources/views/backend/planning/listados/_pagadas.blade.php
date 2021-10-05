@@ -39,13 +39,8 @@ endif
                             <?php if ($book->agency != 0): ?>
                         <img src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" class="img-agency" />
                             <?php endif;?>
-                            <?php if (isset($payment[$book->id])): ?>
-                            <a class="update-book r" data-id="<?php echo $book->id ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                              <?php echo $book->customer['name']  ?></a>
-                            <?php else: ?>
                             <a class="update-book" data-id="<?php echo $book->id ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                               <?php echo $book->customer['name']  ?></a>
-                                <?php endif ?>
                         </div>
                         </td>
                         @if($isMobile)

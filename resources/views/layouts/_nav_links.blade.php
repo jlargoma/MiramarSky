@@ -68,11 +68,7 @@
     <li class="{{ $pathRequest == 'admin/facturas' ? 'active' : '' }}">
       <a href="{{ url('admin/facturas') }}"  class="detailed">Facturas</a>
     </li>
-    @if (config('show_ASN'))
-    <li class="{{ $pathRequest == 'admin/encuestas' ? 'active' : '' }}">
-      <a href="{{ url('admin/encuestas') }}" class="detailed">Encuestas</a>
-    </li>
-    @endif
+    
     <li class="{{ $pathRequest == 'admin/forfaits/orders' ? 'active' : '' }}">
       <a href="{{ url('admin/forfaits/orders') }}" class="detailed">Forfaits</a>
     </li>

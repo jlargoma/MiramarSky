@@ -7,6 +7,13 @@ setlocale(LC_TIME, "es_ES");
 $uRole = Auth::user()->role;
 $appName = env('APP_APPLICATION');
 ?>
+
+@if($totalSales !== null)
+<div class="clearfix totalCalendar" >
+  Ventas de {{getMonthsSpanish($currentM,false)}} : {{moneda($totalSales)}}
+</div>
+@endif
+
 <div class="col-md-12 col-xs-12">
   <div class="panel panel-mobile">
    @include('backend.planning.calendar.tabs')

@@ -1274,7 +1274,7 @@ class BookController extends AppController
             break;
           case 'blocks':
                 $books = $booksQuery->where('type_book', 4)
-                  ->orderBy('created_at', 'DESC')->get();
+                  ->orderBy('created_at', 'DESC')->limit(500)->get();
 
             $bg_color = '#448eff';
           break;
@@ -1485,10 +1485,10 @@ class BookController extends AppController
     }
     public function getCalendarChannelView($chGr,$month=null){
       $roomIDs = Rooms::where('channel_group',$chGr)->pluck('id');
-      return $this->getCalendarView($month,$roomIDs);
+      return $this->getCalendarView($month,$roomIDs,false);
     }
     
-    public function getCalendarView($month=null,$roomIDs= null){
+    public function getCalendarView($month=null,$roomIDs= null,$showTotals=true){
         $mes           = [];
         $arrayReservas = [];
         $arrayMonths   = [];
@@ -1496,8 +1496,9 @@ class BookController extends AppController
         $year          = $this->getActiveYear();
         $startYear     = new Carbon($year->start_date);
         $endYear       = new Carbon($year->end_date);
-
+        $totalSales    = 0;
         $type_book_not = [0,3,6,12,98,99];
+        $type_book_sales = [1,2,8,11];
         $uRole = Auth::user()->role;
         $mobile = new Mobile();
         $isMobile = $mobile->isMobile();
@@ -1507,6 +1508,16 @@ class BookController extends AppController
             $month = strtotime(($year->year+1).'-'.date('m').'-01');
           }
         }
+        
+        if ($showTotals){
+          //just to jlargo && MariaJose
+          $usrAdmin = Auth::user()->email;
+          if( $usrAdmin != "jlargo@mksport.es" && $usrAdmin != "info@eysed.es"){
+            $totalSales = null;
+            $showTotals = false;
+          }
+        }
+        
         $currentM = date('n',$month);
         $startAux = new Carbon(date('Y-m-d', strtotime('-1 months',$month)));
         $endAux = new Carbon(date('Y-m-d', strtotime('+1 months',$month)));
@@ -1533,19 +1544,28 @@ class BookController extends AppController
         $uRole = Auth::user()->role;
         foreach ($books as $book)
         {
-            $dia        = Carbon::createFromFormat('Y-m-d', $book->start);
-            $start      = Carbon::createFromFormat('Y-m-d', $book->start);
-            $finish     = Carbon::createFromFormat('Y-m-d', $book->finish);
-            $diferencia = $start->diffInDays($finish);
-            $event = $this->calendarEvent($book,$uRole,$isMobile,$bookings_without_Cvc);
-           
-            for ($i = 0; $i <= $diferencia; $i++)
-            {
-              $aux = $dia->copy();
-              $arrayReservas[$book->room_id][$aux->format('Y')][$aux->format('n')][$aux->format('j')][] = $event;
-              $dia = $dia->addDay();
+          $start = strtotime($book->start);
+          $finish = strtotime($book->finish);
+          $salesMonth = 0;
+          $pvpNight = ($book->nigths>0) ? $book->total_price / $book->nigths : $book->total_price;
+          $event = $this->calendarEvent($book,$uRole,$isMobile,$bookings_without_Cvc);
+          while($start<$finish){
+            $arrayReservas[$book->room_id][date('Y',$start)][date('n',$start)][date('j',$start)][] = $event;
+            if (date('n',$start) ==  $currentM) $salesMonth += $pvpNight;
+            $start = strtotime("+1 day", $start);
+          }
+          $arrayReservas[$book->room_id][date('Y',$start)][date('n',$start)][date('j',$start)][] = $event;
+
+            if ($showTotals){
+              if (!$book->nigths || $book->nigths == 0) $salesMonth = $pvpNight;
+                if (in_array($book->type_book,$type_book_sales)){
+                    $totalSales += $salesMonth;
+                }
             }
         }
+        
+         
+        
         
         $firstDayOfTheYear = $startAux->copy();
         $dayWeek = ["D","L","M","X","J","V", "S"];
@@ -1586,12 +1606,11 @@ class BookController extends AppController
         
         $roomscalendar = $sqlRooms->orderBy('order', 'ASC')->get();
         $days = $arrayDays;
-  
         
       $buffer = ob_html_compress(view('backend.planning.calendar.content', 
               compact('arrayMonths',
                       'roomscalendar', 'arrayReservas', 'mes', 
-                      'days', 'startYear', 'endYear','currentM','startAux')));
+                      'days', 'startYear', 'endYear','currentM','startAux','totalSales')));
       return view('backend.planning.calendar.index',['content'=>$buffer]);
       
     }

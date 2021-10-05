@@ -57,7 +57,7 @@ $uRole = Auth::user()->role;
             <td class="fix-col td-b1" data-order="{{$book->id}}">
                <div class="fix-col-data">
                 {!! $icon !!}
-                <?php if (isset($payment[$book->id])): ?>
+                <?php if (isset($payment[$book->id]) && $payment[$book->id]>0): ?>
                 <a class="update-book r" data-id="<?php echo $book->id ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                   <?php echo $book->customer['name']  ?>
                 </a>

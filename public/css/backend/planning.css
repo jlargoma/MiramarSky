@@ -81,11 +81,11 @@ input#minDay.danger {
 icon {
   float: left;
   width: 17px;
-    text-align: center;
+  text-align: center;
 }
 button.btn.btn-xs.getImagesCustomer {
-    float: left;
-    margin-left: 3px;
+  float: left;
+  margin-left: 3px;
 }
 .BookComm.tooltiptext {
   color: #fff;
@@ -249,6 +249,24 @@ button#closeUrgente {
   max-width: 2.5em;
   border-radius: 4px !important;
 }
+
+.totalCalendar{
+  border: 1px solid;
+  margin: 10px 0;
+  padding: 10px 0;
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+.wallt_forfait {
+  font-size: 18px;
+  padding: 12px 5px;
+  margin: 10px auto;
+  background-color: #ffffff;
+  height: 46px;
+  font-weight: bold;
+}
+
 /******************************************************************************/
 
 @media only screen and (max-width: 991px){
@@ -283,10 +301,7 @@ button#closeUrgente {
     display: block;
     margin: 6em auto;
   }
-  .title-year-selector{
-    margin-top: -14px;
-    font-weight: 800;
-  }
+
 }
 @media only screen and (max-width: 560px){
   .table-icon-row{
@@ -679,8 +694,11 @@ div.dataTables_filter {
 }
 @media only screen and (max-width: 540px){
   .buttonsTops button.btn {
-   padding: 8px 3px;
+    padding: 8px 3px;
     margin: 2px 0px 4px;
-}
+  }
+  .title-year-selector{
+    margin-top: 0px;
+  }
 
 }
