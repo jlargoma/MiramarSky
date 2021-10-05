@@ -451,12 +451,12 @@ $(document).ready(function () {
 
   ///////////////////////////////////////////////
 
-  setTimeout(
-          function () {
-            var tutiempo_script = document.createElement('script');
-            tutiempo_script.setAttribute('src', "https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G");
-            document.body.appendChild(tutiempo_script);
-          }, 700);
+//  setTimeout(
+//          function () {
+//            var tutiempo_script = document.createElement('script');
+//            tutiempo_script.setAttribute('src', "https://www.tutiempo.net/s-widget/l_FyTwLBdBd1arY8FUjfzjDjjjD6lUMWzFrd1dEZi5KkjI3535G");
+//            document.body.appendChild(tutiempo_script);
+//          }, 700);
 
   $('body').on('click', '.send_encuesta', function (event) {
     var id = $(this).data('id');

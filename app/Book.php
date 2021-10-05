@@ -1053,7 +1053,7 @@ class Book extends Model {
   
   
   function printExtraIcon(){
-    
+    return '';
     $lujo = $this->getSupLujo($this->type_luxury);
     $parking = $this->getParking($this->type_park);
     
@@ -1064,13 +1064,20 @@ class Book extends Model {
   }
   /**********************************************************************/
   /////////  book_meta //////////////
-  public function setMetaContent($key,$content) {
-    DB::table('book_meta')
-    ->updateOrInsert(
-        ['book_id' => $this->id, 'meta_key' => $key],
-        ['meta_value' => $content]
-    );
+   public function setMetaContent($key,$content) {
+      
+      
+    $updated =  DB::table('book_meta')->where('book_id',$this->id)
+              ->where('meta_key',$key)
+              ->update(['meta_value' => $content]);
+
+    if (!$updated) {
+      DB::table('book_meta')->insert(
+            ['book_id' => $this->id, 'meta_key' => $key,'meta_value' => $content]
+        );
+    }
   }
+  
   public function getMetaContent($key) {
     
     $book_meta = DB::table('book_meta')

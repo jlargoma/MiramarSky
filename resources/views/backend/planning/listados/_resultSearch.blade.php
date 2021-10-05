@@ -59,15 +59,9 @@ $uRole = Auth::user()->role;
                 @if($book->is_fastpayment == 1 || $book->type_book == 99 )
                  <img class="img-agency" src="/pages/fastpayment.png" />
                 @endif
-                <?php if (isset($payment[$book->id])): ?>
-                <a class="update-book r" data-id="<?php echo $book->id ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
-                  <?php echo $book->customer['name']  ?>
-                </a>
-                <?php else: ?>
                 <a class="update-book" data-id="<?php echo $book->id ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                   <?php echo $book->customer['name']  ?>
                 </a>
-                <?php endif ?>
                </div>
             </td>
             @if($isMobile)

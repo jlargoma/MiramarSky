@@ -124,7 +124,7 @@ class SendParteeReminder extends Command {
       }
     } else {
       //Can't conect to partee
-      $this->sLog->warning("Error Conect Partee " . $this->apiPartee->response);
+//      $this->sLog->warning("Error Conect Partee " . $this->apiPartee->response);
       echo $this->apiPartee->response;
     }
   }
