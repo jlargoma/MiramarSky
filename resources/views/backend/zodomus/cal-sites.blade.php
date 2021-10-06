@@ -174,6 +174,13 @@ $tDays = count($days);
           <td class="day">{{$t_rooms-$avail[$k]}}</td>
           @endforeach
         </tr>
+        <tr>
+          <th>OTA Avail</th>
+          @foreach($days as $k=>$day)
+          <?php $aux = isset($otaAvail[$kRoom]) ? $otaAvail[$kRoom][$k] : '0'; ?>
+          <td class="day <?php if ($avail[$k] != $aux) echo 'red'; ?>"">{{$aux}}</td>
+          @endforeach
+        </tr>
         @endforeach
         </tbody>
       </table>

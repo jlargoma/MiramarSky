@@ -17,14 +17,14 @@ class LogsService{
             );
   }
   
-  public function info($text) {
-    $this->logger->info($text);
+  public function info($text,$context = []) {
+    $this->logger->info($text,$context);
   }
-  public function warning($text) {
-    $this->logger->warning($text);
+  public function warning($text,$context = []) {
+    $this->logger->warning($text,$context);
   }
-  public function error($text) {
-    $this->logger->error($text);
+  public function error($text,$context = []) {
+    $this->logger->error($text,$context);
   }
   
 }

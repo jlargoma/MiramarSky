@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use DateTime;
 use DateInterval;
 use App\DailyPrices;
+use App\Services\LogsService;
 
 class OtaGateway {
 
@@ -17,11 +18,13 @@ class OtaGateway {
   protected $URL;
   protected $oConfig;
   protected $account_id;
+  private $sLog;
 
   public function __construct() {
     $this->URL = env('OTA_GATEWAY_URL');
     $this->account_id = env('OTA_GATEWAY_USR_ID');
     $this->oConfig = new oConfig();
+    $this->sLog = new LogsService('OTAs','OtaGateway');
   }
 
   /**
@@ -73,9 +76,30 @@ class OtaGateway {
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 //    var_dump(\json_decode($result),$result,$httpCode);
     curl_close($ch);
+    if ($httpCode!=200){
+      if (isset($data['username'])){
+        unset($data['username']);
+        unset($data['password']);
+      }
+      $data['endpoint'] = $this->URL . $endpoint;
+      $this->sLog->error($result,$data);
+      return false;
+    }
+    
     $this->response = null;
     $this->responseCode = $httpCode;
     $this->response = \json_decode($result);
+    
+     if (!is_object($this->response) || !$this->response){
+       if (isset($data['username'])){
+        unset($data['username']);
+        unset($data['password']);
+        }
+       $data['endpoint'] = $this->URL . $endpoint;
+      $this->sLog->error($result,$data);
+      return false;
+    }
+    
     return TRUE;
    
   }
@@ -530,4 +554,16 @@ class OtaGateway {
   /*   * ********************************************************** */
   /*   * ***********    AUX FUNCTIONS             ***************** */
   /*   * ********************************************************** */
+  
+  
+  public function getAvailability($dfrom,$dto) {
+    $params = [];
+    $params['token'] = $this->token;
+    $params['account_id'] = $this->account_id;
+    $params['dfrom'] = $dfrom;
+    $params['dto'] = $dto;
+   
+    $this->call('availability', 'GET', $params);
+    return ($this->response);
+  }
 }
