@@ -352,22 +352,14 @@ class OtaGate extends Controller {
       if (isset($extra_array->from_google) && $extra_array->from_google){
           $oBooking->ota_id = 'google-hotel';
       }
-     
+      
       //BEGIN: si es una cancelación por modificación -> la salto
-      if ($oBooking->modified_to){
-        \Illuminate\Support\Facades\Mail::send('backend.emails.base-admin', [
-            'content' => 'La reserva '.$oBooking->number.' / '.$channel_group.
-             ' fue modificada por bkg_number '.$oBooking->modified_to,
-         ], function ($message){
-             $message->from(env('MAIL_FROM'));
-             $message->to('pingodevweb@gmail.com');
-             $message->subject('Actualización de reservas - MiramarSky');
-         });
-
-         continue;
+      if ($oBooking->modified_to) {
+        if ($this->otaModified($oBooking,$channel_group))
+          continue; //sólo si se actualizó
       }
       //END: si es una cancelación por modificación -> la salto
-      
+               
       $reserv = [
                 'channel' => $oBooking->ota_id,
                 'bkg_number' => $oBooking->number,
@@ -427,4 +419,40 @@ class OtaGate extends Controller {
     
   }
   
+   function otaModified($oBooking,$channel_group) {
+    $site = '';
+    $oBook = \App\Book::where('bkg_number', $oBooking->number)->first();
+    if ($oBook) {
+      $bkgNumbers = explode(',',$oBooking->modified_to);
+      $updated = false;
+      $newNumber = '';
+      foreach ($bkgNumbers as $number){
+        if ($updated) continue; //ya encontró uno
+        $oBook2 = \App\Book::where('bkg_number', $number)->first();
+        if (!$oBook2){ // aún no se ha cargado
+          $updated == true;
+          $newNumber = $number;
+          $oBook->bkg_number = $number;
+          $oBook->save();
+        }
+      }
+      
+      if (!$updated) return false; //no encontró lugar
+      
+      $bData = \App\BookData::findOrCreate('modified_to', $oBook->id);
+      $bData->content .= $oBooking->number.',';
+      $bData->save();
+
+      \Illuminate\Support\Facades\Mail::send('backend.emails.base-admin', [
+        'content' => 'La reserva ' . $oBooking->number . ' / ' . $channel_group .
+        ' fue modificada por bkg_number ' . $newNumber,
+            ], function ($message) {
+              $message->from(env('MAIL_FROM'));
+              $message->to('pingodevweb@gmail.com');
+              $message->subject('Actualización de reservas');
+            });
+    }
+
+    return true; //si no existe, la tomo como modificada
+  }
 }
