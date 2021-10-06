@@ -23,15 +23,27 @@
     border: 1px solid #c3c3c3;
     text-align: center;
     margin: 4px auto;
-}
-td.border-1{
-  border-left: 2px solid #000;
-}
+  }
+  input.form-control.changeVal.text {
+    width: 97%;
+    text-align: left;
+    margin: 0;
+    padding: 3px !important;
+    height: 21px !important;
+    font-size: 11px;
+    min-height: 0;
+    display: block;
+    margin-bottom: 9px;
+    background-color: #c3c3c3 !important;
+  }
+  td.border-1{
+    border-left: 2px solid #000;
+  }
 </style>
 @endsection
 @section('content')
 <style>
- 
+
 </style>
 
 <div class="container-fluid padding-25 sm-padding-10">
@@ -44,17 +56,17 @@ td.border-1{
           <h3>Porcentajes OTAs:</h3>
         </div>
         <div class="col-xs-12 col-md-7">
-         @include('backend.prices._navs')
+          @include('backend.prices._navs')
         </div>
         <div class="col-md-2 col-xs-12 row"></div>
         @if (Auth::user()->email == "jlargo@mksport.es")
-          <div class="col-md-12 col-xs-12">
-            <form action="{{route('precios.prepare-cron')}}" method="post" class="inline">
-              <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
-              <button class="btn btn-success" title="{{$sendDataInfo}}">Sincr. precios OTAs</button>
-            </form>
-            <small>(Sincronizar toda la temporada)</small>
-          </div>
+        <div class="col-md-12 col-xs-12">
+          <form action="{{route('precios.prepare-cron')}}" method="post" class="inline">
+            <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+            <button class="btn btn-success" title="{{$sendDataInfo}}">Sincr. precios OTAs</button>
+          </form>
+          <small>(Sincronizar toda la temporada)</small>
+        </div>
         @endif
       </div>
     </div>
@@ -84,14 +96,17 @@ td.border-1{
         @if($rooms)
         @foreach($rooms as $k=>$n)
         <tr>
-          <td class="aptos">{{$n}}</td>
+          <td class="aptos">
+            {{$n}}
+            <input type="text" class="form-control changeVal text" data-room="{{$k}}" data-ota="0" data-type="t" value="{{$aPricesOta[$k.'t']}}">
+          </td>
           @if($agencies)
           @foreach($agencies as $name=>$id)
           <td class="inputs border-1">
-            <input type="number" class="form-control changeVal" data-room="{{$k}}" data-ota="{{$id}}" data-type="f" value="{{$aPricesOta[$k.$id]['f']}}">
+            <input type="text" class="form-control changeVal only-numbers" data-room="{{$k}}" data-ota="{{$id}}" data-type="f" value="{{$aPricesOta[$k.$id]['f']}}">
           </td>
           <td class="inputs">
-            <input type="number" class="form-control changeVal" data-room="{{$k}}" data-ota="{{$id}}" data-type="p" value="{{$aPricesOta[$k.$id]['p']}}">
+            <input type="text" class="form-control changeVal only-numbers" data-room="{{$k}}" data-ota="{{$id}}" data-type="p" value="{{$aPricesOta[$k.$id]['p']}}">
           </td>
           @endforeach
           @endif
@@ -117,37 +132,37 @@ td.border-1{
 <script type="text/javascript" src="/js/datePicker01.js"></script>
 <script type="text/javascript">
 $(document).ready(function () {
-  /********************************************************/
-  var updValues = function(objt){
-    var url = "{{route('precios.pricesOTAs.upd')}}";
-    $.ajax({
-      type: "POST",
-      url: url,
-      data: {
-        _token: "{{ csrf_token() }}",
-        room: objt.data('room'),
-        ota: objt.data('ota'),
-        val: objt.val(),
-        type: objt.data('type')
-      },
-      success: function (response)
-      {
-        if (response.status == 'OK') {
-          window.show_notif('OK','success',response.msg);
-        } else {
-          window.show_notif('Error','danger',response.msg);
-        }
-      }
-    });
-  }
-      
-  $('.changeVal').on('keyup', function(e){
+    /********************************************************/
+    var updValues = function (objt) {
+        var url = "{{route('precios.pricesOTAs.upd')}}";
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                _token: "{{ csrf_token() }}",
+                room: objt.data('room'),
+                ota: objt.data('ota'),
+                val: objt.val(),
+                type: objt.data('type')
+            },
+            success: function (response)
+            {
+                if (response.status == 'OK') {
+                    window.show_notif('OK', 'success', response.msg);
+                } else {
+                    window.show_notif('Error', 'danger', response.msg);
+                }
+            }
+        });
+    }
+
+    $('.changeVal').on('keyup', function (e) {
 //    if (e.keyCode == 13) {
-      updValues($(this));
+        updValues($(this));
 //    }
-  });
-  
-  /********************************************************/
+    });
+
+    /********************************************************/
 });
 </script>
 @endsection

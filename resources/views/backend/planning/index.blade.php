@@ -76,7 +76,9 @@ $is_mobile = $mobile->isMobile();
     .btnMob button.btn, .buttonsTops button.btn i {
     font-size: 19px;
 }
-
+  .btnMob button.btn, .buttonsTops button.btn i {
+    margin-right: 0px;
+  }
     .bloq-btn-tabs .btn-tables span.bold {
       width: 35px !important;
       display: inline-grid;

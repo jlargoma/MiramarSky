@@ -342,54 +342,18 @@ function getArrayMonth($startYear,$endYear,$index=false){
 }
 
 function configZodomusAptos(){
-/*  $confFile = [
-    'TEST' => [
-        'name' => 'Apto Test 1',
-        'roomtype_id' => 46964,
-        'rooms' => [
-            [
-                'channel' => 1, //booking.com
-                'propID' => 123456789,
-                'roomID' => 12345678901,
-                'rateID' => 123456789992,
-                'name' => 'booking'
-            ],
-            [
-                'channel' => 2, //Expedia
-                'propID' => 123456789,
-                'roomID' => 12345678902,
-                'rateID' => 123456789992,
-                'name' => 'Expedia'
-            ]
-        ],
-    ],
-    'TEST_2' => [
-        'name' => 'Apto Test 2',
-        'roomtype_id' => 46965,
-        'rooms' => [
-            [
-                'channel' => 1, //booking.com
-                'propID' => 1234567,
-                'roomID' => 123456701,
-                'rateID' => 123456789992,
-                'name' => 'booking'
-            ],
-            [
-                'channel' => 2, //Expedia
-                'propID' => 12345,
-                'roomID' => 1234501,
-                'rateID' => 123456789992,
-                'name' => 'Expedia'
-            ]
-        ],
-    ],
-  ];
-  
-  return json_decode(json_encode($confFile));
-*/
-  
-  $confFile = Illuminate\Support\Facades\File::get(storage_path('app/config/zodomus'));
-  return json_decode($confFile);
+  $oConfign = new \App\Services\OtaGateway\Config();
+  $rNames = $oConfign->getRoomsName();
+  return $rNames;
+//  $allRoomsOta = $oConfign->getRooms();
+//  $resp = [];
+//  foreach ($allRoomsOta as $ch=>$rID){
+//    $resp[$ch] = [
+//      'name'=> $rNames[$ch],
+//      'roomID'=> $rID,
+//    ];
+//  }
+//  return $resp;
 }
 
 function calcNights($start,$end) {

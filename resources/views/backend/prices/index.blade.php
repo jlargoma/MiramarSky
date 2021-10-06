@@ -117,8 +117,6 @@
 </style>
 
 <div class="container-fluid padding-25 sm-padding-10">
-  @if (\Session::has('sent'))<p class="alert alert-success">{!! \Session::get('sent') !!}</p>@endif
-  @if($errors->any())<p class="alert alert-danger">{{$errors->first()}}</p>@endif
   <div class="row">
     <div class="col-md-12">
       <div class="row">
@@ -143,6 +141,10 @@
     <form action="{{route('precios.prepare-cron-minStay')}}" method="post" class="inline">
       <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
       <button class="btn btn-success" title="{{$sendDataInfo_minStay}}">Sincr. Estadías Mínimas OTAs</button>
+    </form>
+    <form action="{{route('channel.sendAvail',['allSeasson'])}}" method="post" class="inline">
+      <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+      <button class="btn btn-success" title="{{$sendDataInfo_minStay}}">Sincr. Disponibilidad OTAs</button>
     </form>
     <small>(Sincronizar toda la temporada)</small>
   </div>

@@ -71,7 +71,7 @@ class OtaGateway {
 
     $result = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-//      dd(\json_decode($result),$result,$httpCode);
+//    var_dump(\json_decode($result),$result,$httpCode);
     curl_close($ch);
     $this->response = null;
     $this->responseCode = $httpCode;
@@ -91,7 +91,6 @@ class OtaGateway {
         'password' => env('OTA_GATEWAY_PSW')
     );
     $Response = $this->call('auth', "POST", $params);
-//      dd($Response,$this->response);
     if ($Response) {
       $this->token = strval($this->response->token);
       setcookie("OTA_GATE_TOKEN", $this->token, time() + 3000);
@@ -205,6 +204,17 @@ class OtaGateway {
     return ($this->responseCode);
   }
 
+  public function sendAvailabilityByCh($ch,$aLstDays) {
+    $return = null;
+    $allRoomsOta = $this->oConfig->getRooms();
+    if (isset($allRoomsOta[$ch])){
+      $return = $this->sendAvailability([
+          'availability'=>[$allRoomsOta[$ch]=>$aLstDays]
+        ]);
+    }
+    return $return;
+  }
+  
   function getBooking($booking_numbers) {
     $params = [];
     $fixParam = "";

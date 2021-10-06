@@ -30,12 +30,7 @@ class PricesController extends AppController {
 
     $oSeasonType = \App\TypeSeasons::orderBy('order', 'ASC')->get();
     
-    $aptos = configZodomusAptos();
-    $ch_group = [];
-    foreach ($aptos as $k=>$v){
-      $ch_group[$k] = $v->name;
-    }
-        
+    $ch_group = configZodomusAptos();
     $allPrices = [];
     for($i=1; $i<15;$i++){
       foreach($oSeasonType as $season){
@@ -302,12 +297,14 @@ class PricesController extends AppController {
     } else {
       $prices_ota = [];
     }
-    
     $aPricesOta = [];
     foreach ($rooms as $k=>$n){
       foreach($agencies as $name=>$id)
-        $aPricesOta[$k.$id] = isset ($prices_ota[$k.$id]) ? $prices_ota[$k.$id] : ['f'=>0,'p'=>0];
+        $aPricesOta[$k.$id] = isset($prices_ota[$k.$id]) ? $prices_ota[$k.$id] : ['f'=>0,'p'=>0];
+      
+      $aPricesOta[$k.'t'] = isset($prices_ota[$k.'t']) ? $prices_ota[$k.'t'] : '';
     }
+
    
     /************************************************************************/
     $sentData = \App\ProcessedData::findOrCreate('create_baseSeason_'.$year->id);
@@ -354,12 +351,22 @@ class PricesController extends AppController {
     foreach ($rooms as $k=>$n){
       foreach($agencies as $name=>$id)
         $aPricesOta[$k.$id] = isset($prices_ota[$k.$id]) ? $prices_ota[$k.$id] : ['f'=>0,'p'=>0];
+      
+      $aPricesOta[$k.'t'] = isset($prices_ota[$k.'t']) ? $prices_ota[$k.'t'] : '';
     }
     
-    $key = $request->input('room').$request->input('ota');
-    if (isset($aPricesOta[$key])){
-      $type = $request->input('type');
-      $aPricesOta[$key][$type] = intval($request->input('val'));
+    $ota = $request->input('ota');
+    $room = $request->input('room');
+    $type = $request->input('type');
+//      dd($ota,$type);
+    if ($ota == 0 && $type == 't'){
+      $key = $room.'t';
+      $aPricesOta[$key] = $request->input('val');
+    } else {
+      $key = $room.$ota;
+      if (isset($aPricesOta[$key])){
+        $aPricesOta[$key][$type] = intval($request->input('val'));
+      }
     }
    
     $oSetting->content = serialize($aPricesOta);

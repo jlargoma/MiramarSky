@@ -25,7 +25,7 @@ $(document).ready(function() {
           z_index: 1031,
           allow_dismiss: true,
           delay: 1000,
-          timer: 3000,
+          timer: 2000,
       }); 
     }
   
