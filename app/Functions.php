@@ -546,3 +546,17 @@ function get_shortlink($url){
   $sS_urls = new \App\Services\ShortUrlService();
   return $sS_urls->create($url);
 }
+
+function arrayDays($start,$end,$format,$val=0){
+  $allDay = [];
+  $inicio = new DateTime($start);
+  $intervalo = new DateInterval('P1D');
+  $fin = new DateTime($end);
+  $periodo = new DatePeriod($inicio, $intervalo, $fin);
+  
+  foreach ($periodo as $fecha) {
+    $allDay[$fecha->format($format)] = $val;
+  }
+  $allDay[$fin->format($format)] = $val;
+  return $allDay;
+}

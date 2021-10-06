@@ -34,16 +34,7 @@ class RatesRoom {
 
   function setSeassonDays() {
 
-    $allDays = [];
-
-    $inicio = new DateTime($this->start);
-    $intervalo = new DateInterval('P1D');
-    $fin = new DateTime($this->end);
-    $periodo = new DatePeriod($inicio, $intervalo, $fin);
-    foreach ($periodo as $fecha) {
-      $allDay[$fecha->format('Ymd')] = 0;
-    }
-
+    $allDay = arrayDays($this->start,$this->end,'Ymd',0);
 
     $match1 = [['start_date', '>=', $this->start], ['start_date', '<=', $this->end]];
     $match2 = [['finish_date', '>=', $this->start], ['finish_date', '<=', $this->end]];

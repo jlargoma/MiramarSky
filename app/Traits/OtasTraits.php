@@ -398,6 +398,7 @@ trait OtasTraits
         'year' => $year,
         'aMonth' => $aMonth,
         'current' => $current,
+        'otaAvail' => $this->getOtaAvail($start,$finish),
         'prev' => date('m/Y',strtotime('-1 month'.$start)),
         'next' => date('m/Y',strtotime('+1 month'.$start)),
     ]);
@@ -575,6 +576,47 @@ trait OtasTraits
   
   return response()->json(['status'=>'OK','msg'=>'datos cargados']);
  
+  }
+  
+  function getOtaAvail($start,$end){
+  
+    $cKey = md5('OA'.$start.$end);
+    $sCache = new \App\Services\CacheData($cKey);
+    $cache = $sCache->get();
+    if ($cache){
+      if ($cache && $cache['time'] > time()){
+        return $cache['data'];
+      }
+    }
+    
+    $oConfig = $this->oConfig;
+    $OtaGateway = new \App\Services\OtaGateway\OtaGateway();
+    $aRoomIDs = $this->oConfig->getRooms();
+    $auxDay = arrayDays($start,$end,'Y-m-d',0);
+    $result = [];
+    foreach ($aRoomIDs as $ch=>$r){
+      $result[$ch] = $auxDay;
+    }
+    
+    if (!$OtaGateway->conect())   return 'Ota no conectada';
+    $avail = $OtaGateway->getAvailability($start,$end);
+    if (isset($avail->availability)){
+      foreach ($avail->availability as $rID => $a){
+        $ch = array_search($rID, $aRoomIDs);
+        if($ch){
+          foreach ($a as $date => $av)
+            $result[$ch][$date]=$av;
+        }
+      }
+    }
+    
+    $data = [
+      'time'=>time()+300,
+      'data'=>$result
+    ];
+    $sCache->set(($data));
+
+    return $result;
   }
   
 }
