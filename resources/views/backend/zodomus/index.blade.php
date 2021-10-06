@@ -32,22 +32,12 @@
 
           @foreach($aptos as $k=>$item)
           <div class="block-otas">
-            <h2 class="mobile-tit">{{$item->name}}</h2>
+            <h2 class="mobile-tit">{{$item}}</h2>
             <div class="row">
               <div class="col-md-6">
-                <ol>
-                  @foreach($item->rooms as $room)
-                  <li>
-                    {{$room->name}}
-                    @if(isset($channels[$room->channel]))
-                    (<b>{{$channels[$room->channel]}}</b> - ID {{$room->propID}}/{{$room->roomID}})
-                    @endif
-                  </li>
-                  @endforeach
-                </ol>
+                <h3>Enviar disponibilidad:</h3>
               </div>
               <div class="col-md-6">
-                <h3>Enviar disponibilidad:</h3>
                 <form method="POST" action="{{route('channel.sendAvail',$k)}}" id="channelForm">
                   <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
                   <div class="row">
@@ -77,9 +67,9 @@
             <h2 class="mobile-tit">Enviar a todos</h2>
             <div class="row">
               <div class="col-md-6">
+                <h3>Enviar disponibilidad:</h3>
               </div>
               <div class="col-md-6">
-                <h3>Enviar disponibilidad:</h3>
                 <form method="POST" action="{{route('channel.sendAvail','all')}}" id="channelForm">
                   <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
                   <div class="row">

@@ -569,7 +569,7 @@ class Book extends Model {
     return '--';
   }
     
-  /**
+   /**
    * send to channel manager the availibility
    * @param type $available
    */
@@ -592,8 +592,8 @@ class Book extends Model {
     if(!$start) $start = $this->start;
     if(!$finish) $finish = $this->finish;
     if ($room){
-      $oRooms = Rooms::where('channel_group',$room->channel_group)->pluck('id')->toArray();
-      Rooms::RoomsCH_IDs($room->channel_group);
+//      $oRooms = Rooms::where('channel_group',$room->channel_group)->pluck('id')->toArray();
+      $oRooms = Rooms::RoomsCH_IDs($room->channel_group);
       if (!in_array($old_room,$oRooms)){
         $this->sendAvailibility($old_room,$start,$finish);
       } 
@@ -612,10 +612,9 @@ class Book extends Model {
    * @param type $available
    */
   public function sendAvailibility($room_id,$start,$finish) {
-    
     $room     = Rooms::find($room_id);
-    
     if ($room){
+      $oOta = new Services\OtaGateway\OtaGateway();
       $oRooms = Rooms::RoomsCH_IDs($room->channel_group);
             
       $match1 = [['start','>=', $start ],['start','<=', $finish ]];
@@ -631,6 +630,7 @@ class Book extends Model {
             
       $avail  = count($oRooms);
       
+      
       //Prepara la disponibilidad por día de la reserva
       $today = strtotime(date('Y-m-d'));
       $startAux = strtotime($start);
@@ -641,76 +641,41 @@ class Book extends Model {
         $aLstDays[date('Y-m-d',$startAux)] = $avail;
         $startAux = strtotime("+1 day", $startAux);
       }
-      
       $control = [];
       if ($books) {
         foreach ($books as $book) {
           //Resto los días reservados
           $startAux = strtotime($book->start);
           $endAux = strtotime($book->finish);
-
-          while ($startAux < $endAux) {
+          if ($startAux == $endAux){
             $auxTime = date('Y-m-d', $startAux);
             $keyControl = $book->room_id.'-'.$auxTime;
             if (!in_array($keyControl, $control)){
               if (isset($aLstDays[$auxTime]))
-                $aLstDays[$auxTime] --;
-
+                $aLstDays[$auxTime]--;
               $control[] = $keyControl;
             }
-            $startAux = strtotime("+1 day", $startAux);
+          } else {
+            while ($startAux < $endAux) {
+              $auxTime = date('Y-m-d', $startAux);
+              $keyControl = $book->room_id.'-'.$auxTime;
+              if (!in_array($keyControl, $control)){
+                if (isset($aLstDays[$auxTime]))
+                  $aLstDays[$auxTime] --;
+
+                $control[] = $keyControl;
+              }
+
+              $startAux = strtotime("+1 day", $startAux);
+            }
           }
         }
       }
-      //Genero el listado para enviar a OTAs
-      $resultLst = [];
-      $WubookAvailDays = [];
-      $startAux2 = $end = $value = null;
-      if (count($aLstDays) == 1){
-        foreach ($aLstDays as $d => $v) {
-          $resultLst[] = [
-                "avail" => $v,
-                "start" => $d,
-                "end" => date('Y-m-d', strtotime("+1 day", strtotime($d)))
-            ];
-          //Wubook Items: just to RIAD and HotelRosa
-          if ($room->site_id != 3)
-            $WubookAvailDays[] = [
-              'channel_group' => $room->channel_group,
-              'date'          => $d,
-              'avail'         => $v
-          ];
-        }
+      if($oOta->conect($room->site_id)){
+        $return = $oOta->sendAvailabilityByCh($room->channel_group,$aLstDays);
+        return ($return == 200);
       } else {
-        foreach ($aLstDays as $d => $v) {
-          if ($value === null) {
-            $value = $v;
-            $startAux2 = $d;
-          }
-          if ($value != $v) {
-            $resultLst[] = [
-                "avail" => $value,
-                "start" => $startAux2,
-                "end" => date('Y-m-d', strtotime("+1 day", strtotime($end))),
-            ];
-
-            $value = $v;
-            $startAux2 = $d;
-          }
-
-          $end = $d;
-        
-            $WubookAvailDays[] = [
-              'channel_group' => $room->channel_group,
-              'date'          => $d,
-              'avail'         => $v
-            ];
-         
-        }
-      }
-      //save the new availibility
-      if (count($WubookAvailDays)){
-        \App\WobookAvails::insert($WubookAvailDays);
+        return false;
       }
     }
   }
@@ -721,12 +686,13 @@ class Book extends Model {
    * @param type $available
    */
   public function getAvailibilityBy_channel($apto, $start, $finish,$return = false,$justSale=false,$real=false) {
+
+//    $oRooms = Rooms::where('channel_group', $apto)->pluck('id')->toArray();
     $oRooms = Rooms::RoomsCH_IDs($apto);
     $match1 = [['start', '>=', $start], ['start', '<=', $finish]];
     $match2 = [['finish', '>=', $start], ['finish', '<=', $finish]];
     $match3 = [['start', '<', $start], ['finish', '>', $finish]];
 
-    
     if ($justSale) $sqlBooks = self::where_type_book_sales();
     else  $sqlBooks = self::where_type_book_reserved($real);
     
@@ -738,6 +704,7 @@ class Book extends Model {
                     })->get();
 
     $avail = count($oRooms);
+   
 
     //Prepara la disponibilidad por día de la reserva
     $startAux = strtotime($start);
@@ -755,6 +722,7 @@ class Book extends Model {
         //Resto los días reservados
         $startAux = strtotime($book->start);
         $endAux = strtotime($book->finish);
+
         if ($startAux == $endAux){
           $auxTime = date('Y-m-d', $startAux);
           $keyControl = $book->room_id.'-'.$auxTime;
@@ -765,13 +733,16 @@ class Book extends Model {
           }
         } else {
           while ($startAux < $endAux) {
+        
             $auxTime = date('Y-m-d', $startAux);
             $keyControl = $book->room_id.'-'.$auxTime;
             if (!in_array($keyControl, $control)){
               if (isset($aLstDays[$auxTime]))
-                $aLstDays[$auxTime]--;
+                $aLstDays[$auxTime] --;
+
               $control[] = $keyControl;
             }
+
             $startAux = strtotime("+1 day", $startAux);
           }
         }

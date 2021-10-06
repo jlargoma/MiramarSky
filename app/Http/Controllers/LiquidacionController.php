@@ -1861,14 +1861,8 @@ class LiquidacionController extends AppController {
     foreach ($lstMonths as $k=>$v) $months_empty[$k] = 0;
     
         
-    $aptos = configZodomusAptos();
-    $channels = [];
+    $channels = configZodomusAptos();
     $chRooms = [];
-    foreach ($aptos as $k => $item) 
-    {
-      $channels[$k] = $item->name;
-    }
-
     foreach ($channels as $k=>$v){
       $rooms = \App\Rooms::where('state', 1)->where('channel_group',$k)->orderBy('order', 'ASC')->get();
       foreach ($rooms as $r){

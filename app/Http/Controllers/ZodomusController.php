@@ -506,22 +506,32 @@ class ZodomusController extends Controller {
   
   function sendAvail(Request $request, $apto) {
     
-    $date_range = $request->input('date_range', null);
-    
-    if (!$date_range)
-      return back()->withErrors(['Debe seleccionar al menos una fecha de inicio']);
-    
-    $date = explode(' - ', $date_range);
-    $startTime = (convertDateToDB($date[0]));
-    $endTime = (convertDateToDB($date[1]));
-    
+    if ($apto == 'allSeasson'){
+      $oYear = \App\Years::where('active', 1)->first();
+      $sentData = \App\ProcessedData::findOrCreate('send_dispSeason_'.$oYear->id);
+      $sentData->content = 1;
+      $sentData->save();
+      $startTime = $oYear->start_date;
+      $endTime = $oYear->end_date;
+      $apto = 'all';
+    } else {
+      $date_range = $request->input('date_range', null);
+
+      if (!$date_range)
+        return back()->withErrors(['Debe seleccionar al menos una fecha de inicio']);
+
+      $date = explode(' - ', $date_range);
+      $startTime = (convertDateToDB($date[0]));
+      $endTime = (convertDateToDB($date[1]));
+    }
     if ($apto == 'all'){
       $aptos = configZodomusAptos();
       $book = new \App\Book();
       foreach ($aptos as $ch=>$v){
         $room = Rooms::where('channel_group',$ch)->first();
         if ($room){
-            $book->sendAvailibility($room->id,$startTime,$endTime);
+          $resp = $book->sendAvailibility($room->id,$startTime,$endTime);
+          if (!$resp) return back()->withErrors(['ocurrió un error al enviar los datos']);
         }
       }
       return back()->with(['success'=>'Disponibilidad enviada']);
@@ -529,7 +539,8 @@ class ZodomusController extends Controller {
       $room = Rooms::where('channel_group',$apto)->first();
       if ($room){
         $book = new \App\Book();
-        $book->sendAvailibility($room->id,$startTime,$endTime);
+        $resp = $book->sendAvailibility($room->id,$startTime,$endTime);
+        if (!$resp) return back()->withErrors(['ocurrió un error al enviar los datos']);
         return back()->with(['success'=>'Disponibilidad enviada']);
       } else {
         return back()->withErrors(['No posee apartamentos asignados']);
