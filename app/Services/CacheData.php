@@ -18,15 +18,26 @@ class CacheData {
     $this->file = $directory . $folder;
   }
 
-  public function set($data) {
-    file_put_contents($this->file,json_encode($data));
+  public function set($result) {
+    $content = [
+      'time'=>time()+300,
+      'data'=>$result
+    ];
+    file_put_contents($this->file,json_encode($content));
   }
 
   public function get() {
     if (!File::exists($this->file))
       return null;
     $data = File::get($this->file);
-    return json_decode($data, true);
+    $cache = json_decode($data, true);
+    if ($cache){
+      if ($cache && $cache['time'] > time()){
+        return $cache['data'];
+      }
+    }
+    
+    return null;
   }
 
   public function date() {

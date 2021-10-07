@@ -24,8 +24,28 @@
     text-align: center;
     margin: 4px auto;
   }
+  #TpriceOTA th.static {
+    background-color: #fafafa;
+    line-height: 0 !important;
+    margin-top: -3px;
+    width: 130px;
+  }
+  #TpriceOTA td.aptos.static {
+      background-color: #fff;
+      padding: 12px 5px !important;
+      width: 130px;
+      height: 44px;
+      overflow: hidden;
+  }
+  #TpriceOTA .first-col {
+      padding-left: 124px !important;
+  }
+  td.border-1{
+    border-left: 2px solid #000;
+  }
   input.form-control.changeVal.text {
     width: 97%;
+    min-width: 7em;
     text-align: left;
     margin: 0;
     padding: 3px !important;
@@ -35,10 +55,19 @@
     display: block;
     margin-bottom: 9px;
     background-color: #c3c3c3 !important;
+}
+
+@media only screen and (min-width: 768px){
+  #TpriceOTA .first-col{
+    display: none;
   }
-  td.border-1{
-    border-left: 2px solid #000;
+}
+@media only screen and (max-width: 767px){
+  #TpriceOTA .static,
+  #TpriceOTA tr{
+    height: 70px !important;
   }
+}
 </style>
 @endsection
 @section('content')
@@ -71,11 +100,12 @@
       </div>
     </div>
   </div>
-  <div class="table-responsive">
+  <div class="table-responsive" id="TpriceOTA">
     <table class="table">
       <thead>
         <tr>
-          <th>Apto</th>
+          <th class="static">Apto</th>
+          <th class="first-col"></th>
           @if($agencies)
           @foreach($agencies as $name=>$id)
           <th colspan="2"><?php echo ($name == 'google-hotel') ? 'direct' : $name; ?></th>
@@ -83,7 +113,8 @@
           @endif
         </tr>
         <tr>
-          <th></th>
+          <th  class="static"></th>
+          <th class="first-col"></th>
           @if($agencies)
           @foreach($agencies as $name=>$id)
           <th>€</th>
@@ -96,10 +127,11 @@
         @if($rooms)
         @foreach($rooms as $k=>$n)
         <tr>
-          <td class="aptos">
+          <td class="aptos static">
             {{$n}}
             <input type="text" class="form-control changeVal text" data-room="{{$k}}" data-ota="0" data-type="t" value="{{$aPricesOta[$k.'t']}}">
           </td>
+          <td class="first-col"></td>
           @if($agencies)
           @foreach($agencies as $name=>$id)
           <td class="inputs border-1">

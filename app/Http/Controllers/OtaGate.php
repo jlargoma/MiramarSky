@@ -430,7 +430,7 @@ class OtaGate extends Controller {
         if ($updated) continue; //ya encontró uno
         $oBook2 = \App\Book::where('bkg_number', $number)->first();
         if (!$oBook2){ // aún no se ha cargado
-          $updated == true;
+          $updated = true;
           $newNumber = $number;
           $oBook->bkg_number = $number;
           $oBook->save();

@@ -583,11 +583,7 @@ trait OtasTraits
     $cKey = md5('OA'.$start.$end);
     $sCache = new \App\Services\CacheData($cKey);
     $cache = $sCache->get();
-    if ($cache){
-      if ($cache && $cache['time'] > time()){
-        return $cache['data'];
-      }
-    }
+    if ($cache) return $cache;
     
     $oConfig = $this->oConfig;
     $OtaGateway = new \App\Services\OtaGateway\OtaGateway();
@@ -610,12 +606,7 @@ trait OtasTraits
       }
     }
     
-    $data = [
-      'time'=>time()+300,
-      'data'=>$result
-    ];
-    $sCache->set(($data));
-
+    $sCache->set($result);
     return $result;
   }
   

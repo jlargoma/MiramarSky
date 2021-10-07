@@ -4,6 +4,7 @@ $(document).on('mouseover','[data-toggle="tooltip"]',function(){
 
 $(document).ready(function() { 
   window["show_notif"] = function(title,status,message){
+      $(document).find('.notificate').remove();
       var titleHtml = '';
       if (title != '') titleHtml = '<strong>'+title+'</strong>, ';
     $.notify({
@@ -13,7 +14,7 @@ $(document).ready(function() {
       },{
           type: status,
           animate: {
-              enter: 'animated fadeInUp',
+              enter: 'animated fadeInUp notificate',
               exit: 'animated fadeOutRight'
           },
           placement: {
