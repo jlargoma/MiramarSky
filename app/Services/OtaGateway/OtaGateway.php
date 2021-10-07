@@ -310,20 +310,21 @@ class OtaGateway {
        /*     * ******************************************************** */
     /** CANCEL THE BOOKING * */
     //Booking Status. 1 - new, 2 - canceled, 3 - pending
-    $this->reservaModificada($reserv);
     $alreadyExist_qry = \App\Book::where('bkg_number', $reserv['bkg_number']);
+    /** Era para vincular lo viejo
     if (isset($reserv['reser_id']) && $reserv['reser_id'] > 0) {
       $alreadyExist_qry->Where('external_id', $reserv['reser_id']);
     }
+    */
     $alreadyExist = $alreadyExist_qry->first();
     if ($alreadyExist) {
       if ($reserv['status'] == 2) {//Cancelada
+        $alreadyExist->setMetaContent('oldStatus',$alreadyExist->type_book);
         $response = $alreadyExist->changeBook(98, "", $alreadyExist);
         if ($response['status'] == 'success' || $response['status'] == 'warning') {
           //Ya esta disponible
           $alreadyExist->sendAvailibilityBy_status();
         }
-//        echo $alreadyExist->id.',';
         return $alreadyExist->id;
       } else {
         $update = $alreadyExist->id;
@@ -526,31 +527,6 @@ class OtaGateway {
     }
   }
   
-  function reservaModificada($reserv){
-    if ($reserv['modified_from']){
-     
-      $alreadyExist_qry = \App\Book::where('bkg_number', $reserv['modified_from']);
-      if (isset($reserv['reser_id']) && $reserv['reser_id'] > 0) {
-        $alreadyExist_qry->Where('external_id', $reserv['reser_id']);
-      }
-      $alreadyExist = $alreadyExist_qry->first();
-      if ($alreadyExist){
-        $alreadyExist->bkg_number = $reserv['bkg_number'];
-        $alreadyExist->save();
-         \Illuminate\Support\Facades\Mail::send('backend.emails.base-admin', [
-             'content' => 'La reserva '.$reserv['modified_from'].
-              ' tiene el external_id '.$reserv['reser_id'].' modifica a bkg_number '.$reserv['bkg_number'],
-          ], function ($message){
-              $message->from(env('MAIL_FROM'));
-              $message->to('pingodevweb@gmail.com');
-              $message->subject('Actualización de reservas');
-          });
-          
-      }
-    }
-    
-  }
-
   /*   * ********************************************************** */
   /*   * ***********    AUX FUNCTIONS             ***************** */
   /*   * ********************************************************** */
