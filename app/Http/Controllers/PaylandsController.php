@@ -782,4 +782,79 @@ class PaylandsController extends AppController
         'msg' => "Registro no encontrado."
     ];
   }
+     
+    /**
+     * Payment by MoTo
+     * @param Request $req
+     */
+    public function processPaymentMoto(Request $req)
+    {
+        $order = $req->input('order');
+        $uuid = $order['uuid'];
+          
+        if (!$uuid || trim($uuid) == '') return 'Orden vacia';
+        
+        $paylandClient = $this->getPaylandApiClient();
+        $orderPayment  = $paylandClient->getOrder($uuid);
+        if ($orderPayment && $orderPayment->message == 'OK'){
+            $order = $orderPayment->order;
+        } else {
+            return 'Orden No Encontrada';
+        }
+        
+        $uuid = $order->uuid;
+        $created = $order->created;
+        $amount = $order->amount;
+        $refunded = $order->refunded;
+        $paid = $order->paid; // true
+        $comment = $order->additional;
+        $bookID = intval($order->customer);
+        
+        
+//        $created = $order['created'];
+//        $amount = $order['amount'];
+//        $refunded = $order['refunded'];
+//        $paid = $order['paid']; // true
+//        $comment = $order['additional'];
+//        $bookID = intval($order['customer']);
+        
+        if ($paid === TRUE && $bookID>0){
+            if ($refunded>0)  $amount = $amount-$refunded;
+            $amount = $amount/100;
+            
+            $alreadyExist = false;
+            $oPaym = \App\Payments::where('uuid',$uuid)->first();
+            if ($oPaym){
+                $alreadyExist = true;
+                $bookID = $oPaym->book_id;
+            } else {
+                $oPaym = new \App\Payments();
+                $oPaym->book_id = $bookID;
+                $oPaym->datePayment = date('Y-m-d', strtotime($created));
+                $oPaym->comment = $comment;
+                $oPaym->type = 2;
+                $oPaym->uuid = $uuid;
+            }
+
+            $oPaym->import = $amount;
+            $oPaym->save();
+            
+            if (!$alreadyExist){
+                $book = \App\Book::find($bookID);
+                if (in_array($book->type_book, [1,9,11,99])){
+                  $book->type_book = 2;
+                  $book->save();
+                }
+
+                if ($book->customer->send_notif){
+                  $subject = translateSubject('RECIBO PAGO RESERVA',$book->customer->country);
+                  $subject .= ' '. $book->customer->name;
+                  $this->sendEmail_confirmCobros($book,$subject,$amount,$book->customer->email_notif);
+                }
+            }
+            
+            return 'Pago guardado';
+            
+        }
+    }
 }
