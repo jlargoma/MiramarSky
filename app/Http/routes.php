@@ -233,3 +233,5 @@
 //      \Artisan::call('ical:import');
 ////      return redirect('/admin/reservas');
 //    });
+    
+    Route::post('/payments-moto', 'PaylandsController@processPaymentMoto');
