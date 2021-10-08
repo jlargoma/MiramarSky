@@ -817,7 +817,7 @@ class PaylandsController extends AppController
 //        $paid = $order['paid']; // true
 //        $comment = $order['additional'];
 //        $bookID = intval($order['customer']);
-        
+
         if ($paid === TRUE && $bookID>0){
             if ($refunded>0)  $amount = $amount-$refunded;
             $amount = $amount/100;
