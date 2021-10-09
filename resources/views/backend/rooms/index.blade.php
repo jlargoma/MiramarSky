@@ -89,9 +89,9 @@ button.btn.btnContract.enviado {
     <div class="col-md-2 col-xs-6 push-20">
       <select class="form-control minimal" id="channel_group" placeholder="ZODOMUS Apto">
         <option value=""> - CHANNELs -</option>
-        <?php foreach ($zodomusAptos as $id=>$data): ?>                                   
+        <?php foreach ($zodomusAptos as $id=>$name): ?>                                   
           <option value="{{$id}}" <?php echo ($id == $channel_group) ? "selected" : "" ?>>
-            {{$data->name}}
+            {{$name}}
           </option>
         <?php endforeach ?>
       </select>
