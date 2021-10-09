@@ -101,6 +101,16 @@ class PaylandService {
     }
   }
 
+  public function getOrder($uuid){
+      try
+      {
+          $response = $this->call(self::METHOD_GET,'/order/'.$uuid);
+          return $response;
+      } catch (\Exception $e)
+      {
+         return null;
+      }
+  }
   public function getCurrency($currencyID) {
     if ($currencyID == 978) {
       return 'EUR';

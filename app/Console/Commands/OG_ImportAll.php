@@ -10,11 +10,12 @@ use App\Services\OtaGateway\Config as oConfig;
 use App\Rooms;
 use App\SizeRooms;
 use App\Book;
+use \App\Traits\Bookings\LoadByOTA;
 
 /// /admin/ota-gateway/import?detail=1
 // http://miramarski.virtual/admin/ota-gateway/import?detail=1
 class OG_ImportAll extends Command {
-
+  use LoadByOTA;
   /**
    * Customer ID for assign to the new books
    *
@@ -55,7 +56,7 @@ class OG_ImportAll extends Command {
    *
    * @var string
    */
-  var $sOtaGateway = array();
+  var $sOta = array();
 
   /**
    * Create a new command instance.
@@ -64,7 +65,7 @@ class OG_ImportAll extends Command {
    */
   public function __construct() {
     $this->result = array();
-    $this->sOtaGateway = new OtaGateway();
+    $this->sOta = new OtaGateway();
     parent::__construct();
   }
 
@@ -74,68 +75,21 @@ class OG_ImportAll extends Command {
    * @return mixed
    */
   public function handle() {
-    $OtaGateway = $this->sOtaGateway;
+    $OtaGateway = $this->sOta;
     $oConfig = new oConfig();
    
+//    include_once dirname(dirname(dirname(dirname(__FILE__)))) . '/public/tests/ota-bookings.php';
+//    $oBookings = \json_decode($bookings);
    
-    
     $start = date('Y-m-d', strtotime(' -2 days'));
     $end = date('Y-m-d', strtotime(' +1 days'));
     $OtaGateway->conect();
     $oBookings = $OtaGateway->getBookings($start,$end);
     if (!$oBookings) return null;
     if (count($oBookings->bookings)==0) return null;
-         
-    
-    foreach ($oBookings->bookings as $oBooking){
-      
-      //BEGIN: si es una cancelación por modificación -> la salto
-      if ($oBooking->modified_to){
-        \Illuminate\Support\Facades\Mail::send('backend.emails.base-admin', [
-            'content' => 'La reserva '.$oBooking->number.' / '.$channel_group.
-             ' fue modificada por bkg_number '.$oBooking->modified_to,
-         ], function ($message){
-             $message->from(env('MAIL_FROM'));
-             $message->to('pingodevweb@gmail.com');
-             $message->subject('Actualización de reservas - MiramarSky');
-         });
-
-         continue;
-      }
-      //END: si es una cancelación por modificación -> la salto
-      
-      $channel_group = $oConfig->getChannelByRoom($oBooking->roomtype_id);
-      
-      $reserv = [
-                'channel' => $oBooking->ota_id,
-                'bkg_number' => $oBooking->number,
-                'rate_id' => $oBooking->plan_id,
-                'external_roomId' => $oBooking->roomtype_id,
-                'reser_id' => $oBooking->ota_booking_id,
-                'comision'=>0,
-                'channel_group' => $channel_group,
-                'status' => $oBooking->status_id,
-                'agency' => $oConfig->getAgency($oBooking->ota_id),
-                'customer_name' => $oBooking->name.' '.$oBooking->surname,
-                'customer_email' => $oBooking->email,
-                'customer_phone' => $oBooking->phone,
-                'customer_comment' => $oBooking->comment,
-                'totalPrice' => $oBooking->amount,
-                'adults' => $oBooking->adults,
-                'children' => $oBooking->children,
-                'extra_array' => is_string($oBooking->extra_array) ? json_decode($oBooking->extra_array) : $oBooking->extra_array,
-//                    'currency' => $oBooking->currency,
-                'start' => $oBooking->arrival,
-                'end' => $oBooking->departure,
-                'modified_from' => $oBooking->modified_from,
-                'modified_to' => $oBooking->modified_to,
-              ];
-      $this->result[] = $reserv;
-      $bookID = $OtaGateway->addBook($channel_group,$reserv);
-    }
-    
-    if (isset($_GET['detail']))  $this->printResults();
-    
+          
+    $oBookings = $oBookings->bookings;
+    $this->loadBooking($oBookings);
     $OtaGateway->disconect();
   }
 

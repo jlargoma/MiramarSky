@@ -46,6 +46,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/admin/paymentspro/seeLiquidationProp',
         '/api/*',
         '/ajax/createSafetyBox',
-        '/ajax/SafetyBox-updKey'
+        '/ajax/SafetyBox-updKey',
+        '/payments-moto'
     ];
 }

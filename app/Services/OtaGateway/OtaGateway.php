@@ -538,6 +538,7 @@ class OtaGateway {
     $params['account_id'] = $this->account_id;
     $params['dfrom'] = $dfrom;
     $params['dto'] = $dto;
+    $params['for_ota'] = 1;
    
     $this->call('availability', 'GET', $params);
     return ($this->response);

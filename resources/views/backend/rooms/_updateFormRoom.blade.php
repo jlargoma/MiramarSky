@@ -39,9 +39,9 @@
                 <label for="sizeApto">OTA Group</label>
                 <select class="form-control minimal" name="channel_group">
                     <option value=""> -- </option>
-                    <?php foreach ($zodomusAptos as $id => $data): ?>                                   
+                    <?php foreach ($zodomusAptos as $id => $name): ?>                                   
                       <option value="{{$id}}" <?php echo ($id == $room->channel_group) ? "selected" : "" ?>>
-                          {{$data->name}}
+                          {{$name}}
                       </option>
                     <?php endforeach ?>
                 </select>
