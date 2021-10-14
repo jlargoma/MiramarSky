@@ -125,23 +125,21 @@ else $daysMonth = $mDays[intVal(explode('.',$month)[1])];
     </div>
     <div class="col-md-4 table-responsive ">
       <?php
-      $yearMin = $year - 2000;
-      $month2 = $month < 10 ? '0' . $month : $month;
-      $limpM = isset($monthlyLimp["$month2-$yearMin"]) ? round($monthlyLimp["$month2-$yearMin"]) : 0;
-      $limpY = array_sum($monthlyLimp);
-      $otaCommM = isset($monthlyOta["$month2-$yearMin"]) ? $monthlyOta["$month2-$yearMin"] : 0;
-      $otaCommY = array_sum($monthlyOta);
-
-      $ComisTPV_M = isset($comisionesTPV[$month]) ? $comisionesTPV[$month] : 0;
-      $ComisTPV_Y = array_sum($comisionesTPV);
+      if ($month == 0){
+        $limpM = array_sum($monthlyLimp);
+        $otaCommM = array_sum($monthlyOta);
+        $ComisTPV_M = array_sum($comisionesTPV);
+      } else {
+        $limpM = isset($monthlyLimp[$month]) ? round($monthlyLimp[$month]) : 0;
+        $otaCommM = isset($monthlyOta[$month]) ? $monthlyOta[$month] : 0;
+        $ComisTPV_M = isset($comisionesTPV[$month]) ? $comisionesTPV[$month] : 0;
+      }
 
       //BEGIN: datos para los graficos
       foreach ($lstMonths as $m2 => $v2) {
-        $m3 = $m2 < 10 ? '0' . $m2 : $m2;
-        $aux1 = isset($monthlyLimp["$m3-$yearMin"]) ? $monthlyLimp["$m3-$yearMin"] : 0;
-        $aux2 = isset($monthlyOta["$m3-$yearMin"]) ? $monthlyOta["$m3-$yearMin"] : 0;
+        $aux1 = isset($monthlyLimp[$m2]) ? $monthlyLimp[$m2] : 0;
+        $aux2 = isset($monthlyOta[$m2]) ? $monthlyOta[$m2] : 0;
         $aux3 = isset($comisionesTPV[$m2]) ? $comisionesTPV[$m2] : 0;
-
         $grafPresupSite['result'][$m2] = $grafPresupSite['ing'][$m2] - $grafPresupSite['gastos'][$m2] - $aux1 - $aux2;
       }
 
@@ -210,13 +208,16 @@ else $daysMonth = $mDays[intVal(explode('.',$month)[1])];
           </div>
           <div class="block">
             <div class="row">
-              <h2 class="col-md-7">COSTES FIJOS EDIFICIO</h2>
+              <h2 class="col-md-5">COSTES FIJOS EDIFICIO</h2>
               <div class="col-md-3">
                 <select class="form-control" id="year_costesFijosEdificio">
                   @for($i=$year-5;$i<$year+2;$i++) 
                   <option value="{{$i}}" <?php echo ($i==$year) ? 'selected' : ''; ?>>{{$i}}</option>
                   @endfor
                 </select>
+              </div>
+              <div class="col-md-2">
+                <button type="button" class="btn btn-success" id="copyConsteFijoNextYear">Copiar todo al <span>{{$year+1}}</span></button>
               </div>
             </div>
             <div class="table-responsive">
@@ -313,7 +314,29 @@ button.btn.btn-load {
     $('#cargaCostesFijos').modal();
   }
   
-  $('#year_costesFijosEdificio').on('change', function(){load_costesFijos($(this).val());});
+  $('#year_costesFijosEdificio').on('change', function(){
+    var year = parseInt($(this).val());
+    $('#copyConsteFijoNextYear').find('span').text(year+1);
+    load_costesFijos(year);
+  });
+  $('#copyConsteFijoNextYear').on('click', function(){
+    var year = parseInt($('#year_costesFijosEdificio').val());
+    year++;
+    if (confirm("Copiar todos los valores al año "+year+"? (se pisaran los valores actuales)")){
+      $.post('/admin/revenue/copyFixedcostsAnualTo/'+year,{_token: "{{csrf_token()}}"})
+        .done(function (resp) {
+          if (resp == 'OK') {
+            window.show_notif('Registro modificado', 'success', '');
+            $('#year_costesFijosEdificio').val(year);
+            load_costesFijos(year);
+          } else {
+            window.show_notif(resp, 'danger', '');
+          }
+        });
+        
+      
+    }
+  });
 
 $('.fixcost').on('click', function(){
     

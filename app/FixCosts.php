@@ -27,4 +27,9 @@ class FixCosts extends Model
     return \App\FixCosts::where('date','>=',$start)
             ->where('date','<=',$end)->get();
   }
+  
+  static function deleteByRang($start,$end){
+    return \App\FixCosts::where('date','>=',$start)
+            ->where('date','<=',$end)->delete();
+  }
 }

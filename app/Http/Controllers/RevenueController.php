@@ -54,10 +54,12 @@ class RevenueController extends AppController
     /*************************************************************/
     $oLiquidacion = new \App\Liquidacion();
     $dataSeason = $oLiquidacion->getBookingAgencyDetailsBy_date($oYear->start_date,$oYear->end_date);
+//    dd($dataSeason);
     $agencias = view('backend.revenue.dashboard.agencias',[
         'data' => $dataSeason,
         'agencyBooks' => $oLiquidacion->getArrayAgency()
     ]);
+//    echo ($agencias); die;
     /*************************************************************/
     $disponiblidad = $this->data_disponibilidad($oYear,$month,$oServ->start,$oServ->finish,true,$oServ->lstMonths);
     
@@ -1255,5 +1257,38 @@ class RevenueController extends AppController
           'fixCosts' => $fixCosts,
           'FCItems' => $oFCItems
       ]);
+    }
+    
+    function copyFixedcostsAnualTo($year){
+      
+      $oYearOld = \App\Years::where('year', $year-1)->first();
+      if (!$oYearOld) return 'Temporada no existente';
+      
+       $oYear = \App\Years::where('year', $year)->first();
+      if (!$oYear) return 'Temporada no existente';
+     
+      $oFixCosts = \App\FixCosts::getByRang($oYearOld->start_date,$oYearOld->end_date);
+      if (count($oFixCosts)==0) return 'No hay datos cargados';
+        
+      \App\FixCosts::deleteByRang($oYear->start_date,$oYear->end_date);
+       
+      foreach ($oFixCosts as $item){
+        
+        $aux = explode('-', $item->date);
+        $date = ($aux[0]+1).'-'.$aux[1].'-01';
+        $oObject = \App\FixCosts::where('date',$date)
+                ->where('concept',$item->concept)
+                ->first();
+        if (!$oObject){
+          $oObject = new \App\FixCosts();
+          $oObject->date    = $date;
+          $oObject->concept = $item->concept;
+        }
+        $oObject->content = $item->content;
+        $oObject->save();
+      }
+      
+     
+      return 'OK';
     }
 }

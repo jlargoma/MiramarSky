@@ -36,7 +36,7 @@
             <th class="text-center">
               <?php
               $percent = 0;
-              if ($data2['months'] > 1)
+              if ($data2['months'] > 1 && $t_all_rooms>0)
                 $percent = ($data2['months'][0] * 100 / $t_all_rooms);
               ?>
               {{round($percent)}}%
@@ -72,7 +72,8 @@
             </th>
             <td class="text-center">
               <?php
-              $percent = ($totalRoom / $t_all_rooms) * 100;
+              $percent = 0;
+              if ($t_all_rooms>0) $percent = ($totalRoom / $t_all_rooms) * 100;
               echo round($percent) . '%';
               ?>
             </td>

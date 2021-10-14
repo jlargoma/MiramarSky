@@ -475,15 +475,13 @@ class Liquidacion
           break;
         }
         $PVPAgencia = isset($commAge[$book->book_id]) ? $commAge[$book->book_id] : 0;
-        $t = round(floatval($book->total_price), 2);
+        $t = $book->pvp;
         $data[$agency_name]['total']        += $t;
         $data[$agency_name]['reservations'] += 1;
         $data[$agency_name]['commissions']  += $PVPAgencia;
         $totals['total']        += $t;
         $totals['reservations'] += 1;
         $totals['commissions']  += $PVPAgencia;
-        
-        
         }
         
         foreach ($data as $a=>$d){

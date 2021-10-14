@@ -216,9 +216,10 @@ class RevenueService
     
 
     function getMonthSum($field,$filter,$date1,$date2) {
+      $result = [];
       $lst = DB::select('SELECT new_date,room_id, SUM('.$field.') as total '
             . ' FROM ('
-            . '        SELECT '.$field.',room_id,DATE_FORMAT('.$filter.', "%m-%y") new_date '
+            . '        SELECT '.$field.',room_id,DATE_FORMAT('.$filter.', "%y.%m") new_date '
             . '        FROM book'
             . '        WHERE type_book IN ('.implode(',',$this->type_book).')'
             . '        AND '.$filter.' >= "'.$date1.'" '
