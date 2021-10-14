@@ -60,6 +60,7 @@ ORDER BY `book_days`.`date` DESC*/
               'limp'=>$cost_limp,
               'extr'=>$extraCost,
               'pvpComm'=>$pvpComm,
+              'forfait'=>$b->ff_status,
           ];
         continue;
       }
@@ -83,6 +84,7 @@ ORDER BY `book_days`.`date` DESC*/
               'limp'=>$cost_limp,
               'extr'=>$extraCost,
               'pvpComm'=>$pvpComm,
+              'forfait'=>$b->ff_status,
           ];
         
         $b_start = strtotime('+1 day', $b_start);

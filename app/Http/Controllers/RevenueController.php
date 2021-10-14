@@ -35,6 +35,7 @@ class RevenueController extends AppController
     $oServ->setRooms();
     $oServ->createDaysOfMonths($year);
     $ADR_finde = $oServ->getADR_finde();
+    $forfaits = $oServ->getForfaits();
     $datosMes = view('backend.revenue.dashboard.mes',[
         'books' => $oServ->books,
         'roomCh' => $oServ->rChannel,
@@ -47,6 +48,7 @@ class RevenueController extends AppController
         'nights'=>$oServ->countNightsSite(),
         'rvas'=>$oServ->countBookingsSite(),
         'ADR_finde'=>$ADR_finde,
+        'forfaits'=>$forfaits
     ]);
     
     /*************************************************************/
@@ -147,15 +149,33 @@ class RevenueController extends AppController
     $liq['ingrMonths']    = $oServ->getIngrMonths($liq['chRooms']);
     $ingrMes = view('backend.revenue.dashboard.ingresos',$liq);
     /*************************************************************/
-    $balance = view('backend.revenue.dashboard.balance',[
-          'lstMonths'=>$oServ->lstMonths,
-          'ingr'=>$liq['ingrMonths'],
-          'gastos'=>$oServ->getExpenses(),
-          'year'=>$oYear,
-          'ingrExt'=>$oServ->getIncomesYear($year)
-          ]);
-    /*************************************************************/    
     
+    $balanceFF = [];
+    $ffTot = $forfaits['totals'];
+    $typeFF = [
+          't'=>'Total',
+          'forfaits'=>'Forfaits',
+          'clases'=>'Clases',
+          'equipos'=>'Equipos',
+          ''=>'Otros',
+    ];
+    foreach ($typeFF as $k=>$n){
+      $balanceFF[$k][0] = isset($ffTot[0][$k]) ? $ffTot[0][$k]: 0; 
+      foreach($oServ->lstMonths as $mk => $month){
+        $balanceFF[$k][$mk] = isset($ffTot[$mk][$k]) ? $ffTot[$mk][$k]: 0;  
+      }
+    }
+    unset($typeFF['t']);
+    $balance = view('backend.revenue.dashboard.balance',[
+        'lstMonths' => $oServ->lstMonths,
+        'ingr' => $liq['ingrMonths'],
+        'gastos' => $oServ->getExpenses(),
+        'year' => $oYear,
+        'ingrExt' => $oServ->getIncomesYear($year),
+        'balanceFF' => $balanceFF,
+        'typeFF' => $typeFF,
+    ]);
+    /*************************************************************/    
     return view('backend.revenue.dashboard',[
         'datosMes' => $datosMes,
         'year' => $year,
@@ -182,6 +202,7 @@ class RevenueController extends AppController
     $oServ->setBook();
     $oServ->setRooms();
     $ADR_finde = $oServ->getADR_finde();
+    $forfaits = $oServ->getForfaits();
     
     return view('backend.revenue.dashboard.mes',[
         'books' => $oServ->books,
@@ -193,6 +214,7 @@ class RevenueController extends AppController
         'nights'=>$oServ->countNightsSite(),
         'rvas'=>$oServ->countBookingsSite(),
         'ADR_finde'=>$ADR_finde,
+        'forfaits'=>$forfaits,
     ]);
   }
   

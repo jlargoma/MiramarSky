@@ -322,7 +322,7 @@ class LiquidacionController extends AppController {
     $lstT_ing['ff'] = $auxFF['pay'];
 //    $lstT_ing['ff_FFExpress'] = $auxFF['totalFFExpress'];
 //    $lstT_ing['ff_ClassesMat'] = $auxFF['totalClassesMat'];
-    $aIngrPending['ff'] = $auxFF['to_pay']+$auxFF['to_pay_mat'];;
+    $aIngrPending['ff'] = $auxFF['to_pay']+$auxFF['to_pay_mat'];
     /*************************************************************************/
     
     $ingresos['others'] = $emptyMonths;

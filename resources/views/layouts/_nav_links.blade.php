@@ -110,7 +110,7 @@
 <?php endif ?>
     <?php if ($uRole == "admin" || $uRole == "subadmin" || $uRole == "recepcionista"): ?>
      <li class="{{  (preg_match('/\/revenue/i',$pathRequest))  ? 'active' : '' }}">
-        <a href="{{ url('/admin/revenue/DASHBOARD') }}" class="detailed">Revenue</a>
+        <a href="{{ url('/admin/revenue/DASHBOARD') }}" class="detailed">REVENUE</a>
     </li>
     <li class="{{  (preg_match('/\/channel-manager/i',$pathRequest) || $pathRequest == 'admin/precios')  ? 'active' : '' }}">
         <a href="{{ url('/admin/precios') }}" class="detailed">CHANNEL</a>

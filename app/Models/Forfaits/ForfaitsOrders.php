@@ -8,6 +8,14 @@ use App\Models\Forfaits\ForfaitsOrderItem;
 class ForfaitsOrders extends Model
 {
   
+/**
+ * ORDER STATUS
+ * status==1 => pend
+ * status==2 => pay
+ * status==3 => cancel
+ * 
+ */
+          
 //  static function getByBook($bookID) {
 //    $order = self::where('book_id',$bookID)->first();
 //    if ($order){

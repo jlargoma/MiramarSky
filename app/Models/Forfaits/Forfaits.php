@@ -220,6 +220,14 @@ class Forfaits extends Model
             ->where('forfaits_orders.status', '!=',3) // no cancel
             ->get();
   }
+  static function getAllOrdersSoldByBooks($bIDs) {
+    $qry = Forfaits::select('forfaits_orders.*')
+            ->join('forfaits_orders','forfaits.id','=','forfaits_orders.forfats_id');
+    $qry->whereIn('forfaits.book_id',$bIDs);
+    return $qry->whereIn('forfaits.status', [2,3]) // cobrada
+            ->where('forfaits_orders.status', '!=',3) // no cancel
+            ->get();
+  }
 
 
   static function getTotalByYear($year){
@@ -227,8 +235,14 @@ class Forfaits extends Model
     $total = 0;
     $ffItems = [];
     $allForfaits =  self::getAllOrdersSold(null,$year);
-    if (count($allForfaits)){
-      foreach ($allForfaits as $order){
+    return self::getTotalByForfatis($allForfaits);
+  }
+  
+  static function getTotalByForfatis($Forfaits){
+    $total = 0;
+    $ffItems = [];
+    if (count($Forfaits)){
+      foreach ($Forfaits as $order){
         if ($order->quick_order){
           $total += $order->total;
         } else {
@@ -241,5 +255,27 @@ class Forfaits extends Model
       $total += ForfaitsOrderItem::whereIn('order_id',$ffItems)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
     }
     return $total;
+  }
+  static function getTotalByTypeForfatis($Forfaits){
+    $totals = ['t'=>0];
+    $ffItems = [];
+    if (count($Forfaits)){
+      foreach ($Forfaits as $order){
+        if (!isset($totals[$order->type])) $totals[$order->type] = 0;
+        if ($order->quick_order){
+          $totals['t'] += $order->total;
+          $totals[$order->type] += $order->total;
+        } else {
+          $ffItems[] = $order->id;
+        }
+      }
+    }
+    if ($ffItems){
+      if (!isset($totals['forfaits'])) $totals['forfaits'] = 0;
+      $aux = ForfaitsOrderItem::whereIn('order_id',$ffItems)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
+      $totals['forfaits'] += $aux;
+      $totals['t'] += $aux;
+    }
+    return $totals;
   }
 }
