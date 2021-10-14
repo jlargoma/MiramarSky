@@ -19,18 +19,17 @@ $Y = $year;
       <tr class="borders">
         <td>{{$concept}}</td>
         <?php
-        $tYear = 0;
+        
         $aux_attr = 'data-k="' . $key . '"  ';
         $auxValues = [];
         if (isset($fixCosts[$key])) {
           $val = $fixCosts[$key];
-         
+          $tYear = $val[0];
           $M = 0;
           if (!isset($aTotals["mdlFC$M"]))
             $aTotals["mdlFC$M"] = 0;
 //           dd($val,$aTotals["mdlFC$M"]);
           $aTotals["mdlFC$M"] += $val[0];
-          $tYear = array_sum($val);
           $yearTotals += $tYear;
           ?>
           

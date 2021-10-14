@@ -18,8 +18,8 @@ function prOcup_3($disp, $days, $night) {
 }
 
 //--END: RATIOS -------//
-
-$AUXsummay = $comparativaAnual[$year];
+if (isset($comparativaAnual[$year])) $AUXsummay = $comparativaAnual[$year];
+else  $AUXsummay = ['pvp'=>0];
 
 $lstMonthsDays = [0 => $tDays];
 foreach ($lstMonths as $k2 => $v2) {

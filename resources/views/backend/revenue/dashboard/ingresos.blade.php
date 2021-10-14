@@ -4,12 +4,10 @@
       <table class="table tIngrMes">
         <thead>
           <tr>
-            <th class="text-center bg-complete text-white static">Apto</th>
-            <th class="text-center bg-complete text-white first-col"></th>
-            <th class="text-center bg-complete text-white">total<br/>
-              <?php echo number_format($t_all_rooms, 0, ',', '.'); ?>€
-            </th>
-            <th class="text-center bg-complete text-white">%</th>
+            <th class="static">Apto</th>
+            <th class="first-col"></th>
+            <th >total<br/>{{moneda($t_all_rooms)}}</th>
+            <th >%</th>
             @foreach($lstMonths as $k => $month)
             <th class="text-center bg-complete text-white">
               {{getMonthsSpanish($month['m'])}}<br/>
@@ -38,7 +36,7 @@
             <th class="text-center">
               <?php
               $percent = 0;
-              if ($data2['months'] > 1)
+              if ($data2['months'] > 1 && $t_all_rooms>0)
                 $percent = ($data2['months'][0] * 100 / $t_all_rooms);
               ?>
               {{round($percent)}}%
@@ -74,7 +72,8 @@
             </th>
             <td class="text-center">
               <?php
-              $percent = ($totalRoom / $t_all_rooms) * 100;
+              $percent = 0;
+              if ($t_all_rooms>0) $percent = ($totalRoom / $t_all_rooms) * 100;
               echo round($percent) . '%';
               ?>
             </td>
@@ -100,6 +99,40 @@
       </table>
     </div>
     <small><b>Nota:</b> Los ingresos por edificio ya incluyen los Extras asociados</small>
+    
+    
+    <?php 
+    $trimestre = [[],[],[],[]];
+    $trimestreText = ['1er','2do','3er','4to'];
+    $count = 0;
+    foreach($lstMonths as $k => $month){
+      $aux = ($count/3);
+      if (!isset($trimestre[$aux])) $trimestre[$aux] = [];
+      $trimestre[$aux][] = $k;
+      $count++;
+    }
+    ?>
+    <div class=" table-responsive" >
+      <table class="table tableTrimestres">
+          <tr>
+            <th>VENTAS TRIMESTRES</th>
+            <th>TOTAL <br/>{{moneda($t_all_rooms)}}</th>
+            <?php
+            foreach ($trimestre as $t=>$meses):
+              $tAux = 0;
+              foreach ($meses as $m):
+                if (isset($t_room_month[$m]) && $t_room_month[$m] > 1) {
+                  $tAux += $t_room_month[$m];
+                }
+              endforeach
+              ?>
+                <th>{{$trimestreText[$t]}} TRIM. <br/>{{moneda($tAux)}}</th>
+              <?php
+            endforeach
+              ?>
+          </tr>
+      </table>
+    </div>
   </div>
   <div class="col-md-3">
     <h3>Ingresos Anual</h3>
@@ -197,3 +230,14 @@ $ingrMonths = $ingrSite = array();
     data: data,
   });
 </script>
+<style>
+  .tIngrMes thead th,
+  .tableTrimestres th{
+    color: #FFF !important;
+    background-color: #48b0f7;
+    text-align: center;
+  }
+  .table.tableTrimestres tr th{
+    font-size: 22px;
+  }
+  </style>

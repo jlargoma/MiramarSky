@@ -1,45 +1,49 @@
-<div class="row">
-  <div class="col-md-9">
-    <div class="table-responsive">
-      <table class="table liq-agencia" border="1">
-        <thead>
-          <tr>
-            <th>AGENCIA</th>
-            <th>Vtas</th>
-            <th>Vtas. %</th>
-            <th>Reservas<br>(noches)</th>
-            <th>Res. %</th>
-            <th>Comisión</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach($data['data'] as $k=>$v)
+<div class="">
+  <div class="table-responsive">
+    <table class="table liq-agencia" border="1">
+      <thead>
         <tr>
-          <th>{{$agencyBooks[$k]}}</th>
-          <td>{{moneda($v['total'])}}</td>
-          <td>{{$v['total_rate']}}%</td>
-          <td>{{$v['reservations']}}</td>
-          <td>{{$v['reservations_rate']}}%</td>
-          <td>{{moneda($v['commissions'])}}</td>
+          <th>AGENCIA</th>
+          <th>Vtas</th>
+          <th>Vtas. %</th>
+          <th>Reservas<br>(noches)</th>
+          <th>Res. %</th>
+          <th>Comisión</th>
         </tr>
-        @endforeach
-        </tbody>
-        <tfoot style="    background-color: #c7c7c7;">
-        <th>Total</th>
-        <th colspan="2">{{moneda($data['totals']['total'])}}</th>
-        <th colspan="2">{{$data['totals']['reservations']}}</th>
-        <th>{{moneda($data['totals']['commissions'])}}</th>
-        </tfoot>
-      </table>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="pieChart">
-      <canvas id="chart_agency"></canvas>
-    </div>
+      </thead>
+      <tbody>
+        @foreach($data['data'] as $k=>$v)
+      <tr>
+        <th>{{$agencyBooks[$k]}}</th>
+        <td>{{moneda($v['total'])}}</td>
+        <td>{{$v['total_rate']}}%</td>
+        <td>{{$v['reservations']}}</td>
+        <td>{{$v['reservations_rate']}}%</td>
+        <td>{{moneda($v['commissions'])}}</td>
+      </tr>
+      @endforeach
+      </tbody>
+      <tfoot style="    background-color: #c7c7c7;">
+      <th>Total</th>
+      <th colspan="2">{{moneda($data['totals']['total'])}}</th>
+      <th colspan="2">{{$data['totals']['reservations']}}</th>
+      <th>{{moneda($data['totals']['commissions'])}}</th>
+      </tfoot>
+    </table>
   </div>
 </div>
-
+<div class="col-md-12">
+  <div class="pieChart agencies">
+    <canvas id="chart_agency"></canvas>
+  </div>
+</div>
+<style>
+  .pieChart.agencies {
+    max-width: 260px;
+    margin: 1em auto;
+    text-align: center;
+}
+</style>
 <script type="text/javascript">
   new Chart(document.getElementById("chart_agency"), {
     type: 'pie',

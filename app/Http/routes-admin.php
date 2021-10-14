@@ -223,6 +223,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], fun
   Route::post('admin/revenue/upd-fixedcosts', 'RevenueController@updFixedcosts');
   Route::get('admin/revenue/getComparativaAnual/{year}', 'RevenueController@getComparativaAnual');
   Route::get('admin/revenue/getFixedcostsAnual/{year}', 'RevenueController@getFixedcostsAnual');
+  Route::post('admin/revenue/copyFixedcostsAnualTo/{year}', 'RevenueController@copyFixedcostsAnualTo');
   
   
   

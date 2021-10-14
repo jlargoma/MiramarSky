@@ -55,11 +55,17 @@
             <canvas id="barChart2" style="width: 100%; height: 250px;"></canvas>
         </div>
       </div>
+       @include('backend.revenue.dashboard.resume-by-forfatis')
     </div>
-       <div class="row">
-       
-      </div>
 </div>
+<style>
+  .t-r-ff .resume-head .static{
+    height: 59px;
+  }
+  .t-r-ff tbody .static{
+    height: 37px;
+  }
+</style>
 <script type="text/javascript">
   /* GRAFICA INGRESOS/GASTOS */
   var data = {
@@ -91,6 +97,8 @@
           data: data,
   });
 
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
 
                  
       var data = {
@@ -128,6 +136,50 @@
         type: 'bar',
         data: data,
       });
+      
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/     
 
+
+      var data = {
+        labels: [
+          <?php 
+           foreach($lstMonths as $mk => $month){ echo "'$month',";}
+          ?>
+        ],
+        datasets: [
+          <?php 
+          $nro = 0;
+           foreach ($typeFF as $k=>$n):
+             if ($k == 't') continue;
+             $nro++;
+            ?>
+            {
+            label: "{{$n}}",
+            borderColor: '{{printColor($nro)}}',
+            borderWidth: 1,
+            data: [
+	          <?php 
+                foreach($lstMonths as $mk => $month):
+                  echo "'" . round($balanceFF[$k][$mk]). "',";
+                endforeach
+              ?>
+            ],
+          },
+            <?php
+           endforeach;
+          ?>
+          
+        ]
+      };
+
+        
+
+      var myBarChart = new Chart('barChart', {
+        type: 'line',
+        data: data,
+      });
+/*----------------------------------------------------------------------*/
+/*----------------------------------------------------------------------*/
 </script>
 

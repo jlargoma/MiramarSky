@@ -5,9 +5,14 @@
   <input type="hidden" id="calc_finish" value="{{$finish}}">
   <input type="hidden" id="calc_pax" value="{{$pax}}">
   
+
   <div class="table-responsive" style="overflow-y: hidden;">
     <table class="table table-resumen table-mobile_cr">
       <thead>
+        <tr>
+          <td colspan="2">  <h5 class="text-center">Del <b>{{dateMin($start)}}</b> al <b>{{dateMin($finish)}}</b></h5></td>
+          <td colspan="8"></td>
+        </tr>
         <tr class ="text-center bg-success text-white">
           <th class="th-bookings text-center th-2 static">Disp.</th>
           <th class="th-bookings static-2" >Apto.</th>

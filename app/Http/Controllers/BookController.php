@@ -441,6 +441,7 @@ class BookController extends AppController
       if ( $oUser->canEditBooking()){
          
           $book  = \App\Book::with('payments')->find($id);
+          if (!$book) return redirect('/admin/reservas')->withErrors(['Reserva no encontrada']);
           $rooms = \App\Rooms::orderBy('order')->get();
           if ( $oUser->role == "admin" || $oUser->role == "subadmin"){
             $oVisa = DB::table('book_visa')

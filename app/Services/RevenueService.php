@@ -216,9 +216,10 @@ class RevenueService
     
 
     function getMonthSum($field,$filter,$date1,$date2) {
+      $result = [];
       $lst = DB::select('SELECT new_date,room_id, SUM('.$field.') as total '
             . ' FROM ('
-            . '        SELECT '.$field.',room_id,DATE_FORMAT('.$filter.', "%m-%y") new_date '
+            . '        SELECT '.$field.',room_id,DATE_FORMAT('.$filter.', "%y.%m") new_date '
             . '        FROM book'
             . '        WHERE type_book IN ('.implode(',',$this->type_book).')'
             . '        AND '.$filter.' >= "'.$date1.'" '
@@ -317,5 +318,57 @@ class RevenueService
         }
       }
       return $totalAnual;
+    }
+    
+    function getForfaits(){
+      
+      $aB_IDs = [];
+      $auxStatus = [
+          0,//0 'No Gestionada',
+          0,//1 'Cancelada',
+          0,//2 'No Cobrada',
+          0,//3 'Confirmada',
+          0//4 'Comprometida',
+      ];
+      $result = [0=>$auxStatus];
+      foreach ($this->lstMonths as $k2=>$v2){
+        $result[$k2] = $auxStatus;
+        $books[$k2] = [];
+        $totals[$k2] = 0;
+      }
+      
+      foreach ($this->books as $b){
+        if (!in_array($b->book_id, $aB_IDs)){
+          $am = date('y.m',strtotime($b->date));
+          $result[$am][$b->forfait]++;
+          $result[0][$b->forfait]++;
+          $books[$am][] = $b->book_id;
+          $aB_IDs[] = $b->book_id;
+        }
+      }
+        
+//      dd($result,$totals2);
+      foreach ($books as $m=>$bIDs){
+        $auxItems = \App\Models\Forfaits\Forfaits::getAllOrdersSoldByBooks($bIDs);
+        if ($auxItems && count($auxItems)>0){
+          $total = \App\Models\Forfaits\Forfaits::getTotalByTypeForfatis($auxItems);
+          if ($total){
+            $totals[$m] = $total;
+          }
+        }
+      }
+      
+      $auxT = [];
+      foreach ($totals as $ff){
+        if (is_array($ff)){
+          foreach ($ff as $k=>$v){
+            if (!isset($auxT[$k])) $auxT[$k] = 0;
+            $auxT[$k] += $v;
+          }
+        }
+      }
+      $totals[0] = $auxT;
+      return ['lst'=>$result,'totals'=>$totals];
+        
     }
 }

@@ -35,6 +35,7 @@ class RevenueController extends AppController
     $oServ->setRooms();
     $oServ->createDaysOfMonths($year);
     $ADR_finde = $oServ->getADR_finde();
+    $forfaits = $oServ->getForfaits();
     $datosMes = view('backend.revenue.dashboard.mes',[
         'books' => $oServ->books,
         'roomCh' => $oServ->rChannel,
@@ -47,15 +48,18 @@ class RevenueController extends AppController
         'nights'=>$oServ->countNightsSite(),
         'rvas'=>$oServ->countBookingsSite(),
         'ADR_finde'=>$ADR_finde,
+        'forfaits'=>$forfaits
     ]);
     
     /*************************************************************/
     $oLiquidacion = new \App\Liquidacion();
     $dataSeason = $oLiquidacion->getBookingAgencyDetailsBy_date($oYear->start_date,$oYear->end_date);
+//    dd($dataSeason);
     $agencias = view('backend.revenue.dashboard.agencias',[
         'data' => $dataSeason,
         'agencyBooks' => $oLiquidacion->getArrayAgency()
     ]);
+//    echo ($agencias); die;
     /*************************************************************/
     $disponiblidad = $this->data_disponibilidad($oYear,$month,$oServ->start,$oServ->finish,true,$oServ->lstMonths);
     
@@ -147,15 +151,33 @@ class RevenueController extends AppController
     $liq['ingrMonths']    = $oServ->getIngrMonths($liq['chRooms']);
     $ingrMes = view('backend.revenue.dashboard.ingresos',$liq);
     /*************************************************************/
-    $balance = view('backend.revenue.dashboard.balance',[
-          'lstMonths'=>$oServ->lstMonths,
-          'ingr'=>$liq['ingrMonths'],
-          'gastos'=>$oServ->getExpenses(),
-          'year'=>$oYear,
-          'ingrExt'=>$oServ->getIncomesYear($year)
-          ]);
-    /*************************************************************/    
     
+    $balanceFF = [];
+    $ffTot = $forfaits['totals'];
+    $typeFF = [
+          't'=>'Total',
+          'forfaits'=>'Forfaits',
+          'clases'=>'Clases',
+          'equipos'=>'Equipos',
+          ''=>'Otros',
+    ];
+    foreach ($typeFF as $k=>$n){
+      $balanceFF[$k][0] = isset($ffTot[0][$k]) ? $ffTot[0][$k]: 0; 
+      foreach($oServ->lstMonths as $mk => $month){
+        $balanceFF[$k][$mk] = isset($ffTot[$mk][$k]) ? $ffTot[$mk][$k]: 0;  
+      }
+    }
+    unset($typeFF['t']);
+    $balance = view('backend.revenue.dashboard.balance',[
+        'lstMonths' => $oServ->lstMonths,
+        'ingr' => $liq['ingrMonths'],
+        'gastos' => $oServ->getExpenses(),
+        'year' => $oYear,
+        'ingrExt' => $oServ->getIncomesYear($year),
+        'balanceFF' => $balanceFF,
+        'typeFF' => $typeFF,
+    ]);
+    /*************************************************************/    
     return view('backend.revenue.dashboard',[
         'datosMes' => $datosMes,
         'year' => $year,
@@ -182,6 +204,7 @@ class RevenueController extends AppController
     $oServ->setBook();
     $oServ->setRooms();
     $ADR_finde = $oServ->getADR_finde();
+    $forfaits = $oServ->getForfaits();
     
     return view('backend.revenue.dashboard.mes',[
         'books' => $oServ->books,
@@ -193,6 +216,7 @@ class RevenueController extends AppController
         'nights'=>$oServ->countNightsSite(),
         'rvas'=>$oServ->countBookingsSite(),
         'ADR_finde'=>$ADR_finde,
+        'forfaits'=>$forfaits,
     ]);
   }
   
@@ -1233,5 +1257,38 @@ class RevenueController extends AppController
           'fixCosts' => $fixCosts,
           'FCItems' => $oFCItems
       ]);
+    }
+    
+    function copyFixedcostsAnualTo($year){
+      
+      $oYearOld = \App\Years::where('year', $year-1)->first();
+      if (!$oYearOld) return 'Temporada no existente';
+      
+       $oYear = \App\Years::where('year', $year)->first();
+      if (!$oYear) return 'Temporada no existente';
+     
+      $oFixCosts = \App\FixCosts::getByRang($oYearOld->start_date,$oYearOld->end_date);
+      if (count($oFixCosts)==0) return 'No hay datos cargados';
+        
+      \App\FixCosts::deleteByRang($oYear->start_date,$oYear->end_date);
+       
+      foreach ($oFixCosts as $item){
+        
+        $aux = explode('-', $item->date);
+        $date = ($aux[0]+1).'-'.$aux[1].'-01';
+        $oObject = \App\FixCosts::where('date',$date)
+                ->where('concept',$item->concept)
+                ->first();
+        if (!$oObject){
+          $oObject = new \App\FixCosts();
+          $oObject->date    = $date;
+          $oObject->concept = $item->concept;
+        }
+        $oObject->content = $item->content;
+        $oObject->save();
+      }
+      
+     
+      return 'OK';
     }
 }
