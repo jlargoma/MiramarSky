@@ -15,6 +15,8 @@
     $totalPVP = \App\Rooms::getPvpByYear($yearAux);
     $totalExpense = \App\Expenses::getTotalByYear($yearAux); 
     $otherIngr = \App\Incomes::getIncomesYear($yearAux);
+    $totalFF = App\Models\Forfaits\Forfaits::getTotalByYear($yearAux);
+    if ($totalFF) $otherIngr += $totalFF;
     $result = $totalPVP-$totalExpense+$otherIngr;
     ?>
     <div class="col-md-4 col-xs-6 m-b-10">

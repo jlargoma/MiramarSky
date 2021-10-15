@@ -146,6 +146,7 @@ class Liquidacion
 
             if (!$order->quick_order){
               $common_ordersID[] = $order->id;
+              continue;
             }
             $totalPrice += $order->total;
             $ordersID[] = $order->id;
@@ -170,6 +171,12 @@ class Liquidacion
           }
         }
         $forfaitsIDs[] = $forfait->id;
+      }
+      
+      if ($common_ordersID){
+        $totalCommonOrders = Models\Forfaits\ForfaitsOrderItem::whereIn('order_id',$common_ordersID)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
+        $totalFFExpress += $totalCommonOrders;
+        $totalPayment += $totalCommonOrders;
       }
   
       /*--------------------------------*/

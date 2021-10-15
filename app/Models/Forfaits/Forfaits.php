@@ -204,15 +204,15 @@ class Forfaits extends Model
             ->join('forfaits_orders','forfaits.id','=','forfaits_orders.forfats_id');
     
     if ($month){
-      $qry->whereYear('forfaits_orders.created_at','=', $year)
-              ->whereMonth('forfaits_orders.created_at','=', $month);
+      $qry->whereYear('forfaits.created_at','=', $year)
+              ->whereMonth('forfaits.created_at','=', $month);
     } else {
       $activeYear = \App\Years::where('year', $year)->first();
       if (!$activeYear) return 0;
       $startYear  = $activeYear->start_date;
       $endYear    = $activeYear->end_date;
-      $qry->where('forfaits_orders.created_at', '>=', $startYear)
-              ->where('forfaits_orders.created_at', '<=', $endYear);
+      $qry->where('forfaits.created_at', '>=', $startYear)
+              ->where('forfaits.created_at', '<=', $endYear);
     }
       
     
