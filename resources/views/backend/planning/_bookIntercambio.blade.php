@@ -85,6 +85,11 @@
 
 </script>
 <style>
+    .box-intercambio{
+        box-shadow: 1px 1px 7px #868585;
+    padding: 12px;
+    margin-top: 1em;
+  }
   #lst_interc_2 ul,
   #lst_interc_1 ul {
     padding: 12px 00;
@@ -119,7 +124,8 @@
   }
 </style>
 
-
+<div class="box-intercambio">
+  <h2>Intercambio de habitaciones</h2>
 <div class="row">
   <div class="col-md-6">
     <div class="">
@@ -143,4 +149,5 @@
     <button type="button" class="btn btn-primary" id="sendIntercambio">Intercambiar</button>
     <p class="alert alert-warning" style="display:none;" id="IntercambioResponse"></p>
   </div>
+</div>
 </div>

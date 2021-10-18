@@ -5,6 +5,8 @@
 //      dd($ingr);
       $tIngr = array_sum($ingr);
       $tGast = array_sum($gastos);
+      $ff = $balanceFF['t'][0];
+      if ($ff) $ingrExt += $ff;
       $tBene = $tIngr+$ingrExt-$tGast;
       ?>
       <div class="row resume-box">

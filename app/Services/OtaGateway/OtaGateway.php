@@ -437,7 +437,7 @@ class OtaGateway {
    */
   private function updBooking($book, $reserv) {
 
-    $pax = $reserv['adults'] + $reserv['children'];
+    $pax = $reserv['pax'];
     $book_comments = $book->book_comments . "\n"
             . 'Adultos: ' . $reserv['adults'] . ' - '
             . 'Niños: ' . $reserv['children'];
