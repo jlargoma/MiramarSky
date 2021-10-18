@@ -65,12 +65,8 @@ trait OtasTraits
       /*******************************/
       // save log data
       $lData = new \App\LogsData();
-          
-      $date_range = $request->input('date_range', null);
-      $date = explode(' - ', $date_range);
-      $startTime = convertDateToDB($date[0]);
-      $endTime = convertDateToDB($date[1]);
-      
+      $startTime = $request->input('date_start', null);
+      $endTime = $request->input('date_end', null);
       $weekDays = [];
       $diaSemana = listDaysSpanish(true); 
       for($i=0;$i<7;$i++){

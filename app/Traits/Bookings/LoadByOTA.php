@@ -53,8 +53,30 @@ trait LoadByOTA {
                 'end' => $oBooking->departure,
                 'modified_from' => $oBooking->modified_from,
                 'modified_to' => $oBooking->modified_to,
+                'pax'=>$oBooking->adults+$oBooking->children
               ];
       
+      //PAXs --- RECALCULAR PAX BOOKING.COM----------------------------
+      foreach ($reserv['extra_array'] as $k => $v) {
+        if ($k == 'Guests'){
+          foreach ($v as $k2 => $v2) {
+            if ($k2 == 'Requested occupancy'){
+              $pax = 0;
+              $reserv['adults'] = $reserv['children'] = 0;
+              foreach ($v2 as $k3 => $v3) {
+                $pax += $v3->count;
+                if ($v3->type ==  "child") $reserv['children'] += $v3->count;
+                if ($v3->type ==  "adult") $reserv['adults'] += $v3->count;
+              }
+//              if ($reserv['pax'] != $pax && $reserv['status'] == 1)
+//                echo $reserv['bkg_number'].'<br>'; //dd($reserv,$pax);
+              $reserv['pax'] = $pax;
+            }
+          }
+        }
+      }
+      //PAXs -------------------------------
+//      $bookID = null;
       $bookID = $this->sOta->addBook($channel_group,$reserv);
 //      echo $bookID.'<br/>';
 //      dd($bookID);
