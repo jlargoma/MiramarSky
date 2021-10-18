@@ -267,6 +267,24 @@ button#closeUrgente {
   font-weight: bold;
 }
 
+#modalPAXs .modal-dialog.modal-lg {
+  max-width: 840px;
+}
+#modalPAXs .table tbody tr th,
+#modalPAXs .table tbody tr td {
+  padding: 5px !important;
+  text-align: center;
+}
+#modalPAXs .table tbody tr th{
+    background-color: #1b416d;
+    color: #FFF;
+}
+button.btn.btn-danger.removeAlertPax {
+    padding: 0 4px;
+    margin-left: 9px;
+    font-size: 11px;
+}
+
 /******************************************************************************/
 
 @media only screen and (max-width: 991px){
