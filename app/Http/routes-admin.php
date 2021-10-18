@@ -11,6 +11,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], fun
   Route::post('admin/saveCustomerRequest', 'BookController@saveCustomerRequest');
   Route::post('admin/getCustomersRequest', 'BookController@getCustomersRequest');
   Route::get('/admin/getCustomerRequestBook/{bID}', 'BookController@getCustomersRequest_book');
+  Route::post('admin/removeAlertPax', 'BookController@removeAlertPax');
   
   Route::get('/admin/get-books-without-cvc', 'BookController@getBooksWithoutCvc');
  

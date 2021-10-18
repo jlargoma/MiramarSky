@@ -122,9 +122,10 @@ class BookController extends AppController
         
         //BEGIN: Processed data
         $bookOverbooking = null;
+        $alarmsCheckPaxs = null;
         $overbooking = [];
         $alarms = 0;
-        $oData = \App\ProcessedData::whereIn('key',['overbooking','alarmsPayment'])->get();
+        $oData = \App\ProcessedData::whereIn('key',['overbooking','alarmsPayment','checkPaxs'])->get();
         foreach ($oData as $d){
           switch ($d->key){
             case 'overbooking':
@@ -133,6 +134,10 @@ class BookController extends AppController
             case 'alarmsPayment':
               if (trim($d->content) != '')
                 $alarms = count(json_decode($d->content));
+              break;
+            case 'checkPaxs':
+              if (trim($d->content) != '')
+                $alarmsCheckPaxs = json_decode($d->content,true);
               break;
           }
         }
@@ -159,6 +164,12 @@ class BookController extends AppController
               'text'   => 'Tienes un OVERBOOKING'
               ];          
         }
+         if(is_array($alarmsCheckPaxs) && count($alarmsCheckPaxs)>0){
+          $urgentes[] = [
+              'action' => 'class="btn btn-danger"  type="button" data-toggle="modal" data-target="#modalPAXs"',
+              'text'   => 'Se deben controlar el PAXs en reservas'
+              ];          
+        }
         
         /****************************************************************/
         /*bookings_without_Cvc*/
@@ -172,7 +183,7 @@ class BookController extends AppController
         /****************************************************************/
         return view('backend/planning/index',
                 compact('books', 'mobile', 'stripe', 'rooms', 
-                        'booksCount', 'alarms','lowProfits',
+                        'booksCount', 'alarms','lowProfits','alarmsCheckPaxs',
                         'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment',
                         'ff_pendientes','ff_mount','totalReserv','amountReserv','overbooking',
                         'urgentes','bookings_without_Cvc')
@@ -2469,4 +2480,25 @@ class BookController extends AppController
                 'response' => "REGISTRO GUARDADO"
             ];
   }   
+
+  function removeAlertPax(Request $request){
+    $oUser = Auth::user();
+    if ( !( $oUser->role == "admin" || $oUser->role == "subadmin")){
+      return "No posees permisos";
+    }
+    $bookingID = $request->input('bID', null);
+    $oData = \App\ProcessedData::where('key','checkPaxs')->first();
+    if ($oData){
+      $content = json_decode($oData->content,true);
+      foreach ($content as $k=>$v){
+        if ($v['bookID'] == $bookingID){
+          unset($content[$k]);
+        }
+      }
+      $oData->content = json_encode($content);
+      $oData->save();
+    }
+      
+    return 'OK';
+  }
 }

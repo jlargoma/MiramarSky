@@ -241,6 +241,23 @@ $(document).ready(function () {
     });
   });
 
+  $('#modalPAXs').on('click','.removeAlertPax',function(){
+    var obj = $(this).closest('tr');
+    var data = {
+      _token: window.csrf_token,
+      bID: obj.data('id'),
+      link: obj.data('link'),
+    };
+    
+    $.post('/admin/removeAlertPax', data, function (response) {
+      if (response == 'OK'){
+        obj.remove();
+        window.show_notif('','success', 'El item fue removido.');
+      } else {
+        window.show_notif('','error', 'El item no pudo ser removido.');
+      }
+    });
+  });
 
 
   //Fianzas

@@ -1,9 +1,3 @@
 <?php
-
-$bookings = '{
-   "bookings":[
-      { },
-      { }
-   ]
-}';
+$bookings = '';
 ?>

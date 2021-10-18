@@ -12,108 +12,141 @@ use App\Services\OtaGateway\Config as oConfig;
 
 trait LoadByOTA {
 
-    
-  private function loadBooking($oBookings) {
+ function loadBooking($oBookings) {
     $oConfig = new oConfig();
-   
-    foreach ($oBookings as $oBooking){
-//      dd($oBooking);
+
+    foreach ($oBookings as $oBooking) {
       $channel_group = $oConfig->getChannelByRoom($oBooking->roomtype_id);
       $extra_array = is_string($oBooking->extra_array) ? json_decode($oBooking->extra_array) : $oBooking->extra_array;
-      if (isset($extra_array->from_google) && $extra_array->from_google){
-          $oBooking->ota_id = 'google-hotel';
+      if (isset($extra_array->from_google) && $extra_array->from_google) {
+        $oBooking->ota_id = 'google-hotel';
       }
-      
       //BEGIN: si es una cancelación por modificación -> la salto
       if ($oBooking->modified_to) {
         if ($this->otaModified($oBooking,$channel_group))
           continue; //sólo si se actualizó
       }
       //END: si es una cancelación por modificación -> la salto
-               
       $reserv = [
-                'channel' => $oBooking->ota_id,
-                'bkg_number' => $oBooking->number,
-                'rate_id' => $oBooking->plan_id,
-                'external_roomId' => $oBooking->roomtype_id,
-                'reser_id' => $oBooking->ota_booking_id,
-                'comision'=>0,
-                'channel_group' => $channel_group,
-                'status' => $oBooking->status_id,
-                'agency' => $oConfig->getAgency($oBooking->ota_id),
-                'customer_name' => $oBooking->name.' '.$oBooking->surname,
-                'customer_email' => $oBooking->email,
-                'customer_phone' => $oBooking->phone,
-                'customer_comment' => $oBooking->comment,
-                'totalPrice' => $oBooking->amount,
-                'adults' => $oBooking->adults,
-                'children' => $oBooking->children,
-                'extra_array' => $extra_array,
-                'start' => $oBooking->arrival,
-                'end' => $oBooking->departure,
-                'modified_from' => $oBooking->modified_from,
-                'modified_to' => $oBooking->modified_to,
-                'pax'=>$oBooking->adults+$oBooking->children
-              ];
+          'channel' => $oBooking->ota_id,
+          'bkg_number' => $oBooking->number,
+          'rate_id' => $oBooking->plan_id,
+          'external_roomId' => $oBooking->roomtype_id,
+          'reser_id' => $oBooking->ota_booking_id,
+          'comision' => 0,
+          'channel_group' => $channel_group,
+          'status' => $oBooking->status_id,
+          'agency' => $oConfig->getAgency($oBooking->ota_id),
+          'customer_name' => $oBooking->name . ' ' . $oBooking->surname,
+          'customer_email' => $oBooking->email,
+          'customer_phone' => $oBooking->phone,
+          'customer_comment' => $oBooking->comment,
+          'totalPrice' => $oBooking->amount,
+          'adults' => $oBooking->adults,
+          'children' => $oBooking->children,
+          'extra_array' => $extra_array,
+          'start' => $oBooking->arrival,
+          'end' => $oBooking->departure,
+          'modified_from' => $oBooking->modified_from,
+          'modified_to' => $oBooking->modified_to,
+          'pax'=>$oBooking->adults+$oBooking->children
+      ];
       
-      //PAXs --- RECALCULAR PAX BOOKING.COM----------------------------
+      
+      
+      //PAXs -------------------------------
+      $checkPAX = false;
+      
       foreach ($reserv['extra_array'] as $k => $v) {
         if ($k == 'Guests'){
           foreach ($v as $k2 => $v2) {
             if ($k2 == 'Requested occupancy'){
-              $pax = 0;
-              $reserv['adults'] = $reserv['children'] = 0;
+              $pax = $adults = $children = 0;
+             
               foreach ($v2 as $k3 => $v3) {
                 $pax += $v3->count;
-                if ($v3->type ==  "child") $reserv['children'] += $v3->count;
-                if ($v3->type ==  "adult") $reserv['adults'] += $v3->count;
+                if ($v3->type ==  "child") $children += $v3->count;
+                if ($v3->type ==  "adult") $adults += $v3->count;
               }
-//              if ($reserv['pax'] != $pax && $reserv['status'] == 1)
-//                echo $reserv['bkg_number'].'<br>'; //dd($reserv,$pax);
-              $reserv['pax'] = $pax;
+              if ($reserv['pax'] != $pax && $reserv['status'] == 1){
+                if ($oBooking->link_id == "0" || $children == 0){ //el problema son los chicos
+                  $reserv['pax'] = $pax;
+                  $reserv['adults'] = $adults;
+                  $reserv['children'] = $children;
+                } else {
+                  echo '"'.$oBooking->number.'", <br>';
+                  //es una reserva doble -> control manual
+                  $checkPAX = [
+                    'bookID'=>null,  
+                    'link_id'=>$oBooking->link_id,  
+                    'customer'=>$reserv['customer_name'],  
+                    'pax'=>$reserv['pax'],  
+                    'reser_id' => $oBooking->ota_booking_id,
+                    'adults'=>$adults,  
+                    'children'=>$children,  
+                    'channel_group' => $channel_group,
+                  ];
+                  
+                }
+              }
             }
           }
         }
       }
       //PAXs -------------------------------
 //      $bookID = null;
-      $bookID = $this->sOta->addBook($channel_group,$reserv);
-//      echo $bookID.'<br/>';
-//      dd($bookID);
-//      var_dump($reserv,$oBooking); die;
+      $bookID = $this->sOta->addBook($channel_group, $reserv);
+//      var_dump($reserv,$oBooking);// die;
+
+      if ($bookID && $oBooking->ota_id == 'google-hotel') {
+
+        $book = \App\Book::find($bookID);
+        $body = 'Hola, ha entrado una nueva reserva desde Google Hotel:<br/><br/>';
+
+        $customer = $book->customer;
+        $subject = 'RESERVA GOOGLEHOTELS : ' . $customer->name;
+        $body .= '<b>Nombre:</b>: ' . $customer->name . '<br/><br/>';
+        $body .= '<b>e-mail:</b>: ' . $customer->email . '<br/><br/>';
+        $body .= '<b>Teléfono:</b>: ' . $customer->phone . '<br/><br/>';
+        $body .= '<b>Habitación:</b> ' . $book->room->name . '<br/><br/>';
+        $body .= '<b>PVP:</b>: ' . number_format($book->total_price, 0, '', '.') . '<br/><br/>';
+        $body .= '<b>Fechas:</b> ' . convertDateToShow_text($book->start) . ' - ' . convertDateToShow_text($book->finish) . '<br/><br/>';
+        $body .= '<b>Noches:</b> ' . $book->nigths . '<br/><br/>';
+        $body .= '<b>Paxs:</b> ' . $book->pax . '<br/><br/>';
+        $body .= '<b>Comtentarios:</b> ' . $book->book_comments . '<br/><br/>';
+
+        $sended = \Illuminate\Support\Facades\Mail::send('backend.emails.base', [
+                    'mailContent' => $body,
+                    'title' => $subject
+                        ], function ($message) use ($book, $subject) {
+                          $message->from(env('MAIL_FROM'));
+                          $message->to(env('MAIL_FROM'));
+                          $message->subject($subject);
+                        });
+      }
       
-        if ($bookID && $oBooking->ota_id == 'google-hotel'){
-
-          $book = \App\Book::find($bookID);
-          $body = 'Hola, ha entrado una nueva reserva desde Google Hotel:<br/><br/>';
-
-          $customer = $book->customer;
-          $subject = 'RESERVA GOOGLEHOTELS : '.$customer->name;
-          $body .= '<b>Nombre:</b>: '.$customer->name.'<br/><br/>';
-          $body .= '<b>e-mail:</b>: '.$customer->email.'<br/><br/>';
-          $body .= '<b>Teléfono:</b>: '.$customer->phone.'<br/><br/>';
-          $body .= '<b>Habitación:</b> '.$book->room->name.'<br/><br/>';
-          $body .= '<b>PVP:</b>: '.number_format($book->total_price, 0, '', '.').'<br/><br/>';
-          $body .= '<b>Fechas:</b> '.convertDateToShow_text($book->start).' - '. convertDateToShow_text($book->finish).'<br/><br/>';
-          $body .= '<b>Noches:</b> '.$book->nigths.'<br/><br/>';
-          $body .= '<b>Paxs:</b> '.$book->pax.'<br/><br/>';
-          $body .= '<b>Comtentarios:</b> '.$book->book_comments.'<br/><br/>';
-
-           $sended = \Illuminate\Support\Facades\Mail::send('backend.emails.base', [
-                'mailContent' => $body,
-                'title'       => $subject
-            ], function ($message) use ($book, $subject) {
-                $message->from(env('MAIL_FROM'));
-                $message->to(env('MAIL_FROM'));
-                $message->subject($subject);
-            });
+      if ($bookID && $checkPAX){
+        $checkPAX['bookID'] = $bookID;
         
-        }
+        $oProcessData = \App\ProcessedData::findOrCreate('checkPaxs');
+        $content = json_decode($oProcessData->content,true);
+        
+        if (is_array($content)){ 
+          foreach ($content as $k=>$v){
+            if ($v['bookID'] == $bookID){
+              unset($content[$k]); //borrar si es actualización
+            }
+          }
+          $content[] = $checkPAX;
+        } else $content = [$checkPAX];
+        
+        $oProcessData->content = json_encode($content);
+        $oProcessData->save();
+      }
     }
-    
   }
   
-   function otaModified($oBooking,$channel_group) {
+  function otaModified($oBooking,$channel_group) {
     $site = '';
     $oBook = \App\Book::where('bkg_number', $oBooking->number)->first();
     if ($oBook) {

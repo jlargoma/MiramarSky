@@ -158,7 +158,17 @@ $is_mobile = $mobile->isMobile();
   </div>
 <?php endif ?>
 
-
+@if($alarmsCheckPaxs)
+<div class="modal fade slide-up in" id="modalPAXs" tabindex="-1" role="dialog" aria-hidden="true" >
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        @include('backend.planning._alarmsPAXs', ['alarms' => $alarmsCheckPaxs])
+      </div>
+    </div>
+  </div>
+</div>
+@endif
 
 <form method="post" id="formFF" action=""  <?php
 if (!$is_mobile) {
