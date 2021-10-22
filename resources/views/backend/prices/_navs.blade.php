@@ -34,5 +34,6 @@ $lstBtn = [
         <a class="text-white btn btn-md btn-primary" href="{{route($k)}}">{{$v}}</a>
       <?php endif ?>	
   <?php endforeach; ?>
+    <?php if (isset($extr)) echo $extr; ?>
   </div>
 </div>

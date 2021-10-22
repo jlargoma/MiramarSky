@@ -14,6 +14,7 @@
 <?php 
 $hcol = (_IS_MOBILE) ? 3:15;
 $tDays = count($days);
+$extr = '<span class="btnCalendar btn btn-primary"  data-toggle="modal" data-target="#siteCalendar"><i class="fa fa-calendar openCalendar"></i></span>';
 ?>
 <div class="container-fluid padding-25 sm-padding-10">
   <div class="row">
@@ -22,12 +23,9 @@ $tDays = count($days);
         <div class="col-md-3 col-xs-12">
           <h3>Listado de Precios:</h3>
         </div>
-        <div class="col-xs-12 col-md-8">
-          @include('backend.prices._navs')
-        </div>
-        <div class="col-xs-12 col-md-1">
-        <i class="fa fa-calendar openCalendar" data-toggle="modal" data-target="#siteCalendar"></i>
-        </div>
+        <div class="col-xs-12 col-md-9">
+          @include('backend.prices._navs',['extr'=>$extr])
+           
         </div>
       </div>
       <div class="row">
@@ -608,6 +606,10 @@ $(document).ready(function () {
   #select_site{
     width: 80%;  
     margin-top: 0 !important
+  }
+  .buttons-box .btnCalendar{
+    padding: 4px;
+    min-width: 71px;
   }
 
   .select-site .openCalendar{

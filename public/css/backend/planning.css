@@ -284,6 +284,9 @@ button.btn.btn-danger.removeAlertPax {
     margin-left: 9px;
     font-size: 11px;
 }
+.box-alerts-popup .items {
+    margin-top: 8px;
+}
 
 /******************************************************************************/
 

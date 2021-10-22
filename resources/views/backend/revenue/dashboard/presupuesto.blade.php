@@ -32,7 +32,7 @@ else $daysMonth = $mDays[intVal(explode('.',$month)[1])];
         <tr><th colspan="3" style="font-size: 1.4em;background-color: #ed2402;color: #FFF;">COSTES FIJOS EDIFICIO</th></tr>
         <tr class="grey">
           <td>CONCEPTO</td>
-          <td>MENSUAL</td>
+          <td></td>
         </tr>
         <?php
         $cftM = 0;

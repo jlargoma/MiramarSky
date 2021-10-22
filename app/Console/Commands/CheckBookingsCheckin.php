@@ -64,8 +64,10 @@ class CheckBookingsCheckin extends Command {
       foreach ($items as $item){
         if ($item){
           foreach ($item as $reserv){
+            if (!$reserv->modified_to){
               $numbers[] = $reserv->number;
               $ota_b_id[] = $reserv->ota_booking_id;
+            }
           }
         }
       }

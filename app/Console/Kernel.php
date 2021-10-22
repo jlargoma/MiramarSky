@@ -39,6 +39,7 @@ class Kernel extends ConsoleKernel
         Commands\CheckBookingsCheckin::class,
         Commands\BookingsDays::class,
         Commands\SendParteeReminder::class,
+        Commands\CheckPricess::class,
 //        Commands\WubookGetBookings::class,
 //        Commands\ZodomusImport::class,
 //        Commands\RoomsPhotosMigrate::class,

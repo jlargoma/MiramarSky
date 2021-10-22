@@ -74,7 +74,7 @@ trait LoadByOTA {
                   $reserv['adults'] = $adults;
                   $reserv['children'] = $children;
                 } else {
-                  echo '"'.$oBooking->number.'", <br>';
+                 // echo '"'.$oBooking->number.'", <br>';
                   //es una reserva doble -> control manual
                   $checkPAX = [
                     'bookID'=>null,  
