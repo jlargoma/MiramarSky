@@ -28,7 +28,7 @@ class RatesRoom {
   function setDates($oYear) {
     $this->start = $oYear->start_date;
     $this->end = $oYear->end_date;
-    $year = $oYear->year-2000;
+    $year = $oYear->year;
     $this->seasson = $year.'-'.($year+1);
   }
 

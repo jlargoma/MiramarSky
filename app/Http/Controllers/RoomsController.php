@@ -1279,7 +1279,7 @@ class RoomsController extends AppController {
     $url = route('contract.see',[$oContr->id]);
     $subject = 'Contrato de Propietario';
     $mailContent = 'Hola <b>'.$oRoom->user->name.'</b> <br/><br/>';
-    $mailContent .= '<p>Te adjuntamos el contrato del apartamento <b>'.$oRoom->nameRoom.'</b> con las tarifas para la comercialización de la temporada <b>'.$seasson.'</b></p>';
+    $mailContent .= '<p>Te adjuntamos el contrato del apartamento <b>'.$oRoom->nameRoom.'</b> con las tarifas para la comercialización de la <b>temporada '.$seasson.'</b></p>';
     $mailContent .= '<p>Si te parece bien y estás de acuerdo, solo necesitamos que agregues tu firma en el siguiente link:</p>';
     $mailContent .= '<p><a href="'.$url.'" alt="Link al contrato">'.$url.'</a></p>';
     $mailContent .= '<p>En el momento que procedas te llegará un email con el documento firmado en pdf.</p>';
