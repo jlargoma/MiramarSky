@@ -38,6 +38,7 @@ class CheckPricess extends Command {
   var $to;
   var $aAgencies;
   var $priceDay;
+  var $pricesFx;
   private $oConfig = null;
 
   /**
@@ -57,11 +58,13 @@ class CheckPricess extends Command {
    * @return mixed
    */
   public function handle() {
-    $this->from = date('Y-m-d', strtotime('+1 days'));
+    $this->from = date('Y-m-d');
 //    $this->to = date('Y-m-d', strtotime('+6 days'));
-    $this->to = date('Y-m-d', strtotime('+6 months'));
+    $this->to = date('Y-m-d', strtotime('+7 months'));
 
     $this->aAgencies = $this->oConfig->getAllAgency();
+    $this->pricesFx  = unserialize(\App\Settings::getContent('prices_ota'));
+    
     $this->preparePrices();
     $pricesOta = $this->get_otaGateway();
     $errors = $this->check_Prices($pricesOta);
@@ -71,17 +74,11 @@ class CheckPricess extends Command {
 //    $this->sendMessage();
   }
 
+  /**
+   * Get array prices from OTA
+   * @return string
+   */
   private function get_otaGateway() {
-
-
-//    // if Exist the cache, return it
-//    $cKey = md5('OTAPrice' . $this->from . $this->to);
-//    $sCache = new \App\Services\CacheData($cKey);
-//    $cache = $sCache->get();
-//    if ($cache)
-//      return $cache;
-    
-//     $sCache->set($result);
 
     //Prepare Plans_id
     $aPlans = [];
@@ -143,6 +140,9 @@ class CheckPricess extends Command {
   }
 
   //-----------------------------------------------------------
+  /**
+   * Prepare Dayly Prices of the channels rooms
+   */
   private function preparePrices() {
     $otaGateway = new \App\Services\OtaGateway\Config();
     $dailyPrices = [];
@@ -176,7 +176,11 @@ class CheckPricess extends Command {
   }
 
   //-----------------------------------------------------------
-
+  /**
+   * Compare the admin OTAs prices with the OTA prices
+   * @param type $pricesOta
+   * @return type
+   */
   private function check_Prices($pricesOta) {
     $toControl = [];
     foreach ($pricesOta as $plan => $channels) {
@@ -185,7 +189,7 @@ class CheckPricess extends Command {
         foreach ($lst as $d => $p) {
           $pAdmin = 0;
           if (isset($adminPrice[$d]))
-          $pAdmin = $this->oConfig->priceByChannel($adminPrice[$d], $plan, $ch);
+          $pAdmin = $this->priceByChannel($adminPrice[$d], $plan, $ch);
           
           $pAdmin = ceil($pAdmin);
           $priceOta = ceil($p);
@@ -205,21 +209,33 @@ class CheckPricess extends Command {
   }
 
   //-----------------------------------------------------------
+  /**
+   * Return Admin OTAs Prices
+   * @param type $p
+   * @param type $ota
+   * @param type $ch
+   * @return type
+   */
+  function priceByChannel($p,$ota,$ch){
+      if (is_array($this->pricesFx) && isset($this->pricesFx[$ch . $ota])){
+        $priceData = $this->pricesFx[$ch . $ota];
+        //incremento el valor fijo por noche
+        if ($priceData['f'] && $priceData['f']>0){
+          $p += $priceData['f'];
+        }
+        
+        //incremento el valo por porcentaje
+        if ($priceData['p'] && $priceData['p']>0){
+          $p = $p * (1+ ($priceData['p'] / 100));
+        }
+      }
+      return $p;
+  }
+  //-----------------------------------------------------------
 
   private function sendMessage() {
-    $subject = 'Atención: Control de Reservas OTAs';
-
-    $mailContent = '<h3>Las siguientes reservas deben controlarse:</h3>';
-    $send = false;
-    if (count($this->result) > 0) {
-      $send = true;
-      $mailContent .= '<div><h4>Booking Numbers:</h4>' . implode(',', $this->result) . '</div>';
-    }
-    if (count($this->resultIDs) > 0) {
-      $send = true;
-      $mailContent .= '<div><h4>Booking ID:</h4>' . implode(',', $this->resultIDs) . '</div>';
-    }
-
+    $subject = 'Atención: Control de Precios OTAs';
+    $mailContent = '';
     if ($send)
       Mail::send('backend.emails.base', [
           'mailContent' => $mailContent,

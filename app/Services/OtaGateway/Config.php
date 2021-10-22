@@ -91,7 +91,6 @@ class Config {
     if (!$agencyLst) $agencyLst = $this->getAllAgency();
     if (!$discounts) $discounts = [];
    
-//dd($discounts,$day);
     if (is_numeric($room)) {
       $aux = array_search($room, $roomsLst);
       if ($aux)
