@@ -6,7 +6,18 @@ $temporada = $oYear->year . ' - ' . ($oYear->year + 1);
   <div class="block-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="pg-close fs-14" style="font-size: 40px!important;color: black!important"></i>
     </button>
-    <h2 class="text-center">Contrato <a href="{{route('contract.see',[$contract->id])}}" title="Ver contrato"  target="_black" ><i class="fa fa-eye"></i></a> <i class="fa fa-paper-plane  sendContrato"></i></h2>
+    
+    <h2 class="text-center">
+      @if($sign)
+      Contrato <a href="{{route('contract.see',[$contract->id])}}" title="Ver contrato"  target="_black" ><i class="fa fa-eye"></i></a>
+      <span class="sing_true">Documento firmado</span>
+      @else
+      Contrato 
+      <a href="{{route('contract.see',[$contract->id])}}" title="Ver contrato"  target="_black" ><i class="fa fa-eye"></i></a> 
+      <i class="fa fa-paper-plane  sendContrato" data-send="0" title="Enviar Contrato por mail"></i>
+      <span class="sing_false">Documento no firmado</span>
+      @endif
+    </h2>
     <h2 class="text-center">Temporada {{$temporada}}</h2>
   </div>
   <div class="px-1em">
@@ -26,7 +37,6 @@ $temporada = $oYear->year . ' - ' . ($oYear->year + 1);
           </div>
         </div>
       @else
-      
         <div class="col-md-9">
           <textarea class="form-control" name="contract_main_content" id="contract_main_content"><?php echo $contract->content; ?></textarea>
         </div>
@@ -42,11 +52,6 @@ $temporada = $oYear->year . ' - ' . ($oYear->year + 1);
             <li>{temporada_rango} (rango en Años de la temporada)</li>
             <li>{break} (sallto de linea)</li>
           </u>
-          <div class="singBox">
-          @if(!$sign)
-          <p>Documento no firmado</p>
-          @endif
-          </div>
         </div>
 
         <div class="col-md-7 mt-1em">
@@ -114,16 +119,42 @@ $temporada = $oYear->year . ' - ' . ($oYear->year + 1);
         _token: $('#tokenContr').val(),
         id: $('#idContr').val()
       };
-      console.log(data);
-      $.post('{{route("contracts.send")}}', data, function (resp) {
-          if (resp == 'OK'){
-            window.show_notif('','success','Email enviado');
-          } else {
-            
-            window.show_notif('','danger',resp);
-          }
-      });
+      var that = $(this);
+      if (that.data('send') == 0){
+        $.post('{{route("contracts.send")}}', data, function (resp) {
+            if (resp == 'OK'){
+              window.show_notif('','success','Email enviado');
+              that.data('send', 1);
+              that.addClass('text-success');
+            } else {
+
+              window.show_notif('','danger',resp);
+            }
+        });
+      } else {
+        alert('El contrato ya ha sido enviado. Vuelve a cargar la ventana para enviarlo nuevamente');
+      }
     });
   });
 
 </script>
+<style>
+  .sing_true,
+  .sing_false{
+    padding: 0px 1em;
+    font-size: 14px;
+    background-color: red;
+    border-radius: 8px;
+    color: #FFF;
+    font-weight: 700;
+    display: inline-block;
+    margin-left: 2em;
+  }
+  .sing_true{
+    background-color: green;
+  }
+  .sendContrato{cursor: pointer;}
+  .sendContrato:hover{
+    color: #10cfbd ;
+  }
+  </style>

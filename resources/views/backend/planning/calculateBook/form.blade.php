@@ -28,7 +28,7 @@
           </div>
           <div class="col-md-3 col-xs-4">
               <div class="form-group">
-                  <label for="quantity">*Personas</label>
+                <label for="quantity">*Personas <i class="fa fa-question-circle help" ><span> Min PAX y Max PAX del tipo de Apartamentos (Widget Habitaciones)</span></i></label>
                   <div class="quantity">
                       <select id="quantity" class="form-control minimal" name="quantity">
                           <?php for ($i = 1; $i <= 14; $i++): ?>
@@ -89,6 +89,23 @@
     padding: 4px;
     text-align: center;
 }
+i.fa.fa-question-circle {
+    color: #d0893e;
+    margin-left: 3px;
+    font-size: 15px;
+}
+.help span{ 
+    visibility: hidden; 
+    background-color: #424242;
+    display: block;
+    padding: 6px;
+    font-size: 12px;
+    position: absolute;
+    color: #FFF;
+    text-transform: initial;
+    line-height: 1.2;
+}
+.help:hover span{visibility: visible;}
 @media (max-width: 425px){
   #confirm-reserva.btn-cons {
       min-width: 3em!important;

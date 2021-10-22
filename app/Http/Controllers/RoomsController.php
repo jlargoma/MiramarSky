@@ -1278,11 +1278,15 @@ class RoomsController extends AppController {
     
     $url = route('contract.see',[$oContr->id]);
     $subject = 'Contrato de Propietario';
-    $mailContent = 'Hola '.$oRoom->user->name.', <br/><br/>';
-    $mailContent .= '<p>Ya tienes el contrato para la comercialización del apartamento <b>'.$oRoom->nameRoom.'</b> para la temporada <b>'.$seasson.'</b></p>';
-    $mailContent .= '<p>Solo necesitamos que agregues tu firma en el siguente link:</p>';
-    $mailContent .= '<a href="'.$url.'" alt="Link al contrato">'.$url.'</a>';
-    $mailContent .= '<br/><br/><br/><p>Muchas Gracias.!</p>';
+    $mailContent = 'Hola <b>'.$oRoom->user->name.'</b> <br/><br/>';
+    $mailContent .= '<p>Te adjuntamos el contrato del apartamento <b>'.$oRoom->nameRoom.'</b> con las tarifas para la comercialización de la temporada <b>'.$seasson.'</b></p>';
+    $mailContent .= '<p>Si te parece bien y estás de acuerdo, solo necesitamos que agregues tu firma en el siguiente link:</p>';
+    $mailContent .= '<p><a href="'.$url.'" alt="Link al contrato">'.$url.'</a></p>';
+    $mailContent .= '<p>En el momento que procedas te llegará un email con el documento firmado en pdf.</p>';
+    $mailContent .= '<p><br/>Muchas Gracias por tu confianza, un abrazo fuerte!</p>';
+    
+    
+    
     $email = $oRoom->user->email;
     try{
     Mail::send('backend.emails.base', [
