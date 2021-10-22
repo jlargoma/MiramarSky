@@ -547,7 +547,7 @@ function get_shortlink($url){
   return $sS_urls->create($url);
 }
 
-function arrayDays($start,$end,$format,$val=0){
+function arrayDays($start,$end,$format,$val=0,$includeLast = true){
   $allDay = [];
   $inicio = new DateTime($start);
   $intervalo = new DateInterval('P1D');
@@ -557,6 +557,6 @@ function arrayDays($start,$end,$format,$val=0){
   foreach ($periodo as $fecha) {
     $allDay[$fecha->format($format)] = $val;
   }
-  $allDay[$fin->format($format)] = $val;
+  if ($includeLast) $allDay[$fin->format($format)] = $val;
   return $allDay;
 }

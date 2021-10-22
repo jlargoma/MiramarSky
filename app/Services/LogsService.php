@@ -18,13 +18,25 @@ class LogsService{
   }
   
   public function info($text,$context = []) {
-    $this->logger->info($text,$context);
+    try{
+      $this->logger->info($text,$context);
+    } catch (\Exception $e){
+      //return $e->getMessage();
+    }
   }
   public function warning($text,$context = []) {
-    $this->logger->warning($text,$context);
+    try{
+      $this->logger->warning($text,$context);
+    } catch (\Exception $e){
+      //return $e->getMessage();
+    }
   }
   public function error($text,$context = []) {
-    $this->logger->error($text,$context);
+    try{
+      $this->logger->error($text,$context);
+    } catch (\Exception $e){
+      //return $e->getMessage();
+    }
   }
   
 }

@@ -341,9 +341,7 @@ class OwnedController extends AppController {
     // Controls -------------------------------------------------------   
   
     $content = $oContr->content;
-    
-        
-    $oYear = $this->getActiveYear();
+    $oYear = \App\Years::find($oContr->year_id);
     $sRates = new \App\Services\Bookings\RatesRoom();
     $sRates->setDates($oYear);
     $sRates->setSeassonDays();
