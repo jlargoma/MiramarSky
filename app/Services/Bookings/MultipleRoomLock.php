@@ -44,7 +44,7 @@ class MultipleRoomLock {
     $oUser = Auth::user();
     $roomID = null;
     $uID =  $oUser ? $oUser->id : 1;
-    
+    $channelsRoom = [];
     foreach ($aRoomsLst as $room) {
       $aDays = $this->calcRangBkg($room->id);
       if (count($aDays)>0){
