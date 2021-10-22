@@ -870,7 +870,12 @@ td.bg-red {
     padding: 1em 3px;
   }
   
-  .navbar-inverse .navbar-nav > li > a {
+  .buttons-box{
+    width: 100%;
+    overflow: auto;
+  }
+  
+  .navbar-inverse .navbar-nav > li > a{
     font-size: 20px;
   }
 }

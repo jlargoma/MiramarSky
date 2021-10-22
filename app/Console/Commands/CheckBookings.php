@@ -68,8 +68,10 @@ class CheckBookings extends Command {
           foreach ($item as $reserv){
             if ($reserv->status_id == 2){
 //              $numbersCancel[] = '"'.$reserv->number.'"';
-              $numbersCancel[] = $reserv->number;
-              $ota_b_idCancel[] = $reserv->ota_booking_id;
+              if (!$reserv->modified_to){
+                $numbersCancel[] = $reserv->number;
+                $ota_b_idCancel[] = $reserv->ota_booking_id;
+              }
             } else {
               $numbers[] = $reserv->number;
               $ota_b_id[] = $reserv->ota_booking_id;

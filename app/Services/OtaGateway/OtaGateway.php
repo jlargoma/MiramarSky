@@ -543,4 +543,25 @@ class OtaGateway {
     $this->call('availability', 'GET', $params);
     return ($this->response);
   }
+  
+   
+  /**
+   * 
+   * @param type $dfrom
+   * @param type $dto
+   * @return type
+   * //    {{ServerUrl}}/prices?token={{token_auth}}&account_id={{account_id}}&plan_id=17633&dfrom=2021-10-21&dto=2021-10-28
+   */
+  public function getRates($plan_id,$dfrom,$dto) {
+    
+    $params = [];
+    $params['token'] = $this->token;
+    $params['account_id'] = $this->account_id;
+    $params['dfrom'] = $dfrom;
+    $params['dto'] = $dto;
+    $params['plan_id'] = $plan_id;
+   
+    $this->call('prices', 'GET', $params);
+    return ($this->response);
+  }
 }

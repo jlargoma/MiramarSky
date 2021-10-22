@@ -123,6 +123,7 @@ class BookController extends AppController
         //BEGIN: Processed data
         $bookOverbooking = null;
         $alarmsCheckPaxs = null;
+        $errorsOtaPrices = null;
         $overbooking = [];
         $alarms = 0;
         $oData = \App\ProcessedData::whereIn('key',['overbooking','alarmsPayment','checkPaxs'])->get();
@@ -164,11 +165,25 @@ class BookController extends AppController
               'text'   => 'Tienes un OVERBOOKING'
               ];          
         }
-         if(is_array($alarmsCheckPaxs) && count($alarmsCheckPaxs)>0){
+        if(is_array($alarmsCheckPaxs) && count($alarmsCheckPaxs)>0){
           $urgentes[] = [
               'action' => 'class="btn btn-danger"  type="button" data-toggle="modal" data-target="#modalPAXs"',
               'text'   => 'Se deben controlar el PAXs en reservas'
               ];          
+        }
+        
+        
+    
+        $fOTAPriceErrors = storage_path()."/app/OTAPriceErrors";
+        if (\Illuminate\Support\Facades\File::exists($fOTAPriceErrors)){
+          $data = \Illuminate\Support\Facades\File::get($fOTAPriceErrors);
+          $errorsOtaPrices = json_decode($data, true);
+          if(is_array($errorsOtaPrices) && count($errorsOtaPrices)>0){
+            $urgentes[] = [
+                'action' => 'class="btn btn-danger"  type="button" data-toggle="modal" data-target="#modalOtasPrices"',
+                'text'   => 'Se deben controlar algunos precios en las OTAs'
+                ];          
+          }
         }
         
         /****************************************************************/
@@ -183,7 +198,7 @@ class BookController extends AppController
         /****************************************************************/
         return view('backend/planning/index',
                 compact('books', 'mobile', 'stripe', 'rooms', 
-                        'booksCount', 'alarms','lowProfits','alarmsCheckPaxs',
+                        'booksCount', 'alarms','lowProfits','alarmsCheckPaxs','errorsOtaPrices',
                         'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment',
                         'ff_pendientes','ff_mount','totalReserv','amountReserv','overbooking',
                         'urgentes','bookings_without_Cvc')

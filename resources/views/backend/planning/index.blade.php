@@ -170,6 +170,18 @@ $is_mobile = $mobile->isMobile();
 </div>
 @endif
 
+@if($errorsOtaPrices)
+<div class="modal fade slide-up in" id="modalOtasPrices" tabindex="-1" role="dialog" aria-hidden="true" >
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content-wrapper">
+      <div class="modal-content">
+        @include('backend.planning._alarmsOtaPrices', ['alarms' => $errorsOtaPrices])
+      </div>
+    </div>
+  </div>
+</div>
+@endif
+
 <form method="post" id="formFF" action=""  <?php
 if (!$is_mobile) {
   echo 'target="_blank"';

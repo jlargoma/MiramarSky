@@ -41,8 +41,8 @@ class Config {
       case "4": //"Plan Miramar - AirBnb"
         return 18111;
       case 98:
-      case "98": //google agoda
-        return -1;
+//      case "98": //google agoda
+//        return -1;
       case 99:
       case "99": //google GHotels
         return 18112;
@@ -91,7 +91,6 @@ class Config {
     if (!$agencyLst) $agencyLst = $this->getAllAgency();
     if (!$discounts) $discounts = [];
    
-//dd($discounts,$day);
     if (is_numeric($room)) {
       $aux = array_search($room, $roomsLst);
       if ($aux)
@@ -195,7 +194,7 @@ class Config {
         'booking' => 1,
         'expedia' => 28,
         'google-hotel' => 99,
-        'agoda' => 98,
+//        'agoda' => 98,
     ];
   }
   

@@ -1163,7 +1163,7 @@ class RoomsController extends AppController {
     $aptos = configZodomusAptos();
     $ch_group = [];
     foreach ($aptos as $k=>$v){
-      $ch_group[$k]= $v->name;
+      $ch_group[$k]= $v;
       $minPax[$k]  = 0;
       $maxPax[$k]  = 0;
       $title[$k]   = '';
