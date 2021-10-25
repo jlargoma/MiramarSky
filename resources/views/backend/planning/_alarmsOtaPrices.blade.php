@@ -7,6 +7,9 @@ $aAgenc   = [];
 foreach ($oOtaConfig->getAllAgency() as $name=>$id){
   $aAgenc[$id] = $name;
 }
+
+
+$logLines = \App\Logs::getLastInfo('OTAs_prices');
         
 ?>
 
@@ -16,8 +19,17 @@ foreach ($oOtaConfig->getAllAgency() as $name=>$id){
 </button>
 <div class="contentOtaPrices">
 <h4 class="text-center">Revisar Precios en Otas: </h4>
+
   <?php 
-  foreach ($alarms as $plan=>$channels){
+    $aux = [];
+    foreach ($alarms as $item){
+      $plan = $item['plan'];
+      $ch = $item['ch'];
+      if (!isset($aux[$plan])) $aux[$plan] = [];
+      if (!isset($aux[$plan][$ch]))  $aux[$plan][$ch] = [];
+      $aux[$plan][$ch][] = [convertDateToShow($item['date']),moneda($item['price_admin']), moneda($item['price_ota'])];
+    }
+  foreach ($aux as $plan=>$channels){
   ?>
     <h5><?php echo isset($aAgenc[$plan]) ? $aAgenc[$plan] : 'OTA'; ?></h5>
     <?php
@@ -26,12 +38,12 @@ foreach ($oOtaConfig->getAllAgency() as $name=>$id){
       <h6><?php echo isset($aChRooms[$ch]) ? $aChRooms[$ch] : 'APARTAMENTO'; ?></h6>
       <div class="lst cleafix">
       <?php
-        foreach ($lst as $d=>$p){
+        foreach ($lst as $i){
       ?>
         <div class="box">
-          <div class="date">{{convertDateToShow($d)}}</div>
-          <span class="admin">{{moneda($p[0])}}</span> / 
-          <span class="ota ">{{moneda($p[1])}}</span>
+          <div class="date">{{$i[0]}}</div>
+          <span class="admin">{{$i[1]}}</span> / 
+          <span class="ota ">{{$i[2]}}</span>
         </div>
       <?php
       }
@@ -41,6 +53,8 @@ foreach ($oOtaConfig->getAllAgency() as $name=>$id){
     }
   }
   ?>
+  <h5>Últimos logs</h5>
+  <?php echo $logLines; ?>
 </div>
 <style>
   .contentOtaPrices{
