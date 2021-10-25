@@ -62,8 +62,8 @@ class CheckPricess extends Command {
    */
   public function handle() {
     $this->from = date('Y-m-d');
-    $this->to = date('Y-m-d', strtotime('+6 days'));
-//    $this->to = date('Y-m-d', strtotime('+7 months'));
+//    $this->to = date('Y-m-d', strtotime('+6 days'));
+    $this->to = date('Y-m-d', strtotime('+7 months'));
 
     $this->OtaGateway = new \App\Services\OtaGateway\OtaGateway();
     if (!$this->OtaGateway->conect()){
