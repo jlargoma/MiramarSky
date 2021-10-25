@@ -642,7 +642,7 @@ trait OtasTraits
     return view('backend/prices/controlOta', [
         'aAgenc' => $aAgenc,
         'aChRooms' => $oConfig->getRoomsName(),
-        'logLines' => \App\Logs::getLastInfo('OTAs_prices',20),
+        'logLines' => \App\LogsData::getLastInfo('OTAs_prices',20),
         'lst' => $aux,
     ]);
   

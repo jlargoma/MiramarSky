@@ -67,7 +67,7 @@ class CheckPricess extends Command {
 
     $this->OtaGateway = new \App\Services\OtaGateway\OtaGateway();
     if (!$this->OtaGateway->conect()){
-      $oLog = new \App\Logs();
+      $oLog = new \App\LogsData();
       $oLog->infoProceess('OTAs_prices','Error al conectarse a la API');
       return 'Ota no conectada';
     }

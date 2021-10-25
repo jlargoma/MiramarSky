@@ -574,7 +574,7 @@ class OtaGateway {
   }
   
   function saveResponse($process,$params){
-    $oLog = new \App\Logs();
+    $oLog = new \App\LogsData();
     if ($this->responseCode == 200){
       switch ($process){
         case 'prices':
