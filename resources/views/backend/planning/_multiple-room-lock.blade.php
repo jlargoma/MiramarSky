@@ -65,7 +65,7 @@
       "cancelClass": "button-light",
       autoUpdateInput: true,
       locale: {
-        firstDay: 2,
+        firstDay: 1,
         format: 'DD MMM, YY',
         "applyLabel": "Aplicar",
         "cancelLabel": "Cancelar",
