@@ -213,8 +213,8 @@ class CheckPricess extends Command {
               'plan' => $plan,
               'ch'   => $ch,
               'date' => $d,
-              'price_admin' => round($pAdmin,2),
-              'price_ota'   => round($priceOta,2),
+              'price_admin' => $pAdmin,
+              'price_ota'   => $priceOta,
               'created_at'  => $today ];
              
           }
@@ -280,7 +280,7 @@ class CheckPricess extends Command {
       }
       if (count($toSend) == 0) continue;
         $response = $this->OtaGateway->sendRatesPrices([
-                "plan_id"=>$plan,
+                "plan_id"=>$this->oConfig->Plans($plan),
                 "price"=>$toSend
             ]);
     }
