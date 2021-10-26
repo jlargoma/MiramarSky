@@ -318,6 +318,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   
   Route::get('/channel-manager/price-site/{site?}/{month?}/{year?}','OtaGate@calendSite')->name('channel.price.site');
   Route::post('/channel-manager/upd-price-site/','OtaGate@calendSiteUpd')->name('channel.price.site.upd');
+  Route::get('/channel-manager/controlOta/','OtaGate@controlOta')->name('channel.price.diff');
   Route::get('/channel-manager/promocion/{promoID?}','PromotionsController@getItem')->name('channel.promotions.get');
   Route::get('/channel-manager/promociones/','PromotionsController@index')->name('channel.promotions');
   Route::post('/channel-manager/promociones/create','PromotionsController@create')->name('channel.promotions.new');

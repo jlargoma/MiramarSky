@@ -174,18 +174,13 @@ class BookController extends AppController
         
         
     
-        $fOTAPriceErrors = storage_path()."/app/OTAPriceErrors";
-        if (\Illuminate\Support\Facades\File::exists($fOTAPriceErrors)){
-          $data = \Illuminate\Support\Facades\File::get($fOTAPriceErrors);
-          $errorsOtaPrices = json_decode($data, true);
-          if(is_array($errorsOtaPrices) && count($errorsOtaPrices)>0){
-            $urgentes[] = [
-                'action' => 'class="btn btn-danger"  type="button" data-toggle="modal" data-target="#modalOtasPrices"',
-                'text'   => 'Se deben controlar algunos precios en las OTAs'
-                ];          
-          }
+        $errorsOtaPrices = \App\PricesOtas::count();
+        if(($errorsOtaPrices)>0){
+          $urgentes[] = [
+              'action' => 'class="btn btn-danger"  type="button" id="goOtasPrices"',
+              'text'   => 'Se deben controlar algunos precios en las OTAs'
+              ];          
         }
-        
         /****************************************************************/
         /*bookings_without_Cvc*/
         $bookings_without_Cvc = \App\ProcessedData::findOrCreate('bookings_without_Cvc');

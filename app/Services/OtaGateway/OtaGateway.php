@@ -167,20 +167,20 @@ class OtaGateway {
     $params['token'] = $this->token;
     $params['account_id'] = $this->account_id;
     $params['plan_id'] = $this->oConfig->Plans();
-//    $this->call('prices', 'POST', $params);
-    
     $agencyLst = $this->oConfig->getAllAgency();
     foreach ($agencyLst as $agenc => $id)
       $this->setRatesOta($params,$id);
 
-    return ($this->responseCode);
+    return $this->saveResponse('prices',$params);
+//    return ($this->responseCode);
   }
   public function setRatesGHotel($params) {
     $params['token'] = $this->token;
     $params['account_id'] = $this->account_id;
     $params['plan_id'] = $this->oConfig->Plans();
     $this->setRatesOta($params,99);
-    return ($this->responseCode);
+    return $this->saveResponse('prices',$params);
+//    return ($this->responseCode);
   }
   public function setRatesOta($params,$ota_id) {
      $priceBase = $params['price'];
@@ -194,6 +194,14 @@ class OtaGateway {
     }
     $params['plan_id'] = $this->oConfig->Plans($ota_id);
     if ($params['plan_id']>0)  $this->call('prices', 'POST', $params);
+  }
+    
+  public function sendRatesPrices($params) {
+    $params['token'] = $this->token;
+    $params['account_id'] = $this->account_id;
+    $this->call('prices', 'POST', $params);
+   
+    return $this->saveResponse('prices',$params);
   }
   
   public function setMinStay($params) {
@@ -563,5 +571,30 @@ class OtaGateway {
    
     $this->call('prices', 'GET', $params);
     return ($this->response);
+  }
+  
+  function saveResponse($process,$params){
+    $oLog = new \App\LogsData();
+    if ($this->responseCode == 200){
+      switch ($process){
+        case 'prices':
+          $oLog->infoProceess('OTAs_prices','Precios Enviados',json_encode($params));
+          break;
+        default :
+          $oLog->infoProceess('OTAs','Datos enviados '.$process,json_encode($params));
+          break;
+      }
+      return true;
+    } else {
+      switch ($process){
+        case 'prices':
+          $oLog->infoProceess('OTAs_prices','Error al enviar los Precios',json_encode($params));
+          break;
+        default :
+          $oLog->infoProceess('OTAs','Datos enviados '.$process,json_encode($params));
+          break;
+      }
+      return false;
+    }
   }
 }

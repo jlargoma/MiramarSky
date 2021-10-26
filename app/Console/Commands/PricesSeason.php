@@ -67,7 +67,7 @@ class PricesSeason extends Command
           $data = json_decode($item->content,true);
           $prices = [$data['room']=>$data['prices']];
           $response = $OtaGateway->setRates(["price"=>$prices]);
-          if ($response == 200) { $item->delete();}
+          if ($response) { $item->delete();}
           else {
             $item->key = 'SendToOtaGateway-error';
             $item->save();

@@ -40,6 +40,7 @@ class Kernel extends ConsoleKernel
         Commands\BookingsDays::class,
         Commands\SendParteeReminder::class,
         Commands\CheckPricess::class,
+        Commands\icalOld::class,
 //        Commands\WubookGetBookings::class,
 //        Commands\ZodomusImport::class,
 //        Commands\RoomsPhotosMigrate::class,

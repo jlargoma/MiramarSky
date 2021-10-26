@@ -182,13 +182,18 @@ trait OtasTraits
     
     
     $roomTypeID = $this->oConfig->getRooms($apto);
-
+    $resp = false;
     if (count($aPrices)){
       $resp = $OtaGateway->setRates(["price"=>[$roomTypeID=>$aPrices]]);
     }
     
     if (count($aMinStay)){
-      $OtaGateway->setMinStay(['restrictions'=>[$roomTypeID=>$aMinStay]]);
+      $resp = $OtaGateway->setMinStay(['restrictions'=>[$roomTypeID=>$aMinStay]]);
+    }
+    if ($resp){
+      return response()->json(['status'=>'OK','msg'=>'datos cargados y enviados']);
+    } else {
+      return response()->json(['status'=>'error','msg'=>'Datos cargados, pero ocurrió un error al enviarlos']);
     }
     
 //
@@ -199,7 +204,6 @@ trait OtasTraits
 //      \App\ProcessedData::saveMinDayUPD_toOtaGateway(date('Y-m-d',$startTime),date('Y-m-d',$endTime));
 //    }
 
-    return response()->json(['status'=>'OK','msg'=>'datos cargados']);
   }
   
   
@@ -606,4 +610,41 @@ trait OtasTraits
     return $result;
   }
   
+  
+  
+   
+  /**
+   * Display a listing of prices with diff.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  function controlOta() {
+    $oConfig = $this->oConfig;
+    
+      
+    $aux = $aux2 = [];
+    $oLst = \App\PricesOtas::all();
+    foreach ($oLst as $item){
+      $plan = $item['plan'];
+      $ch = $item['ch'];
+      if (!isset($aux[$plan])) $aux[$plan] = [];
+      if (!isset($aux[$plan][$ch]))  $aux[$plan][$ch] = [];
+      $aux[$plan][$ch][] = [convertDateToShow($item['date']),moneda($item['price_admin']), moneda($item['price_ota'])];
+      $aux2[$plan] = 1;
+    }
+    
+    $aAgenc   = [];
+    foreach ($oConfig->getAllAgency() as $name=>$id){
+      if (isset($aux2[$id]))    $aAgenc[$id] = $name;
+    }
+    
+
+    return view('backend/prices/controlOta', [
+        'aAgenc' => $aAgenc,
+        'aChRooms' => $oConfig->getRoomsName(),
+        'logLines' => \App\LogsData::getLastInfo('OTAs_prices',20),
+        'lst' => $aux,
+    ]);
+  
+  }
 }

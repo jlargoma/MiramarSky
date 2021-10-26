@@ -356,6 +356,7 @@ $(document).ready(function () {
   $('#channelForm').on('submit', function (event) {
 
     event.preventDefault();
+    $('#loadigPage').show('slow');
     $('#error').text('').hide();
     $('#success').text('').hide();
     var form_data = $(this).serialize();
@@ -375,8 +376,14 @@ $(document).ready(function () {
         } else {
           $('#error').text(data.msg).show();
         }
+        $('#loadigPage').hide('slow');
 //        console.log(data.msg); // show response from the php script.
-      }
+      },
+      fail: function ()
+      {
+        $('#error').text('Ocurrió un error al enviar los datos').show();
+        $('#loadigPage').hide('slow');
+      },
     });
   });
 

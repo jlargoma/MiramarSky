@@ -15,6 +15,7 @@
 </style>
 
 <?php
+$countLogLines = \App\PricesOtas::count();
 $route = \Request::route()->getName();
 $lstBtn = [
     'precios.base'=>'PRECIO BASE X TEMP',
@@ -22,7 +23,8 @@ $lstBtn = [
     'channel.price.site'=>'EDIFICIO',
     'channel.promotions'=>'PROMOCIONES',
     'precios.pricesOTAs'=>'PRECIOS OTAs',
-    'channel.index'=>'DISPONIBILIDAD'
+    'channel.index'=>'DISPONIBILIDAD',
+    'channel.price.diff'=>"OTA Control($countLogLines)"
 ];
 ?>
 <div class="buttons-box">

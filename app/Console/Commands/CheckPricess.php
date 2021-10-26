@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Services\OtaGateway\OtaGateway;
 use App\Services\OtaGateway\Config as oConfig;
 use Illuminate\Support\Facades\Mail;
-use App\ProcessedData;
+use App\PricesOtas;
 use App\Book;
 
 class CheckPricess extends Command {
@@ -39,6 +39,9 @@ class CheckPricess extends Command {
   var $aAgencies;
   var $priceDay;
   var $pricesFx;
+  var $aPlans;
+  var $aRoomIDs;
+  var $OtaGateway;
   private $oConfig = null;
 
   /**
@@ -61,25 +64,34 @@ class CheckPricess extends Command {
     $this->from = date('Y-m-d');
 //    $this->to = date('Y-m-d', strtotime('+6 days'));
     $this->to = date('Y-m-d', strtotime('+7 months'));
+    $oYear = \App\Years::where('year', date('Y'))->first();
+    if ($oYear && $oYear->end_date > $this->to){
+      $this->to = $oYear->end_date;
+    }
 
-    $this->aAgencies = $this->oConfig->getAllAgency();
-    $this->pricesFx  = unserialize(\App\Settings::getContent('prices_ota'));
+    $this->OtaGateway = new \App\Services\OtaGateway\OtaGateway();
+    if (!$this->OtaGateway->conect()){
+      $oLog = new \App\LogsData();
+      $oLog->infoProceess('OTAs_prices','Error al conectarse a la API');
+      return 'Ota no conectada';
+    }
     
-    $this->preparePrices();
-    $pricesOta = $this->get_otaGateway();
-    $errors = $this->check_Prices($pricesOta);
+      $this->aAgencies = $this->oConfig->getAllAgency();
+      $this->pricesFx  = unserialize(\App\Settings::getContent('prices_ota'));
 
-    file_put_contents(storage_path()."/app/OTAPriceErrors",json_encode($errors));
-
+      $this->prepareDatas();
+      $this->preparePrices();
+      $pricesOta = $this->get_otaGateway();
+      $errors = $this->check_Prices($pricesOta);
+      $this->saveRegisters($errors);
+      $this->sendPrices($errors);
 //    $this->sendMessage();
+    $this->OtaGateway->disconect();
   }
 
-  /**
-   * Get array prices from OTA
-   * @return string
-   */
-  private function get_otaGateway() {
-
+  //-------------------------------------------------------
+  
+  function prepareDatas() {
     //Prepare Plans_id
     $aPlans = [];
     foreach ($this->aAgencies as $k => $v)
@@ -103,28 +115,31 @@ class CheckPricess extends Command {
 //        '9F' => 1719,
 //    ];
     ////-  test remove ----------------------------------- 
-
+    $this->aPlans = $aPlans;
+    $this->aRoomIDs = $aRoomIDs;
+  }
+  //-------------------------------------------------------
+  
+  /**
+   * Get array prices from OTA
+   * @return string
+   */
+  private function get_otaGateway() {
 
     $auxDay = arrayDays($this->from, $this->to, 'Y-m-d', 0);
     $aRooms = [];
-    foreach ($aRoomIDs as $ch => $r) {
+    foreach ($this->aRoomIDs as $ch => $r) {
       $aRooms[$ch] = $auxDay;
     }
 
-
-
-    $OtaGateway = new \App\Services\OtaGateway\OtaGateway();
-    if (!$OtaGateway->conect())
-      return 'Ota no conectada';
-
     //------------------------------------------------
     $result = [];
-    foreach ($aPlans as $k => $planID) {
+    foreach ($this->aPlans as $k => $planID) {
       $aux = $aRooms;
-      $rates = $OtaGateway->getRates($planID, $this->from, $this->to);
+      $rates = $this->OtaGateway->getRates($planID, $this->from, $this->to);
       if (isset($rates->prices)) {
         foreach ($rates->prices as $rID => $a) {
-          $ch = array_search($rID, $aRoomIDs);
+          $ch = array_search($rID, $this->aRoomIDs);
           if ($ch) {
             foreach ($a as $date => $price)
               $aux[$ch][$date] = $price->price;
@@ -134,8 +149,6 @@ class CheckPricess extends Command {
       $result[$k] = $aux;
     }
 
-   
-    $OtaGateway->disconect();
     return $result;
   }
 
@@ -144,9 +157,8 @@ class CheckPricess extends Command {
    * Prepare Dayly Prices of the channels rooms
    */
   private function preparePrices() {
-    $otaGateway = new \App\Services\OtaGateway\Config();
     $dailyPrices = [];
-    foreach ($otaGateway->getRooms() as $chGroup => $v) {
+    foreach ($this->oConfig->getRooms() as $chGroup => $v) {
       $oRoom = \App\Rooms::where('channel_group', $chGroup)->first();
       if ($oRoom) {
         $this->dailyPrice($oRoom);
@@ -176,6 +188,8 @@ class CheckPricess extends Command {
   }
 
   //-----------------------------------------------------------
+  
+  
   /**
    * Compare the admin OTAs prices with the OTA prices
    * @param type $pricesOta
@@ -183,6 +197,7 @@ class CheckPricess extends Command {
    */
   private function check_Prices($pricesOta) {
     $toControl = [];
+    $today = date('Y-m-d H:i:s');
     foreach ($pricesOta as $plan => $channels) {
       foreach ($channels as $ch => $lst) {
         $adminPrice = $this->priceDay[$ch];
@@ -194,12 +209,14 @@ class CheckPricess extends Command {
           $pAdmin = ceil($pAdmin);
           $priceOta = ceil($p);
           if ($pAdmin != $priceOta) {
-            if (!isset($toControl[$plan]))
-              $toControl[$plan] = [];
-            if (!isset($toControl[$plan][$ch]))
-              $toControl[$plan][$ch] = [];
-
-            $toControl[$plan][$ch][$d] = [$pAdmin, $priceOta];
+            $toControl[] = [
+              'plan' => $plan,
+              'ch'   => $ch,
+              'date' => $d,
+              'price_admin' => round($pAdmin,2),
+              'price_ota'   => round($priceOta,2),
+              'created_at'  => $today ];
+             
           }
         }
       }
@@ -209,6 +226,7 @@ class CheckPricess extends Command {
   }
 
   //-----------------------------------------------------------
+  
   /**
    * Return Admin OTAs Prices
    * @param type $p
@@ -232,7 +250,55 @@ class CheckPricess extends Command {
       return $p;
   }
   //-----------------------------------------------------------
-
+  
+  /**
+   * Send the prices to OTAs
+   * @param type $lst
+   */
+  function sendPrices($lst){
+    if (count($lst) == 0) return;
+    $aux = [];
+    foreach ($lst as $item){
+      $plan = $item['plan'];
+      $ch = $item['ch'];
+      if (!isset($aux[$plan])) $aux[$plan] = [];
+      if (!isset($aux[$plan][$ch]))  $aux[$plan][$ch] = [];
+      $aux[$plan][$ch][] = [$item['date'],$item['price_admin']];
+    }
+    
+    foreach ($aux as $plan => $aCh){
+      $toSend = [];
+      foreach ($aCh as $ch=>$i){
+        if (isset($this->aRoomIDs[$ch])){
+          $rID = $this->aRoomIDs[$ch];
+          $aux2 = [];
+          foreach ($i as $j){
+            $aux2[$j[0]] = $j[1];
+          }
+          $toSend[$rID] = $aux2;
+        }
+      }
+      if (count($toSend) == 0) continue;
+        $response = $this->OtaGateway->sendRatesPrices([
+                "plan_id"=>$plan,
+                "price"=>$toSend
+            ]);
+    }
+    
+  }
+  //-----------------------------------------------------------
+  
+  function saveRegisters($data){
+    
+    $pOtas = new PricesOtas();
+    $pOtas->truncate();
+    foreach(array_chunk($data, 1000) as $key => $smallerArray) {
+      $pOtas->insert($smallerArray);
+    }
+  }
+  
+  //-----------------------------------------------------------
+  
   private function sendMessage() {
     $subject = 'Atención: Control de Precios OTAs';
     $mailContent = '';
