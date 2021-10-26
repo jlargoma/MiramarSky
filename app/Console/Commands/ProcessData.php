@@ -56,7 +56,7 @@ class ProcessData extends Command
       $this->bookingsWithoutCvc();
       $this->check_overbooking();
       $this->check_pendienteCobro();
-      //$this->check_customPricesOtaGateway();
+      $this->check_customPricesOtaGateway();
       $this->check_customMinStayOtaGateway();
     }
     

@@ -64,6 +64,10 @@ class CheckPricess extends Command {
     $this->from = date('Y-m-d');
 //    $this->to = date('Y-m-d', strtotime('+6 days'));
     $this->to = date('Y-m-d', strtotime('+7 months'));
+    $oYear = \App\Years::where('year', date('Y'))->first();
+    if ($oYear && $oYear->end_date > $this->to){
+      $this->to = $oYear->end_date;
+    }
 
     $this->OtaGateway = new \App\Services\OtaGateway\OtaGateway();
     if (!$this->OtaGateway->conect()){
@@ -79,13 +83,8 @@ class CheckPricess extends Command {
       $this->preparePrices();
       $pricesOta = $this->get_otaGateway();
       $errors = $this->check_Prices($pricesOta);
-//      file_put_contents(storage_path()."/app/OTAPriceErrors",json_encode($errors));
-      $pOtas = new PricesOtas();
-      $pOtas->truncate();
-      $pOtas->insert($errors);
-
+      $this->saveRegisters($errors);
       $this->sendPrices($errors);
-
 //    $this->sendMessage();
     $this->OtaGateway->disconect();
   }
@@ -280,14 +279,26 @@ class CheckPricess extends Command {
         }
       }
       if (count($toSend) == 0) continue;
-      $response = $this->OtaGateway->sendRatesPrices([
-                  "plan_id"=>$plan,
-                  "price"=>$toSend
-              ]);
+        $response = $this->OtaGateway->sendRatesPrices([
+                "plan_id"=>$plan,
+                "price"=>$toSend
+            ]);
     }
     
   }
   //-----------------------------------------------------------
+  
+  function saveRegisters($data){
+    
+    $pOtas = new PricesOtas();
+    $pOtas->truncate();
+    foreach(array_chunk($data, 1000) as $key => $smallerArray) {
+      $pOtas->insert($smallerArray);
+    }
+  }
+  
+  //-----------------------------------------------------------
+  
   private function sendMessage() {
     $subject = 'Atención: Control de Precios OTAs';
     $mailContent = '';
