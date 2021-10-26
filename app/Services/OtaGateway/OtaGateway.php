@@ -575,7 +575,12 @@ class OtaGateway {
   
   function saveResponse($process,$params){
     $oLog = new \App\LogsData();
-    if ($this->responseCode == 200){
+    
+    $success = ($this->responseCode == 200);
+    if (!is_object($this->response) || !$this->response)
+      $success = false;
+    
+    if ($success){
       switch ($process){
         case 'prices':
           $oLog->infoProceess('OTAs_prices','Precios Enviados',json_encode($params));
