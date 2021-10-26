@@ -671,7 +671,7 @@ class Book extends Model {
           }
         }
       }
-      if($oOta->conect($room->site_id)){
+      if($oOta->conect()){
         $return = $oOta->sendAvailabilityByCh($room->channel_group,$aLstDays);
         return ($return == 200);
       } else {

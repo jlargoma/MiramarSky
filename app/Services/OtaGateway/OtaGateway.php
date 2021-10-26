@@ -72,6 +72,7 @@ class OtaGateway {
       ));
     }
 
+    DB::table('OTA_CALLs')->insert(['method'=>$method,'endpoint'=>$endpoint]);
     $result = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 //    var_dump(\json_decode($result),$result,$httpCode);
@@ -106,10 +107,17 @@ class OtaGateway {
 
   public function conect() {
 
+    global $OTA_GATE_TOKEN; //to console
+    
     if (isset($_COOKIE["OTA_GATE_TOKEN"])) {
       $this->token = $_COOKIE["OTA_GATE_TOKEN"];
       return true;
     }
+    if ($OTA_GATE_TOKEN) {
+      $this->token = $OTA_GATE_TOKEN;
+      return true;
+    }
+    
     $params = array(
         'username' => env('OTA_GATEWAY_USR'),
         'password' => env('OTA_GATEWAY_PSW')
@@ -118,12 +126,17 @@ class OtaGateway {
     if ($Response) {
       $this->token = strval($this->response->token);
       setcookie("OTA_GATE_TOKEN", $this->token, time() + 3000);
+      $OTA_GATE_TOKEN = $this->token;
       return true;
     }
     return false;
   }
 
   public function disconect() {
+    //to console
+    global $OTA_GATE_TOKEN;
+    $OTA_GATE_TOKEN = null;
+    
     if (isset($_COOKIE["OTA_GATE_TOKEN"])) {
       $this->token = $_COOKIE["OTA_GATE_TOKEN"];
       $Response = $this->call('auth', "DELETE", []);
