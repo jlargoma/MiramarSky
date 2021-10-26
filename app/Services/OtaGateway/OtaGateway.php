@@ -107,7 +107,8 @@ class OtaGateway {
 
   public function conect() {
 
-    global $OTA_GATE_TOKEN;
+    global $OTA_GATE_TOKEN; //to console
+    
     if (isset($_COOKIE["OTA_GATE_TOKEN"])) {
       $this->token = $_COOKIE["OTA_GATE_TOKEN"];
       return true;
@@ -132,6 +133,10 @@ class OtaGateway {
   }
 
   public function disconect() {
+    //to console
+    global $OTA_GATE_TOKEN;
+    $OTA_GATE_TOKEN = null;
+    
     if (isset($_COOKIE["OTA_GATE_TOKEN"])) {
       $this->token = $_COOKIE["OTA_GATE_TOKEN"];
       $Response = $this->call('auth', "DELETE", []);
