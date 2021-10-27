@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\User;
 use App\Http\Requests;
+use Auth;
 
 class UsersController extends AppController
 {
@@ -74,6 +75,12 @@ class UsersController extends AppController
         $userUpadate          = User::find($id);
         
         
+        $email = $request->input('email');
+        $alreadyExist = User::where('email',$email)->where('id','!=',$id)->first();
+        if ($alreadyExist){
+          return redirect()->back()->withErrors("El usuario $email ya pertenece a otro usuario en la base de datos");
+        }
+        
         $userUpadate->name = $request->input('name');
         $userUpadate->email = $request->input('email');
         $userUpadate->phone = $request->input('phone');
@@ -115,12 +122,33 @@ class UsersController extends AppController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function delete(Request $request)
     {
-        $user = User::find($id);
-        if ( $user->delete() ) {
-            return redirect()->action('UsersController@index');
-        }
+      $cUser = Auth::user();
+      // Sólo lo puede ver jorge
+      if ($cUser->email != "jlargo@mksport.es"){
+        return redirect()->back()->withErrors("Acción no permitida por el usuario actual");
+      }
+      $id   = $request->input('id');
+      $oUser = User::find($id);
+      if ($oUser->email == $cUser->email){
+        return redirect()->back()->withErrors("No se puede eliminarse a sí mismo");
+      }
+      
+      
+      
+      $isOwned = \App\Rooms::where('owned',$id)->first();
+      if ($isOwned){
+        return redirect()->back()->withErrors("El Usuario es dueño de un apartamento");
+      }
+      
+//      $oUser->email = time().'@deleted';
+//      $oUser->save();
+      if ( $oUser->delete() ) {
+          return redirect()->back()->with(['success'=>'Usuario '.$oUser->email.' eliminado']);
+      } else {
+        return redirect()->back()->withErrors("No se puedo eliminar el usuario");
+      }
     }
 
 

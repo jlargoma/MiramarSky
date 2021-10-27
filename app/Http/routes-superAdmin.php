@@ -20,7 +20,7 @@ Route::group(['middleware' => 'authAdmin'], function () {
   Route::post('admin/usuarios/saveAjax', 'UsersController@saveAjax');
   Route::post('admin/usuarios/saveupdate', 'UsersController@saveUpdate');
   Route::post('admin/usuarios/create', 'UsersController@create');
-  Route::get('admin/usuarios/delete/{id}', 'UsersController@delete');
+  Route::post('admin/usuarios/delete', 'UsersController@delete');
   Route::post('admin/usuarios/search', 'UsersController@searchUserByName');
 
   // Clientes

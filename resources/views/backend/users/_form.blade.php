@@ -68,7 +68,15 @@
     <div class="col-btn">
       <button class="btn btn-complete" type="submit">Guardar</button>
     </div>
+   
   </form>
+  <form role="form"  action="{{ url('/admin/usuarios/delete') }}" method="post" onsubmit="return confirm('Eliminar usuario de manera permanente?')">
+    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+    <input type="hidden" name="id" value="<?php echo $user->id ?>">
+     <div class="col-btn">
+      <button class="btn btn-danger" type="submit">Eliminar Usuario</button>
+    </div>
+    </form>
 </div>
 <style>
   .boxUserEdit{

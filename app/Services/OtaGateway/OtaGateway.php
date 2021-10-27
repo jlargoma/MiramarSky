@@ -76,6 +76,9 @@ class OtaGateway {
     $result = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 //    var_dump(\json_decode($result),$result,$httpCode);
+    $this->response = null;
+    $this->responseCode = $httpCode;
+    
     curl_close($ch);
     if ($httpCode!=200){
       if (isset($data['username'])){
@@ -87,8 +90,6 @@ class OtaGateway {
       return false;
     }
     
-    $this->response = null;
-    $this->responseCode = $httpCode;
     $this->response = \json_decode($result);
     
      if (!is_object($this->response) || !$this->response){
