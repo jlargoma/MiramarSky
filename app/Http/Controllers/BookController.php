@@ -312,7 +312,9 @@ class BookController extends AppController
         // 4 es el extra correspondiente a el obsequio
         $extraPrice = 0; // Es solo un coste
 //        $extraCost  = \App\Extras::find(4)->cost;
-        $extraCost  = Rooms::GIFT_COST;
+//        $extraCost  = Rooms::GIFT_COST;
+        $extraPrice = \App\Extras::find(4);
+        $extraCost  = floatval($extraPrice->cost);
         
         //createacion del cliente
         $customer          = new \App\Customers();
@@ -688,8 +690,10 @@ class BookController extends AppController
               if(!$IS_agente){  
                 $book->extra     = $request->input('extra');
 
-                $book->extraPrice  = Rooms::GIFT_PRICE;
-                $book->extraCost   = Rooms::GIFT_COST;
+                $extraPrice = \App\Extras::find(4);
+                $book->extraPrice  = floatval($extraPrice->price);
+                $book->extraCost   = floatval($extraPrice->cost);
+
                 $book->schedule    = $request->input('schedule');
                 $book->scheduleOut = $request->input('scheduleOut');
                 if ($request->updMetaPrice == 1){
@@ -1865,7 +1869,10 @@ class BookController extends AppController
         
         
         $data['costes']['lujo']      = $this->getCostLujo($request->lujo);
-        $data['costes']['obsequio']  = Rooms::GIFT_COST;
+        $extraPrice = \App\Extras::find(4);
+        $data['costes']['obsequio']  = floatval($extraPrice->cost);
+                
+                
         $data['costes']['agencia']   = (float) $request->agencyCost;
         $data['costes']['promotion'] = $promotion;
         
