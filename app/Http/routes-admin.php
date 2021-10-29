@@ -153,6 +153,8 @@ Route::group(['middleware' => 'auth', 'prefix' => 'admin'], function () {
   Route::get('/sales/updateCostPark/{id}/{importe}','RouterActionsController@sales_updateCostPark');
   Route::get('/sales/updateCostTotal/{id}/{importe}','RouterActionsController@sales_updateCostTotal');
   Route::get('/sales/updatePVP/{id}/{importe}','RouterActionsController@sales_updatePVP');
+  Route::post('/sales/updateBook','LiquidacionController@updateBook');
+  
   Route::get('/invoices/searchByName/{searchString?}','RouterActionsController@invoices_searchByName');
   Route::get('/settings', 'SettingsController@index');
   Route::post('/settings-general', 'SettingsController@upd_general')->name('settings.gral.upd');

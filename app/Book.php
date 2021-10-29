@@ -203,7 +203,7 @@ class Book extends Model {
   }
   
   function get_costProp(){
-    $cost = $this->cost_apto +  $this->cost_park;
+    $cost = $this->cost_apto +  $this->cost_park  + $this->luz_cost;
     $cost += $this->get_costLujo();
     return $cost;
   }
@@ -445,6 +445,7 @@ class Book extends Model {
       'cost_extr'     => 0,
       'price_total'   => 0,
       'cost_total'    => 0,
+      'luz_cost'      => 0,
         
     ];
     if (!$oRoom){
@@ -474,9 +475,10 @@ class Book extends Model {
       $return['price_lux'] = Http\Controllers\BookController::getPriceLujo($this->type_luxury);
       $return['cost_lux'] = Http\Controllers\BookController::getCostLujo($this->type_luxury);
       
-      $extraPrice = \App\Extras::find(4);
-      $return['price_extr'] = floatval($extraPrice->price);
-      $return['cost_extr']  = floatval($extraPrice->cost);
+      $extraPrice = \App\Extras::loadFixed();
+      $return['price_extr'] = $extraPrice->giftPVP;
+      $return['cost_extr']  = $extraPrice->giftCost;
+      $return['luz_cost']   = $extraPrice->luzCost;
       
       $return['price_total'] =  $return['pvp']+ $return['parking']+ $return['price_lux']+ $return['price_limp']+ $return['price_extr'];
 
@@ -816,6 +818,7 @@ class Book extends Model {
     $this->inc_percent = 0;
     $this->ben_jorge   = 0;
     $this->ben_jaime   = 0;
+    $this->luz_cost    = 0;
 //    $this->total_price = 0;
          
   }

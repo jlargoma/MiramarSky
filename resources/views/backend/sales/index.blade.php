@@ -65,33 +65,17 @@
             color: blue;
         }
 
-        .updateLimp {
+        .updBookField{
             background-color: rgba(200, 200, 200, 0.5) !important;
             color: black;
             width: 85%;
             height: 25px;
             text-align: center;
             border: 0px;
+            padding: 0 !important;
         }
 
-        .updateExtraCost,
-        .updateCostApto,
-        .updateCostPark,
-        .updateCostTotal,
-        .updatePVP {
-            background-color: rgba(200, 200, 200, 0.5) !important;
-            color: black;
-            width: 90%;
-            height: 25px;
-            text-align: center;
-            border: 0px;
-        }
-
-        .updateLimp.alert-limp, .updateExtraCost.alert-limp {
-            background-color: #f8d053 !important;
-        }
-
-        .alert-limp {
+        .updBookField.alert {
             background-color: #f8d053 !important;
         }
         .title-year-selector{
@@ -329,25 +313,46 @@
 
 
         });
-
-        $('.updateLimp').change(function () {
-          var id = $(this).attr('data-idBook');
-          var limp = $(this).val();
-          $.get("/admin/sales/updateLimpBook/" + id + "/" + limp).done(function (data) {
-
-          });
-        });
-
-        $('.updateExtraCost').change(function () {
-          var id = $(this).attr('data-idBook');
-          var extraCost = $(this).val();
-          $.get("/admin/sales/updateExtraCost/" + id + "/" + extraCost).done(function (data) {
-
-          });
-        });
+//
+//        $('.updateLimp').change(function () {
+//          var id = $(this).attr('data-idBook');
+//          var limp = $(this).val();
+//          $.get("/admin/sales/updateLimpBook/" + id + "/" + limp).done(function (data) {
+//
+//          });
+//        });
+//
+//        $('.updateExtraCost').change(function () {
+//          var id = $(this).attr('data-idBook');
+//          var extraCost = $(this).val();
+//          $.get("/admin/sales/updateExtraCost/" + id + "/" + extraCost).done(function (data) {
+//
+//          });
+//        });
+        
+        
+    $('.liquidationSummary').on('change','.updBookField',function(){
+      var id = $(this).attr('data-idBook');
+      var field = $(this).attr('data-field');
+      var val = $(this).val();
+      $.ajax({
+        url: '/admin/sales/updateBook',
+        type:'POST',
+        data: {id:id, '_token':"{{csrf_token()}}",field:field,val:val},
+        success: function(response){
+          if (response.status == 'OK'){
+            window.show_notif('','success',response.msg);
+          } else {
+            window.show_notif('','danger',response.msg);
+          }
+        }
+      });
+    });
         
       
-      });
-    </script>
-    @include('backend.sales._vtas-x-agencia')
+      
+  }); 
+</script>
+    
+@include('backend.sales._vtas-x-agencia')
 @endsection

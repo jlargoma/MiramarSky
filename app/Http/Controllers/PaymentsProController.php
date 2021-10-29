@@ -49,6 +49,7 @@ class PaymentsProController extends AppController {
         'totalCost' => 0,
         'totalApto' => 0,
         'totalPVP' => 0,
+        'totalLuz' => 0,
         'pagos' => 0,
     ];
 
@@ -62,6 +63,7 @@ class PaymentsProController extends AppController {
       $data[$room->id]['totales']['totalCost'] = 0;
       $data[$room->id]['totales']['totalApto'] = 0;
       $data[$room->id]['totales']['totalPVP'] = 0;
+      $data[$room->id]['totales']['totalLuz'] = 0;
       $data[$room->id]['pagos'] = 0;
       $data[$room->id]['coste_prop'] = 0;
 
@@ -79,6 +81,7 @@ class PaymentsProController extends AppController {
         $lujo = $book->get_costLujo();
         $data[$book->room_id]['coste_prop'] += $book->get_costProp();
         $data[$book->room_id]['totales']['totalLujo'] += $lujo;
+        $data[$book->room_id]['totales']['totalLuz'] += $book->luz_cost;
         $summary["totalLujo"] += $lujo;
 
         $data[$book->room_id]['totales']['totalLimp'] += $book->cost_limp;
@@ -97,6 +100,7 @@ class PaymentsProController extends AppController {
         $summary['totalCost'] += $costTotal;
         $summary['totalApto'] += $book->cost_apto;
         $summary['totalPVP'] += $book->total_price;
+        $summary['totalLuz'] += $book->luz_cost;
       }
 
       
@@ -178,13 +182,12 @@ class PaymentsProController extends AppController {
         'prop_payment'=>$summary['pagos'],
         'benef'=>0,
         'benef_inc'=>0,
+        'luz'=>0,
         ];
             
     foreach ($data as $rID=>$d){
        
-        $summary_liq['prop_cost'] += round($d['totales']['totalApto'] +
-                                    $d['totales']['totalParking'] +
-                                    $d['totales']['totalLujo']);
+        $summary_liq['prop_cost'] += round($d['coste_prop']);
         $summary_liq['total_pvp'] += round($d['totales']['totalPVP']);
         $summary_liq['total_cost'] += round($d['totales']['totalCost']);
         $summary_liq['apto'] += $d['totales']['totalApto'];
@@ -192,6 +195,7 @@ class PaymentsProController extends AppController {
         $summary_liq['lujo'] += $d['totales']['totalLujo'];
         $summary_liq['agency'] += $d['totales']['totalAgencia'];
         $summary_liq['limp'] += $d['totales']['totalLimp'];
+        $summary_liq['luz'] += $d['totales']['totalLuz'];
 
     }
     
@@ -517,6 +521,7 @@ class PaymentsProController extends AppController {
     $total = 0;
     $apto = 0;
     $park = 0;
+    $luz  = 0;
     $lujo = 0;
     $costeProp = 0;
     $pagototal = 0;
@@ -537,6 +542,7 @@ class PaymentsProController extends AppController {
         $total += $book->get_costProp();
         $apto += $book->cost_apto;
         $park += $book->cost_park;
+        $luz  += $book->luz_cost;
         $lujo += $book->get_costLujo();
       }
     }
@@ -581,6 +587,7 @@ class PaymentsProController extends AppController {
         'costeProp' => $costeProp,
         'apto' => $apto,
         'park' => $park,
+        'luz'  => $luz,
         'lujo' => $lujo,
         'total' => $total,
         'room' => $room,

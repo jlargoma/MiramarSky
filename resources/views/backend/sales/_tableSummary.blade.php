@@ -106,6 +106,9 @@
                       Sup. Lujo<br/><b> <?php echo number_format($totales["costeLujo"],0,',','.') ?>€</b>
                     </th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">
+                      Luz Cost<br/><b> <?php echo number_format($totales["luz_cost"],0,',','.') ?>€</b>
+                    </th>
+                    <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">
                       Limp<br/><b><?php echo number_format($totales["costeLimp"],0,',','.') ?>€</b>
                     </th>
                     <th class ="text-center bg-complete text-white" style="width: 5% !important;font-size:10px!important">
@@ -172,7 +175,7 @@
                                 <?php echo $book->nigths ?>
                             </td>
                             <td class="text-center coste" style="border-left: 1px solid black;">
-                                <input class="updatePVP" type="number" step="0.01" value="<?php echo round($book->total_price);?>" data-idBook="<?php echo $book->id; ?>"/>
+                                <input class="updBookField only-numbers" type="text" value="<?php echo round($book->total_price);?>" data-idBook="<?php echo $book->id; ?>" data-field="total_price"/>
                             </td>
                             <td class="text-center coste banco" style="border-left: 1px solid black;">
                               {{moneda($books_payments[$book->id]['banco'],false)}}
@@ -202,17 +205,20 @@
                             <td class="text-center coste bi " style="border-left: 1px solid black;">
                                 {{$book->cost_total}}
                             </td>
-                            <td class="text-center coste" style="border-left: 1px solid black;">
-                                <input class="updateCostApto" type="number" value="<?php echo round($book->cost_apto); ?>" data-idBook="<?php echo $book->id; ?>"/>
+                            <td class="text-center coste" style="border-left: 1px solid black;" data-order="{{$book->cost_apto}}">
+                                <input class="updBookField only-numbers" type="text"  value="<?php echo round($book->cost_apto); ?>" data-idBook="<?php echo $book->id; ?>" data-field="cost_apto"/>
                             </td>
-                            <td class="text-center coste" style="border-left: 1px solid black;">
-                                <input class="updateCostPark" type="number" value="<?php echo round($book->cost_park); ?>" data-idBook="<?php echo $book->id; ?>"/>
+                            <td class="text-center coste" style="border-left: 1px solid black;" data-order="{{$book->cost_park}}">
+                                <input class="updBookField only-numbers" type="text" value="<?php echo round($book->cost_park); ?>" data-idBook="<?php echo $book->id; ?>" data-field="cost_park"/>
                             </td>
                             <td class="text-center coste"  style="border-left: 1px solid black;">
                               {{moneda($book->get_costLujo())}}
                             </td>
-                            <td class="text-center coste <?php if($book->cost_limp == 0){ echo 'alert-limp'; }?>" style="border-left: 1px solid black;">
-                                <input class="updateLimp <?php if($book->cost_limp == 0){ echo 'alert-limp'; }?>" type="number" step="0.01" value="<?php echo $book->cost_limp; ?>" data-idBook="<?php echo $book->id; ?>"/>
+                            <td class="text-center coste"  style="border-left: 1px solid black;" data-order="{{$book->luz_cost}}">
+                              <input class="updBookField only-numbers <?= ($book->luz_cost == 0) ? 'alert' : '';?>" type="text" value="<?php echo $book->luz_cost; ?>" data-idBook="<?php echo $book->id; ?>" data-field="luz_cost"/>
+                            </td>
+                            <td class="text-center coste" style="border-left: 1px solid black;" data-order="{{$book->cost_limp}}">
+                                <input class="updBookField only-numbers <?= ($book->cost_limp == 0) ? 'alert' : '';?>" type="text" value="<?php echo $book->cost_limp; ?>" data-idBook="<?php echo $book->id; ?>" data-field="cost_limp"/>
                             </td>
                             <td class="text-center coste " style="border-left: 1px solid black;">
                                 <?php if ( $book->PVPAgencia > 0): ?>
@@ -222,8 +228,8 @@
                                 <?php endif ?>
 
                             </td>
-                            <td class="text-center coste <?php if($book->extraCost == 0){ echo 'alert-limp'; }?>" style="border-left: 1px solid black;">
-                                <input class="updateExtraCost <?php if($book->extraCost == 0){ echo 'alert-limp'; }?>" type="number" value="<?php echo round($book->extraCost); ?>" data-idBook="<?php echo $book->id; ?>"/>
+                            <td class="text-center coste" style="border-left: 1px solid black;">
+                                <input class="updBookField only-numbers <?= ($book->extraCost == 0) ? 'alert' : '';?>" type="text" value="<?php echo round($book->extraCost); ?>" data-idBook="<?php echo $book->id; ?>" data-field="extraCost"/>
                             </td>
                             <td class="text-center coste bf" style="border-left: 1px solid black;">
                                 <span data-toggle="tooltip" data-placement="top" data-original-title=" {{moneda($stripeCost[$book->id],false)}}">
@@ -244,7 +250,7 @@
       
       
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.20/datatables.min.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<!--<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>-->
 <script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
 
@@ -277,52 +283,4 @@ $(document).ready(function() {
     @endif
 } );
 	
-
-
-  	$('.updateLimp').change(function(){
-		var id = $(this).attr('data-idBook');
-		var limp = $(this).val();
-		$.get( "/admin/sales/updateLimpBook/"+id+"/"+limp).done(function( data ) {
-                  if (data != 'OK') alert('Ups, no se ha guardado su cambio');
-		});
- 	});
-
-  	$('.updateExtraCost').change(function(){
-    	var id = $(this).attr('data-idBook');
-    	var extraCost = $(this).val();
-    	$.get( "/admin/sales/updateExtraCost/"+id+"/"+extraCost).done(function( data ) {
-          if (data != 'OK') alert('Ups, no se ha guardado su cambio');
-        });
-    });
-
-
-	$('.updateCostApto').change(function(){
-    	var id = $(this).attr('data-idBook');
-    	var costApto = $(this).val();
-    	$.get( "/admin/sales/updateCostApto/"+id+"/"+costApto).done(function( data ) {
-          if (data != 'OK') alert('Ups, no se ha guardado su cambio');
-        });
-
-    });
-
-	$('.updateCostPark').change(function(){
-    	var id = $(this).attr('data-idBook');
-    	var costPark = $(this).val();
-    	$.get( "/admin/sales/updateCostPark/"+id+"/"+costPark).done(function( data ) {console.log(data)});
-
-    });
-
-    $('.updateCostTotal').change(function(){
-    	var id = $(this).attr('data-idBook');
-    	var costTotal = $(this).val();
-    	$.get( "/admin/sales/updateCostTotal/"+id+"/"+costTotal).done(function( data ) {console.log(data)});
-
-    });
-    $('.updatePVP').change(function(){
-      var id = $(this).attr('data-idBook');
-      var pvp = $(this).val();
-      $.get( "/admin/sales/updatePVP/"+id+"/"+pvp).done(function( data ) {console.log(data)});
-
-    });
-
 </script>

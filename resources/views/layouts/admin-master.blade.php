@@ -133,7 +133,7 @@
         <script src="{{ assetV('assets/plugins/skycons/skycons.js') }}" type="text/javascript"></script>
         <script src="{{ assetV('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
         <script type="text/javascript" src="{{ assetV('/pages/js/bootstrap-notify.js')}}"></script>
-
+        
         <script src="{{ assetV('pages/js/pages.min.js') }}"></script>
         <script src="{{ assetV('js/custom.js') }}"></script>
         @yield('scripts')

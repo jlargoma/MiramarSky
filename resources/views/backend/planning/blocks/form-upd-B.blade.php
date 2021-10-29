@@ -160,6 +160,11 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
              name="promociones"
              value="<?php echo ($book->promociones > 0) ? $book->promociones : "" ?>">
     </div>
+    <div class="col-4 ">
+      <label title="Costo Supl. Luz">Costo Luz</label>
+      <input type="number" step='0.01' class="luz_cost recalc only-numbers form-control " {{$disabl_limp}}
+             name="luz_cost" value="{{$book->luz_cost}}">
+    </div>
     
       <div class="col-md-2 col-xs-6 push-10 content_image_offert" <?php if ($book->promociones <1) echo 'style="display:none"' ?>>
         <img src="/pages/oferta.png" style="width: 90px;">

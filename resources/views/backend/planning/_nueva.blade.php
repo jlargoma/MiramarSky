@@ -276,13 +276,17 @@ $is_mobile = $mobile->isMobile();
               </div>
 
                 <?php if ( Auth::user()->role != "agente" ): ?>
-                <div class="col-xs-12 col-md-3 not-padding">
+                <div class="col-xs-12 col-md-3">
                   <label>promoción</label>
                   <input type="number" class="promociones form-control recalc" step='0.01'  name="promociones" <?php value_isset($data,'pvp_promo'); ?>>
                 </div>
 	            <?php else: ?>
                     <input type="hidden" class="promociones form-control" step='0.01' name="promociones" value="0">
                 <?php endif ?>
+                <div class="col-xs-12 col-md-3">    
+                  <label title="Costo Supl. Luz">Costo Luz</label>
+                  <input type="number" step='0.01' class="luz_cost recalc only-numbers form-control "  name="luz_cost"  <?php value_isset($data,'luz_cost'); ?> >
+                </div>
             </div>
             <div class="col-xs-12">
                 <div class="col-xs-12 not-padding">
@@ -304,7 +308,7 @@ $is_mobile = $mobile->isMobile();
                     <?php if ( Auth::user()->role != "agente" ): ?>
                     <div class="col-md-3 col-xs-6 text-center " style="background: #99D9EA;">
                             <label class="font-w800 text-white" for="">COSTE TOTAL</label>
-                            <input type="number" step='0.01' class="form-control  cost m-t-10 m-b-10 white" name="cost" >
+                            <input type="text" readonly="" class="form-control  cost m-t-10 m-b-10 white" name="cost" >
                         </div>
 
                         <div class="col-md-2 col-xs-6 text-center " style="background: #91cf81;">

@@ -1,13 +1,14 @@
 <div class="table-responsive">
     <table class="table table-bookings">
         <thead>
-								<th class="text-left bg-complete text-white">Cliente</th>
-								<th class="text-center bg-complete text-white">Pers</th>
-								<th class="text-center bg-complete text-white">IN</th>
-								<th class="text-center bg-complete text-white">OUT</th>
-								<th class="text-center bg-complete text-white">ING. PROP</th>
-								<th class="text-center bg-complete text-white">Apto</th>
-								<th class="text-center bg-complete text-white">Park.</th>
+          <th class="text-left bg-complete text-white">Cliente</th>
+          <th class="text-center bg-complete text-white">Pers</th>
+          <th class="text-center bg-complete text-white">IN</th>
+          <th class="text-center bg-complete text-white">OUT</th>
+          <th class="text-center bg-complete text-white">ING. PROP</th>
+          <th class="text-center bg-complete text-white">Apto</th>
+          <th class="text-center bg-complete text-white">Park.</th>
+          <th class="text-center bg-complete text-white">Luz</th>
         <?php if ($room != 'all'): ?>
           <?php if ($room->luxury == 1): ?>
     								<th class="text-center bg-complete text-white">Sup.Lujo</th>
@@ -34,29 +35,16 @@
                       {{moneda($book->get_costProp(),false,2)}}
                   </td>
                   <td class="text-center">
-
                       <?php if ($book->type_book != 7 && $book->type_book != 8): ?>
-                        <?php if ($book->cost_apto > 0): ?>
-                          <?php echo number_format($book->cost_apto, 0, ',', '.') ?>€
-                        <?php else: ?>
-                          ---€
-                        <?php endif ?>
-                      <?php else: ?>
-                        ---€
+                        {{moneda($book->cost_apto)}}
                       <?php endif ?>
-
                   </td>
                   <td class="text-center">
-                      <?php if ($book->type_book != 7 && $book->type_book != 8): ?>
-                        <?php if ($book->cost_park > 0): ?>
-                          <?php echo number_format($book->cost_park, 2, '.', ',') ?>€
-                        <?php else: ?>
-                          ---€
-                        <?php endif ?>
-                      <?php else: ?>
-                        ---€
+                    <?php if ($book->type_book != 7 && $book->type_book != 8): ?>
+                    {{moneda($book->cost_park,true,2)}}
                       <?php endif ?>
                   </td>
+                    <td class="text-center">{{moneda($book->luz_cost)}}</td>
                     <td class="text-center">
                         {{moneda($book->get_costLujo(),false,2)}}
                     </td>
