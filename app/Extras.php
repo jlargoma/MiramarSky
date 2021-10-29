@@ -19,30 +19,48 @@ class Extras extends Model
     9 Chalet = 0
    * 
    */
+  static function luzBySize($sizeApt){
+    switch ($sizeApt) {
+      case 1: // Estudio = 20
+      case 5: // Estudio Lujo = 20 
+        return 7;
+      case 2: //Dos Dorm = 25
+      case 6: //Dos Dorm Lujo = 25
+        return 8;
+      case 9: //Chalet = 25
+        return 9;
+      case 3: //Grande(10 px) = 40
+      case 4: //Grande (12 pax) = 40
+      case 7: //Grande(10px) Lujo = 40
+      case 8: //Grande (12 pax) Lujo = 40
+        return 10;
+      default:
+        return 7;
+          break;
+    }
+  }
   /**
    * 
    * @return (object) [giftCost,giftPVP,luzCost,luzPVP]
    */
-  static function loadFixed(){
+  static function loadFixed($sizeApt){
     
     $aObj = [
         'giftCost'=>0,
         'giftPVP'=>0,
         'luzCost'=>0,
-        'luzPVP'=>0,
+        'luzPVP'=>0
         ];
-  
-    $oObj = \App\Extras::whereIn('id',[4,7])->get();
+    $oObj = \App\Extras::where('id',4)
+            ->orWhere('id', Extras::luzBySize($sizeApt))->get();
     foreach ($oObj  as $item) {
-      switch ($item->id){
-        case 4: //Gift
+      if ($item->id == 4){ //Gift
           $aObj['giftCost'] = floatval($item->cost);
           $aObj['giftPVP'] = floatval($item->price);
-          break;
-        case 7: //Luz
+          
+      } else {
           $aObj['luzCost'] = floatval($item->cost);
           $aObj['luzPVP'] = floatval($item->price);
-          break;
       }
     }
     return (object)$aObj;
@@ -54,8 +72,8 @@ class Extras extends Model
     return floatval($extraPrice->cost);
   }
   
-  static function luzCost(){
-    $extraPrice = \App\Extras::find(7);
-    return floatval($extraPrice->cost);
-  }
+//  static function luzCost($sizeApt){
+//    $extraPrice = \App\Extras::find(Extras::luzBySize($sizeApt));
+//    return floatval($extraPrice->cost);
+//  }
 }

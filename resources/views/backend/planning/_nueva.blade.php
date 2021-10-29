@@ -180,6 +180,7 @@ $is_mobile = $mobile->isMobile();
                 <?php endif ?>
                 <div class="col-md-3 col-xs-7 push-xs-10">
                     <label>Apartamento</label>
+                    <input type="hidden" id="currentRoom">
                     <select class="form-control full-width newroom minimal" name="newroom" id="newroom" required>
                         <option ></option>
                         <?php foreach ($rooms as $room): ?>

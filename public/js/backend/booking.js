@@ -69,6 +69,7 @@ $(document).ready(function() {
       var totalPrice = $('.total').val();
       var totalCost = $('.cost').val();
       var luz_cost = $('.luz_cost').val();
+      var currentRoom = $('#currentRoom').val();
       var apartmentCost = $('.costApto').val();
       var parkingCost = $('.costParking').val();
       var book_id = $('#book-id').val();
@@ -78,6 +79,7 @@ $(document).ready(function() {
           finish: finish_date,
           pax: pax,
           room: room,
+          currentRoom: currentRoom,
           park: park,
           lujo: lujo,
           agencyCost: agencyCost,
@@ -119,6 +121,7 @@ $(document).ready(function() {
           $('.costApto').val(data.costes.book);
           $('.costParking').val(data.costes.parking);
           $('.luz_cost').val(data.costes.luz);
+          $('#currentRoom').val(room);
           $('#real-price').html(data.calculated.real_price);
           $('#publ_price').html(data.public.pvp_init);
           $('#publ_disc').html(parseInt(data.public.PRIVEE)+parseInt(data.public.discount_pvp));

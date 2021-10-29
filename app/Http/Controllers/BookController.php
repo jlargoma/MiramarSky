@@ -309,7 +309,8 @@ class BookController extends AppController
         $date_start  = $request->input('start',null);
         $date_finish  = $request->input('finish',null);
         if (!$date_start || !$date_finish ) die('error');
-        $oFixExtra = \App\Extras::loadFixed();
+        $room = \App\Rooms::find($request->input('newroom'));
+        $oFixExtra = \App\Extras::loadFixed($room->sizeApto);
         
         //createacion del cliente
         $customer          = new \App\Customers();
@@ -341,7 +342,7 @@ class BookController extends AppController
         $book->nigths        = $nigths;
         $book->luz_cost      = $request->input('luz_cost',0);//$oFixExtra->luzCost;
         
-        $room = \App\Rooms::find($request->input('newroom'));
+        
         
         $discount = $request->input('ff_discount',null);
         if ($discount && $discount>0){
@@ -1826,7 +1827,8 @@ class BookController extends AppController
           return null;
         }
                
-        $loadedParking = $loadedCostRoom = $loadedCostLuz = false;
+        $loadedParking = $loadedCostRoom = false;
+        $loadedCostLuz = ($request->room == $request->currentRoom);
         if ($request->book_id){
           $book = Book::find($request->book_id);
           if ($book){
@@ -1839,7 +1841,6 @@ class BookController extends AppController
             if ($request->start == $book->start && $request->finish  == $book->finish){
               if ($request->pax == $book->pax && $request->room == $book->room_id ){
 //                $loadedCostRoom = true;
-                $loadedCostLuz = true;
                 $data['costes']['book'] = $book->cost_apto;
                 if ($request->park == $book->type_park){
                   $loadedParking = true;
@@ -1860,13 +1861,13 @@ class BookController extends AppController
         if (!$loadedCostRoom)
           $data['costes']['book']      = $room->getCostRoom($start, $finish, $pax)-$promotion;
         
-        $oFixExtra = \App\Extras::loadFixed();
         //------------------------------------
-        if (empty($request->luzCost)){
-          if (!$loadedCostLuz){
-            $data['costes']['luz']  = $oFixExtra->luzCost;
-          }
-        } else $data['costes']['luz']  = intval($request->luzCost);
+        $oFixExtra = \App\Extras::loadFixed($room->sizeApto);
+        if ($loadedCostLuz){
+          $data['costes']['luz']  = (empty($request->luzCost)) ? $oFixExtra->luzCost : intval($request->luzCost);
+        } else {
+          $data['costes']['luz']  = $oFixExtra->luzCost;
+        }
         //------------------------------------
         
         $data['costes']['lujo'] = $this->getCostLujo($request->lujo);

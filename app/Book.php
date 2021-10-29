@@ -475,7 +475,7 @@ class Book extends Model {
       $return['price_lux'] = Http\Controllers\BookController::getPriceLujo($this->type_luxury);
       $return['cost_lux'] = Http\Controllers\BookController::getCostLujo($this->type_luxury);
       
-      $extraPrice = \App\Extras::loadFixed();
+      $extraPrice = \App\Extras::loadFixed($oRoom->sizeApto);
       $return['price_extr'] = $extraPrice->giftPVP;
       $return['cost_extr']  = $extraPrice->giftCost;
       $return['luz_cost']   = $extraPrice->luzCost;
