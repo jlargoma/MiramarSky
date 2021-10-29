@@ -309,10 +309,8 @@ class BookController extends AppController
         $date_start  = $request->input('start',null);
         $date_finish  = $request->input('finish',null);
         if (!$date_start || !$date_finish ) die('error');
-        // 4 es el extra correspondiente a el obsequio
-        $extraPrice = 0; // Es solo un coste
-//        $extraCost  = \App\Extras::find(4)->cost;
-        $extraCost  = Rooms::GIFT_COST;
+        $room = \App\Rooms::find($request->input('newroom'));
+        $oFixExtra = \App\Extras::loadFixed($room->sizeApto);
         
         //createacion del cliente
         $customer          = new \App\Customers();
@@ -338,12 +336,13 @@ class BookController extends AppController
         $book->agency        = $request->input('agency',0);
         $book->PVPAgencia    = ($request->input('agencia')) ? $request->input('agencia') : 0;
         $book->is_fastpayment = ($book->type_book == 99 ) ? 1:0;
-        $book->extraPrice = $extraPrice;
-        $book->extraCost  = $extraCost;
+        $book->extraPrice = $oFixExtra->giftPVP;
+        $book->extraCost  = $oFixExtra->giftCost;
         $nigths = calcNights($book->start, $book->finish );
         $book->nigths        = $nigths;
-                
-        $room = \App\Rooms::find($request->input('newroom'));
+        $book->luz_cost      = $request->input('luz_cost',0);//$oFixExtra->luzCost;
+        
+        
         
         $discount = $request->input('ff_discount',null);
         if ($discount && $discount>0){
@@ -389,7 +388,7 @@ class BookController extends AppController
                     }else{
                       $book->total_price = $request->input('total');
                       $book->cost_apto = ($request->input('costApto')) ? $request->input('costApto') : $room->getCostRoom($date_start,$date_finish,$book->pax);
-                      $book->cost_total = ($request->input('cost')) ? $request->input('cost') : $book->cost_apto + $subTotalCost;
+                      $book->cost_total = ($request->input('cost')) ? $request->input('cost') : $book->get_costeTotal();
                       if ($request->input('costParking'))
                       $book->cost_park = round($request->input('costParking'),2);
                       if (isset($request->priceDiscount) && $request->input('priceDiscount') == "yes"){
@@ -652,7 +651,7 @@ class BookController extends AppController
             $book->book_comments       = ltrim($request->input('book_comments'));
             $book->pax                 = $request->input('pax');
             $book->real_pax            = $request->input('real_pax');
-            $book->promociones            = $request->input('promociones');
+            $book->promociones         = $request->input('promociones');
             $book->nigths              = calcNights($book->start, $book->finish );
 
             
@@ -687,11 +686,9 @@ class BookController extends AppController
               if ($request->input('costParking'))  $book->cost_park  = $request->input('costParking');
               if(!$IS_agente){  
                 $book->extra     = $request->input('extra');
-
-                $book->extraPrice  = Rooms::GIFT_PRICE;
-                $book->extraCost   = Rooms::GIFT_COST;
                 $book->schedule    = $request->input('schedule');
                 $book->scheduleOut = $request->input('scheduleOut');
+                $book->luz_cost    = intval($request->input('luz_cost',0));
                 if ($request->updMetaPrice == 1){
                   $book->promociones = ($request->input('promociones')) ? $request->input('promociones') : 0;
                   $book->book_owned_comments = ($request->input('book_owned_comments')) ? $request->input('book_owned_comments') : "";
@@ -714,7 +711,7 @@ class BookController extends AppController
             if ($book->type_book == 8 || $book->type_book == 7){
                 $book->bookingFree();
             }
-            
+            $book->cost_total = $book->get_costeTotal();
             if ($book->save()){
               
               if ($request->updMetaPrice == 1){
@@ -1829,8 +1826,9 @@ class BookController extends AppController
         if (!$room){
           return null;
         }
-        
+               
         $loadedParking = $loadedCostRoom = false;
+        $loadedCostLuz = ($request->room == $request->currentRoom);
         if ($request->book_id){
           $book = Book::find($request->book_id);
           if ($book){
@@ -1863,9 +1861,18 @@ class BookController extends AppController
         if (!$loadedCostRoom)
           $data['costes']['book']      = $room->getCostRoom($start, $finish, $pax)-$promotion;
         
+        //------------------------------------
+        $oFixExtra = \App\Extras::loadFixed($room->sizeApto);
+        if ($loadedCostLuz){
+          $data['costes']['luz']  = (empty($request->luzCost)) ? $oFixExtra->luzCost : intval($request->luzCost);
+        } else {
+          $data['costes']['luz']  = $oFixExtra->luzCost;
+        }
+        //------------------------------------
         
-        $data['costes']['lujo']      = $this->getCostLujo($request->lujo);
-        $data['costes']['obsequio']  = Rooms::GIFT_COST;
+        $data['costes']['lujo'] = $this->getCostLujo($request->lujo);
+        $data['costes']['obsequio']  = $oFixExtra->giftCost;
+                
         $data['costes']['agencia']   = (float) $request->agencyCost;
         $data['costes']['promotion'] = $promotion;
         
@@ -1875,13 +1882,10 @@ class BookController extends AppController
 
         $data['totales']['parking']  = $this->getPricePark($request->park, $noches) * $room->num_garage;
         $data['totales']['lujo']     = $this->getPriceLujo($request->lujo);
-        $data['totales']['obsequio'] = Rooms::GIFT_PRICE;
-
-
-
+        $data['totales']['obsequio'] = $oFixExtra->giftPVP;
         $data['public'] = $room->getRoomPrice($start, $finish, $pax);
-        
         /*****************************************************************/
+        /* El parking y supl lujo ya están incluidos en el precio OTA */
         $parkingPVP = $this->getPVPParking() * $noches * $room->num_garage;
         switch ($request->park){
             //keep the pvp
@@ -1900,12 +1904,9 @@ class BookController extends AppController
               case 4: $lujoPVP = $lujoPVP / 2; break;
           }
         }
-        
-
-        /*****************************************************************/
         $data['public']['pvp'] = $data['public']['pvp'] - $parkingPVP - $lujoPVP;
+        /*****************************************************************/
         $totalPrice = $data['public']['pvp'];
-        
         $totalCost = array_sum($data['costes']) - $promotion;
         $profit    = round($totalPrice - $totalCost);
         $data['calculated']['total_price']       = $totalPrice;

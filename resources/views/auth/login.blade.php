@@ -93,6 +93,8 @@ $mobile = new Mobile();
             </div>
             <!-- END Form Control-->
             <button class="btn btn-primary btn-cons m-t-10" type="submit">Login </button>
+            
+            <a href="/clear-cookies" class="clearCookie">Limpiar Cookies</a>
           </form>
 
           <div style="margin-top: 1em;">
@@ -114,6 +116,13 @@ $mobile = new Mobile();
     display: block;
     font-size: 14px;
 
+      }
+      .clearCookie{
+        float: right;
+        margin-top: 10px;
+        background-color: #FFF;
+        padding: 7px 11px;
+        border-radius: 3px;
       }
     </style>
   </body>

@@ -235,3 +235,9 @@
 //    });
     
     Route::post('/payments-moto', 'PaylandsController@processPaymentMoto');
+    
+    Route::get('/clear-cookies', function(){
+      unset($_COOKIE["XSRF-TOKEN"]);
+      unset($_COOKIE["laravel_session"]);
+      return redirect('/login');
+    });

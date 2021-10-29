@@ -63,7 +63,7 @@ function getKeyControl($id){
 
 function assetV($uri){
   $uri_asset = asset($uri);
-  $v = env('VERSION','v1.0.1');
+  $v = env('VERSION','v1.0.3');
   return $uri_asset.'?'.$v;
 }
 function assetNew($uri){

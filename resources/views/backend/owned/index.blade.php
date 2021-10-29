@@ -177,6 +177,14 @@
 
 		$(document).ready(function() {
 			
+			$('.btn-nav.btn-blocks').click(function(event) {
+              $('.navbar-collapse').collapse('hide');
+            });
+			$('.btn-nav.btn-content').click(function(event) {
+              $('.navbar-collapse').collapse('hide');
+            });
+          
+            
 			$('.bloq-fecha').click(function(event) {
 				
 				var x = document.getElementById('bloq');

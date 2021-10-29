@@ -514,6 +514,7 @@ class OtaGateway {
     $book->cost_apto = $totales['cost_apto'];
     $book->extraCost = $totales['cost_extr'];
     $book->extraPrice = $totales['price_extr'];
+    $book->luz_cost = $totales['luz_cost'];
 
     $book->cost_total = $book->get_costeTotal();
     $book->real_price = $totales['price_total'];

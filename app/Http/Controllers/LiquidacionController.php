@@ -109,6 +109,7 @@ class LiquidacionController extends AppController {
             'adicionales'=>0,
             'banco'=>0,
             'caja'=>0,
+            'luz_cost'=>0
         ];
         
     $year = $this->getActiveYear();
@@ -166,6 +167,7 @@ class LiquidacionController extends AppController {
       $totales["stripe"] += paylandCost($book->getPayment(2));
       $totales["obs"] += $book->extraCost;
       $totales["pendiente"] += $book->pending;
+      $totales["luz_cost"] += $book->luz_cost;
 
       $inc_percent = $book->get_inc_percent();
       if (round($inc_percent) <= $percentBenef) {
@@ -2219,5 +2221,34 @@ td {
    
   }
   
+    
+  public function updateBook(Request $request) {
+    $id = $request->input('id');
+    $field = $request->input('field');
+    $val = $request->input('val');
+    
+    $resp = ['status'=>'error','msg'=>''];
+    
+    $oBook = Book::find($id);
+    if (!$oBook || $oBook->id != $id){
+      $resp['msg'] = 'Reserva no encontrada';
+      return response()->json($resp);
+    }
+    $aFields = ['luz_pvp','luz_cost','cost_limp','extraCost','cost_apto','cost_park','total_price'];
+    if (in_array($field,$aFields)){
+
+      $oBook->{$field} = intval($val);
+      $oBook->cost_total = 9999999999999;
+      $oBook->save();
+      
+      $resp['status'] = 'OK';
+      $resp['msg'] = 'Reserva actualizada';
+      return response()->json($resp);
+      
+    }
+        
+    $resp['msg'] = 'No se ha actualizado el valor';
+    return response()->json($resp);
+  }
   
 }

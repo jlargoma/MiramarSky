@@ -53,7 +53,6 @@ $(document).ready(function() {
   
   
     $('.only-numbers').keydown(function (e) {
-      console.log(e.keyCode);
       // Allow: backspace, delete, tab, escape, enter and .
       if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110, 190, 32, 107, 17, 67, 86, 88,188,189 ]) !== -1 ||
            // Allow: Ctrl/cmd+A

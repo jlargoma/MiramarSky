@@ -20,18 +20,26 @@ class OwnedController extends AppController {
    * @return \Illuminate\Http\Response
    */
   public function index($name = "") {
-    $year = $this->getActiveYear();
+    
+    $oUser = Auth::user();
+    if ($oUser->role == "admin"){
+      $year = $this->getActiveYear();
+    } else {
+      $year = \App\Years::where('start_date','<=', date('Y-m-d'))
+            ->where('end_date','>=', date('Y-m-d'))
+            ->first();
+    }
     $startYear = new Carbon($year->start_date);
     $endYear = new Carbon($year->end_date);
     $diff = $startYear->diffInMonths($endYear) + 1;
 
     if (empty($name)){
-      if (count(Auth::user()->rooms) == 0)
+      if (count($oUser->rooms) == 0)
         return view('backend.rooms.not_rooms_avaliables');
       else
-        $room = Auth::user()->rooms[0];
+        $room = $oUser->rooms[0];
     } else {
-      if (count(Auth::user()->rooms) == 0 && Auth::user()->role != "admin")
+      if (count($oUser->rooms) == 0 && $oUser->role != "admin")
         return view('backend.rooms.not_rooms_avaliables');
       else
         $room = \App\Rooms::where('nameRoom', 'LIKE', "%" . $name . "%")->first();
@@ -53,6 +61,7 @@ class OwnedController extends AppController {
     $total = 0;
     $apto = 0;
     $park = 0;
+    $luz = 0;
     $lujo = 0;
     
     // Datos
@@ -119,9 +128,10 @@ class OwnedController extends AppController {
     foreach ($books as $book) {
         $apto += $book->cost_apto;
         $park += $book->cost_park;
+        $luz += $book->luz_cost;
         $lujo += $book->get_costLujo();
     }
-    $total += ($apto + $park + $lujo);
+    $total += ($apto + $park + $lujo + $luz);
 
     // $paymentspro = \App\Paymentspro::where('room_id',$room->id)->where('datePayment','>=',$date->copy()->format('Y-m-d'))->where('datePayment','<=',$date->copy()->addYear()->format('Y-m-d'))->get();
 
@@ -181,6 +191,7 @@ class OwnedController extends AppController {
         'total' => $total,
         'apto' => $apto,
         'park' => $park,
+        'luz' => $luz,
         'lujo' => $lujo,
         'pagos' => $gastos,
         'pagototal' => $pagototal,

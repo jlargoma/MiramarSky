@@ -123,7 +123,7 @@ use \Carbon\Carbon; ?>
 
 <div class="container-fluid padding-25 sm-padding-10">
   <div class="row push-20">
-    <div class="col-md-4 col-xs-12 text-center">
+    <div class="col-md-5 col-xs-12 text-center">
       <form method="POST" id="form_filterByRange"> 
         <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
         <input type="hidden" id="sent" name="sent" value="0">
@@ -148,10 +148,10 @@ use \Carbon\Carbon; ?>
       </form>
       <button class="btn btn-primary btn-txt" type="button" data-toggle="modal" data-target="#modalTXT">Ver TXT</button>
     </div>
-    <div class="col-md-2 col-md-offset-1 col-xs-12 text-center">
+    <div class="col-md-3 col-md-offset-1 col-xs-12 text-center">
       <h2 class="font-w300">Pagos a <span class="font-w800">propietarios</span> </h2>
     </div>
-    <div class="col-md-1 col-xs-12">
+    <div class="col-md-2 col-xs-12">
       @include('backend.years._selector')
     </div>
   </div>
@@ -184,6 +184,9 @@ use \Carbon\Carbon; ?>
               </th>
               <th class ="text-center bg-complete text-white">
                 C. Limp.   
+              </th>
+              <th class ="text-center bg-complete text-white">
+                C. Luz.   
               </th>
               <th class ="text-center bg-complete text-white">
                 Benef.    
@@ -224,6 +227,9 @@ use \Carbon\Carbon; ?>
               </td>
               <td >
                 {{moneda($summary_liq['limp'])}}
+              </td>
+              <td >
+                {{moneda($summary_liq['luz'])}}
               </td>
               <td >
                 <b class="<?php echo ($summary_liq['benef'] > 0) ? 'text-success' : 'text-danger';?> font-w800">{{moneda($summary_liq['benef'])}}</b>
@@ -294,6 +300,9 @@ use \Carbon\Carbon; ?>
               </th>
               <th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
                 C. Limp.   
+              </th>
+              <th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
+                C. Luz   
               </th>
               <th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
                 Benef
@@ -393,6 +402,13 @@ use \Carbon\Carbon; ?>
                   <td class="text-center"  style="padding: 10px 5px ;">
     <?php if (isset($data[$room->id]['totales']['totalLimp'])): ?>
                       <?php echo number_format($data[$room->id]['totales']['totalLimp'], 0, ',', '.'); ?>€
+                    <?php else: ?>
+                      -----
+                    <?php endif ?>
+                  </td>
+                  <td class="text-center"  style="padding: 10px 5px ;">
+                    <?php if (isset($data[$room->id]['totales']['totalLuz'])): ?>
+                      <?php echo number_format($data[$room->id]['totales']['totalLuz'], 0, ',', '.'); ?>€
                     <?php else: ?>
                       -----
                     <?php endif ?>

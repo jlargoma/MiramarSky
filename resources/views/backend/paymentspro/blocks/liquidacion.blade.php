@@ -9,6 +9,7 @@
             <th class="text-center bg-complete text-white">ING. PROP</th>
             <th class="text-center bg-complete text-white">Apto</th>
             <th class="text-center bg-complete text-white">Park</th>
+            <th class="text-center bg-complete text-white">Luz</th>
             <?php if ($room->luxury == 1): ?>
               <th class="text-center bg-complete text-white">Sup.Lujo</th>
             <?php endif ?>
@@ -17,6 +18,7 @@
             <td class="text-center total">{{moneda($total,false)}}</td>
             <td class="text-center">{{moneda($apto,false)}}</td>
             <td class="text-center">{{moneda($park,false)}}</td>
+            <td class="text-center">{{moneda($luz,false)}}</td>
             <?php if ($room->luxury == 1): ?>
               <td class="text-center">{{moneda($lujo,false)}}</td>
             <?php endif ?>
