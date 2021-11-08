@@ -41,6 +41,7 @@ class Kernel extends ConsoleKernel
         Commands\SendParteeReminder::class,
         Commands\CheckPricess::class,
         Commands\icalOld::class,
+        Commands\DataDis::class,
 //        Commands\WubookGetBookings::class,
 //        Commands\ZodomusImport::class,
 //        Commands\RoomsPhotosMigrate::class,
@@ -88,5 +89,6 @@ class Kernel extends ConsoleKernel
       $schedule->command('OTAs:SendAvailibilityMonth')->dailyAt('22:00')->timezone('Europe/Madrid');
         
       $schedule->command('OTAs:CheckPricess')->everyThirtyMinutes();
+      $schedule->command('DataDis:load')->dailyAt('2:00')->timezone('Europe/Madrid');
     }
 }

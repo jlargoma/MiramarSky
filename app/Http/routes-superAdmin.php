@@ -366,7 +366,11 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
     
   // OTA Gateway  
   Route::get('/otaGate/test','OtaGate@test');
-
+  
+  // WUBOOK
+  Route::get('/dataDis', 'DataDisController@index');
+  Route::get('/dataDis/calendar/{month?}', 'DataDisController@calendar');
+  Route::get('/dataDis/day/{rid?}/{month?}', 'DataDisController@getDay');
   
 });
   Route::get('/connect_airbnb',function(){ var_dump($_REQUEST); die; });
