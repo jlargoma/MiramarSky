@@ -134,8 +134,15 @@ $extr = '<span class="btnCalendar btn btn-primary"  data-toggle="modal" data-tar
             <i class="fa fa-question-circle">
               <div class="t-otas-room">
               <table class="">
-                <tr><td><span class="price-booking">{{$priceLst[$k]['booking']}}</span></td><td><span class="price-airbnb">{{$priceLst[$k]['airbnb']}}</span></td></tr>
-                <tr><td><span class="price-expedia">{{$priceLst[$k]['expedia']}}</span></td><td><span class="price-google">{{$priceLst[$k]['google']}}</span></td></tr>
+                <tr>
+                  <td><span class="price-booking">{{$priceLst[$k]['booking']}}</span></td>
+                  <td><span class="price-airbnb">{{$priceLst[$k]['airbnb']}}</span></td>
+                  <td rowspan="2" class="benef">{{$priceLst[$k]['inc_percent']}}%</td>
+                </tr>
+                <tr>
+                  <td><span class="price-expedia">{{$priceLst[$k]['expedia']}}</span></td>
+                  <td><span class="price-google">{{$priceLst[$k]['google']}}</span></td>
+                </tr>
               </table>
                 </div>
             </i>
@@ -191,9 +198,14 @@ $extr = '<span class="btnCalendar btn btn-primary"  data-toggle="modal" data-tar
       
     </div>
   </div>
+<br/><br/>
+<small>
+  <span class="benef">33%</span>: Porcentaje de beneficio calculado sobre el precio de Google Hotel 
+  y cuyo costo es la sumatoria del costo del apto + costo limpieza 
+  + costo de parking + costo Exta (obsequio) + costo Lujo (si corresponde).<br/>
+  No incluye costo de agencia o comisiones PVP.
+</small>
 </div>
-
-
 <div class="modal fade slide-up in" id="siteCalendar" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content-wrapper">
@@ -386,7 +398,7 @@ $(document).ready(function () {
   }
   .t-otas-room {
     position: absolute;
-    width: 6em;
+    width: 10em;
     top: 27px;
     left: -14px;
     padding: 5px !important;
@@ -396,6 +408,12 @@ $(document).ready(function () {
   }
   .t-otas-room table td{
     text-align: center;
+  }
+  .t-otas-room table td.benef,
+  span.benef{
+    padding: 0 3px 0 8px !important;
+    color: #ff6b00;
+    font-size: 18px;
   }
   .t-otas-room table{
     width: 98%;

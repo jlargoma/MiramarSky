@@ -47,8 +47,8 @@ class DataDis extends Command {
       
       $startDate = date('Y/m/d', strtotime('-3 days'));
       $endDate = date('Y/m/d', strtotime('-2 days'));
-      $startDate = '2021/10/27';
-      $endDate = '2021/11/07';
+//      $startDate = '2021/10/07';
+//      $endDate = '2021/10/28';
       
       $aRooms = $this->oConfig->getRooms();
       foreach ($aRooms as $rID => $rData){
@@ -82,11 +82,6 @@ class DataDis extends Command {
           }
         }
       }
-      
-      
-      die;
-      
-      
     }
   
   }

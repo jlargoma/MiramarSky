@@ -268,8 +268,8 @@ trait OtasTraits
         $priceLst[] = [
             "title" => ''.$p.' €<p class="min-estanc">'.$min_estancia.' dias</p>'
             . '<table class="t-otas">'
-            . '<tr><td><span class="price-booking">'.$data['price_booking'].'</span></td><td><span class="price-airbnb">'.$data['price_airbnb'].'</span></td></tr>'
-            . '<tr><td><span class="price-expedia">'.$data['price_expedia'].'</span></td><td><span class="price-google">'.$data['price_google'].'</span></td></tr>'
+            . '<tr><td><span class="price-booking">'.round($data['price_booking']).'</span></td><td><span class="price-airbnb">'.round($data['price_airbnb']).'</span></td></tr>'
+            . '<tr><td><span class="price-expedia">'.round($data['price_expedia']).'</span></td><td><span class="price-google">'.round($data['price_google']).'</span></td></tr>'
             . '</table>',
             "start" => $d,
             'classNames' => 'prices',
@@ -413,6 +413,22 @@ trait OtasTraits
     if (!$room)   return null;
     $defaults = $room->defaultCostPrice($start, $end, $room->pax);
     $priceDay = $defaults['priceDay'];
+    $costDay = $defaults['costDay'];
+    $costOthers = 0;
+    /* ------------------------------------------------------- */
+    $parkCostSetting = Settings::where('key', Settings::PARK_COST_SETTING_CODE)->first();
+    $costOthers += $parkCostSetting->value;
+    /* ------------------------------------------------------- */
+    if ($room->luxury == 1){
+      $luxuryCostSetting = Settings::where('key', Settings::LUXURY_COST_SETTING_CODE)->first();
+      $costOthers += $luxuryCostSetting->value;
+    }
+    /* ------------------------------------------------------- */
+    $oFixExtra = \App\Extras::loadFixed($room->sizeApto);
+    $costOthers += $oFixExtra->giftCost + $oFixExtra->luzCost;
+        
+    /* ------------------------------------------------------- */
+    
     $min = [];
     $oPrice = DailyPrices::where('channel_group', $ch)
             ->where('date', '>=', $start)
@@ -428,15 +444,27 @@ trait OtasTraits
     $redDays = [];
     foreach ($priceDay as $d => $p) {
       $min_estancia = isset($min[$d]) ? $min[$d] : 0;
+      $pvpGH = ceil($oConfig->priceByChannel($p,99,$ch));
+      
+      $inc_percent = $tCost = 0;
+      if ($pvpGH > 0 && isset($costDay[$d])) {
+        $tCost = $costDay[$d]+$costOthers;
+        $profit = $pvpGH-$tCost;
+        $inc_percent = intval(($profit / $pvpGH ) * 100,0);
+      }
+      
       $priceLst[$d] = [
           $p,
           $min_estancia,
           'booking'=>ceil($oConfig->priceByChannel($p,1,$ch)),
           'expedia'=>ceil($oConfig->priceByChannel($p,28,$ch)),
           'airbnb'=>ceil($oConfig->priceByChannel($p,4,$ch)),
-          'google'=>ceil($oConfig->priceByChannel($p,99,$ch)),
+          'google'=>$pvpGH,
+          'tCost'=>$tCost,
+          'inc_percent'=>$inc_percent,
         ];
     }
+//    dd($priceLst);
     $book = new \App\Book();
     $availibility = $book->getAvailibilityBy_channel($ch, $start, $end,true);
     
