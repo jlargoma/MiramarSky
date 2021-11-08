@@ -18,9 +18,9 @@ class CacheData {
     $this->file = $directory . $folder;
   }
 
-  public function set($result) {
+  public function set($result,$keep=300) {
     $content = [
-      'time'=>time()+300,
+      'time'=>time()+$keep,
       'data'=>$result
     ];
     file_put_contents($this->file,json_encode($content));

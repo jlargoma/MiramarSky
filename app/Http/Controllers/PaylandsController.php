@@ -94,6 +94,7 @@ class PaylandsController extends AppController
       
       $urlPay = $this->generateOrder($amount,$subject,$bookingID);
       if ($urlPay){
+        $urlPay = get_shortlink($urlPay);
         return $this->getPaymentText($urlPay,$bookingID,$amount);
       }
       return 'error';
@@ -696,6 +697,7 @@ class PaylandsController extends AppController
             $is_deferred = $request->input('is_deferred', null); //fianza
             $urlPay = $this->generateOrder($amount,$subject,$bookingID,$is_deferred);
             if ($urlPay){
+              $urlPay = get_shortlink($urlPay);
               return $this->getPaymentText($urlPay,$bookingID,$amount);
             }
             

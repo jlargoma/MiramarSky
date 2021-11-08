@@ -121,6 +121,10 @@
     <li class="{{ $pathRequest == 'admin/contabilidad'  ? 'active' : '' }}">
       <a href="{{ url('admin/contabilidad') }}" class="detailed">CONTABILIDAD</a>
     </li>
+        
+    <li class="{{ $pathRequest == 'admin/dataDis'  ? 'active' : '' }}">
+      <a href="{{ url('admin/dataDis') }}" class="detailed">DATADIS</a>
+    </li>
 <?php endif ?>
     
 </ul>

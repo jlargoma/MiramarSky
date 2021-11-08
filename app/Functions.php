@@ -555,8 +555,34 @@ function arrayDays($start,$end,$format,$val=0,$includeLast = true){
   $periodo = new DatePeriod($inicio, $intervalo, $fin);
   
   foreach ($periodo as $fecha) {
-    $allDay[$fecha->format($format)] = $val;
+    switch ($val){
+      case 'w':
+        $allDay[$fecha->format($format)] = $fecha->format('w');
+        break;
+      case 'array':
+        $allDay[$fecha->format($format)] = [];
+        break;
+      default :
+        $allDay[$fecha->format($format)] = $val;
+        break;
+    }
   }
-  if ($includeLast) $allDay[$fin->format($format)] = $val;
+  
+  if ($includeLast){
+    
+    switch ($val){
+      case 'w':
+        $allDay[$fin->format($format)] = $fin->format('w');
+        break;
+      case 'array':
+        $allDay[$fin->format($format)] = [];
+        break;
+      default :
+        $allDay[$fin->format($format)] = $val;
+        break;
+    }
+   
+  }
+  
   return $allDay;
 }
