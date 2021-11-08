@@ -43,6 +43,7 @@
                       <td><span class="price-airbnb">{{moneda($pOta['airbnb'])}}</span></td>
                       <td><span class="price-expedia">{{moneda($pOta['expedia'])}}</span></td>
                       <td><span class="price-google">{{moneda($pOta['google-hotel'])}}</span></td>
+                      <td><span class="benef">{{$pOta['benef']}}%</span></td>
                     </tr>
                   </table>
                 </div>
@@ -214,6 +215,11 @@ td.minStay {
     background-color: #6a6a6a;
 }
 table.table-prices { padding: 3px;}
+  span.benef{
+    padding: 0 3px 0 8px !important;
+    color: #ff6b00;
+    font-size: 18px;
+  }
 @media (min-width: 1760px){
   .table-resumen.table-mobile_cr td.static-2 {
     width: 238px;

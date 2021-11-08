@@ -75,6 +75,7 @@ class GetRoomsSuggest {
             'name' => $item->name,
             'title' => $item->title,
             'channel_group' => $item->channel_group,
+            'nigths' => $nigths,
             'max_pax' => $item->max_pax,
             'availiable' => $roomData['availiable'],
             'lux' => $roomData['lux'],
@@ -162,12 +163,45 @@ class GetRoomsSuggest {
     $aAgencies = $oConfig->getAllAgency();
     foreach ($rooms as $r){
       $ch = $r['channel_group'];
+      $nigths = $r['nigths'];
       $oRoom = Rooms::where('channel_group',$ch)->first();
       $pvp = $oRoom->getPVP($start, $finish, $oRoom->pax,false);
+      
+      
+      
+      /* ------------------------------------------------  */
+      /* -----    PREPARE COSTS       -------------------  */
+      $defaults = $oRoom->defaultCostPrice($start, $finish, $oRoom->pax);
+      $tCost = array_sum($defaults['costDay']);
+      /* ------------------------------------------------------- */
+      $parkCostSetting = Settings::where('key', Settings::PARK_COST_SETTING_CODE)->first();
+      $tCost += $parkCostSetting->value*$nigths;
+      /* ------------------------------------------------------- */
+      if ($oRoom->luxury == 1){
+        $luxuryCostSetting = Settings::where('key', Settings::LUXURY_COST_SETTING_CODE)->first();
+        $tCost += $luxuryCostSetting->value;
+      }
+      /* ------------------------------------------------------- */
+      $oFixExtra = \App\Extras::loadFixed($oRoom->sizeApto);
+      $tCost += $oFixExtra->giftCost + $oFixExtra->luzCost;
+
+      /* -----    PREPARE COSTS       -------------------  */
+      /* ------------------------------------------------  */
+     
       $aux = [];
       foreach ($aAgencies as $n=>$k){
-        $aux[$n] = $this->priceByChannel($pvp, $k, $ch);
+        $aux[$n] = $this->priceByChannel($pvp, $k, $ch,$nigths);
       }
+      //google-hotel
+     
+      $inc_percent = 0;
+      if (isset($aux['google-hotel'])){
+        $pvpGH = $aux['google-hotel'];
+        $profit = $pvpGH-$tCost;
+        $inc_percent = intval(($profit / $pvpGH ) * 100,0)+15;
+      }
+      $aux['benef'] = $inc_percent;
+      
       $result[$ch] = $aux;
     }
     return $result;
@@ -181,12 +215,12 @@ class GetRoomsSuggest {
    * @param type $ch
    * @return type
    */
-  function priceByChannel($p,$ota,$ch){
+  function priceByChannel($p,$ota,$ch,$nigths){
       if (is_array($this->pricesFx) && isset($this->pricesFx[$ch . $ota])){
         $priceData = $this->pricesFx[$ch . $ota];
         //incremento el valor fijo por noche
         if ($priceData['f'] && $priceData['f']>0){
-          $p += $priceData['f'];
+          $p += $nigths*$priceData['f'];
         }
         
         //incremento el valo por porcentaje
