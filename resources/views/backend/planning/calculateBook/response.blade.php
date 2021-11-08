@@ -30,7 +30,31 @@
         @foreach($rooms as $room)
         <tr >
           <td class="static">{{$room['availiable']}}</td>
-          <td class="static-2">{{$room['title']}}</td>
+          <td class="static-2">
+            <?php 
+            if(isset($otaPrices[$room['channel_group']])):
+              $pOta = $otaPrices[$room['channel_group']];
+            ?>
+            <div class="showOtaPvp">{{$room['title']}}
+             <div class="boxOtaPvp">
+                  <table class="table-prices">
+                    <tr>
+                      <td><span class="price-booking">{{moneda($pOta['booking'])}}</span></td>
+                      <td><span class="price-airbnb">{{moneda($pOta['airbnb'])}}</span></td>
+                      <td><span class="price-expedia">{{moneda($pOta['expedia'])}}</span></td>
+                      <td><span class="price-google">{{moneda($pOta['google-hotel'])}}</span></td>
+                    </tr>
+                  </table>
+                </div>
+            </div>
+            <?php
+            
+            else:
+              echo $room['title'];
+            endif; 
+            ?>
+            
+          </td>
           <td class="first-col"></td>
           <td class="text-center BRight"><b >{{moneda($room['pvp_1']+$room['extr_costs'])}}</b>
           <td class="text-center"><b >{{$room['price']}}</b></td>
@@ -91,6 +115,19 @@
       $("#content-book-response .back").hide();
       $("#content-book-response .front").show();
     });
+    
+    $('.showOtaPvp').hover(function(event){
+      var obj = $(this).find('.boxOtaPvp');
+      if (screen.width<768){
+        obj.css('top','auto');
+        obj.css('bottom','-9px');
+        obj.css('left', 'auto');
+        obj.css('right', '3px');
+      } else {
+        obj.css('top', (event.screenY-80));
+      }
+    });
+  
   });
 </script>
 <style>
@@ -164,6 +201,19 @@ td.minStay {
   border-right: 1px solid;
 }
 
+.showOtaPvp{cursor: pointer}
+.showOtaPvp:hover .boxOtaPvp{
+  display: block;
+}
+.boxOtaPvp{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 8em;
+    z-index: 999999;
+    background-color: #6a6a6a;
+}
+table.table-prices { padding: 3px;}
 @media (min-width: 1760px){
   .table-resumen.table-mobile_cr td.static-2 {
     width: 238px;

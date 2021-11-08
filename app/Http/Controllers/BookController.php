@@ -2015,12 +2015,13 @@ class BookController extends AppController
         $oGetRoomsSuggest->size_apto = $size_apto;
         $oGetRoomsSuggest->luxury = $luxury;
         $rooms = $oGetRoomsSuggest->getItemsSuggest($pax,$start,$finish,$size_apto,$luxury);
+        $otaPrices = $oGetRoomsSuggest->getOtasPrices($rooms,$start,$finish);
         $oSetting = new Settings();
         $url = $oSetting->getLongKeyValue('gha_sitio');
         foreach ($rooms as $k=>$v){
           unset($rooms[$k]['infoCancel']);
         }
-//        dd($rooms);
+//        dd($otaPrices);
         return view('backend.planning.calculateBook.response', [
                 'pax'   => $pax,
                 'nigths'=> $countDays,
@@ -2029,6 +2030,7 @@ class BookController extends AppController
                 'name'  => $request->input('name'),
                 'start' => $start,
                 'finish'=> $finish,
+                'otaPrices'=> $otaPrices,
             ]);
         
     }

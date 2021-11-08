@@ -18,10 +18,12 @@ class GetRoomsSuggest {
 
   var $size_apto;
   var $luxury;
+  var $pricesFx;
   
   public function __construct() {
     $this->size_apto = null;
     $this->luxury = null;
+    $this->pricesFx = null;
   }
 
   function size_apto($size_apto){
@@ -72,6 +74,7 @@ class GetRoomsSuggest {
         $response[] = [
             'name' => $item->name,
             'title' => $item->title,
+            'channel_group' => $item->channel_group,
             'max_pax' => $item->max_pax,
             'availiable' => $roomData['availiable'],
             'lux' => $roomData['lux'],
@@ -151,5 +154,47 @@ class GetRoomsSuggest {
     }
     return $return;
   }
+  
+  function getOtasPrices($rooms,$start,$finish){
+    $oConfig = new Config();
+    $result = [];
+    $this->pricesFx  = unserialize(\App\Settings::getContent('prices_ota'));
+    $aAgencies = $oConfig->getAllAgency();
+    foreach ($rooms as $r){
+      $ch = $r['channel_group'];
+      $oRoom = Rooms::where('channel_group',$ch)->first();
+      $pvp = $oRoom->getPVP($start, $finish, $oRoom->pax,false);
+      $aux = [];
+      foreach ($aAgencies as $n=>$k){
+        $aux[$n] = $this->priceByChannel($pvp, $k, $ch);
+      }
+      $result[$ch] = $aux;
+    }
+    return $result;
+  }
 
+    
+  /**
+   * Return Admin OTAs Prices
+   * @param type $p
+   * @param type $ota
+   * @param type $ch
+   * @return type
+   */
+  function priceByChannel($p,$ota,$ch){
+      if (is_array($this->pricesFx) && isset($this->pricesFx[$ch . $ota])){
+        $priceData = $this->pricesFx[$ch . $ota];
+        //incremento el valor fijo por noche
+        if ($priceData['f'] && $priceData['f']>0){
+          $p += $priceData['f'];
+        }
+        
+        //incremento el valo por porcentaje
+        if ($priceData['p'] && $priceData['p']>0){
+          $p = $p * (1+ ($priceData['p'] / 100));
+        }
+      }
+      return $p;
+  }
+  
 }
