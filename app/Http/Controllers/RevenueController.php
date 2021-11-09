@@ -54,7 +54,6 @@ class RevenueController extends AppController
     /*************************************************************/
     $oLiquidacion = new \App\Liquidacion();
     $dataSeason = $oLiquidacion->getBookingAgencyDetailsBy_date($oYear->start_date,$oYear->end_date);
-//    dd($dataSeason);
     $agencias = view('backend.revenue.dashboard.agencias',[
         'data' => $dataSeason,
         'agencyBooks' => $oLiquidacion->getArrayAgency()
@@ -75,7 +74,7 @@ class RevenueController extends AppController
     $auxADR = $aRatios[0];
     $ADR_semana = $auxADR['c_s'] > 0 ? $auxADR['t_s'] / $auxADR['c_s'] : $auxADR['t_s'];
     $ADR_finde  = $auxADR['c_f'] > 0 ? $auxADR['t_f'] / $auxADR['c_f'] : $auxADR['t_f'];
-    
+    $summary    = $oLiquidacion->summaryTemp();
     $viewRatios = [
         'books' => $oServ->books,
         'aRatios' => $aRatios,
@@ -88,7 +87,7 @@ class RevenueController extends AppController
         'time_start' => strtotime($oYear->start_date),
         'time_end' =>strtotime($oYear->end_date),
         'rvas'=>$oServ->countBookingsSite(),
-        'summary' => $oLiquidacion->summaryTemp(),
+        'summary' => $summary,
         'ADR_semana'=>moneda($ADR_semana),
         'ADR_finde'=>moneda($ADR_finde),
     ];
@@ -177,6 +176,50 @@ class RevenueController extends AppController
         'balanceFF' => $balanceFF,
         'typeFF' => $typeFF,
     ]);
+    /*************************************************************/ 
+    $ffData = [
+        'total'=>0,
+        'to_pay'=>0,
+        'pay'=>0,
+        'q'=>$forfaits['count']
+        ];
+    if (isset($ffTot[0]['t'])){
+      $ffData['total'] = $ffTot[0]['t'];
+      $ffData['to_pay'] = $ffTot[0]['p'];
+      $ffData['pay'] = $ffTot[0]['c'];
+    }
+    
+    $books = \App\Book::where_type_book_sales(true)->with('payments')
+            ->where('start', '>=', $oYear->start_date)
+            ->where('start', '<=', $oYear->end_date)->get();
+    
+    $cobrado = $metalico = $banco = $vendido = 0;
+    foreach ($books as $key => $book) {
+      if ($book->payments){
+        foreach ($book->payments as $pay){
+          $cobrado += $pay->import;
+          if ($pay->type == 0 || $pay->type == 1) {
+            $metalico += $pay->import;
+          } else  {
+            $banco += $pay->import;
+          }
+        }
+      }
+      $vendido += $book->total_price;
+    }
+    
+    $contabilidad = view('backend.revenue.dashboard.contabilidad',[
+        'year' => $oYear,
+        'yDays' =>$oServ->mDays[0],
+        'summary' => $summary,
+        'ADR_semana'=>moneda($ADR_semana),
+        'ADR_finde'=>moneda($ADR_finde),
+        'ingr_cobrado'=>$cobrado,
+        'ingr_metalico'=>$metalico,
+        'ingr_banco'=>$banco,
+        'ingr_vendido'=>$vendido,
+        'ffData'=>$ffData,
+    ]);
     /*************************************************************/    
     return view('backend.revenue.dashboard',[
         'datosMes' => $datosMes,
@@ -189,6 +232,7 @@ class RevenueController extends AppController
         'presupuesto_head' => $presupuesto_head,
         'agencias' => $agencias,
         'comp_ingresos_anuales' => $comp_ingresos_anuales,
+        'contabilidad' => $contabilidad,
       ]);
     
   }
