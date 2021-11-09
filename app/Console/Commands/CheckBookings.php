@@ -59,7 +59,7 @@ class CheckBookings extends Command {
 
   private function check_booking_otaGateway() {
       $OtaGateway = new OtaGateway();
-      $OtaGateway->conect();
+      if (!$OtaGateway->conect()) return;
       $items = $OtaGateway->getBookings($this->from,$this->to);
       $numbers = $numbersCancel = [];
       $ota_b_id = $ota_b_idCancel = [];

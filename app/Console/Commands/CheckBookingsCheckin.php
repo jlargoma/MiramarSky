@@ -58,7 +58,7 @@ class CheckBookingsCheckin extends Command {
 
   private function check_booking_otaGateway($siteID) {
       $OtaGateway = new OtaGateway();
-      $OtaGateway->conect();
+      if (!$OtaGateway->conect()) return;
       $items = $OtaGateway->getBookingsCheckin($this->from);
       $numbers = $ota_b_id = [];
       foreach ($items as $item){

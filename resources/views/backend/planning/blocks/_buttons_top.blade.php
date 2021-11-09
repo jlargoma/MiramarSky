@@ -24,8 +24,12 @@ endswitch;
       </button>
       @foreach($urgentes as $item)
       <div class="items">
-        <button {!! $item['action'] !!}><i class="fa fa-bell" aria-hidden="true"></i> </button>
-        {{$item['text']}}
+        @if(isset($item['onlyText']))
+          <?php echo $item['onlyText']; ?>
+        @else
+          <button {!! $item['action'] !!}><i class="fa fa-bell" aria-hidden="true"></i> </button>
+          {{$item['text']}}
+        @endif
       </div>
       @endforeach 
     </div>

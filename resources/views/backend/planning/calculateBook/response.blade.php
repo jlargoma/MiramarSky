@@ -35,18 +35,14 @@
             if(isset($otaPrices[$room['channel_group']])):
               $pOta = $otaPrices[$room['channel_group']];
             ?>
-            <div class="showOtaPvp">{{$room['title']}}
-             <div class="boxOtaPvp">
-                  <table class="table-prices">
-                    <tr>
-                      <td><span class="price-booking">{{moneda($pOta['booking'])}}</span></td>
-                      <td><span class="price-airbnb">{{moneda($pOta['airbnb'])}}</span></td>
-                      <td><span class="price-expedia">{{moneda($pOta['expedia'])}}</span></td>
-                      <td><span class="price-google">{{moneda($pOta['google-hotel'])}}</span></td>
-                      <td><span class="benef">{{$pOta['benef']}}%</span></td>
-                    </tr>
-                  </table>
-                </div>
+            <div class="showOtaPvp"
+                 data-booking="{{moneda($pOta['booking'])}}"
+                 data-airbnb="{{moneda($pOta['airbnb'])}}"
+                 data-expedia="{{moneda($pOta['expedia'])}}"
+                 data-google="{{moneda($pOta['google-hotel'])}}"
+                 data-benef="{{$pOta['benef']}}%"
+                 >
+              {{$room['title']}}
             </div>
             <?php
             
@@ -108,6 +104,21 @@
       </tbody>
     </table>
   </div>
+  
+   <div class="boxOtaPvp">
+      <table class="table-prices">
+        <tr>
+          <td><span class="price-booking">asdasd</span></td>
+          <td><span class="price-airbnb">asdasd</span></td>
+          <td rowspan="2"><span class="benef">asdasd</span></td>
+        </tr>
+        <tr>
+          <td><span class="price-expedia">asdasd</span></td>
+          <td><span class="price-google">asdasdas</span></td>
+        </tr>
+      </table>
+    </div>
+  
 </div>
 <script type="text/javascript">
   $(document).ready(function () {
@@ -118,15 +129,25 @@
     });
     
     $('.showOtaPvp').hover(function(event){
-      var obj = $(this).find('.boxOtaPvp');
+      var obj = $('.boxOtaPvp');
+      var data = $(this)
+      obj.find('.price-booking').text(data.data('booking'));
+      obj.find('.price-airbnb').text(data.data('airbnb'));
+      obj.find('.price-expedia').text(data.data('expedia'));
+      obj.find('.price-google').text(data.data('google'));
+      obj.find('.benef').text(data.data('benef'));
+      obj.show();
       if (screen.width<768){
         obj.css('top','auto');
-        obj.css('bottom','-9px');
+        obj.css('bottom','3px');
         obj.css('left', 'auto');
         obj.css('right', '3px');
       } else {
         obj.css('top', (event.screenY-80));
       }
+    },
+    function(){
+      $('.boxOtaPvp').hide();
     });
   
   });
@@ -210,11 +231,12 @@ td.minStay {
     display: none;
     position: fixed;
     top: 0;
-    left: 8em;
+    left: 15em;
     z-index: 999999;
     background-color: #6a6a6a;
+    padding: 3px;
 }
-table.table-prices { padding: 3px;}
+.boxOtaPvp table.table-prices { padding: 3px; background-color: #FFF;}
   span.benef{
     padding: 0 3px 0 8px !important;
     color: #ff6b00;
