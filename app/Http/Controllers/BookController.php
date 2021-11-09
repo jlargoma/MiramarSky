@@ -191,6 +191,14 @@ class BookController extends AppController
           $bookings_without_Cvc = 0;
         }
         /****************************************************************/
+        //BEGIN: LOGs OTA
+        $errLogs = $this->getLogErros();
+        if (!empty($errLogs)){
+           $urgentes[] = [
+              'onlyText'   => '<h5>Errores Api OTAs</h5>'.$errLogs
+              ];
+        }
+        /****************************************************************/
         return view('backend/planning/index',
                 compact('books', 'mobile', 'stripe', 'rooms', 
                         'booksCount', 'alarms','lowProfits','alarmsCheckPaxs','errorsOtaPrices',
@@ -2513,5 +2521,43 @@ class BookController extends AppController
     }
       
     return 'OK';
+  }
+  
+  function getLogErros(){
+    $resp = '';
+    $today = date('Y-m-d');
+    $dir = storage_path().'/logs/OTAs'.date('Ym').'.log';
+    
+    if (file_exists($dir)) {
+      $lines = file($dir);
+      foreach ($lines as $num => $lin) {
+        if (str_contains($lin, $today)){
+          if (str_contains($lin, 'OtaGateway.ERROR')){
+            $data = explode('OtaGateway.ERROR: ', $lin);
+            $dataJson = str_replace(' [] []', '', $data[1]);
+             if (str_contains($lin, '} {')){
+              $aux = explode('} {', $dataJson);
+              $dataJson = $aux[0].'}';
+            }
+            
+            $aData = json_decode($dataJson);
+            
+            if (isset($aData->message)){
+              $resp .= "<b>{$data[0]}</b>: " . ($aData->message) . "<br />\n";
+            } else {
+              if (isset($aData->errors)){
+                foreach ($aData->errors as $v){
+                  if (isset($v->message)){
+                    $resp .= "<b>{$data[0]}</b>: " . ($v->message) . "<br />\n";
+                  }
+                }
+              }
+              
+            }
+          }
+        }
+      }
+    }
+    return $resp;
   }
 }
