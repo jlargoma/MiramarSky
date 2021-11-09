@@ -132,25 +132,15 @@ class Rooms extends Model {
   }
 
   static function getPvpByYear($year) {
-    $activeYear = \App\Years::where('year', $year)->first();
-    if (!$activeYear)
+    $oYear = \App\Years::where('year', $year)->first();
+    if (!$oYear)
       return 0;
-    $startYear = new Carbon($activeYear->start_date);
-    $endYear = new Carbon($activeYear->end_date);
 
-    $total = \App\Book::where_type_book_sales(true)
-            ->where('start', '>=', $startYear)
-            ->where('start', '<=', $endYear)
-            ->orderBy('start', 'ASC')
+    return \App\Book::where_type_book_sales(true)
+            ->where('start', '>=', $oYear->start_date)
+            ->where('start', '<=', $oYear->end_date)
             ->sum('total_price');
 
-//
-//        $total = 0;
-//        foreach ($books as $book) {
-//           $total  +=  $book->total_price;
-//        }
-
-    return $total;
   }
 
   static function getCostPropByMonth($year, $room_id = NULL) {

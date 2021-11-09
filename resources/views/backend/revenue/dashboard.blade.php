@@ -26,6 +26,7 @@
     @include('backend.revenue.dashboard.pieCss')
 
 <div class=" contenedor c-dashboard">
+  <?php echo $contabilidad; ?>
   <h2 class="line"><span>Venta mes en curso</span></h2>
   <div id="blockMes">
   <?php echo $datosMes; ?>

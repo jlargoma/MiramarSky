@@ -221,7 +221,7 @@ class Forfaits extends Model
             ->get();
   }
   static function getAllOrdersSoldByBooks($bIDs) {
-    $qry = Forfaits::select('forfaits_orders.*')
+    $qry = Forfaits::select('forfaits_orders.*','forfaits.book_id')
             ->join('forfaits_orders','forfaits.id','=','forfaits_orders.forfats_id');
     $qry->whereIn('forfaits.book_id',$bIDs);
     return $qry->whereIn('forfaits.status', [2,3]) // cobrada
@@ -257,7 +257,7 @@ class Forfaits extends Model
     return $total;
   }
   static function getTotalByTypeForfatis($Forfaits){
-    $totals = ['t'=>0];
+    $totals = ['t'=>0,'p'=>0,'c'=>0];
     $ffItems = [];
     if (count($Forfaits)){
       foreach ($Forfaits as $order){
@@ -265,8 +265,16 @@ class Forfaits extends Model
         if ($order->quick_order){
           $totals['t'] += $order->total;
           $totals[$order->type] += $order->total;
+          
+          if ($order->status == 2) $totals['c'] += $order->total; //cobrado
+            else $totals['p'] += $order->total; //pendiente
+          
         } else {
           $ffItems[] = $order->id;
+          $totals['t'] += $order->total;
+          if ($order->status == 2) $totals['c'] += $order->total; //cobrado
+            else $totals['p'] += $order->total; //pendiente
+            
         }
       }
     }
@@ -274,8 +282,9 @@ class Forfaits extends Model
       if (!isset($totals['forfaits'])) $totals['forfaits'] = 0;
       $aux = ForfaitsOrderItem::whereIn('order_id',$ffItems)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
       $totals['forfaits'] += $aux;
-      $totals['t'] += $aux;
     }
     return $totals;
   }
 }
+
+//SELECT t1.id,t1.book_id,t1.status,t1.total,t2.total FROM `forfaits_orders` as t1 INNER JOIN forfaits_order_items as t2 ON t1.id=t2.order_id WHERE t1.total != t2.total AND t1.status != 3 AND t2.type = "forfaits" ORDER BY `t1`.`book_id` ASC

@@ -1036,6 +1036,19 @@ class Book extends Model {
     if ($lujo != 'No')
        echo '<icon><i class="fas fa-star" title="Supl Lujo ('.$lujo.')"></i></icon>';
   }
+  
+  static function getPvpByYear($year) {
+    $oYear = \App\Years::where('year', $year)->first();
+    if (!$oYear)
+      return 0;
+
+    return self::where_type_book_sales(true)
+            ->where('start', '>=', $oYear->start_date)
+            ->where('start', '<=', $oYear->end_date)
+            ->sum('total_price');
+
+  }
+  
   /**********************************************************************/
   /////////  book_meta //////////////
    public function setMetaContent($key,$content) {

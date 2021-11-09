@@ -204,10 +204,11 @@ class RevenueService
     }
     
     function createDaysOfMonths($year){
-      $this->mDays = [0=>365];
+      $this->mDays = [];
       foreach ($this->months as $k=>$v){
         $this->mDays[$k] = cal_days_in_month(CAL_GREGORIAN, $k,$year);
       }
+      $this->mDays[0] = array_sum($this->mDays);
     }
     
     function getIncomesYear($year){
@@ -323,6 +324,8 @@ class RevenueService
     function getForfaits(){
       
       $aB_IDs = [];
+      $aBIDsFF = [];
+      $count = 0;
       $auxStatus = [
           0,//0 'No Gestionada',
           0,//1 'Cancelada',
@@ -352,12 +355,13 @@ class RevenueService
         $auxItems = \App\Models\Forfaits\Forfaits::getAllOrdersSoldByBooks($bIDs);
         if ($auxItems && count($auxItems)>0){
           $total = \App\Models\Forfaits\Forfaits::getTotalByTypeForfatis($auxItems);
+          foreach ($auxItems as $item) $aBIDsFF[] = $item->book_id;
           if ($total){
             $totals[$m] = $total;
           }
         }
       }
-      
+      $aBIDsFF = array_unique($aBIDsFF);
       $auxT = [];
       foreach ($totals as $ff){
         if (is_array($ff)){
@@ -368,7 +372,7 @@ class RevenueService
         }
       }
       $totals[0] = $auxT;
-      return ['lst'=>$result,'totals'=>$totals];
+      return ['lst'=>$result,'totals'=>$totals,'count'=>count($aBIDsFF)];
         
     }
 }
