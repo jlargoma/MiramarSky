@@ -124,7 +124,7 @@ class DataDisController extends AppController {
       }
       
       if ($isMobile){
-        $titulo .= '<div class="calLink" data-'.$href.'>IR</div>';
+        $titulo .= '<div class="calLink" data-'.$href.'>Consumo diario</div>';
         $href = '#';
       }
       $return = json_encode([

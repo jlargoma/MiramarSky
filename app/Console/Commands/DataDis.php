@@ -46,7 +46,7 @@ class DataDis extends Command {
       $date = date('Y-m-d', strtotime('-2 days'));
       
       $startDate = date('Y/m/d', strtotime('-3 days'));
-      $endDate = date('Y/m/d', strtotime('-2 days'));
+      $endDate = date('Y/m/d');
 //      $startDate = '2021/10/07';
 //      $endDate = '2021/10/28';
       
