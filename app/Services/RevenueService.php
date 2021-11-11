@@ -130,8 +130,8 @@ class RevenueService
       if($data){
         foreach ($data as $k=>$d){
           unset($d['months'][0]);
-          foreach ($d['months'] as $k=>$v)
-            $aux[$k] = isset ($aux[$k]) ? $aux[$k]+$v : $v;
+          foreach ($d['months'] as $k2=>$v)
+            $aux[$k2] = isset ($aux[$k2]) ? $aux[$k2]+$v : $v;
         }
       }
       return $aux;

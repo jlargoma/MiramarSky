@@ -1853,9 +1853,9 @@ class LiquidacionController extends AppController {
     
     $lstMonths = lstMonths($startYear,$endYear);
     
-    $books = \App\Book::where_type_book_sales(true)->with('payments')
-            ->where('start', '>=', $startYear)
-            ->where('start', '<=', $endYear)->get();
+    $books = \App\BookDay::where_type_book_sales(true)
+            ->where('date', '>=', $startYear)
+            ->where('date', '<=', $endYear)->get();
     
     
     $months_empty = array();
@@ -1882,11 +1882,11 @@ class LiquidacionController extends AppController {
     }
     $sales_rooms = [];
     foreach ($books as $key => $book) {
-      $date = date('ym', strtotime($book->start));
-      $value = $book->total_price;
+      $date = date('ym', strtotime($book->date));
+      $value = $book->pvp;
       if (!isset($sales_rooms[$book->room_id])) $sales_rooms[$book->room_id] = [];
       if (!isset($sales_rooms[$book->room_id][$date])) $sales_rooms[$book->room_id][$date] = 0;
-      $sales_rooms[$book->room_id][$date] += $book->total_price;
+      $sales_rooms[$book->room_id][$date] += $value;
       
     }
     //group Rooms

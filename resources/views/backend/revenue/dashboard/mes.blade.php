@@ -15,6 +15,7 @@ if ($books) {
   $aPKI['nigth'] = $nights;
   $aPKI['rva'] = $rvas;
 }
+//dd($aPKI);
 $k = 0;
 ?>
 <div class="table-responsive">

@@ -88,7 +88,7 @@ endfor;
 <?php
 $auxY = $year->year - 3;
 for ($i = 1; $i <= 4; $i++):
-  $totalYear = \App\Book::getPvpByYear($auxY);
+  $totalYear = \App\BookDay::getPvpByYear($auxY);
   echo "'" . $totalYear . "',";
   $auxY++;
 endfor;

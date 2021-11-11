@@ -6,13 +6,13 @@
   $arrayColors = ['bg-info', 'bg-complete', 'bg-primary',];
   $year = $year->year-2;
   
-  $totalPVP = \App\Rooms::getPvpByYear($year-1);
+  $totalPVP = \App\BookDay::getPvpByYear($year-1);
   $totalExpense = \App\Expenses::getTotalByYear($year-1); 
   $oldResult = $totalPVP-$totalExpense;
     
   for ($i = 0; $i < 3; $i++):
     $yearAux = $year+$i;
-    $totalPVP = \App\Rooms::getPvpByYear($yearAux);
+    $totalPVP = \App\BookDay::getPvpByYear($yearAux);
     $totalExpense = \App\Expenses::getTotalByYear($yearAux); 
     $otherIngr = \App\Incomes::getIncomesYear($yearAux);
     $totalFF = App\Models\Forfaits\Forfaits::getTotalByYear($yearAux);

@@ -145,7 +145,7 @@ class RevenueController extends AppController
     /*************************************************************/
     $oYear = $this->getActiveYear();
     $liq = LiquidacionController::static_prepareTables($oYear);
-//    dd($liq['chRooms']);
+//    dd($liq);
     $liq['months']        = $oServ->months;
     $liq['ingrMonths']    = $oServ->getIngrMonths($liq['chRooms']);
     $ingrMes = view('backend.revenue.dashboard.ingresos',$liq);
@@ -170,6 +170,7 @@ class RevenueController extends AppController
     $balance = view('backend.revenue.dashboard.balance',[
         'lstMonths' => $oServ->lstMonths,
         'ingr' => $liq['ingrMonths'],
+        'tIngr' => $liq['t_all_rooms'],
         'gastos' => $oServ->getExpenses(),
         'year' => $oYear,
         'ingrExt' => $oServ->getIncomesYear($year),

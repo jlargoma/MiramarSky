@@ -152,4 +152,17 @@ ORDER BY `book_days`.`date` DESC*/
 //    echo "\n";
     return $this->apto +  $this->park +  $this->lujo;
   }
+  
+    
+  static function getPvpByYear($year) {
+    $oYear = \App\Years::where('year', $year)->first();
+    if (!$oYear)
+      return 0;
+
+    return round(self::where_type_book_sales(true)
+            ->where('date', '>=', $oYear->start_date)
+            ->where('date', '<=', $oYear->end_date)
+            ->sum('pvp'));
+
+  }
 }

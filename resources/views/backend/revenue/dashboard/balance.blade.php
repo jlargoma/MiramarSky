@@ -2,8 +2,6 @@
     <div class="col-md-6 col-xs-12">
       <h2 class="line"><span>Beneficio temporar actual</span></h2>
       <?php 
-//      dd($ingr);
-      $tIngr = array_sum($ingr);
       $tGast = array_sum($gastos);
       $ff = $balanceFF['t'][0];
       if ($ff) $ingrExt += $ff;
@@ -123,7 +121,7 @@
 	          <?php 
                 $auxY = $year->year-3;
                 for ($i=1; $i <= 4; $i++):
-                  $totalYear = \App\Rooms::getPvpByYear($auxY);
+                  $totalYear = \App\BookDay::getPvpByYear($auxY);
                   echo "'" . $totalYear. "',";
                   $auxY++;
                 endfor; ?>
