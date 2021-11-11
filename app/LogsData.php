@@ -22,9 +22,8 @@ class LogsData extends Model
   
   static function getLastInfo($key,$limit = 5) {
     $oLst = LogsData::where('key',$key)
-            ->orderBy('created_at','DESC')->limit($limit)
+            ->orderBy('id','DESC')->limit($limit)
             ->get();
-  
     $lst = '<ul>';
     if ($oLst){
       foreach ($oLst as $l)

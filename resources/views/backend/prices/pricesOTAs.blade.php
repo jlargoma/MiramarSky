@@ -88,15 +88,6 @@
           @include('backend.prices._navs')
         </div>
         <div class="col-md-2 col-xs-12 row"></div>
-        @if (Auth::user()->email == "jlargo@mksport.es")
-        <div class="col-md-12 col-xs-12">
-          <form action="{{route('precios.prepare-cron')}}" method="post" class="inline">
-            <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
-            <button class="btn btn-success" title="{{$sendDataInfo}}">Sincr. precios OTAs</button>
-          </form>
-          <small>(Sincronizar toda la temporada)</small>
-        </div>
-        @endif
       </div>
     </div>
   </div>

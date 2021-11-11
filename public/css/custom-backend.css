@@ -776,7 +776,7 @@ a.tip:hover span {
     left: 0px;
     margin: 10px;
     width: 210px;
-    position: fixed;
+    position: absolute;
     top: 10px;
     text-decoration: none;
 }
@@ -813,6 +813,10 @@ td.bg-red {
 
 .row.box-year {
     margin: 0 auto 1em;
+}
+.e_logs {
+    white-space: nowrap;
+    overflow: auto;
 }
 
 /*****************************************************************************/

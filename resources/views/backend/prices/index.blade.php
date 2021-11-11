@@ -132,23 +132,6 @@
       </div>
     </div>
   </div>
-  @if (Auth::user()->email == "jlargo@mksport.es")
-  <div class="col-md-12">
-    <form action="{{route('precios.prepare-cron')}}" method="post" class="inline">
-      <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
-      <button class="btn btn-success" title="{{$sendDataInfo}}">Sincr. precios OTAs</button>
-    </form>
-    <form action="{{route('precios.prepare-cron-minStay')}}" method="post" class="inline">
-      <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
-      <button class="btn btn-success" title="{{$sendDataInfo_minStay}}">Sincr. Estadías Mínimas OTAs</button>
-    </form>
-    <form action="{{route('channel.sendAvail',['allSeasson'])}}" method="post" class="inline">
-      <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
-      <button class="btn btn-success" title="{{$sendDataInfo_minStay}}">Sincr. Disponibilidad OTAs</button>
-    </form>
-    <small>(Sincronizar toda la temporada)</small>
-  </div>
-  @endif
   
   <div class="row">
     @include('backend.prices.blocks._table_types')

@@ -235,13 +235,13 @@ class PricesController extends AppController {
       return redirect('no-allowed');
     }
     
-    $store = \App\ProcessedData::findOrCreate('create_baseSeason_'.$year->id);
-    $store->content = json_encode([
+    $data = json_encode([
         'u' =>$cUser->email,
         'ip'=>getUserIpAddr()
     ]);
-    $store->save();
-    
+    $oLog = new \App\LogsData();
+    $oLog->infoProceess('OTAs_prices','Se forzó el envío de los precios de la temporada: '.$year->start_date.' al '.$year->end_date,$data);
+      
     $prepareDefaultPrices = new prepareDefaultPrices($year->start_date,$year->end_date);
     if ($prepareDefaultPrices->error){
       return back()->with('sent_error',$prepareDefaultPrices->error);
@@ -254,17 +254,13 @@ class PricesController extends AppController {
   public function prepareYearMinStay(Request $request) {
     $year = $this->getActiveYear();
     $cUser = \Illuminate\Support\Facades\Auth::user();
-    // Sólo lo puede ver jorge
-//    if ($cUser->email != "jlargo@mksport.es"){
-//      return redirect('no-allowed');
-//    }
-//    
-    $store = \App\ProcessedData::findOrCreate('send_minStaySeason_'.$year->id);
-    $store->content = json_encode([
+    $data = json_encode([
         'u' =>$cUser->email,
         'ip'=>getUserIpAddr()
     ]);
-    $store->save();
+    $oLog = new \App\LogsData();
+    $oLog->infoProceess('OTAs_prices','Se forzó el envío de las estancias mínimas de la temporada: '.$year->start_date.' al '.$year->end_date,$data);
+      
     
     $prepareMinStay = new \App\Models\PrepareMinStay($year->start_date,$year->end_date);
     if ($prepareMinStay->error){

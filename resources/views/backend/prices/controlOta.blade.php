@@ -59,6 +59,23 @@
       </div>
     </div>
   </div>
+  @if (Auth::user()->email == "jlargo@mksport.es")
+  <div class="col-md-12">
+    <form action="{{route('precios.prepare-cron')}}" method="post" class="inline">
+      <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+      <button class="btn btn-success">Forzar Sincr. precios</button>
+    </form>
+    <form action="{{route('precios.prepare-cron-minStay')}}" method="post" class="inline">
+      <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+      <button class="btn btn-success">Forzar Sincr. Estadías Mínimas</button>
+    </form>
+    <form action="{{route('channel.sendAvail',['allSeasson'])}}" method="post" class="inline">
+      <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
+      <button class="btn btn-success">Forzar Sincr. Disponibilidad</button>
+    </form>
+    <small>(Forzar la sincronización de toda la temporada)</small>
+  </div>
+  @endif
   <div class="contentOtaPrices">
     <h1 class="text-center">Revisar Precios en Otas: </h1>
 

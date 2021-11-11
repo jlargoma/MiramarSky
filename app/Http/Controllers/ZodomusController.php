@@ -505,7 +505,7 @@ class ZodomusController extends Controller {
   
   
   function sendAvail(Request $request, $apto) {
-    
+    $cUser = \Illuminate\Support\Facades\Auth::user();
     if ($apto == 'allSeasson'){
       $oYear = \App\Years::where('active', 1)->first();
       $sentData = \App\ProcessedData::findOrCreate('send_dispSeason_'.$oYear->id);
@@ -514,6 +514,17 @@ class ZodomusController extends Controller {
       $startTime = $oYear->start_date;
       $endTime = $oYear->end_date;
       $apto = 'all';
+      
+      $data = json_encode([
+        'u' =>$cUser->email,
+        'ip'=>getUserIpAddr(),
+        'startTime'=>$startTime,
+        'endTime'=>$endTime
+      ]);
+      $oLog = new \App\LogsData();
+      $oLog->infoProceess('OTAs_prices','Se forzó el envío de la disponibilidad de la temporada: '.$startTime.' al '.$endTime,$data);
+      
+    
     } else {
       $date_range = $request->input('date_range', null);
 
@@ -527,14 +538,21 @@ class ZodomusController extends Controller {
     if ($apto == 'all'){
       $aptos = configZodomusAptos();
       $book = new \App\Book();
+      $success = $error = 0;
       foreach ($aptos as $ch=>$v){
         $room = Rooms::where('channel_group',$ch)->first();
         if ($room){
           $resp = $book->sendAvailibility($room->id,$startTime,$endTime);
-          if (!$resp) return back()->withErrors(['ocurrió un error al enviar los datos']);
+          if ($resp){
+            $success++;
+            $oLog->infoProceess('OTAs_prices','Se envió de la disponibilidad de la temporada para '.$v,$data);
+          } else {
+            $error++;
+            $oLog->infoProceess('OTAs_prices','Error al enviar de la disponibilidad de la temporada para '.$v,$data);
+          }
         }
       }
-      return back()->with(['success'=>'Disponibilidad enviada']);
+      return back()->with(['success'=>"Disponibilidad enviada. $success exitos y $error errores"]);
     } else {
       $room = Rooms::where('channel_group',$apto)->first();
       if ($room){

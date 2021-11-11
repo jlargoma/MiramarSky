@@ -256,7 +256,8 @@ class RevenueService
               ->selectRaw('sum(amount) as sum, updated_at')->pluck('sum','updated_at');
       
       foreach ($payments as $d=>$p){
-        $aux[date('y.m',strtotime($d))] += $p;
+        if (isset($aux[date('y.m',strtotime($d))]))
+          $aux[date('y.m',strtotime($d))] += $p;
       }
       foreach ($aux as $d=>$p){
         $result[$d] = round(paylandCost($p/100));

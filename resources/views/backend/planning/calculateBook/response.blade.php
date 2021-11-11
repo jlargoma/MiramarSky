@@ -53,7 +53,33 @@
             
           </td>
           <td class="first-col"></td>
-          <td class="text-center BRight"><b >{{moneda($room['pvp_1']+$room['extr_costs'])}}</b>
+          <td class="text-center BRight">
+            <?php 
+            $finalPrice = '<b>'.moneda($room['pvp_1']+$room['extr_costs']).'</b>';
+            if(isset($otaPrices[$room['channel_group']])):
+              $pOta = $otaPrices[$room['channel_group']];
+            ?>
+            <div class="tip">
+                <?php echo $finalPrice; ?>
+                <table class="table-prices">
+                  <tr>
+                    <td><span class="price-booking">{{moneda($pOta['booking'])}}</span></td>
+                    <td><span class="price-airbnb">{{moneda($pOta['airbnb'])}}</span></td>
+                    <td rowspan="2"><span class="benef">{{$pOta['benef']}}%</span></td>
+                  </tr>
+                  <tr>
+                    <td><span class="price-expedia">{{moneda($pOta['expedia'])}}</span></td>
+                    <td><span class="price-google">{{moneda($pOta['google-hotel'])}}</span></td>
+                  </tr>
+                </table>
+            </div>
+            <?php
+            
+            else:
+              echo $finalPrice;
+            endif; 
+            ?>
+          </td>
           <td class="text-center"><b >{{$room['price']}}</b></td>
           <td class="text-center text-danger"><b ><?php echo '-'.moneda($room['pvp_discount'],false); ?></b></td>
           <td class="text-center text-danger">
@@ -105,19 +131,7 @@
     </table>
   </div>
   
-   <div class="boxOtaPvp">
-      <table class="table-prices">
-        <tr>
-          <td><span class="price-booking">asdasd</span></td>
-          <td><span class="price-airbnb">asdasd</span></td>
-          <td rowspan="2"><span class="benef">asdasd</span></td>
-        </tr>
-        <tr>
-          <td><span class="price-expedia">asdasd</span></td>
-          <td><span class="price-google">asdasdas</span></td>
-        </tr>
-      </table>
-    </div>
+   
   
 </div>
 <script type="text/javascript">
@@ -128,27 +142,27 @@
       $("#content-book-response .front").show();
     });
     
-    $('.showOtaPvp').hover(function(event){
-      var obj = $('.boxOtaPvp');
-      var data = $(this)
-      obj.find('.price-booking').text(data.data('booking'));
-      obj.find('.price-airbnb').text(data.data('airbnb'));
-      obj.find('.price-expedia').text(data.data('expedia'));
-      obj.find('.price-google').text(data.data('google'));
-      obj.find('.benef').text(data.data('benef'));
-      obj.show();
-      if (screen.width<768){
-        obj.css('top','auto');
-        obj.css('bottom','3px');
-        obj.css('left', 'auto');
-        obj.css('right', '3px');
-      } else {
-        obj.css('top', (event.screenY-80));
-      }
-    },
-    function(){
-      $('.boxOtaPvp').hide();
-    });
+//    $('.showOtaPvp').hover(function(event){
+//      var obj = $('.boxOtaPvp');
+//      var data = $(this)
+//      obj.find('.price-booking').text(data.data('booking'));
+//      obj.find('.price-airbnb').text(data.data('airbnb'));
+//      obj.find('.price-expedia').text(data.data('expedia'));
+//      obj.find('.price-google').text(data.data('google'));
+//      obj.find('.benef').text(data.data('benef'));
+//      obj.show();
+//      if (screen.width<768){
+//        obj.css('top','auto');
+//        obj.css('bottom','3px');
+//        obj.css('left', 'auto');
+//        obj.css('right', '3px');
+//      } else {
+//        obj.css('top', (event.screenY));
+//      }
+//    },
+//    function(){
+//      $('.boxOtaPvp').hide();
+//    });
   
   });
 </script>
@@ -242,9 +256,43 @@ td.minStay {
     color: #ff6b00;
     font-size: 18px;
   }
+  div.tip{
+    position: relative;
+    cursor: pointer;
+  }
+ div.tip table.table-prices {
+   display: none;
+   padding:  0px !important;
+ }
+ div.tip table.table-prices tbody tr td {
+    min-width: 75px;
+ }
+ div.tip:hover table.table-prices {
+    display: block;
+    bottom: 40px;
+    left: 45px;
+    top: auto !important;
+    position: absolute;
+    cursor: default;
+    border: 1px solid #c3c3c3;
+    background-color: #e1e1e1;
+    padding: 2px;
+  }
 @media (min-width: 1760px){
   .table-resumen.table-mobile_cr td.static-2 {
     width: 238px;
 }
+}
+@media (max-width: 540px){
+  div.tip:hover table.table-prices {
+    position: fixed;
+    background-color: #000000;
+    z-index: 99;
+    padding: 4px !important;
+    bottom: 3px;
+    right: 2px;
+    left: auto;
+
+  }
 }
 </style>

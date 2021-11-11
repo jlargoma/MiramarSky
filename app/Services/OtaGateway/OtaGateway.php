@@ -590,6 +590,7 @@ class OtaGateway {
   
   function saveResponse($process,$params){
     $oLog = new \App\LogsData();
+    global $responseExtrMsg;
     
     $success = ($this->responseCode == 200);
     if (!is_object($this->response) || !$this->response)
@@ -597,8 +598,8 @@ class OtaGateway {
     
     if ($success){
       switch ($process){
-        case 'prices':
-          $oLog->infoProceess('OTAs_prices','Precios Enviados',json_encode($params));
+        case 'prices':         
+          $oLog->infoProceess('OTAs_prices','Precios Enviados '.$responseExtrMsg,json_encode($params));
           break;
         default :
           $oLog->infoProceess('OTAs','Datos enviados '.$process,json_encode($params));
@@ -608,7 +609,7 @@ class OtaGateway {
     } else {
       switch ($process){
         case 'prices':
-          $oLog->infoProceess('OTAs_prices','Error al enviar los Precios',json_encode($params));
+          $oLog->infoProceess('OTAs_prices','Error al enviar los Precios '.$responseExtrMsg,json_encode($params));
           break;
         default :
           $oLog->infoProceess('OTAs','Datos enviados '.$process,json_encode($params));
