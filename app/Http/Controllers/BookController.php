@@ -195,7 +195,7 @@ class BookController extends AppController
         $errLogs = $this->getLogErros();
         if (!empty($errLogs)){
            $urgentes[] = [
-              'onlyText'   => '<h5>Errores Api OTAs</h5>'.$errLogs
+              'onlyText'   => '<h5>Errores Api OTAs</h5><div class="e_logs">'.$errLogs.'</div>'
               ];
         }
         /****************************************************************/
@@ -2525,9 +2525,9 @@ class BookController extends AppController
   
   function getLogErros(){
     $resp = '';
-    $today = date('Y-m-d');
+    $today = '['.date('Y-m-d');
     $dir = storage_path().'/logs/OTAs'.date('Ym').'.log';
-    
+  
     if (file_exists($dir)) {
       $lines = file($dir);
       foreach ($lines as $num => $lin) {

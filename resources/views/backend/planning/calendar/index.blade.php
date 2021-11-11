@@ -11,10 +11,10 @@
       span.css('bottom','-9px');
       span.css('left', 'auto');
       span.css('right', '3px');
-    } else {
-      span.css('top', (event.screenY-120));
-      span.css('left', (event.pageX-100));
-      console.log(event.screenY-120,event.pageX-100)
+//    } else {
+//      span.css('top', (event.screenY-120));
+//      span.css('left', (event.pageX-100));
+//      console.log(event.screenY-120,event.pageX-100)
     }
   });
    });
@@ -40,6 +40,11 @@
   .content-calendar .tip:hover .start,
   .content-calendar .tip:hover .total{
     background-color: red !important;
+  }
+  .content-calendar   a.tip:hover span {
+    bottom: 5px;
+    top: auto !important;
+    cursor: default;
   }
   
     .content-calendar .td-calendar{

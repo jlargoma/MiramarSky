@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\Mail;
 use App\PricesOtas;
 use App\Book;
 
-class CheckPricess extends Command {
+class CheckPrices extends Command {
 
   /**
    * The name and signature of the console command.
    *
    * @var string
    */
-  protected $signature = 'OTAs:CheckPricess';
+  protected $signature = 'OTAs:CheckPrices';
 
   /**
    * The console command description.
@@ -69,6 +69,9 @@ class CheckPricess extends Command {
       $this->to = $oYear->end_date;
     }
 
+    global $responseExtrMsg;
+    $responseExtrMsg = ': Por control de precios';
+    
     $this->OtaGateway = new \App\Services\OtaGateway\OtaGateway();
     if (!$this->OtaGateway->conect()){
       $oLog = new \App\LogsData();

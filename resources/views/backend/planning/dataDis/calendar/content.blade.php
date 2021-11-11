@@ -11,6 +11,7 @@
           $currentAux = null;
           $posicion = 0;
           $arrayLine = [];
+          $yesterday = date('Y-m-d', strtotime('-1 days'));
           ?>
           <?php foreach ($oRooms as $room): ?>
             <?php
@@ -19,15 +20,25 @@
             $luxAux = $room->luxury;
             $typeAux = $room->sizeApto;
             $currentAux = $room->channel_group;
+            $lstEvents = $arrayReservas[$room->id];
+            $lightbulb = '';
+            if (isset($aRoomsElectricity[$room->id]) && isset($aRoomsElectricity[$room->id][$yesterday])) {
+              if ($aRoomsElectricity[$room->id][$yesterday]>0){
+                $lightbulb = '<i class="fas fa-lightbulb"></i>';
+                if ($lstEvents && isset($lstEvents[$yesterday]))
+                  if (count($lstEvents[$yesterday])>0) $lightbulb = '';
+              }
+            }
             ?>
             <tr class="<?php echo $line ?>">
               <td class="text-center fixed-td">
+                  <?php echo $lightbulb; ?>
                 <b data-placement="right" title="" data-toggle="tooltip" data-original-title="<?php echo $room->name ?>">
                   <?php echo substr($room->nameRoom, 0, 5) ?>
                 </b>
               </td>
               <?php
-              $lstEvents = $arrayReservas[$room->id];
+              
               foreach ($lstEvents as $date => $events):
                 $cEv = count($events);
                 $dayKey = '';
@@ -79,7 +90,11 @@
 <br/>
 <br/>
 <br/>
+<div class="monthlyCanvas">
+  <div class="">
 <canvas id="barBalance" style="width: 100%; height: 350px;"></canvas>
+</div>
+</div>
 
 <script type="text/javascript">
   $(document).ready(function () {

@@ -5,7 +5,9 @@
       $('.calendarBox').on('click','.ddd',function (event) {
           var td = $(this).closest('td');
           var rID = td.data('rid');
+         
           if (typeof rID != 'undefined'){
+             $('.datadis_day').text('Recibiendo...');
             $('.datadis_day').load('/admin/dataDis/day/'+rID+'/'+td.data('day'))
           }
       });
@@ -84,5 +86,29 @@
   .table-responsive.contentCalendar {
     padding: 0 2em 0 25px;
   }
+  td.td-month.today {
+    background-color: #295d9b;
+    color: #FFF;
+    font-weight: bold;
+  }
+  i.fas.fa-lightbulb {
+    color: red;
+}
+  @media (max-width: 540px){
+  .table-responsive.contentCalendar {
+    padding-top: 33px;
+  }
+  .col-md-5.col-xs-12.boxDaily {
+    margin-top: 1em;
+    max-width: 95%;
+  }
+  .monthlyCanvas{
+    overflow: auto;
+  }
+  .monthlyCanvas div{
+    min-width: 2024px;
+    
+  }
+}
   
 </style>
