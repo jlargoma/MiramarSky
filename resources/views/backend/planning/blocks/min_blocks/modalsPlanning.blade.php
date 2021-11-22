@@ -204,3 +204,15 @@
     </div>
   </div>
 </div>
+<div class="modal fade slide-up in" id="modalBasic" tabindex="-1" role="dialog" aria-hidden="true" style=" z-index: 9999;">
+  <div class="modal-dialog modal-xd">
+    <div class="modal-content-classic">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+        <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
+      </button>
+      <h3 id="modalBasic_title"></h3>
+      <div id="modalBasic_content" style="margin-top:1em;">
+      </div>
+    </div>
+  </div>
+</div>
