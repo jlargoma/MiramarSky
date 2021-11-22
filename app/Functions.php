@@ -586,3 +586,19 @@ function arrayDays($start,$end,$format,$val=0,$includeLast = true){
   
   return $allDay;
 }
+
+function getYearActive() {
+    if (isset($_COOKIE['ActiveYear'])) {
+        return $_COOKIE['ActiveYear'];
+    } else {
+      $activeYear = \App\Years::where('active', 1)->first();
+      if ($activeYear){
+        setYearActive($activeYear->id);
+        return $activeYear->id;
+      }
+    }
+  return -1;
+}
+function setYearActive($yID) {
+  setcookie('ActiveYear',$yID, time() + (86400 * 30), "/"); // 86400 = 1 day
+}

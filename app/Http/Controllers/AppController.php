@@ -40,8 +40,15 @@ class AppController extends Controller
      */
     protected static function getActiveYear()
     {
+      $activeYear = null;
+      $idYear = getYearActive();
+      if (is_numeric($idYear) && $idYear>0)
+        $activeYear = Years::find($idYear);
+      if (!$activeYear){
         $activeYear = Years::where('active', 1)->first();
-        return $activeYear;
+        if ($activeYear) setYearActive($activeYear->id);
+      }
+      return $activeYear;
     }
     /**
      * @return mixed

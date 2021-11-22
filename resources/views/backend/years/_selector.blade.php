@@ -1,7 +1,10 @@
-<?php $years = \App\Years::all(); ?>
+<?php
+$years = \App\Years::all(); 
+$activeY = getYearActive();
+?>
 <select id="years" class="form-control minimal" <?php if ( Auth::user()->role == "agente"):?>disabled<?php endif ?>>
     @foreach($years as $key => $year)
-        <option value="{{ $year->id }}" @if ($year->active == 1) selected @endif >
+        <option value="{{ $year->id }}" @if ($year->id == $activeY) selected @endif >
             {{ $year->year }} - {{ $year->year + 1 }}
         </option>
     @endforeach

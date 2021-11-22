@@ -218,7 +218,11 @@ class OwnedController extends AppController {
       return view('errors.owned-access');
     }
     
-    $oYear = $this->getActiveYear();
+//    $oYear = $this->getActiveYear();
+    $oYear = \App\Years::where('start_date','<=', date('Y-m-d'))
+            ->where('end_date','>=', date('Y-m-d'))
+            ->first();
+    
     $sRates = new \App\Services\Bookings\RatesRoom();
     $sRates->setDates($oYear);
     $sRates->setSeassonDays();
