@@ -192,19 +192,14 @@ class BookController extends AppController
         }
         /****************************************************************/
         //BEGIN: LOGs OTA
-        $errLogs = $this->getLogErros();
-        if (!empty($errLogs)){
-           $urgentes[] = [
-              'onlyText'   => '<h5>Errores Api OTAs</h5><div class="e_logs">'.$errLogs.'</div>'
-              ];
-        }
+        $ota_errLogs = $this->getOTAsLogErros_qty();
         /****************************************************************/
         return view('backend/planning/index',
                 compact('books', 'mobile', 'stripe', 'rooms', 
                         'booksCount', 'alarms','lowProfits','alarmsCheckPaxs','errorsOtaPrices',
                         'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment',
                         'ff_pendientes','ff_mount','totalReserv','amountReserv','overbooking',
-                        'urgentes','bookings_without_Cvc')
+                        'urgentes','bookings_without_Cvc','ota_errLogs')
 		);
     }
 
@@ -2523,41 +2518,83 @@ class BookController extends AppController
     return 'OK';
   }
   
-  function getLogErros(){
+  function getOTAsLogErros_qty(){
     $resp = '';
-    $today = '['.date('Y-m-d');
     $dir = storage_path().'/logs/OTAs'.date('Ym').'.log';
-  
+    $count = 0;
+    
+    $lastView = strtotime('-1 weeks');
+    $lastRead = \App\ProcessedData::findOrCreate('log_OTA_readed');
+    if ($lastRead->content)  $lastView = $lastRead->content;
+    
+    /** TEST */
+//    $dir = storage_path().'/logs/OTAs202110.log';
+//    $lastView = strtotime('2021-10-26 13:52:48');
+    /** TEST */
+    
     if (file_exists($dir)) {
       $lines = file($dir);
+      $lines = array_reverse($lines);
       foreach ($lines as $num => $lin) {
-        if (str_contains($lin, $today)){
-          if (str_contains($lin, 'OtaGateway.ERROR')){
-            $data = explode('OtaGateway.ERROR: ', $lin);
-            $dataJson = str_replace(' [] []', '', $data[1]);
-             if (str_contains($lin, '} {')){
-              $aux = explode('} {', $dataJson);
-              $dataJson = $aux[0].'}';
-            }
-            
-            $aData = json_decode($dataJson);
-            
-            if (isset($aData->message)){
-              $resp .= "<b>{$data[0]}</b>: " . ($aData->message) . "<br />\n";
-            } else {
-              if (isset($aData->errors)){
-                foreach ($aData->errors as $v){
-                  if (isset($v->message)){
-                    $resp .= "<b>{$data[0]}</b>: " . ($v->message) . "<br />\n";
-                  }
+        $dTime = strtotime(substr($lin, 1,19));
+        if ($lastView<$dTime){
+            $count++;
+        }
+      }
+    }
+    return $count;
+  }
+  
+  function getLogErros_notRead(){
+    $resp = '<div class="e_logs">';//
+    $dir = storage_path().'/logs/OTAs'.date('Ym').'.log';
+    $count = 0;
+    
+    $lastRead = \App\ProcessedData::findOrCreate('log_OTA_readed');
+    if ($lastRead->content)  $lastView = $lastRead->content;
+//    $lastView = strtotime('-2 days');
+    
+    if (file_exists($dir)) {
+      $lines = file($dir);
+      $lines = array_reverse($lines);
+      foreach ($lines as $num => $lin) {
+        $dTime = strtotime(substr($lin, 1, 19));
+        if ($lastView < $dTime) {
+          $data = explode('OtaGateway.ERROR: ', $lin);
+          $dataJson = str_replace(' [] []', '', $data[1]);
+          if (str_contains($lin, '} {')) {
+            $aux = explode('} {', $dataJson);
+            $dataJson = $aux[0] . '}';
+          }
+
+          $aData = json_decode($dataJson);
+
+          if (isset($aData->message)) {
+            $count++;
+            $resp .= "<b>{$data[0]}</b>: " . ($aData->message) . "<br />";
+          } else {
+            if (isset($aData->errors)) {
+              foreach ($aData->errors as $v) {
+                if (isset($v->message)) {
+                  $count++;
+                  $resp .= "<b>{$data[0]}</b>: " . ($v->message) . "<br />";
                 }
               }
-              
             }
           }
         }
       }
     }
-    return $resp;
+    
+    if ($count == 0){
+      $resp .= '<div class="alert alert-warning">No hay registros sin leer</div>';
+    }
+    
+    echo $resp.'</div>';
+        
+    $lastRead->content = time();
+    $lastRead->save();
+    
+    return;
   }
 }

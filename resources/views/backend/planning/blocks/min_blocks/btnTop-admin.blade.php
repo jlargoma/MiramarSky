@@ -77,5 +77,11 @@
   <button class=" btn btn-blue btn_intercambio btn-cons minimal hidden-mobile" type="button">
     <span class="bold">intercambio</span>
   </button>
+  <button class="btn btn-success btn-orange <?php if ($ota_errLogs > 0) echo 'btn-alarms'; ?>" id="btnOTAsLogs">
+    <span class="bold">OTAs Errors</span>
+    @if($ota_errLogs>0)
+    <span class="numPaymentLastBooks" data-val="{{$ota_errLogs}}">{{$ota_errLogs}}</span>
+    @endif
+  </button>
 </div>
 

@@ -10,21 +10,13 @@ use Illuminate\Http\Response;
 class YearsController extends AppController {
 
   public function changeActiveYear(Request $request) {
-    foreach (\App\Years::all() as $key => $year) {
-      $year->active = 0;
-      $year->save();
-    }
-
+    
     if (!$request->has('year'))
       throw new ModelNotFoundException('Year not found', 404);
 
     $newYear = \App\Years::find($request->get('year'));
-    $newYear->active = 1;
-
-    if ($newYear->save())
-      return new Response("OK, year changed", 200);
-    else
-      return new Response("Error undefined", 500);
+    setcookie('ActiveYear', $newYear->id, time() + (86400 * 30), "/"); // 86400 = 1 day
+    return new Response("OK, year changed", 200);
   }
 
     
@@ -32,13 +24,18 @@ class YearsController extends AppController {
     $start = $request->input('start');
     $end = $request->input('end');
     $yearID = $request->input('years');
+    $active = $request->input('active');
     $oYear = \App\Years::find($yearID);
     if (!$oYear){
       $oYear = new \App\Years();
     }
+    if ($active == 1){
+      \App\Years::where('active',1)->update(['active' => 0]);
+    }
+    
     $oYear->start_date = convertDateToDB($start);
     $oYear->end_date = convertDateToDB($end);
-
+    $oYear->active = $active;
     if ($oYear->save())
       return new Response("OK", 200);
     else
@@ -53,6 +50,7 @@ class YearsController extends AppController {
                       [
                           date('d/m/Y', strtotime($year->start_date)),
                           date('d/m/Y', strtotime($year->end_date)),
+                          $year->active,
                       ]
       );
     }

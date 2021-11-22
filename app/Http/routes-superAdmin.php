@@ -237,6 +237,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista'], 'pre
 
   Route::get('/reservas/api/sendSencondEmail', 'BookController@sendSencondEmail');
   Route::get('/reservas/api/toggleAlertLowProfits', 'BookController@toggleAlertLowProfits');
+  Route::get('/reservas/api/getOTAsLogs', 'BookController@getLogErros_notRead');
   
     //Paylands
   Route::get('/orders-payland', 'PaylandsController@lstOrders');

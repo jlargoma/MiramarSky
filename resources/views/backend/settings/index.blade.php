@@ -32,13 +32,25 @@
         <div class="col-xs-6">
         @include('backend.years._selector')
         </div>
-        <div class="col-xs-6 py-1">
+        <div class="col-xs-4 py-1">
           <label>Desde</label>
           <input type="text" id="temporada_start" class="datepicker2" value="<?php echo date('d/m/Y', strtotime($year->start_date));?>">
         </div>
-        <div class="col-xs-6 py-1">
+        <div class="col-xs-4 py-1">
           <label>Hasta</label>
           <input type="text" id="temporada_end" class="datepicker2" value="<?php echo date('d/m/Y', strtotime($year->end_date));?>">
+        </div>
+        <div class="col-xs-4 py-1">
+          <label>Temp. Activa</label>
+          <input type="hidden" id="tempActive" value="{{$year->active}}">
+          @if($year->active == 1)
+            <button type="button" id="temporada_actived" class="btn btn-danger" disabled="true">
+             Desactivar
+            @else 
+            <button type="button" id="temporada_actived" class="btn btn-success">
+            Activar
+            @endif
+          </button>
         </div>
       </div>
       </div>
@@ -192,14 +204,17 @@
       function saveTemporadaRange(that){
         temporada_start = $('#temporada_start').val();
         temporada_end = $('#temporada_end').val();
+        var tempActive = $('#tempActive').val();
         var data = {
           start: temporada_start,
           end: temporada_end,
+          active: tempActive,
           years: that.closest('.temporadas').find('#years').val()
         }
         $.post("{{ route('years.change.month') }}", data).done(function (resp) {
           if (resp == 'OK'){
-           window.show_notif('','success','temporada cambiada');
+           window.show_notif('','success','temporada cambiada.. Recargando la página');
+           setTimeout(function(){location.reload();},250);
           } else {
            window.show_notif('','danger','No se pudo modificar la temporada');
          }
@@ -214,6 +229,13 @@
         if (temporada_end != $(this).val() && $(this).val() != ''){
           saveTemporadaRange($(this));
         }
+      });
+      $("#temporada_actived").click(function() {
+        var tempActive = $('#tempActive').val();
+        if (tempActive == 1) $('#tempActive').val(0);
+        else $('#tempActive').val(1);
+        saveTemporadaRange($(this));
+        
       });
       
       

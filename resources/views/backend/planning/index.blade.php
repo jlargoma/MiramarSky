@@ -242,6 +242,12 @@ $(document).ready(function () {
       $('#goOtasPrices').on('click', function(){
           window.location.href = "/admin/channel-manager/controlOta";
       })
+      // LOGs OTAs
+      $('#btnOTAsLogs').click(function(event) {
+        $('#modalBasic_title').text('Logs Errores Api OTAs');
+        $('#modalBasic_content').empty().load('/admin/reservas/api/getOTAsLogs');
+        $('#modalBasic').modal('show');
+      });
   });
 </script>
 <script type="text/javascript">
