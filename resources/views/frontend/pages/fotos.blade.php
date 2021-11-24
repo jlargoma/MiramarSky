@@ -1,3 +1,13 @@
+<?php 
+function urlImgCDN($rute,$file,$thumbnails = false){
+  $url = 'https://cdn.granadaexperience.es/mski';
+//  $url = 'http://cdn-miramarski.virtual/mski';
+  if ($thumbnails)
+  return $url.$rute.'/thumbnails/'.$file;
+  
+  return $url.$rute.'/'.$file;
+}
+?>
 <style>
     h1{
         margin-bottom: 0 !important;
@@ -64,7 +74,7 @@
                     <div class="swiper-container gallery-top">
                         <div class="swiper-wrapper">
                             <?php foreach ($photos as $img): ?>
-                              <div class="swiper-slide" style="background-image:url({{url($img->file_rute.'/'.$img->file_name)}})"></div>
+                              <div class="swiper-slide" style="background-image:url({{urlImgCDN($img->file_rute,$img->file_name)}})"></div>
                             <?php endforeach; ?>
 
                         </div>
@@ -75,7 +85,7 @@
                     <div class="swiper-container gallery-thumbs">
                         <div class="swiper-wrapper">
                             <?php foreach ($photos as $img): ?>
-                              <div class="swiper-slide" style="background-image:url({{url($img->file_rute.'/'.$img->file_name)}})"></div>
+                              <div class="swiper-slide" style="background-image:url({{urlImgCDN($img->file_rute,$img->file_name)}})"></div>
                             <?php endforeach; ?>
                         </div>
                     </div>

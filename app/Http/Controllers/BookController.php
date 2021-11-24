@@ -2550,6 +2550,7 @@ class BookController extends AppController
     $dir = storage_path().'/logs/OTAs'.date('Ym').'.log';
     $count = 0;
     
+    $lastView = strtotime('-1 weeks');
     $lastRead = \App\ProcessedData::findOrCreate('log_OTA_readed');
     if ($lastRead->content)  $lastView = $lastRead->content;
 //    $lastView = strtotime('-2 days');
