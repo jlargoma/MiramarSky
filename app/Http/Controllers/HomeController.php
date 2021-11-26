@@ -60,58 +60,19 @@ class HomeController extends AppController
       $directory = public_path() . "/img/miramarski/apartamentos/" . $room->nameRoom.'/';
       $directoryThumbnail = "/img/miramarski/apartamentos/" . $room->nameRoom . "/thumbnails/";
       $texts = null;
-      $photos = null;
+      $photos = [];
       if ($room) {
-        $photos = \App\RoomsPhotos::where('room_id', $room->id)->orderBy('main','DESC')->orderBy('position')->get();
+        $oPhotos = \App\RoomsPhotos::where('room_id', $room->id)->orderBy('main','DESC')->orderBy('position')->get();
+        foreach ($oPhotos as $i){
+          if (file_exists($directory.$i->file_name)){
+            $photos[] = $i;
+          }
+        }
         $texts = $room->getTexts();
       }
       
-      
-      if (isset($_GET['all']) && false){
-        $result = [];
-        $aRooms = \App\Rooms::where('state',1)->get();
-        $path = url('public');
-        foreach ($aRooms as $room) {
-          $photos = \App\RoomsPhotos::where('room_id', $room->id)->orderBy('main','DESC')->orderBy('position')->get();
-        
-
-          $i=0;
-          foreach ($photos as $photo){
-            $ext = explode('.', $photo->file_name);
-            $i++;
-            $result[] = [
-                'name' => $room->nameRoom.'-'.$i.'.'.$ext[count($ext)-1],
-                'url'  => $path.$photo->file_rute.'/'.$photo->file_name
-            ];
-          }
-        }
-         echo json_encode($result); 
-         die;
-      }
-      
-      $mobile = new Mobile();
-      $oPhotoHeader = \App\RoomsHeaders::where('room_id', $room->id)->first();
-      if (!$oPhotoHeader){
-        $oPhotoHeader = \App\RoomsHeaders::where('url', 'default')->first();
-      }
-      $photoHeader = asset('/frontend/images/home/aptos-tit.png');
-      if ($oPhotoHeader){
-        if ($mobile->isMobile()){
-          $aux = public_path().$oPhotoHeader->img_mobile;
-          if (is_file($aux)){
-            $photoHeader = $oPhotoHeader->img_mobile;
-          }
-        } else {
-          $aux = public_path().$oPhotoHeader->img_desktop;
-          if (is_file($aux)){
-            $photoHeader = $oPhotoHeader->img_desktop;
-          }
-        }
-      }
        return view('frontend.pages.fotos', [
               'photos'            => $photos,
-              'photoHeader'       => $photoHeader,
-              'mobile'            => $mobile,
               'aptoHeading'       => $aptoHeading,
               'aptoHeadingMobile' => $aptoHeadingMobile,
               'typeApto'          => $typeApto,
@@ -135,60 +96,21 @@ class HomeController extends AppController
         {
           return $this->getRoomData($url,$room);
         } else {
-          $room = \App\RoomsType::where('name',$url)->first();
-          if ($room){
-            
-            $aptoHeading = $room->title;
-            $photos = \App\RoomsPhotos::where('gallery_key', $room->id)
-                    ->orderBy('main','DESC')->orderBy('position')->get();
-            
-            
-            $aptos = array();
-            $roomsType = \App\RoomsType::select('name')->where('status',1)->get();
-            if ($roomsType){
-              foreach ($roomsType as $v){
-                $aptos[] = $v->name;
-              }
-            }
-            $mobile = new Mobile();
-            $oPhotoHeader = \App\RoomsHeaders::where('room_type_id', $room->id)->first();
-            if (!$oPhotoHeader){
-              $oPhotoHeader = \App\RoomsHeaders::where('url', 'default')->first();
-            }
-            $photoHeader = asset('/frontend/images/home/apart-bg.jpg');
-
-            if ($oPhotoHeader){
-              if ($mobile->isMobile()){
-                $aux = public_path().$oPhotoHeader->img_mobile;
-                if (is_file($aux)){
-                  $photoHeader = $oPhotoHeader->img_mobile;
-                }
-              } else {
-                $aux = public_path().$oPhotoHeader->img_desktop;
-                if (is_file($aux)){
-                  $photoHeader = $oPhotoHeader->img_desktop;
-                }
-              }
-            }
-            
-            
-            return view('frontend.pages.apartamento', [
-              'photos'   => $photos,
-              'aptoHeading'   => $aptoHeading,
-              'photoHeader'   => $photoHeader,
-              'mobile'   => $mobile,
-              'room'     => $room,
-              'aptos'    => $aptos,
-              'url'      => $url,
-              'meta_tit' => $room->meta_title,
-              'meta_descript' => $room->meta_descript,
-              'url'      => $url,
-            ]);
-            
-          }
+//          $room = \App\RoomsType::where('name',$url)->first();
+//          if ($room){
+//             $aptoHeading = $room->title;
+//            $photos = \App\RoomsPhotos::where('gallery_key', $room->id)
+//                    ->orderBy('main','DESC')->orderBy('position')->get();
+//            return view('frontend.pages.apartamento', [
+//              'photos'   => $photos,
+//              'aptoHeading'   => $aptoHeading,
+//            ]);
+//            
+//          }
         }
-
-        return 'No encontrado';
+        echo '<input type="hidden" id="nameAptoFoto" value="'.$apto.'">';
+        echo '<div class="alert alert-warning text-center">Apartamento no encontrado</div>';
+        return '';
         return redirect('404');
         
     

@@ -36,11 +36,6 @@
     <i class="fa fa-key" aria-hidden="true"></i>
     <span class="bold hidden-mobile">Bloqueo</span>
   </button>
-  <?php if ($uRole == "admin"): ?>
-    <button class="btn btn-primary btn-cupos btn-cons minimal" type="button" data-toggle="modal" data-target="#modalCuposVtn">
-      <i class="fa fa-calendar" aria-hidden="true"></i><span class="bold hidden-mobile">Cupos Vtn Rapida</span>
-    </button>
-  <?php endif ?>
   <button class="btn btn-success btn-orange <?php if ($bookings_without_Cvc > 0) echo 'btn-alarms'; ?>" id="btnBookingsWithoutCvc">
     <span class="bold">SIN VISA</span>
     @if($bookings_without_Cvc>0)
@@ -66,7 +61,7 @@
   @endif
   <?php if ($uRole == "admin"): ?>
     <a class="btn btn-primary" href="/admin/revenue/DASHBOARD" style="top: 6px;">
-      <span class="bold">DASHBOARD</span>
+      <span class="bold">DASHB<span class="bold hidden-mobile">OARD</span></span>
     </a>   
   <?php endif ?>
 
@@ -78,7 +73,7 @@
     <span class="bold">intercambio</span>
   </button>
   <button class="btn btn-success btn-orange <?php if ($ota_errLogs > 0) echo 'btn-alarms'; ?>" id="btnOTAsLogs">
-    <span class="bold">OTAs Errors</span>
+    <span class="bold"><i class="fa fa-exclamation-triangle show-mobile" style="font-size: 12px;"></i> OTAs</span><span class="bold hidden-mobile"> Errors</span>
     @if($ota_errLogs>0)
     <span class="numPaymentLastBooks" data-val="{{$ota_errLogs}}">{{$ota_errLogs}}</span>
     @endif

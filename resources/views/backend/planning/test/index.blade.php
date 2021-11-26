@@ -711,13 +711,7 @@ $is_mobile = $mobile->isMobile();
           <?php endif ?>
 
 
-          $('.btn-cupos').click(function () {
-            $.get('/admin/rooms/cupos', function(data) {
-
-              $('#content-cupos').empty().append(data);
-
-            });
-          });
+ 
  
       $('body').on('click','.openFF', function (event) {
         
