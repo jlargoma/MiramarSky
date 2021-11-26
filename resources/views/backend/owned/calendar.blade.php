@@ -134,7 +134,30 @@ $uRole = Auth::user()->role;
 
     </div>
   </div>
+  <div class="leyenda">
+    
+  <div class="bloqueo text-left"><span></span>Bloqueo</div>
+  <div class="nocobrada text-left"><span></span>Reserva aún no cobrada</div>
+  <div class="reservada text-left"><span></span>Reserva Cobrada</div>
+  </div>
 </div>
+<style>
+  .leyenda span{
+    width: 15px;
+    height: 10px;
+    display: inline-block;
+    margin-right: 2px;
+  }
+  .leyenda .bloqueo span{
+    background-color: orange;
+  }
+  .leyenda .nocobrada span{
+    background-color: #bdf9bd;
+  }
+  .leyenda .reservada span{
+    background-color: green;
+  }
+</style>
 <script type="text/javascript">
 
 //  $('.btn-fechas-calendar').click(function (event) {

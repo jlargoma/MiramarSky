@@ -65,12 +65,13 @@ class OwnedController extends AppController {
     $lujo = 0;
     
     // Datos
-    $reservas = Book::where_book_times($startYear,$endYear)->whereIn('type_book', [1, 2, 7])
+    $typeBProp = [1, 2, 7];
+    $reservas = Book::where_book_times($startYear,$endYear)->whereIn('type_book', $typeBProp)
             ->where('room_id', $room->id)
             ->orderBy('start', 'ASC')
             ->get();
 
-    $books = Book::where_type_book_prop()->where('room_id', $room->id)
+    $books = Book::whereIn('type_book', $typeBProp)->where('room_id', $room->id)
                     ->where('start', '>=', $startYear)
                     ->where('start', '<=', $endYear)
                     ->orderBy('start', 'ASC')->get();
