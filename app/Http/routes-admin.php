@@ -51,6 +51,8 @@ Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionist
   Route::post('/ajax/SafetyBox-updKey', 'BookController@updKeySafetyBox');
   Route::post('/ajax/send-SafetyBox-mail', 'BookController@sendSafetyBoxMail');
   Route::get('admin/get-SafetyBox', 'BookController@getSafetyBoxLst');
+  
+  Route::post('/ajax/toggleCliHasPhotos', 'BookController@toggleCliHasPhotos');
 });
 
 Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista']], function () {

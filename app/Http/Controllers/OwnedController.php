@@ -150,14 +150,14 @@ class OwnedController extends AppController {
     $ingrs = $clients = array();
     if ($books){
       foreach ($books as $book){
-        if ($book->type_book == 2){
+//        if ($book->type_book == 2){
           $cMonth = intval(date('n', strtotime($book->start)));
 
           if (!isset($ingrs[$cMonth])) $ingrs[$cMonth] = 0;
           if (!isset($clients[$cMonth])) $clients[$cMonth] = 0;
           $ingrs[$cMonth] += $book->get_costProp();//+$book->cost_park+$book->cost_lujo;
           $clients[$cMonth] += $book->pax;
-        }
+//        }
       }
     }
     

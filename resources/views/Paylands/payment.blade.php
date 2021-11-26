@@ -25,6 +25,7 @@
   <div class="col-md-4 col-xs-6 push-20">
     <button onclick="_createPayment('link')" class="btn btn-success" type="button" id="_createPaymentLink">Link</button>
     <button onclick="_createPayment('form')" class="btn btn-success" type="button" id="_createPaymentForm">Pago</button>
+    <a href="https://dashboard.stripe.com/payments/new" target="_black" class="btn btn-success">STRIPE</a>
     
   </div>
     <div class="col-md-5 " style="overflow: auto;">
