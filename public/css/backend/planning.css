@@ -287,7 +287,15 @@ button.btn.btn-danger.removeAlertPax {
 .box-alerts-popup .items {
     margin-top: 8px;
 }
-
+i.c_h_photo.fas.fa-camera {
+float: right;
+}
+i.c_h_photo.fas.fa-camera::after {
+  rotation: 1;
+  width: 15px;
+  height: 5px;
+  background-color: black;
+}
 /******************************************************************************/
 
 @media only screen and (max-width: 991px){

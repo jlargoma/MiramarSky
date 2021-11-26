@@ -133,4 +133,21 @@ $(document).ready(function () {
       }
     });
   });
+    $('#updateBooking').on('click','.cliHasPhotos',function(){
+    var that = $(this);
+    var data = {
+      _token: window.csrf_token,
+      bid: that.data('id')
+    };
+    $.post('/ajax/toggleCliHasPhotos', data, function (resp) {
+      if (resp.status == 'OK'){
+        window.show_notif('','success', 'Item guardado.');
+        if (resp.result)
+            that.addClass('send').attr('title','Fotos enviadas al cliente');
+        else that.removeClass('send').attr('title','Fotos NO enviadas al cliente');
+      } else {
+        window.show_notif('','error', 'No se pudo guardar el registro.');
+      }
+    });
+  });
 });

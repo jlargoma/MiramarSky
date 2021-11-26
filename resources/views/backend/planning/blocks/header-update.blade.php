@@ -100,7 +100,13 @@
             </a>
             <div class="FF_resume tooltiptext"></div>
           </div>
+          <div class="icon-lst">
+            <span class="cliHasPhotos <?= ($cliHasPhotos) ? 'send' : ''; ?>" title="Fotos <?= ($cliHasPhotos) ? '' : 'NO '; ?>enviadas al cliente" data-id="{{$book->id}}">
+              <i class="fas fa-camera"></i>
+            </span>
+          </div>
           <?php $book->printExtraIcon();?>
+          
         </div>
         </div>
         <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">

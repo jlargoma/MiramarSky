@@ -575,7 +575,10 @@ class BookController extends AppController
         
         $otaURL = $this->getOtaURL($book);
         
-
+        /*************************************/
+        $cliHasPhotos = \App\BookData::findOrCreate('client_has_photos',$book->id);
+        if ($cliHasPhotos)  $cliHasPhotos = $cliHasPhotos->content;
+        /*************************************/
     
         return view('backend/planning/update'.$updateBlade, [
             'book'         => $book,
@@ -597,7 +600,8 @@ class BookController extends AppController
             'email_notif'  => $email_notif,
             'send_notif'   => $send_notif,
             'otaURL'       => $otaURL,
-            'partee' => $partee,
+            'partee'       => $partee,
+            'cliHasPhotos' => $cliHasPhotos,
             'creditCardData' => $creditCardData,
         ]);
     }
@@ -1546,13 +1550,19 @@ class BookController extends AppController
         $startAux->firstOfMonth();
         $endAux->lastOfMonth();
         $sqlBook = Book::where_book_times($startAux,$endAux)
+                ->select('book.*',DB::raw("book_data.content as 'client_has_photos'"))
                 ->whereNotIn('type_book', $type_book_not);
         
         if ($roomIDs){
           $sqlBook->whereIn('room_id', $roomIDs);
         }
         
-        $books = $sqlBook->orderBy('start', 'ASC')->get();
+        $books = $sqlBook->leftJoin('book_data', function($join)
+                         {
+                             $join->on('book.id','=','book_data.book_id');
+                             $join->on('book_data.key','=',DB::raw("'client_has_photos'"));
+                         })
+                ->orderBy('start', 'ASC')->get();
         /****************************************/    
         $bookings_without_Cvc = \App\ProcessedData::findOrCreate('bookings_without_Cvc');
         $bookings_without_Cvc = json_decode($bookings_without_Cvc->content,true);
@@ -2074,15 +2084,19 @@ class BookController extends AppController
 //      if (!$isMobile){
       if (true){
         $agency = ($book->agency != 0) ? "Agencia: ".$book->getAgency($book->agency).'<br/>' : "";
-        $titulo = $book->customer->name.'<br/>'.
-              'Pax-real '.$book->real_pax.'<br/>'.
+        $titulo = $book->customer->name.'<br/>';
+
+        if ($book->client_has_photos)  $titulo.= '<i class="c_h_photo fas fa-camera"></i>';
+
+        $titulo.= 
               Carbon::createFromFormat('Y-m-d',$book->start)->formatLocalized('%d %b').
               ' - '.Carbon::createFromFormat('Y-m-d',$book->finish)->formatLocalized('%d %b')
-              .'<br/>';
+              .'  | <b>Pax</b> '.$book->real_pax.'<br/>';
+      
       
         if ($vistaCompleta){
+          $titulo .='<b>PVP</b>:'.$book->total_price.' | ';
           $titulo .= strtoupper($book->user->name).'<br/>';
-          $titulo .='PVP:'.$book->total_price.'<br/>';
         }
 
         $titulo .= $agency;
@@ -2104,6 +2118,7 @@ class BookController extends AppController
             }
         }
       }
+      
       
       if ($isMobile){
         $titulo .= '<div class="calLink" data-'.$href.'>IR</div>';
@@ -2597,5 +2612,19 @@ class BookController extends AppController
     $lastRead->save();
     
     return;
+  }
+  
+  function toggleCliHasPhotos(Request $request){
+    $bID =$request->input("bid");
+    $oBook = Book::find($bID);
+    if (!$oBook){
+      return response()->json(['status'=>'error','result'=>'reserva no encontrada']);
+    }
+    
+    $cliHasPhotos = \App\BookData::findOrCreate('client_has_photos',$bID);
+    $cliHasPhotos->content = ($cliHasPhotos->content) ? false : true;
+    $cliHasPhotos->save();
+    
+    return response()->json(['status'=>'OK','result'=>$cliHasPhotos->content]);
   }
 }
