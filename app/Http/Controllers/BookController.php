@@ -101,7 +101,7 @@ class BookController extends AppController
         $booksCount['deletes']      = Book::where('start', '>', $startYear)->where('finish', '<', $endYear)
                                                ->where('type_book', 0)->where("enable", "=", "1")->count();
         
-        $booksCount['checkin']      = $this->getCounters('checkin');
+        $booksCount['checkin']      = $this->getCounters('checkin') + $this->getCounters('especiales');
         $booksCount['checkout']     = $this->getCounters('checkout');
 
         $books = []; 
@@ -1257,10 +1257,11 @@ class BookController extends AppController
           case 'checkin':
           case 'ff_pdtes':
             $dateX = Carbon::now();
+            // agregamos las especiales 7, 8
             $booksQuery = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))
                             ->where('start', '<=', $year->end_date)
                             ->with('room','payments','customer','leads')
-                            ->whereIn('type_book', [1, 2])->orderBy('start', 'ASC');
+                            ->whereIn('type_book', [1, 2, 7, 8])->orderBy('start', 'ASC');
             
              if ($uRole == "agente")
             {
