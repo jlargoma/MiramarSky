@@ -93,11 +93,21 @@ $lstSafetyBox = \App\BookSafetyBox::$keys_name;
                             <?php if ($book->agency != 0): ?>
                                 <img src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" class="img-agency"/>
                             <?php endif ?>
-                            <?php if (isset($payment[$book->id])): ?>
-                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
-                            <?php else: ?>
-                                <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
-                            <?php endif ?>
+                            <?php 
+                            $styleRed = ($payment[$book->id]) ? '' : 'style="color: red"'; 
+                            $bookName = $book->customer['name'];
+                            switch ($book->type_book){
+                              case 7:
+                                $bookName = "<b>P</b> ".$bookName;
+                                break;
+                              case 8:
+                                $bookName = "<b>E</b> ".$bookName;
+                                break;
+                            }
+                            ?>
+                            
+                            <a class="update-book" data-id="<?= $book->id ?>"  title="<?= $book->customer['name'].'-'.$book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?= $book->id ?>" <?= $styleRed; ?>><?= $bookName ?></a>
+                                
                           </div>
                         </td>
                         @if($isMobile)

@@ -296,6 +296,10 @@ i.c_h_photo.fas.fa-camera::after {
   height: 5px;
   background-color: black;
 }
+
+#tabPagadas a.update-book b {
+    color: #2a5d9b;
+}
 /******************************************************************************/
 
 @media only screen and (max-width: 991px){
