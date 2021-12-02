@@ -133,18 +133,42 @@ $(document).ready(function () {
       }
     });
   });
-    $('#updateBooking').on('click','.cliHasPhotos',function(){
+    $('#updateBooking').on('click','.cliHas',function(){
     var that = $(this);
+    var type = that.data('t');
+    var text = '';
     var data = {
       _token: window.csrf_token,
-      bid: that.data('id')
+      bid: that.data('id'),
+      type: type
     };
-    $.post('/ajax/toggleCliHasPhotos', data, function (resp) {
+    $.post('/ajax/toggleCliHas', data, function (resp) {
       if (resp.status == 'OK'){
         window.show_notif('','success', 'Item guardado.');
-        if (resp.result)
-            that.addClass('send').attr('title','Fotos enviadas al cliente');
-        else that.removeClass('send').attr('title','Fotos NO enviadas al cliente');
+        if (resp.result){
+            switch(type){
+                case 'photos':
+                    text = 'Fotos enviadas al cliente';
+                    break;
+                case 'beds':
+                    text = 'CON CAMAS SUPLETORIAS';
+                    break;
+            }
+            that.addClass('active').attr('title',text);
+        }
+        else{ 
+            switch(type){
+                case 'photos':
+                    text = 'Fotos NO enviadas al cliente';
+                    break;
+                case 'beds':
+                    text = 'SIN CAMAS SUPLETORIAS';
+                    break;
+            }
+            that.removeClass('active').attr('title',text);
+        }
+        
+        
       } else {
         window.show_notif('','error', 'No se pudo guardar el registro.');
       }

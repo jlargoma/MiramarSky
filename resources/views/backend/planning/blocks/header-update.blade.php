@@ -1,7 +1,7 @@
 <?php use \Carbon\Carbon;?>
   <div class="row">
     <div class="col-md-12 col-xs-12 center text-left0 mobil-p0">
-      <div class="col-md-6 mobil-p0">
+      <div class="col-md-8 mobil-p0">
         <div class="col-md-9 col-xs-12">
           <div class="" id="headerFixed">
           @if( url()->previous() != "" )
@@ -101,8 +101,13 @@
             <div class="FF_resume tooltiptext"></div>
           </div>
           <div class="icon-lst">
-            <span class="cliHasPhotos <?= ($cliHasPhotos) ? 'send' : ''; ?>" title="Fotos <?= ($cliHasPhotos) ? '' : 'NO '; ?>enviadas al cliente" data-id="{{$book->id}}">
+            <span class="cliHas <?= ($cliHasPhotos) ? 'active' : ''; ?>" title="Fotos <?= ($cliHasPhotos) ? '' : 'NO '; ?>enviadas al cliente" data-id="{{$book->id}}" data-t="photos">
               <i class="fas fa-camera"></i>
+            </span>
+          </div>
+          <div class="icon-lst">
+            <span class="cliHas <?= ($cliHasBed) ? 'active' : ''; ?>" title=" <?= ($cliHasBed) ? 'CON' : 'SIN'; ?> CAMAS SUPLETORIAS" data-id="{{$book->id}}" data-t="beds">
+              <i class="fas fa-bed"></i>
             </span>
           </div>
           <?php $book->printExtraIcon();?>
@@ -142,7 +147,7 @@
           <h5 class="guardar" style="font-weight: bold; display: none; font-size: 15px;"></h5>
         </div>
       </div>
-      <div class="col-md-6 col-xs-12" style="max-height: 195px; overflow: auto;">
+      <div class="col-md-4 col-xs-12" style="max-height: 195px; overflow: auto;">
         @if(Request::has('msg_type'))
         <div class="col-lg-12 col-xs-12 content-alert-error2">
           <div class="alert alert-success alert-dismissable">

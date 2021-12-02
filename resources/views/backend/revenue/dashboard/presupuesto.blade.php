@@ -140,16 +140,18 @@ else $daysMonth = $mDays[intVal(explode('.',$month)[1])];
         $aux1 = isset($monthlyLimp[$m2]) ? $monthlyLimp[$m2] : 0;
         $aux2 = isset($monthlyOta[$m2]) ? $monthlyOta[$m2] : 0;
         $aux3 = isset($comisionesTPV[$m2]) ? $comisionesTPV[$m2] : 0;
-        $grafPresupSite['result'][$m2] = $grafPresupSite['ing'][$m2] - $grafPresupSite['gastos'][$m2] - $aux1 - $aux2;
+        $grafPresupSite['result'][$m2] = $grafPresupSite['ing'][$m2] - $grafPresupSite['gastos'][$m2] - $aux1 - $aux2 - $aux3;
       }
 
-
-      $rentabTotM = $grafPresupSite['result'][$month];
-      $rentabTotY = array_sum($grafPresupSite['result']);
+//      if ($month > 0)  $rentabTotM = $grafPresupSite['result'][$month];
+//      else $rentabTotM = array_sum($grafPresupSite['result']);
+//      $rentabTotY = array_sum($grafPresupSite['result']);
       //END: datos para los graficos
       $totalCostM = $otaCommM + $limpM + $ComisTPV_M + $cftM;
       if ($totalCostM == 0)
         $totalCostM = 1;
+      
+      $rentabTotM = $ingrT_M-$totalCostM;
       ?>
 
       <table class="table">
@@ -402,7 +404,7 @@ $('.fixcost').on('click', function(){
     /* GRAFICA INGRESOS/GASTOS */
     var data = {
     labels: [
-            @foreach ($meses as $m2) "{{$m2}}", @endforeach
+            @foreach ($lstMonths as $m2 => $v2) "{{$v2}}", @endforeach
     ],
             datasets: [
             {

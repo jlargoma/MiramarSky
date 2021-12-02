@@ -19,6 +19,7 @@ $t_class = ($isMobile) ? '' : 'th-bookings';
                     <th class="{{$t_class}} th-3">  <i class="fa fa-moon-o"></i> </th>
                     <th class="{{$t_class}} th-3"> <i class="fa fa-clock-o"></i></th>
                     <th class="{{$t_class}} th-4">IN</th>
+                    <th class="{{$t_class}} th-4"><i class="fas fa-bed"></i></th>
                     <th class="{{$t_class}} th-4">OUT</th>
                     <th class="{{$t_class}} th-2">&nbsp;</th>
                 </tr>
@@ -84,6 +85,11 @@ $t_class = ($isMobile) ? '' : 'th-bookings';
                            {{$book->schedule}} Hrs.
                         </td>
                         <td class="text-center" data-order="{{$book->start}}">{{dateMin($book->start)}}</td>
+                        <td class="text-center" data-order="{{$book->has_beds}}">
+                          <span class="<?= ($book->has_beds) ? 'red' : 'grey'; ?>" title=" <?= ($book->has_beds) ? 'CON' : 'SIN'; ?> CAMAS SUPLETORIAS" >
+                            <i class="fas fa-bed"></i>
+                          </span>
+                        </td>
                         <td class="text-center" data-order="{{$book->finish}}">{{dateMin($book->finish)}}</td>
                         <td class="text-center">
                           @if($book->book_owned_comments)

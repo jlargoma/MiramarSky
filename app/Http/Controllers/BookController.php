@@ -578,6 +578,10 @@ class BookController extends AppController
         /*************************************/
         $cliHasPhotos = \App\BookData::findOrCreate('client_has_photos',$book->id);
         if ($cliHasPhotos)  $cliHasPhotos = $cliHasPhotos->content;
+        $cliHasBed = \App\BookData::findOrCreate('client_has_beds',$book->id);
+        if ($cliHasBed)  $cliHasBed = $cliHasBed->content;
+        
+        
         /*************************************/
     
         return view('backend/planning/update'.$updateBlade, [
@@ -602,6 +606,7 @@ class BookController extends AppController
             'otaURL'       => $otaURL,
             'partee'       => $partee,
             'cliHasPhotos' => $cliHasPhotos,
+            'cliHasBed'    => $cliHasBed,
             'creditCardData' => $creditCardData,
         ]);
     }
@@ -1259,9 +1264,18 @@ class BookController extends AppController
             $dateX = Carbon::now();
             // agregamos las especiales 7, 8
             $booksQuery = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))
+                    ->select('book.*',DB::raw("book_data.content as 'has_beds'"))
                             ->where('start', '<=', $year->end_date)
                             ->with('room','payments','customer','leads')
                             ->whereIn('type_book', [1, 2, 7, 8])->orderBy('start', 'ASC');
+            
+            $booksQuery->leftJoin('book_data', function($join)
+                         {
+                             $join->on('book.id','=','book_data.book_id');
+                             $join->on('book_data.key','=',DB::raw("'client_has_beds'"));
+                         });
+                         
+                         
             
              if ($uRole == "agente")
             {
@@ -1271,6 +1285,7 @@ class BookController extends AppController
                 });
             }
             $books = $booksQuery->get();
+            
             break;
           case 'checkout':
             $dateX = Carbon::now();
@@ -2615,17 +2630,27 @@ class BookController extends AppController
     return;
   }
   
-  function toggleCliHasPhotos(Request $request){
-    $bID =$request->input("bid");
+  function toggleCliHas(Request $request){
+    $bID  = $request->input("bid");
+    $type = $request->input("type");
     $oBook = Book::find($bID);
     if (!$oBook){
       return response()->json(['status'=>'error','result'=>'reserva no encontrada']);
     }
     
-    $cliHasPhotos = \App\BookData::findOrCreate('client_has_photos',$bID);
-    $cliHasPhotos->content = ($cliHasPhotos->content) ? false : true;
-    $cliHasPhotos->save();
+    switch ($type){
+      case 'photos':
+        $oData = \App\BookData::findOrCreate('client_has_photos',$bID);
+        break;
+      case 'beds':
+        $oData = \App\BookData::findOrCreate('client_has_beds',$bID);
+        break;
+    }
     
-    return response()->json(['status'=>'OK','result'=>$cliHasPhotos->content]);
+    
+    $oData->content = ($oData->content) ? false : true;
+    $oData->save();
+    
+    return response()->json(['status'=>'OK','result'=>$oData->content]);
   }
 }

@@ -1205,6 +1205,8 @@ class RevenueController extends AppController
       
       
       $aux = explode('_', $req->input('m'));
+      if (count($aux) != 2) $aux = explode('.', $req->input('m'));
+      
       $date = '20'.$aux[0].'-'.$aux[1].'-01';
               
       $oObject = \App\FixCosts::where('date',$date)
