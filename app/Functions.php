@@ -593,7 +593,7 @@ function getYearActive() {
     } else {
       $activeYear = \App\Years::where('active', 1)->first();
       if ($activeYear){
-        setYearActive($activeYear->id);
+       // setYearActive($activeYear->id);
         return $activeYear->id;
       }
     }

@@ -192,13 +192,13 @@ span#loadchatbox {
   background-position: center;
   background-color: transparent;
 }
-.cliHasPhotos{
+.cliHas{
   font-size: 36px;
   display: flex;
   cursor: pointer;
   color: #d1d1d1;
 }
-.cliHasPhotos.send{
+.cliHas.active{
   color: #ed2402;
 }
 

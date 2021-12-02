@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Book;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class LimpiezaController extends AppController {
 
@@ -35,10 +36,15 @@ class LimpiezaController extends AppController {
 
     $noRooms = \App\Rooms::where('channel_group','')->pluck('id');
     $rooms = \App\Rooms::all();
-    $checkin =Book::where('start', '>=', $start)->where('start', '<=', $finish)
-                ->with('room','customer')
-                ->whereNotIn('room_id',$noRooms)
-                ->whereIn('type_book',[1,2,7,8])->orderBy('start', 'ASC')->get();
+    $checkin = Book::where('start', '>=', $start)->where('start', '<=', $finish)
+                    ->select('book.*', DB::raw("book_data.content as 'has_beds'"))
+                    ->with('room', 'customer')
+                    ->whereNotIn('room_id', $noRooms)
+                    ->leftJoin('book_data', function ($join) {
+                      $join->on('book.id', '=', 'book_data.book_id');
+                      $join->on('book_data.key', '=', DB::raw("'client_has_beds'"));
+                    })
+                    ->whereIn('type_book', [1, 2, 7, 8])->orderBy('start', 'ASC')->get();
         
     
     $checkout =Book::where('finish', '>=', $start)

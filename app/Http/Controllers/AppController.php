@@ -46,7 +46,7 @@ class AppController extends Controller
         $activeYear = Years::find($idYear);
       if (!$activeYear){
         $activeYear = Years::where('active', 1)->first();
-        if ($activeYear) setYearActive($activeYear->id);
+//        if ($activeYear) setYearActive($activeYear->id);
       }
       return $activeYear;
     }
