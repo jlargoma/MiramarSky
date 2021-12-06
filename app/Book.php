@@ -103,7 +103,8 @@ class Book extends Model {
         2 => "TPV",//"Banco Jorge",
         3 => "TPV",//"Banco Jaime"
         4 => "REINTEGRO",//Devoluciones
-        5 => "BANCO"//BANCO
+        5 => "BANCO",//BANCO
+        6 => "CRIPTO"//CRIPTO
     ];
 
     if (!is_null($typePayment)) return $typePayment = $array[$typePayment];

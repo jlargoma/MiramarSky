@@ -156,11 +156,11 @@ class ApiController extends AppController
         $extras = isset($selected['ext']) ? $selected['ext'] : [];
         $response = $this->createBooking($date_start,$date_finish,$customer,$oRoom,$comments,$pax,$extras,$rate);
         if ($response){
-          return response()->json(['data'=>$response,'c_token'=>$this->customerToken,'observations'=>$widget_observations],200);
+          return response()->json(['data'=>$response[0],'cripto'=>$response[1],'c_token'=>$this->customerToken,'observations'=>$widget_observations],200);
         }
       }
       $response =  'No hay información disponible';
-      return response()->json(['data'=>$response,'c_token'=>$this->customerToken,'observations'=>$widget_observations],401);
+      return response()->json(['data'=>$response,'cripto'=>null,'c_token'=>$this->customerToken,'observations'=>$widget_observations],401);
      
     }
     
@@ -271,13 +271,14 @@ class ApiController extends AppController
         if ($book->save()) {
           $book->setMetaContent('price_detail', serialize($meta_price));
           $amount = ($book->total_price / 2);
+          
           $client_email = 'no_email';
-          if ($customer->emaill && trim($customer->emaill)) {
+          if ($customer->email && trim($customer->email)) {
             $client_email = $customer->emaill;
           }
 
           //check if already exist another FastPayment to the user
-          if ($client_email) {
+          if ($client_email || false) { // fastaPayment ya no usado
 
             $clientExist = Book::select('book.*')->join('customers', function ($join) use($client_email) {
                       $join->on('book.customer_id', '=', 'customers.id')
@@ -307,11 +308,22 @@ class ApiController extends AppController
               'service'   => env('PAYLAND_SERVICE')
           ];
           $oPaylands    = new \App\Services\PaylandService($paylandConfig);
+         // $urlPayland = 'aaa';
           $urlPayland = $oPaylands->generateOrderPaymentBooking(
                   $book->id, $book->customer->id, $client_email, $description, $amount, false, 1
           );
 
-          return $urlPayland;
+          /** BEGIN: criptomonedas        *************************************/
+          $urlCripto = null;
+          if ($cData['c_phone'] == 98765432){
+          $item_name = $room->RoomsType->title;
+          $item_desc = '50% del pago de la reserva para los días '.dateMin($date_start).' al '. dateMin($date_finish);
+          $sCriptoCoin = new \App\Services\CriptoCoin\CriptoCoin();
+          $sCriptoCoin->setParameters($customer->name, $customer->email, $book->id, $item_name,$item_desc, $amount);
+          $urlCripto = $sCriptoCoin->getUrl();
+          }
+          /** END: criptomonedas          *************************************/
+          return [$urlPayland,$urlCripto];
       }
       
     }
@@ -441,5 +453,10 @@ class ApiController extends AppController
       }
         
       return response()->json(['success'=>false,'data'=>'Acceso denegado'],401);
+    }
+    
+    public function checkPayment(Request $request) {
+      $sCriptoCoin = new \App\Services\CriptoCoin\CriptoCoin();
+      return $sCriptoCoin->checkPayment($request->all());
     }
 }

@@ -22,6 +22,7 @@ Route::group(['middleware' => 'apiControl','prefix' => 'api'], function () {
   Route::get('finish_booking','ApiController@finishBooking');
   Route::get('booking/detail/{apto}', 'ApiController@getDetail');
   Route::post('change-customer-booking-external','ApiController@changeCustomer');
+  Route::post('booking-cripto-payment','ApiController@checkPayment');
   Route::get('booking/', 'ApiController@index');
 });
 ?>
