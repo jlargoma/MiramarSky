@@ -602,3 +602,11 @@ function getYearActive() {
 function setYearActive($yID) {
   setcookie('ActiveYear',$yID, time() + (86400 * 30), "/"); // 86400 = 1 day
 }
+
+function stripslashes_deep($value) {
+    $value = is_array($value) ?
+            array_map('stripslashes_deep', $value) :
+            stripslashes($value);
+
+    return $value;
+  }

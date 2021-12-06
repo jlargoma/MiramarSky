@@ -18,10 +18,10 @@ $lstSafetyBox = \App\BookSafetyBox::$keys_name;
                     </th>
                     <th class="th-bookings th-2">Pax</th>
                     <th class="th-bookings" style="min-width:136px !important;">Apart</th>
+                    <th class="th-bookings th-2"><i class="fas fa-bed"></i></th>
                     <th class="th-bookings th-3">  <i class="fa fa-moon"></i> </th>
                     <th class="th-bookings th-3"> <i class="fa fa-clock"></i></th>
                     <th class="th-bookings th-4">IN</th>
-                    <th class="th-bookings th-2"><i class="fas fa-bed"></i></th>
                     <th class="th-bookings th-4">OUT</th>
                     <th class="th-bookings th-4"><i class="fa fa-lock"></i></th>
                     <th class="th-bookings th-3 hiddenOnlyRiad">FF</th>
@@ -154,6 +154,11 @@ $lstSafetyBox = \App\BookSafetyBox::$keys_name;
                           }
                           ?>
                         </td>
+                        <td class="td-date mobil-pad-x3" data-order="{{$book->has_beds}}">
+                          <span class="<?= ($book->has_beds) ? 'red' : 'grey'; ?>" title=" <?= ($book->has_beds) ? 'CON' : 'SIN'; ?> CAMAS SUPLETORIAS" >
+                            <i class="fas fa-bed"></i>
+                          </span>
+                        </td>
                         <td class ="text-center"><?php echo $book->nigths ?></td>
                         <td class="text-center sm-p-t-10 sm-p-b-10">
 
@@ -178,11 +183,6 @@ $lstSafetyBox = \App\BookSafetyBox::$keys_name;
                         </td>
                         <td class="td-date mobil-pad-x3" data-order="{{$book->start}}">
                           <?php echo dateMin($book->start) ?>
-                        </td>
-                        <td class="td-date mobil-pad-x3" data-order="{{$book->has_beds}}">
-                          <span class="<?= ($book->has_beds) ? 'red' : 'grey'; ?>" title=" <?= ($book->has_beds) ? 'CON' : 'SIN'; ?> CAMAS SUPLETORIAS" >
-                            <i class="fas fa-bed"></i>
-                          </span>
                         </td>
                         <td class="td-date mobil-pad-x3" data-order="{{$book->finish}}">
                           <?php echo dateMin($book->finish) ?>

@@ -79,6 +79,7 @@
                 <option value="2"><?php echo $book->getTypeCobro(2) ?></option>
                 <option value="0"><?php echo $book->getTypeCobro(0) ?></option>
                 <option value="4"><?php echo $book->getTypeCobro(4) ?></option>
+                <option value="6"><?php echo $book->getTypeCobro(6) ?></option>
               </select>
             </td>
             <td class="text-center">
