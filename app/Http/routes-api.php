@@ -12,6 +12,7 @@
 Route::group(['prefix' => 'api'], function () {
   Route::get('page-booking', 'ApiController@view');
 //  Route::post('get-items-suggest','ApiController@getItemsSuggest_withContent');
+  Route::post('booking-cripto-payment','AppController@checkPaymentCripto');
 });
 
 Route::group(['middleware' => 'apiControl','prefix' => 'api'], function () {
@@ -22,7 +23,7 @@ Route::group(['middleware' => 'apiControl','prefix' => 'api'], function () {
   Route::get('finish_booking','ApiController@finishBooking');
   Route::get('booking/detail/{apto}', 'ApiController@getDetail');
   Route::post('change-customer-booking-external','ApiController@changeCustomer');
-  Route::post('booking-cripto-payment','ApiController@checkPayment');
+  
   Route::get('booking/', 'ApiController@index');
 });
 ?>

@@ -86,6 +86,7 @@ $appName = env('APP_APPLICATION');
 
 <?php  endforeach; ?>
               </tbody>
+              @include('backend.planning.calendar.months_footer')
             </table>
 
           </div>

@@ -45,7 +45,11 @@ $uRole = Auth::user()->role;
         <?php 
           $class = ucwords($book->getStatus($book->type_book));
           if ($class == "Contestado(EMAIL)") $class = "contestado-email";
+          if ($class == "Reservado - Stripe") $class = " ";
           
+          if ($book->type_book == 11 && $book->agency == 31){
+            $class .= " direct";
+          }
           $icon = '';
           $bType = $book->type_book;
           if ($book->agency != 0){
@@ -56,7 +60,7 @@ $uRole = Auth::user()->role;
         <tr class="<?php echo $class;?>" data-id="{{$book->id}}" >
             <td class="fix-col td-b1" data-order="{{$book->id}}">
                <div class="fix-col-data">
-                {!! $icon !!}
+                 {!! $icon !!} 
                 <?php if (isset($payment[$book->id]) && $payment[$book->id]>0): ?>
                 <a class="update-book r" data-id="<?php echo $book->id ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                   <?php echo $book->customer['name']  ?>

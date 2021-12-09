@@ -46,9 +46,12 @@ $uRole = Auth::user()->role;
 	        }
         ?>
         <?php $class = ucwords($book->getStatus($book->type_book)) ?>
-        <?php if ($class == "Contestado(EMAIL)"): ?>
-                    <?php $class = "contestado-email" ?>
-                <?php endif ?>
+        <?php 
+          if ($class == "Contestado(EMAIL)") $class = "contestado-email";
+          if ($book->type_book == 11 && $book->agency == 31){
+            $class .= " direct";
+          }
+          ?>
 
         <tr class="<?php echo $class;?>" data-id="{{$book->id}}" >
             <td class="fix-col td-b1">

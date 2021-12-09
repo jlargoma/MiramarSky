@@ -419,4 +419,19 @@ class AppController extends Controller
             
     return view('backend.planning.calculateBook.form',$data);
   }
+  
+   public function checkPaymentCripto(Request $request) {
+      
+      //save a copy
+      $json = json_encode($request->all());
+      $json2 = json_encode($_SERVER['HTTP_HMAC']);
+      $dir = storage_path().'/cripto';
+      if (!file_exists($dir)) {
+          mkdir($dir, 0775, true);
+      }
+      file_put_contents($dir."/".time(),$json.' ---- '.$json2);
+      $sCriptoCoin = new \App\Services\CriptoCoin\CriptoCoin();
+      $response =  $sCriptoCoin->checkPayment($request->all());
+      file_put_contents($dir."/".time().'-resp',$response);
+    }
 }
