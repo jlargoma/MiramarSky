@@ -319,7 +319,8 @@ class ApiController extends AppController
           $item_name = $room->RoomsType->title;
           $item_desc = '50% del pago de la reserva para los días '.dateMin($date_start).' al '. dateMin($date_finish);
           $sCriptoCoin = new \App\Services\CriptoCoin\CriptoCoin();
-          $sCriptoCoin->setParameters($customer->name, $customer->email, $book->id, $item_name,$item_desc, $amount);
+          $sCriptoCoin->setParameters($customer->name, $customer->email, $book->id, $item_name,$item_desc, 1);
+//          $sCriptoCoin->setParameters($customer->name, $customer->email, $book->id, $item_name,$item_desc, $amount);
           $urlCripto = $sCriptoCoin->getUrl();
           }
           /** END: criptomonedas          *************************************/
@@ -395,6 +396,12 @@ class ApiController extends AppController
         }
       }
       
+      $extraPrice = \App\Extras::loadFixed($book->room->sizeApto);
+      $book->extraCost = $extraPrice->giftCost;
+      $book->extraPrice = $extraPrice->giftPVP;
+      $book->luz_cost = $extraPrice->luzCost;
+    
+      
       $book->save();
     }
     
@@ -455,8 +462,5 @@ class ApiController extends AppController
       return response()->json(['success'=>false,'data'=>'Acceso denegado'],401);
     }
     
-    public function checkPayment(Request $request) {
-      $sCriptoCoin = new \App\Services\CriptoCoin\CriptoCoin();
-      return $sCriptoCoin->checkPayment($request->all());
-    }
+   
 }

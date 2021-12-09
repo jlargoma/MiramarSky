@@ -1292,7 +1292,7 @@ class BookController extends AppController
             $booksQuery = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))
                             ->where('finish', '<', $year->end_date)
                             ->with('room','payments','customer','leads')
-                            ->where('type_book', 2)->orderBy('finish', 'ASC');
+                            ->whereIn('type_book',[1,2,7,8])->orderBy('finish', 'ASC');
             
             if ($uRole == "agente"){
                 $booksQuery->where(function ($query2) use ($roomsAgents,$agency) {

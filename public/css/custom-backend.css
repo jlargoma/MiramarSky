@@ -533,10 +533,6 @@ div#safeBoxLst {
   margin: 5px 1px;
 }
 
-
-.table.table-striped tbody tr.Reservado td {
-  background-color: #FFF !important;
-}
 .contestado-email {
   background-color: #f8f7c8 !important;
 }
@@ -710,6 +706,11 @@ table.table-prices {
 .table.table-striped tbody tr.Blocked-ical td,
 .blocked-ical, .Blocked-ical{
   background-color: #e8afe7 !important;
+}
+
+.table.table-striped tbody tr.Blocked-ical.direct td,
+.blocked-ical, .Blocked-ical.direct{
+  background-color: #ff008059 !important;
 }
 
 .line-divide {

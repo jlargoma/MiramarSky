@@ -389,7 +389,7 @@ trait OtasTraits
     }
     $dw = listDaysSpanish(true);
 
-    return view('backend/zodomus/cal-sites', [
+    return view('backend/prices/cal-sites', [
         'rooms' => $rooms,
         'dw' => $dw,
         'days' => $days,

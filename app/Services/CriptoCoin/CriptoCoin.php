@@ -18,14 +18,13 @@ class CriptoCoin {
     $this->merchant_id = "ea84a699e42f3ce88d72e4b89058e83a";
     $this->parameters = [];
     $this->error_msg = '';
-    $this->siteResp = 'http://dev-miramar.virtual';
+    $this->siteResp = 'https://www.apartamentosierranevada.net';
   }
 
   public function setParameters($name, $mail, $bID, $item_name, $item_desc, $amount) {
 
     $success_url = $this->siteResp . '/payByCripto?success=1';
-    $cancel_url = $this->siteResp . '/payByCripto?error=1';
-    $ipn_url = $this->siteResp . '/payByCripto?ipn=1';
+    $cancel_url = $this->siteResp . '/payByCripto?cancel=1';
 
     $oOrder = new BookCriptos();
     $oOrder->book_id = $bID;
@@ -44,7 +43,7 @@ class CriptoCoin {
         'cancel_url' => $cancel_url,
         'invoice' => "MIRAMARSKI-RVA-$bID",
         'custom' => $oOrder->token,
-        'ipn_url' => $ipn_url,
+        'ipn_url' => 'https://admin.apartamentosierranevada.net/api/booking-cripto-payment',
         'first_name' => $name,
         'last_name' => '',
         'email' => $mail,
@@ -83,12 +82,13 @@ class CriptoCoin {
     $auth_ok = false;
     if ($request !== FALSE && !empty($request)) {
       if (isset($request['ipn_mode']) && $request['ipn_mode'] == 'hmac') {
-        if (isset($request['HTTP_HMAC']) && !empty($request['HTTP_HMAC'])) {
+        if (isset($_SERVER['HTTP_HMAC']) && !empty($_SERVER['HTTP_HMAC'])) {
 
           if (isset($request['merchant']) && $request['merchant'] == trim($this->merchant_id)) {
-            $hmac = hash_hmac("sha512", $request['requestText'], trim($this->ipn_secret));
+            $requestText = file_get_contents('php://input');
+            $hmac = hash_hmac("sha512", $requestText, trim($this->ipn_secret));
 //            echo $hmac; die;
-            if ($hmac == $request['HTTP_HMAC']) {
+            if ($hmac == $_SERVER['HTTP_HMAC']) {
               $auth_ok = true;
             } else {
               $error_msg = 'HMAC signature does not match';

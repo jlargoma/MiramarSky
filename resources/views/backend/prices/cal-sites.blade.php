@@ -81,40 +81,10 @@ $extr = '<span class="btnCalendar btn btn-primary"  data-toggle="modal" data-tar
           </thead>
           <tbody>
         @foreach($rooms as $kRoom=>$item)
-       <tr class="room-name">
-              <th  class="room-name static static-header" colspan="{{$hcol}}"  >
-                <div class="col-2">
-                  <h4 class="white">{{str_replace('ROSA - ','',$item['tit'])}}</h4>
-                </div>
-                @if(!_IS_MOBILE)
-                <div class="col-2">
-                  <table class="table-prices">
-                    <tr>
-                      <td><span class="price-booking">{{$item['price_booking']}}</span></td>
-                      <td><span class="price-airbnb">{{$item['price_airbnb']}}</span></td>
-                      <td><span class="price-expedia">{{$item['price_expedia']}}</span></td>
-                      <td><span class="price-google">{{$item['price_google']}}</span></td>
-                    </tr>
-                  </table>
-                </div>
-                @endif
-              </th>
-              <td colspan="{{$tDays-$hcol+1}}"></td>
-            </tr>
-            @if(_IS_MOBILE)
-            <tr class="room-name">
-              <th  class="room-name mobile static static-header" colspan="4"  >
-                <div class="pricelist">
-                  <div><span class="price-booking">{{$item['price_booking']}}</span></div>
-                  <div><span class="price-airbnb">{{$item['price_airbnb']}}</span></div>
-                  <div><span class="price-expedia">{{$item['price_expedia']}}</span></div>
-                  <div><span class="price-google">{{$item['price_google']}}</span></div>
-                </div>
-              </th>
-              <td colspan="{{$tDays-4}}"></td>
-            </tr>
-            @endif
-
+          <tr class="room-name">
+            <th>{{str_replace('ROSA - ','',$item['tit'])}}</th>
+            @include('backend.prices.blocks.otaPrices')
+          </tr>
         <tr>
           <th>Precio €</th>
           <?php $priceLst = $item['data']['priceLst']; ?>
@@ -198,8 +168,7 @@ $extr = '<span class="btnCalendar btn btn-primary"  data-toggle="modal" data-tar
       
     </div>
   </div>
-<br/><br/>
-<small>
+<small class="hidden-mobile">
   <span class="benef">33%</span>: Porcentaje de beneficio calculado sobre el precio de Google Hotel 
   y cuyo costo es la sumatoria del costo del apto + costo limpieza 
   + costo de parking + costo Exta (obsequio) + costo Lujo (si corresponde).<br/>
@@ -527,7 +496,11 @@ $(document).ready(function () {
     padding: 13px;
   }
 
+  #table_prices.table-resumen tr.room-name td {
+    text-align: left !important;
+ }
 
+  #table_prices.table-resumen tr.room-name th,
   #table_prices.table-resumen tr.room-name td {
     background-color: #2a5d9b !important;
     color: #fff;
@@ -643,6 +616,14 @@ $(document).ready(function () {
   .label_sel_col{
     font-size: 1.15em;font-weight: 800;text-align: right;
   }
+  
+  .price-google:before,
+  .price-airbnb:before,
+  .price-booking:before,
+  .price-expedia:before  {
+    margin-top: 3px !important;
+  }
+    
   @media only screen and (max-width: 425px) {
     .select-site{
       clear: both;
