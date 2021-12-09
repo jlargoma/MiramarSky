@@ -653,6 +653,10 @@ $(document).ready(function () {
     select#sel_by_column {
       margin: 1em 0;
     }
+    .buttons-lst {
+        width: 65em !important;
+        margin-bottom: 1em;
+    }
   }
 
 </style>

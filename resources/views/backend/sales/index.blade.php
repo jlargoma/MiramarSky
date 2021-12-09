@@ -77,6 +77,7 @@
 
         .updBookField.alert {
             background-color: #f8d053 !important;
+            margin-bottom: 0px !important;
         }
         .title-year-selector{
             display: none;
