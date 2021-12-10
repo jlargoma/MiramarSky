@@ -21,14 +21,15 @@ class CriptoCoin {
     $this->siteResp = 'https://www.apartamentosierranevada.net';
   }
 
-  public function setParameters($name, $mail, $bID, $item_name, $item_desc, $amount) {
+  public function setParameters($name, $mail, $bID, $item_name, $item_desc,$criptoPVP,$discCripto) {
 
     $success_url = $this->siteResp . '/payByCripto?success=1';
     $cancel_url = $this->siteResp . '/payByCripto?cancel=1';
 
     $oOrder = new BookCriptos();
     $oOrder->book_id = $bID;
-    $oOrder->amount = $amount;
+    $oOrder->amount = $criptoPVP;
+    $oOrder->discount = $discCripto;
     $oOrder->token = md5($mail . time());
     $oOrder->save();
 
@@ -51,7 +52,7 @@ class CriptoCoin {
         'item_name' => $item_name,
         'item_desc' => $item_desc,
         'quantity' => 0,
-        'amountf' => $amount,
+        'amountf' => $criptoPVP,
         'taxf' => 0,
     );
   }
@@ -142,6 +143,7 @@ class CriptoCoin {
   }
 
   function paymentSuccess($posted) {
+    
     $token = $posted['custom'];
 
     $oOrder = BookCriptos::where('token', $token)->first();
@@ -182,6 +184,11 @@ class CriptoCoin {
       } else
         $book->changeBook(2, "", $book);
     }
+    $comment = $book->comment;
+    $book->comment = $comment."\n".'10% dto opcional aplicado por pago con criptomoneda: '.moneda($oOrder->discount);
+    $book->total_price -= $oOrder->discount;
+    $book->save();
+    
     $this->error_msg = '';
     return true;
   }

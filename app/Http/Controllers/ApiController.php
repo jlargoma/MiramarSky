@@ -156,11 +156,11 @@ class ApiController extends AppController
         $extras = isset($selected['ext']) ? $selected['ext'] : [];
         $response = $this->createBooking($date_start,$date_finish,$customer,$oRoom,$comments,$pax,$extras,$rate);
         if ($response){
-          return response()->json(['data'=>$response[0],'cripto'=>$response[1],'c_token'=>$this->customerToken,'observations'=>$widget_observations],200);
+          return response()->json(['data'=>$response[0],'cripto'=>$response[1],'criptoPvp'=>$response[2],'c_token'=>$this->customerToken,'observations'=>$widget_observations],200);
         }
       }
       $response =  'No hay información disponible';
-      return response()->json(['data'=>$response,'cripto'=>null,'c_token'=>$this->customerToken,'observations'=>$widget_observations],401);
+      return response()->json(['data'=>$response,'cripto'=>null,'criptoPvp'=>null,'c_token'=>$this->customerToken,'observations'=>$widget_observations],401);
      
     }
     
@@ -315,16 +315,19 @@ class ApiController extends AppController
 
           /** BEGIN: criptomonedas        *************************************/
           $urlCripto = null;
-          if ($cData['c_phone'] == 98765432){
+          $criptoPVP = null;
           $item_name = $room->RoomsType->title;
-          $item_desc = '50% del pago de la reserva para los días '.dateMin($date_start).' al '. dateMin($date_finish);
+          $item_desc = '50% del pago de la reserva para los días '.
+                  dateMin($date_start).' al '. dateMin($date_finish).
+                  ' ( 10% dto opcional aplicado )';
+          
           $sCriptoCoin = new \App\Services\CriptoCoin\CriptoCoin();
-          $sCriptoCoin->setParameters($customer->name, $customer->email, $book->id, $item_name,$item_desc, 1);
-//          $sCriptoCoin->setParameters($customer->name, $customer->email, $book->id, $item_name,$item_desc, $amount);
+          $discCripto = $amount*0.1;
+          $criptoPVP = $amount-$discCripto;
+          $sCriptoCoin->setParameters($customer->name, $customer->email, $book->id, $item_name,$item_desc,$criptoPVP,$discCripto);
           $urlCripto = $sCriptoCoin->getUrl();
-          }
           /** END: criptomonedas          *************************************/
-          return [$urlPayland,$urlCripto];
+          return [$urlPayland,$urlCripto,moneda($criptoPVP)];
       }
       
     }
