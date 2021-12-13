@@ -47,6 +47,7 @@ class VerifyCsrfToken extends BaseVerifier
         '/api/*',
         '/ajax/createSafetyBox',
         '/ajax/SafetyBox-updKey',
-        '/payments-moto'
+        '/payments-moto',
+        '/payments-by-cripto/'
     ];
 }
