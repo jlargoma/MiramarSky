@@ -193,16 +193,9 @@ label.checkbox :checked + span:after {
     <div class="background"></div>
     <div class="contenedor">
       <h3 class="tpv">TPV</h3>
-      <?php if (env('APP_APPLICATION') == "riad"): ?>
-        <a class="logo" href="/">
-          <img src="{{ assetV('img/riad/logo_riad_b.png') }}" alt="Riad">
-        </a>
-      <?php else: ?>
         <a class="logo" href="/">
           <img src="{{ assetV('img/miramarski/logo_miramar.png') }}" alt="miramarSki">
         </a>
-      <?php endif; ?>
-
       @if($request_dni)
       <div class="form black">
        
@@ -245,11 +238,15 @@ label.checkbox :checked + span:after {
           <p class="loader"></p>
         </div>
         <div id="form_step_2" style="display:none">
+          @include('frontend.bookStatus.cripto')
+          <h4>B) PAGO CON PASARELA SEGURA</h4>
           <iframe src="{{ $urlPayland  }}" frameborder="0" style="width: 100%; min-height: 550px;"></iframe>
         </div>
         <div id="recaptcha" class="g-recaptcha" data-sitekey="6Ld4Jh8TAAAAAD2tURa21kTFwMkKoyJCqaXb0uoK"></div>
       </div>
       @else
+      @include('frontend.bookStatus.cripto')
+      <h4>B) PAGO CON PASARELA SEGURA</h4>
       <iframe src="{{ $urlPayland  }}" frameborder="0" style="width: 100%; min-height: 550px;"></iframe>
       @endif
 
