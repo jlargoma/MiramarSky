@@ -610,6 +610,7 @@ class PaylandsController extends AppController
                 }
               }
             }
+//            $urlPayland = 'http://miramar.virtual/testpayment.html';
             $urlPayland = $this->generateOrderPaymentBooking(
                     $payment->book_id,
                     $payment->cli_id,
@@ -619,13 +620,12 @@ class PaylandsController extends AppController
                     $payment->is_deferred
                     );
             
-            if (env('APP_APPLICATION') == "riad"){
-              $background = assetV('img/riad/lockscreen.jpg');
-            } else {
-              $background = assetV('img/miramarski/lockscreen.jpg');
-            }
+            $background = assetV('img/miramarski/lockscreen.jpg');
+            
+            $discCripto = $payment->amount*0.1;
+            $criptoPVP = $payment->amount-$discCripto;
       
-             return view('frontend.bookStatus.paylandPay', 
+            return view('frontend.bookStatus.paylandPay', 
                      [
                          'urlPayland' => $urlPayland,
                          'background'=>$background,
@@ -633,7 +633,11 @@ class PaylandsController extends AppController
                          'urlSend'=>route('front.payments.dni',$token),
                          'dates' => $dates,
                          'name' => $name,
-                         'request_dni' =>$request_dni
+                         'request_dni'=>$request_dni,
+                         'token'=>$token,
+                         'amount' =>$payment->amount,
+                         'discCripto' =>$discCripto,
+                         'criptoPVP'  =>$criptoPVP
                          ]);
           }
           return redirect()->route('paymeny-error');
@@ -641,6 +645,31 @@ class PaylandsController extends AppController
         return redirect()->route('paymeny-error');
       }
     
+    public function paymentsFormsCripto(Request $request) {
+      $token = $request->input('tkn');
+      if ($token){
+        $payment = \App\PaymentOrders::where('token',$token)->first();
+        if ($payment){
+          $book = \App\Book::find($payment->book_id);
+          $amount = $payment->amount;
+          $item_name = $book->room->RoomsType->title;
+          $customer = $book->customer;
+          $item_desc = 'Pago por parte de la reserva para los días '.
+                  dateMin($book->start).' al '. dateMin($book->finish).
+                  ' ( 10% dto opcional aplicado )';
+
+          $sCriptoCoin = new \App\Services\CriptoCoin\CriptoCoin();
+          $discCripto = $amount*0.1;
+          $criptoPVP = $amount-$discCripto;
+          $sCriptoCoin->setParameters($customer->name, $customer->email, $book->id, $item_name,$item_desc,$criptoPVP,$discCripto);
+          $urlCripto = $sCriptoCoin->getUrl();
+          return Redirect::to($urlCripto);
+        }
+        return redirect()->route('paymeny-error');
+      }
+      return redirect()->route('paymeny-error');
+    }
+      
    public function saveDni(Request $request,$token) {
       $dni = $request->input('dni', null);
       $accepted_hiring_policies = $request->input('accepted_hiring_policies', null);

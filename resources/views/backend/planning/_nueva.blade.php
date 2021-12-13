@@ -191,6 +191,7 @@ $is_mobile = $mobile->isMobile();
                           <?php endif; ?>
                         <?php endforeach ?>
                     </select>
+                    <span class="textAptoInfo"></span>
                 </div>
                 <div style="clear: both;"></div>
                 <?php if ( Auth::user()->role != "agente" ): ?>

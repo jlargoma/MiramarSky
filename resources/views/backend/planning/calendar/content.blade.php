@@ -30,13 +30,15 @@ $appName = env('APP_APPLICATION');
                 $typeAux = 2; 
                 $currentAux = null; 
                 $posicion = 0;
-                $arrayLine = [5,7,17,18,24,30,31,32,33];
+                $arrayLine = ['10G','9R','3M','CHLT','U7','10I','V8'];
+                $line = '';
+//                $arrayLine = [7,17,18,24,30,31,32,33];
                 ?>
                 <?php foreach ($roomscalendar as $key => $room): ?>
                   <?php $inicio = $inicioAux->copy() ?>
 
                   <?php 
-                  $line = in_array($posicion, $arrayLine) ? "line-divide " : '';
+                  
                   $posicion++;
                   $luxAux = $room->luxury;
                   $typeAux = $room->sizeApto;
@@ -48,7 +50,7 @@ $appName = env('APP_APPLICATION');
                       <button class="font-w800 btn btn-xs getImages" type="button" data-toggle="modal" data-target="#modalRoomImages" style="z-index: 99; border: none; background-color: white; color:black;padding: 0;" data-id="<?php echo $room->id; ?>">
                         <i class="fa fa-eye"></i>
                       </button>
-                      <b style="cursor: pointer;" data-placement="right" title="" data-toggle="tooltip" data-original-title="<?php echo $room->name ?>">
+                      <b style="cursor: pointer;" data-placement="right" title="" data-toggle="tooltip" data-original-title="<?php echo $room->name ?>" data-kk="{{$room->nameRoom}}">
                     <?php echo substr($room->nameRoom, 0, 5) ?>
                       </b>
 
@@ -84,7 +86,9 @@ $appName = env('APP_APPLICATION');
                   <?php endforeach ?>
                   </tr>
 
-<?php  endforeach; ?>
+<?php 
+$line = in_array($room->nameRoom, $arrayLine) ? "line-divide " : '';
+endforeach; ?>
               </tbody>
               @include('backend.planning.calendar.months_footer')
             </table>

@@ -198,7 +198,7 @@ class GetRoomsSuggest {
       if (isset($aux['google-hotel'])){
         $pvpGH = $aux['google-hotel'];
         $profit = $pvpGH-$tCost;
-        $inc_percent = intval(($profit / $pvpGH ) * 100,0)+15;
+        $inc_percent = intval(($profit / $pvpGH ) * 100,0);
       }
       $aux['benef'] = $inc_percent;
       

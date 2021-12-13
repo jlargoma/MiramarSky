@@ -132,6 +132,11 @@ $(document).ready(function() {
           $('#publ_beneficio').html(data.calculated.profit);
           $('#publ_beneficio_perc').html(data.calculated.profit_percentage+ '%');
           
+          if (data.aux.moreInfo){
+            $('.textAptoInfo').show().text(data.aux.moreInfo);
+          } else {
+            $('.textAptoInfo').hide().text('');
+            }
           
           var total_pvp = $('#total_pvp').val();
           var benef = total_pvp - data.calculated.total_cost;
