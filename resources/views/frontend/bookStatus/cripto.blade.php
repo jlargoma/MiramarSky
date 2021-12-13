@@ -3,7 +3,7 @@
   <form action="{{route('front.payments-byCripto')}}" method="POST" class="payCripto">
     <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
     <input type="hidden" id="tkn" name="tkn" value="{{ $token }}">
-    <img src="/img/pagarCripto2.png" alt="paga 10% menos con criptos"/>
+    <img src="https://admin.apartamentosierranevada.net/img/pagarCripto2.png" alt="paga 10% menos con criptos"/>
     <button class="btnpay">Pagar <span class="tachado">{{moneda($amount)}}</span> {{moneda($criptoPVP)}}</button>
     <div class="ahorro">Ahorro estimado {{moneda($discCripto)}}</div>
   </form>
@@ -67,9 +67,9 @@ a.payCripto:hover {
 .ahorro {
     margin: 10px auto 1px;
     font-weight: bold;
-    color: #4c4c01;
-    background-color: yellow;
-    border: 1px solid #cbcb12;
+    color: #8d8d0c;
+    /*background-color: yellow;*/
+    /*border: 1px solid #cbcb12;*/
     padding: 5px;
     width: 170px;
     border-radius: 6px;
