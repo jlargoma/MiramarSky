@@ -54,6 +54,10 @@
                 <label for="maxOcu">Ocu. Max</label>
                 <input type="number" name="maxOcu" class="form-control" value="<?php echo $room->maxOcu; ?>"/>
             </div>
+            <div class="col-md-2 col-xs-4 push-20">
+                <label for="maxOcu">Info. PAX</label>
+                <input type="text" name="meta_title" class="form-control" maxlength="60" value="<?php echo $room->meta_title; ?>"/>
+            </div>
         </div>
         <div class="">
             <div class="">

@@ -1944,6 +1944,7 @@ class BookController extends AppController
         $data['calculated']['profit_percentage'] = ($totalPrice>0) ? round(($profit / $totalPrice) * 100) : 0;
         $data['calculated']['real_price']        = array_sum($data['totales']);
         $data['aux']['min_day']        = $room->getMin_estancia($start, $finish);
+        $data['aux']['moreInfo']       = $room->meta_title;
         
         
         return $data;

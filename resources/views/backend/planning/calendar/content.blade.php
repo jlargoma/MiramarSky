@@ -30,7 +30,7 @@ $appName = env('APP_APPLICATION');
                 $typeAux = 2; 
                 $currentAux = null; 
                 $posicion = 0;
-                $arrayLine = ['9R','3M','CHLT','U7','10I','EST.GORBEA'];
+                $arrayLine = ['10G','9R','3M','CHLT','U7','10I','V8'];
                 $line = '';
 //                $arrayLine = [7,17,18,24,30,31,32,33];
                 ?>

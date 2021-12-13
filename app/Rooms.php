@@ -406,7 +406,6 @@ class Rooms extends Model {
 
       $priceList = [];
       $prices = \App\Prices::whereIn('season', array_unique($seasonsActive))->where('occupation', $pricePax)->get();
-
       if ($prices) {
         foreach ($prices as $p) {
           $priceList[$p->season] = [
@@ -415,7 +414,15 @@ class Rooms extends Model {
           ];
         }
       }
-
+      if ($pax != $pricePax) {
+        $costs = \App\Prices::whereIn('season', array_unique($seasonsActive))->where('occupation', $pax)->get();
+        if ($costs) {
+          foreach ($costs as $c) {
+            $priceList[$p->season]['c'] = $c->cost;
+          }
+        }
+      }
+      
       foreach ($seassonDay as $s_time => $s_type) {
         if (isset($priceList[$s_type])) {
           $priceDay[$s_time] = $priceList[$s_type]['p'];
