@@ -418,7 +418,7 @@ class Rooms extends Model {
         $costs = \App\Prices::whereIn('season', array_unique($seasonsActive))->where('occupation', $pax)->get();
         if ($costs) {
           foreach ($costs as $c) {
-            $priceList[$p->season]['c'] = $c->cost;
+            $priceList[$c->season]["c"] = $c->cost;
           }
         }
       }
