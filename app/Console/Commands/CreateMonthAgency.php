@@ -53,7 +53,7 @@ class CreateMonthAgency extends Command {
 //    $date = strtotime('-1 months');
     $dateStart = date('Y-m-01', $date);
     $dateEnd = date('Y-m-t', $date);
-    var_dump($dateStart,$dateEnd);
+//    var_dump($dateStart,$dateEnd);
     $cost = \App\Book::where('start', '>=', $dateStart)
             ->where('start', '<=', $dateEnd)
             ->where('agency', 4)

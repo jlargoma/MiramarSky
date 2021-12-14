@@ -89,6 +89,9 @@ class Kernel extends ConsoleKernel
       $schedule->command('OTAs:SendAvailibilityMonth')->dailyAt('15:00')->timezone('Europe/Madrid');
       $schedule->command('OTAs:SendAvailibilityMonth')->dailyAt('19:00')->timezone('Europe/Madrid');
       $schedule->command('OTAs:SendAvailibilityMonth')->dailyAt('22:00')->timezone('Europe/Madrid');
+      
+      
+      $schedule->command('monthAgency:create')->monthly()->timezone('Europe/Madrid');
         
       $schedule->command('OTAs:CheckPrices')->everyThirtyMinutes();
       $schedule->command('DataDis:load')->dailyAt('2:00')->timezone('Europe/Madrid');
