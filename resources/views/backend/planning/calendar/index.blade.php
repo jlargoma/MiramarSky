@@ -42,9 +42,10 @@
     background-color: red !important;
   }
   .content-calendar   a.tip:hover span {
-    bottom: 5px;
+    bottom: -47px;
     top: auto !important;
     cursor: default;
+    white-space: nowrap;
   }
   
     .content-calendar .td-calendar{

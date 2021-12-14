@@ -2113,7 +2113,7 @@ class BookController extends AppController
       
         if ($vistaCompleta){
           $titulo .='<b>PVP</b>:'.$book->total_price.' | ';
-          $titulo .= strtoupper($book->user->name).'<br/>';
+          $titulo .= substr(strtoupper($book->user->name), 0, 8).'<br/>';
         }
 
         $titulo .= $agency;
@@ -2126,7 +2126,7 @@ class BookController extends AppController
         }
         if ($vistaCompleta && $book->type_book == 2){
             $amount = $book->payments->pluck('import')->sum();
-            $falta = intval($book->total_price) - $amount;
+            $falta = intval(intval($book->total_price) - $amount);
             if ($falta>5){
                $titulo.= '<b class="text-danger">PENDIENTE PAGO: '. $falta .'€</b>';
                $classTd = ' class="td-calendar bordander" ';

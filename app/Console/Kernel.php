@@ -42,6 +42,8 @@ class Kernel extends ConsoleKernel
         Commands\CheckPrices::class,
         Commands\icalOld::class,
         Commands\DataDis::class,
+        Commands\CreateMonthAgency::class,
+        Commands\zAutomaticTask::class,
 //        Commands\WubookGetBookings::class,
 //        Commands\ZodomusImport::class,
 //        Commands\RoomsPhotosMigrate::class,
