@@ -38,7 +38,7 @@ setlocale(LC_TIME, "es_ES");
         <h2 class="text-center">ENVIADO</h2>
       </div>
     </div>
-    <form  action="{{ url('/admin/reservas/sendEmail') }}" method="post" id="form-email">
+    <form  action="{{ url('/admin/reservas/sendEmail') }}" method="post" id="formSendEmail">
       <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
       <input type="hidden" class="id" name="id" value="<?php echo $book->id; ?>">
 
@@ -64,8 +64,8 @@ function sending() {
 }
 
 function sended() {
-  $('.loading .sending').hide();
-  $('.loading .sendend').show();
+  $('.loading').hide();
+//  $('.loading .sendend').show();
 }
 
 
@@ -91,7 +91,7 @@ function sended() {
 
 
 
-$('#form-email').submit(function (event) {
+$('#formSendEmail').submit(function (event) {
   event.preventDefault();
 
   sending();
@@ -102,20 +102,18 @@ $('#form-email').submit(function (event) {
   var textEmail = $('#textEmail').val();
   var type = 1;
   $.post(formURL, {_token: token, textEmail: textEmail, id: id, type: type}, function (data) {
-    if (data == 1) {
-      sended();
+    if (data == 'OK') {
       var type = $('.table-data').attr('data-type');
       var year = $('#fecha').val();
       $.get('/admin/reservas/api/getTableData', {type: type, year: year}, function (data) {
-
         $('.content-tables').empty().append(data);
-
       });
       $('.close').trigger('click');
-
     } else {
-      alert('Error al guardar estado');
+      alert('Error al guardar estado: '+data);
     }
+    
+    sended();
 
   });
 });

@@ -59,9 +59,6 @@ $uRole = Auth::user()->role;
                 <?php if ($book->agency != 0): ?>
                   <img class="img-agency" src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png"/>
                 <?php endif ?>
-                @if($book->is_fastpayment == 1 || $book->type_book == 99 )
-                 <img class="img-agency" src="/pages/fastpayment.png" />
-                @endif
                 <a class="update-book" data-id="<?php echo $book->id ?>" href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>">
                   <?php echo $book->customer['name']  ?>
                 </a>
