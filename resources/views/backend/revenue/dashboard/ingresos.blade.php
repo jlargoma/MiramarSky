@@ -152,7 +152,8 @@ $ingrMonths = $ingrSite = array();
           {
             <?php $count++; ?>
             borderColor: '{{printColor($count)}}',
-            label: "aa",
+            label: "",
+            fill: false,
             borderWidth: 1,
             data: [
               <?php
@@ -201,6 +202,7 @@ $ingrMonths = $ingrSite = array();
             borderColor: '{{printColor($count)}}',
             label: "{{$channels[$ch]}}",
             borderWidth: 1,
+            fill: false,
             data: [
             <?php
             foreach($lstMonths as $k => $month){

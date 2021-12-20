@@ -7,7 +7,7 @@ $disp = App\Rooms::avail();
 if ($books) {
   foreach ($books as $b) {
     $aPKI['pvp'] += $b->pvp;
-    if ($b->agency > 0)
+    if ($b->agency > 0 && $b->agency != 31)
       $aPKI['vAgen'] += $b->pvp;
     else
       $aPKI['vProp'] += $b->pvp;
@@ -123,8 +123,8 @@ $k = 0;
           <tr>
             <th>Total Noches</th>
             <th>Estancia media</th>
-            <th>Vnt Propia</th>
-            <th>Vnt Agencia</th>
+            <th>Vnt Propia (€)</th>
+            <th>Vnt Agencia (€)</th>
           </tr>
           <tr>
             <td class="td-h1">{{$aPKI['nigth']}}</td>

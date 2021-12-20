@@ -147,7 +147,7 @@ else $daysMonth = $mDays[intVal(explode('.',$month)[1])];
 //      else $rentabTotM = array_sum($grafPresupSite['result']);
 //      $rentabTotY = array_sum($grafPresupSite['result']);
       //END: datos para los graficos
-      $totalCostM = $otaCommM + $limpM + $ComisTPV_M + $cftM;
+      $totalCostM = $otaCommM + $limpM + $ComisTPV_M + $cftM + $tProp[$month];
       if ($totalCostM == 0)
         $totalCostM = 1;
       
@@ -170,6 +170,11 @@ else $daysMonth = $mDays[intVal(explode('.',$month)[1])];
           <td>COSTES FIJOS</td>
           <td class="text-right">{{moneda($cftM)}}</td>
           <td class="text-right"><?php echo ($cftM > 0) ? round($cftM / $totalCostM * 100) : 0; ?>%</td>
+        </tr>
+        <tr>
+          <td>COSTE PROP.</td>
+          <td class="text-right">{{moneda($tProp[$month])}}</td>
+          <td class="text-right"><?php echo ($tProp[$month] > 0) ? round($tProp[$month] / $totalCostM * 100) : 0; ?>%</td>
         </tr>
         <tr>
           <td>LIMPIEZA / LAVANDERÍA</td>

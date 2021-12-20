@@ -376,4 +376,22 @@ class RevenueService
       return ['lst'=>$result,'totals'=>$totals,'count'=>count($aBIDsFF)];
         
     }
+    
+    function getTotalProp(){
+      $result = [0=>0];
+      foreach ($this->lstMonths as $k2=>$v2)  $result[$k2] = 0;
+
+      $lst = Book::whereIn('type_book',$this->type_book)
+            ->where('start','>=',$this->start)
+            ->where('start','<=',$this->finish)
+            ->get();
+      foreach ($lst as $b){
+        $am = date('y.m',strtotime($b->start));
+        $result[$am]+= $b->get_costProp();
+      }
+        
+      $result[0] = array_sum($result);
+      
+      return $result;
+    }
 }

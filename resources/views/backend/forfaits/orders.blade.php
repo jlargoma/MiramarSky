@@ -174,7 +174,7 @@ $oRole = Auth::user()->role;
         <div class="col-md-6 bordered text-center">
           <h4 class="hint-text">Total de Ordenes</h4>
           <div class="p-l-20">
-            <h3 ><?php echo $totalOrders; ?></h3>
+            <h3 ><?php echo $countOrder; ?></h3>
           </div>
         </div>
         <div class="col-md-6 bordered text-center">
@@ -182,8 +182,8 @@ $oRole = Auth::user()->role;
             <h3 >
               <?php 
               $promedio = 0;
-              if ($totals['orders']>0){
-                $promedio = round($totals['totalPrice'])/$totals['orders'];
+              if ($countOrder>0){
+                $promedio = round($totals['totalPrice'])/$countOrder;
               }
               echo number_format(round($promedio), 0, ',', '.')
               ?>
@@ -246,6 +246,7 @@ $oRole = Auth::user()->role;
           <?php
           foreach ($orders as $order):
             $book = $order['book'];
+            $style = $book->type_book == 0 ? 'style="color:red;"' : '';
           ?>
           <tr>
             <?php if ($book): ?>
@@ -254,13 +255,13 @@ $oRole = Auth::user()->role;
                 <?php if ( $book->agency != 0): ?>
               <img src="/pages/<?php echo strtolower($book->getAgency($book->agency)) ?>.png" class="img-agency" />
             <?php endif ?>
-              <div class="th-name">
+              <div class="th-name" <?php echo $style; ?>>
                                 <?php if (isset($payment[$book->id])): ?>
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" style="color: red"><?php echo $book->customer['name']  ?></a>
                                 <?php else: ?>
                                     <a class="update-book" data-id="<?php echo $book->id ?>"  title="<?php echo $book->customer['name'] ?> - <?php echo $book->customer['email'] ?>"  href="{{url ('/admin/reservas/update')}}/<?php echo $book->id ?>" ><?php echo $book->customer['name']  ?></a>
                                 <?php endif ?>
-                               
+                             <br/>{{$book->getStatus($book->type_book)}}  
               </div>
                            </div>
                             </td>
