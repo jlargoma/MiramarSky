@@ -68,41 +68,9 @@ if ($pending<0) $pending = 0;
 </style>
 <script type="text/javascript">
   /*----------------------------------------------------------------------*/
-  var data = {
-      labels: [
-<?php
-$auxY = $year->year - 3;
-for ($i = 1; $i <= 4; $i++):
-  echo "'$auxY',";
-  $auxY++;
-endfor;
-?>
-      ],
-      datasets: [
-          {
-              label: "Ingresos por Temp",
-              backgroundColor: 'rgba(54, 162, 235, 0.2)',
-              borderColor: 'rgba(54, 162, 235, 1)',
-              borderWidth: 1,
-              data: [
-<?php
-$auxY = $year->year - 3;
-for ($i = 1; $i <= 4; $i++):
-  $totalYear = \App\BookDay::getPvpByYear($auxY);
-  echo "'" . $totalYear . "',";
-  $auxY++;
-endfor;
-?>
-              ],
-          }
-      ]
-  };
-
-
-
   var myBarChart = new Chart('barChartContabilidad1', {
       type: 'line',
-      data: data,
+      data: dataCharContabilidad,
   });
 
   /*----------------------------------------------------------------------*/
@@ -112,20 +80,19 @@ endfor;
     data: {
       labels: ["Cobrado", "Pendiente", ],
       datasets: [{
-          label: "Population (millions)",
+          label: "",
           backgroundColor: ["#38C8A7", "#8e5ea2"],
           data: [
-
             //Comprobamos si existen cobros
-<?php echo round($ingr_cobrado) ?>,
-<?php echo round($pending) ?>,
+            <?php echo round($ingr_cobrado) ?>,
+            <?php echo round($pending) ?>,
           ]
         }]
     },
     options: {
       title: {
         display: false,
-        text: 'Ingresos de la temporada'
+        text: ''
       }
     }
   });

@@ -1720,7 +1720,7 @@ class LiquidacionController extends AppController {
     $months_empty = $data['months_empty'];
     $lstMonths = $data['lstMonths'];
     $t_room_month = $data['t_room_month'];
-    $year = $data['year'];
+    $oYear = $data['year'];
     $channels = $data['channels'];
     $chRooms = $data['chRooms'];
     $sales_rooms = $data['sales_rooms'];
@@ -1732,8 +1732,8 @@ class LiquidacionController extends AppController {
     
     /* INDICADORES DE LA TEMPORADA */
     
-    $countDiasPropios = \App\Book::where('start', '>', $startYear)
-                  ->where('finish', '<', $endYear)
+    $countDiasPropios = \App\Book::where('start', '>=', $startYear)
+                  ->where('start', '<=', $endYear)
                   ->whereIn('type_book', [7,8])
                   ->sum('nigths');
     
@@ -1742,14 +1742,15 @@ class LiquidacionController extends AppController {
 
         
     $cobrado = $metalico = $banco = $vendido = $vta_prop = 0;
-//    dd($books);
-    foreach ($books as $key => $book) {
-      $date = date('ym', strtotime($book->start));
-      
+    $booksPay = \App\Book::where_type_book_sales(true)->with('payments')
+            ->where('start', '>=', $startYear)
+            ->where('start', '<=', $endYear)->get();
+    
+    $cobrado = $metalico = $banco = $vendido = 0;
+    foreach ($booksPay as $key => $book) {
       if ($book->payments){
         foreach ($book->payments as $pay){
           $cobrado += $pay->import;
-
           if ($pay->type == 0 || $pay->type == 1) {
             $metalico += $pay->import;
           } else  {
@@ -1757,10 +1758,7 @@ class LiquidacionController extends AppController {
           }
         }
       }
- 
-      //Rooom info
-      $value = $book->pvp;
-      $vendido += $book->pvp;
+      $vendido += $book->total_price;
     }
 
     $totBooks = count($books);
@@ -1772,11 +1770,11 @@ class LiquidacionController extends AppController {
       $dataChartMonths[getMonthsSpanish($v['m'])] = $val;
     }
     //*******************************************************************//
-    $ffData = $oLiq->getFF_Data($year);
+    $ffData = $oLiq->getFF_Data($oYear->year);
     $months_ff = null;
     $cachedRepository  = new \App\Repositories\CachedRepository();
     $ForfaitsItemController = new \App\Http\Controllers\ForfaitsItemController($cachedRepository);
-    $months_obj = $ForfaitsItemController->getMonthlyData($year);
+    $months_obj = $ForfaitsItemController->getMonthlyData($oYear);
     if ($months_obj){
       $months_ff = $months_obj['months_obj'];
     }
@@ -1819,7 +1817,7 @@ class LiquidacionController extends AppController {
     ///////////////////////////////
     
     return view('backend/sales/contabilidad', [
-        'year' => $year,
+        'year' => $oYear,
         'diff' => $diff,
         'sales_rooms' => $sales_rooms,
         'lstMonths' => $lstMonths,

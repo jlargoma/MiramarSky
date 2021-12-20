@@ -183,12 +183,13 @@ class RevenueController extends AppController
         'total'=>0,
         'to_pay'=>0,
         'pay'=>0,
-        'q'=>$forfaits['count']
+        'q'=>0
         ];
     if (isset($ffTot[0]['t'])){
       $ffData['total'] = $ffTot[0]['t'];
       $ffData['to_pay'] = $ffTot[0]['p'];
       $ffData['pay'] = $ffTot[0]['c'];
+      $ffData['q'] = $ffTot[0]['q'];
     }
     
     $books = \App\Book::where_type_book_sales(true)->with('payments')

@@ -92,17 +92,10 @@ $isMobile = $mobile->isMobile();
     <div class="container-fluid">
         <div class="row bg-white push-30">
             <div class="col-lg-4 col-md-6 col-xs-12">
-                <div class="col-lg-6 col-md-6 hidden-mobile">
-                    <div>
-                        <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
-                    </div>
+                <div class="hidden-mobile">
+                  <canvas id="charContabilidadIngr" style="width: 100%; height: 250px;"></canvas>
                 </div>
-                <div class="col-lg-6 col-md-6  hidden-mobile">
-                    <div>
-                        <canvas id="barChart2" style="width: 100%; height: 250px;"></canvas>
-                    </div>
-                </div>
-              <div class="col-md-12 col-xs-12">
+              <div class="">
                 @include('backend.sales._by_season')
                 </div>
             </div>
@@ -319,53 +312,11 @@ $isMobile = $mobile->isMobile();
 @section('scripts')
     <script type="text/javascript">
 
-      
-      var data = {
-        labels: [
-
-	        <?php $lastThreeSeason = Carbon::createFromFormat('Y', $year->year)->subYears(3) ?>
-	        <?php for ($i=1; $i <= 4; $i++): ?>
-	            <?php echo "'" . $lastThreeSeason->format('y') . "-".$lastThreeSeason->copy()->addYear()->format('y')."'," ?>
-                <?php $lastThreeSeason->addYear(); ?>
-            <?php endfor; ?>
-        ],
-        datasets: [
-          {
-            label: "Ingresos por Temp",
-            backgroundColor: [
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(54, 162, 235, 0.2)'
-            ],
-            borderColor: [
-              'rgba(54, 162, 235, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(54, 162, 235, 1)'
-            ],
-            borderWidth: 1,
-            data: [
-	            <?php $lastThreeSeason = Carbon::createFromFormat('Y', $year->year)->subYears(3) ?>
-                <?php for ($i=1; $i <= 4; $i++): ?>
-                    <?php $totalYear = \App\Rooms::getPvpByYear($lastThreeSeason->copy()->format('Y')); ?>
-                    <?php echo "'" . $totalYear. "'," ?>
-                    <?php $lastThreeSeason->addYear(); ?>
-                <?php endfor; ?>
-            ],
-          }
-        ]
-      };
-
-      var myBarChart = new Chart('barChart', {
+      var myBarChart = new Chart('charContabilidadIngr', {
         type: 'line',
-        data: data,
+        data: dataCharContabilidad,
       });
 
-      var myBarChart = new Chart('barChart2', {
-        type: 'bar',
-        data: data,
-      });
 
 
       var myBarChart = new Chart('barChartMonth', {

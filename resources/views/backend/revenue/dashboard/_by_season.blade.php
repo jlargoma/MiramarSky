@@ -2,7 +2,7 @@
   <?php 
   $oldResult = 0;
   $totalPVP = 0; 
-  
+  $toGrafJs = [];
   $arrayColors = ['bg-info', 'bg-complete', 'bg-primary',];
   $year = $year->year-2;
   
@@ -16,7 +16,8 @@
     $totalExpense = \App\Expenses::getTotalByYear($yearAux); 
     $otherIngr = \App\Incomes::getIncomesYear($yearAux);
     $totalFF = App\Models\Forfaits\Forfaits::getTotalByYear($yearAux);
-    $result = $totalPVP-$totalExpense+$otherIngr+$totalFF;
+    $result = $totalPVP+$otherIngr+$totalFF-$totalExpense;
+    $toGrafJs[$yearAux] = $totalPVP+$otherIngr+$totalFF;
     ?>
     <div class="col-md-4 col-xs-6 m-b-10">
 
@@ -57,3 +58,30 @@ endfor;
 ?>
 
 </div>
+<script type="text/javascript">
+  /*----------------------------------------------------------------------*/
+  var dataCharContabilidad = {
+      labels: [
+        <?php
+          foreach($toGrafJs as $k=>$v){
+            $auxY = $k-2000;
+            echo "'".$auxY.'-'.($auxY+1)."',";
+          }
+        ?>
+      ],
+      datasets: [
+          {
+              label: "Total Ingr. Temp.",
+              backgroundColor: 'rgba(54, 162, 235, 0.2)',
+              borderColor: 'rgba(54, 162, 235, 1)',
+              borderWidth: 1,
+              data: [
+                <?php
+                foreach($toGrafJs as $k=>$v) echo "'" . ceil($v) . "',";
+                ?>
+              ],
+          }
+      ]
+  };
+  
+  </script>

@@ -434,7 +434,7 @@ trait ForfaitsPaymentsTraits {
         'totalPayment'=> 0,
         'totalToPay'  => 0,
       ];
-            
+    $countOrder = 0;
     if ($allForfaits){
       foreach ($allForfaits as $forfait){
           
@@ -454,7 +454,7 @@ trait ForfaitsPaymentsTraits {
               if ($order->status == 3){
                 continue; //ORder cancel
               }
-              
+              $countOrder++;
               if ($order->quick_order){
                 switch ($order->type){
                   case 'forfaits':
@@ -570,7 +570,7 @@ trait ForfaitsPaymentsTraits {
       if ($booksCheckin>0 && $totalOrders>0){
         $ff_checkin = ceil(($totalOrders/$booksCheckin)*100);
       }
-               
+            
       if ($totals['totalToPay']<0) $totals['totalToPay'] = 0;
       return view('backend.forfaits.orders', [
           'orders' => $lstOrders,
@@ -585,6 +585,7 @@ trait ForfaitsPaymentsTraits {
           'months_label'=> $obj1['months_label'],
           'ff_checkin'=> $ff_checkin,
           'totalOrders'=> $totalOrders,
+          'countOrder'=> $countOrder,
               ]);
     }
     

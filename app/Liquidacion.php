@@ -143,7 +143,6 @@ class Liquidacion
       $total = 0;
       $ffItems = [];
       $allForfaits =  Models\Forfaits\Forfaits::getAllOrdersSold(null,$year);
-      
       if ($allForfaits && count($allForfaits)>0){
         $ffItems = Models\Forfaits\Forfaits::getTotalByTypeForfatis($allForfaits);
         $totalClassesMat = 0;
