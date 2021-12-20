@@ -412,9 +412,9 @@ trait ForfaitsPaymentsTraits {
     $startYear = $year->start_date;
     $endYear = $year->end_date;
     
-    $bIDs = \App\BookDay::where_type_book_sales(true,true)
-            ->where('date', '>=', $startYear)->where('date', '<=', $endYear)
-            ->pluck('book_id')->toArray();
+    $bIDs = \App\Book::where('start', '>=', $startYear)
+            ->where('start', '<=', $endYear)
+            ->pluck('id')->toArray();
     
     if ($bIDs) $bIDs = array_unique($bIDs);
   
