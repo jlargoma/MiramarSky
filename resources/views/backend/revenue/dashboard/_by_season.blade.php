@@ -16,8 +16,7 @@
     $totalExpense = \App\Expenses::getTotalByYear($yearAux); 
     $otherIngr = \App\Incomes::getIncomesYear($yearAux);
     $totalFF = App\Models\Forfaits\Forfaits::getTotalByYear($yearAux);
-    if ($totalFF) $otherIngr += $totalFF;
-    $result = $totalPVP-$totalExpense+$otherIngr;
+    $result = $totalPVP-$totalExpense+$otherIngr+$totalFF;
     ?>
     <div class="col-md-4 col-xs-6 m-b-10">
 
@@ -31,6 +30,7 @@
               <div class="col-xs-10 text-white font-s24">
                   <div><?php echo moneda($totalPVP); ?></div>
                   <div>+<?php echo moneda($otherIngr); ?></div>
+                  <div>+<?php echo moneda($totalFF); ?> <small>FF</small></div>
                   <div>- <?php echo moneda($totalExpense); ?></div>
                   <div style="border-bottom: 1px solid;"> </div>
                   <div class="mt-1em"><?php echo moneda($result); ?></div>

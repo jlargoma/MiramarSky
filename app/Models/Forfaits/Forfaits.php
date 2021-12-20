@@ -200,27 +200,25 @@ class Forfaits extends Model
   }
   
   static function getAllOrdersSold($month,$year) {
-    $qry = Forfaits::select('forfaits_orders.*')
-            ->join('forfaits_orders','forfaits.id','=','forfaits_orders.forfats_id');
-    
+    $bIDs = null;
+    $bIDsQry = \App\Book::where_type_book_sales(true,true);
     if ($month){
-      $qry->whereYear('forfaits.created_at','=', $year)
-              ->whereMonth('forfaits.created_at','=', $month);
+      $bIDsQry->whereYear('start','=', $year)
+              ->whereMonth('start','=', $month);
     } else {
       $activeYear = \App\Years::where('year', $year)->first();
       if (!$activeYear) return 0;
       $startYear  = $activeYear->start_date;
       $endYear    = $activeYear->end_date;
-      $qry->where('forfaits.created_at', '>=', $startYear)
-              ->where('forfaits.created_at', '<=', $endYear);
+      $bIDsQry->where('start', '>=', $startYear)->where('start', '<=', $endYear);
     }
-      
-    
-    return $qry->whereIn('forfaits.status', [2,3]) // cobrada
-            ->where('forfaits_orders.status', '!=',3) // no cancel
-            ->get();
+    $bIDs = $bIDsQry->pluck('id')->toArray();
+    if ($bIDs) $bIDs = array_unique($bIDs);
+    return self::getAllOrdersSoldByBooks($bIDs);
   }
+  
   static function getAllOrdersSoldByBooks($bIDs) {
+    
     $qry = Forfaits::select('forfaits_orders.*','forfaits.book_id')
             ->join('forfaits_orders','forfaits.id','=','forfaits_orders.forfats_id');
     $qry->whereIn('forfaits.book_id',$bIDs);
@@ -235,10 +233,16 @@ class Forfaits extends Model
     $total = 0;
     $ffItems = [];
     $allForfaits =  self::getAllOrdersSold(null,$year);
-    return self::getTotalByForfatis($allForfaits);
+    if ($allForfaits && count($allForfaits)>0){
+      $ffItems = self::getTotalByTypeForfatis($allForfaits);
+      $total = $ffItems['t'];
+    }
+    
+    return $total;
   }
   
   static function getTotalByForfatis($Forfaits){
+    die('en construcción');
     $total = 0;
     $ffItems = [];
     if (count($Forfaits)){
@@ -257,7 +261,7 @@ class Forfaits extends Model
     return $total;
   }
   static function getTotalByTypeForfatis($Forfaits){
-    $totals = ['t'=>0,'p'=>0,'c'=>0];
+    $totals = ['t'=>0,'p'=>0,'c'=>0,'q'=>0];
     $ffItems = [];
     if (count($Forfaits)){
       foreach ($Forfaits as $order){
@@ -277,6 +281,7 @@ class Forfaits extends Model
             
         }
       }
+      $totals['q'] = count($Forfaits);
     }
     if ($ffItems){
       if (!isset($totals['forfaits'])) $totals['forfaits'] = 0;

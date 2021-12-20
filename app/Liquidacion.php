@@ -52,19 +52,32 @@ class Liquidacion
      */
     public function get_summary($lstRvs,$temporada=false) {
       $bLstID = [];
-      $t_pax = $t_nights = $t_pvp = $t_cost = $vta_agency = 0;
+      $t_pax = $t_nights = $t_pvp = $t_cost = $vta_agency = $vta_prop = 0;
       foreach ($lstRvs as $key => $b) {
         $m = date('ym', strtotime($b->date));
         $t_pvp += $b->pvp;
         $t_nights++;
         if (!isset($bLstID[$b->book_id])){
           $bLstID[$b->book_id] = 1;
-          if ($b->agency != 0) $vta_agency++;
+          
+          
+          
           $t_pax += $b->pax;
         }
+        
+        $vtaProp = false;
+        if ($b->agency == 0 || $b->agency == 31){
+          $vtaProp = true;
+          $vta_prop++;
+        } elseif ($b->type_book == 99 || $b->is_fastpayment){
+          $vta_prop++;
+          $vtaProp = true;
+        }
+
+        if (!$vtaProp) $vta_agency++;
+          
         $t_cost += $b->costs;
       }
-   
       //------------------------------------
       /***************************************/
       /*****    COSTOS                ********/
@@ -112,7 +125,7 @@ class Liquidacion
           'daysTemp'=>\App\SeasonDays::first()->numDays,//$startYear->diffInDays($endYear)
         ];
       if($t_books>0){
-        $summary['vta_agency'] = round(($vta_agency / $t_books) * 100);
+        $summary['vta_agency'] = round(($vta_agency / $t_nights) * 100);
         $summary['vta_prop'] = 100-$summary['vta_agency'];    
       }
      
@@ -126,88 +139,40 @@ class Liquidacion
      * @param type $endYear
      * @return type
      */
-    public function getFF_Data($startYear,$endYear) {
-    
-    $allForfaits = Models\Forfaits\Forfaits::whereIn('status',[2,3])
-            ->where('created_at', '>=', $startYear)->where('created_at', '<=', $endYear)->get();
+    public function getFF_Data($year) {
+      $total = 0;
+      $ffItems = [];
+      $allForfaits =  Models\Forfaits\Forfaits::getAllOrdersSold(null,$year);
       
-    $totalPrice = $forfaits = $totalToPay = $totalToPay = $totalPayment = 0;
-    $totalFFExpress = $totalClassesMat = 0;
-    $toPayFF = $toPayMat = 0;
-    $forfaitsIDs = $ordersID = $common_ordersID = array();
-    if ($allForfaits){
-      foreach ($allForfaits as $forfait){
-        $allOrders = $forfait->orders()->get();
-        if ($allOrders){
-          foreach ($allOrders as $order){
-            if ($order->status == 3){
-              continue; //ORder cancel
-            }
+      if ($allForfaits && count($allForfaits)>0){
+        $ffItems = Models\Forfaits\Forfaits::getTotalByTypeForfatis($allForfaits);
+        $totalClassesMat = 0;
+        if (isset($ffItems['clases'])) $totalClassesMat += $ffItems['clases'];
+        if (isset($ffItems['equipos'])) $totalClassesMat += $ffItems['equipos'];
+        return [
+            'q'=>isset($ffItems['q']) ? $ffItems['q'] : 0,
+            'to_pay'=> isset($ffItems['p']) ? $ffItems['p'] : 0,
+            'to_pay_mat'=>0,
+            'total'=>isset($ffItems['t']) ? $ffItems['t'] : 0,
+            'pay'=>isset($ffItems['c']) ? $ffItems['c'] : 0,
+            'totalFFExpress'=>isset($ffItems['forfaits']) ? $ffItems['forfaits'] : 0,
+            'totalClassesMat'=>$totalClassesMat,
+        ];
+      }
 
-            if (!$order->quick_order){
-              $common_ordersID[] = $order->id;
-              continue;
-            }
-            $totalPrice += $order->total;
-            $ordersID[] = $order->id;
-            
-            
-            if ($order->status == 2){
-              $totalPayment += $order->total;
-              if ($order->type == 'forfaits'){
-                 $totalFFExpress += $order->total;
-              } else {
-                $totalClassesMat += $order->total;
-//                echo $order->total.' '.$order->forfats_id.'<br>';
-              }
-            }
-            if ($order->status != 2){
-              if ($order->type == 'forfaits'){
-                 $toPayFF += $order->total;
-              } else {
-                $toPayMat += $order->total;
-              }
-            }
-          }
-        }
-        $forfaitsIDs[] = $forfait->id;
-      }
       
-      if ($common_ordersID){
-        $totalCommonOrders = Models\Forfaits\ForfaitsOrderItem::whereIn('order_id',$common_ordersID)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
-        $totalFFExpress += $totalCommonOrders;
-        $totalPayment += $totalCommonOrders;
-      }
-  
-      /*--------------------------------*/
-//      if (count($ordersID)>0){
-//        $totalPayment = ForfaitsOrderPayments::whereIn('order_id', $ordersID)->where('paid',1)->sum('amount');
-//        if ($totalPayment>0){
-//          $totalPayment = $totalPayment/100;
-//          $totalClassesMat += $totalPayment;
-//        }
-//        $totalPayment2 =  ForfaitsOrderPayments::whereIn('forfats_id', $forfaitsIDs)->where('paid',1)->sum('amount');
-//
-//        if ($totalPayment2>0){
-//          $totalPayment += $totalPayment2/100;
-//          $totalFFExpress += round($totalPayment2/100,2);
-//        }
-//      }
-      $totalToPay = $totalPrice - $totalPayment;
-     //---------------------------------------------------------/ 
-    }
-    if ($totalToPay<0) $totalToPay = 0;
-//    dd($totalClassesMat);
-    return [
-        'q'=>count($ordersID),
-        'to_pay'=>$toPayFF,
-        'to_pay_mat'=>$toPayMat,
-        'total'=>$totalPrice,
-        'pay'=>$totalPayment,
-        'totalFFExpress'=>$totalFFExpress,
-        'totalClassesMat'=>$totalClassesMat,
-    ];
       
+       return [
+            'q'=>0,
+            'to_pay'=>  0,
+            'to_pay_mat'=>0,
+            'total'=> 0,
+            'pay'=>0,
+            'totalFFExpress'=>0,
+            'totalClassesMat'=>0,
+        ];
+    
+    
   }
   
   /**
@@ -469,18 +434,11 @@ class Liquidacion
            case 29: $agency_name = 'h';  break;
            case 31: $agency_name = 'vd';  break;
            case 999999: $agency_name = 'gh';  break; 
-           default :
-          
-            if ($book->agency>0) $agency_name = 'none';
-            else {
-              if ($book->type_book == 99 || $book->is_fastpayment) // fastpayment
-                  $agency_name = 'vd';
-              else
-                $agency_name = 'none';
-            }
-            
-          break;
+           default: $agency_name = 'none'; break;
         }
+        if ($book->type_book == 99 || $book->is_fastpayment) // fastpayment
+                  $agency_name = 'vd';
+        
         $PVPAgencia = isset($commAge[$book->book_id]) ? $commAge[$book->book_id] : 0;
         $t = $book->pvp;
         $data[$agency_name]['total']        += $t;
@@ -497,7 +455,7 @@ class Liquidacion
           if ($d['total']>0 && $totals['total']>0)
             $data[$a]['total_rate'] = round($d['total']/$totals['total']*100);
         }
-        
+
       }
       return  ['totals' => $totals,'data'=>$data];
     }

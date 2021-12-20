@@ -1742,6 +1742,7 @@ class LiquidacionController extends AppController {
 
         
     $cobrado = $metalico = $banco = $vendido = $vta_prop = 0;
+//    dd($books);
     foreach ($books as $key => $book) {
       $date = date('ym', strtotime($book->start));
       
@@ -1758,8 +1759,8 @@ class LiquidacionController extends AppController {
       }
  
       //Rooom info
-      $value = $book->total_price;
-      $vendido += $book->total_price;
+      $value = $book->pvp;
+      $vendido += $book->pvp;
     }
 
     $totBooks = count($books);
@@ -1771,7 +1772,7 @@ class LiquidacionController extends AppController {
       $dataChartMonths[getMonthsSpanish($v['m'])] = $val;
     }
     //*******************************************************************//
-    $ffData = $oLiq->getFF_Data($startYear,$endYear);
+    $ffData = $oLiq->getFF_Data($year);
     $months_ff = null;
     $cachedRepository  = new \App\Repositories\CachedRepository();
     $ForfaitsItemController = new \App\Http\Controllers\ForfaitsItemController($cachedRepository);

@@ -376,4 +376,19 @@ class RevenueService
       return ['lst'=>$result,'totals'=>$totals,'count'=>count($aBIDsFF)];
         
     }
+    
+    function getTotalProp(){
+      $lst = $this->books;
+      $result = [0=>0];
+      foreach ($this->lstMonths as $k2=>$v2)  $result[$k2] = 0;
+
+      foreach ($lst as $b){
+        $am = date('y.m',strtotime($b->date));
+        $result[$am]+= $b->costs;
+      }
+        
+      $result[0] = array_sum($result);
+      
+      return $result;
+    }
 }

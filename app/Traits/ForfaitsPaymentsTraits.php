@@ -409,11 +409,17 @@ trait ForfaitsPaymentsTraits {
   function listOrders(){
     
     $year = $this->getActiveYear();
-    $startYear = new Carbon($year->start_date);
-    $endYear = new Carbon($year->end_date);
+    $startYear = $year->start_date;
+    $endYear = $year->end_date;
     
-    $allForfaits = Forfaits::whereIn('status',[2,3])
-            ->where('created_at', '>=', $startYear)->where('created_at', '<=', $endYear)->get();
+    $bIDs = \App\BookDay::where_type_book_sales(true,true)
+            ->where('date', '>=', $startYear)->where('date', '<=', $endYear)
+            ->pluck('book_id')->toArray();
+    
+    if ($bIDs) $bIDs = array_unique($bIDs);
+  
+    $allForfaits = Forfaits::whereIn('status', [2,3])
+            ->whereIn('forfaits.book_id',$bIDs)->get();
 
     $lstOrders = [];
    
@@ -637,49 +643,32 @@ trait ForfaitsPaymentsTraits {
             ];
           }
           
-          
+          $keys = ['forfaits','equipos','clases','otros'];
           $monthValue = array();
+          $i = 0;
           foreach ($months_obj as $k=>$months){
             $common_ordersID = [];
             $value = 0;
+            $monthValue[$i] = 0;
+            $months_obj[$k]['value'] = 0;
 
                     
             $orders = Forfaits::getAllOrdersSold($months['month'],$months['dateYear']);
             if ($orders){
-              foreach ($orders as $order){
-//                if ($order->status != 2)continue;
-                if ($order->quick_order){
-                  $type = 'otros';
-                  if ($order->type){
-                    $type = $order->type;
-                  }
-                  $months_obj[$k]['data'][$type] += $order->total;
-                  
-                  $value += $order->total;
-                } else {
-                  $common_ordersID[] = $order->id;
+              $ffItems = Forfaits::getTotalByTypeForfatis($orders);
+              foreach ($keys as $kd){
+                $value = (isset($ffItems[$kd])) ? $ffItems[$kd] : 0;
+                if ($value){
+                  $months_obj[$k]['data'][$kd] = $value;
+                  $months_obj[$k]['value'] += $value;
+                  $monthValue[$i] += $value;
                 }
-              }
-              
-              if (count($common_ordersID)>0){
-               $ffTotal = ForfaitsOrderItem::whereIn('order_id',$common_ordersID)->where('type', 'forfaits')->WhereNull('cancel')->sum('total');
-               $months_obj[$k]['data']['forfaits'] += $ffTotal;
-               $value += $ffTotal;
+                
               }
             }
-            
-           
-            if ($value){
-              $months_obj[$k]['value'] = $value;
-              $monthValue[] = $value;
-            }
-            else {
-              $monthValue[] = 0;
-              $months_obj[$k]['value'] = 0;
-            }
+            $i++;
             
           }
-//          dd($months_obj);
           return [
               'year'        => $year->year,
               'selected'    => $selected,

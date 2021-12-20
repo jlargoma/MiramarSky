@@ -129,6 +129,7 @@ class RevenueController extends AppController
         'time_end' =>strtotime($oYear->end_date),
         'month' =>$month,
         'bookingCount'=>$bookingCount,
+        'tProp'=>$oServ->getTotalProp(),
         'monthlyLimp'=>$oServ->getMonthSum('cost_limp', 'finish', $oYear->start_date, $oYear->end_date),
         'monthlyOta'=>$oServ->getMonthSum('PVPAgencia', 'finish', $oYear->start_date, $oYear->end_date),
         'comisionesTPV' => $oServ->commisionTPVBookingsSiteMonths()
