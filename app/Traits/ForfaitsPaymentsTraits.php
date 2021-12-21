@@ -1599,6 +1599,13 @@ trait ForfaitsPaymentsTraits {
     if ($oForfait){
       $resume = $oForfait->resume();
       echo $resume;
+      if ($oForfait->more_info){
+        echo '<div class="ffsolicitud">';
+        echo $oForfait->phone;
+        echo $oForfait->email;
+        echo $oForfait->more_info;
+        echo '</div>';
+      }
     } else {
       echo '<p>Sin datos</p>';
     }
