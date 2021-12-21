@@ -111,7 +111,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-12 push-20 ">
+        <div class="col-md-12 push-20 overAuto" >
           <h4 class="text-center">Descripción del apto</h4>
           <textarea class="form-control" name="description" rows="7"><?php echo $room->description; ?></textarea>
         </div>

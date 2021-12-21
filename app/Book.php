@@ -1056,6 +1056,19 @@ class Book extends Model {
 
   }
   
+  static function cliHas_lst($bIDs){
+    $result = [[],[]];
+    $cliHas = BookData::whereIn('key',['client_has_beds','client_has_babyCarriage'])
+            ->where('content',1)
+            ->whereIn('book_id',$bIDs)->get();
+    if ($cliHas){
+      foreach ($cliHas as $d){
+        if ($d->key == 'client_has_beds') $result[0][] = $d->book_id;
+        else $result[1][] = $d->book_id;
+      }
+    }
+    return $result;
+  }
   /**********************************************************************/
   /////////  book_meta //////////////
    public function setMetaContent($key,$content) {
