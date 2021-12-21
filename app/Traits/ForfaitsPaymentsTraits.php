@@ -439,7 +439,7 @@ trait ForfaitsPaymentsTraits {
       foreach ($allForfaits as $forfait){
           
           $book = Book::find($forfait->book_id);
-          $allOrders = $forfait->orders()->get();
+          $allOrders = $forfait->orders()->where('status','!=',3)->get();
           $quick_order = 0;
           $totalPrice = 0;
           $totalPayment = 0;
@@ -453,7 +453,7 @@ trait ForfaitsPaymentsTraits {
               
               if ($order->status == 3){
                 continue; //ORder cancel
-              }
+              }             
               $countOrder++;
               if ($order->quick_order){
                 switch ($order->type){
@@ -530,6 +530,7 @@ trait ForfaitsPaymentsTraits {
                   'ff_sent'     => $ff_sent,
                   'status'     => $forfait->get_ff_status(),
                   'ff_item_total'=> $ff_item_total,
+                  'qty'=>count($allOrders)
               ];
 //              if (true){  /** @FFToDo no mostrar las canceladas**/
               
@@ -1598,6 +1599,13 @@ trait ForfaitsPaymentsTraits {
     if ($oForfait){
       $resume = $oForfait->resume();
       echo $resume;
+      if ($oForfait->more_info){
+        echo '<div class="ffsolicitud">';
+        echo $oForfait->phone;
+        echo $oForfait->email;
+        echo $oForfait->more_info;
+        echo '</div>';
+      }
     } else {
       echo '<p>Sin datos</p>';
     }

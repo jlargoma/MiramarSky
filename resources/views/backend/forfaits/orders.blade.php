@@ -171,10 +171,16 @@ $oRole = Auth::user()->role;
           <h4 class="hint-text bold">Vendido Temporada</h4>
             <h3 ><?php echo number_format(round($totals['totalSale']), 0, ',', '.') ?> €</h3>
         </div>
-        <div class="col-md-6 bordered text-center">
-          <h4 class="hint-text">Total de Ordenes</h4>
+        <div class="col-md-3 bordered text-center">
+          <h4 class="hint-text">Ordenes</h4>
           <div class="p-l-20">
             <h3 ><?php echo $countOrder; ?></h3>
+          </div>
+        </div>
+        <div class="col-md-3 bordered text-center">
+          <h4 class="hint-text">Reservas</h4>
+          <div class="p-l-20">
+            <h3 ><?php echo $totalOrders; ?></h3>
           </div>
         </div>
         <div class="col-md-6 bordered text-center">
@@ -223,7 +229,7 @@ $oRole = Auth::user()->role;
             <th class="th-bookings th-2">Pax</th>
             <th class="th-bookings">Apart</th>
             <th class="th-bookings th-2"><i class="fa fa-moon-o"></i> </th>
-            <th class="th-bookings th-2"><i class="fa fa-clock-o"></i></th>
+            <th class="th-bookings th-2">Qty Ord</th>
             <th class="th-bookings th-4">IN</th>
             <th class="th-bookings th-4">OUT</th>
             <th class="th-bookings th-6">
@@ -299,7 +305,7 @@ $oRole = Auth::user()->role;
                             </td>
                             <td class ="text-center"><?php echo $book->nigths ?></td>
                             <td class="text-center sm-p-t-10 sm-p-b-10">
-                                {{$book->schedule}}
+                                {{$order['qty']}}
                             </td>
                            <td class="td-date" data-order="{{$book->start}}">
                               <?php echo dateMin($book->start) ?>

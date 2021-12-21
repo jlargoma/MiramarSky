@@ -26,6 +26,7 @@ $uRole = Auth::user()->role;
         <th class="text-center Reservado-table text-white" style="width: 12%!important"> Estado</th>
         @endif
         <th class="text-center Reservado-table text-white" style="max-width:30px !important;">&nbsp;</th>
+        <th class="text-center Reservado-table text-white" style="min-width: 120px;">&nbsp;</th>
 		<?php if ($uRole != "agente" ): ?>
         <th class="text-center Reservado-table text-white" style="width: 65px!important">Acciones</th>
 		<?php endif ?>
@@ -142,6 +143,13 @@ $uRole = Auth::user()->role;
                             class="text-left"><?php echo $book->book_owned_comments ?></p></div>
 
                 <?php endif ?>
+            </td>
+            <td>
+                <?php 
+                if ($uRole != "limpieza"):
+                  echo $book->showPricePlanning($payment);
+                endif;
+                ?>
             </td>
             <?php if ( $uRole != "agente" ): ?>
             <td>

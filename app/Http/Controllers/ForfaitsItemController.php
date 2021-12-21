@@ -688,6 +688,7 @@ class ForfaitsItemController extends AppController {
         'orders' => '',
         'key' => [$ordenID, $control]
     ];
+    $solicitud = '';
 
     $ordenID = desencriptID($ordenID);
     $bookingNumbers = [];
@@ -710,6 +711,7 @@ class ForfaitsItemController extends AppController {
             $userData['start'] = $book->start;
             $userData['finish'] = $book->finish;
             $userData['ff_status'] = $status;
+            $solicitud = $oForfait->more_info;
             if ($book->agency != 0){
               $userData['agency'] = url('/pages/'.strtolower($book->getAgency($book->agency)).'.png');
               
@@ -745,10 +747,6 @@ class ForfaitsItemController extends AppController {
               }
             
           }
-        
-          
-//        
-    
         }
       }
     }
@@ -760,6 +758,7 @@ class ForfaitsItemController extends AppController {
       'seasons' => $this->getForfaitSeasons(),
       'ff_canceled' =>implode(', ', $bookingNumbers),
       'orders' => $orders,
+      'solicitud' => $solicitud,
     ];
     
     
@@ -1130,30 +1129,45 @@ class ForfaitsItemController extends AppController {
   }
   
   function createNewOrder(Request $req) {
-    $c_name = $req->input('c_name',null);
+    
+    $key = $req->input('tkn', null);
+    $forfait = Forfaits::getByKey($key);
+    if (!$forfait) {
+      return die('404');
+    }
+    
     $c_email = $req->input('c_email',null);
     $c_phone = $req->input('c_phone',null);
     $c_petition = $req->input('c_petition',null);
-    
+    $opts = $req->input('opts',null);
+    if (is_array($opts) && count($opts)>0){
+      $c_petition = '<p><b>'.implode(', ', $opts).'</b></p>'.$c_petition;
+    }
     $return = array(
         'status' => 'ok',
         'link'   => null
     );
     /** @FF-ToDo get by orderID */
-    $order = new Forfaits();
-    $order->name  = $c_name;
-    $order->email = $c_email;
-    $order->phone = $c_phone;
-    $order->more_info = $c_petition;
-    $order->save();
+    $forfait->email = $c_email;
+    $forfait->phone = $c_phone;
+    $forfait->more_info = $c_petition;
     
     
-    $link = env('FF_PAGE').encriptID($order->id).'-'. getKeyControl($order->id);   
+    $forfait->save();
     
-    $this->sendEmail_ForfaitNewOrder($order,$link);
-    $return['link'] = $link;     
+    
+    $oBook = Book::find($forfait->book_id);
+    if ($oBook->ff_status != 3 && $oBook->ff_status!= 4){ 
+      $oBook->ff_status = 5;
+      $oBook->save();
+    }
+      
+    
+    $link = env('FF_PAGE').encriptID($forfait->id).'-'. getKeyControl($forfait->id);   
+    
+    $this->sendEmail_ForfaitNewOrder($forfait,$link);
 
-    return $return;
+    return 'Solicitud enviada';
             
   }
 
