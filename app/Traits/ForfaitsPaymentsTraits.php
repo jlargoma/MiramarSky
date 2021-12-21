@@ -1601,8 +1601,8 @@ trait ForfaitsPaymentsTraits {
       echo $resume;
       if ($oForfait->more_info){
         echo '<div class="ffsolicitud">';
-        echo $oForfait->phone;
-        echo $oForfait->email;
+        if ($oForfait->phone) echo $oForfait->phone.'<br>';
+        if ($oForfait->email) echo $oForfait->email.'<br>';
         echo $oForfait->more_info;
         echo '</div>';
       }

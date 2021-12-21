@@ -1148,8 +1148,8 @@ class ForfaitsItemController extends AppController {
         'link'   => null
     );
     /** @FF-ToDo get by orderID */
-    $forfait->email = $c_email;
-    $forfait->phone = $c_phone;
+    if ($c_email) $forfait->email = $c_email;
+    if ($c_phone) $forfait->phone = $c_phone;
     $forfait->more_info = $c_petition;
     
     
