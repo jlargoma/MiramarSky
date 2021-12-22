@@ -99,7 +99,7 @@ $uRole = Auth::user()->role;
                     <i class="fa fa-eye"></i>
                 </button>
                 <?php endif ?>
-                <?php if (!empty($book->comment) || !empty($book->book_comments)): ?>
+                <?php if (!empty($book->comment) || !empty($book->book_comments) || !empty($book->book_owned_comments)): ?>
                     <div data-booking="<?php echo $book->id; ?>" class="showBookComm" >
                       <i class="far fa-comment-dots" style="color: #000;" aria-hidden="true"></i>
                       <div class="BookComm tooltiptext"></div>

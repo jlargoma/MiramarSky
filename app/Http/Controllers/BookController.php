@@ -2063,7 +2063,10 @@ class BookController extends AppController
             $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:"."<br>"." ".$book->comment."<br>";
         }
         if (!empty($book->book_comments)) {
-            $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments;
+            $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments."<br>";
+        }
+        if (!empty($book->book_owned_comments)) {
+            $textComment .= "<b>COMENTARIOS PROPIETARIO</b>:"."<br>"." ".$book->book_owned_comments."<br>";
         }
         echo $textComment;
       } else {

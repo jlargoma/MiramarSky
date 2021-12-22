@@ -104,12 +104,12 @@ $t_class = ($isMobile) ? '' : 'th-bookings';
                         </td>
                         <td class="text-center" data-order="{{$book->finish}}">{{dateMin($book->finish)}}</td>
                         <td class="text-center">
-                          @if($book->book_owned_comments)
-                          <div class="show-comment">
-                          <i class="far fa-comment-dots" style="color: #000;" aria-hidden="true"></i>
-                          <div class="comment-floating content-commentOwned-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $book->book_owned_comments ?></p></div>
-                          </div>
-                          @endif
+                          <?php if (!empty($book->comment) || !empty($book->book_comments) || !empty($book->book_owned_comments)): ?>
+                            <div data-booking="<?php echo $book->id; ?>" class="showBookComm col-xs-4" >
+                              <i class="far fa-comment-dots" style="color: #000;" aria-hidden="true"></i>
+                              <div class="BookComm tooltiptext"></div>
+                            </div>
+                          <?php endif ?>
                         </td>
                     </tr>
                 <?php endforeach ?>

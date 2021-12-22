@@ -255,6 +255,25 @@ $(document).ready(function () {
         });
         
     $('#filter').on('change',function(){$('#formFilter').submit()});
+    
+    var load_comment = true;
+    $('body').on('mouseover', '.showBookComm', function () {
+        var id = $(this).data('booking');
+        if (load_comment != id) {
+          var tooltip = $(this).find('.BookComm');
+          tooltip.load('/ajax/get-book-comm/' + id);
+          load_comment = id;
+          if (screen.width<768){
+            tooltip.css('top','auto');
+            tooltip.css('bottom','-9px');
+            tooltip.css('left', 'auto');
+            tooltip.css('right', '3px');
+          } else {
+            tooltip.css('top', (event.screenY-120));
+            tooltip.css('left', (event.pageX-100));
+          }
+        }
+    });
 });
 
 </script>
