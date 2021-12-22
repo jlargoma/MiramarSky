@@ -126,8 +126,7 @@ $lstSafetyBox = \App\BookSafetyBox::$keys_name;
                               <input type="text" class="only-numbers customer-phone" data-id="<?php echo $book->customer->id ?>"/>
                             <?php endif ?>
                           @endif
-                            <?php if ($uRole != "limpieza" && (!empty($book->comment) || !empty($book->book_comments))): ?>
-                          
+                            <?php if (!empty($book->comment) || !empty($book->book_comments) || !empty($book->book_owned_comments)): ?>
                             <div data-booking="<?php echo $book->id; ?>" class="showBookComm" >
                               <i class="far fa-comment-dots" style="color: #000;" aria-hidden="true"></i>
                               <div class="BookComm tooltiptext"></div>

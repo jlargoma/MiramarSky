@@ -53,21 +53,12 @@
                     @endif
                     
                     <div class="row table-icon-row">
-                        <?php if ((!empty($book->comment) || !empty($book->book_comments))): ?>
-                            <?php 
-                                $textComment = "";
-                                if (!empty($book->comment)) {
-                                    $textComment .= "<b>COMENTARIOS DEL CLIENTE</b>:"."<br>"." ".$book->comment."<br>";
-                                }
-                                if (!empty($book->book_comments)) {
-                                    $textComment .= "<b>COMENTARIOS DE LA RESERVA</b>:"."<br>"." ".$book->book_comments;
-                                }
-                            ?>
-                            <span class="icons-comment" data-class-content="content-comment-<?php echo $book->id?>">
-                                <i class="far fa-comment-dots" style="color: #000;" aria-hidden="true"></i>
-                            </span>
-                            <div class="comment-floating content-comment-<?php echo $book->id?>" style="display: none;"><p class="text-left"><?php echo $textComment ?></p></div>
-                        <?php endif ?>
+                       <?php if (!empty($book->comment) || !empty($book->book_comments) || !empty($book->book_owned_comments)): ?>
+                            <div data-booking="<?php echo $book->id; ?>" class="showBookComm col-xs-4" >
+                              <i class="far fa-comment-dots" style="color: #000;" aria-hidden="true"></i>
+                              <div class="BookComm tooltiptext"></div>
+                            </div>
+                          <?php endif ?>
                       </div>
                     
                     </td>
