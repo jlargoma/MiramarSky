@@ -168,6 +168,7 @@ span#loadchatbox {
   margin: 8px 5px;
   width: 1.5em;
   min-height: 1.5em !important;
+  height: 35px;
 }
 
 .icon-lst.partee-icon {
@@ -197,6 +198,7 @@ span#loadchatbox {
   display: flex;
   cursor: pointer;
   color: #d1d1d1;
+  min-height: 30px;
 }
 .cliHas.active{
   color: #ed2402;

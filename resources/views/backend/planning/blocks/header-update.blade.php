@@ -110,8 +110,12 @@
               <i class="fas fa-bed"></i>
             </span>
           </div>
+          <div class="icon-lst">
+            <span class="cliHas <?= ($cliHasBabyCarriage) ? 'active' : ''; ?>" title=" <?= ($cliHasBabyCarriage) ? 'CON' : 'SIN'; ?> CUNA" data-id="{{$book->id}}" data-t="babyCarriage">
+              <i class="fas babyCarriage"></i>
+            </span>
+          </div>
           <?php $book->printExtraIcon();?>
-          
         </div>
         </div>
         <div class="col-md-3 col-xs-12 content-guardar" style="padding: 20px 0;">

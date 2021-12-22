@@ -580,6 +580,8 @@ class BookController extends AppController
         if ($cliHasPhotos)  $cliHasPhotos = $cliHasPhotos->content;
         $cliHasBed = \App\BookData::findOrCreate('client_has_beds',$book->id);
         if ($cliHasBed)  $cliHasBed = $cliHasBed->content;
+        $cliHasBabyCarriage = \App\BookData::findOrCreate('client_has_babyCarriage',$book->id);
+        if ($cliHasBabyCarriage)  $cliHasBabyCarriage = $cliHasBabyCarriage->content;
         
         
         /*************************************/
@@ -607,6 +609,7 @@ class BookController extends AppController
             'partee'       => $partee,
             'cliHasPhotos' => $cliHasPhotos,
             'cliHasBed'    => $cliHasBed,
+            'cliHasBabyCarriage'    => $cliHasBabyCarriage,
             'creditCardData' => $creditCardData,
         ]);
     }
@@ -1181,6 +1184,7 @@ class BookController extends AppController
         $endYear   = new Carbon($year->end_date);
         $books     = [];
         $pullSent  = [];
+        $cliHas    = [];
         $oUser     = Auth::user();
         $uRole     = getUsrRole();
 
@@ -1259,20 +1263,10 @@ class BookController extends AppController
             $dateX = Carbon::now();
             // agregamos las especiales 7, 8
             $booksQuery = \App\Book::where('start', '>=', $dateX->copy()->subDays(3))
-                    ->select('book.*',DB::raw("book_data.content as 'has_beds'"))
                             ->where('start', '<=', $year->end_date)
                             ->with('room','payments','customer','leads')
                             ->whereIn('type_book', [1, 2, 7, 8])->orderBy('start', 'ASC');
-            
-            $booksQuery->leftJoin('book_data', function($join)
-                         {
-                             $join->on('book.id','=','book_data.book_id');
-                             $join->on('book_data.key','=',DB::raw("'client_has_beds'"));
-                         });
-                         
-                         
-            
-             if ($uRole == "agente")
+            if ($uRole == "agente")
             {
                 $booksQuery->where(function ($query2) use ($roomsAgents,$agency) {
                     $query2->whereIn('room_id', $roomsAgents)
@@ -1280,7 +1274,7 @@ class BookController extends AppController
                 });
             }
             $books = $booksQuery->get();
-            
+            $cliHas = Book::cliHas_lst($booksQuery->pluck('id'));
             break;
           case 'checkout':
             $dateX = Carbon::now();
@@ -1351,7 +1345,7 @@ class BookController extends AppController
            }
         }
            
-        return view('backend/planning/_table', compact('books', 'rooms', 'type', 'mobile','pullSent','payment'));
+        return view('backend/planning/_table', compact('books', 'rooms', 'type', 'mobile','pullSent','payment','cliHas'));
     }
 
     public function getLastBooks($type=null)
@@ -2640,6 +2634,9 @@ class BookController extends AppController
         break;
       case 'beds':
         $oData = \App\BookData::findOrCreate('client_has_beds',$bID);
+        break;
+      case 'babyCarriage':
+        $oData = \App\BookData::findOrCreate('client_has_babyCarriage',$bID);
         break;
     }
     

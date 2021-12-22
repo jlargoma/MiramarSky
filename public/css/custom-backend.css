@@ -837,6 +837,19 @@ td.bg-red {
 .ffsolicitud b{
   color: #000000 !important;
 }
+
+.babyCarriage{
+    background-image: url(/img/babyCarriage.png) !important;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 100%;
+    min-height: 14px;
+}
+.cliHas.active .babyCarriage{
+    background-image: url(/img/babyCarriageActive.png) !important;
+}
+
 /*****************************************************************************/
 /*****************************************************************************/
 /*****************************************************************************/

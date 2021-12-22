@@ -85,10 +85,22 @@ $t_class = ($isMobile) ? '' : 'th-bookings';
                            {{$book->schedule}} Hrs.
                         </td>
                         <td class="text-center" data-order="{{$book->start}}">{{dateMin($book->start)}}</td>
-                        <td class="text-center" data-order="{{$book->has_beds}}">
-                          <span class="<?= ($book->has_beds) ? 'red' : 'grey'; ?>" title=" <?= ($book->has_beds) ? 'CON' : 'SIN'; ?> CAMAS SUPLETORIAS" >
-                            <i class="fas fa-bed"></i>
-                          </span>
+                        <?php 
+                          $orderBeds = 0; $icon = '';
+                          if (in_array($book->id, $cliHas[1])){
+                            $orderBeds = 1;
+                            $icon .= '<span class="cliHas active" title="CON CUNA"><i class="fas babyCarriage"></i></span>';
+                          }
+                          if (in_array($book->id, $cliHas[0])){
+                              $icon .= '<span class="red" title=" CON CAMAS SUPLETORIAS" ><i class="fas fa-bed"></i></span>';
+                              $orderBeds = 1;
+                          } 
+                          if($orderBeds == 0) {
+                            $icon = '<span class="grey" title="Sin CAMAS SUPLETORIAS" ><i class="fas fa-bed"></i></span>';
+                          }
+                        ?>
+                        <td class="td-date mobil-pad-x3" data-order="{{$orderBeds}}">
+                            <?php echo $icon; ?>
                         </td>
                         <td class="text-center" data-order="{{$book->finish}}">{{dateMin($book->finish)}}</td>
                         <td class="text-center">
