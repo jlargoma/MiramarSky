@@ -111,6 +111,12 @@ class ForfaitsOrders extends Model
             'icon' => asset('/img/miramarski/ski_icon_status_orange.png')
         ];
         break;
+      case 5:
+        $result = [
+            'name' => 'INTERESADOS',
+            'icon' => asset('/img/miramarski/ski_icon_status_rosa.png')
+        ];
+        break;
     }
     return $result;
   }
