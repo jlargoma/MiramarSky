@@ -106,7 +106,7 @@ class Forfaits extends Model
       case 5:
         $result = [
             'name' => 'INTERESADOS',
-            'icon' => asset('/img/miramarski/ski_icon_status_consulta.png')
+            'icon' => asset('/img/miramarski/ski_icon_status_rosa.png')
         ];
         break;
     }
