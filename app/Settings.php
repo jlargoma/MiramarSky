@@ -59,6 +59,7 @@ class Settings extends Model {
            'text_payment_link',
            'SMS_Partee_msg',
            'SMS_buzon',
+          'forfait_email_request'
       ];
     }
 
@@ -86,6 +87,7 @@ class Settings extends Model {
         'second_payment_reminder' => 'Recordatorio 2º pago',
         'second_payment_confirm' => 'Confirmación del 2º pago',
         'Forfait_email_payment_request' => 'Solicitud de pago Forfaits',
+        'forfait_email_request' => 'Mail Solicitud Forfaits',
         'Forfait_email_confirmation_payment' => 'Confirmación pago Forfait',
         'payment_receipt' => 'Mail de recibos de pagos',
         'book_email_buzon' => 'Envío de datos del Buzón',

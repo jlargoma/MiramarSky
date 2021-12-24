@@ -1013,23 +1013,23 @@ class ForfaitsItemController extends AppController {
     if (!$this->checkUserAdmin($token,$client)) return die('404');
     
       $key = $req->input('key', null);
-      $data = $req->input('data', null);
+      $status = $req->input('data', null);
       if ($key) {
         $aKey = explode('-', $key);
         $orderID = isset($aKey[0]) ? ($aKey[0]) : null;
         $control = isset($aKey[1]) ? ($aKey[1]) : null;
         $orderID = desencriptID($orderID);
-        if (is_numeric($orderID) &&  $control == getKeyControl($orderID)){
+        if (is_numeric($orderID) && is_numeric($status) &&  $control == getKeyControl($orderID)){
             $order = Forfaits::find($orderID);
             if ($order){
               $bookingID = $order->book_id;
               $book = Book::find($bookingID);
               if ($book) {
-                $book->ff_status = intval($data);
+                $book->ff_status = $status;
                 $book->save();
               }
               
-              $order->status = intval($data);
+              $order->status = $status;
               $order->save();
               return response()->json(['status' => 'ok']);
             }
@@ -1128,6 +1128,11 @@ class ForfaitsItemController extends AppController {
     return $return;
   }
   
+  /**
+   * createNewOrder
+   * @param Request $req
+   * @return string
+   */
   function createNewOrder(Request $req) {
     
     $key = $req->input('tkn', null);
@@ -1136,36 +1141,37 @@ class ForfaitsItemController extends AppController {
       return die('404');
     }
     
-    $c_email = $req->input('c_email',null);
-    $c_phone = $req->input('c_phone',null);
+//    $c_email = $req->input('c_email',null);
+//    $c_phone = $req->input('c_phone',null);
     $c_petition = $req->input('c_petition',null);
     $opts = $req->input('opts',null);
-    if (is_array($opts) && count($opts)>0){
-      $c_petition = '<p><b>'.implode(', ', $opts).'</b></p>'.$c_petition;
-    }
+    $more_info = ['txt'=>$c_petition,'opts'=>$opts];
     $return = array(
         'status' => 'ok',
         'link'   => null
     );
     /** @FF-ToDo get by orderID */
-    if ($c_email) $forfait->email = $c_email;
-    if ($c_phone) $forfait->phone = $c_phone;
-    $forfait->more_info = $c_petition;
-    
-    
+//    if ($c_email) $forfait->email = $c_email;
+//    if ($c_phone) $forfait->phone = $c_phone;
+    $forfait->more_info = json_encode($more_info);
     $forfait->save();
     
     
+    $type_s = $req->input('type_s',null);
     $oBook = Book::find($forfait->book_id);
-    if ($oBook->ff_status != 3 && $oBook->ff_status!= 4){ 
+    if ($type_s == 'customer'){// || ($oBook->ff_status != 3 && $oBook->ff_status!= 4)){ 
       $oBook->ff_status = 5;
       $oBook->save();
     }
       
+    $customer = null;
+    if ($oBook->customer){ 
+      $customer = $oBook->customer;
+    }              
     
     $link = env('FF_PAGE').encriptID($forfait->id).'-'. getKeyControl($forfait->id);   
     
-    $this->sendEmail_ForfaitNewOrder($forfait,$link);
+    $this->sendEmail_ForfaitNewOrder($forfait,$link,$customer);
 
     return 'Solicitud enviada';
             

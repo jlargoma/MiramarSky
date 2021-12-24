@@ -24,6 +24,7 @@
     Route::get('/api/forfaits/getCurrentCart/{bID}/{uID}', 'ForfaitsItemController@getCurrentCart');
     Route::get('/api/forfaits/sedOrder/{bID}/{uID}/{type}', 'ForfaitsItemController@sendClientEmail');
     Route::post('/api/forfaits/sendOrder', 'ForfaitsItemController@sendOrdenToClient');
+    Route::post('/api/forfaits/recordarSolicitudFF', 'ForfaitsItemController@recordarSolicitudFF');
     Route::post('/api/forfaits/showOrder', 'ForfaitsItemController@showOrder');
     Route::post('/api/forfaits/sendConsult', 'ForfaitsItemController@sendEmail');
     Route::get('/api/forfaits/getSeasons', 'ForfaitsItemController@getForfaitSeasons');
