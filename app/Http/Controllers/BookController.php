@@ -1038,7 +1038,7 @@ class BookController extends AppController
     public function sendEmail(Request $request){
         $book = \App\Book::find($request->input('id'));
         if ($book){
-           if ($book->customer->send_mails == false || !$book->customer->email || trim($book->customer->email) == '') return 'El cliente no posee email';
+           if (!$book->customer->email || trim($book->customer->email) == '') return 'El cliente no posee email';
           $mailClientContent = $request->input('textEmail');
           $subject = 'Disponibilidad para tu reserva';
           $sended = Mail::send('backend.emails.base', [

@@ -17,7 +17,7 @@
       @if($item->action == 'change_status')
       <div class="status">
         <div class="chat-text">{{$item->subject}} 
-          @if(isset($roomLst[$item->room_id]))<span> {{$roomLst[$item->room_id]}}</span> @endif
+          @if(isset($roomLst[$item->room_id]))<span><i> ({{$roomLst[$item->room_id]}})</i></span> @endif
         </div>
         <div class="chat-user">
           @if(isset($userLst[$item->user_id])) 

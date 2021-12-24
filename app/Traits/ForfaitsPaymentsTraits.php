@@ -406,6 +406,10 @@ trait ForfaitsPaymentsTraits {
     return die('404');
   }
   
+  /**
+   * /admin/forfaits/orders
+   * @return type
+   */
   function listOrders(){
     
     $year = $this->getActiveYear();
@@ -418,7 +422,7 @@ trait ForfaitsPaymentsTraits {
     
     if ($bIDs) $bIDs = array_unique($bIDs);
   
-    $allForfaits = Forfaits::whereIn('status', [2,3])
+    $allForfaits = Forfaits::whereIn('status', [2,3,5])
             ->whereIn('forfaits.book_id',$bIDs)->get();
 
     $lstOrders = [];
@@ -945,6 +949,7 @@ trait ForfaitsPaymentsTraits {
           }
      
           if ($type == 'sms'){
+            return response()->json(['status' => 'error','msg'=>'SMS no habilitado']);
             if (!$phone || trim($phone) == ''){
               return response()->json(['status' => 'error','msg'=>'el usuario no posee teléfono']);
             }
@@ -999,11 +1004,55 @@ trait ForfaitsPaymentsTraits {
               }
               $orderText = $this->renderOrderList($ordersLst);
             }
-            
             $this->sendEmail_linkForfaitPayment($cli_email,$cli_name,$subject,$orderText,$urlPay,$book);
+            return response()->json(['status' => 'ok']);
           }
-          return response()->json(['status' => 'ok']);
         }
+      return response()->json(['status' => 'error3']);
+    }
+    
+    public function recordarSolicitudFF(Request $req) {
+      
+      $key = $req->input('key', null);
+      $type = $req->input('type', 'mail');
+      $token = $req->header('token-ff');
+      $client = $req->header('client');
+      if (!$this->checkUserAdmin($token,$client)) return die('404');
+    
+      $oForfait = Forfaits::getByKey($key);
+      if (!$oForfait) {
+        return response()->json(['status' => 'error1']);
+      }
+      
+      if ($oForfait){
+          $book = Book::find($oForfait->book_id);
+          if ($book){
+            $cli_email = $book->customer->email;
+            $cli_name = $book->customer->name;
+            $phone = $book->customer->phone;
+            $subject = 'formulario peticion Forfaits, clases de esquí';
+          
+            $urlFF = env('FF_PAGE').encriptID($oForfait->id).'-'. getKeyControl($oForfait->id);
+            $message = $message_wsp = Settings::getContent('forfait_email_request');
+            $message = str_replace('{customer_name}', $cli_name, $message);
+           
+            if ($type == 'text'){
+              $message = str_replace('{link_forfait}', $urlFF, $message);
+              $message = $this->clearVars($message);
+              $messageWSP = $message;
+              $message = strip_tags($message);
+              return response()->json(['status' => 'ok','msg'=>$message,'wsp'=> urlencode($messageWSP)]);
+            }
+            if ($type == 'mail'){
+              $message = nl2br($message);
+              $urlFF ='<a href="'.$urlFF.'" title="Ir al forfait">'.$urlFF.'</a>';
+              $message = str_replace('{link_forfait}', $urlFF, $message);
+              $message = $this->clearVars($message);
+              $this->sendEmail_text($message,$subject,$cli_email);
+              return response()->json(['status' => 'ok']);
+            }
+        }
+      }
       return response()->json(['status' => 'error3']);
     }
     
@@ -1422,6 +1471,10 @@ trait ForfaitsPaymentsTraits {
     
     $orders = [];
     $ff_status = $oForfait->checkStatus();
+    $oBook = Book::find($oForfait->book_id);
+    
+    //es mas important el status en la reserva
+    if ($oBook) $ff_status = $oBook->ff_status;
     
     $orderLst = $oForfait->orders()->get();
     if ($orderLst){
@@ -1599,13 +1652,23 @@ trait ForfaitsPaymentsTraits {
     if ($oForfait){
       $resume = $oForfait->resume();
       echo $resume;
-      if ($oForfait->more_info){
-        echo '<div class="ffsolicitud">';
-        if ($oForfait->phone) echo $oForfait->phone.'<br>';
-        if ($oForfait->email) echo $oForfait->email.'<br>';
-        echo $oForfait->more_info;
-        echo '</div>';
-      }
+//      if ($oForfait->more_info){
+//        echo '<div class="ffsolicitud">Solicitud: <br/>';
+////        if ($oForfait->phone) echo $oForfait->phone.'<br>';
+////        if ($oForfait->email) echo $oForfait->email.'<br>';
+//        $more_info = json_decode($oForfait->more_info);
+//        if ($more_info){
+//          if (is_array($more_info->opts) && count($more_info->opts)>0){
+//            echo '<b>'.implode(', ', $more_info->opts).'</b><br>';
+//          }
+//          echo $more_info->txt;
+//        } else {
+//          echo $oForfait->more_info;
+//        }
+//        
+//        
+//        echo '</div>';
+//      }
     } else {
       echo '<p>Sin datos</p>';
     }

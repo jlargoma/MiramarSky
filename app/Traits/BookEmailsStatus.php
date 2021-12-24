@@ -507,31 +507,43 @@ trait BookEmailsStatus
      * @param type $book
      * @param type $subject
      */
-    public function sendEmail_ForfaitNewOrder($order,$link)
+    public function sendEmail_ForfaitNewOrder($order,$link,$customer)
     {
        
       $subject = 'Nueva solicitud pública de Forfaits';
       
       $mailClientContent = 'Hola, un nuevo usuario ha solicitado Forfaits desde la parte pública:<br/><br/>';
       $linkBook = '<a href="https://admin.apartamentosierranevada.net/admin/reservas/update/'.$order->book_id.'">'.$order->book_id.'</a>';
-      $clientMail = $order->email;
+      
+      $more_info = json_decode($order->more_info);
+      $opts = $more_info->opts;
+      $optText = '';
+      if (is_array($opts) && count($opts)>0){
+        $optText = implode(', ', $opts);
+      }
+      
+      $clientMail = $customer->email;
+      $mailClientContent .= '<b>Huesped:</b> '.$customer->name.'<br/><br/>';
       $mailClientContent .= '<b>Reserva:</b> '.$linkBook.'<br/><br/>';
       $mailClientContent .= '<b>e-mail:</b> '.$clientMail.'<br/><br/>';
-      $mailClientContent .= '<b>Teléfono:</b> '.$order->phone.'<br/><br/>';
-      $mailClientContent .= '<b>Petición:</b> '.$order->more_info.'<br/><br/>';
+      $mailClientContent .= '<b>Teléfono:</b> '.$customer->phone.'<br/><br/>';
+      $mailClientContent .= '<b>Opciones:</b> '.$optText.'<br/><br/>';
+      $mailClientContent .= '<b>Petición:</b> '.$more_info->txt.'<br/><br/>';
 
       $mailClientContent .= '<br/><br/>Puedes acceder a la vista pública de la orden a travéz del enlace'
               . '<br/><a href="'.$link.'" title="Ir al Forfaits">'.$link.'</a><br/><br/>';
-        $sended = Mail::send('backend.emails.forfait', [
-            'mailContent' => $mailClientContent,
-            'title'       => $subject
-        ], function ($message) use ($subject,$clientMail) {
-            $message->from($clientMail);
-            $message->to(env('MAIL_FROM_FORFAITS'));
-            $message->subject($subject);
-        });
-        
-        return $sended;
+      
+      if (!$clientMail) $clientMail = 'customer@apartamentosierranevada.net';
+      $sended = Mail::send('backend.emails.forfait', [
+          'mailContent' => $mailClientContent,
+          'title'       => $subject
+      ], function ($message) use ($subject,$clientMail) {
+          $message->from($clientMail);
+          $message->to(env('MAIL_FROM_FORFAITS'));
+          $message->subject($subject);
+      });
+
+      return $sended;
     }
     
      /**
@@ -719,6 +731,29 @@ trait BookEmailsStatus
             $message->replyTo(config('mail.from.address'));
         });
         
+        return $sended;
+    }
+    
+    /**
+     *
+     * @param type $book
+     * @param type $subject
+     */
+    public function sendEmail_text($text, $subject,$emailTo)
+    {
+      if (!$emailTo || trim($emailTo) == '') return;
+      
+        setlocale(LC_TIME, "ES");
+        setlocale(LC_TIME, "es_ES");
+        $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $text,
+            'title'       => $subject
+        ], function ($message) use ($emailTo, $subject) {
+            $message->from(env('MAIL_FROM'));
+            $message->to($emailTo);
+            $message->subject($subject);
+            $message->replyTo(env('MAIL_FROM'));
+        });
         return $sended;
     }
 }
