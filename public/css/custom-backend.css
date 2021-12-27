@@ -850,7 +850,8 @@ td.bg-red {
     background-image: url(/img/babyCarriageActive.png) !important;
 }
 
-.td-calendar .ATIPICAS{
+.td-calendar .ATIPICAS,
+.ev-doble .ATIPICAS{
   background-color: #ff008059 !important; 
 }
 
