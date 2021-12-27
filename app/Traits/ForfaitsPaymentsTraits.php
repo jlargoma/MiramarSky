@@ -1041,10 +1041,12 @@ trait ForfaitsPaymentsTraits {
               $message = $this->clearVars($message);
               $messageWSP = $message;
               $message = strip_tags($message);
+              $message = '*FORMULARIO FORFAITS CLASES DE ESQUÍ*'."\n".$message;
               return response()->json(['status' => 'ok','msg'=>$message,'wsp'=> urlencode($messageWSP)]);
             }
             if ($type == 'mail'){
-              $message = nl2br($message);
+              $message = nl2br(whatsappUnFormat($message));
+              
               $urlFF ='<a href="'.$urlFF.'" title="Ir al forfait">'.$urlFF.'</a>';
               $message = str_replace('{link_forfait}', $urlFF, $message);
               $message = $this->clearVars($message);

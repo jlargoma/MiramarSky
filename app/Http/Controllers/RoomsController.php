@@ -732,19 +732,21 @@ class RoomsController extends AppController {
     $images = RoomsPhotos::where('room_id', $room->id)->orderBy('position')->get();
    
     if ($images && $images->count()>0 ){
-      $send = Mail::send('backend.emails._imagesRoomEmail', ['room' => $room], function ($message) use ($email, $images, $room, $path) {
+      
+      $aptoName = $room->nameRoom. ' ('.$room->sizeRooms->name.')';
+      $messaj = 'Hola, te adjunto las fotos del apartamento de tu reserva:<p>';
+      $messaj .= '<p><b>Apartamento</b>'.$aptoName.'</p><p><b>PLAZA: </b>'.$room->num_garage.'</p><p><b>TAQUILLA: </b>'.$room->locker.'</p>'
+              . '<br>'.$room->description;
+      
+      $title = 'Imagenes del apartamento ' . $aptoName;
+      $send = Mail::send('backend.emails.base', ['mailContent' => $messaj,'title'=>$title], function ($message) use ($email, $images, $title, $path) {
                 $message->from(env('MAIL_FROM'));
-                $luxury = ($room->luxury == 1) ? "Lujo" : "Estandar";
-
-
                 foreach ($images as $key => $image):
                   if (file_exists($path . $image->file_name))
                     $message->attach($path . $image->file_name);
                 endforeach;
-
-
                 $message->to($email);
-                $message->subject('Imagenes del apartamento ' . $room->sizeRooms->name . ' // ' . $luxury);
+                $message->subject($title);
               });
       if ($send){
         echo "EMAIL SALIENDO";

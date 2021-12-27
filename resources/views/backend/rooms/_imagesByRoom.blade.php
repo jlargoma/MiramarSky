@@ -43,9 +43,17 @@
         <div class="col-md-8 col-xs-12">
             <h2 class="text-center">
                 <span class="font-w800"><?php echo $room->nameRoom?></span>
-				<?php echo $room->sizeRooms->name ?> // <?php echo ($room->luxury == 1) ? "Lujo" : "Estandar" ?>
+				<?php echo $room->sizeRooms->name ?>
                 <span class="font-w800">(<?php echo $room->minOcu?>/<?php echo $room->maxOcu?> Pers)</span>
             </h2>
+          <div class="row">
+            <div class="col-xs-6 text-center">
+              <b>PLAZA: </b> <?php echo $room->num_garage; ?> 		
+            </div>
+            <div class="col-xs-6 text-center">
+              <b>TAQUILLA: </b> <?php echo $room->locker; ?> 		
+            </div>
+          </div>
             <p class="text-justify">
 				<?php echo $room->description; ?>
             </p>
