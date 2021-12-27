@@ -210,14 +210,14 @@ class ProcessData extends Command
     if ($start<$today) $start = $today;
     
     $oPrepareMinStay = new \App\Models\PrepareMinStay($start, $end);
-      
     if ($oPrepareMinStay->error){
+      $sentUPD->content = $oPrepareMinStay->error;
+      $sentUPD->save();
+    } else {
+      $oPrepareMinStay->process_OtaGateway();
       $sentUPD->content = null;
       $sentUPD->save();
     }
-    $oPrepareMinStay->process_OtaGateway();
-    $sentUPD->content = null;
-    $sentUPD->save();
   }
   
   

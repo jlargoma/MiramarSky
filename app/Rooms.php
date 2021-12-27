@@ -425,8 +425,8 @@ class Rooms extends Model {
       
       foreach ($seassonDay as $s_time => $s_type) {
         if (isset($priceList[$s_type])) {
-          $priceDay[$s_time] = $priceList[$s_type]['p'];
-          $costDay[$s_time] = $priceList[$s_type]['c'];
+          $priceDay[$s_time] = isset($priceList[$s_type]['p']) ? $priceList[$s_type]['p'] : 0;
+          $costDay[$s_time]  = isset($priceList[$s_type]['c']) ? $priceList[$s_type]['c'] : 0;
         }
       }
 

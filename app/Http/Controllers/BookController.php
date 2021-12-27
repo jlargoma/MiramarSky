@@ -1520,6 +1520,8 @@ class BookController extends AppController
     }
     
     public function getCalendarView($month=null,$roomIDs= null,$showTotals=true){
+      
+      if (!Auth::check()) return null;
         $mes           = [];
         $arrayReservas = [];
         $arrayMonths   = [];
