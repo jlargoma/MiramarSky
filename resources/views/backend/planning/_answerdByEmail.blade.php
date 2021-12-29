@@ -95,7 +95,7 @@ $('#formSendEmail').submit(function (event) {
   var formURL = $(this).attr("action");
   var token = $('input[name="_token"]').val();
   var id = $('.id').val();
-  var textEmail = $('#textEmail').val();
+  var textEmail = CKEDITOR.instances['textEmail'].getData();
   var type = 1;
   $.post(formURL, {_token: token, textEmail: textEmail, id: id, type: type}, function (data) {
     if (data == 'OK') {
