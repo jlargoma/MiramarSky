@@ -130,6 +130,33 @@ $(document).ready(function() {
     );
   });
 /*******   msgEmergente   ***********/
+/******* BEGIN: copy CKEditor   ***********/
+function convertToPlain(html){
+
+    // Create a new div element
+    var tempDivElement = document.createElement("div");
+
+    // Set the HTML content with the given value
+    tempDivElement.innerHTML = html;
+console.log('tempDivElement',tempDivElement);
+    // Retrieve the text property of the element 
+    return tempDivElement.textContent || tempDivElement.innerText || "";
+}
+
+$('body').on('click','.btnCopyCKEDITOR', function(){
+  var str = CKEDITOR.instances[$(this).data('instance')].getData();
+ 
+  str = (convertToPlain(str));
+  var testingCodeToCopy = document.querySelector('#copyCKEditorCode')
+  testingCodeToCopy.value = str;
+  testingCodeToCopy.select()
+  var successful = document.execCommand('copy');
+  if (successful) alert("Mensaje Copiado");
+  else alert("texto no copiado");
+          
+});
+/******* END: copy CKEditor   ***********/
+
 });
 
 
