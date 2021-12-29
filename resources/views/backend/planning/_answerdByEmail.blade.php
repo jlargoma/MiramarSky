@@ -50,7 +50,9 @@ setlocale(LC_TIME, "es_ES");
 
       <div class="wrapper push-20" style="text-align: center;">
         <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Contestar</button>
+        <button type="button" class="btn btn-lg btn-info btnCopy"><i class="fa fa-copy" aria-hidden="true"></i> Copiar</button>
       </div>
+      <textarea id="copyCode" style="height: 1px;width: 1px;border: none;"></textarea>
     </form>
   </div>
 </div>
@@ -69,7 +71,7 @@ function sended() {
 }
 
 
-  CKEDITOR.replace('textEmail',
+  var objEditor = CKEDITOR.replace('textEmail',
           {
             toolbar:
                     [
@@ -86,11 +88,29 @@ function sended() {
           });
           
 
+function convertToPlain(html){
 
+    // Create a new div element
+    var tempDivElement = document.createElement("div");
 
+    // Set the HTML content with the given value
+    tempDivElement.innerHTML = html;
 
+    // Retrieve the text property of the element 
+    return tempDivElement.textContent || tempDivElement.innerText || "";
+}
 
-
+$('.btnCopy').on('click', function(){
+  var str = objEditor.getData();
+  str = (convertToPlain(str));
+  var testingCodeToCopy = document.querySelector('#copyCode')
+  testingCodeToCopy.value = str;
+  testingCodeToCopy.select()
+  var successful = document.execCommand('copy');
+  if (successful) alert("Mensaje Copiado");
+  else alert("texto no copiado");
+          
+});
 $('#formSendEmail').submit(function (event) {
   event.preventDefault();
 
