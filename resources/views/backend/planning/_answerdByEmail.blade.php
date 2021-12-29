@@ -50,7 +50,9 @@ setlocale(LC_TIME, "es_ES");
 
       <div class="wrapper push-20" style="text-align: center;">
         <button type="submit" class="btn btn-lg btn-success"><i class="fa fa-paper-plane-o" aria-hidden="true"></i> Contestar</button>
+        <button type="button" class="btn btn-lg btn-info btnCopyCKEDITOR" data-instance="textEmail"><i class="fa fa-copy" aria-hidden="true"></i> Copiar</button>
       </div>
+      <textarea id="copyCKEditorCode" style="height: 1px;width: 1px;border: none;"></textarea>
     </form>
   </div>
 </div>
@@ -69,7 +71,7 @@ function sended() {
 }
 
 
-  CKEDITOR.replace('textEmail',
+  var objEditor = CKEDITOR.replace('textEmail',
           {
             toolbar:
                     [
@@ -85,12 +87,6 @@ function sended() {
                     ]
           });
           
-
-
-
-
-
-
 $('#formSendEmail').submit(function (event) {
   event.preventDefault();
 
