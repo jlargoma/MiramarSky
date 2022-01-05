@@ -46,8 +46,8 @@
                     <td class ="text-center" >
                             <?php echo $book->pax ?>
                     </td>
-                    <td class="text-center sm-p-t-10 sm-p-b-10" data-order="<?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->format("U") ?>">
-                        <?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b-%y') ?>
+                    <td class="text-center sm-p-t-10 sm-p-b-10" data-order="{{$book->finish}}">
+                      <?php echo dateMin($book->finish) ?>
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                       <?php if ($isMobile): ?>
@@ -57,7 +57,13 @@
                       <?php endif;?>
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
-                        {{$book->scheduleOut}}Hrs.
+                        <?php 
+                        if ($book->scheduleOut == 24){
+                          echo '<b>CheckOUT</b>';
+                        } else {
+                          echo $book->scheduleOut.'0Hrs.';
+                        }
+                        ?>
                     </td>
 
                 </tr>

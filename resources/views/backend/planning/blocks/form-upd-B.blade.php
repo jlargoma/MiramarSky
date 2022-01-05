@@ -137,6 +137,7 @@ $disabl_limp = ($uRole == "limpieza") ? 'disabled' : '';
   <?php endif ?>
           </option>
 <?php endfor ?>
+          <option value="24" <?php if(24 == $book->scheduleOut) { echo 'selected';}?>>CHECKOUT</option>
       </select>
     </div>
   </div>

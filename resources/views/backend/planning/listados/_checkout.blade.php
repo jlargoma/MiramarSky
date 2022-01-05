@@ -71,7 +71,7 @@
                             
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10" data-order="<?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->format("U") ?>">
-                        <?php echo Carbon::CreateFromFormat('Y-m-d',$book->finish)->formatLocalized('%d-%b-%y') ?>
+                      <?php echo dateMin($book->finish) ?>
                     </td>
                     <td class="text-center sm-p-t-10 sm-p-b-10">
                       <?php if ($isMobile): ?>
@@ -80,7 +80,7 @@
                         <b><?php echo substr($book->room->nameRoom." - ".$book->room->name, 0, 15)  ?></b>
                       <?php endif;?>
                     </td>
-                    <td class="text-center sm-p-t-10 sm-p-b-10">
+                    <td class="text-center sm-p-t-10 sm-p-b-10" style="min-width: 59px;">
                         <select name="scheduleOut" class=" schedule <?php if(!$isMobile ): ?>form-control minimal<?php endif; ?>" style="width: 100%;" data-type="out" data-id="<?php echo $book->id ?>" <?php if (getUsrRole() == "limpieza"): ?>disabled<?php endif ?>>
                             <option>---</option>
                             <?php for ($i = 0; $i < 24; $i++): ?>
@@ -94,6 +94,7 @@
                                     <?php if ($i != 12): ?></b><?php endif ?>
                                 </option>
                             <?php endfor ?>
+                            <option value="24" <?php if(24 == $book->scheduleOut) { echo 'selected';}?>>CHECKOUT</option>
                         </select>
                        <!--  <?php if (isset($payment[$book->id])): ?>
                             <?php echo number_format($book->total_price - $payment[$book->id],2,',','.') ?> €

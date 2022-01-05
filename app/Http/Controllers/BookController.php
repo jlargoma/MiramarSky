@@ -1278,7 +1278,7 @@ class BookController extends AppController
             break;
           case 'checkout':
             $dateX = Carbon::now();
-            $booksQuery = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))
+            $booksQuery = \App\Book::where('finish', '>=', date('Y-m-d'))
                             ->where('finish', '<', $year->end_date)
                             ->with('room','payments','customer','leads')
                             ->whereIn('type_book',[1,2,7,8])->orderBy('finish', 'ASC');
@@ -1701,7 +1701,7 @@ class BookController extends AppController
                 break;
             case 'checkout':
                 $dateX      = Carbon::now();
-                $booksCount = \App\Book::where('finish', '>=', $dateX->copy()->subDays(3))->where('finish', '<', $year->end_date)
+                $booksCount = \App\Book::where('finish', '>=', $dateX->copy())->where('finish', '<', $year->end_date)
                                   ->where('type_book', 2)->orderBy('finish', 'ASC')->count();
                 break;
             case 'eliminadas':
