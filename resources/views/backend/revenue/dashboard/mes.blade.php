@@ -159,14 +159,15 @@ $k = 0;
   new Chart(document.getElementById("bar_forfatis"), {
     type: 'bar',
     data: {
-      labels: ['No Gestionada','Cancelada','No Cobrada','Confirmada','Comprometida'],
+      labels: ['No Gestionada','Cancelada','No Cobrada','Confirmada','Comprometida','Interesados'],
       datasets: [{
           backgroundColor: [<?php 
             echo '"'.printColor(1).'",';
             echo '"'.printColor(2).'",';
             echo '"'.printColor(3).'",';
             echo '"'.printColor(4).'",';
-            echo '"'.printColor(5).'"';
+            echo '"'.printColor(5).'",';
+            echo '"'.printColor(6).'"';
             ?>],
           data: [<?php foreach ($forfaits['lst'][$month] as $k=>$v)
               echo "'" . $v . "',"; ?>]

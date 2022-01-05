@@ -46,12 +46,12 @@
 				<?php echo $room->sizeRooms->name ?>
                 <span class="font-w800">(<?php echo $room->minOcu?>/<?php echo $room->maxOcu?> Pers)</span>
             </h2>
-          <div class="row">
-            <div class="col-xs-6 text-center">
-              <b>PLAZA: </b> <?php echo $room->num_garage; ?> 		
+          <div class="row" style="margin-bottom: 1em;">
+            <div class="col-xs-6 text-center" style="font-size: 20px">
+              <b>PLAZA: </b> <?php echo $room->parking; ?><br/> 		
             </div>
-            <div class="col-xs-6 text-center">
-              <b>TAQUILLA: </b> <?php echo $room->locker; ?> 		
+            <div class="col-xs-6 text-center" style="font-size: 20px">
+              <b>TAQUILLA: </b> <?php echo $room->locker; ?><br/>
             </div>
           </div>
             <p class="text-justify">

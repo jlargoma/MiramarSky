@@ -332,7 +332,8 @@ class RevenueService
           0,//1 'Cancelada',
           0,//2 'No Cobrada',
           0,//3 'Confirmada',
-          0//4 'Comprometida',
+          0,//4 'Comprometida',
+          0//5 'INTERESADOS',
       ];
       $result = [0=>$auxStatus];
       foreach ($this->lstMonths as $k2=>$v2){

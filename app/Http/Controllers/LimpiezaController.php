@@ -44,7 +44,7 @@ class LimpiezaController extends AppController {
     $cliHas = Book::cliHas_lst($booksQuery->pluck('id'));
     
     
-    $checkout =Book::where('finish', '>=', $start)
+    $checkout =Book::where('finish', '>=', date('Y-m-d'))
                 ->where('finish', '<=', $finish)->whereIn('type_book',[1,2,7,8])
                 ->with('room','customer')
                 ->whereNotIn('room_id',$noRooms)

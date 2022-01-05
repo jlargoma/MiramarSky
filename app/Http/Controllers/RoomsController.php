@@ -735,7 +735,7 @@ class RoomsController extends AppController {
       
       $aptoName = $room->nameRoom. ' ('.$room->sizeRooms->name.')';
       $messaj = 'Hola, te adjunto las fotos del apartamento de tu reserva:<p>';
-      $messaj .= '<p><b>Apartamento:</b> '.$aptoName.'</p><p><b>PLAZA: </b>'.$room->num_garage.'</p><p><b>TAQUILLA: </b>'.$room->locker.'</p>'
+      $messaj .= '<p><b>Apartamento:</b> '.$aptoName.'</p><p><b>PLAZA: </b>'.$room->parking.'</p><p><b>TAQUILLA: </b>'.$room->locker.'</p>'
               . '<br>'.$room->description;
       
       $title = 'Imagenes del apartamento ' . $aptoName;
