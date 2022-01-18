@@ -432,7 +432,7 @@ class OtaGateway {
     $customer->save();
 
     //Create Book
-    $book->user_id = 39;
+    $book->user_id = 11;
     $book->customer_id = $customer->id;
     $book->room_id = $roomID;
     $book->external_id = $reserv['reser_id'];
