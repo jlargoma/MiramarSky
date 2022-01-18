@@ -106,6 +106,7 @@ class Settings extends Model {
         'SMS_payment_link'     =>'SMS GENERADOR DE LINKS',
         'widget_observations'      =>'Widget: Observaciones de su reserva',
         'widget_alert_cancelation' =>'Widget: Popover Cancelación gratuita',
+        'mail_checkin_msg' => 'Mensaje contacto y teléf. checkin',
     ];
     if ($lng && $lng != 'es') {
       $lstNew = [];

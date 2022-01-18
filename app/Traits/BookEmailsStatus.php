@@ -756,4 +756,32 @@ trait BookEmailsStatus
         });
         return $sended;
     }
+    
+    /**
+     *
+     * @param type $book
+     * @param type $subject
+     */
+    public function sendEmail_contactCheckin($book, $subject)
+    {
+      if (!$book->customer->email || trim($book->customer->email) == '') return false;
+        $mailClientContent = $this->getMailData($book, 'mail_checkin_msg');
+        setlocale(LC_TIME, "ES");
+        setlocale(LC_TIME, "es_ES");
+        $mailClientContent = $this->clearVars($mailClientContent);
+
+        $sended = Mail::send('backend.emails.base', [
+            'mailContent' => $mailClientContent,
+            'title'       => $subject
+        ], function ($message) use ($book, $subject) {
+            $message->from(env('MAIL_FROM'));
+            $message->to($book->customer->email);
+            $message->subject($subject);
+            $message->replyTo(env('MAIL_FROM'));
+        });
+        
+        \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'mail_checkin_msg',$subject,$mailClientContent);
+
+        return $sended;
+    }
 }

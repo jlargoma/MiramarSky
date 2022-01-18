@@ -39,6 +39,7 @@ class Kernel extends ConsoleKernel
         Commands\CheckBookingsCheckin::class,
         Commands\BookingsDays::class,
         Commands\SendParteeReminder::class,
+        Commands\SendCheckinMsg::class,
         Commands\CheckPrices::class,
         Commands\icalOld::class,
         Commands\DataDis::class,
@@ -63,6 +64,7 @@ class Kernel extends ConsoleKernel
       $schedule->command('SafeBoxUnassing:unasign')->dailyAt('6:00')->timezone('Europe/Madrid');
       $schedule->command('SafeBox:asignAndSend')->dailyAt('14:00')->timezone('Europe/Madrid');
       $schedule->command('SendPoll:sendEmails')->dailyAt('12:00')->timezone('Europe/Madrid');
+      $schedule->command('checking:sendMsg')->dailyAt('19:00')->timezone('Europe/Madrid');
       $schedule->command('FFSeasson:get')->dailyAt('4:00')->timezone('Europe/Madrid');
       $schedule->command('OTAs:SendAvailibilityMonth')->dailyAt('2:00')->timezone('Europe/Madrid');
       $schedule->command('sendFFAdmin:sendForfaits')->dailyAt('6:45')->timezone('Europe/Madrid');
