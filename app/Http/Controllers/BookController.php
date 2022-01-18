@@ -656,7 +656,7 @@ class BookController extends AppController
 
             $room = \App\Rooms::find($request->input('newroom'));
 
-            $book->user_id     = Auth::user()->id;
+            //$book->user_id     = Auth::user()->id;
             $book->customer_id = $request->input('customer_id');
             $book->room_id     = $request->input('newroom');
 
