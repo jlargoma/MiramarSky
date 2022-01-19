@@ -103,6 +103,7 @@ class BookController extends AppController
         
         $booksCount['checkin']      = $this->getCounters('checkin') + $this->getCounters('especiales');
         $booksCount['checkout']     = $this->getCounters('checkout');
+        $booksCount['ff_interesado']= $this->getCounters('INTERESADOS');
 
         $books = []; 
         $stripe = null;
@@ -1315,6 +1316,14 @@ class BookController extends AppController
           case 'cancel-xml':
             $books = $booksQuery->where('type_book', 98)->orderBy('updated_at', 'DESC')->get();
             break;
+          case 'ff_interesado':
+            $books = $booksQuery->where('ff_status', 5)
+                  ->where('start', '>=', date('Y-m-d'))
+                  ->with('room','payments','customer','leads')
+                  ->whereIn('type_book', Book::get_type_book_sales(true,true))
+                  ->orderBy('start', 'ASC')->get();
+            $cliHas = Book::cliHas_lst($booksQuery->pluck('id'));
+            break;
           case 'blocked-ical':
             $books = $booksQuery->where('start', '>=', $startYear->copy()->subDays(3))
                             ->with('room', 'payments', 'customer')
@@ -1348,6 +1357,12 @@ class BookController extends AppController
         return view('backend/planning/_table', compact('books', 'rooms', 'type', 'mobile','pullSent','payment','cliHas'));
     }
 
+    /**
+     * /reservas/api/lastsBooks/{type?}
+     * 
+     * @param type $type
+     * @return type
+     */
     public function getLastBooks($type=null)
     {
         $mobile = new Mobile();
@@ -1397,7 +1412,7 @@ class BookController extends AppController
         
         $lst = $qry_lst->whereIn('type_book',[1,2,7,8,98])
             ->with('room','payments','customer','leads')
-            ->orderBy('updated_at','DESC')->get();
+            ->orderBy('start','DESC')->get();
 
         $books = [];
         foreach ($lst as $book)
@@ -1709,6 +1724,14 @@ class BookController extends AppController
                 $booksCount = \App\Book::where('start', '>=', $startYear->copy()->format('Y-m-d'))
                                        ->where('finish', '<=', $endYear->copy()->format('Y-m-d'))
                                        ->whereIn('type_book', 0)->count();
+                break;
+            case 'INTERESADOS':
+                $booksCount = \App\Book::where('ff_status', 5)
+                  ->where('start', '>=', date('Y-m-d'))
+                  ->with('room','payments','customer','leads')
+                  ->whereIn('type_book', Book::get_type_book_sales(true,true))
+                  ->count();
+              
                 break;
         }
 

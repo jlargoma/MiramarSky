@@ -31,6 +31,7 @@ $role = Auth::user()->role;
       break;
     case 'checkin':
     case 'ff_pdtes':
+    case 'ff_interesado':
       ?> @include('backend.planning.listados._checkin', ['books' => $books ])<?php
       if  ($role != "agente" && $role != "limpieza"){
         $columnDefs = '0,1,2,3,4,5,8,9,10,11';
