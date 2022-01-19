@@ -12,19 +12,16 @@
         }
     </style>
 <?php endif;?>
-    <div class="col-md-12 pull-right push-20">
-        <div class="col-md-11 col-xs-12">
-            <h2 class="text-left">
-                Indicadores de ocupación
-            </h2>
+    <div class="col-xs-12">
+            <div class="col-md-9">
+              <h2 class="text-left"> Indicadores de ocupación</h2>
+            </div>
+            <div class="col-md-3 text-right">
+             <label style="width: 100%; float:left;">Benef critico</label>
+             <span style="font-size: 33px; color: red;"><?php echo $percentBenef ?></span><span class="font-w800" style="font-size: 32px">%</span>
+            </div>
         </div>
-        <div class="col-md-1 col-xs-12 pull-right">
-            <label style="width: 100%; float:left;">Benef critico</label>
-            <input class="form-control text-black font-w400 text-center" value="<?php echo $percentBenef ?>" style="border: none; font-size: 32px;margin: 10px 0;color:red!important; width: 70%; float:left;" disabled=""/> <span class="font-w800" style="font-size: 32px">%</span>
-        </div>
-        <div style="clear: both;"></div>
         @include('backend.sales._tableSummaryBoxes-subadmin', ['totales' => $totales, 'books' => $books, 'data' => $summary, 'year'=> $year])
-    </div>
     <div class="col-xs-12">
         <div class="row push-10">
            <h2 class="text-left font-w800">

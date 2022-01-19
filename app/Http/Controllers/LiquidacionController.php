@@ -68,9 +68,6 @@ class LiquidacionController extends AppController {
     }
     /***************************************************************************/
     
-    
-    
-    
     if ($cUser->role == "admin"){
       return view('backend/sales/index', $data);
     }
