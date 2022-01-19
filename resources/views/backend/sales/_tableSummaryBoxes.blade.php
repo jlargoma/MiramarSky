@@ -16,6 +16,7 @@ if(!isset($hide)) $hide = ['t_day_2'];
   }
 </style>
 <div class="row">
+  <div class="col-lg-8 col-md-12">
   <div class="sumary bordered">
     <label>Total Reservas</label>
     <h3 class="text-black font-w400 text-center">{{$summary['total']}}</h3>
@@ -66,5 +67,26 @@ if(!isset($hide)) $hide = ['t_day_2'];
     @if(!in_array('t_day_2',$hide))
     <h3 class="text-black font-w400 text-center">{{$summary['daysTemp']}}</h3>
     @endif
+  </div>
+  </div>
+  <div class="col-lg-4 col-md-12">
+     @if(isset($salesByUser))
+     <table class="table">
+       <tr>
+         <th></th>
+         @foreach($yearsLst as $year)
+         <th>{{$year}}</th>
+         @endforeach
+       </tr>
+        @foreach($salesByUser as $uid=>$data)
+        <tr>
+          <th><?php echo (isset($uIdName[$uid])) ? $uIdName[$uid] : 'Otros'; ?></th>
+         @foreach($data as $year=>$val)
+         <td>{{moneda($val)}}</td>
+         @endforeach
+         </tr>
+        @endforeach
+     </table>
+     @endif
   </div>
 </div>

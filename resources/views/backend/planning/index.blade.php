@@ -44,6 +44,10 @@ $is_mobile = $mobile->isMobile();
   .btnMob button.btn, .buttonsTops button.btn i {
     margin-right: 7px;
   }
+  button.btn.btn-rosa.btn-tables.btn-cons {
+    background-color: #ffa6d3;
+    color: #100000;
+}
   @media screen and (max-width:450px){
     .panel-mobile, .table-responsive.content-calendar{
       margin-bottom: 0px;

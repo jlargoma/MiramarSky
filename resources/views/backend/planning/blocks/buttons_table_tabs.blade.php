@@ -60,6 +60,12 @@
           {{ $booksCount['cancel-xml'] }}
         </span>
       </button>
+      <button class="btn btn-rosa btn-tables btn-cons" type="button" data-type="ff_interesado">
+        <span class="bold">FF interesados</span>
+        <span class="text-black text-cont" >
+          {{ $booksCount['ff_interesado'] }}
+        </span>
+      </button>
     <?php endif ?>
   </div>
 <?php else: ?>
@@ -128,6 +134,12 @@
       <span class="bold">Cancel</span>
       <span class="text-black" >
         {{ $booksCount['cancel-xml'] }}
+      </span>
+    </button>
+    <button class="btn btn-rosa btn-tables btn-cons" type="button" data-type="ff_interesado">
+      <span class="bold">FFs</span>
+      <span class="text-black text-cont" >
+        {{ $booksCount['ff_interesado'] }}
       </span>
     </button>
   <?php endif ?>

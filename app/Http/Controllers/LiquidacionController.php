@@ -35,7 +35,43 @@ class LiquidacionController extends AppController {
     $data['stripeCost'] = $oLiq->getTPV($data['books']);
     $data['total_stripeCost'] = array_sum($data['stripeCost']);
     
-    if (Auth::user()->role == "admin"){
+    $cUser = Auth::user();
+    /***************************************************************************/
+    //es visible para Jaime ( subadministrador) y mariajo y jorge
+    $salesByUser = [];
+    if (in_array($cUser->id,[28,39,70])){
+      $uIds = [39=>'Jorge',70=>'Mariajo',98=>'Web direct'];
+      $year = $this->getActiveYear();
+      $lstYears = \App\Years::where('year','<=',$year->year)->orderBy('year')->limit(5)->get();
+      $type_book = Book::get_type_book_sales(true,true);
+      $salesByUser = [39=>[],70=>[],98=>[],0=>[]];
+      $yearsLst = [];
+      foreach ($lstYears as $year){
+        $yearsLst[] = $year->year;
+        foreach ($uIds as $uID => $name){
+          $salesByUser[$uID][$year->year] = 0;
+          $tPvp = Book::where_book_times($year->start_date,$year->end_date)
+                  ->where('user_id',$uID)
+                  ->whereIn('type_book',$type_book)->sum('total_price');
+          if ($tPvp)  $salesByUser[$uID][$year->year] = $tPvp;
+        }
+        
+        $tPvp = Book::where_book_times($year->start_date,$year->end_date)
+                  ->whereNotIn('user_id', array_keys($uIds))
+                  ->whereIn('type_book',$type_book)->sum('total_price');
+        if ($tPvp)  $salesByUser[0][$year->year] = $tPvp;
+        else  $salesByUser[0][$year->year] = 0;
+      }
+      $data['salesByUser'] = $salesByUser;
+      $data['uIdName'] = $uIds;
+      $data['yearsLst'] = $yearsLst;
+    }
+    /***************************************************************************/
+    
+    
+    
+    
+    if ($cUser->role == "admin"){
       return view('backend/sales/index', $data);
     }
     return view('backend/sales/index-subadmin', $data);
