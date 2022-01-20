@@ -199,7 +199,9 @@ else $daysMonth = $mDays[intVal(explode('.',$month)[1])];
       </table>
     </div>
   </div>
+  <div class="boxChar"><div class="contentChar">
   <canvas id="barRentabilidad" style="width: 100%; height: 250px;"></canvas>
+  </div></div>
 </div>
 
 

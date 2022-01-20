@@ -47,7 +47,7 @@ foreach ($comparativaAnual as $k => $v) {
       <div class="ratio_comps_comp table-responsive">
         <table class="table">
           <tr class="thead">
-            <th class="static" style="background-color: #fafafa;height: 36px;"></th>
+            <th class="static" style="background-color: transparent;height: 0px;"></th>
             <td class="first-col"></td>
             <th>Total</th>
             @foreach ($lstMonths as $k2=>$v2)
@@ -121,7 +121,10 @@ foreach ($comparativaAnual as $k => $v) {
         </table>
       </div>
     </div>
-    <canvas id="barRatioComp" width="500" height="150"></canvas>
+      
+    <div class="boxChar"><div class="contentChar">
+      <canvas id="barRatioComp" width="500" height="150"></canvas>
+    </div></div>
 
   </div>
 
@@ -230,7 +233,9 @@ foreach ($comparativaAnual as $k => $v) {
         </tr>
       </table>
     </div>
-    <canvas id="barRatioCompYear" width="400" height="250"></canvas>
+    <div class="boxChar"><div class="contentChar">
+      <canvas id="barRatioCompYear" width="400" height="250"></canvas>
+    </div></div>
   </div>
 </div>
 
@@ -238,7 +243,7 @@ foreach ($comparativaAnual as $k => $v) {
 <style>
   #comparativaAnuales .table tbody tr td{
     font-size: 12px;
-    padding: 0 !important;
+    /*padding: 0 !important;*/
   }
   
   #comparativaAnual .dispPKI {

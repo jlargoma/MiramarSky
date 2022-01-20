@@ -245,7 +245,7 @@ h2.line:after {
   top: 21px;
 }
 h2.line span {
-  background-color: #ffffff;
+  background-color: #fafafa;
   display: block;
   z-index: 9;
   position: absolute;
@@ -377,5 +377,47 @@ tr.thead {
   }
   .col-xs-10.text-white.font-s24 {
     font-size: 19px !important;
+  }
+  .table tbody tr td {
+    padding-top: 5px !important; 
+    padding-button: 5px !important; 
+    padding-right: 10px !important; 
+  }
+  h2.line {
+    font-size: 18px;
+  }
+  h2.line span {
+    left: 7px;
+    padding: 0 6px;
+}
+  
+  .widget-12 {
+    height: 14em !important;
+}
+#bar_forfatis{
+  min-height: 10em;
+}
+  #comparativaAnuales th.static,
+  #comparativaAnual th.static {
+    height: 26px;
+    padding: 0 !important;
+    width: 96px;
+    color: #FFF;
+    margin: 0;
+  }
+  
+  #comparativaAnuales td.first-col,
+  #comparativaAnual td.first-col {
+    padding-left: 90px !important;
+  }
+  .boxChar{
+    width: 100%;
+    overflow: scroll;
+  }
+  .boxChar .contentChar{
+    min-width: 680px;
+  }
+  .buttons-lst {
+    width: 44em;
   }
 }

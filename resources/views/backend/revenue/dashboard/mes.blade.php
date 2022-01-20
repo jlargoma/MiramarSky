@@ -71,8 +71,7 @@ $k = 0;
           <?php  echo ($forfaits['lst'][$month][3]>0) ? moneda($ffTotals/$forfaits['lst'][$month][3]) : '--'; ?>
         </h4>
         <b>Bº ESTIM <small>(15% x vtas de forfait)</small>:</b>
-        <h4>
-         <h4>{{moneda($ffTotals*0.15)}}</h4>
+        <h4>{{moneda($ffTotals*0.15)}}</h4>
         </h4>
         
       </div>

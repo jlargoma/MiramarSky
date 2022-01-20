@@ -38,7 +38,9 @@
           </div>
         </div>
       </div>
-      <canvas id="barBalance" style="width: 100%; height: 250px;"></canvas>
+      <div class="boxChar"><div class="contentChar">
+        <canvas id="barBalance" style="width: 100%; height: 250px;"></canvas>
+      </div></div>
         
  
     </div>
@@ -46,14 +48,14 @@
       <h2 class="line"><span>Ingresos Años Anteriores</span></h2>
       @include('backend.revenue.dashboard._by_season')
       <div class="col-lg-6 col-md-6 col-xs-12">
-        <div>
+        <div class="boxChar"><div class="contentChar">
             <canvas id="barChart" style="width: 100%; height: 250px;"></canvas>
-        </div>
+        </div></div>
       </div>
       <div class="col-lg-6 col-md-6  col-xs-12">
-        <div>
-            <canvas id="barChart2" style="width: 100%; height: 250px;"></canvas>
-        </div>
+        <div class="boxChar"><div class="contentChar">
+          <canvas id="barChart2" style="width: 100%; height: 250px;"></canvas>
+        </div></div>
       </div>
        @include('backend.revenue.dashboard.resume-by-forfatis')
     </div>
