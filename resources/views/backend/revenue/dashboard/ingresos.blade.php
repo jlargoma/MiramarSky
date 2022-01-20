@@ -136,9 +136,13 @@
   </div>
   <div class="col-md-3">
     <h3>Ingresos Anual</h3>
-    <canvas id="ingrChar" style="width: 100%; height: 250px;"></canvas>
+    <div class="boxChar"><div class="contentChar">
+      <canvas id="ingrChar" style="width: 100%; height: 250px;"></canvas>
+    </div></div>
     <h3>Ingresos Por Tipo</h3>
+    <div class="boxChar"><div class="contentChar">
     <canvas id="ingrCharSite" style="width: 100%; height: 250px;"></canvas>
+    </div></div>
   </div>
 </div>
 <?php $count=0;

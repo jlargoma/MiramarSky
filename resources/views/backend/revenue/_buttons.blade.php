@@ -16,9 +16,6 @@
     float: none;
     padding-top: 1em;
   }
-  .buttons-lst{
-    width: 70em;
-  }
 }
 </style>
 <?php

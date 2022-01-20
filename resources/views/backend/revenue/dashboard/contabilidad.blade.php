@@ -11,7 +11,7 @@ if ($pending<0) $pending = 0;
     </div>
     @include('backend.revenue.dashboard._by_season')
   </div>
-  <div class="col-md-2 col-xs-6">
+  <div class="col-md-2 col-xs-12">
 
     <table class="table table-hover table-striped table-ingresos" style="background-color: #92B6E2">
       <thead class="bg-complete" style="background: #d3e8f7">
@@ -52,10 +52,11 @@ if ($pending<0) $pending = 0;
       </div>
     </div>
   </div>
-  <div class="col-md-2 col-xs-6">
+  <div class="col-md-2 col-xs-12">
     <h4>Indicaciones de Ocupación</h4>
     @include('backend.revenue.dashboard.blocks._contabilidad_indicadores')
   </div>
+  <h5 class="show-mobile col-xs-12">Forfaits</h5>
   @include('backend.revenue.dashboard.blocks._contabilidad_ff')
 </div>
 <style>
