@@ -78,5 +78,11 @@
     <span class="numPaymentLastBooks" data-val="{{$ota_errLogs}}">{{$ota_errLogs}}</span>
     @endif
   </button>
+  <button class="btn btn-tables btn-cons  hidden-mobile" type="button" data-type="ff_interesado">
+    <img src="http://miramarski.virtual/img/miramarski/ski_icon_status_rosa.png" style="max-width:30px;" alt="INTERESADOS">
+      <span class="text-black text-cont" >
+        {{ $booksCount['ff_interesado'] }}
+      </span>
+  </button>
 </div>
 
