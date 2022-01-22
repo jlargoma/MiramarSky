@@ -701,7 +701,7 @@ div.dataTables_filter {
     position: relative !important;
   }
   .btn-tabs{
-    min-width: 900px;
+    min-width: 1000px;
   }
   .btn-tables, .btn-calMobile{
     width: 85px;
