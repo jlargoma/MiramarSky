@@ -103,7 +103,7 @@
     
     <?php 
     $trimestre = [[],[],[],[]];
-    $trimestreText = ['1er','2do','3er','4to'];
+    $trimestreText = ['1er','2do','3er','4to','5to'];
     $count = 0;
     foreach($lstMonths as $k => $month){
       $aux = ($count/3);
