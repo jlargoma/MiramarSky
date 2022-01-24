@@ -38,7 +38,8 @@ class RoomsController extends AppController {
     $oYear      = $this->getActiveYear();
     $zConfig = new \App\Services\Zodomus\Config();
 
-    $lstContr = \App\RoomsContracts::where('year_id',$oYear->id)->get();
+    $lstContr = \App\RoomsContracts::where('year_id',$oYear->id)
+            ->where('is_delegacion',0)->get();
     $aContrs = [];
     $pathFile = storage_path('app/');
     if($lstContr){
@@ -51,7 +52,23 @@ class RoomsController extends AppController {
         }
       }
     }
-  
+    
+    
+    $lstContr = \App\RoomsContracts::where('year_id',$oYear->id)
+            ->where('is_delegacion',1)->get();
+    $aContrs2 = [];
+    $pathFile = storage_path('app/');
+    if($lstContr){
+      foreach ($lstContr as $c){
+        if($c->send) $aContrs2[$c->room_id] = 'enviado';
+
+        $fileName = $c->file;
+        if ($fileName && File::exists($pathFile.$fileName)){
+          $aContrs2[$c->room_id] = 'firmado';
+        }
+      }
+    }
+ 
     return view('backend/rooms/index', [
 //        'rooms' => Rooms::where('state', "!=", 0)->orderBy('order', 'ASC')->get(),
         'rooms' => Rooms::orderBy('order', 'ASC')->get(),
@@ -64,7 +81,8 @@ class RoomsController extends AppController {
         'typesApto' => \App\TypeApto::all(),
         'zodomusAptos' => configZodomusAptos(),
         'channel_group' => null,
-        'aContrs'=>$aContrs
+        'aContrs'=>$aContrs,
+        'aContrs2'=>$aContrs2
     ]);
   }
 
@@ -1307,4 +1325,87 @@ class RoomsController extends AppController {
       return $e->getMessage();
     }
   }
+  
+  /***************************************************************************/
+  /**** CONTR DELEGACION DE REPRESENTACION            ************************/
+  function getContratoDelegacionRoom($roomID=null){
+       
+    $oYear = $this->getActiveYear();
+    $sRates = new \App\Services\Bookings\RatesRoom();
+    $sRates->setDates($oYear);
+    $sRates->setSeassonDays();
+    
+    $oContr = \App\RoomsContracts::getContract($oYear->id,$roomID,1);
+    $sign = false;
+    
+    
+    //  Already Created ---------------------------------------------------
+    $fileName = $oContr->file;
+    $path = storage_path('app/'.$fileName);
+    $sign = ($fileName && File::exists($path));
+    
+    return view('backend.rooms.contratos.modal_content_delegacion', [
+        'oYear'=>$oYear,
+        'contract' => $oContr,
+        'sign' => $sign,
+        ]);
+                    
+  }
+  
+  function saveContratoDelegacionUser(Request $req){
+    $id = $req->input('id');
+    $oContr = \App\RoomsContracts::find($id);
+    if (!$oContr) return redirect ()->back()->withErrors (['Contrato no encontrado']);
+    if ($req->has('contract_main_content'))   $oContr->content = $req->input('contract_main_content');
+    if($req->input('delSign')=='on'){
+      $oContr->file = null;
+    }
+    $oContr->save();
+    return redirect()->back()->with(['success'=>'Contrato Guardado']);
+  }
+  
+  function sendContratoDelegacionUser(Request $req){
+    $id = $req->input('id');
+    $oContr = \App\RoomsContracts::find($id);
+    if (!$oContr) return 'Contrato no encontrado';
+    
+    $oRoom = Rooms::where('id',$oContr->room_id)->with('user')->first();
+    if (!$oRoom) return 'Apto no encontrado';
+    
+    
+    $oYear = \App\Years::find($oContr->year_id);
+    if (!$oYear) return 'Temporada no encontrada';
+    $seasson = $oYear->year.' - '.($oYear->year+1);
+    
+    $url = route('contratoDelegacion.see',[$oContr->id]);
+    
+    $subject = 'DELEGACIÓN DE VOTO PARA JUNTA DE VECINOS MIRAMAR SKI';
+    $mailContent = 'Hola vecino, tras la conversación mantenida te hacemos llegar desde email para que le des el voto a favor de la persona que indicamos en el documento pdf<br/><br/>';
+    $mailContent .= '<p>Creemos que firmemente este cambio en la comunidad va a provocar muchos beneficios para la propiedad. </b></p>';
+    $mailContent .= '<p>Es un equipo gestor nuevo y que viene con  buenas ideas para modernizar, digitalizar y optimizar la gestión de la comunidad en interés de todos los propietarios.</p>';
+    $mailContent .= '<p>Si te parece bien y estás de acuerdo, solo necesitamos que agregues los datos de tu representante y tu firma en el siguiente link:</p>';
+    $mailContent .= '<p><a href="'.$url.'" alt="Link al contrato">'.$url.'</a></p>';
+    $mailContent .= '<p><br/>Gracias y un saludo, te mantendremos informado</p>';
+
+    
+    $email = $oRoom->user->email;
+    try{
+    Mail::send('backend.emails.base', [
+            'mailContent' => $mailContent,
+            'title'       => $subject
+        ], function ($message) use ($subject,$email) {
+            $message->from(env('MAIL_FROM'),env('MAIL_FROM_NAME'));
+            $message->to($email);
+            $message->subject($subject);
+        });
+        
+    $oContr->send = 1;
+    $oContr->save();
+    return 'OK';
+    } catch (\Exception $e){
+      return $e->getMessage();
+    }
+  }
+  /**** CONTR DELEGACION DE REPRESENTACION            ************************/
+  /***************************************************************************/
 }

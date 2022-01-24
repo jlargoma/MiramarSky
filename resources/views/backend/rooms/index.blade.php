@@ -59,11 +59,13 @@
     border-radius: 8px;
   }
   
-  button.btn.btnContract.firmado {
+  button.btn.btnContract.firmado,
+  button.btn.btnContract2.firmado {
     background-color: #2cad2c;
     color: #FFF;
 }
-button.btn.btnContract.enviado {
+button.btn.btnContract.enviado,
+button.btn.btnContract2.enviado {
     background-color: #ff9c21;
     color: #FFF;
 }
@@ -112,6 +114,9 @@ button.btn.btnContract.enviado {
       </button>
       <button class="btn btn-success btnContract" type="button" data-id="">
         <span class="bold">Contratos</span>
+      </button>
+      <button class="btn btn-success btnContract2" type="button" data-id="">
+        <span class="bold">Contratos DELEGACION DE REPRESENTACION</span>
       </button>
     </div>
 
@@ -614,6 +619,14 @@ $(document).ready(function () {
     var id = $(this).attr('data-id');
     if (id) id = '/'+id;
     $.get('{{route("contracts.getByRoom")}}' + id, function (data) {
+      $('#modalContratos .modal-content').empty().append(data);
+      $('#modalContratos').modal();
+    });
+  });
+  $('.btnContract2').click(function (event) {
+    var id = $(this).attr('data-id');
+    if (id) id = '/'+id;
+    $.get('{{route("contractsDelegacion.getByRoom")}}' + id, function (data) {
       $('#modalContratos .modal-content').empty().append(data);
       $('#modalContratos').modal();
     });

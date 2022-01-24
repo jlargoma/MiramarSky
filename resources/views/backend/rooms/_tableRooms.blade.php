@@ -75,6 +75,7 @@ $mobile = new Mobile();
         <th>#</th>
         <th>Nombre tRooms APTO</th>
         <th>Contr</th>
+        <th>Contr2</th>
         <th>Lujo</th>
         <th>OCU. MIN</th>
         <th>OCU. MAX</th>
@@ -96,6 +97,13 @@ $mobile = new Mobile();
           <td class="text-center">
             <?php $status = (isset($aContrs[$room->id])) ? $aContrs[$room->id] : ""; ?>
             <button class="btn btnContract  {{$status}}" data-id="{{$room->id}}" title="Contrato {{$status}}">
+              <i class="fa fa-file"></i>
+            </button>
+          </td>
+          <td class="text-center">
+            <?php
+            $status = (isset($aContrs2[$room->id])) ? $aContrs2[$room->id] : ""; ?>
+            <button class="btn btnContract2  {{$status}}" data-id="{{$room->id}}" title="Contrato de REPRESENTACION{{$status}}">
               <i class="fa fa-file"></i>
             </button>
           </td>

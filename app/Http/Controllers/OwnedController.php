@@ -9,11 +9,13 @@ use Auth;
 use Mail;
 use App\Classes\Mobile;
 use App\Book;
+use App\Traits\Rooms\ContratosDelegacion;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class OwnedController extends AppController {
 
+  use ContratosDelegacion;
   /**
    * Display a listing of the resource.
    *
