@@ -165,6 +165,9 @@ Route::group(['middleware' => 'authAdmin', 'prefix' => 'admin'], function () {
   Route::get('/apartamentos/get-contrato/{roomID?}', 'RoomsController@getContractoRoom')->name('contracts.getByRoom');
   Route::post('/apartamentos/contrato-guardar', 'RoomsController@saveContractoUser')->name('contracts.save');
   Route::post('/apartamentos/contrato-send', 'RoomsController@sendContractoUser')->name('contracts.send');
+  Route::get('/apartamentos/get-contractsDelegacion/{roomID?}', 'RoomsController@getContratoDelegacionRoom')->name('contractsDelegacion.getByRoom');
+  Route::post('/apartamentos/contractsDelegacion-guardar', 'RoomsController@saveContratoDelegacionUser')->name('contractsDelegacion.save');
+  Route::post('/apartamentos/contractsDelegacion-send', 'RoomsController@sendContratoDelegacionUser')->name('contractsDelegacion.send');
 
   // Clientes
   Route::get('/clientes/update', 'CustomersController@update');

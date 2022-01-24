@@ -116,6 +116,11 @@ Route::group(['middleware' => ['auth','role:admin|propietario'], 'prefix' => 'ad
   Route::get('/propietario/contrato/downl/{id}', 'OwnedController@downlContract')->name('contract.downl');
   Route::get('/propietario/contrato/{id}', 'OwnedController@seeContracts')->name('contract.see');
   
+  Route::get('/propietario/ContratoDelegacion/sign/{file?}', 'RouterActionsController@getSignContratoDelegacion');
+  Route::post('/propietario/ContratoDelegacion/sign', 'OwnedController@setSignContratoDelegacion')->name('contratoDelegacion.sign');
+  Route::get('/propietario/ContratoDelegacion/downl/{id}', 'OwnedController@downlContratoDelegacion')->name('contratoDelegacion.downl');
+  Route::get('/propietario/ContratoDelegacion/{id}', 'OwnedController@seeContratoDelegacion')->name('contratoDelegacion.see');
+  
 });
 
 /** Moved form routers */
