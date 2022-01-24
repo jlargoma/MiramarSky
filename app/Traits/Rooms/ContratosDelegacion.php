@@ -119,9 +119,9 @@ trait ContratosDelegacion
     
     $cedeToName = $req->input('cedeToName');
     $cedeToDni = $req->input('cedeToDni');
-    if (trim($cedeToName) == '' || trim($cedeToDni) == ''){
-      return  redirect()->back()->withErrors(['El nombre y el dni de su representante es obligatorio']);
-    }
+//    if (trim($cedeToName) == '' || trim($cedeToDni) == ''){
+//      return  redirect()->back()->withErrors(['El nombre y el dni de su representante es obligatorio']);
+//    }
     
    
     $sign = $req->input('sign');
@@ -147,7 +147,7 @@ trait ContratosDelegacion
     $pdf->loadView('backend.owned.contratoDelegacionDownl',$data);
     $output = $pdf->output();
 //        return $pdf->download('invoice.pdf');
-//    return $pdf->stream();
+    return $pdf->stream();
         
     //save document
     $fileName = 'contracts/' .$contrID.'-'. $oUsr->id .'-'.time().'.pdf';

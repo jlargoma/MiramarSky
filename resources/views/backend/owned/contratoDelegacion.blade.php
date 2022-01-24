@@ -156,16 +156,16 @@ $(document).ready(function () {
     });
     $('#saveSign').on('click', function (e) {
       
-      if ($('#cedeToName').val() == ''){
-        $('.inputName').addClass('danger');
-        alert('Debe completar el nombre para continuar');
-        return false;
-      }
-      if ($('#cedeToDni').val() == ''){
-        $('.inputDNI').addClass('danger');
-        alert('Debe completar el DNI para continuar');
-        return false;
-      }
+//      if ($('#cedeToName').val() == ''){
+//        $('.inputName').addClass('danger');
+//        alert('Debe completar el nombre para continuar');
+//        return false;
+//      }
+//      if ($('#cedeToDni').val() == ''){
+//        $('.inputDNI').addClass('danger');
+//        alert('Debe completar el DNI para continuar');
+//        return false;
+//      }
       
       e.preventDefault();
       $('#sign').val(signaturePad.toDataURL()); // save image as PNG
@@ -173,10 +173,12 @@ $(document).ready(function () {
     });
     
     var e = document.getElementsByTagName('name')[0];
-    e.innerHTML = '<input type="text" class="inputName">';
+    if (typeof e != 'undefined')
+      e.innerHTML = '<input type="text" class="inputName">';
     
     var e = document.getElementsByTagName('dni')[0];
-    e.innerHTML = '<input type="text"  class="inputDNI">';
+    if (typeof e != 'undefined')
+      e.innerHTML = '<input type="text"  class="inputDNI">';
     
     $('.contratoBox').on('click','.inputName,.inputDNI',function(){
       $(this).removeClass('danger');
