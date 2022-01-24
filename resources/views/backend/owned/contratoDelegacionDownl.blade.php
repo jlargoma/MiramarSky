@@ -72,7 +72,7 @@
   <div class="body">
     <?php echo $text; ?>
   </div>
-  @for($i=0; $i<11;$i++)
+  @for($i=0; $i<6;$i++)
   <br/>
   @endfor
   <table class="signs">
