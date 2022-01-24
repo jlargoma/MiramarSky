@@ -46,6 +46,7 @@ else $daysMonth = $mDays[intVal(explode('.',$month)[1])];
             }
             foreach ($val as $m=>$v) {
               //BEGIN: datos para los graficos
+              if (isset($grafPresupSite['gastos'][$m]))
               $grafPresupSite['gastos'][$m] += $v;
             }
           }

@@ -63,6 +63,8 @@
   <?php echo $balance; ?>
 </div>
 
+<h2 class="line"><span>Año Natural</span></h2>   
+<iframe src="/admin/revenue/anioNatura" style="width: 100%; height: 40em; padding: 9px; border: none;"></iframe>
 @endsection
 
 @section('externalScripts')

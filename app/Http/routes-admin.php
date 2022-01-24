@@ -217,6 +217,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], fun
   Route::post('admin/revenue/donwlVtasDia', 'RevenueController@donwlDaily')->name('revenue.donwlVtasDia');
   Route::get('admin/revenue/RATE-SHOPPER/generate', 'RevenueController@setRateCheckWubook');
   Route::get('admin/revenue/DASHBOARD', 'RevenueController@index')->name('revenue');
+  Route::get('admin/revenue/anioNatura/{year?}', 'RevenueController@balanceAnioNatural');
   Route::post('admin/revenue/generate', 'RevenueController@generate')->name('revenue.generate');
   Route::post('admin/revenue/generatePickUp', 'RevenueController@generatePickUp')->name('revenue.generatePickUp');
   Route::post('admin/revenue/donwlPickUp', 'RevenueController@donwlPickUp')->name('revenue.donwlPickUp');

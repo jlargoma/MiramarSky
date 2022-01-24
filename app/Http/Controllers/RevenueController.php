@@ -115,7 +115,7 @@ class RevenueController extends AppController
       if (isset($fixCosts[$k]))  $fixCosts[$k][0] = array_sum($fixCosts[$k]);
       else $fixCosts[$k][0] = 0;
     }
-    
+   
     $presupuesto = view('backend.revenue.dashboard.presupuesto',[
         'aRatios' => $aRatios,
         'months' => $oServ->months,
@@ -1340,4 +1340,79 @@ class RevenueController extends AppController
      
       return 'OK';
     }
+    
+    
+  function balanceAnioNatural($year=null){
+    if (!$year ) $year = date('Y');
+    
+    $monthEmpty = [
+        '01'=>0,
+        '02'=>0,
+        '03'=>0,
+        '04'=>0,
+        '05'=>0,
+        '06'=>0,
+        '07'=>0,
+        '08'=>0,
+        '09'=>0,
+        '10'=>0,
+        '11'=>0,
+        '12'=>0
+    ];
+    $monthBook = $monthProp = $result = $base = $iva = $tIva = $monthEmpty;
+    
+    /************************************************/
+    $books = BookDay::where_type_book_sales()
+            ->whereYear('date','=',$year)->get();
+
+    if ($books)
+    foreach ($books as $b){
+      $monthBook[substr($b->date,5,2)] += $b->pvp;
+    }
+
+    /************************************************/
+    
+      
+    $booksByYear = \App\Book::where('type_book', 2)
+              ->whereYear('start', '=', $year)
+              ->get();
+
+//    $oPayments = \App\Expenses::getPaymentToPropYear($year);
+    if ($booksByYear)
+    foreach ($booksByYear as $p){
+      $monthProp[substr($p->start,5,2)] += $p->get_costProp();
+    }
+    
+    $monthNames = getMonthsSpanish(null, true, true);
+    
+    /************************************************/
+    
+    foreach ($monthBook as $k=>$v){
+      $result[$k] = $v-$monthProp[$k];
+    }
+    foreach ($result as $k=>$v){
+      $base[$k] = $v/1.1;
+    }
+    foreach ($base as $k=>$v){
+      $iva[$k] = $v*0.1;
+    }
+    foreach ($result as $k=>$v){
+      $tIva[$k] = $base[$k]+$iva[$k];
+    }
+    
+    
+    
+    return view('backend.revenue.dashboard.anioNatural',[
+          'monthBook' => $monthBook,
+          'year' =>$year,
+          'monthProp' => $monthProp,
+          'result' => $result,
+          'monthNames' => $monthNames,
+          'base' => $base,
+          'tIva' => $tIva,
+          'iva' => $iva,
+      ]);
+    
+     dd($monthBook,$monthProp);
+  }
 }
