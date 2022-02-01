@@ -38,11 +38,11 @@ class Liquidacion
      * 
      * @return type
      */
-    public function summaryTemp($qry=false) {
+    public function summaryTemp($qry=false,$oYear=null) {
         if ($qry){
           return $this->get_summary($qry->get(),true);
         }
-      return $this->get_summary(BookDay::getBy_temporada(),true);
+      return $this->get_summary(BookDay::getBy_temporada($oYear),true);
     }
 
     /**

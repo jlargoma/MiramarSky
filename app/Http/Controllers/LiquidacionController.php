@@ -29,9 +29,10 @@ class LiquidacionController extends AppController {
     if (!Auth::user()->canSeeLiquidacion()){
       return redirect('no-allowed');
     }
+    $oYear = $this->getActiveYear();
     $oLiq = new Liquidacion();
     $data = $this->getTableData();
-    $data['summary'] = $oLiq->summaryTemp();
+    $data['summary'] = $oLiq->summaryTemp(false,$oYear);
     $data['stripeCost'] = $oLiq->getTPV($data['books']);
     $data['total_stripeCost'] = array_sum($data['stripeCost']);
     
@@ -41,13 +42,13 @@ class LiquidacionController extends AppController {
     $salesByUser = [];
     if (in_array($cUser->id,[28,39,70])){
       $uIds = [39=>'Jorge',70=>'Mariajo',98=>'Web direct'];
-      $year = $this->getActiveYear();
-      $lstYears = \App\Years::where('year','<=',$year->year)->orderBy('year')->limit(5)->get();
+      
+      $lstYears = \App\Years::where('year','<=',$oYear->year)->orderBy('year','DESC')->limit(5)->get();
       $type_book = Book::get_type_book_sales(true,true);
       $salesByUser = [39=>[],70=>[],98=>[],0=>[]];
       $yearsLst = [];
       foreach ($lstYears as $year){
-        $yearsLst[] = $year->year;
+        $yearsLst[] = substr($year->end_date,2,2).'-'.substr($year->start_date ,2,2);
         foreach ($uIds as $uID => $name){
           $salesByUser[$uID][$year->year] = 0;
           $tPvp = Book::where_book_times($year->start_date,$year->end_date)
@@ -112,7 +113,7 @@ class LiquidacionController extends AppController {
     $data = $this->getTableData($arrayCustomersId,$agency,$roomID,$type);
      
     $oLiq = new Liquidacion();
-    $data['summary'] = $oLiq->summaryTemp();
+    $data['summary'] = $oLiq->summaryTemp(false,$data['year']);
     $data['stripeCost'] = $oLiq->getTPV($data['books']);
     $data['total_stripeCost'] = array_sum($data['stripeCost']);
              
@@ -226,7 +227,7 @@ class LiquidacionController extends AppController {
      
   }
 
-  
+  //admin/perdidas-ganancias/{year?}
   public function perdidasGanancias() {
     $cUser = Auth::user();
     // Sólo lo puede ver jorge
@@ -303,9 +304,9 @@ class LiquidacionController extends AppController {
   public function get_perdidasGanancias() {
      
     $oLiq = new Liquidacion();
-    $year = $this->getActiveYear();
-    $startYear = new Carbon($year->start_date);
-    $endYear = new Carbon($year->end_date);
+    $oYear = $this->getActiveYear();
+    $startYear = new Carbon($oYear->start_date);
+    $endYear = new Carbon($oYear->end_date);
     $diff = $startYear->diffInMonths($endYear) + 1;
     $lstMonths = lstMonths($startYear,$endYear,'ym',true);
     $ingresos = ['ventas'=>0,'ff'=>0];
@@ -469,7 +470,7 @@ class LiquidacionController extends AppController {
     $totalIngr = array_sum($lstT_ing);
     $totalGasto = array_sum($lstT_gast);
     
-    $summary = $oLiq->summaryTemp();
+    $summary = $oLiq->summaryTemp(false,$oYear);
   
     
 //    dd($totalGasto,$lstT_gast);
@@ -489,7 +490,7 @@ class LiquidacionController extends AppController {
         'aIngrPending' => $aIngrPending,
         'diff' => $diff,
         'lstMonths' => $lstMonths,
-        'year' => $year,
+        'year' => $oYear,
         'tGastByMonth' => $tGastByMonth,
         'tIngByMonth' => $tIngByMonth,
         'ingrType' => $ingrType,
@@ -1771,7 +1772,7 @@ class LiquidacionController extends AppController {
                   ->sum('nigths');
     
     
-    $summary = $oLiq->summaryTemp();
+    $summary = $oLiq->summaryTemp(false,$data['year']);
 
         
     $cobrado = $metalico = $banco = $vendido = $vta_prop = 0;
@@ -1977,7 +1978,7 @@ class LiquidacionController extends AppController {
     
     $oLiq = new Liquidacion();
     $data = $this->getTableData();
-    $data['summary'] = $oLiq->summaryTemp();
+    $data['summary'] = $oLiq->summaryTemp(false,$data['year']);
     $data['stripeCost'] = $oLiq->getTPV($data['books']);
     
     $year = $data['year']->year;
