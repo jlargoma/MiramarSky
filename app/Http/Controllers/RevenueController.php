@@ -74,7 +74,7 @@ class RevenueController extends AppController
     $auxADR = $aRatios[0];
     $ADR_semana = $auxADR['c_s'] > 0 ? $auxADR['t_s'] / $auxADR['c_s'] : $auxADR['t_s'];
     $ADR_finde  = $auxADR['c_f'] > 0 ? $auxADR['t_f'] / $auxADR['c_f'] : $auxADR['t_f'];
-    $summary    = $oLiquidacion->summaryTemp();
+    $summary    = $oLiquidacion->summaryTemp(false,$oYear);
     $viewRatios = [
         'books' => $oServ->books,
         'aRatios' => $aRatios,
@@ -1258,7 +1258,7 @@ class RevenueController extends AppController
         'time_start' => strtotime($oYear->start_date),
         'time_end' =>strtotime($oYear->end_date),
         'rvas'=>$oServ->countBookingsSite(),
-        'summary' => $oLiquidacion->summaryTemp(),
+        'summary' => $oLiquidacion->summaryTemp(false,$oYear),
         'ADR_semana'=>moneda($ADR_semana),
         'ADR_finde'=>moneda($ADR_finde),
     ];

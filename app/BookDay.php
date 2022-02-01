@@ -139,11 +139,11 @@ ORDER BY `book_days`.`date` DESC*/
   }
   
     
-  static function getBy_temporada(){
-    $activeYear = Years::getActive();
+  static function getBy_temporada($oYear = null){
+    if (!$oYear) $oYear = Years::getActive();
     return self::where_type_book_sales(true,true)
-            ->where('date', '>=', $activeYear->start_date)
-            ->where('date', '<=', $activeYear->end_date)->get();
+            ->where('date', '>=', $oYear->start_date)
+            ->where('date', '<=', $oYear->end_date)->get();
   }
   
   

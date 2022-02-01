@@ -584,6 +584,9 @@ class PaylandsController extends AppController
             $book = \App\Book::find($payment->book_id);
             $request_dni = false;
             if ($book){
+              if ($book->type_book !=1 && $book->type_book !=2 ){
+                return redirect()->route('paymeny-error');
+              }
               $payments = \App\Payments::where('book_id', $book->id)->first();
               $customer = $book->customer;
               if($customer && !$customer->accepted_hiring_policies){
@@ -651,6 +654,9 @@ class PaylandsController extends AppController
         $payment = \App\PaymentOrders::where('token',$token)->first();
         if ($payment){
           $book = \App\Book::find($payment->book_id);
+          if ($book->type_book !=1 && $book->type_book !=2 ){
+            return redirect()->route('paymeny-error');
+          }
           $amount = $payment->amount;
           $item_name = $book->room->RoomsType->title;
           $customer = $book->customer;
