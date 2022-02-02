@@ -85,24 +85,32 @@ $isMobile = $mobile->isMobile();
                         </td>
                         <td class="text-center" ><b><?= ($b['datePay']) ?></b></td>
                         @if($b['percent']>99)
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
-                        <td class="text-center"></td>
+                          <td class="text-center"></td>
+                          <td class="text-center"></td>
+                          <td class="text-center">
+                             @if($b['tbook'] == 98)
+                            <span>Reserva Cancelada</span>
+                            @endif
+                          </td>
                         @else
-                        <td class="text-center text-danger" ><b><?= moneda($b['toPay']) ?></b></td>
-                        <td class="text-center text-danger" >
+                          <td class="text-center text-danger" ><b><?= moneda($b['toPay']) ?></b></td>
+                          <td class="text-center text-danger" >
                         @if($b['retrasado'])
-                        <div class="alert alert-danger">
-                            <i class="fa fa-bell " aria-hidden="true"></i>
-                        </div>  
+                          <div class="alert alert-danger">
+                              <i class="fa fa-bell " aria-hidden="true"></i>
+                          </div>  
                         @endif
                         </td>
                         <td class="text-center">
-                            @if(isset($b['tbook']) && ($b['tbook'] == 2 || $b['tbook'] == 1) )
+                        @if($b['tbook'] == 2 || $b['tbook'] == 1 )
                           <button data-id="<?= $b['id']; ?>" class="btn btn-xs <?= $b['btn-send']; ?>  sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="0">
                             <i class="fa fa-paper-plane" aria-hidden="true"></i>
                           </button>
+                          @else
+                            @if($b['tbook'] == 98)
+                            <span>Reserva Cancelada</span>
                             @endif
+                          @endif
                         </td>
                         @endif
                     </tr>
