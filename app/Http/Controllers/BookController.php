@@ -1399,10 +1399,12 @@ class BookController extends AppController
         } else {
           switch ($type){
             case 'week':
-              $sqlPayment =  \App\Payments::where('datePayment',date("Y-m-d",strtotime("- 7 days")));
+              $sqlPayment =  \App\Payments::where('datePayment','<=',date('Y-m-d'))
+                    ->where('datePayment','>',date("Y-m-d",strtotime("- 7 days")));
               break;
             case 'month':
-              $sqlPayment =  \App\Payments::where('datePayment',date("Y-m-d",strtotime("- 1 months")));
+              $sqlPayment =  \App\Payments::where('datePayment','<=',date('Y-m-d'))
+                      ->where('datePayment','>',date("Y-m-d",strtotime("- 1 months")));
               break;
             default :
               $sqlPayment = \App\Payments::where('datePayment','<=',$endYear)
