@@ -37,6 +37,7 @@ $isMobile = $mobile->isMobile();
         <th style="width: 155px; text-align: center;">Fechas</th>
         <th style="width: 50px; text-align: center;">PVP</th>
         <th style="width: 50px; text-align: center;">Pagado</th>
+        <th style="width: 50px; text-align: center;">ùlt pago</th>
         <th style="width: 50px; text-align: center;">Pendiente</th>
         <th style="width: 30px; text-align: center;"></th>
         <th style="width: 50px; text-align: center;">Enviar Mail</th>
@@ -82,6 +83,7 @@ $isMobile = $mobile->isMobile();
                           <?= moneda($b['payment']) ?> <br>
                           <b class="<?= $b['percent']>99 ? 'text-success' : 'text-danger' ?> "><?= $b['percent'] ?>%</b>
                         </td>
+                        <td class="text-center" ><b><?= ($b['datePay']) ?></b></td>
                         @if($b['percent']>99)
                         <td class="text-center"></td>
                         <td class="text-center"></td>
@@ -96,7 +98,7 @@ $isMobile = $mobile->isMobile();
                         @endif
                         </td>
                         <td class="text-center">
-                            @if($b['tbook'] == 2 || $b['tbook'] == 1)
+                            @if(isset($b['tbook']) && ($b['tbook'] == 2 || $b['tbook'] == 1) )
                           <button data-id="<?= $b['id']; ?>" class="btn btn-xs <?= $b['btn-send']; ?>  sendSecondPay" type="button" data-toggle="tooltip" title="" data-original-title="Enviar recordatorio segundo pago" data-sended="0">
                             <i class="fa fa-paper-plane" aria-hidden="true"></i>
                           </button>

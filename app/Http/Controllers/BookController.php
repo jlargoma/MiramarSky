@@ -1387,32 +1387,39 @@ class BookController extends AppController
           die;
         }
         /*************************************************************************************/
-        switch ($type){
-          case 'pendientes':
-            if (count($alarmsPayment)>0){
-              $qry_lst = Book::whereIn('id',$alarmsPayment);
-            } else $qry_lst = Book::where('id',-1);
-            break;
-          case 'week':
-            $fecha_actual = date("Y-m-d");
-            $qry_lst = Book::where('updated_at','>',date("Y-m-d",strtotime($fecha_actual."- 7 days")));
-            break;
-          case 'month':
-            $fecha_actual = date("Y-m-d");
-            $qry_lst = Book::where('updated_at','>',date("Y-m-d",strtotime($fecha_actual."- 31 days")));
-            break;
-          default :
-            $qry_lst = Book::where_book_times($startYear, $endYear)->limit(50);
-            break;
-        }
+        //buscar pagos (idBook) utima semana o mes 
         
+        if ($type == 'pendientes'){
+          
+          if (count($alarmsPayment)>0){
+              $qry_lst = Book::whereIn('id',$alarmsPayment);
+          } else $qry_lst = Book::where('id',-1);
+          $IdBooks = $qry_lst->pluck('id')->toArray();
+          
+        } else {
+          switch ($type){
+            case 'week':
+              $sqlPayment =  \App\Payments::where('datePayment',date("Y-m-d",strtotime("- 7 days")));
+              break;
+            case 'month':
+              $sqlPayment =  \App\Payments::where('datePayment',date("Y-m-d",strtotime("- 1 months")));
+              break;
+            default :
+              $sqlPayment = \App\Payments::where('datePayment','<=',$endYear)
+                    ->where('datePayment','>=',$startYear)->limit(50);
+              break;
+          }
+          $IdBooks = $sqlPayment->pluck('book_id')->toArray();
+        }
+                
         $toDay = new \DateTime();
         $toDayEnd = date('Y-m-d');
         $daysToCheck = \App\DaysSecondPay::find(1)->days;
         
-        $lst = $qry_lst->whereIn('type_book',[1,2,7,8,98])
-            ->with('room','payments','customer','leads')
-            ->orderBy('start','DESC')->get();
+        $lst = Book::whereIn('id',array_unique($IdBooks))
+                ->whereIn('type_book',[1,2,7,8,98])
+                ->with('room','payments','customer','leads')
+                ->orderBy('start','DESC')->get();
 
         $books = [];
         foreach ($lst as $book)
@@ -1434,6 +1441,7 @@ class BookController extends AppController
               'percent'=>0,
               'week'=>'',
               'month'=>'',
+              'datePay'=>''
           ];
           
           $payments = \App\Payments::where('book_id', $book->id)->get();
@@ -1474,7 +1482,7 @@ class BookController extends AppController
               case 98: $aux['status'] = 'CANCEL'; break;
             } 
           }
-          $books[] = $aux;
+          $books[$book->id] = $aux;
           
           /*
            * 
@@ -1483,6 +1491,23 @@ class BookController extends AppController
            */
         }
         
+        $lstPayment = \App\Payments::select('book_id','datePayment')->whereIn('book_id',array_keys($books))
+                ->orderBy('datePayment','DESC')->get();
+        $resultAux = [];
+        if ($lstPayment){
+          foreach ($lstPayment as $pay){
+            if (isset($books[$pay->book_id])){
+              $books[$pay->book_id]['datePay'] = dateMin($pay->datePayment);
+              $resultAux[] = $books[$pay->book_id];
+              unset($books[$pay->book_id]);
+            }
+          }
+          if (count($books)>0){
+            foreach ($books as $restantes)
+              $resultAux[] = $restantes;
+          }
+          $books = $resultAux;
+        }
         
         return view('backend.planning._lastBookPayment', compact('books','bMonth','bWeek', 'mobile','total','type','alarmsPayment'));
 //        dd($books,$bWeek);
