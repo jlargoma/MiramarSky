@@ -1,6 +1,6 @@
 @extends('layouts.pdf')
 
-@section('title') Contratos @endsection
+@section('title') DELEGACION DE REPRESENTACIO @endsection
 
 @section('styles')
 <style type="text/css">
@@ -67,7 +67,7 @@
 @section('content')
 
 <div class="contratoBox">
-  <h1>CONTRATATO PARA DELEGACION DE REPRESENTACION</h1>
+  <h1>DELEGACION DE REPRESENTACION</h1>
   <h3>Sierra Nevada {{$date}}</h3>
   <div class="body">
     <?php echo $text; ?>
