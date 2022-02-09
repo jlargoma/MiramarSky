@@ -327,7 +327,7 @@ class LiquidacionController extends AppController {
     /*************************************************************************/
     /** @ToSee estimaciones sólo de las reservas vendidas */
     $aux = $emptyMonths;
-    $lstRvs = \App\BookDay::where_type_book_sales()
+    $lstRvs = \App\BookDay::where_type_book_sales(true)
             ->where('date', '>=', $startYear)
             ->where('date', '<=', $endYear)->get();
      
@@ -359,6 +359,7 @@ class LiquidacionController extends AppController {
 //    $lstT_ing['ff_FFExpress'] = $auxFF['totalFFExpress'];
 //    $lstT_ing['ff_ClassesMat'] = $auxFF['totalClassesMat'];
     $aIngrPending['ff'] = $auxFF['to_pay']+$auxFF['to_pay_mat'];
+    $lstT_ing['ffTpay'] = $aIngrPending['ff'];
     /*************************************************************************/
     
     $ingresos['others'] = $emptyMonths;
@@ -373,7 +374,7 @@ class LiquidacionController extends AppController {
         $lstT_ing[$type] += $item->import;
       }
     }
-    
+
     $ingrType['ventas'] = 'VENTAS';
     $ingrType['others'] = 'OTROS INGRESOS';
     
@@ -466,7 +467,7 @@ class LiquidacionController extends AppController {
     unset($listGastos['comisiones']);
     $totalPendingImp = 0;
     /*****************************************************************/
-    
+       
     $totalIngr = array_sum($lstT_ing);
     $totalGasto = array_sum($lstT_gast);
     

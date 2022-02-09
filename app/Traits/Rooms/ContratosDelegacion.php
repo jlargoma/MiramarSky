@@ -168,7 +168,7 @@ trait ContratosDelegacion
     if (!$oYear) return 'Temporada no encontrada';
     $seasson = $oYear->year.' - '.($oYear->year+1);
     
-    $subject = 'Contrato de DELEGACIÓN DE VOTO PARA JUNTA DE VECINOS MIRAMAR SKI';
+    $subject = 'DELEGACIÓN DE VOTO PARA JUNTA DE VECINOS MIRAMAR SKI';
     $mailContent = 'Hola '.$oRoom->user->name.', <br/><br/>';
     $mailContent .= '<p>Gracias por firmar su contrato para la delegación de representación del apartamento <b>'.$oRoom->nameRoom.'</b> para la próxima Junta General Ordinaria de la Comunidad.</b></p>';
     $mailContent .= '<p>Le adjuntamos el documento firmado.</p>';
@@ -184,6 +184,7 @@ trait ContratosDelegacion
             $message->from(env('MAIL_FROM'),env('MAIL_FROM_NAME'));
             $message->subject($subject);
             $message->to($email);
+            $message->bcc(env('MAIL_FROM'));
             $message->attach( $path, array(
                             'as' => $fileName.'.pdf', 
                             'mime' => 'application/pdf'));
