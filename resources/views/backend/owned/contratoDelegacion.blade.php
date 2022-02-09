@@ -1,6 +1,6 @@
 @extends('layouts.admin-master')
 
-@section('title') Contratos @endsection
+@section('title')  DELEGACION DE REPRESENTACIO @endsection
 
 @section('content')
 <style type="text/css">
@@ -109,7 +109,7 @@ input.inputDNI.danger{
 
 
 <div class="contratoBox">
-  <h1>CONTRATATO PARA DELEGACION DE REPRESENTACION</h1>
+  <h1>DELEGACION DE REPRESENTACION</h1>
   <h3>Sierra Nevada {{$date}}</h3>
   <div class="body">
     <?php echo $text; ?>

@@ -170,7 +170,7 @@ trait ContratosDelegacion
     
     $subject = 'DELEGACIÓN DE VOTO PARA JUNTA DE VECINOS MIRAMAR SKI';
     $mailContent = 'Hola '.$oRoom->user->name.', <br/><br/>';
-    $mailContent .= '<p>Gracias por firmar su contrato para la delegación de representación del apartamento <b>'.$oRoom->nameRoom.'</b> para la próxima Junta General Ordinaria de la Comunidad.</b></p>';
+    $mailContent .= '<p>Gracias por firmar su delegación de representación del apartamento <b>'.$oRoom->nameRoom.'</b> para la próxima Junta General Ordinaria de la Comunidad.</b></p>';
     $mailContent .= '<p>Le adjuntamos el documento firmado.</p>';
     $mailContent .= '<br/><br/><br/><p>Muchas Gracias.!</p>';
     $email = $oRoom->user->email;
