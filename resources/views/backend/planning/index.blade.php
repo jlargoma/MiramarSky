@@ -174,6 +174,11 @@ $is_mobile = $mobile->isMobile();
 </div>
 @endif
 
+@if($otasDisconect)
+@include('backend.planning._alarmsDisconect', ['alarms' => $otasDisconect])
+
+@endif
+
 
 <form method="post" id="formFF" action=""  <?php
 if (!$is_mobile) {

@@ -125,9 +125,10 @@ class BookController extends AppController
         $bookOverbooking = null;
         $alarmsCheckPaxs = null;
         $errorsOtaPrices = null;
+        $otasDisconect = [];
         $overbooking = [];
         $alarms = 0;
-        $oData = \App\ProcessedData::whereIn('key',['overbooking','alarmsPayment','checkPaxs'])->get();
+        $oData = \App\ProcessedData::whereIn('key',['overbooking','alarmsPayment','checkPaxs','otasDisconect'])->get();
         foreach ($oData as $d){
           switch ($d->key){
             case 'overbooking':
@@ -140,6 +141,10 @@ class BookController extends AppController
             case 'checkPaxs':
               if (trim($d->content) != '')
                 $alarmsCheckPaxs = json_decode($d->content,true);
+              break;
+            case 'otasDisconect':
+              if (trim($d->content) != '')
+                $otasDisconect = json_decode($d->content,true);
               break;
           }
         }
@@ -172,6 +177,12 @@ class BookController extends AppController
               'text'   => 'Se deben controlar el PAXs en reservas'
               ];          
         }
+        if(is_array($otasDisconect) && count($otasDisconect)>0){
+          $urgentes[] = [
+              'action' => 'class="btn btn-danger"  type="button" data-toggle="modal" data-target="#modalOtasDisc"',
+              'text'   => 'Se han desconectado Channels en las OTAS'
+              ];          
+        }
         
         
     
@@ -199,7 +210,7 @@ class BookController extends AppController
                 compact('books', 'mobile', 'stripe', 'rooms', 
                         'booksCount', 'alarms','lowProfits','alarmsCheckPaxs','errorsOtaPrices',
                         'alert_lowProfits','percentBenef','parteeToActive','lastBooksPayment',
-                        'ff_pendientes','ff_mount','totalReserv','amountReserv','overbooking',
+                        'ff_pendientes','ff_mount','totalReserv','amountReserv','overbooking','otasDisconect',
                         'urgentes','bookings_without_Cvc','ota_errLogs')
 		);
     }
