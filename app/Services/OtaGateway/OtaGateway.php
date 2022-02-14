@@ -618,4 +618,14 @@ class OtaGateway {
       return false;
     }
   }
+  
+  
+  public function getChannelStatus() {
+    $params = [];
+    $params['token'] = $this->token;
+    $params['account_id'] = $this->account_id;
+    $this->call('ota_settings', 'GET', $params);
+    return ($this->response);
+  }
+  
 }
