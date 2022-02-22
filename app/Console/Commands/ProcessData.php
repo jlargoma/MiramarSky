@@ -248,7 +248,7 @@ class ProcessData extends Command
 
     $finish = date('Y-m-d', strtotime('+15 days'));
     $booksAlarms = \App\Book::where('start', '>=', date('Y-m-d'))
-            ->where('start', '<=', $finish)->where('type_book', 2)->get();
+            ->where('start', '<=', $finish)->whereIn('type_book', [1,2])->get();
 
     $lst = array();
     foreach ($booksAlarms as $b){
