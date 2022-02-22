@@ -41,11 +41,11 @@ class LiquidacionController extends AppController {
     //es visible para Jaime ( subadministrador) y mariajo y jorge
     $salesByUser = [];
     if (in_array($cUser->id,[28,39,70])){
-      $uIds = [39=>'Jorge',70=>'Mariajo',98=>'Web direct'];
+      $uIds = [39=>'Jorge',70=>'Mariajo',98=>'Web direct',11=>'OTAs'];
       
       $lstYears = \App\Years::where('year','<=',$oYear->year)->orderBy('year','DESC')->limit(5)->get();
       $type_book = Book::get_type_book_sales(true,true);
-      $salesByUser = [39=>[],70=>[],98=>[],0=>[]];
+      $salesByUser = [39=>[],70=>[],11=>[],98=>[],0=>[]];
       $yearsLst = [];
       foreach ($lstYears as $year){
         $yearsLst[] = substr($year->end_date,2,2).'-'.substr($year->start_date ,2,2);

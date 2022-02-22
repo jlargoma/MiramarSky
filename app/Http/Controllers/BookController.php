@@ -1430,7 +1430,6 @@ class BookController extends AppController
         $daysToCheck = \App\DaysSecondPay::find(1)->days;
         
         $lst = Book::whereIn('id',array_unique($IdBooks))
-                ->whereIn('type_book',[1,2,7,8,98])
                 ->with('room','payments','customer','leads')
                 ->orderBy('start','DESC')->get();
 
