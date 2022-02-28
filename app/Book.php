@@ -1095,4 +1095,19 @@ class Book extends Model {
     }
     return null;
   }
+  
+  
+  function save(array $options = Array()){
+    
+    try{
+      $dir = storage_path().'/BLogs';
+      if (!file_exists($dir)) {
+        mkdir($dir, 0775, true);
+      }
+      file_put_contents($dir."/".date('YW'),"\n".date('d-H:is').': '.json_encode($this->attributes),FILE_APPEND|LOCK_EX);
+    } catch (\Exception $e){ }
+    
+    
+    return parent::save($options);
+  }
 }
