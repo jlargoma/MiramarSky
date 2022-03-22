@@ -49,7 +49,7 @@ class Kernel extends ConsoleKernel {
 //        Commands\WubookGetBookings::class,
 //        Commands\ZodomusImport::class,
 //        Commands\RoomsPhotosMigrate::class,
-//        Commands\ImportICal::class,
+        Commands\ImportICal::class,
   ];
 
   /**
@@ -96,6 +96,7 @@ class Kernel extends ConsoleKernel {
     $schedule->command('OTAs:CheckPrices')->everyThirtyMinutes();
 
     $schedule->command('OTAs:sendPricesSeason')->everyMinute();
+    $schedule->command('ical:import')->everyFiveMinutes();
     $schedule->command('wubook:sendAvaliables')->everyFiveMinutes();
     $schedule->command('ProcessData:all')->everyFiveMinutes();
     $schedule->command('OTAs:sendMinStaySeason')->everyFiveMinutes();

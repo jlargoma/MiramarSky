@@ -24,19 +24,13 @@ use Illuminate\Support\Facades\DB;
 ///admin/ical/importFromUrl?detail=1
 class ImportICal extends Command
 {
-    /**
-     * Customer ID for assign to the new books
-     *
-     * @var int
-     */
-    private $customer_id = 1780;
 
     /**
      * User ID for assign to the new books
      *
      * @var int
      */
-    private $user_id = 39;
+    private $user_id = 11;
 
     /**
      * The name and signature of the console command.
@@ -123,7 +117,7 @@ class ImportICal extends Command
                 if ($agency == 4 && strpos(strtoupper($event->summary),'NOT AVAILABLE') !== false){
                   continue;
                 }
-                $checEvent = $this->isEventValidForAdd($event, $agency, $room_id);
+                $checEvent = $this->isEventValidForAdd($event, $agency, $room_id);               
                 if ($checEvent['valid']) {
                     if ($this->addBook($event, $agency, $room_id)){
                       $count++;
@@ -212,12 +206,12 @@ class ImportICal extends Command
 
         //Create Book
         $book->user_id       = $this->user_id;
-        $book->customer_id   = $customer->id;//$this->customer_id;// user to book imports / user to airbnb imports
+        $book->customer_id   = $customer->id;
         $book->room_id       = $room_id;
         $book->start         = $start->format("Y-m-d");
         $book->finish        = $finish->format("Y-m-d");
         $book->comment       = $event->summary;
-        $book->book_comments = $event->summary . " #IMPORTING_TASK_SCHEDULED";
+        $book->book_comments = $event->description . " #IMPORTING_TASK_SCHEDULED";
         $book->type_book     = 11;
         $book->nigths        = $nights;
         $book->agency        = $agency;
@@ -249,7 +243,6 @@ class ImportICal extends Command
         if ($date_now->format("Y-m-d") >= $date_end_book->format("Y-m-d"))
           return ['valid'=>false,'msg'=>'Fecha posterior'];
 //            return false;
-
         // if summary event start on #ADMIN, #BOOKING, #TRIVAGO, #BED&SNOW, #AIRBNB
 
         if (  preg_match("/^#ADMIN/", $event->summary ) || preg_match("/^#BOOKING/", $event->summary ) || preg_match("/^#TRIVAGO/", $event->summary ) || preg_match("/^#BED&SNOW/", $event->summary ) || preg_match("/^#AIRBNB/", $event->summary )
