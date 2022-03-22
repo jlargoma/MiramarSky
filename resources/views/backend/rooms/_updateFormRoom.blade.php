@@ -129,10 +129,43 @@
             </button>
         </div>
     </form>
-    <div class="clearfix" style="overflow: auto;padding: 1em;background-color: #FFF; margin: 1em;">
-      {!! $room->content_front !!}
-    </div>
 </div>
+
+
+<!-- FORMULARIO DE IMPORTACION DE ICAL POR ROOM -->
+<div class="row" style="border-top: 2px dashed #000;">
+	<div class="col-md-12" style="padding: 0 15px">
+		<h3 class="text-left font-w300">
+			Importar ICAL
+		</h3>
+		<form class="form" action="{{ url('ical/import/saveUrl') }}" method="post" id="icalForm">
+			<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+			<input type="hidden" name="id" value="<?php echo $room->id; ?>">
+			<div class="col-md-9 col-xs-12 push-20">
+				<input type="url" name="urlIcal" class="form-control" placeholder="url para importar..." required>
+			</div>
+			<div class="col-md-3 col-xs-12 push-20 text-left">
+				<button class="btn btn-primary btn-cons" type="submit">
+	                <span class="bold">AÑADIR URL</span>
+	            </button>
+			</div>
+		</form>
+	</div>
+	<div class="col-md-12" style="padding: 0 15px" >
+		<div class="col-md-6 col-xs-12 " style="    padding: 20px 15px;">
+			<label for="type">Link Expor. cal. Apto</label>
+			<p>
+              <?php echo route("import-iCalendar", ["aptoID" => $room->id])?> &nbsp;&nbsp;&nbsp;&nbsp;
+			<button class="btn btn-cons" type="button" id="copy-link-export" data-link="<?php echo route("import-iCalendar", ["aptoID" => $room->id])?>">
+                <span class="bold">Copiar Link</span>
+            </button>		
+              </p>
+		</div>	
+		
+		
+	</div>
+</div>
+<!-- FIN FORMULARIO DE IMPORTACION DE ICAL POR ROOM -->
 
 <script type="text/javascript">
 
