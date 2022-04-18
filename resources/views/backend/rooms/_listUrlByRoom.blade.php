@@ -19,7 +19,7 @@
 					<b><?php echo $url->room->nameRoom; ?></b>
 				</td>
 				<td class="text-left" style="padding: 5px!important;">
-					<?php echo substr($url->url, 0, 65); ?>...
+					<?php echo $url->url; ?>
 				</td>
 				<td class="text-center">
 					<button class="btn btn-xs btn-danger deleteUrl" data-id="<?php echo $url->id; ?>" data-idRoom="<?php echo $url->room_id; ?>">

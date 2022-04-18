@@ -59,7 +59,6 @@ class CheckOtaService extends Command {
     if (count($result) > 0)
       $resultOta['miramarSki'] = $result;
 
-
     if (count($resultOta) > 0) {
       $oData = ProcessedData::findOrCreate('otasDisconect');
       $oData->content = json_encode($resultOta);
@@ -80,7 +79,8 @@ class CheckOtaService extends Command {
     $result = [];
     if ($lstChannels) {
       foreach ($lstChannels as $items) {
-        foreach ($items as $ch) {
+        foreach ($items as $ch) { 
+          if ($ch->ota_id == "airbnb") continue;
           $last_push_date = ' última conección ' . $ch->last_connection_date;
           switch ($ch->status) {
             case 1:
