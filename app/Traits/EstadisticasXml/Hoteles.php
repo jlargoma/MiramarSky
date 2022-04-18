@@ -105,7 +105,7 @@ trait Hoteles {
     $year = date('Y',strtotime($start));
   
 //    $days  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-    $days  = calcNights($start,$finish);
+    $days  = calcNights($start,$finish)+1;
     $obj['CABECERA']['FECHA_REFERENCIA']['MES'] = $month;
     $obj['CABECERA']['FECHA_REFERENCIA']['ANYO'] = $year;
     $obj['CABECERA']['DIAS_ABIERTO_MES_REFERENCIA'] = $days;

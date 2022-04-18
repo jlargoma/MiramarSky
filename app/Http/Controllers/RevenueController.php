@@ -1342,8 +1342,9 @@ class RevenueController extends AppController
     }
     
     
-  function balanceAnioNatural($year=null){
+  function balanceAnioNatural($year=null,$trim=null){
     if (!$year ) $year = date('Y');
+    
     
     $monthEmpty = [
         '01'=>0,
@@ -1359,11 +1360,41 @@ class RevenueController extends AppController
         '11'=>0,
         '12'=>0
     ];
-    $monthBook = $monthProp = $result = $base = $iva = $tIva = $monthEmpty;
+   
     
     /************************************************/
-    $books = BookDay::where_type_book_sales()
-            ->whereYear('date','=',$year)->get();
+    $sqlBooks = BookDay::where_type_book_sales();
+    if ($trim){
+      $trim = intval($trim);
+      switch ($trim){
+        case 1:
+          $startTrim = '01-01-'.$year;
+          $endTrim = '01-04-'.$year;
+          $monthEmpty = ['01'=>0,'02'=>0,'03'=>0];
+          break;
+        case 2:
+          $startTrim = '01-04-'.$year;
+          $endTrim = '01-07-'.$year;
+          $monthEmpty = ['04'=>0,'05'=>0,'06'=>0];
+          break;
+        case 3:
+          $startTrim = '01-07-'.$year;
+          $endTrim = '01-10-'.$year;
+          $monthEmpty = ['07'=>0,'08'=>0,'09'=>0];
+          break;
+        case 4:
+          $startTrim = '01-10-'.$year;
+          $endTrim = '01-01-'.($year+1);
+          $monthEmpty = ['10'=>0, '11'=>0, '12'=>0];
+          break;
+      }
+      $sqlBooks->where('date','<=',$startTrim)->where('date','>',$endTrim);
+    } else {
+      $sqlBooks->whereYear('date','=',$year);
+    }
+    $books = $sqlBooks->get();
+     
+    $monthBook = $monthProp = $result = $base = $iva = $tIva = $monthEmpty;
 
     if ($books)
     foreach ($books as $b){
@@ -1380,7 +1411,8 @@ class RevenueController extends AppController
 //    $oPayments = \App\Expenses::getPaymentToPropYear($year);
     if ($booksByYear)
     foreach ($booksByYear as $p){
-      $monthProp[substr($p->start,5,2)] += $p->get_costProp();
+      if (isset($monthProp[substr($p->start,5,2)]))
+        $monthProp[substr($p->start,5,2)] += $p->get_costProp();
     }
     
     $monthNames = getMonthsSpanish(null, true, true);
@@ -1399,12 +1431,18 @@ class RevenueController extends AppController
     foreach ($result as $k=>$v){
       $tIva[$k] = $base[$k]+$iva[$k];
     }
-    
+    $aux = [];
+    foreach ($monthNames as $k=>$v){
+      if ($k<10 && isset($monthEmpty['0'.$k])) $aux[$k] = $v;
+      if ($k>9 && isset($monthEmpty[$k])) $aux[$k] = $v;
+    }
+    $monthNames =  $aux;
     
     
     return view('backend.revenue.dashboard.anioNatural',[
           'monthBook' => $monthBook,
           'year' =>$year,
+          'trim' =>$trim,
           'monthProp' => $monthProp,
           'result' => $result,
           'monthNames' => $monthNames,

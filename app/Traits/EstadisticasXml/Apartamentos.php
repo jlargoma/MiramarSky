@@ -99,7 +99,7 @@ trait Apartamentos {
     $obj = $obj['APARTAMENTOS'];
 //    $days  = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 //    $days  = ((strtotime($finish)-strtotime($start))/(24*60*60));
-    $days  = calcNights($start,$finish);
+    $days  = calcNights($start,$finish)+1;
     $obj['CABECERA']['FECHA_REFERENCIA']['MES'] = $month;
     $obj['CABECERA']['FECHA_REFERENCIA']['ANYO'] = $year;
     $obj['CABECERA']['DIAS_ABIERTO_MES_REFERENCIA'] = $days;
