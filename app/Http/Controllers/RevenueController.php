@@ -1368,27 +1368,27 @@ class RevenueController extends AppController
       $trim = intval($trim);
       switch ($trim){
         case 1:
-          $startTrim = '01-01-'.$year;
-          $endTrim = '01-04-'.$year;
+          $startTrim = $year.'-01-01';
+          $endTrim = $year.'-04-01';
           $monthEmpty = ['01'=>0,'02'=>0,'03'=>0];
           break;
         case 2:
-          $startTrim = '01-04-'.$year;
-          $endTrim = '01-07-'.$year;
+          $startTrim = $year.'-04-01';
+          $endTrim = $year.'-07-01';
           $monthEmpty = ['04'=>0,'05'=>0,'06'=>0];
           break;
         case 3:
-          $startTrim = '01-07-'.$year;
-          $endTrim = '01-10-'.$year;
+          $startTrim = $year.'-07-01';
+          $endTrim = $year.'-10-01';
           $monthEmpty = ['07'=>0,'08'=>0,'09'=>0];
           break;
         case 4:
-          $startTrim = '01-10-'.$year;
-          $endTrim = '01-01-'.($year+1);
+          $startTrim = $year.'-10-01';
+          $endTrim = ($year+1).'-01-01';
           $monthEmpty = ['10'=>0, '11'=>0, '12'=>0];
           break;
       }
-      $sqlBooks->where('date','<=',$startTrim)->where('date','>',$endTrim);
+      $sqlBooks->where('date','<',$endTrim)->where('date','>=',$startTrim );
     } else {
       $sqlBooks->whereYear('date','=',$year);
     }
