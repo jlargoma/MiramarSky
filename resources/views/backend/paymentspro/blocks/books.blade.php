@@ -24,7 +24,14 @@
                           <?php echo ucfirst(strtolower($book->customer->name)) ?>
                       </a>
                   </td>
-                  <td class="text-center"><?php echo $book->pax ?> </td>
+                  <td class="text-center"><?php echo $book->pax ?>
+                  <?php if (!empty($book->comment) || !empty($book->book_comments) || !empty($book->book_owned_comments)): ?>
+                    <div data-booking="<?php echo $book->id; ?>" class="showBookComm pull-right" >
+                      <i class="far fa-comment-dots" style="color: #000;" aria-hidden="true"></i>
+                      <div class="BookComm tooltiptext"></div>
+                    </div>
+                <?php endif ?>
+               </td>
                   <td class="text-center">
                     {{ convertDateToShow_text($book->start)}}
                   </td>
