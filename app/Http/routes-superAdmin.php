@@ -308,8 +308,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::post('/pagos-propietarios', 'PaymentsProController@indexByDate');
   Route::post('/paymentspro/seeLiquidationProp', 'PaymentsProController@seeLiquidationProp');
   Route::post('/paymentspro/payPropGroup', 'PaymentsProController@payPropGroup');
-  
-  
+  Route::get('/paymentspro/getResumeByRoomsYear', 'PaymentsProController@getResumeByRoomsYear');
     
 
     

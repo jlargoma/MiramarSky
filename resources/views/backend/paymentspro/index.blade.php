@@ -492,46 +492,7 @@ use \Carbon\Carbon; ?>
       </div>
     </div>
     <div class="col-md-4 col-xs-12">
-      <h3 class="text-center font-w300">
-        RESUMEN <span class="font-w800">PAGOS PROP</span>.
-      </h3>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
-              Apart
-            </th>
-            <?php $lastThreeSeason = Carbon::createFromFormat('Y', $year->year)->subYears(2) ?>
-<?php for ($i = 1; $i < 4; $i++): ?>
-              <th class ="text-center bg-complete text-white" style="padding: 10px 5px;">
-                Temp. <?php echo $lastThreeSeason->copy()->format('y'); ?> - <?php echo $lastThreeSeason->copy()->addYear()->format('y'); ?>
-              </th>
-            <?php $lastThreeSeason->addYear(); ?>
-          <?php endfor; ?>
-
-          </tr>
-        </thead>
-        <tbody>
-<?php foreach ($rooms as $room): ?>
-              <?php if ($room->state == 1): ?>
-              <tr>
-                <td class="text-center"  style="padding: 10px 5px ;">
-                  <a class="historic-production" data-id="<?php echo $room->id ?>" data-toggle="modal" data-target="#payments">
-                  <?php echo (isset($room->user->name)) ? ucfirst(substr($room->user->name, 0, 6)) : '-'  ?> (<?php echo substr($room->nameRoom, 0, 6) ?>)
-                  </a>
-                </td>
-                <?php $lastThreeSeason = Carbon::createFromFormat('Y', $year->year)->subYears(2) ?>
-              <?php for ($i = 1; $i < 4; $i++): ?>
-                  <td class="text-center  costeApto bordes"  style="padding: 10px 5px ;">
-                <?php echo number_format($room->getCostPropByYear($lastThreeSeason->copy()->format('Y')), 0, ',', '.'); ?> €
-                  </td>
-      <?php $lastThreeSeason->addYear(); ?>
-    <?php endfor; ?>
-              </tr>
-  <?php endif; ?>
-<?php endforeach ?>
-        </tbody>
-      </table>
+    <div id="ResumeByRoomsYear"></div>
     </div>
   </div>
 
@@ -736,7 +697,7 @@ window.location = '/admin/pagos-propietarios/' + month;
     "info":     false
  });
 
-});
+
 
 $('.ver').click(function (event) {
 
@@ -814,6 +775,8 @@ $('.cPropRooms').on('change',function () {
     }
   });
   $('#totalRemesa').text(total);
+});
+$('#ResumeByRoomsYear').load('/admin/paymentspro/getResumeByRoomsYear');
 });
 </script>
 @endsection
