@@ -84,5 +84,6 @@
         {{ $booksCount['ff_interesado'] }}
       </span>
   </button>
+  <button class="btn btn-success btn-cons" id="mIngrAptos" type="button">Ingr. Aptos</button>
 </div>
 

@@ -174,6 +174,17 @@ $is_mobile = $mobile->isMobile();
 </div>
 @endif
 
+<div class="modal fade slide-up in" id="modalIngrAptos" tabindex="-1" role="dialog" aria-hidden="true" >
+  <div class="modal-dialog modal-xd">
+    <div class="modal-content-classic">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true" style="position: absolute; top: 0px; right: 10px; z-index: 100">
+        <i class="fa fa-times fa-2x" style="color: #000!important;"></i>
+      </button>
+      <div class="boxContent">
+      </div>
+    </div>
+  </div>
+</div>
 @if($otasDisconect)
 @include('backend.planning._alarmsDisconect', ['alarms' => $otasDisconect])
 
@@ -214,6 +225,11 @@ window["URLCalendar"] = '/getCalendarMobile/';
 <script type="text/javascript">
 $(document).ready(function () {
     $('button[data-type="pendientes"]').trigger('click');
+
+    $('#mIngrAptos').on('click', function(){
+      $('#modalIngrAptos').modal();
+      $('#modalIngrAptos .boxContent').load('/admin/paymentspro/getResumeByRoomsYear');
+    });
 });
 </script>
 

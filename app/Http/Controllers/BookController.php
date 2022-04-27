@@ -1419,7 +1419,7 @@ class BookController extends AppController
               break;
             default :
               $sqlPayment = \App\Payments::where('datePayment','<=',$endYear)
-                    ->where('datePayment','>=',$startYear)->limit(50);
+                    ->where('datePayment','>=',$startYear);
               break;
           }
           $IdBooks = $sqlPayment->pluck('book_id')->toArray();

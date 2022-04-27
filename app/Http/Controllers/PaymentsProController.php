@@ -248,7 +248,9 @@ class PaymentsProController extends AppController {
         'limp_prop' => $limp_prop,
         't_limpProp' => $t_limpProp,
         'txtProp' => $txtProp,
-        'tTxtProp'=>$tTxtProp
+        'tTxtProp'=>$tTxtProp,
+        'typePaymentLst' => \App\Expenses::getTypeCobro(),
+        'gTypeLst'=>\App\Expenses::getTypes()
     ]);
   }
 
@@ -893,4 +895,105 @@ class PaymentsProController extends AppController {
     
     echo $html;
   }
+
+  function payPropGroup(Request $req){
+
+    $lstRooms = Rooms::get()->pluck('id');
+    
+    $date = $req->input('fecha',date('d/m/Y'));
+    $concept = $req->input('concept','carga masiva SEPA19');
+    $import = $req->input('import',0);
+    $type_payment = $req->input('type_payment');
+    $type = $req->input('type');
+    $comment = $req->input('comment');
+    $date = convertDateToDB($date);
+    $nSaved = 0;
+    foreach ($lstRooms as $rID){
+      $import = intVal($req->input('cProp_'.$rID,0));
+      if ($import>0){
+        $obj = new \App\Expenses();
+        $obj->concept = $concept;
+        $obj->date = $date;
+        $obj->import = $import;
+        $obj->typePayment = $type_payment;
+        $obj->type = $type;
+        $obj->comment = $comment;
+        $obj->PayFor = $rID;
+        $obj->save();
+        $nSaved++;
+      }
+    }
+    
+    return back()->with(['success'=>$nSaved.' Registros cargados']);
+    
+  }
+
+  function getResumeByRoomsYear(){
+    $oYear = $this->getActiveYear();
+
+    $lstRooms = Rooms::where('state',1)->orderBy('order', 'ASC')->get();
+    $result = [];
+    $rRoomType = [];
+    $year = $oYear->year;
+    foreach ($lstRooms as $room){
+      if (isset($room->user->name)){
+        $own = ucfirst(substr($room->user->name, 0, 6));
+        $own .= ' ('.substr($room->nameRoom, 0, 6).')';
+      } else {
+        $own = $room->nameRoom;
+      }
+      $aux = [
+        'id'=> $room->id,
+        'name'=> $own,
+        'type'=>$room->sizeApto,
+        'semaf'=>'green'
+      ];
+      for ($i = 0; $i < 3; $i++){
+        $auxVal = $room->getCostPropByYear($year-$i);
+        $aux[$year-$i] = $auxVal;
+        if ($i == 0){
+          if (!isset($rRoomType[$room->sizeApto])){
+            $rRoomType[$room->sizeApto] =['t'=>0,'c'=>0];
+          }
+          $rRoomType[$room->sizeApto]['t'] += $auxVal;
+          $rRoomType[$room->sizeApto]['c']++;
+        }
+      }
+      $result[] = $aux;
+    }
+
+    $rRoomTypeMedia = [];
+    $allSize = \App\SizeRooms::all()->pluck('name','id')->toArray();
+    foreach ($rRoomType as $k=>$v){
+      $rRoomType[$k]['p'] = round($v['t'] / $v['c']);
+      if (isset($allSize[$k])){
+        $rRoomTypeMedia[] = [
+          'n'=> $allSize[$k],
+          'v'=>$rRoomType[$k]['p']
+        ];
+      }
+    }
+
+    foreach ($result as $k=>$v){
+      if (isset($rRoomType[$v['type']]) && $rRoomType[$v['type']]['p']>0){
+        $media = $v[$year] / $rRoomType[$v['type']]['p'];
+        if ($media<1){
+          if ($media>0.89) 
+            $result[$k]['semaf']='yellow';
+          else 
+            $result[$k]['semaf']='red';
+        } else {
+          if ($media<1.11) $result[$k]['semaf']='yellow';
+        }
+      }
+    }
+    
+   
+    return view('backend.paymentspro.blocks.resume-by-rooms-years',[
+      'year'=>$oYear,
+      'media'=>$rRoomTypeMedia,
+      'result'=>$result
+    ]);
+  }
+
 }
