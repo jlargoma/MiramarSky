@@ -248,7 +248,9 @@ class PaymentsProController extends AppController {
         'limp_prop' => $limp_prop,
         't_limpProp' => $t_limpProp,
         'txtProp' => $txtProp,
-        'tTxtProp'=>$tTxtProp
+        'tTxtProp'=>$tTxtProp,
+        'typePaymentLst' => \App\Expenses::getTypeCobro(),
+        'gTypeLst'=>\App\Expenses::getTypes()
     ]);
   }
 
@@ -893,4 +895,37 @@ class PaymentsProController extends AppController {
     
     echo $html;
   }
+
+  function payPropGroup(Request $req){
+
+    $lstRooms = Rooms::get()->pluck('id');
+    
+    $date = $req->input('fecha',date('d/m/Y'));
+    $concept = $req->input('concept','carga masiva SEPA19');
+    $import = $req->input('import',0);
+    $type_payment = $req->input('type_payment');
+    $type = $req->input('type');
+    $comment = $req->input('comment');
+    $date = convertDateToDB($date);
+    $nSaved = 0;
+    foreach ($lstRooms as $rID){
+      $import = intVal($req->input('cProp_'.$rID,0));
+      if ($import>0){
+        $obj = new \App\Expenses();
+        $obj->concept = $concept;
+        $obj->date = $date;
+        $obj->import = $import;
+        $obj->typePayment = $type_payment;
+        $obj->type = $type;
+        $obj->comment = $comment;
+        $obj->PayFor = $rID;
+        $obj->save();
+        $nSaved++;
+      }
+    }
+    
+    return back()->with(['success'=>$nSaved.' Registros cargados']);
+    
+  }
+
 }

@@ -62,9 +62,22 @@ $isMobile = $mobile->isMobile()
   width: 100%;
     min-height: 90vh;
     }
+  #filterByRange,.btn-txt{
+    margin-bottom: 10px;
+  }
+
+  button.btn.btn-basic {
+    float: left;
+    margin: 0 7px 10px;
+    box-shadow: 1px 1px 1px 1px #295d9b;
+  }
+
   @media screen and (max-width: 767px){
     .modal-big{
       width: 100%;
+    }
+    #modalSEPA19 a.liquidationByRoom {
+    font-size: 11px;
     }
   }
   .btn-transparent{
@@ -92,6 +105,17 @@ button.btn.btn-primary.btn-txt{    float: left;
     height: 35px;
     margin-left: 9px;
     font-size: 1.2em;}
+ 
+input.form-control.cPropRooms {
+    width: 80px;
+    padding: 2px;
+    border: 1px solid #dfdfdf;
+    margin: 0;
+}
+.datepicker thead tr .prev:before,
+.datepicker thead tr .next:before{
+  content: "";
+}
 </style>
 
 <link href="/assets/plugins/bootstrap-datepicker/css/datepicker3.css" rel="stylesheet" type="text/css" media="screen">
@@ -123,7 +147,7 @@ use \Carbon\Carbon; ?>
 
 <div class="container-fluid padding-25 sm-padding-10">
   <div class="row push-20">
-    <div class="col-md-5 col-xs-12 text-center">
+    <div class="col-md-6 col-xs-12 text-center">
       <form method="POST" id="form_filterByRange"> 
         <input type="hidden" id="_token" name="_token" value="<?php echo csrf_token(); ?>">
         <input type="hidden" id="sent" name="sent" value="0">
@@ -147,6 +171,7 @@ use \Carbon\Carbon; ?>
         </button>
       </form>
       <button class="btn btn-primary btn-txt" type="button" data-toggle="modal" data-target="#modalTXT">Ver TXT</button>
+      <button class="btn btn-basic" type="button" data-toggle="modal" data-target="#modalSEPA19">SEPA 19</button>
     </div>
     <div class="col-md-3 col-md-offset-1 col-xs-12 text-center">
       <h2 class="font-w300">Pagos a <span class="font-w800">propietarios</span> </h2>
@@ -554,7 +579,7 @@ use \Carbon\Carbon; ?>
   </div>
   <!-- /.modal-dialog -->
 </div>
-<div class="modal fade slide-up disable-scroll in" id="liquidationByRoom" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade slide-up disable-scroll in" id="liquidationByRoom" tabindex="-1" role="dialog" aria-hidden="true" style="z-index: 1051;">
   <div class="modal-dialog modal-lg" style="width: 95%;">
     <div class="modal-content-wrapper" >
        
@@ -662,6 +687,8 @@ use \Carbon\Carbon; ?>
     </div>
   </div>
 </div>
+@include('backend.paymentspro.blocks.sepa19')
+
 @endsection
 
 @section('scripts')
@@ -774,6 +801,19 @@ obj.hide().attr('src','/admin/paymentspro/getLiquidationByRooms?modal=1&roomID='
 $('#ifrLiquidationByRoom').on('load',function () {
 //    $('#bkgDetailLoading').hide();
     $(this).show();
+});
+$('#fechasepa19').datepicker();
+$('.cPropRooms').on('change',function () {
+  var total = 0;
+  $('.cPropRooms').each(function(){
+    var value = parseInt($(this).val());
+    if (!isNaN(value)){
+      total += value
+    } else {
+      $(this).val('');
+    }
+  });
+  $('#totalRemesa').text(total);
 });
 </script>
 @endsection
