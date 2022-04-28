@@ -33,7 +33,7 @@
 <div class="col-md-2 col-xs-6">
   
   
-  <div class="row contabilidad">
+  <div class="row contabilidad ff">
     <div class="sumary bordered mobil_1">
       <label>Cobrado Temporada</label>
       <h4 class="text-black font-w400 text-center">{{moneda($ffData['pay'])}}</h4>

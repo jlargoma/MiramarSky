@@ -48,7 +48,8 @@ class RevenueController extends AppController
         'nights'=>$oServ->countNightsSite(),
         'rvas'=>$oServ->countBookingsSite(),
         'ADR_finde'=>$ADR_finde,
-        'forfaits'=>$forfaits
+        'forfaits'=>$forfaits,
+        'aRatios'=>$oServ->getRatios()
     ]);
     
     /*************************************************************/
@@ -236,6 +237,7 @@ class RevenueController extends AppController
         'agencias' => $agencias,
         'comp_ingresos_anuales' => $comp_ingresos_anuales,
         'contabilidad' => $contabilidad,
+        'path'=>$req->path()
       ]);
     
   }
@@ -243,6 +245,7 @@ class RevenueController extends AppController
   function getMonthKPI($month){
     $oYear   = $this->getActiveYear();
     $oServ = new \App\Services\RevenueService();
+    $oServ2 = new \App\Services\RevenueService();
     if ($month > 0){
       $oServ->setDates($month,$oYear);
     } else {
@@ -253,6 +256,9 @@ class RevenueController extends AppController
     $ADR_finde = $oServ->getADR_finde();
     $forfaits = $oServ->getForfaits();
     
+    $oServ2->setDates(null,$oYear);
+    $oServ2->setBook();
+
     return view('backend.revenue.dashboard.mes',[
         'books' => $oServ->books,
         'roomCh' => $oServ->rChannel,
@@ -264,6 +270,7 @@ class RevenueController extends AppController
         'rvas'=>$oServ->countBookingsSite(),
         'ADR_finde'=>$ADR_finde,
         'forfaits'=>$forfaits,
+        'aRatios'=>$oServ2->getRatios()
     ]);
   }
   

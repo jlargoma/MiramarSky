@@ -36,7 +36,7 @@ $k = 0;
 
 <div class="row">
   <div class="col-md-6">
-    <div class="box ">
+    <div class="box table-responsive">
       <table class="table">
         <tr>
           <th>Mes</th>
@@ -60,23 +60,10 @@ $k = 0;
       </table>
     </div>
     <div class="box row">
-      <div class="col-md-4 text-cont">
-        <?php 
-        $ffTotals = isset($forfaits['totals'][0]['t']) ? $forfaits['totals'][0]['t']: 0; 
-        ?>
-        <b>Total Ingresos Ordenes Forfaits:</b>
-        <h4>{{moneda($ffTotals)}}</h4>
-        <b>Promedio por Orden Forfaits:</b>
-        <h4>
-          <?php  echo ($forfaits['lst'][$month][3]>0) ? moneda($ffTotals/$forfaits['lst'][$month][3]) : '--'; ?>
-        </h4>
-        <b>Bº ESTIM <small>(15% x vtas de forfait)</small>:</b>
-        <h4>{{moneda($ffTotals*0.15)}}</h4>
-        </h4>
-        
-      </div>
-      <div class="col-md-8">
-        <canvas id="bar_forfatis"></canvas>
+      <div class="boxChar">
+        <div class="contentChar">
+        <canvas id="bar_ingMonth"></canvas>
+        </div>
       </div>
     </div>
   </div>
@@ -87,7 +74,7 @@ $k = 0;
           <th>KPI - Indicador Clave</th>
         </table>
       </div>
-      <div >
+      <div class="table-responsive">
         <table class="table">
           <tr>
             <th>Total Vnts <?php echo $month > 0 ? $lstMonths[$month] : 'Todos'; ?></th>
@@ -130,7 +117,7 @@ $k = 0;
             <td class="td-h1"> 
               <?php
               if ($aPKI['rva'] > 0)
-                echo round($aPKI['nigth'] / $aPKI['rva']);
+                echo ceil($aPKI['nigth'] / $aPKI['rva']);
               else
                 echo '-';
               ?>
@@ -148,28 +135,73 @@ $k = 0;
               ?>
             </td>
           </tr>
-        </table>
+          </table>
+          <table class="table">
+
+          <?php 
+        $ffTotals = isset($forfaits['totals'][$month]['t']) ? $forfaits['totals'][$month]['t']: 0; 
+       // dd($forfaits);
+        ?>
+          <tr>
+            <th>Vtas Forfaits</th>
+            <th>Total Rvas</th>
+            <th>APR Forfaits</th>
+            <th>Bº ESTIM <small>(10% x vtas de forfait)</small></th>
+          </tr>
+          <tr>
+            <td class="td-h1">{{moneda($ffTotals)}}</td>
+            <td class="td-h1">{{$forfaits['count']}}</td>
+            <td class="td-h1"> 
+              <?php
+               echo ($forfaits['lst'][$month][3]>0) ? moneda($ffTotals/$forfaits['lst'][$month][3]) : '--';
+              ?>
+            </td>
+            <td class="td-h1">
+            {{moneda($ffTotals*0.1)}}
+            </td>
+          </tr>
+          </table>
       </div>
     </div>
   </div>
 </div>
+         
 
 <script type="text/javascript">
-  new Chart(document.getElementById("bar_forfatis"), {
+//   new Chart(document.getElementById("bar_forfatis"), {
+//     type: 'bar',
+//     data: {
+//       labels: ['No Gestionada','Cancelada','No Cobrada','Confirmada','Comprometida','Interesados'],
+//       datasets: [{
+//           backgroundColor: [<?php 
+//             echo '"'.printColor(1).'",';
+//             echo '"'.printColor(2).'",';
+//             echo '"'.printColor(3).'",';
+//             echo '"'.printColor(4).'",';
+//             echo '"'.printColor(5).'",';
+//             echo '"'.printColor(6).'"';
+//             ?>],
+//           data: [<?php foreach ($forfaits['lst'][$month] as $k=>$v)
+//               echo "'" . $v . "',"; ?>]
+//         }]
+//     },
+//     options: {
+//       title: {display: false},
+//       legend: {display: false},
+// //      legend: { position: 'bottom'}
+//     }
+//   });
+
+  new Chart(document.getElementById("bar_ingMonth"), {
     type: 'bar',
     data: {
-      labels: ['No Gestionada','Cancelada','No Cobrada','Confirmada','Comprometida','Interesados'],
+      labels: [
+        <?php foreach ($lstMonths as $k=>$v) echo "'" . $v . "',"; ?>
+      ],
       datasets: [{
-          backgroundColor: [<?php 
-            echo '"'.printColor(1).'",';
-            echo '"'.printColor(2).'",';
-            echo '"'.printColor(3).'",';
-            echo '"'.printColor(4).'",';
-            echo '"'.printColor(5).'",';
-            echo '"'.printColor(6).'"';
-            ?>],
-          data: [<?php foreach ($forfaits['lst'][$month] as $k=>$v)
-              echo "'" . $v . "',"; ?>]
+          backgroundColor: "#295d9b",
+          data: [<?php foreach ($lstMonths as $k=>$v)
+              echo "'" . ceil($aRatios[$k]['p']). "',"; ?>]
         }]
     },
     options: {

@@ -1,9 +1,27 @@
 @extends('layouts.admin-master')
 
-@section('title') Revenue @endsection
+@section('title') Dashboard @endsection
 
 
 @section('content')
+@if($path == 'admin/contabilidad')
+<div class="container padding-5 sm-padding-10">
+        <div class="row bg-white">
+            <div class="col-md-12 col-xs-12">
+
+                <div class="col-md-3 col-md-offset-3 col-xs-12">
+                    <h2 class="text-center">Dashboard</h2>
+                </div>
+                <div class="col-md-2 col-xs-12 sm-padding-10" style="padding: 10px">
+                    @include('backend.years._selector')
+                </div>
+            </div>
+        </div>
+       <div class="row mb-1em">
+         @include('backend.sales._button-contabiliad')
+        </div>
+    </div>
+@else
 <div class="box-btn-contabilidad">
   <div class="row bg-white">
     <div class="col-md-12 col-xs-12">
@@ -22,6 +40,7 @@
     @include('backend.revenue._buttons')
   </div>
 </div>
+@endif
 
     @include('backend.revenue.dashboard.pieCss')
 
@@ -156,14 +175,14 @@ $('.toggle-contab-site').on('click',function(){
       });
       
     $('#blockMes').on('click','.sm',function(){
-      $('#blockMes').load('getMonthKPI/'+$(this).data('k'),function(){
+      $('#blockMes').load('/admin/revenue/getMonthKPI/'+$(this).data('k'),function(){
         $('.kpis').hide();
         $('.kpi_0').show();
         $('.bkpi0').addClass('active');
       });
     });
     $('#blockDisp').on('click','.sm',function(){
-      $('#blockDisp').load('getMonthDisp/'+$(this).data('k'),function(){
+      $('#blockDisp').load('/admin/revenue/getMonthDisp/'+$(this).data('k'),function(){
         
       });
     });

@@ -68,13 +68,12 @@ class Liquidacion
         $vtaProp = false;
         if ($b->agency == 0 || $b->agency == 31){
           $vtaProp = true;
-          $vta_prop++;
         } elseif ($b->type_book == 99 || $b->is_fastpayment){
-          $vta_prop++;
           $vtaProp = true;
         }
 
-        if (!$vtaProp) $vta_agency++;
+        if ($vtaProp)  $vta_prop+=$b->pvp;
+        else $vta_agency+=$b->pvp;
           
         $t_cost += $b->costs;
       }
@@ -125,7 +124,7 @@ class Liquidacion
           'daysTemp'=>\App\SeasonDays::first()->numDays,//$startYear->diffInDays($endYear)
         ];
       if($t_books>0){
-        $summary['vta_agency'] = round(($vta_agency / $t_nights) * 100);
+        $summary['vta_agency'] = round(($vta_agency / $t_pvp) * 100);
         $summary['vta_prop'] = 100-$summary['vta_agency'];    
       }
      
