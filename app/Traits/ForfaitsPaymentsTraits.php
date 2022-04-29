@@ -553,6 +553,34 @@ trait ForfaitsPaymentsTraits {
       $rooms = \App\Rooms::all();
     
       $obj1  = $this->getMonthlyData($year);
+      /*  RESUME BY YEAR */
+      $yResume = [];
+      $aux = $obj1['months_obj'];
+      $auxTot = ["forfaits" => 0, "equipos" => 0, "clases" => 0, "otros" => 0 ];
+      foreach($obj1['months_obj'] as $v){
+        $auxTot['forfaits'] += $v['data']['forfaits']; 
+        $auxTot['equipos'] += $v['data']['equipos']; 
+        $auxTot['clases'] += $v['data']['clases']; 
+        $auxTot['otros'] += $v['data']['otros']; 
+      }
+      $minYear = $year->year-2000;
+      $yResume[$minYear.'-'.($minYear+1)] = $auxTot;
+      
+      for($i=1;$i<4;$i++){
+        $auxYear = \App\Years::where('year', $year->year-$i)->first();
+        $aux  = $this->getMonthlyData($auxYear);
+        $aux = $aux['months_obj'];
+        $auxTot = ["forfaits" => 0, "equipos" => 0, "clases" => 0, "otros" => 0 ];
+        foreach($aux as $v){
+          $auxTot['forfaits'] += $v['data']['forfaits']; 
+          $auxTot['equipos'] += $v['data']['equipos']; 
+          $auxTot['clases'] += $v['data']['clases']; 
+          $auxTot['otros'] += $v['data']['otros']; 
+        }
+        $yResume[($minYear-$i).'-'.($minYear-$i+1)] = $auxTot;
+      }
+      
+      /*  RESUME BY YEAR */
       
       $balance = $this->getBalance();
       $ff_mount = 0;
@@ -591,6 +619,7 @@ trait ForfaitsPaymentsTraits {
           'ff_checkin'=> $ff_checkin,
           'totalOrders'=> $totalOrders,
           'countOrder'=> $countOrder,
+          'yResume'=>$yResume
               ]);
     }
     

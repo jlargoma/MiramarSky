@@ -15,9 +15,9 @@ if ($posicion > 0) {
 
   <div class="btn-contabilidad">
     <?php if ($url == "contabilidad"): ?>
-      <button class="btn btn-md text-white active"  disabled>Estadisticas</button>
+      <button class="btn btn-md text-white active"  disabled>DASHBOARD</button>
     <?php else: ?>
-      <a class="text-white btn btn-md btn-primary" href="{{url('/admin/contabilidad/')}}">Estadisticas</a>
+      <a class="text-white btn btn-md btn-primary" href="{{url('/admin/contabilidad/')}}">DASHBOARD</a>
     <?php endif ?>	
   </div>
   <div class="btn-contabilidad">

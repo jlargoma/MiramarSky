@@ -68,13 +68,12 @@ class Liquidacion
         $vtaProp = false;
         if ($b->agency == 0 || $b->agency == 31){
           $vtaProp = true;
-          $vta_prop++;
         } elseif ($b->type_book == 99 || $b->is_fastpayment){
-          $vta_prop++;
           $vtaProp = true;
         }
 
-        if (!$vtaProp) $vta_agency++;
+        if ($vtaProp)  $vta_prop+=$b->pvp;
+        else $vta_agency+=$b->pvp;
           
         $t_cost += $b->costs;
       }
@@ -108,7 +107,7 @@ class Liquidacion
       $benef = $benef_inc = 0;
       if($t_books>0){
         $benef = $t_pvp-$t_cost;
-        $benef_inc = round(($benef)/$t_pvp*100);
+        $benef_inc = ($t_pvp>0) ? round(($benef)/$t_pvp*100) : 0;
       }
       
       $summary = [
@@ -125,7 +124,7 @@ class Liquidacion
           'daysTemp'=>\App\SeasonDays::first()->numDays,//$startYear->diffInDays($endYear)
         ];
       if($t_books>0){
-        $summary['vta_agency'] = round(($vta_agency / $t_nights) * 100);
+        $summary['vta_agency'] = ($t_pvp>0) ? round(($vta_agency / $t_pvp) * 100) : 0;
         $summary['vta_prop'] = 100-$summary['vta_agency'];    
       }
      
@@ -191,7 +190,6 @@ class Liquidacion
       $aExpensesPending['prop_pay']  += $book->get_costProp();
       $aExpensesPending['agencias']  += $book->pvpAgenc;
       $aExpensesPending['amenities'] += $book->extr;
-      $aExpensesPending['comision_tpv'] += $book->pvpComm;
       if ($book->limp > 10){
         $aExpensesPending['limpieza']  += ($book->limp - 10);
         $aExpensesPending['lavanderia'] += 10;
@@ -199,6 +197,8 @@ class Liquidacion
         $aExpensesPending['lavanderia'] += $book->limp;
       }
     }
+    $stripeCost = $this->getTPV($books);
+    $aExpensesPending['comision_tpv'] = round(array_sum($stripeCost),2);
       
     return $aExpensesPending;
   }
@@ -477,4 +477,28 @@ class Liquidacion
                 'none' => 'Otras',
             ];
     }
+
+     /**
+   * 
+   * @param type $books
+   * @return type
+   */
+  function getLimpiezaEstimation($sqlBooks){
+    
+        $noRooms = \App\Rooms::where('channel_group','')->pluck('id');
+        $sqlBooks->whereNotIn('room_id',$noRooms);
+        $noCustomer = \App\Customers::whereIn('id',$sqlBooks->pluck('customer_id'))
+                ->where('name','Bloqueo automatico')->pluck('id');
+    
+        $books = $sqlBooks->whereNotIn('customer_id',$noCustomer)
+                ->orderBy('finish', 'ASC')->get();
+        $limpieza = 0;
+        $lavanderia = 0;
+        foreach ($books as $b) {
+          $limpieza  += $b->cost_limp;
+          $lavanderia += 6;
+        }
+
+        return ['limpieza'=>$limpieza,'lavanderia'=>$lavanderia];
+      }
 }

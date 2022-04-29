@@ -46,6 +46,12 @@
     .sumary.bordered.min h3{
       font-size: 18px;
     }
+    .contabilidad.ff .mobil_1{
+      float: none;
+      width: 96% !important;
+      height: 6em;
+      margin: auto !important;
+    }
   }
 
 </style>

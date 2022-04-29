@@ -270,7 +270,8 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::post('/ingresos/upd', 'LiquidacionController@ingresosUpd');
   Route::get('/ingresos/delete/{id}','RouterActionsController@ingresos_delete');
   Route::get('/estadisticas/{year?}','LiquidacionController@Statistics');
-  Route::get('/contabilidad','LiquidacionController@contabilidad');
+// Route::get('/contabilidad','LiquidacionController@contabilidad');
+  Route::get('/contabilidad','RevenueController@index');
  
   
   Route::get('/caja', 'LiquidacionController@caja');
@@ -285,11 +286,8 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   Route::get('/rules/stripe/update', 'RulesStripeController@update');
   Route::get('/days/secondPay/update/{id}/{days}','RouterActionsController@days_secondPay_update');
   Route::get('/estadisticas/{year?}', 'LiquidacionController@Statistics');
-  Route::get('/contabilidad', 'LiquidacionController@contabilidad');
   Route::post('/arqueo/create', 'LiquidacionController@arqueoCreate');
 
-  Route::get('/contabilidad','LiquidacionController@contabilidad');
-  
   
 
   Route::get('/perdidas-ganancias-funcional/{year?}','LiquidacionController@perdidasGananciasFuncional');
