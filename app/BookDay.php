@@ -33,10 +33,12 @@ ORDER BY `book_days`.`date` DESC*/
       $PVPAgencia = $b->PVPAgencia;
       $cost_limp = $b->cost_limp;
       $extraCost = $b->extraCost;
+      $luz_cost = $b->luz_cost;
       $pvpComm = paylandCost($b->getPayment(2));
       if($b->nigths>0){
         $pvp = $pvp / $b->nigths;
         $cost_apto = $cost_apto / $b->nigths;
+        $luz_cost = $luz_cost / $b->nigths;
       }
       $extrs = '';
       $tCosts = $b->get_costeTotal();
@@ -61,6 +63,7 @@ ORDER BY `book_days`.`date` DESC*/
               'extr'=>$extraCost,
               'pvpComm'=>$pvpComm,
               'forfait'=>$b->ff_status,
+              'luz'=>$luz_cost
           ];
         continue;
       }
@@ -85,6 +88,7 @@ ORDER BY `book_days`.`date` DESC*/
               'extr'=>$extraCost,
               'pvpComm'=>$pvpComm,
               'forfait'=>$b->ff_status,
+              'luz'=>$luz_cost
           ];
         
         $b_start = strtotime('+1 day', $b_start);
@@ -149,8 +153,8 @@ ORDER BY `book_days`.`date` DESC*/
   
   function get_costProp(){
 //    var_dump($this->book_id,$this->costs,$this->apto, $this->park,$this->lujo);
-//    echo "\n";
-    return $this->apto +  $this->park +  $this->lujo;
+//    return $this->apto +  $this->park +  $this->lujo;
+    return $this->apto + $this->park + $this->luz + $this->lujo;
   }
   
     
