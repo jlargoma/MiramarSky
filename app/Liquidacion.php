@@ -188,8 +188,9 @@ class Liquidacion
     
     foreach ($books as $key => $book) {
       $aExpensesPending['prop_pay']  += $book->get_costProp();
-      $aExpensesPending['agencias']  += $book->pvpAgenc;
+      $aExpensesPending['agencias']  +=  (isset($book->pvpAgenc))  ? $book->pvpAgenc:$book->PVPAgencia;
       $aExpensesPending['amenities'] += $book->extr;
+      $aExpensesPending['comision_tpv'] += $book->pvpComm;
       if ($book->limp > 10){
         $aExpensesPending['limpieza']  += ($book->limp - 10);
         $aExpensesPending['lavanderia'] += 10;
@@ -197,8 +198,8 @@ class Liquidacion
         $aExpensesPending['lavanderia'] += $book->limp;
       }
     }
-    $stripeCost = $this->getTPV($books);
-    $aExpensesPending['comision_tpv'] = round(array_sum($stripeCost),2);
+    // $stripeCost = $this->getTPV($books);
+    // $aExpensesPending['comision_tpv'] = round(array_sum($stripeCost),2);
       
     return $aExpensesPending;
   }

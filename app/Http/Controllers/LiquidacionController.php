@@ -324,24 +324,16 @@ class LiquidacionController extends AppController {
     $aIngrPending = [
         'ventas' => 0,
         ];
-    /*************************************************************************/
-    /** @ToSee estimaciones sólo de las reservas vendidas */
-    $sqlBooks = \App\Book::where_type_book_sales(true,true)
-    ->where('start', '>=', $startYear)->where('start', '<=', $endYear);
-    $books = $sqlBooks->get();
-    $aExpensesPending = $oLiq->getExpensesEstimation($books);
-    $limp = $oLiq->getLimpiezaEstimation($sqlBooks);
-    $aExpensesPending['limpieza'] = $limp['limpieza'];
-    $aExpensesPending['lavanderia'] = $limp['lavanderia'];
-/*************************************************************************/
-
-
-
     $aux = $emptyMonths;
     $lstRvs = \App\BookDay::where_type_book_sales(true)
             ->where('date', '>=', $startYear)
             ->where('date', '<=', $endYear)->get();
-     
+    /*************************************************************************/
+    /** @ToSee estimaciones sólo de las reservas vendidas? Pago a proveedores */
+    $aExpensesPending = $oLiq->getExpensesEstimation($lstRvs);
+    //dd($aExpensesPending);
+    /*************************************************************************/
+ 
     foreach ($lstRvs as $key => $b) {
       $m = date('ym', strtotime($b->date));
       $value = $b->pvp;
