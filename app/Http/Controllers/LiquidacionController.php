@@ -626,7 +626,12 @@ class LiquidacionController extends AppController {
       $tGastos_operativos += $data['lstT_gast'][$k];// + floatval ($data['aExpensesPending'][$k]);
       unset($otherExpenses[$k]);
     }
-    
+
+    $gType = \App\Expenses::getTypes();
+    $otherExpensesText = [];
+    foreach(array_keys($otherExpenses) as $k)
+      if(isset($gType[$k])) $otherExpensesText[] = $gType[$k];
+
     $otherExpenses = array_sum($otherExpenses);
     $iva_otherExpenses = \App\Settings::getKeyValue('otherExpenses_IVA_'.$data['year']->year);
     if (!is_numeric($iva_otherExpenses)) $iva_otherExpenses = 0;
@@ -668,6 +673,7 @@ class LiquidacionController extends AppController {
     $data['tGastos_operativos'] = $tGastos_operativos;
     $data['otherExpenses'] = $otherExpenses;
     $data['iva_otherExpenses'] = $iva_otherExpenses;
+    $data['otherExpensesText'] = $otherExpensesText;
     $data['tPayProp'] = $tPayProp;
     
     $data['tIngr_base']   = $ing_baseImp+$ing_ff_baseImp+$ing_comision_baseImp;
