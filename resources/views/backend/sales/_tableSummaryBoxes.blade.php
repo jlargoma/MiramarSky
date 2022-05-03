@@ -73,7 +73,7 @@ if(!isset($hide)) $hide = ['t_day_2'];
      @if(isset($salesByUser))
      <table class="table">
        <tr>
-         <th></th>
+         <th>Temporada</th>
          @foreach($yearsLst as $year)
          <th>{{$year}}</th>
          @endforeach
@@ -86,6 +86,12 @@ if(!isset($hide)) $hide = ['t_day_2'];
          @endforeach
          </tr>
         @endforeach
+        <tr>
+          <th>Total</th>
+         @foreach($salesByYear as $year=>$val)
+         <th>{{moneda($val)}}</th>
+         @endforeach
+         </tr>
      </table>
      @endif
   </div>

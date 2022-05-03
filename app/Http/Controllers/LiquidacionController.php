@@ -46,7 +46,7 @@ class LiquidacionController extends AppController {
       $lstYears = \App\Years::where('year','<=',$oYear->year)->orderBy('year','DESC')->limit(5)->get();
       $type_book = Book::get_type_book_sales(true,true);
       $salesByUser = [39=>[],70=>[],11=>[],98=>[],0=>[]];
-      $yearsLst = [];
+      $yearsLst = $salesByYear = [];
       foreach ($lstYears as $year){
         $yearsLst[] = substr($year->end_date,2,2).'-'.substr($year->start_date ,2,2);
         foreach ($uIds as $uID => $name){
@@ -63,7 +63,14 @@ class LiquidacionController extends AppController {
         if ($tPvp)  $salesByUser[0][$year->year] = $tPvp;
         else  $salesByUser[0][$year->year] = 0;
       }
+      foreach($salesByUser as $k=>$v){
+        foreach($v as $k1=>$v1){
+          if (!isset($salesByYear[$k1])) $salesByYear[$k1] = 0;
+          $salesByYear[$k1] += $v1;
+        }
+      }
       $data['salesByUser'] = $salesByUser;
+      $data['salesByYear'] = $salesByYear;
       $data['uIdName'] = $uIds;
       $data['yearsLst'] = $yearsLst;
     }
