@@ -103,7 +103,10 @@
           <td >{{moneda($tGastos_operativos)}}</td>
         </tr>
         <tr class="border">
-          <td >GASTOS OTROS</td>
+          <td >GASTOS OTROS
+          <i class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="bottom" 
+            data-content="{{implode(', ',$otherExpensesText)}}"></i>
+          </td>
           <td >{{moneda($otherExpenses-$iva_otherExpenses)}}</td>
           <td >--</td>
           <td ><input type="text" class="saveIVA" data-k="iva_otherExpenses" value="{{$iva_otherExpenses}}"><span>€</span></td>
