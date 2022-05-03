@@ -2716,7 +2716,7 @@ class BookController extends AppController
   function printBooksByUser($uID){
     $year      = $this->getActiveYear();
     $oUser = User::find($uID);
-    $lstBooks = Book::where_type_book_reserved()->where([
+    $lstBooks = Book::where_type_book_reserved(true)->where([
       ['start','>=',$year->start_date],
       ['start','<=',$year->end_date],
       ['user_id',$uID]
