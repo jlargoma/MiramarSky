@@ -46,7 +46,7 @@ class LiquidacionController extends AppController {
       $lstYears = \App\Years::where('year','<=',$oYear->year)->orderBy('year','DESC')->limit(5)->get();
       $type_book = Book::get_type_book_sales(true,true);
       $salesByUser = [39=>[],70=>[],11=>[],98=>[],0=>[]];
-      $yearsLst = [];
+      $yearsLst = $salesByYear = [];
       foreach ($lstYears as $year){
         $yearsLst[] = substr($year->end_date,2,2).'-'.substr($year->start_date ,2,2);
         foreach ($uIds as $uID => $name){
@@ -63,7 +63,14 @@ class LiquidacionController extends AppController {
         if ($tPvp)  $salesByUser[0][$year->year] = $tPvp;
         else  $salesByUser[0][$year->year] = 0;
       }
+      foreach($salesByUser as $k=>$v){
+        foreach($v as $k1=>$v1){
+          if (!isset($salesByYear[$k1])) $salesByYear[$k1] = 0;
+          $salesByYear[$k1] += $v1;
+        }
+      }
       $data['salesByUser'] = $salesByUser;
+      $data['salesByYear'] = $salesByYear;
       $data['uIdName'] = $uIds;
       $data['yearsLst'] = $yearsLst;
     }
@@ -357,7 +364,7 @@ class LiquidacionController extends AppController {
         
     $auxFF = $oLiq->getFF_Data($startYear, $endYear);
     $ingresos['ff'] = $emptyMonths;
-    $ingrType['ff'] = 'FORFAITs';
+    $ingrType['ff'] = 'FORFAITs y CLASES';
     $lstT_ing['ff'] = $auxFF['pay'];
 //    $lstT_ing['ff_FFExpress'] = $auxFF['totalFFExpress'];
 //    $lstT_ing['ff_ClassesMat'] = $auxFF['totalClassesMat'];
@@ -548,9 +555,13 @@ class LiquidacionController extends AppController {
     }
     //INGRESOS POR VENTAS DE RESERVAS
 //    $vtas_reserva = $data['lstT_ing']['ventas'];
-    $ingr_reservas = $data['lstT_ing']['ventas']-$tPayProp-$data['aExpensesPending']['prop_pay'];
-    $ing_baseImp   = $ingr_reservas/(1+($ivas['ing_iva']/100));
-    $ing_iva       = $ingr_reservas-$ing_baseImp;
+    //$ingr_reservas = $data['lstT_ing']['ventas']-$tPayProp-$data['aExpensesPending']['prop_pay'];
+    //1.- poner TOTAL VENTAS ALOJAMIENTO...y corregir la formula..en la casilla no tiene que aparecer 199.000 tieens que poner ( 517.648€)
+    $ingr_reservas = $data['lstT_ing']['ventas'];
+    $ingr_VtaProp = ($tPayProp+$data['aExpensesPending']['prop_pay']);
+    $inr_VtasINTERM = $ingr_reservas-$ingr_VtaProp;
+    $ing_baseImp   = $inr_VtasINTERM/(1+($ivas['ing_iva']/100));
+    $ing_iva       = $inr_VtasINTERM-$ing_baseImp;
     
     
     $vtas_alojamiento = $ingr_reservas;
@@ -617,9 +628,14 @@ class LiquidacionController extends AppController {
     }
     
     $otherExpenses = array_sum($otherExpenses);
-//    $tGastos_operativos
-    
-    $iva_soportado = round(($tGastos_operativos*($ivas['gasto_operativo']/100)),2);
+    $iva_otherExpenses = \App\Settings::getKeyValue('otherExpenses_IVA_'.$data['year']->year);
+    if (!is_numeric($iva_otherExpenses)) $iva_otherExpenses = 0;
+
+
+    $iva_soportado = \App\Settings::getKeyValue('GastoOper_IVA_'.$data['year']->year);
+    if (!is_numeric($iva_soportado))
+    $iva_soportado = ceil($tGastos_operativos*($ivas['gasto_operativo']/100));
+
     $gasto_operativo_iva     = $iva_soportado;
     $gasto_operativo_baseImp = $tGastos_operativos-$gasto_operativo_iva;
     $ivaTemp = \App\Settings::getKeyValue('IVA_'.$data['year']->year);
@@ -627,6 +643,8 @@ class LiquidacionController extends AppController {
     
     $data['ingr_reservas'] = $ingr_reservas;
     $data['ing_baseImp'] = $ing_baseImp;
+    $data['ingr_VtaProp'] = $ingr_VtaProp;
+    $data['inr_VtasINTERM'] = $inr_VtasINTERM;
     $data['ing_iva'] = $ing_iva;
     $data['ing_ff_baseImp'] = $ing_ff_baseImp;
     $data['ing_ff_iva'] = $ing_ff_iva;
@@ -649,6 +667,7 @@ class LiquidacionController extends AppController {
     $data['gasto_operativo_iva'] = $gasto_operativo_iva;
     $data['tGastos_operativos'] = $tGastos_operativos;
     $data['otherExpenses'] = $otherExpenses;
+    $data['iva_otherExpenses'] = $iva_otherExpenses;
     $data['tPayProp'] = $tPayProp;
     
     $data['tIngr_base']   = $ing_baseImp+$ing_ff_baseImp+$ing_comision_baseImp;

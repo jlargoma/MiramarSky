@@ -152,6 +152,22 @@
         </div>
         <!-- /.modal-dialog -->
     </div>
+    <div class="modal fade slide-up disable-scroll in" id="seeBooksUsr" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content-wrapper">
+                <div class="modal-content">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i
+                                class="pg-close fs-50"></i>
+                    </button>
+                    <div class="seeBooksUsr-content">
+                      
+                    </div>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 @endsection
 
 @section('scripts')
@@ -162,6 +178,12 @@
           var id = $(this).attr('data-id');
           $.get('/admin/usuarios/update/' + id, function (data) {
             $('.update-content').empty().append(data);
+          });
+        });
+        $('.seeBooksUsr').click(function (event) {
+          var id = $(this).data('id');
+          $.get('/admin/booksByUser/' + id, function (data) {
+            $('#seeBooksUsr .seeBooksUsr-content').empty().append(data);
           });
         });
         $('#findRole').change(function () {
@@ -197,6 +219,55 @@
             });
           }
         });
+        var load_comment = true;
+        $('body').on('mouseover', '.showBookComm', function() {
+        var id = $(this).data('booking');
+        if (load_comment != id) {
+            var tooltip = $(this).find('.BookComm');
+            tooltip.load('/ajax/get-book-comm/' + id);
+            load_comment = id;
+        }
+        });
+
       });
     </script>
+    <style>
+    .seeBooksUsr,.update-user{
+        background-color: #48b0f7 !important;
+        color: white !important;
+        border: 1px solid #48b0f7;
+        height: 2em;
+        width: 2em;
+        border-radius: 4px;
+        font-weight: bold;
+    }
+    .update-user i{
+        color: white !important;
+    }
+    
+.seeBooksUsr-content {
+    display: block;
+    max-height: 90vh;
+}
+    .showBookComm {
+    position: relative;
+  }
+
+  .BookComm.tooltiptext {
+    color: #fff;
+    padding: 11px;
+    background-color: #333;
+    font-size: 1em;
+    display: none;
+    position: absolute;
+    width: 296px;
+    white-space: break-spaces;
+    z-index: 5;
+  }
+
+  .showBookComm:hover .BookComm.tooltiptext {
+    display: block;
+
+  }
+    </style>
 @endsection

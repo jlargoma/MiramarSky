@@ -29,7 +29,7 @@
         <td class="empty"></td>
       </tr>
       <tr>
-        <td>GASTOS OPERATIVOS</td>
+        <td>GASTOS OPERATIVOS <i class="fa fa-question-circle" title="agencias, amenities, comision_tpv, lavanderia, limpieza y mantenimiento""></i></td>
         <td>{{moneda($gasto_operativo_baseImp+$gasto_operativo_iva)}}</td>
         <td class="empty"></td>
       </tr>

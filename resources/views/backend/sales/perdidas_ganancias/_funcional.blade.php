@@ -10,11 +10,25 @@
         <th>TOTAL</th>
       </tr>
       <tr class="border">
-        <td >VTAS ALOJAMIENTO</td>
-        <td >{{moneda($ing_baseImp)}}</td>
+        <td >TOTAL VENTAS ALOJAMIENTO</td>
+        <td >{{moneda($ing_baseImp+$ingr_VtaProp)}}</td>
         <td >{{$ivas['ing_iva']}}%</td>
         <td >{{moneda($ing_iva)}}</td>
-        <td >{{moneda($ingr_reservas+$tPayProp+$aExpensesPending['prop_pay'])}}</td>
+        <td >{{moneda($ingr_reservas)}}</td>
+      </tr>
+      <tr class="white border">
+        <td >VTAS PARA PROPIETARIOS (Pagos a Prop.)</td>
+        <td >{{moneda($ingr_VtaProp)}}</td>
+        <td >0%</td>
+        <td >0 €</td>
+        <td >{{moneda($ingr_VtaProp)}}</td>
+      </tr>
+      <tr class="white border">
+        <td >VTAS INTERM INMOB</td>
+        <td >{{moneda($ing_baseImp)}}</td>
+        <td >{{$ivas['ing_iva']}}%</td>
+        <td >{{moneda($inr_VtasINTERM-$ing_baseImp)}}</td>
+        <td >{{moneda($inr_VtasINTERM)}}</td>
       </tr>
       <tr class="border">
         <td >VTAS FORFAITS </td>
@@ -45,177 +59,152 @@
       </tr>
     </table>
   </div>
-  <div class="col-md-4 gasto">
-    <h5>DESGLOSE GASTOS OPERATIVOS</h5>
-    <table>
-      <tr class="border">
-        <th></th>
-        <th>BASE IMP</th>
-        <th colspan="2">IVA SOPORTADO</th>
-        <th>TOTAL</th>
-      </tr>
-      <tr class="border">
-        <td >TOTAL PAGO PROPIETARIOS <br/><smal>¿sólo lo pagado?</smal></td>
-        <td >{{moneda($tPayProp)}}</td>
-        <td >0%</td>
-        <td >0 €</td>
-        <td >{{moneda($tPayProp)}}</td>
-      </tr>
-     
-      <tr class="border">
-        <td >PROV FORFAITS </td>
-        <td >{{moneda($_ff_prov_baseImp)}}</td>
-        <td >{{$ivas['ff_FFExpress_expense']}}%</td>
-        <td >{{moneda($_ff_prov_iva)}}</td>
-        <td >{{moneda($_ff_prov_baseImp+$_ff_prov_iva)}}</td>
-      </tr>
-      <tr class="border">
-        <td >PROV CLASES/OTROS</td>
-        <td >{{moneda($_ff_mat_iva)}}</td>
-        <td >{{$ivas['ff_ClassesMat_exp']}}%</td>
-        <td >{{moneda($_ff_mat_baseImp)}}</td>
-        <td >{{moneda($_ff_mat_baseImp+$_ff_mat_iva)}}</td>
-      </tr>
-      <tr class="border">
-        <td >GASTOS OPERATIVOS</td>
-         <td >{{moneda($gasto_operativo_baseImp)}}</td>
-        <td >{{$ivas['gasto_operativo']}}%</td>
-        <td >{{moneda($gasto_operativo_iva)}}</td>
-        <td >{{moneda($tGastos_operativos)}}</td>
-      </tr>
-      <tr class="border">
-        <td >GASTOS OTROS</td>
-         <td ></td>
-        <td ></td>
-        <td ></td>
-        <td >{{moneda($otherExpenses)}}</td>
-      </tr>
-      <tr class="border">
-        <th>Total</th>
-         <th>{{moneda($totalGasto-$t_gastoTabl_iva)}}</th>
-        <th colspan="2">{{moneda($t_gastoTabl_iva)}}</th>
-        <th>{{moneda($totalGasto)}}</th>
-      </tr>
-    </table>
-  </div>
-  <div class="col-md-4 resultado">
-   <h5>RESULTADO OPERATIVO BRUTO</h5>
-    <table>
-      <tr class="border">
-        <th></th>
-        <th>BASE IMP</th>
-        <th>IVA</th>
-        <th>TOTAL</th>
-      </tr>
-      <tr class="border">
-        <td >INGRESOS</td>
-        <td >{{moneda($t_ingrTabl_base)}}</td>
-        <td >{{moneda($t_ingrTabl_iva)}}</td>
-        <td >{{moneda($t_ingrTabl_base+$t_ingrTabl_iva)}}</td>
-      </tr>
-      <tr class="border">
-        <td >GASTOS</td>
-        <td >{{moneda($totalGasto-$ivaSoportado)}}</td>
-        <td >{{moneda($ivaSoportado)}}</td>
-        <td >{{moneda($totalGasto)}}</td>
-      </tr>
-      <tr class="border">
-        <td >ARQUEO</td>
-        <td ></td>
-        <td >{{moneda($ivaTemp)}}</td>
-        <td >-</td>
-      </tr>
-     <?php 
-     $subtotal = ($t_ingrTabl_base+$t_ingrTabl_iva)-$totalGasto;
-     ?>
-     <tr class="border">
-        <th>SubTotal</th>
-        <th>{{moneda($subtotal-$t_iva)}}</th>
-        <th>{{moneda($t_iva)}}</th>
-        <th>{{moneda($subtotal)}}</th>
-      </tr>
+  <div class="col-md-8">
+    <div class="col-md-6 gasto">
+      <h5>DESGLOSE GASTOS OPERATIVOS</h5>
+      <table>
+        <tr class="border">
+          <th></th>
+          <th>BASE IMP</th>
+          <th colspan="2">IVA SOPORTADO</th>
+          <th>TOTAL</th>
+        </tr>
+        <tr class="border">
+          <td >TOTAL PAGO PROPIETARIOS <br/><smal>¿sólo lo pagado?</smal></td>
+          <td >{{moneda($tPayProp)}}</td>
+          <td >0%</td>
+          <td >0 €</td>
+          <td >{{moneda($tPayProp)}}</td>
+        </tr>
+      
+        <tr class="border">
+          <td >PROV FORFAITS </td>
+          <td >{{moneda($_ff_prov_baseImp)}}</td>
+          <td >{{$ivas['ff_FFExpress_expense']}}%</td>
+          <td >{{moneda($_ff_prov_iva)}}</td>
+          <td >{{moneda($_ff_prov_baseImp+$_ff_prov_iva)}}</td>
+        </tr>
+        <tr class="border">
+          <td >PROV CLASES/OTROS</td>
+          <td >{{moneda($_ff_mat_iva)}}</td>
+          <td >{{$ivas['ff_ClassesMat_exp']}}%</td>
+          <td >{{moneda($_ff_mat_baseImp)}}</td>
+          <td >{{moneda($_ff_mat_baseImp+$_ff_mat_iva)}}</td>
+        </tr>
+        <tr class="border">
+          <td >GASTOS OPERATIVOS  
+            <i 
+            class="fa fa-question-circle" data-container="body" data-toggle="popover" data-placement="bottom" 
+            data-content="agencias, amenities, comision tpv, lavanderia, limpieza y mantenimiento"></i>
+          </td>
+          <td >{{moneda($gasto_operativo_baseImp)}}</td>
+          <td >{{$ivas['gasto_operativo']}}%</td>
+          <td ><input type="text" id="gastoOperIVA" value="{{$gasto_operativo_iva}}"><span>€</span></td>
+          <td >{{moneda($tGastos_operativos)}}</td>
+        </tr>
+        <tr class="border">
+          <td >GASTOS OTROS</td>
+          <td >{{moneda($otherExpenses-$iva_otherExpenses)}}</td>
+          <td >--</td>
+          <td ><input type="text" id="gastoOperIVA" value="{{$iva_otherExpenses}}"><span>€</span></td>
+          <td >{{moneda($otherExpenses)}}</td>
+        </tr>
+        <tr class="border">
+          <th>Total</th>
+          <th>{{moneda($totalGasto-$t_gastoTabl_iva)}}</th>
+          <th colspan="2">{{moneda($t_gastoTabl_iva)}}</th>
+          <th>{{moneda($totalGasto)}}</th>
+        </tr>
+      </table>
+    </div>
+    <div class="col-md-6 resultado">
+    <h5>RESULTADO OPERATIVO BRUTO</h5>
+      <table>
+        <tr class="border">
+          <th></th>
+          <th>BASE IMP</th>
+          <th>IVA</th>
+          <th>TOTAL</th>
+        </tr>
+        <tr class="border">
+          <td >INGRESOS</td>
+          <td >{{moneda($t_ingrTabl_base)}}</td>
+          <td >{{moneda($t_ingrTabl_iva)}}</td>
+          <td >{{moneda($t_ingrTabl_base+$t_ingrTabl_iva)}}</td>
+        </tr>
+        <tr class="border">
+          <td >GASTOS</td>
+          <td >{{moneda($totalGasto-$ivaSoportado)}}</td>
+          <td >{{moneda($ivaSoportado)}}</td>
+          <td >{{moneda($totalGasto)}}</td>
+        </tr>
+        <tr class="border">
+          <td >ARQUEO</td>
+          <td ></td>
+          <td >{{moneda($ivaTemp)}}</td>
+          <td >-</td>
+        </tr>
       <?php 
-     $gastoPendiente = array_sum($aExpensesPending);
-     ?>
-     <tr class="border">
-        <th>Gasto Pend.</th>
-        <th></th>
-        <th></th>
-        <th>{{moneda($gastoPendiente)}}</th>
-      </tr>
-    <tr class="border">
-        <th>Total</th>
-        <th></th>
-        <th></th>
-        <th>{{moneda($subtotal + $gastoPendiente)}}</th>
-      </tr>
-    </table>
-  </div>
-</div>
-<div class="row tabla-funcional">
-  <div class="col-md-4 ingresos">
-    <h5>TOTAL VENTAS POR ALOJAMIENTO</h5>
-     <table>
+      $subtotal = ($t_ingrTabl_base+$t_ingrTabl_iva)-$totalGasto;
+      ?>
       <tr class="border">
-        <th></th>
-        <th>BASE IMP</th>
-        <th colspan="2">IVA REPERCIDO</th>
-        <th>TOTAL</th>
-      </tr>
-      <tr class="white border">
-        <td >VTAS PARA PROPIETARIOS (Pagos a Prop.)</td>
-        <td >{{moneda($tPayProp+$aExpensesPending['prop_pay'])}}</td>
-        <td >0%</td>
-        <td >0 €</td>
-        <td >{{moneda($tPayProp+$aExpensesPending['prop_pay'])}}</td>
-      </tr>
-      <tr class="white border">
-        <td >VTAS INTERM INMOB</td>
-        <td >{{moneda($ing_baseImp)}}</td>
-        <td >{{$ivas['ing_iva']}}%</td>
-        <td >{{moneda($ing_iva)}}</td>
-        <td >{{moneda($ingr_reservas)}}</td>
-      </tr>
-      <tr>
-        <th></th>
-        <th colspan="3">TOTAL VENTAS ALOJAMIENTO</th>
-        <th>{{moneda($lstT_ing['ventas'])}}</th>
-      </tr>
-    </table>
-  </div>
-  @if(isset($repartoTemp_fix))
-  <div class="col-md-4 resultado">
-    <h5>IVA</h5>
-    <table>
+          <th>SubTotal</th>
+          <th>{{moneda($subtotal-$t_iva)}}</th>
+          <th>{{moneda($t_iva)}}</th>
+          <th>{{moneda($subtotal)}}</th>
+        </tr>
+        <?php 
+      $gastoPendiente = array_sum($aExpensesPending);
+      ?>
       <tr class="border">
-        <th class="text-left">IVA REPERCUTIDO</th>
-        <td>{{moneda($t_ingrTabl_iva)}}</td>
-      </tr>
+          <th>Gasto Pend.</th>
+          <th></th>
+          <th></th>
+          <th>{{moneda($gastoPendiente)}}</th>
+        </tr>
       <tr class="border">
-        <th class="text-left">IVA SOPORTADO</th>
-        <td> <input type="text" id="ivaSoportado" value="{{$ivaSoportado}}">
-          <span>€</span>
-         </td>
-      </tr>
-      <tr class="border">
-        <th class="text-left">ARQUEO IVA</th>
-        <td>
-          <input type="text" id="ivaTemp" value="{{$ivaTemp}}">
-          <span>€</span>
-        </td>
-      </tr>
-      <tr class="border">
-        <th class="text-left">IVA A PAGAR</th>
-        <th>{{moneda($t_ingrTabl_iva-$ivaSoportado+$ivaTemp)}}</th>
-      </tr>
-    </table>
-    <span id="message_iva"></span>
-   </div>
-   <div class="col-md-4">
-  
-  <button class="btn btn-primary btn-reparto" type="button" data-toggle="modal" data-target="#modalRepartoBenefTemp">
-    <i class="fa fa-eye"></i> Ver resultado de la temporada
-  </button>
+          <th>Total</th>
+          <th></th>
+          <th></th>
+          <th>{{moneda($subtotal + $gastoPendiente)}}</th>
+        </tr>
+      </table>
+    </div>
+    <div class="col-md-12">&nbsp;</div>
+    @if(isset($repartoTemp_fix))
+    <div class="col-md-6 resultado">
+      <h5>IVA</h5>
+      <table>
+        <tr class="border">
+          <th class="text-left">IVA REPERCUTIDO</th>
+          <td>{{moneda($t_ingrTabl_iva)}}</td>
+        </tr>
+        <tr class="border">
+          <th class="text-left">IVA SOPORTADO</th>
+          <td> <input type="text" id="ivaSoportado" value="{{$ivaSoportado}}">
+            <span>€</span>
+          </td>
+        </tr>
+        <tr class="border">
+          <th class="text-left">ARQUEO IVA</th>
+          <td>
+            <input type="text" id="ivaTemp" value="{{$ivaTemp}}">
+            <span>€</span>
+          </td>
+        </tr>
+        <tr class="border">
+          <th class="text-left">IVA A PAGAR</th>
+          <th>{{moneda($t_ingrTabl_iva-$ivaSoportado+$ivaTemp)}}</th>
+        </tr>
+      </table>
+      <span id="message_iva"></span>
+    </div>
+    <div class="col-md-6">
+    
+    <button class="btn btn-primary btn-reparto" type="button" data-toggle="modal" data-target="#modalRepartoBenefTemp">
+      <i class="fa fa-eye"></i> Ver resultado de la temporada
+    </button>
+    </div>
   </div>
   @endif
 </div>
@@ -360,5 +349,13 @@
     button.btn.btn-primary.btn-reparto {
         margin-top: 4em;
         margin-left: 1em;
+    }
+    input#gastoOperIVA {
+      background: transparent;
+      text-align: right;
+      padding: 0 6px;
+      width: 85px;
+      border: none;
+      border-bottom: 1px solid;
     }
   </style>
