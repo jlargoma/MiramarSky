@@ -23,6 +23,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin|recepcionista']], fun
   Route::get('/admin/multiple-room-lock', 'BookController@multipleRoomLock_print');
   Route::post('/admin/multiple-room-lock', 'BookController@multipleRoomLock_send');
   Route::post('/admin/multiple-room-lock-task', 'BookController@multipleRoomLock_tasks');
+  Route::get('/admin/booksByUser/{uID}', 'BookController@printBooksByUser');
 });
 
 Route::group(['middleware' => ['auth','role:admin|limpieza|subadmin|recepcionista|conserje']], function () {

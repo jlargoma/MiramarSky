@@ -24,6 +24,7 @@ use App\Traits\Bookings\SafetyBox;
 use App\Traits\BookLogsTraits;
 use App\BookPartee;
 use App\Settings;
+use App\User;
 
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
@@ -2710,5 +2711,28 @@ class BookController extends AppController
     $oData->save();
     
     return response()->json(['status'=>'OK','result'=>$oData->content]);
+  }
+
+  function printBooksByUser($uID){
+    $year      = $this->getActiveYear();
+    $oUser = User::find($uID);
+    $lstBooks = Book::where_type_book_reserved()->where([
+      ['start','>=',$year->start_date],
+      ['start','<=',$year->end_date],
+      ['user_id',$uID]
+    ])->get();
+
+    $tPVP = 0;
+    $payments = [];
+    foreach ($lstBooks as $book)
+    {
+      $payments[$book->id] =  $book->payments->pluck('import')->sum();
+      $tPVP += $book->total_price;
+    }
+
+
+    return view('backend/users/bookings',compact('lstBooks','oUser','year','payments','tPVP'));
+    dd($oUser);
+
   }
 }

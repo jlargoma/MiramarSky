@@ -28,7 +28,7 @@ class OG_ImportAll extends Command {
    *
    * @var int
    */
-  private $user_id = 39;
+  private $user_id = 11;
 
   /**
    * The name and signature of the console command.
