@@ -70,7 +70,7 @@
           <th>TOTAL</th>
         </tr>
         <tr class="border">
-          <td >TOTAL PAGO PROPIETARIOS <br/><smal>¿sólo lo pagado?</smal></td>
+          <td >TOTAL PAGO PROPIETARIOS <br/><smal>(sólo lo pagado)</smal></td>
           <td >{{moneda($tPayProp)}}</td>
           <td >0%</td>
           <td >0 €</td>
@@ -99,14 +99,14 @@
           </td>
           <td >{{moneda($gasto_operativo_baseImp)}}</td>
           <td >{{$ivas['gasto_operativo']}}%</td>
-          <td ><input type="text" id="gastoOperIVA" value="{{$gasto_operativo_iva}}"><span>€</span></td>
+          <td ><input type="text"  class="saveIVA" data-k="gasto_operativo_iva" value="{{$gasto_operativo_iva}}"><span>€</span></td>
           <td >{{moneda($tGastos_operativos)}}</td>
         </tr>
         <tr class="border">
           <td >GASTOS OTROS</td>
           <td >{{moneda($otherExpenses-$iva_otherExpenses)}}</td>
           <td >--</td>
-          <td ><input type="text" id="gastoOperIVA" value="{{$iva_otherExpenses}}"><span>€</span></td>
+          <td ><input type="text" class="saveIVA" data-k="iva_otherExpenses" value="{{$iva_otherExpenses}}"><span>€</span></td>
           <td >{{moneda($otherExpenses)}}</td>
         </tr>
         <tr class="border">
@@ -181,14 +181,14 @@
         </tr>
         <tr class="border">
           <th class="text-left">IVA SOPORTADO</th>
-          <td> <input type="text" id="ivaSoportado" value="{{$ivaSoportado}}">
+          <td> <input type="text"  class="saveIVA" data-k="ivaSoportado" value="{{$ivaSoportado}}">
             <span>€</span>
           </td>
         </tr>
         <tr class="border">
           <th class="text-left">ARQUEO IVA</th>
           <td>
-            <input type="text" id="ivaTemp" value="{{$ivaTemp}}">
+            <input type="text" class="saveIVA" data-k="ivaTemp" value="{{$ivaTemp}}">
             <span>€</span>
           </td>
         </tr>
@@ -350,7 +350,7 @@
         margin-top: 4em;
         margin-left: 1em;
     }
-    input#gastoOperIVA {
+    input.saveIVA{
       background: transparent;
       text-align: right;
       padding: 0 6px;

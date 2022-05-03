@@ -236,27 +236,17 @@ $(document).ready(function () {
   @if(isset($repartoTemp_fix))
     /** edit iva*/
          
-  $('#ivaTemp').on('keyup', function (e) {
-    var c_val = $(this).val().replace( /[^\d|^-]/g , '' );
+  $('.saveIVA').on('keyup', function (e) {
+    var obj = $(this);
+    var c_val = obj.val().replace( /[^\d|^-]/g , '' );
     if (e.keyCode == 13) {
-      saveIVA(parseInt($(this).val()),1);
+      saveIVA(c_val,obj.data('k'));
     } else {
       $('#message_iva').addClass('alert alert-warning').text('Recuerde dar ENTER para guardar');
       e.preventDefault();
       return false;
     }
   });
-  $('#ivaSoportado').on('keyup', function (e) {
-    var c_val = $(this).val().replace( /[^\d|^-]/g , '' );
-    if (e.keyCode == 13) {
-      saveIVA(parseInt($(this).val()),2);
-    } else {
-      $('#message_iva').addClass('alert alert-warning').text('Recuerde dar ENTER para guardar');
-      e.preventDefault();
-      return false;
-    }
-  });
-  
  
   var saveIVA = function(val,type){
     var url = "/admin/perdidas-ganancias/upd-iva";

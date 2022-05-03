@@ -690,7 +690,7 @@ class LiquidacionController extends AppController {
     $data['t_ingrTabl_base']  = $vtas_alojamiento_base+$ing_ff_baseImp+$data['otros_ingr_base']+$tPayProp+$data['aExpensesPending']['prop_pay'];
     $data['t_ingrTabl_iva']   = $vtas_alojamiento_iva+$ing_ff_iva+$data['otros_ingr_iva'];
     $data['t_gastoTabl_base'] = $tPayProp+$gasto_ff_baseImp+$gasto_operativo_baseImp;
-    $data['t_gastoTabl_iva']  = $gasto_ff_iva+$gasto_operativo_iva;
+    $data['t_gastoTabl_iva']  = $gasto_ff_iva+$gasto_operativo_iva+$iva_otherExpenses;
     $data['ivas']  = $ivas;
     
     
@@ -746,13 +746,26 @@ class LiquidacionController extends AppController {
   }
   
   public function perdidasGananciasUpdIVA(Request $request) {
-    $val   = floatVal($request->input('val'));
+    $val   = $request->input('val',null);
     $type  = ($request->input('type'));
 //    $jorge       = floatVal($request->input('jorge'));
     $temporada   = floatVal($request->input('temporada'));
-    if ($type == 1) $key = 'IVA_'.$temporada;
-    if ($type == 2) $key = 'IVA_SOP'.$temporada;
-    
+    switch($type){
+      case "ivaTemp":
+        $key = 'IVA_';
+        break;
+      case "ivaSoportado":
+        $key = 'IVA_SOP';
+        break;
+      case "gasto_operativo_iva":
+        $key = 'GastoOper_IVA_';
+        break;
+      case "iva_otherExpenses":
+        $key = 'otherExpenses_IVA_';
+        break;
+    }
+
+    $key .= $temporada;
     $objt = \App\Settings::where('key',$key)->first();
     if (!$objt){
       $objt = new \App\Settings();
