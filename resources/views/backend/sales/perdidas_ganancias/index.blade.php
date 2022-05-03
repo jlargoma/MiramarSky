@@ -494,7 +494,7 @@ $('.updIVA').on('change',function(){
         }
       });
     });
-    
+    $('[data-toggle="popover"]').popover();
 });
 </script>
 @endsection
