@@ -13,6 +13,7 @@ use Excel;
 use Auth;
 use App\Models\Forfaits\Forfaits;
 use App\Models\Forfaits\ForfaitsOrderPayments;
+use App\Services\PerdGanancia;
 
 setlocale(LC_TIME, "ES");
 setlocale(LC_TIME, "es_ES");
@@ -237,485 +238,69 @@ class LiquidacionController extends AppController {
   //admin/perdidas-ganancias/{year?}
   public function perdidasGanancias() {
     $cUser = Auth::user();
-    // Sólo lo puede ver jorge
-    if ($cUser->email != "jlargo@mksport.es"){
-      return $this->perdidasGananciasFuncional();
-    }
-      
-      $data = $this->get_perdidasGanancias();
-      $data = $this->perdidasGanaciasExcels($data);
-      $benefJorge = \App\Settings::getKeyValue('benf_jorge');
-      if ($benefJorge == null) $benefJorge = 100;
-      $benefJaime = 100-$benefJorge;
-
-      $benefJorge_perc = $benefJorge/100;
-      $benefJaime_perc = $benefJaime/100;
-
-      $data['repartoTemp_fix']=$data['ingr_reservas']+$data['otros_ingr']-
-              ($data['gasto_operativo_baseImp']+$data['gasto_operativo_iva']);
-      $data['repartoTemp_fix_iva1'] = $data['t_ingrTabl_iva']-$data['gasto_ff_iva']-$data['iva_soportado'];
-      $data['repartoTemp_fix_iva2'] = $data['repartoTemp_fix_iva1']-$data['iva_jorge'];
-
-      $repartoTemp_total1 = $data['repartoTemp_fix']-$data['t_iva'];
-      $repartoTemp_total2 = $data['repartoTemp_fix']-$data['t_iva'];
-
-      $data['repartoTemp_jorge1'] = $repartoTemp_total1*$benefJorge_perc;
-      $data['repartoTemp_jaime1'] = $repartoTemp_total1*$benefJaime_perc;
-
-      $data['repartoTemp_jorge2'] = $repartoTemp_total2*$benefJorge_perc;
-      $data['repartoTemp_jaime2'] = $repartoTemp_total2*$benefJaime_perc;
-      $data['benefJaime'] = $benefJaime;
-      $data['benefJorge'] = $benefJorge;
     
-    return view('backend/sales/perdidas_ganancias/index',$data);
-  }
-  public function perdidasGananciasFuncional() {
-    $data = $this->get_perdidasGanancias();
-    
-    $expensesToDel = [
-      "sueldos",
-      "seg_social",
-      "serv_prof",
-      "alquiler",
-      "seguros",
-      "suministros",
-      "equip_deco",
-      "sabana_toalla",
-      "bancario",
-      "representacion",
-      "publicidad",
-      "mensaje",
-      "varios",
-    ];
-    
-    
-
-    foreach ($expensesToDel as $k){
-      if(isset($data['lstT_gast'][$k])){
-        unset($data['lstT_gast'][$k]);
-        unset($data['gastoType'][$k]);
-        unset($data['listGasto'][$k]);
-        unset($data['aExpensesPending'][$k]);
-      }
-    }
-    
-    $data = $this->perdidasGanaciasExcels($data);
-    
-  
-    
-    
-    return view('backend/sales/perdidas_ganancias/index',$data);
-  }
-  
-  
-  public function get_perdidasGanancias() {
-     
-    $oLiq = new Liquidacion();
     $oYear = $this->getActiveYear();
-    $startYear = new Carbon($oYear->start_date);
-    $endYear = new Carbon($oYear->end_date);
-    $diff = $startYear->diffInMonths($endYear) + 1;
-    $lstMonths = lstMonths($startYear,$endYear,'ym',true);
-    $ingresos = ['ventas'=>0,'ff'=>0];
-    $lstT_ing = [
-        'ff' => 0,
-        'ventas' => 0,
-    ];
-    $emptyMonths = [];
-    foreach ($lstMonths as $k=>$m){
-      $emptyMonths[$k] = 0;
+    $sPerdGanancia = new PerdGanancia();
+    $sPerdGanancia->setDates($oYear);  
+    $sPerdGanancia->setBook();  
+    $sPerdGanancia->setObjs();  
+    $sPerdGanancia->setIngr();  
+    $sPerdGanancia->setExpenses();  
+    $sPerdGanancia->setExpenseCustom();  
+    $sPerdGanancia->excels();  
+    $data = $sPerdGanancia->getData(); 
+    $canEdit = false;
+    $expensesToDel = [];
+    // Sólo lo puede ver jorge
+    if ($cUser->email == "jlargo@mksport.es"){
+      $canEdit = true;
+    } else {
+      $expensesToDel = [
+        "sueldos",
+        "seg_social",
+        "serv_prof",
+        "alquiler",
+        "seguros",
+        "suministros",
+        "equip_deco",
+        "sabana_toalla",
+        "bancario",
+        "representacion",
+        "publicidad",
+        "mensaje",
+      ];
     }
-    $tIngByMonth = $emptyMonths;
-    $tGastByMonth = $emptyMonths;
-    $totalPendingGasto = 0;
-    $aIngrPending = [
-        'ventas' => 0,
-        ];
-    $aux = $emptyMonths;
-    $lstRvs = \App\BookDay::where_type_book_sales(true)
-            ->where('date', '>=', $startYear)
-            ->where('date', '<=', $endYear)->get();
-    /*************************************************************************/
-    /** @ToSee estimaciones sólo de las reservas vendidas? Pago a proveedores */
-    $aExpensesPending = $oLiq->getExpensesEstimation($lstRvs);
-    //dd($aExpensesPending);
-    /*************************************************************************/
- 
-    foreach ($lstRvs as $key => $b) {
-      $m = date('ym', strtotime($b->date));
-      $value = $b->pvp;
-      if (isset($aux[$m])) $aux[$m] += $value;
-      if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $value;
-      $lstT_ing['ventas'] += $value;
-//      if ($b->agency != 0) $vta_agency++;
-    }
-    //--------------------------------------------------------------------------------------------//
-    $ingresos['ventas'] = $aux;
+    $data['canEdit'] = $canEdit;
     
-    
-    $ingrType = \App\Incomes::getTypes();
-    foreach ($ingrType as $k=>$t){
-      $ingresos[$k] = $emptyMonths;
-      $lstT_ing[$k] = 0;
-      $aIngrPending[$k] = 0;
-    }
-     
-    /*************************************************************************/
-        
-    $auxFF = $oLiq->getFF_Data($startYear, $endYear);
-    $ingresos['ff'] = $emptyMonths;
-    $ingrType['ff'] = 'FORFAITs y CLASES';
-    $lstT_ing['ff'] = $auxFF['pay'];
-//    $lstT_ing['ff_FFExpress'] = $auxFF['totalFFExpress'];
-//    $lstT_ing['ff_ClassesMat'] = $auxFF['totalClassesMat'];
-    $aIngrPending['ff'] = $auxFF['to_pay']+$auxFF['to_pay_mat'];
-    $lstT_ing['ffTpay'] = $aIngrPending['ff'];
-    /*************************************************************************/
-    
-    $ingresos['others'] = $emptyMonths;
-    $lstT_ing['others'] = 0;
-    $incomesLst = \App\Incomes::where('date', '>=', $startYear)->Where('date', '<=', $endYear)->get();
-    if ($incomesLst){
-      foreach ($incomesLst as $item){
-        $m = date('ym', strtotime($item->date));
-        $type = isset($ingrType[$item->type]) ? $item->type : 'others';
-        $ingresos[$type][$m] += $item->import;
-        if (isset($tIngByMonth[$m])) $tIngByMonth[$m] += $item->import;
-        $lstT_ing[$type] += $item->import;
-      }
-    }
 
-    $ingrType['ventas'] = 'VENTAS';
-    $ingrType['others'] = 'OTROS INGRESOS';
+    //-----------------------------------------------------------------------//
+    $aux = $data['oGastos'];
+    $auxTypes = $aux->types;
+    $auxOp = $aux->operativos;
+    $aux = '<table>';
+    $auxTotal = 0;
+    foreach($auxOp as $k=>$v){
+      $auxTotal += $v;
+      if ($canEdit) $aux .= '<tr><td>'.$auxTypes->{$k}.'</td><td>'.moneda($v).'</td></tr>';
+      else{
+        if (!in_array($k,$expensesToDel)) $aux .= '<tr><td>'.$auxTypes->{$k}.'</td></tr>';
+      } 
+    }
+    if ($canEdit) $aux .= '<tr><th>TOTAL</th><th>'.moneda($auxTotal).'</th></tr>';
+    $aux .= '</table>';
+    $data['detailOp'] = $aux;
+    //-----------------------------------------------------------------------//
+    if (!$canEdit){
+      $totalVarios = 0;
+      $data['oGastos']->table = $sPerdGanancia->filtrerGastos($expensesToDel,$data['oGastos']->table,$totalVarios);
+      $data['oGastos']->total->varios = $totalVarios;
+    }
     
-    
-    /*************************************************************************/
-    /******       GASTOS                        ***********/
-    $gastos = \App\Expenses::where('date', '>=', $startYear)
-                    ->Where('date', '<=', $endYear)
-                    ->where(function($q) {
-                     $q->WhereNull('PayFor')
-                       ->orWhere('PayFor','=','');
-                    })
-                    ->Where('type','!=','prop_pay')
-                    ->orderBy('date', 'DESC')->get();
 
-    $lstT_gast = [];
-    $listGastos = [];
-    
-    $gType = \App\Expenses::getTypes();
-    if ($gType){
-      foreach ($gType as $k=>$v){
-        $listGastos[$k] = $emptyMonths;
-        $lstT_gast[$k] = 0;
-      }
-    }
-    if ($gastos){
-      foreach ($gastos as $g){
-        $m = date('ym', strtotime($g->date));
-        if (isset($listGastos[$g->type])){
-          $listGastos[$g->type][$m] += $g->import;
-          $lstT_gast[$g->type] += $g->import;
-          if (isset($tGastByMonth[$m]) && $g->type != 'impuestos') $tGastByMonth[$m] += $g->import;
-        }
-      }
-    }
-    
-    /***
-     * Payment prop van todos los gastos específicos
-     */
-    $gastos = \App\Expenses::getPaymentToProp($startYear,$endYear);
-    if ($gastos){
-      foreach ($gastos as $g){
-        $m = date('ym', strtotime($g->date));
-        $listGastos['prop_pay'][$m] += $g->import;
-        $lstT_gast['prop_pay'] += $g->import;
-        if (isset($tGastByMonth[$m])) $tGastByMonth[$m] += $g->import;
-      }
-    }
-    
-    
-    foreach ($gType as $k=>$v){
-      if (isset($aExpensesPending[$k])){
-        $aExpensesPending[$k] -= $lstT_gast[$k];
-        if ($aExpensesPending[$k]<0) $aExpensesPending[$k] = 0;
-      } else {
-        $aExpensesPending[$k] = 0;
-      }
-    }
-//dd($aExpensesPending);
-    $aExpensesPending['excursion'] =  $auxFF['totalFFExpress']+$auxFF['to_pay']-$lstT_gast['excursion'];
-    $aExpensesPending['prov_material'] = $auxFF['totalClassesMat']+$auxFF['to_pay_mat']-$lstT_gast['prov_material'];
-    $aExpensesPendingOrig = $aExpensesPending;
-    
-    $oData = \App\ProcessedData::findOrCreate('PyG_Hide');
-    if ($oData){
-      $PyG_Hide = json_decode($oData->content,true);
-      if ($PyG_Hide && is_array($PyG_Hide)){
-        foreach ($PyG_Hide as $k){
-          if(isset($aExpensesPending[$k])){
-            $aExpensesPending[$k] = 'N/A';
-          }
-        }
-      }
-    }
-      
-    foreach ($aExpensesPending as $k=>$v){
-      if ($v != 'N/A') $totalPendingGasto += intval($v);
-    }
-    
-    
-    /*****************************************************************/
-    
-    $expenses_fix = \App\Expenses::where('date', '=', $startYear)
-                    ->WhereIn('type',['impuestos','iva'])
-                    ->orderBy('date', 'DESC')->pluck('import','type')->toArray();
-    
-    if (!isset($expenses_fix['impuestos'])) $expenses_fix['impuestos'] = 0;
-    if (!isset($expenses_fix['iva']))       $expenses_fix['iva'] = 0;
-
-    unset($listGastos['comisiones']);
-    $totalPendingImp = 0;
-    /*****************************************************************/
-       
-    $totalIngr = array_sum($lstT_ing);
-    $totalGasto = array_sum($lstT_gast);
-    
-    $summary = $oLiq->summaryTemp(false,$oYear);
-  
-    
-//    dd($totalGasto,$lstT_gast);
-    return ([
-        'summary' =>$summary,
-        'lstT_ing' => $lstT_ing,
-        'totalIngr' => $totalIngr,
-        'lstT_gast' => $lstT_gast,
-        'totalGasto' => $totalGasto,
-        'totalPendingGasto' => $totalPendingGasto,
-        'totalPendingIngr' => array_sum($aIngrPending),
-        'totalPendingImp' => $totalPendingImp,
-        'ingresos' => $ingresos,
-        'listGasto' => $listGastos,
-        'aExpensesPending' => $aExpensesPending,
-        'aExpensesPendingOrig' => $aExpensesPendingOrig,
-        'aIngrPending' => $aIngrPending,
-        'diff' => $diff,
-        'lstMonths' => $lstMonths,
-        'year' => $oYear,
-        'tGastByMonth' => $tGastByMonth,
-        'tIngByMonth' => $tIngByMonth,
-        'ingrType' => $ingrType,
-        'gastoType' => $gType,
-        'expenses_fix' => $expenses_fix,
-        'tExpenses_fix' => array_sum($expenses_fix),
-        'ingr_bruto' => $totalIngr-$totalGasto,
-        'ff_FFExpress' => $auxFF['totalFFExpress'],
-        'ff_ClassesMat' => $auxFF['totalClassesMat']
-    ]);
+    //-----------------------------------------------------------------------//
+    return view('backend/sales/perdidas_ganancias/index',$data);
   }
 
-  private function perdidasGanaciasExcels($data) {
-      $tGastByMonth = [];
-    foreach ($data['tGastByMonth'] as $k=>$v){
-      $tGastByMonth[$k] = 0;
-    }
-    
-    foreach ($data['listGasto'] as $k=>$months){
-      foreach ($months as $m=>$v){
-        if(isset($tGastByMonth[$m])) $tGastByMonth[$m] +=$v;
-      }
-    }
-    /** @toSee pagos a propietarios no realizado aún? */
-    $tPayProp = $data['lstT_gast']['prop_pay'];//+$data['aExpensesPending']['prop_pay'];
-    $data['tGastByMonth'] = $tGastByMonth;
-    
-    $data['totalGasto'] = array_sum($data['lstT_gast']);
-//    $data['ingr_bruto'] = $data['totalIngr']-$data['totalGasto'];
-    
-    $iva_jorge = 0;
-    $iva_soportado = 0;
-
-    /*****************************************************************/
-    /******   FORMULAS EXCEL                          ***************/
-    $ivas = [
-        'ing_iva'=>21,
-        'ff_FFExpress'=>10,
-        'ff_ClassesMat'=>21,
-        'ff_FFExpress_expense'=>10,
-        'ff_ClassesMat_exp'=>21,
-        'otros_ingr'=>21,
-        'ff_ClassesMat_expense'=>10,
-        'gasto_operativo'=>21,
-    ];
-    $oIvas = \App\Settings::whereIn('key', array_keys($ivas))->get();
-    if ($oIvas){
-      foreach ($oIvas as $iva){
-        $ivas[$iva->key] = $iva->value;
-      }
-    }
-    //INGRESOS POR VENTAS DE RESERVAS
-//    $vtas_reserva = $data['lstT_ing']['ventas'];
-    //$ingr_reservas = $data['lstT_ing']['ventas']-$tPayProp-$data['aExpensesPending']['prop_pay'];
-    //1.- poner TOTAL VENTAS ALOJAMIENTO...y corregir la formula..en la casilla no tiene que aparecer 199.000 tieens que poner ( 517.648€)
-    $ingr_reservas = $data['lstT_ing']['ventas'];
-    $ingr_VtaProp = ($tPayProp+$data['aExpensesPending']['prop_pay']);
-    $inr_VtasINTERM = $ingr_reservas-$ingr_VtaProp;
-    $ing_baseImp   = $inr_VtasINTERM/(1+($ivas['ing_iva']/100));
-    $ing_iva       = $inr_VtasINTERM-$ing_baseImp;
-    
-    
-    $vtas_alojamiento = $ingr_reservas;
-    $vtas_alojamiento_base = $ing_baseImp;
-    $vtas_alojamiento_iva  = $ing_iva;
-    
-    //EXTRAORDINARIOS + RAPPEL CLASES + RAPPEL FORFAITS
-    $data['otros_ingr'] = 0;
-    $otherIng = $ingrType = \App\Incomes::getTypes();
-    foreach ($otherIng as $k=>$v){
-      if (isset($data['lstT_ing'][$k])){
-         $data['otros_ingr'] += $data['lstT_ing'][$k];
-      }
-    }
-    $data['otros_ingr_base'] = $data['otros_ingr']/(1+($ivas['otros_ingr']/100));
-    $data['otros_ingr_iva']  = $data['otros_ingr']-$data['otros_ingr_base'];
-    
-    //INGRESOS POR VENTAS DE FORFAITS
-//    $_ff_FFExpress_baseImp   = ($data['ff_FFExpress']>0) ? $data['ff_FFExpress']/1.1 : 0;
-    $_ff_FFExpress_baseImp   = ($data['ff_FFExpress']>0) ? $data['ff_FFExpress']/(1+($ivas['ff_FFExpress']/100)) : 0;
-    $_ff_FFExpress_iva       = $data['ff_FFExpress']-$_ff_FFExpress_baseImp;
-    $g_excursion = $data['lstT_gast']['excursion'];
-    $_ff_prov_baseImp   = ($g_excursion>0) ? $g_excursion/(1+($ivas['ff_FFExpress_expense']/100)) : 0;
-    $_ff_prov_iva       = $g_excursion-$_ff_prov_baseImp;
-    
-    
-//    $_ff_ClassesMat_baseImp  = ($data['ff_ClassesMat']>0) ? $data['ff_ClassesMat']/1.21 : 0;
-    $_ff_ClassesMat_baseImp  = ($data['ff_ClassesMat']>0) ? $data['ff_ClassesMat']/(1+($ivas['ff_ClassesMat']/100)) : 0;
-    $_ff_ClassesMat_iva      = $data['ff_ClassesMat']-$_ff_ClassesMat_baseImp;
-    $g_material = $data['lstT_gast']['prov_material'];
-    $_ff_mat_baseImp   = ($g_material>0) ? $g_material/(1+($ivas['ff_ClassesMat_exp']/100)) : 0;
-    $_ff_mat_iva       = $g_material-$_ff_mat_baseImp;
-    
-    $ing_comision_baseImp   = ($data['lstT_ing']['rappel_forfaits']>0) ? $data['lstT_ing']['rappel_forfaits']/1.21 : 0;
-    $ing_comision_iva       = ($ing_comision_baseImp>0) ? $ing_comision_baseImp/(1+($ivas['ff_ClassesMat']/100)) : 0;
-    
-    //TOTAL GASTOS PROV FORFAITS/CLASES
-    
-    
-    $ing_ff_baseImp   = $_ff_ClassesMat_baseImp+$_ff_FFExpress_baseImp;
-    $ing_ff_iva       = $_ff_FFExpress_iva+$_ff_ClassesMat_iva;
-    
-    $gasto_ff = $g_excursion+$g_material;
-    $gasto_ff_baseImp = $_ff_prov_baseImp+$_ff_mat_baseImp;
-    $gasto_ff_iva     = $_ff_prov_iva+$_ff_mat_iva;
-
-    $gasto_operativo_baseImp = $gasto_operativo_iva = 0;
-    $gastos_operativos = [
-              "agencias",
-              "amenities",
-              "comision_tpv",
-              "lavanderia",
-              "limpieza",
-              "mantenimiento"
-            ];
-    $tGastos_operativos = 0;
-    $otherExpenses = $data['lstT_gast'];
-    unset($otherExpenses['prop_pay']);
-    unset($otherExpenses['excursion']);
-    unset($otherExpenses['prov_material']);
-    foreach ($gastos_operativos as $k){
-      $tGastos_operativos += $data['lstT_gast'][$k];// + floatval ($data['aExpensesPending'][$k]);
-      unset($otherExpenses[$k]);
-    }
-
-    $gType = \App\Expenses::getTypes();
-    $otherExpensesText = [];
-    foreach(array_keys($otherExpenses) as $k)
-      if(isset($gType[$k])) $otherExpensesText[] = $gType[$k];
-
-    $otherExpenses = array_sum($otherExpenses);
-    $iva_otherExpenses = \App\Settings::getKeyValue('otherExpenses_IVA_'.$data['year']->year);
-    if (!is_numeric($iva_otherExpenses)) $iva_otherExpenses = 0;
-
-
-    $iva_soportado = \App\Settings::getKeyValue('GastoOper_IVA_'.$data['year']->year);
-    if (!is_numeric($iva_soportado))
-    $iva_soportado = ceil($tGastos_operativos*($ivas['gasto_operativo']/100));
-
-    $gasto_operativo_iva     = $iva_soportado;
-    $gasto_operativo_baseImp = $tGastos_operativos-$gasto_operativo_iva;
-    $ivaTemp = \App\Settings::getKeyValue('IVA_'.$data['year']->year);
-    if (!is_numeric($ivaTemp)) $ivaTemp = 0;
-    
-    $data['ingr_reservas'] = $ingr_reservas;
-    $data['ing_baseImp'] = $ing_baseImp;
-    $data['ingr_VtaProp'] = $ingr_VtaProp;
-    $data['inr_VtasINTERM'] = $inr_VtasINTERM;
-    $data['ing_iva'] = $ing_iva;
-    $data['ing_ff_baseImp'] = $ing_ff_baseImp;
-    $data['ing_ff_iva'] = $ing_ff_iva;
-    $data['_ff_FFExpress_baseImp'] = $_ff_FFExpress_baseImp;
-    $data['_ff_FFExpress_iva'] = $_ff_FFExpress_iva;
-    $data['_ff_ClassesMat_baseImp'] = $_ff_ClassesMat_baseImp;
-    $data['_ff_ClassesMat_iva'] = $_ff_ClassesMat_iva;
-    
-    $data['_ff_mat_baseImp'] = $_ff_mat_baseImp;
-    $data['_ff_mat_iva'] = $_ff_mat_iva;
-    $data['_ff_prov_baseImp'] = $_ff_prov_baseImp;
-    $data['_ff_prov_iva'] = $_ff_prov_iva;
-    
-    $data['ing_comision_baseImp'] = $ing_comision_baseImp;
-    $data['ing_comision_iva'] = $ing_comision_iva;
-    $data['gasto_ff'] = $gasto_ff;
-    $data['gasto_ff_baseImp'] = $gasto_ff_baseImp;
-    $data['gasto_ff_iva'] = $gasto_ff_iva;
-    $data['gasto_operativo_baseImp'] = $gasto_operativo_baseImp;
-    $data['gasto_operativo_iva'] = $gasto_operativo_iva;
-    $data['tGastos_operativos'] = $tGastos_operativos;
-    $data['otherExpenses'] = $otherExpenses;
-    $data['iva_otherExpenses'] = $iva_otherExpenses;
-    $data['otherExpensesText'] = $otherExpensesText;
-    $data['tPayProp'] = $tPayProp;
-    
-    $data['tIngr_base']   = $ing_baseImp+$ing_ff_baseImp+$ing_comision_baseImp;
-    $data['tIngr_imp']    = $ing_iva+$ing_ff_iva+$ing_comision_iva;
-    $data['tGastos_base'] = $gasto_ff_baseImp+$gasto_operativo_baseImp;
-    $data['tGastos_imp']  = $gasto_ff_iva+$gasto_operativo_iva;
-    
-    
-    $data['iva_jorge'] = $iva_jorge;
-    $data['iva_soportado'] = $iva_soportado;
-    $data['ivaTemp'] = $ivaTemp;
-    
-    $data['vtas_alojamiento']  = $vtas_alojamiento;
-    $data['vtas_alojamiento_base']  = $vtas_alojamiento_base;
-    $data['vtas_alojamiento_iva']  = $vtas_alojamiento_iva;
-            
-    
-    
-    
-    $data['t_ingrTabl_base']  = $vtas_alojamiento_base+$ing_ff_baseImp+$data['otros_ingr_base']+$tPayProp+$data['aExpensesPending']['prop_pay'];
-    $data['t_ingrTabl_iva']   = $vtas_alojamiento_iva+$ing_ff_iva+$data['otros_ingr_iva'];
-    $data['t_gastoTabl_base'] = $tPayProp+$gasto_ff_baseImp+$gasto_operativo_baseImp;
-    $data['t_gastoTabl_iva']  = $gasto_ff_iva+$gasto_operativo_iva+$iva_otherExpenses;
-    $data['ivas']  = $ivas;
-    
-    
-    $ivaSoportado = \App\Settings::getKeyValue('IVA_SOP'.$data['year']->year);
-    if (!$ivaSoportado) $ivaSoportado = round($data['t_gastoTabl_iva']);
-    $data['ivaSoportado'] = $ivaSoportado;
-    
-    $data['t_iva'] = $data['t_ingrTabl_iva'] - $ivaSoportado + $data['ivaTemp'];
-    
-    $data['_ff_mat_baseImp'] = $_ff_mat_baseImp;
-    $data['_ff_mat_iva'] = $_ff_mat_iva;
-    $data['_ff_prov_baseImp'] = $_ff_prov_baseImp;
-    $data['_ff_prov_iva'] = $_ff_prov_iva;
-    
-    
-    /******   FORMULAS EXCEL                          ***************/
-    /***************************************************************/
-    return $data;
-  }
   public function perdidasGananciasShowHide(Request $request) {
     
     $key   = $request->input('key');
@@ -785,19 +370,27 @@ class LiquidacionController extends AppController {
   }
   
   public function perdidasGananciasUpdBenef(Request $request) {
-    $value   = floatVal($request->input('input'));
     
-    $benefJorge = \App\Settings::where('key','benf_jorge')->first();
+    $cUser = Auth::user();
+    // Sólo lo puede ver jorge
+    if ($cUser->email != "jlargo@mksport.es"){
+      return back()->withErrors(['acceso restringido']);
+    }
+
+    $value   = floatVal($request->input('percentJorge'));
+    $oYear = $this->getActiveYear();
+    $key = 'benf_jorge'.$oYear->year;
+    $benefJorge = \App\Settings::where('key',$key)->first();
     if (!$benefJorge){
       $benefJorge = new \App\Settings();
-      $benefJorge->key = 'benf_jorge';
+      $benefJorge->key = $key;
       $benefJorge->name = '% Benf Jorge';
     }
         
     $benefJorge->value = $value;
+    $benefJorge->save();
 
-    if ($benefJorge->save()) return 'OK';
-    return 'error';
+    return back()->with(['success'=>'Beneficio de temporada actualizado']);
   }
   
   public function perdidasGananciasUpdIngr(Request $request) {

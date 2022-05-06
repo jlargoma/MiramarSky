@@ -2728,6 +2728,16 @@ class BookController extends AppController
     {
       $payments[$book->id] =  $book->payments->pluck('import')->sum();
       $tPVP += $book->total_price;
+
+      // $uIDOrig = \App\BookLogs::where('book_id',$book->id)->first();
+      // if ($uIDOrig 
+      // && $uIDOrig->user_id != $book->user_id
+      // && $uIDOrig->user_id == 70
+      // && $book->bkg_number == null
+      // && $book->user_id == 39){
+      //   $book->user_id = 70;
+      //   $book->save();
+      // }
     }
 
 
