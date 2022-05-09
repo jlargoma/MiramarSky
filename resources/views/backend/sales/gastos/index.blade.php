@@ -125,6 +125,14 @@ $isMobile = $mobile->isMobile();
       width: 100%;
       padding: 7px;
   }
+  .totales{
+    text-align: right;
+  }
+  .totales h3{
+    min-height: 3em;
+    display: inline-block;
+    padding: 2px 1em;
+  }
   </style>
 @endsection
 
@@ -161,7 +169,7 @@ $isMobile = $mobile->isMobile();
 
        <br/> <br/> <br/>
       
-          <div class="col-md-8 col-xs-12">
+          <div class="col-md-5">
             <div class="month_select-box">
               <div class="month_select" id="ms_{{($year->year-2000)}}_0" data-month="0" data-year="{{$year->year}}">
               Todos
@@ -173,11 +181,11 @@ $isMobile = $mobile->isMobile();
             @endforeach
             </div>
           </div>
-          <div class="col-md-2 col-xs-6">
-            <h3>Total Selec. <br/><span id="totalMounth">0</span></h3>
-          </div>
-          <div class="col-md-2 col-xs-6">
-            <h3>Total Año <br/>{{moneda($total_year_amount)}}</h3>
+          <div class="col-md-7 totales">
+            <h3>T. Base Imp. <br/><span id="totalBImp">0</span></h3>
+            <h3>T. IVA <br/><span id="totalIva">0</span></h3>
+            <h3>T. Selec. <br/><span id="totalMounth">0</span></h3>
+            <h3>Total Año <br/><b>{{moneda($total_year_amount)}}</b></h3>
           </div>
           
         <div class="col-md-12 col-xs-12" style="padding-right: 0; min-height: 3em;">
@@ -186,7 +194,15 @@ $isMobile = $mobile->isMobile();
           <div class="table-responsive">
           <table class="table">
             <thead >
-              <th class="text-center bg-complete text-white col-md-1"">Fecha</th>
+              <th class="text-center bg-complete text-white col-md-1">
+                <select id="s_trim" style="width:auto;">
+                  <option value="-1">TRIM</option>
+                  @for($i=1; $i<5; $i++)
+                  <option value="{{$i}}">TRIM {{$i}}</option>
+                  @endfor
+                </select>
+              </th>
+              <th class="text-center bg-complete text-white col-md-1">Fecha</th>
               <th class="text-center bg-complete text-white col-md-2">Concepto</th>
               <th class="text-center bg-complete text-white col-md-2">
                 <select id="s_type">
@@ -195,7 +211,6 @@ $isMobile = $mobile->isMobile();
                   <option value="{{$k}}">{{$v}}</option>
                   @endforeach
                 </select>
-                
               </th>
               <th class="text-center bg-complete text-white col-md-1">
                 <select id="s_payment">
@@ -205,7 +220,9 @@ $isMobile = $mobile->isMobile();
                   @endforeach
                 </select>
               </th>
-              <th class="text-center bg-complete text-white col-md-2">Importe</th>
+              <th class="text-center bg-complete text-white col-md-1">BImp</th>
+              <th class="text-center bg-complete text-white col-md-1">IVA</th>
+              <th class="text-center bg-complete text-white col-md-1">Importe</th>
               <th class="text-center bg-complete text-white col-md-2">
                 <select id="s_aptos">
                   <option value="-1">Aptos</option>
@@ -417,13 +434,21 @@ $isMobile = $mobile->isMobile();
             $('#ms_'+year+'_'+month).addClass('active');
             $('#tableItems').html('');
             $('#totalMounth').html(response.totalMounth);
+            $('#totalBImp').html(response.totalBImp);
+            $('#totalIva').html(response.totalIva);
+          
             $('#totalMounth').data('orig',response.totalMounth);
             $.each((response.respo_list), function(index, val) {
-              var row = '<tr data-id="' + val.id + '" data-import="' + val.import+ '"><td>' + val.date + '</td>';
+              var textTrimester = (val.trimester>0) ? 'TRIM ' + val.trimester : '--';
+              var row = '<tr data-id="' + val.id + '" data-import="' + val.import+ '">';
+              row += '<td class="editable selects trimester" data-type="trimester" data-current="'+ val.trimester +'" >' + textTrimester + '</td>';
+              row += '<td>' + val.date + '</td>';
               row += '<td class="editable" data-type="concept">' + val.concept + '</td>';
               row += '<td class="editable selects stype" data-type="type" data-current="'+ val.type_v +'" >' + val.type + '</td>';
               row += '<td class="editable selects spayment" data-type="payment" data-current="'+ val.typePayment_v +'" >' + val.typePayment + '</td>';
-              row += '<td class="editable" data-type="price">' + val.import+ '</td>';
+              row += '<td >' + val.bimp+ '</td>';
+              row += '<td >' + val.iva+ '</td>';
+              row += '<td >' + val.import+ '</td>';
               row += '<td class="sapto" data-current="'+ val.aptos_v +'" >' + val.aptos + '</td>';
               row += '<td><button data-id="' + val.id + '" type="button" class="del_expense btn btn-danger btn-xs"><i class="fa fa-trash"></i></button></td>';
               row += '<td class="editable" data-type="comm">' + val.comment + '</td>';
@@ -532,6 +557,21 @@ $(document).ready(function () {
             select.val(currentElement.data('current'));
             currentElement.html(select);
           break;
+          case 'trimester':
+            var select = $('<select>', {class:' form-control'});
+            select.data('t','trimester');
+            <?php
+                for ($i=1;$i<5;$i++){
+                  echo "var option = $('<option></option>');
+                              option.attr('value', '$i');
+                              option.text('TRIM $i');
+                              select.append(option);";
+                }
+            ?>
+            currentElement.data('value',currentElement.html());
+            select.val(currentElement.data('current'));
+            currentElement.html(select);
+          break;
           default:
              var input = $('<input>', {type: "text",class: type})
             .val(currentElement.html())
@@ -612,19 +652,28 @@ $(document).ready(function () {
       }
       
       var filters = {
+        trim : -1,
         type : -1,
         paym : -1,
         apto : -1,
       };
       var filterTable = function(){
         var all = false;
-        if (filters.type == -1 && filters.paym == -1 && filters.apto == -1 ){
+        if (filters.trim == -1 && filters.type == -1 && filters.paym == -1 && filters.apto == -1 ){
           all = true;
         }
         var total = 0;
         $('#tableItems tr').each(function(){
           $(this).show();
           if (!all){
+            //filter by type
+            if (filters.trim != -1){
+              var cell = $(this).find('.trimester');
+              if (cell.data('current') != filters.trim){
+                cell.closest('tr').hide();
+                return; 
+              }
+            }
             //filter by type
             if (filters.type != -1){
               var cell = $(this).find('.stype');
@@ -656,30 +705,21 @@ $(document).ready(function () {
         if (all)   $('#totalMounth').text($('#totalMounth').data('orig'));
         else $('#totalMounth').text(window.formatterEuro.format(total));
       }
+      $('#s_trim').on('change', function(){
+        var value = $(this).val();
+        console.log(value);
+        filters.trim = value;
+        filterTable();
+      });
       $('#s_type').on('change', function(){
         var value = $(this).val();
         filters.type = value;
         filterTable();
-//        $('#tableItems tr').each(function(){
-//            console.log(value);
-//          if (value != '-1'){
-//            var type = $(this).find('.stype');
-//            console.log(type.data('current'));
-//            if (type.data('current') == value){
-//              type.closest('tr').show();
-//            } else {
-//              type.closest('tr').hide();
-//            }
-//          } else {
-//            $(this).show();
-//          }
-//        });
       });
       $('#s_payment').on('change', function(){
         var value = $(this).val();
         filters.paym = value;
         filterTable();
-
       });
       $('#s_aptos').on('change', function(){
         var value = $(this).val();

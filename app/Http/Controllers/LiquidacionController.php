@@ -632,6 +632,16 @@ class LiquidacionController extends AppController {
     $gasto->type = $request->input('type');
     $gasto->comment = $request->input('comment');
 
+    $iva = $request->input('iva',0);
+    if ($iva>0 && $gasto->import>0){
+      $gasto->bimp  = round(($gasto->import/ (1 + ($iva / 100))),2);
+      $gasto->iva = $gasto->import - $gasto->bimp;
+    }
+
+
+    $gasto->trimester = ceil($date->format('n')/3);
+
+
     if ($request->input('type_payFor') == 1) {
       $gasto->PayFor = $request->input('asig_rooms');
     }
@@ -669,6 +679,18 @@ class LiquidacionController extends AppController {
           break;
         case 'payment':
           $gasto->typePayment = $val;
+          $save = true;
+          break;
+        case 'iva':
+          $gasto->iva = $val;
+          $save = true;
+          break;
+        case 'bimp':
+          $gasto->bimp = $val;
+          $save = true;
+          break;
+        case 'trimester':
+          $gasto->trimester = $val;
           $save = true;
           break;
       }
@@ -715,7 +737,7 @@ class LiquidacionController extends AppController {
         'status' => 'false',
         'respo_list' => [],
     ];
-    $totalMounth = 0;
+    $totalMounth = $t_Bimp = $t_iva = 0;
     $typePayment = \App\Expenses::getTypeCobro();
     if ($gastos){
       $respo_list = array();
@@ -743,17 +765,24 @@ class LiquidacionController extends AppController {
             'type'=> isset($gType[$item->type]) ? $gType[$item->type] : '--',
             'type_v'=> $item->type,
             'comment'=> $item->comment,
-            'import'=> $item->import,
+            'import'=> moneda($item->import),
+            'trimester'=> ($item->trimester) ? $item->trimester : '',
+            'iva'=> moneda($item->iva),
+            'bimp'=> moneda($item->bimp),
             'aptos' => (count($lstAptos)>0) ? implode(', ', $lstAptos) : 'GENERICO',
             'aptos_v' => (count($lstAptos)>0) ? implode(',', $lstAptos) : 'GENERICO',
         ];
         $totalMounth += $item->import;
+        $t_Bimp += $item->bimp;
+        $t_iva += $item->iva;
       }
      
       $response = [
           'status' => 'true',
           'respo_list' => $respo_list,
           'totalMounth' => moneda($totalMounth),
+          'totalBImp' => moneda($t_Bimp),
+          'totalIva' => moneda($t_iva),
       ];
     }
     
@@ -1668,6 +1697,9 @@ class LiquidacionController extends AppController {
       'apto' =>-1,  
       'comment' =>-1,
       'filter' =>-1,
+      'trimester'=>-1,
+      'bimp'=>-1,
+      'iva'=>-1,
     ];
     
   
@@ -1714,13 +1746,16 @@ class LiquidacionController extends AppController {
       'typePayment' =>'Metodo de Pago', 
       'apto' =>'Apto',  
       'comment' =>'Comentario',
+      'trimester' =>'trimester',
+      'bimp' =>'bimp',
+      'iva' =>'iva'
     ];
     
     $today = date('Y-m-d');
     $insert = [];
     $newEmpty = [
          'concept'=>null,'date'=>null,'import'=>null,'typePayment'=>null,
-         'type'=>null,'comment'=>null,'PayFor'=>null
+         'type'=>null,'comment'=>null,'PayFor'=>null,'trimester'=>null,'bimp'=>null,'iva'=>null
        ];
     
     $total = count(current($info));
@@ -1739,9 +1774,12 @@ class LiquidacionController extends AppController {
             $new['date'] =  ($variab != '') ? convertDateToDB($variab) : $today;
             break;
           case 'import':
+          case 'bimp':
+          case 'iva':
             $orig = $variab;
-            $variab = floatval(str_replace(',','.',str_replace('.','', $variab)));
-            $new['import'] = $variab;
+           // echo $k.' -> '.$variab.'<br>';
+            $variab = floatval(str_replace(',','.',str_replace('.','', str_replace('€','', $variab))));
+            $new[$k] = $variab;
             break;
           case 'typePayment':
             $aux = strtolower($variab);
@@ -1753,6 +1791,9 @@ class LiquidacionController extends AppController {
           case 'type':
             $type = array_search($variab,$expensesType);
             $new['type'] = $type;
+            break;
+          case 'trimester':
+            $new['trimester'] = intval(str_replace('TRIM','',$variab));
             break;
           case 'apto':
             $aptoIDs = '';
@@ -1769,7 +1810,7 @@ class LiquidacionController extends AppController {
             $new['PayFor'] = $aptoIDs;
             break;
           default:
-            echo $k.' -> '.$variab.'<br>';
+           // echo $k.' -> '.$variab.'<br>';
             $new[$k] = $variab;
             break;
         }

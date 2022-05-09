@@ -36,7 +36,7 @@
       @foreach($oGastos->table as $k=>$v)
       <?php if ($k == 'total') continue; ?>
       <tr>
-        <td>{{$oGastos->types->{$k} }}</td>
+        <td class="open_detail" data-key="{{$k}}">{{$oGastos->types->{$k} }}</td>
         <td class="text-center">{{moneda($oGastos->total->{$k})}}</td>
         @if($canEdit)
         @if($oGastos->pending->{$k} === "N/A")
@@ -71,18 +71,6 @@
       <tr>
         <td class="open_detail" data-key="iva">IVA A PAGAR</td>
         <td class="text-center" data-key="iva">{{moneda($oExcel->iva->toPay)}}</td>
-      </tr>
-      <tr>
-        <td class="open_detail" data-key="impuestos">IMPUESTOS</td>
-        @if($canEdit)
-        <td class="text-center editable_ingr" data-key="impuestos" data-month="" data-val="{{moneda($oExcel->iva->impuestos,false)}}">
-          {{moneda($oExcel->iva->impuestos)}}
-        </td>
-        @else
-        <td class="text-center">
-          {{moneda($oExcel->iva->impuestos)}}
-        </td>
-        @endif
       </tr>
       <tr class="pyg_beneficio">
         <th>BENEFICIO OPERATIVO</th>
