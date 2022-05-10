@@ -183,9 +183,6 @@ setlocale(LC_TIME, "es_ES");
             <h5 class="no-margin p-b-5 text-white ">
               <b>RTDO OPERTIVO BRUTO</b>
             </h5>
-            <?php //$ingr_bruto = $ingr_reservas-$tGastos_operativos+$otros_ingr; 
-            ?>
-            <?php $ingr_bruto = $totalIngr - $totalGasto; ?>
             {{moneda($ingr_bruto)}}
             <?php if ($ingr_bruto > 0) : ?>
               <i class="fa fa-arrow-up text-success result"></i>

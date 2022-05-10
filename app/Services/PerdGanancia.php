@@ -114,6 +114,8 @@ class PerdGanancia
     $listGastos['total'] = $this->emptyMonths;
     $this->gastos = (object) [
       'total' => (object) $lstT_gast,
+      'iva' => (object) $lstT_gast,
+      'bimp' => (object) $lstT_gast,
       'table' => (object) $listGastos,
       'types' => (object) $gType,
       'pending' => (object) $aExpensesPending,
@@ -183,10 +185,14 @@ class PerdGanancia
         if (isset($this->gastos->table->total[$m])) $this->gastos->table->total[$m] += $g->import;
         if (isset($this->gastos->total->{$g->type})) {
           $this->gastos->total->{$g->type} += $g->import;
+          $this->gastos->iva->{$g->type} += $g->iva;
+          $this->gastos->bimp->{$g->type} += $g->bimp;
           $this->gastos->table->{$g->type}[$m] += $g->import;
         } else {
           $this->gastos->table->others[$m] += $g->import;
           $this->gastos->total->others += $g->import;
+          $this->gastos->iva->others += $g->iva;
+          $this->gastos->bimp->others += $g->bimp;
         }
       }
     }
@@ -218,9 +224,16 @@ class PerdGanancia
 
     /*-----------------------------------------------------------*/
     $aux = [];
-    foreach ($this->gastos->total as $k => $v)
-      if ($k != 'prop_pay' && $k != 'excursion' && $k != 'prov_material') $aux[$k] = $v;
-    $this->gastos->operativos = (object) $aux;
+    foreach ($this->gastos->total as $k => $v){
+      if ($k != 'prop_pay' && $k != 'excursion' && $k != 'prov_material'){
+        $aux[$k] = [
+          'tot' =>  $v,
+          'bImp' => $this->gastos->bimp->{$k},
+          'iva' => $this->gastos->iva->{$k},
+        ];
+      } 
+    }
+    $this->gastos->operativos = $aux;
 
     /*-----------------------------------------------------------*/
     $this->gastos->pendingOrig = clone ($this->gastos->pending);
@@ -328,29 +341,32 @@ class PerdGanancia
     $gastos['base']['material'] = ($this->gastos->total->prov_material > 0) ? $this->gastos->total->prov_material / (1 + ($ivas['ff_ClassesMat_exp'] / 100)) : 0;
     $gastos['iva']['material'] = $ivas['ff_ClassesMat_exp'];
 
-
-
-    $others = 0;
-    foreach ($this->gastos->operativos as $k => $v) $others += $v;
-    $gastos['total']['others'] = $others;
-
-    if ($ivas['GastoOper_IVA_' . $year])  $gastos['base']['others'] = $others - $ivas['GastoOper_IVA_' . $year];
-    else $gastos['base']['others'] = ($others > 0) ? $others / (1 + ($ivas['gasto_operativo'] / 100)) : 0;
-    $gastos['iva']['others'] = $ivas['gasto_operativo'];
-
-    $total = 0;
     foreach ($gastos['total'] as $k => $v) {
       $gastos['base'][$k] = round($gastos['base'][$k]);
       $gastos['ivaVal'][$k] = round($v - $gastos['base'][$k]);
-      $gastos['base']['t'] += $gastos['base'][$k];
-      $total += $v;
     }
-    $gastos['total']['t'] = $total;
-    $gastos['ivaVal']['t'] = round($total - $gastos['base']['t']);
 
 
+
+    $others = $otherIVA = $otherBImp = 0;
+    foreach ($this->gastos->operativos as $k => $v){
+      $others += $v['tot'];
+      $otherIVA += $v['iva'];
+      $otherBImp += $v['bImp'];
+    }
+    $gastos['total']['others'] = $others;
+    $gastos['iva']['others'] = '--';
+    $gastos['ivaVal']['others'] = $otherIVA;
+    $gastos['base']['others'] = $otherBImp;
+ 
+    foreach ($gastos['total'] as $k => $v) {
+      $gastos['base']['t'] += $gastos['base'][$k];
+      $gastos['ivaVal']['t'] += $gastos['ivaVal'][$k];
+      $gastos['total']['t'] += $gastos['total'][$k];
+    }
     //-------------------------------------------------------------------------//
-    if (!$ivas['IVA_SOP' . $year]) $ivas['IVA_SOP' . $year] = $gastos['ivaVal']['t'];
+    //if (!$ivas['IVA_SOP' . $year]) $ivas['IVA_SOP' . $year] = $gastos['ivaVal']['t'];
+    $ivas['IVA_SOP' . $year] = $gastos['ivaVal']['t'];
     $oIva = [
       'REPERCUTIDO' => $ingr['ivaVal']['t'],
       'SOPORTADO' => $ivas['IVA_SOP' . $year],
@@ -430,6 +446,13 @@ class PerdGanancia
     $totalIngr = $this->sumTotal($this->ingr->total);
     $totalGasto  = $this->sumTotal($this->gastos->total);
 
+    //sumar el iva 
+    $ingr_bruto = $totalIngr - $totalGasto - $this->excels->iva->toPay;
+
+    $totalIVA = \App\ProcessedData::findOrCreate( 'totalIVA'.$this->oYear->year);
+    $totalIVA->content = $this->excels->iva->toPay;
+    $totalIVA->save();
+
     return ([
       'summary' => $summary,
       'oIngr' => $this->ingr,
@@ -437,7 +460,7 @@ class PerdGanancia
       //      'diff' => $diff,
       'lstMonths' => $this->lstMonths,
       'oYear' =>  $this->oYear,
-      'ingr_bruto' => 9999999,
+      'ingr_bruto' => $ingr_bruto,
       'totalIngr' => $totalIngr,
       'totalPendingIngr' => $this->sumTotal($this->ingr->pending),
       'totalPendingGasto' => $this->sumTotal($this->gastos->pending),
@@ -446,35 +469,6 @@ class PerdGanancia
     ]);
 
 
-
-
-    // return ([
-    //   'summary' => $summary,
-    //   'lstT_ing' => $lstT_ing,
-    //   'totalIngr' => $totalIngr,
-    //   'lstT_gast' => $lstT_gast,
-    //   'totalGasto' => $totalGasto,
-    //   'totalPendingGasto' => $totalPendingGasto,
-    //   'totalPendingIngr' => array_sum($aIngrPending),
-    //   'totalPendingImp' => $totalPendingImp,
-    //   'ingresos' => $ingresos,
-    //   'listGasto' => $listGastos,
-    //   'aExpensesPending' => $aExpensesPending,
-    //   'aExpensesPendingOrig' => $aExpensesPendingOrig,
-    //   'aIngrPending' => $aIngrPending,
-    //   'diff' => $diff,
-    //   'lstMonths' => $lstMonths,
-    //   'year' => $oYear,
-    //   'tGastByMonth' => $tGastByMonth,
-    //   'tIngByMonth' => $tIngByMonth,
-    //   'ingrType' => $ingrType,
-    //   'gastoType' => $gType,
-    //   'expenses_fix' => $expenses_fix,
-    //   'tExpenses_fix' => array_sum($expenses_fix),
-    //   'ingr_bruto' => $totalIngr - $totalGasto,
-    //   'ff_FFExpress' => $this->ffData['totalFFExpress'],
-    //   'ff_ClassesMat' => $this->ffData['totalClassesMat']
-    // ]);
   }
   /*----------------------------------------------------------------------------*/
 }

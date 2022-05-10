@@ -83,14 +83,8 @@ function printTableIva($type, $obj)
             </i>
           </td>
           <td>{{moneda($oExcel->gastos->base['others'])}}</td>
-          <td>{{$oExcel->gastos->iva['others']}}%</td>
-          <td>
-          @if($canEdit)
-            <input type="text" class="saveIVA" data-k="gasto_operativo_iva" value="{{$oExcel->gastos->ivaVal['others']}}"><span>€</span>
-          @else
-          {{moneda($oExcel->gastos->ivaVal['others'])}}
-          @endif
-        </td>
+          <td>--</td>
+          <td>{{moneda($oExcel->gastos->ivaVal['others'])}}</td>
           <td>{{moneda($oExcel->gastos->total['others'])}}</td>
         </tr>
         <tr class="border">
@@ -110,9 +104,7 @@ function printTableIva($type, $obj)
           </tr>
           <tr class="border">
             <th class="text-left">IVA SOPORTADO</th>
-            <td> <input type="text" class="saveIVA" data-k="ivaSoportado" value="{{$oExcel->iva->SOPORTADO}}">
-              <span>€</span>
-            </td>
+            <td>{{moneda($oExcel->iva->SOPORTADO)}}</td>
           </tr>
           <tr class="border">
             <th class="text-left">ARQUEO IVA</th>

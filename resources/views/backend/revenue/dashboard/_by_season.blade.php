@@ -16,7 +16,8 @@
     $totalExpense = \App\Expenses::getTotalByYear($yearAux); 
     $otherIngr = \App\Incomes::getIncomesYear($yearAux);
     $totalFF = App\Models\Forfaits\Forfaits::getTotalByYear($yearAux);
-    $result = $totalPVP+$otherIngr+$totalFF-$totalExpense;
+    $totalIVA = App\ProcessedData::getTotalIVA($yearAux);
+    $result = $totalPVP+$otherIngr+$totalFF-$totalExpense-$totalIVA;
     $toGrafJs[$yearAux] = $totalPVP+$otherIngr+$totalFF;
     ?>
     <div class="col-md-4 col-xs-6 m-b-10">
@@ -29,12 +30,13 @@
             </h4>
             <div class="row">
               <div class="col-xs-10 text-white font-s24">
-                  <div><?php echo moneda($totalPVP); ?></div>
-                  <div>+<?php echo moneda($otherIngr); ?></div>
+                  <div><?php echo moneda($totalPVP); ?> <small>RVAS</small></div>
+                  <div>+<?php echo moneda($otherIngr); ?> <small>EXTR</small></div>
                   <div>+<?php echo moneda($totalFF); ?> <small>FF</small></div>
-                  <div>- <?php echo moneda($totalExpense); ?></div>
+                  <div>- <?php echo moneda($totalExpense); ?> <small>GTOS</small></div>
+                  <div>- <?php echo moneda($totalIVA); ?> <small>IVA</small></div>
                   <div style="border-bottom: 1px solid;"> </div>
-                  <div class="mt-1em"><?php echo moneda($result); ?></div>
+                  <div class="mt-1em"><?php echo moneda($result); ?> <small>Bº</small></div>
               </div>
               <div class="col-xs-2">
                 <span style="font-size: 14px;">

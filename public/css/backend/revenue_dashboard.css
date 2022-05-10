@@ -254,7 +254,7 @@ h2.line span {
 }
 
 .widget-12 {
-  height: 240px;
+  height: 295px;
   overflow: hidden;
   padding: 5px;
 }
@@ -364,7 +364,7 @@ tr.thead {
     font-size: 18px;
   }
   .widget-12 {
-    height: 11em !important;
+    height: 13em !important;
   }
 }
 @media only screen and (max-width: 445px){
@@ -392,7 +392,7 @@ tr.thead {
 }
   
   .widget-12 {
-    height: 14em !important;
+    height: 15em !important;
 }
 #bar_forfatis{
   min-height: 10em;

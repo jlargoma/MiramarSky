@@ -2,10 +2,13 @@
     <div class="col-md-6 col-xs-12">
       <h2 class="line"><span>Beneficio temporar actual</span></h2>
       <?php 
+      // dd($gastos);
       $tGast = array_sum($gastos);
       $ff = $balanceFF['t'][0];
       if ($ff) $ingrExt += $ff;
-      $tBene = $tIngr+$ingrExt-$tGast;
+
+      $totalIVA = App\ProcessedData::getTotalIVA($year->year);
+      $tBene = $tIngr+$ingrExt-$tGast-$totalIVA;
       ?>
       <div class="row resume-box">
         <div class="col-md-4 m-b-10 col-xs-6">

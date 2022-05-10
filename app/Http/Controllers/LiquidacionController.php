@@ -278,15 +278,22 @@ class LiquidacionController extends AppController {
     $auxTypes = $aux->types;
     $auxOp = $aux->operativos;
     $aux = '<table>';
-    $auxTotal = 0;
+    $auxTotal = $auxIVa = $bImp = 0;
+    if ($canEdit){
+      $aux .= '<tr><th></th><th>Base Imp.</th><th>IVA</th><th>Importe</th></tr>';
+    }
     foreach($auxOp as $k=>$v){
-      $auxTotal += $v;
-      if ($canEdit) $aux .= '<tr><td>'.$auxTypes->{$k}.'</td><td>'.moneda($v).'</td></tr>';
+      $auxTotal += $v['tot'];
+      $auxIVa += $v['iva'];
+      $bImp += $v['bImp'];
+      if ($canEdit) $aux .= '<tr><td>'.$auxTypes->{$k}.'</td><td>'.moneda($v['bImp']).'</td><td>'.moneda($v['iva']).'</td><td>'.moneda($v['tot']).'</td></tr>';
       else{
         if (!in_array($k,$expensesToDel)) $aux .= '<tr><td>'.$auxTypes->{$k}.'</td></tr>';
       } 
     }
-    if ($canEdit) $aux .= '<tr><th>TOTAL</th><th>'.moneda($auxTotal).'</th></tr>';
+    if ($canEdit){
+      $aux .= '<tr><th>TOTAL</th><th>'.moneda($bImp).'</th><th>'.moneda($auxIVa).'</th><th>'.moneda($auxTotal).'</th></tr>';
+    }
     $aux .= '</table>';
     $data['detailOp'] = $aux;
     //-----------------------------------------------------------------------//
@@ -466,7 +473,9 @@ class LiquidacionController extends AppController {
     
     $expense = $qry->orderBy('date', 'DESC')->get();
     $total = $qry->sum('import');
-    return view('backend.sales.gastos._details',['items'=>$expense,'total'=>$total,'typePayment'=>$typePayment]);
+    $t_Iva = $qry->sum('iva');
+    $t_bImp = $qry->sum('bImp');
+    return view('backend.sales.gastos._details',['items'=>$expense,'total'=>$total,'t_Iva'=>$t_Iva,'t_bImp'=>$t_bImp,'typePayment'=>$typePayment]);
   }
   /*************************************************************************/
   /************       GASTOS                                        ********/
