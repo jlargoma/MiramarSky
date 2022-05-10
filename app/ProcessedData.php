@@ -140,4 +140,12 @@ class ProcessedData extends Model{
     $obj->content = json_encode($content);
     $obj->save();
   }
+
+  public static function getTotalIVA($year){
+    $obj = self::where('key','totalIVA'.$year)->first();
+    if ($obj){
+      return $obj->content;
+    }
+    return 0;
+  }
 }

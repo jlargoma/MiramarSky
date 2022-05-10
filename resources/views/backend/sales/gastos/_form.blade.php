@@ -27,11 +27,19 @@ if(isset($page)){
         @endforeach
       </select>
     </div>
-    <div class="col-lg-4 col-md-6 col-xs-12">
+    <div class="col-lg-3 col-md-4 col-xs-6">
       <label for="import">Importe</label>
       <input  type="number" step="0.01" name="import" id="import" class="form-control" required />
     </div>
-    <div class="col-lg-4  col-md-6 col-xs-12">
+    <div class="col-lg-2 col-md-4 col-xs-6">
+      <label for="type">IVA</label>
+        <select class="form-control" id="iva" name="iva"  data-placeholder="Seleccione un tipo" required >
+        <option value="0">0%</option>
+        <option value="10">10%</option>
+        <option value="21">21%</option>
+      </select>
+    </div>
+    <div class="col-lg-3  col-md-4 col-xs-12">
       <label for="pay_for">Met de pago</label>
       <select class="js-select2 form-control" id="type_payment" name="type_payment" style="width: 100%;" data-placeholder="Seleccione una" required>
         @foreach($typePayment as $k=>$v)

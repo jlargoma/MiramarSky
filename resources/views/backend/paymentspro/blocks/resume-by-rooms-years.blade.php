@@ -21,7 +21,19 @@
         <?php foreach ($result as $r) : ?>
             <tr>
                 <td style="padding:5px !important;">
-                <span class="semaphore {{$r['semaf']}}"></span>
+                <?php
+                switch($r['semaf']){
+                    case 'yellow':
+                        echo '<span class="semaphore yellow"></span>';
+                        break;
+                    case 'green':
+                        echo '<i class="fa fa-arrow-up"></i>';
+                        break;
+                    case 'red':
+                            echo '<i class="fa fa-arrow-down red"></i>';
+                        break;
+                }
+                ?>
                     <a class="historic-production" data-id="{{$r['id']}}" data-toggle="modal" data-target="#payments">
                         {{$r['name']}}
                     </a>
