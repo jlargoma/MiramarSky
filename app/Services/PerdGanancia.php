@@ -207,6 +207,8 @@ class PerdGanancia
         if (isset($this->gastos->table->total[$m])) $this->gastos->table->total[$m] += $g->import;
         $this->gastos->table->prop_pay[$m] += $g->import;
         $this->gastos->total->prop_pay += $g->import;
+        $this->gastos->iva->prop_pay += $g->iva;
+        $this->gastos->bimp->prop_pay += $g->bimp;
       }
     }
     /*-----------------------------------------------------------*/
@@ -226,11 +228,7 @@ class PerdGanancia
     $aux = [];
     foreach ($this->gastos->total as $k => $v){
       if ($k != 'prop_pay' && $k != 'excursion' && $k != 'prov_material'){
-        $aux[$k] = [
-          'tot' =>  $v,
-          'bImp' => $this->gastos->bimp->{$k},
-          'iva' => $this->gastos->iva->{$k},
-        ];
+        $aux[$k] = $v;
       } 
     }
     $this->gastos->operativos = $aux;
@@ -329,30 +327,19 @@ class PerdGanancia
 
     //-------------------------------------------------------------------------//
     $gastos = ['base' => ['t' => 0], 'iva' => ['t' => 0], 'ivaVal' => ['t' => 0], 'total' => ['t' => 0]];
-    $gastos['total']['payprop'] = $this->gastos->total->prop_pay;
-    $gastos['base']['payprop'] = $this->gastos->total->prop_pay;
-    $gastos['iva']['payprop'] = 0;
-
-    $gastos['total']['excursion'] = $this->gastos->total->excursion;
-    $gastos['base']['excursion'] = ($this->gastos->total->excursion > 0) ? $this->gastos->total->excursion / (1 + ($ivas['ff_FFExpress_expense'] / 100)) : 0;
-    $gastos['iva']['excursion'] = $ivas['ff_FFExpress_expense'];
-
-    $gastos['total']['material'] = $this->gastos->total->prov_material;
-    $gastos['base']['material'] = ($this->gastos->total->prov_material > 0) ? $this->gastos->total->prov_material / (1 + ($ivas['ff_ClassesMat_exp'] / 100)) : 0;
-    $gastos['iva']['material'] = $ivas['ff_ClassesMat_exp'];
-
-    foreach ($gastos['total'] as $k => $v) {
-      $gastos['base'][$k] = round($gastos['base'][$k]);
-      $gastos['ivaVal'][$k] = round($v - $gastos['base'][$k]);
+    $auxTypes = ['payprop'=>'prop_pay','excursion'=>'excursion','material'=>'prov_material'];
+    foreach($auxTypes as $k=>$v){
+      $gastos['total'][$k] = $this->gastos->total->{$v};
+      $gastos['ivaVal'][$k] = $this->gastos->iva->{$v};
+      $gastos['base'][$k] = $this->gastos->bimp->{$v};
+      $gastos['iva'][$k] = 0;
     }
-
-
 
     $others = $otherIVA = $otherBImp = 0;
     foreach ($this->gastos->operativos as $k => $v){
-      $others += $v['tot'];
-      $otherIVA += $v['iva'];
-      $otherBImp += $v['bImp'];
+      $others += $v;
+      $otherIVA += $this->gastos->iva->{$k};
+      $otherBImp += $this->gastos->bimp->{$k};
     }
     $gastos['total']['others'] = $others;
     $gastos['iva']['others'] = '--';

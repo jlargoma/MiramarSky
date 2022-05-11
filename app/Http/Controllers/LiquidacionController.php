@@ -277,16 +277,18 @@ class LiquidacionController extends AppController {
     $aux = $data['oGastos'];
     $auxTypes = $aux->types;
     $auxOp = $aux->operativos;
+    $auxIva = $aux->iva;
+    $auxbImp = $aux->bimp;
     $aux = '<table>';
     $auxTotal = $auxIVa = $bImp = 0;
     if ($canEdit){
       $aux .= '<tr><th></th><th>Base Imp.</th><th>IVA</th><th>Importe</th></tr>';
     }
     foreach($auxOp as $k=>$v){
-      $auxTotal += $v['tot'];
-      $auxIVa += $v['iva'];
-      $bImp += $v['bImp'];
-      if ($canEdit) $aux .= '<tr><td>'.$auxTypes->{$k}.'</td><td>'.moneda($v['bImp']).'</td><td>'.moneda($v['iva']).'</td><td>'.moneda($v['tot']).'</td></tr>';
+      $auxTotal += $v;
+      $auxIVa += $auxIva->{$k};
+      $bImp += $auxbImp->{$k};
+      if ($canEdit) $aux .= '<tr><td>'.$auxTypes->{$k}.'</td><td>'.moneda($auxbImp->{$k}).'</td><td>'.moneda($auxIva->{$k}).'</td><td>'.moneda($v).'</td></tr>';
       else{
         if (!in_array($k,$expensesToDel)) $aux .= '<tr><td>'.$auxTypes->{$k}.'</td></tr>';
       } 
