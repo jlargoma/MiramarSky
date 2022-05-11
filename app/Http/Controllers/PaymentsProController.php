@@ -954,35 +954,39 @@ class PaymentsProController extends AppController {
         'type'=>$room->sizeApto,
         'semaf'=>'green'
       ];
+      if (!isset($rRoomType[$room->sizeApto])) $rRoomType[$room->sizeApto] = [];
+
       for ($i = 0; $i < 3; $i++){
-        $auxVal = $room->getCostPropByYear($year-$i);
-        $aux[$year-$i] = $auxVal;
-        if ($i == 0){
-          if (!isset($rRoomType[$room->sizeApto])){
-            $rRoomType[$room->sizeApto] =['t'=>0,'c'=>0];
-          }
-          $rRoomType[$room->sizeApto]['t'] += $auxVal;
-          $rRoomType[$room->sizeApto]['c']++;
+        $auxYear = $year-$i;
+        $auxVal = $room->getCostPropByYear($auxYear);
+        $aux[$auxYear] = $auxVal;
+        if (!isset($rRoomType[$room->sizeApto][$auxYear])){
+          $rRoomType[$room->sizeApto][$auxYear] =['t'=>0,'c'=>0,'p'=>0];
         }
+        $rRoomType[$room->sizeApto][$auxYear]['t'] += $auxVal;
+        $rRoomType[$room->sizeApto][$auxYear]['c']++;
       }
       $result[] = $aux;
     }
 
     $rRoomTypeMedia = [];
     $allSize = \App\SizeRooms::all()->pluck('name','id')->toArray();
-    foreach ($rRoomType as $k=>$v){
-      $rRoomType[$k]['p'] = round($v['t'] / $v['c']);
+    foreach ($rRoomType as $k=>$seasson){
       if (isset($allSize[$k])){
-        $rRoomTypeMedia[] = [
-          'n'=> $allSize[$k],
-          'v'=>$rRoomType[$k]['p']
-        ];
+        $rRoomTypeMedia[$k] = ['n'=> $allSize[$k]];
+        foreach ($seasson as $y=>$v){
+          $rRoomType[$k][$y]['p'] = round($v['t'] / $v['c']);
+          $rRoomTypeMedia[$k][$y] = $rRoomType[$k][$y]['p'];
+        }
       }
     }
-
     foreach ($result as $k=>$v){
-      if (isset($rRoomType[$v['type']]) && $rRoomType[$v['type']]['p']>0){
-        $media = $v[$year] / $rRoomType[$v['type']]['p'];
+      $mediaYear = 0;
+      if (isset($rRoomType[$v['type']])  && isset($rRoomType[$v['type']][$year]) )
+      $mediaYear = $rRoomType[$v['type']][$year]['p'];
+
+      if ($mediaYear>0){
+        $media = $v[$year] / $mediaYear;
         if ($media<1){
           if ($media>0.89) 
             $result[$k]['semaf']='yellow';
