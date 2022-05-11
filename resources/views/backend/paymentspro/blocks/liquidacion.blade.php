@@ -108,16 +108,24 @@
           <input type="text" class="form-control datepicker" name="fecha" id="fecha" value="<?php echo date('d/m/Y') ?>" style="font-size: 12px">
         </div>
     </div>
-    <div class="col-lg-4 col-md-6 col-xs-12 mb-1em">
+    <div class="col-lg-3 col-md-9 col-xs-12 mb-1em">
       <label for="concept">Concepto</label>
       <input  type="text" class="form-control" name="concept" id="concept" />
     </div>
 
-    <div class="col-lg-3 col-md-3 col-xs-12">
+    <div class="col-lg-2 col-md-3 col-xs-12">
       <label for="import">Importe</label>
       <input  type="number" step="0.01" name="import" id="import" class="form-control" required />
     </div>
-    <div class="col-lg-3 col-md-3 col-xs-12">
+    <div class="col-lg-1 col-md-3 col-xs-12">
+            <label for="type">IVA</label>
+              <select class="form-control" id="iva" name="iva"  data-placeholder="Seleccione un tipo" required >
+              <option value="0">0%</option>
+              <option value="10">10%</option>
+              <option value="21">21%</option>
+            </select>
+    </div>
+    <div class="col-lg-3 col-md-5 col-xs-12">
       <label for="pay_for">Met de pago</label>
       <select class="js-select2 form-control" id="type_payment" name="type_payment" style="width: 100%;" data-placeholder="Seleccione una" required>
         @foreach($typePayment as $k=>$v)

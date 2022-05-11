@@ -53,9 +53,17 @@
             </select>
           </div>
 
-          <div class="col-xs-12 col-lg-2 col-md-1 push-10">
+          <div class="col-xs-6 col-lg-2 col-md-1 push-10">
             <label for="import">Importe</label>
             <input  type="number" step="0.01" name="import" id="import" class="form-control"  />
+          </div>
+          <div class="col-xs-6 col-lg-2 col-md-1 push-10">
+            <label for="type">IVA</label>
+              <select class="form-control" id="iva" name="iva"  data-placeholder="Seleccione un tipo" required >
+              <option value="0">0%</option>
+              <option value="10">10%</option>
+              <option value="21">21%</option>
+            </select>
           </div>
         </div>
         <div style="clear:both"></div>

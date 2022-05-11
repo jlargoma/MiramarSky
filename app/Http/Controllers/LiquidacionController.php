@@ -647,6 +647,8 @@ class LiquidacionController extends AppController {
     if ($iva>0 && $gasto->import>0){
       $gasto->bimp  = round(($gasto->import/ (1 + ($iva / 100))),2);
       $gasto->iva = $gasto->import - $gasto->bimp;
+    } else {
+      $gasto->bimp  = $gasto->import;
     }
 
 

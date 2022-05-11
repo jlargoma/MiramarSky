@@ -14,6 +14,8 @@ setlocale(LC_TIME, "es_ES");
       <thead>
       <th class="text-center bg-complete text-white">Fecha</th>
       <th class="text-left bg-complete text-white">Concepto</th>
+      <th class="text-center bg-complete text-white">Base Imp.</th>
+      <th class="text-center bg-complete text-white">IVA</th>
       <th class="text-center bg-complete text-white">Importe</th>
       <th class="text-center bg-complete text-white">Piso</th>
       <th class="text-left bg-complete text-white">Comentario</th>
@@ -51,9 +53,9 @@ setlocale(LC_TIME, "es_ES");
                 $divisor = 1;
               }
               ?>
-              <td class="text-center">
-                <?php echo number_format(($gasto->import / $divisor), 2, ',', '.') ?>€
-              </td>
+              <td class="text-center">{{moneda(($gasto->bimp / $divisor))}}</td>
+              <td class="text-center">{{moneda(($gasto->iva / $divisor))}}</td>
+              <td class="text-center">{{moneda(($gasto->import / $divisor))}}</td>
               <td class="text-left" style="padding: 5px 8px !important">
                 <?php if ($gasto->PayFor != NULL): ?>
                   <?php $aux = explode(',', $gasto->PayFor) ?>
