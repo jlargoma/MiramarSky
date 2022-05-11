@@ -561,6 +561,8 @@ class PaymentsProController extends AppController {
             ->get();
     $payProp = 0;
     $lstPagos = [];
+    $lstBimp = [];
+    $lstIva = [];
     if ($pagos)
     foreach ($pagos as $pago) {
       $pagototal += $pago->import;
@@ -578,6 +580,8 @@ class PaymentsProController extends AppController {
        $divisor = 1;
       }
       $amount   = ($pago->import / $divisor);
+      $lstBimp[$pago->id] = ($pago->bimp / $divisor);
+      $lstIva[$pago->id]  = ($pago->iva / $divisor);
       $payProp += $amount;
       $lstPagos[$pago->id] = $amount;
           
@@ -604,6 +608,8 @@ class PaymentsProController extends AppController {
         'pagototal' => $pagototal,
         'pagototalProp' => $payProp,
         'lstPagos' => $lstPagos,
+        'lstBimp' => $lstBimp,
+        'lstIva' => $lstIva,
         'rooms'  => $lstRooms,
         'roomID' => $roomID,
         'is_modal' => $is_modal,
