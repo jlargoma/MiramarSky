@@ -90,7 +90,28 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.js"></script>
 <link rel="stylesheet" href="{{ asset('/css/backend/revenue_dashboard.css')}}" type="text/css"/>
+<style>
+    .box-popoer{
+    position: relative;
+  }
+  .box-popoer:hover .popover{
+    display: block;
+  }
+  .box-popoer .popover table td,
+  .box-popoer .popover table th{
+    padding: 2px 10px !important;
+  }
+  .box-popoer .popover table td{
+    background: none;
+  }
 
+  .box-popoer .popover .table.table_white tr td,
+  .box-popoer .popover .table.table_white tr:hover td {
+    background: #fff !important;
+    color: #000;
+    white-space: nowrap;
+}
+  </style>
 <script type="text/javascript">
   
   $(document).ready(function () {

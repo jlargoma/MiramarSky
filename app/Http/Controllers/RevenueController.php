@@ -198,10 +198,13 @@ class RevenueController extends AppController
             ->where('start', '<=', $oYear->end_date)->get();
     
     $cobrado = $metalico = $banco = $vendido = 0;
+    $diff = [];
     foreach ($books as $key => $book) {
+      $aux = 0;
       if ($book->payments){
         foreach ($book->payments as $pay){
           $cobrado += $pay->import;
+          $aux += $pay->import;
           if ($pay->type == 0 || $pay->type == 1) {
             $metalico += $pay->import;
           } else  {
@@ -209,9 +212,13 @@ class RevenueController extends AppController
           }
         }
       }
+      if (intVal($aux) != intVal($book->total_price)){
+        $diff[] = [$book->id, $book->customer->name, $aux,$book->total_price];
+        // echo $book->id.': '.intVal($aux).'!='.intVal($book->total_price).'<br>';
+      }
       $vendido += $book->total_price;
     }
-    
+   
     $contabilidad = view('backend.revenue.dashboard.contabilidad',[
         'year' => $oYear,
         'yDays' =>$oServ->mDays[0],
@@ -223,6 +230,7 @@ class RevenueController extends AppController
         'ingr_banco'=>$banco,
         'ingr_vendido'=>$vendido,
         'ffData'=>$ffData,
+        'diffPending'=>$diff,
     ]);
     /*************************************************************/    
     return view('backend.revenue.dashboard',[
