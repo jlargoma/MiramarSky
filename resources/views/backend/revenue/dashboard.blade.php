@@ -111,6 +111,11 @@
     color: #000;
     white-space: nowrap;
 }
+
+table.table.table_white {
+    box-shadow: 1px 1px 7px 3px #000;
+    border-radius: 4px;
+}
   </style>
 <script type="text/javascript">
   

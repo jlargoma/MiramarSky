@@ -47,7 +47,7 @@ if ($pending<0) $pending = 0;
                   </thead>
                   @foreach($diffPending as $p)
                   <tr>
-                    <td><a href="/admin/reservas/update/{{$p[0]}}" title="abrir reserva">{{$p[1]}}</a></td>
+                    <td><a href="/admin/reservas/update/{{$p[0]}}" title="abrir reserva" target="_blank">{{$p[1]}}</a></td>
                     <td>{{moneda($p[2])}}</td>
                     <td>{{moneda($p[3])}}</td>
                   </tr>
