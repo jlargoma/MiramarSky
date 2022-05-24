@@ -183,13 +183,26 @@ trait OtasTraits
     
     $roomTypeID = $this->oConfig->getRooms($apto);
     $resp = false;
+    $keyWubook = null;
     if (count($aPrices)){
+      $keyWubook = 'wubookRate';
       $resp = $OtaGateway->setRates(["price"=>[$roomTypeID=>$aPrices]]);
     }
     
     if (count($aMinStay)){
+      $keyWubook = 'wubookMinStay';
       $resp = $OtaGateway->setMinStay(['restrictions'=>[$roomTypeID=>$aMinStay]]);
     }
+
+
+    //BEGIN wubook
+    if($keyWubook){
+      $oAux = \App\ProcessedData::findOrCreate($keyWubook);
+      $oAux->content=time();
+      $oAux->save();
+    }
+    //END wubook
+
     if ($resp){
       return response()->json(['status'=>'OK','msg'=>'datos cargados y enviados']);
     } else {
@@ -597,11 +610,23 @@ trait OtasTraits
       }
     }
   }
-  if ($type == 'price')
+  $keyWubook = 'wubookRate';
+  if ($type == 'price'){
     \App\ProcessedData::savePriceUPD_toOtaGateway($min_day,$max_day);
-  if ($type == 'minDay')
+    $keyWubook = 'wubookRate';
+  }
+  if ($type == 'minDay'){
+    $keyWubook = 'wubookMinStay';
     \App\ProcessedData::saveMinDayUPD_toOtaGateway($min_day,$max_day);
-  
+  }
+
+    //BEGIN wubook
+    if($keyWubook){
+      $oAux = \App\ProcessedData::findOrCreate($keyWubook);
+      $oAux->content=time();
+      $oAux->save();
+    }
+    //END wubook
   return response()->json(['status'=>'OK','msg'=>'datos cargados']);
  
   }

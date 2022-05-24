@@ -33,7 +33,30 @@ if ($pending<0) $pending = 0;
           </td>
         </tr>
         <tr style="background-color: #8e5ea2;">
-          <td class="text-white" style="padding: 5px 8px!important;background-color: #8e5ea2!important;">Pendiente Cobro</td>
+          <td class="text-white" style="padding: 5px 8px!important;background-color: #8e5ea2!important;">Pendiente Cobro
+          @if($diffPending)
+          <i class="fa fa-question-circle box-popoer">
+              <div class="popover">
+                <table class="table table_white">
+                  <thead>
+                  <tr>
+                    <th>Cliente</th>
+                    <th>Cobrado</th>
+                    <th>PVP</th>
+                  </tr>
+                  </thead>
+                  @foreach($diffPending as $p)
+                  <tr>
+                    <td><a href="/admin/reservas/update/{{$p[0]}}" title="abrir reserva" target="_blank">{{$p[1]}}</a></td>
+                    <td>{{moneda($p[2])}}</td>
+                    <td>{{moneda($p[3])}}</td>
+                  </tr>
+                  @endforeach
+                </table>
+              </div>
+            </i>
+            @endif
+          </td>
           <td class="text-white text-center" style="padding: 5px 8px!important;background-color: #8e5ea2!important;">
             <b>{{moneda($pending)}}</b>
           </td>

@@ -94,6 +94,31 @@ trait LoadByOTA {
         }
       }
       //PAXs -------------------------------
+
+      if ($oBooking->modified_from) {
+        $alreadyExist = \App\Book::where('bkg_number', $oBooking->number)->first();
+        if (!$alreadyExist) { // espero la confirmacion de eliminar
+          $oData = \App\ProcessedData::findOrCreate('OTA_rva_save');
+          $content = json_decode($oData->content,true);
+          if (!$content || !is_array($content)) $content = [];
+          $content[] = [$oBooking->number,$channel_group, $reserv];
+          $oData->content = json_encode($content);
+          $oData->save();
+
+          Mail::send('backend.emails.base', [
+            'mailContent' => 'Reserva en espera: modified_from '.$oBooking->modified_from.' bkg number '.$oBooking->number,
+            'title'       => 'reserva en espera '.$oBooking->number
+          ], function ($message) {
+              $message->from(env('MAIL_FROM'));
+              $message->to(env('MAIL_FROM'));
+              $message->cc('pingodevweb@gmail.com');
+              $message->subject('reserva en espera');
+          });
+
+
+          continue;
+        }
+      }
 //      $bookID = null;
       $bookID = $this->sOta->addBook($channel_group, $reserv);
 //      var_dump($reserv,$oBooking);// die;

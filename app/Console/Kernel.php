@@ -46,10 +46,13 @@ class Kernel extends ConsoleKernel {
       Commands\CreateMonthAgency::class,
       Commands\zAutomaticTask::class,
       Commands\CheckOtaService::class,
-//        Commands\WubookGetBookings::class,
-//        Commands\ZodomusImport::class,
-//        Commands\RoomsPhotosMigrate::class,
-        Commands\ImportICal::class,
+      Commands\ImportICal::class,
+      Commands\WubookAvailables::class,
+      Commands\WubookRates::class,
+      Commands\WubookMinStay::class,
+      Commands\WubookBooks::class,
+      Commands\WubookGetAllBooking::class,
+      Commands\CheckOtaRrvs::class,
   ];
 
   /**
@@ -77,6 +80,14 @@ class Kernel extends ConsoleKernel {
     $schedule->command('OTAs:checkBookingsCheckin')->dailyAt('1:40')->timezone('Europe/Madrid');
     $schedule->command('PaylandSeasson:process')->dailyAt('4:00')->timezone('Europe/Madrid');
     $schedule->command('DataDis:load')->dailyAt('2:00')->timezone('Europe/Madrid');
+    $schedule->command('OTAs:CheckOtaRrvs')->everyMinute();
+
+    //WUBOOK
+    $schedule->command('wubook:sendRates')->everyTenMinutes();
+    $schedule->command('wubook:sendMinStay')->everyTenMinutes();
+    $schedule->command('wubook:sendAvaliables')->everyFiveMinutes();
+    $schedule->command('wubook:WubookBooks')->everyMinute();
+    $schedule->command('wubook:getAllBookings')->hourly();
 
     //everyThreeHours
     $schedule->command('OTAs:SendAvailibilityMonth')->dailyAt('7:00')->timezone('Europe/Madrid');

@@ -2,42 +2,52 @@
 
 namespace App\Services\Wubook;
 
-class Config {
+class Config
+{
 
-  public function roomsEquivalent() {
 
-    return [
-        432614 => 'DDE', //DDS
-        432360 => 'DDL', 
-        432630 => 'EstS',
-        433845 => 'EstL',
-        432611 => 'ESTG',
-        431916 => '7J',
-        432606 => '9R',
-        432612 => '9F',
-        432610 => '10I',
-        432613 => 'CHLT',
+  public function getPropID($site = null)
+  {
+    return 1578438122; //s'olo vamos a usa una
+  }
+
+  function getRooms($room = null)
+  {
+
+    $lst = [
+      'CHLT' => 432613,
+      'DDE' => 432614,
+      'ESTG' => 432611,
+      'DDL' => 432360,
+      'EstS' => 432630,
+      'EstL' => 433845,
+      '7J' => 431916,
+      '9R' => 432606,
+      '9F' => 432612,
+      '10I' => 432610
     ];
-  }
-  
-   public function getPropID($site = null) {
-
-    return 1578438122;
-    
+    if ($room) {
+      return isset($lst[$room]) ? $lst[$room] : -1;
+    }
+    return $lst;
   }
 
-  public function getAgency($id_chanel) {
-    // airbnb => 4,
-    //booking => 1
-
-    $chanels = [
-        1 => 4,
-        2 => 1,
-        3 => 1,
-        43 => 4,
-    ];
-
-    return isset($chanels[$id_chanel]) ? $chanels[$id_chanel] : -1;
+  function getChannelByRoom($roomID)
+  {
+    $all = $this->getRooms();
+    foreach ($all as $chn => $rid) {
+      if ($rid == $roomID) return $chn;
+    }
+    return null;
   }
 
+  public function pricePlan($site)
+  {
+    return 153130; 
+  }
+
+  public function restricPlan($site)
+  {
+    return 76427;  // solo vamos a usar una propiedad
+  }
 }

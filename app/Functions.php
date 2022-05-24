@@ -610,3 +610,7 @@ function stripslashes_deep($value) {
 
     return $value;
   }
+
+  function getAptosChannel(){
+    return ['CHLT','DDE','ESTG','DDL','EstS','EstL','7J','9R','9F','10I'];
+  }
