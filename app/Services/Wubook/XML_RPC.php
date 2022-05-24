@@ -150,7 +150,7 @@ class XML_RPC
                 break;
 
             case 'array':
-                $ret_val = XML_RPC::encode_array($var);
+                $ret_val = '<value>'.XML_RPC::encode_array($var).'</value>';
                 break;
             
             default:
@@ -211,8 +211,11 @@ class XML_RPC
      */
     private static function is_assoc($array)
     {
-        if (is_array($array) && !is_numeric(array_shift(array_keys($array))))
-            return true;
+        foreach(array_keys($array) as $k){
+            if (!is_numeric($k)) return true;
+        }
+        // if (is_array($array) && !is_numeric(array_shift(array_keys($array))))
+        //     return true;
 
         return false;
     }

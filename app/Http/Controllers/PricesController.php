@@ -247,6 +247,11 @@ class PricesController extends AppController {
       return back()->with('sent_error',$prepareDefaultPrices->error);
     }
     $prepareDefaultPrices->process();
+
+    //BEGIN wubook
+    $oAux = \App\ProcessedData::findOrCreate('wubookRate');
+    $oAux->content=time();
+    $oAux->save();
     
     return back()->with('sent','Precios cargados para ser enviados');
   }

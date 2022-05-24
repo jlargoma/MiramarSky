@@ -20,17 +20,15 @@ class WuBook{
     
     public function __construct()
     {
-      $this->iCode = 1578438122;
-      $this->token = "5808490848.6474";
+      $this->iCode = 1578438122; //getPropID
+      $this->token = "1974458162.3376";
       $this->price_plan = 153130;
-      $this->rplan = 76427;
       $this->WBConfig = new WBConfig();
     }
     
     private function call($method,$param) {
       $response = XML_RPC::CallMethod("https://wired.wubook.net/", $method, $param);
       if ($response){
-        
         if (isset($response->params->param->value->array->data)){
           $response = $response->params->param->value->array->data;
           if (isset($response->value)){
@@ -47,6 +45,7 @@ class WuBook{
     }
     
     public function conect(){
+      // return true; 
       $params = array(
           env('WUBOOK_USR'),
           env('WUBOOK_PSW'),
@@ -70,7 +69,7 @@ class WuBook{
       return FALSE; 
     }
     
-    public function pushURL($url, $test=0){
+    public function pushURL($site,$url, $test=0){
       // tdocs.wubook.net/wired/fetch.html#setting-up-the-push-notification
       if ($this->token){
         $aResponse = $this->call('push_activation', array($this->token,$this->iCode,$url, $test));
@@ -83,7 +82,7 @@ class WuBook{
       return FALSE; 
     }
     
-    public function get_pushURL(){
+    public function get_pushURL($site){
       // tdocs.wubook.net/wired/fetch.html#setting-up-the-push-notification
       if ($this->token){
         $aResponse = $this->call('push_url', array($this->token,$this->iCode));
@@ -102,6 +101,9 @@ class WuBook{
     private function processData($aResponse) {
       $result = array();
       if ($aResponse){
+        if (!$aResponse->array->data || empty($aResponse->array->data)) return null;
+        if (!property_exists($aResponse->array->data, 'value')) return null;
+ 
         $structs = $aResponse->array->data->value;
         foreach ($structs as $struct){
           
@@ -162,7 +164,7 @@ class WuBook{
                 break;
             }
 
-
+//            var_dump($k,$content);
             $aData[$k] = $content;
 
           }
@@ -179,8 +181,9 @@ class WuBook{
      * @param type $rCode
      * @return boolean
      */
-    public function set_Closes($roomdays) {
+    public function set_Closes($sID,$roomdays) {
       if ($this->token){
+
 //        $roomdays= [
 //          ['id'=> 433743, 'days'=> [['avail'=> 1,'date'=>'27/11/2016']],
 //          ['id'=> 433742, 'days'=> [['avail'=> 2,'date'=>'07/11/2016'], [], ['avail'=> 2,'date'=>'17/11/2016']]],
@@ -194,7 +197,7 @@ class WuBook{
         $aResponse = $this->call('update_sparse_avail',$param);
         if ($aResponse){
           if ($aResponse[0]->string == 'Ok'){
-//            echo 'Disponibilidad Actualizada';
+            echo 'Disponibilidad Actualizada';
             return true;
           }
         }
@@ -245,14 +248,11 @@ class WuBook{
       
       if ($this->token){
        $dfromTime = strtotime($dfrom);
-       
-       
-      
 //        $prices= [
 //          "_int_433743" => [100, 101, 102],
 //          "_int_433742" => [200, 201, 202],
 //        ];
- 
+               
           
         $param = [
             $this->token,
@@ -261,8 +261,7 @@ class WuBook{
             date('d/m/Y',$dfromTime),
             $prices
         ];
-//        var_dump($param);
-//       dd($param);
+      //  var_dump($param);
       
         $aResponse = $this->call('update_plan_prices',$param);
         if ($aResponse){
@@ -275,23 +274,18 @@ class WuBook{
       return FALSE; 
     }
     
+    
      /**
      * check and apply Closes by dates
      * 
      * @param type $rCode
      * @return boolean
      */
-    public function set_Restrictions($dfrom='2029-01-28',$min_stay) {
-      
+    public function set_Restrictions($site,$dfrom='2029-01-28',$min_stay) {  
       if ($this->token){
-       $dfromTime = strtotime($dfrom);
+        $dfromTime = strtotime($dfrom);
+        $this->rplan  = $this->WBConfig->restricPlan($site);
        
-//        values= {
-//          '1': [ {'min_stay': 3}, {}, {'max_stay': 4}],
-//          '2': [ {'closed': 1}, {}, {'max_stay': 2}],
-//        }
- 
-          
         $param = [
             $this->token,
             $this->iCode,
@@ -299,8 +293,8 @@ class WuBook{
             date('d/m/Y',$dfromTime),
             $min_stay
         ];
-//        var_dump($param);
-      
+        // dd($param);
+//        echo $this->iCode."\n";
         $aResponse = $this->call('rplan_update_rplan_values',$param);
         if ($aResponse){
           if ($aResponse->string == 'Ok'){
@@ -308,6 +302,7 @@ class WuBook{
           }
         }
       }
+      
       return FALSE; 
     }
     
@@ -317,11 +312,10 @@ class WuBook{
      * @param type $rCode
      * @return boolean
      */
-    public function fetch_bookings($dfrom='01/01/2020',$dto='21/12/2020') {
+    public function fetch_bookings($site,$dfrom='01/05/2020',$dto='21/12/2020') {
       
       $result = [];
       if ($this->token){
-     
         $param = [
             $this->token,
             $this->iCode,
@@ -331,24 +325,13 @@ class WuBook{
         ];
         
         $aResponse = $this->call('fetch_bookings',$param);
+    
         $aux = json_encode($aResponse);
         $aResponse = json_decode($aux);
-//        echo json_encode($aResponse);
 //        include_once public_path('MoreBook.php');
 //        $aResponse = json_decode($bookings);
 
-
-        $reservs = $this->processData($aResponse);
-        
-        if (count($reservs)){
-          
-          $this->channels = $this->WBConfig->roomsEquivalent();
-          foreach ($reservs as $data){
-            $result[] = $this->addBook($data);
-          }
-        }
-        
-        dd($result);
+        return $this->processData($aResponse);
       }
       return FALSE; 
     }
@@ -362,25 +345,25 @@ class WuBook{
      */
     public function fetch_booking($iCode,$rCode=null) {
       
-      if ($iCode != $this->iCode) return false;
+      if ($iCode != $$this->iCode) return false;
       
       if ($this->token && $rCode){
+     
         $param = [
             $this->token,
             $this->iCode,
             $rCode,
         ];
         $aResponse = $this->call('fetch_booking',$param);
-        $aux = json_encode($aResponse);
-        $aResponse = json_decode($aux);
+//        echo json_encode($aResponse); die;
+        $aResponse = json_decode(json_encode($aResponse));
         
 //        include_once public_path('/tests/WuBook-booking.php');
 //        $aResponse = json_decode($bookings);
-//        
+        
         $reserv = $this->processData($aResponse);
         if ($reserv){
-          $this->channels = $this->WBConfig->roomsEquivalent();
-          return $this->addBook($reserv[0]);
+          return $reserv[0];
         }
       }
       
@@ -395,9 +378,8 @@ class WuBook{
      * @param $agency integer Agency from where come the book
      * @param $room_id Room belong the book
      */
-    private function addBook($data)
+    private function addBook_OLD($data)
     {
-   
       /***********************************************************/
       /** CANCEL THE BOOKING **/
       if ($data['status'] == 5){
@@ -409,6 +391,7 @@ class WuBook{
         return null;
       }
       /***********************************************************/
+   
       
       foreach ($data as $k=>$v){
         if ($k != 'rooms_occupancies')
@@ -452,7 +435,7 @@ class WuBook{
         return null;
       }
       
-       /** CREATE THE BOOKING **/
+      /** CREATE THE BOOKING **/
       $roomGroup = isset($this->channels[$data['rooms']]) ? $this->channels[$data['rooms']] : 'ROSASJ';
       $room = new \App\Rooms();
       $roomID = $room->calculateRoomToFastPayment($roomGroup, $start, $finish);
@@ -501,107 +484,210 @@ class WuBook{
       $book->save();
 
       $this->updBooking($book, $data);
+
+      
+
       return $book->id;
-      /************************************************************/
-    }
-    
-    private function updBooking($book, $data){
       
-      $pax    = isset($data['rooms_occupancies']) ? $data['rooms_occupancies']['occupancy'] : 0;
-      if ($pax <1)  $pax = $data['men'] + $data['children'];
-      $book_comments = $book->comment .'id Reserva - OTA: '.$data['channel_reservation_code'].'<br>'
-            .'Moneda: '.$data['currency'].'|'
-            .'Adultos: '.$data['men'].'|'
-            .'Niños: '.$data['children'];
-      
-      $agency = $this->WBConfig->getAgency(intval($data['id_channel'])); //wubook
-      $amount = floatval($data['amount']);
-      $PVPAgencia = 0;
-      if ($agency == 999999)  $PVPAgencia = intval ($data['amount']) * 0.12;
-      $book->type_book = 11;
-      $book->nigths = $data['nights'];
-      $book->agency = $agency;
-      $book->PVPAgencia = $PVPAgencia;
-      $book->pax = $pax;
-      $book->real_pax = $pax;
-      $book->start = $data['start_date'];
-      $book->finish = $data['end_date'];
-      $book->comment = $book_comments;
-      $book->total_price = $data['amount'];
-      $book->external_roomId = null;
-      $book->priceOTA = $data['amount'];
-
-      $book->save();
-      
-      //costes
-      $room = \App\Rooms::find($book->room_id);
-      $costes = $room->priceLimpieza($room->sizeApto);
-      $book->cost_limp = isset($costes['cost_limp']) ? $costes['cost_limp'] : 0;
-      $book->cost_lujo = 0;
-      if ($room->luxury == 1){
-        $book->type_luxury = 1;
-        $book->cost_lujo = \App\Settings::priceLujo();
-      }
-      $book->cost_park = (\App\Settings::priceParking()*$data['nights']) * $room->num_garage;
-      $book->type_park = 1;
-
-      $book->cost_apto = $room->getCostRoom($book->start,$book->finish,$book->pax);
-      $book->extraCost  = \App\Extras::find(4)->cost;
-
-      $book->cost_total = $book->get_costeTotal();
-      $book->save();
-
-      $book->sendAvailibility($book->room_id,$data['start_date'],$data['end_date']);
-      
-    }
      
+    }
+    
+    
+    
     public function getRoomsEquivalent($channels) {
-      $result = [];
-      $lst = $this->WBConfig->roomsEquivalent();
-      
-      if ($channels === null){
-        foreach ($lst as $rid => $ch)  $result[$ch] = $rid;
-        return $result;
-      }
-      
-      foreach ($lst as $rid => $ch){
-        if(in_array($ch, $channels))
-        $result[$ch] = $rid;
-      }
-      return $result;
+      return $this->WBConfig->getRooms($channels);
     }
     
-    function fetch_rooms() {
-      $param = [
-            $this->token,
-            1578949667,
-          160538,
-           '21/04/2020',
-           '24/04/2020',
-        ];
-      
-      
-                
-        $aResponse = $this->call('fetch_plan_prices',$param);
-        var_dump($aResponse);
-    }
-    
-    public function getCC_Data($rcode) {
-      
-      $pwd_used_to_store_ccs = env('WUBOOK_CC_KEY');
+    function callActions($call,$lcode,$param1, $param2) {
       $param = [
           $this->token,
-          $this->iCode,
+          $lcode,
+          $param1,
+          $param2,
+        ];
+               
+      //fetch_ccard(token, lcode, rcode, pwd_used_to_store_ccs)
+//        $aResponse = $this->call($call,$param);
+//        echo json_encode($aResponse); die;
+//        $aResponse = json_decode(json_encode($aResponse));
+      $test = '{"array":{"data":{"value":{"struct":{"member":[{"name":"id_policy","value":{"string":{}}},{"name":"wdays","value":{"array":{"data":{"value":[{"int":"1"},{"int":"1"},{"int":"1"},{"int":"1"},{"int":"1"},{"int":"1"},{"int":"1"}]}}}},{"name":"wdays_type","value":{"int":"3"}},{"name":"dtype","value":{"int":"1"}},{"name":"periods","value":{"array":{"data":{"value":{"array":{"data":{"value":[{"string":"29\/04\/2020"},{"string":"31\/08\/2020"}]}}}}}}},{"name":"apply_to","value":{"string":"*"}},{"name":"rplan","value":{"string":{}}},{"name":"guarantee","value":{"int":"0"}},{"name":"hidden_on_founts","value":{"int":"0"}},{"name":"dvalue","value":{"double":"16.0"}},{"name":"must_stay","value":{"int":"0"}},{"name":"ddp","value":{"int":"0"}},{"name":"sid","value":{"int":"52875"}},{"name":"short_disable","value":{"string":{}}},{"name":"must_rooms","value":{"string":","}},{"name":"max_advance","value":{"int":"0"}},{"name":"max_stay","value":{"int":"0"}},{"name":"must_opps","value":{"string":","}},{"name":"dto","value":{"string":"30\/06\/2020"}},{"name":"name","value":{"string":"OFERTA REAPERTURA COVID"}},{"name":"must_type","value":{"int":"-1"}},{"name":"dfrom","value":{"string":"30\/06\/2020"}},{"name":"nations","value":{"array":{"data":{"0":"\n"}}}},{"name":"must_advance","value":{"int":"0"}},{"name":"deposit","value":{"double":"0.0"}}]}}}}}';
+      $test = '{"array":{"data":{"value":{"struct":{"member":[{"name":"id_policy","value":{"string":{}}},{"name":"wdays","value":{"array":{"data":{"value":[{"int":"1"},{"int":"1"},{"int":"1"},{"int":"1"},{"int":"1"},{"int":"1"},{"int":"1"}]}}}},{"name":"wdays_type","value":{"int":"3"}},{"name":"dtype","value":{"int":"1"}},{"name":"periods","value":{"array":{"data":{"value":{"array":{"data":{"value":[{"string":"01\/07\/2020"},{"string":"02\/07\/2020"}]}}}}}}},{"name":"apply_to","value":{"string":"*"}},{"name":"rplan","value":{"string":{}}},{"name":"guarantee","value":{"int":"0"}},{"name":"hidden_on_founts","value":{"int":"0"}},{"name":"dvalue","value":{"double":"2.0"}},{"name":"must_stay","value":{"int":"0"}},{"name":"ddp","value":{"int":"0"}},{"name":"sid","value":{"int":"54105"}},{"name":"short_disable","value":{"string":{}}},{"name":"must_rooms","value":{"string":","}},{"name":"max_advance","value":{"int":"0"}},{"name":"max_stay","value":{"int":"0"}},{"name":"must_opps","value":{"string":","}},{"name":"dto","value":{"string":"02\/07\/2020"}},{"name":"name","value":{"string":"test"}},{"name":"must_type","value":{"int":"-1"}},{"name":"dfrom","value":{"string":"01\/07\/2020"}},{"name":"nations","value":{"array":{"data":{"0":"\n"}}}},{"name":"must_advance","value":{"int":"0"}},{"name":"deposit","value":{"double":"0.0"}}]}}}}}';
+      $test = '{"struct":{"member":[{"name":"cc_type","value":{"int":"2"}},{"name":"cc_number","value":{"string":"5338210232212016"}},{"name":"cc_cvv","value":{"string":"198"}},{"name":"cc_code","value":{"string":{}}},{"name":"cc_owner","value":{"string":"mercedes heredia"}},{"name":"cc_expiring","value":{"string":"12\/2021"}}]}}';
+      $aResponse = json_decode($test);
+      dd($aResponse);
+      
+      
+//      dtype => 1: Percentage 2: Fixed
+//        dvalue
+      $registers = $aResponse->array->data->value->struct->member;
+      foreach ($registers as $data){
+        if ($data->name == 'dtype'){
+//           dd($data->value->int);
+        }
+        if ($data->name == 'dvalue'){
+          dd($data->value->double);
+        }
+        echo $data->name.'<br>';
+      }
+        dd('$data');
+            
+    }
+    
+    function getPricesBooking($siteID=null,$dfrom, $dto) {
+      $prices = [];
+      //nights+1 para corregir fechas
+      $nights = calcNights(convertDateToDB($dfrom), convertDateToDB($dto))+1;
+      if ($siteID>0){
+        $lcode = $this->WBConfig->getPropID($siteID);
+        $pID   = $this->WBConfig->pricePlanMetaBuscador($siteID);
+        if ($pID){
+          $prices = $this->getPricesBookingBySite($lcode,$pID,$dfrom, $dto);
+          $aDiscounts = $this->getDiscounts($lcode,$dfrom, $dto);
+          $aExtras = $this->getExtras($lcode,$dfrom, $dto);
+          if ($aDiscounts['type'] == 1){ //1: Percentage
+            foreach ($prices as $k=>$v){
+              $prices[$k] = $v-$v*($aDiscounts['value']/100);
+            }
+          }
+          if ($aDiscounts['type'] == 2){ //2: Fixed
+            foreach ($prices as $k=>$v){
+              $prices[$k] = $v-$aDiscounts['value'];
+            }
+          }
+          if ($aExtras) {
+            foreach ($prices as $k => $v) {
+              if ($aExtras['extra'] == 1) {
+                if ($aExtras['perday'] == 1){
+                  $v = $v + ($nights * $aExtras['price']);
+                }
+                else
+                  $v = $v + $aExtras['price'];
+              } else {
+                if ($aExtras['perday'] == 1)
+                  $v = $v - ($nights * $aExtras['price']);
+                else
+                  $v = $v - $aExtras['price'];
+              }
+              $prices[$k] = $v;
+            }
+          }
+        }
+      } else {
+        for($i=1;$i<4;$i++){
+          $lcode = $this->WBConfig->getPropID($i);
+          $pID   = $this->WBConfig->pricePlanMetaBuscador($i); 
+          if ($pID){
+            $priceAux = $this->getPricesBookingBySite($lcode,$pID,$dfrom, $dto);
+            $aDiscounts = $this->getDiscounts($lcode,$dfrom, $dto);
+            $aExtras = $this->getExtras($lcode,$dfrom, $dto);
+            foreach ($priceAux as $k=>$v){
+              if ($aDiscounts['type'] == 1){ //1: Percentage
+                $v = $v-$v*($aDiscounts['value']/100);
+              }
+              if ($aDiscounts['type'] == 2){ //2: Fixed
+                $v = $v-$aDiscounts['value'];
+              }
+              
+              if ($aExtras){
+                if ($aExtras['extra'] == 1){
+                  if ($aExtras['perday'] == 1){
+                   
+                    $v = $v + ($nights*$aExtras['price']);
+                  }
+                  else $v = $v + $aExtras['price'];
+                } else {
+                  if ($aExtras['perday'] == 1)
+                    $v = $v - ($nights*$aExtras['price']);
+                  else $v = $v - $aExtras['price'];
+                }
+              }
+          
+              $prices[$k] = $v;
+            }
+          }
+        }
+      }
+      return $prices;
+      
+    }
+    function getPricesBookingBySite($lcode=null,$pID=null,$dfrom, $dto) {
+      $param = [
+          $this->token,
+          $lcode,
+          $pID,
+          $dfrom,
+          $dto,
+        ];
+//      $aResponse = $this->call('fetch_rooms_values',$param);
+      $aResponse = $this->call('fetch_plan_prices',$param);
+      $aResponse = json_decode(json_encode($aResponse));
+      $channels = $this->WBConfig->roomsEquivalent();
+      $prices = [];
+      
+      @$registers = $aResponse->struct;
+      if (!$registers) return [];
+      $registers = $registers->member;
+      foreach ($registers as $data){
+        $price = 0;
+        if (isset($data->value->array->data->value)){
+          foreach ($data->value->array->data->value as $p){
+            if (is_object($p))  $price += floatval($p->double);
+            else $price += floatval($p);
+          }
+        }
+        $ch = isset($channels[$data->name]) ? $channels[$data->name] : '';
+        $prices[$ch] = $price;
+      }
+      return $prices;
+    }
+    
+    private function getDiscounts($lcode=null,$dfrom, $dto) {
+      $return = ['type'=>null,'value'=>null];
+       $param = [
+          $this->token,
+          $lcode,
+          $dfrom,
+          $dto,
+        ];
+      
+      $aResponse = $this->call('fetch_soffers',$param);
+      $aResponse = json_decode(json_encode($aResponse));
+      if ($aResponse){
+        try{
+          @$registers = $aResponse->array->data->value;
+          if (!$registers) return $return;
+          $registers = $registers->struct->member;
+          foreach ($registers as $data){
+            if ($data->name == 'dtype'){
+              $return['type'] = intval($data->value->int);
+            }
+            if ($data->name == 'dvalue'){
+              $return['value'] = floatval($data->value->double);
+            }
+          }
+        } catch (Exception $ex) {
+
+        }
+      }
+      return $return;
+    }
+    
+    public function getCC_Data($siteID,$rcode) {
+      
+      $lcode = $this->WBConfig->getPropID($siteID);
+      $pwd_used_to_store_ccs = config('app.wubook.cc_hey');
+      $param = [
+          $this->token,
+          $lcode,
           $rcode,
           $pwd_used_to_store_ccs
         ];
-      $aResponse = $this->call('fetch_ccard',$param);
-      $aResponse = json_decode(json_encode($aResponse));
-      //      $test = '{"struct":{"member":[{"name":"cc_type","value":{"int":"2"}},{"name":"cc_number","value":{"string":"5338210232212016"}},{"name":"cc_cvv","value":{"string":"198"}},{"name":"cc_code","value":{"string":{}}},{"name":"cc_owner","value":{"string":"mercedes heredia"}},{"name":"cc_expiring","value":{"string":"12\/2021"}}]}}';
-      //      $aResponse = json_decode($test);
-      @$registers = $aResponse->struct;
-      if (!$registers) return null;
-      $registers = $registers->member;
+        $aResponse = $this->call('fetch_ccard',$param);
+        $aResponse = json_decode(json_encode($aResponse));
+//      $test = '{"struct":{"member":[{"name":"cc_type","value":{"int":"2"}},{"name":"cc_number","value":{"string":"5338210232212016"}},{"name":"cc_cvv","value":{"string":"198"}},{"name":"cc_code","value":{"string":{}}},{"name":"cc_owner","value":{"string":"mercedes heredia"}},{"name":"cc_expiring","value":{"string":"12\/2021"}}]}}';
+//      $aResponse = json_decode($test);
+        if (!$aResponse) return null;
+      $registers = $aResponse->struct->member;
       $cc = [];
       foreach ($registers as $data){
         foreach ($data->value as $v){
@@ -624,4 +710,105 @@ class WuBook{
       return $fieldsCard;
             
     }
+    
+    private function getExtras($lcode=null,$dfrom, $dto) {
+      
+      $return= ['extra'=>null,'price'=>null,'active'=>null,'perday'=>null];
+      $param = [
+        $this->token,
+        $lcode,
+        $dfrom,
+        $dto,
+      ];
+      
+//      $aResponse = $this->call('fetch_opportunities',$param);
+//      echo json_encode($aResponse); die;
+//      $aResponse = json_decode(json_encode($aResponse));
+       $aResponse = json_decode('{"array":{"data":{"value":{"struct":{"member":[{"name":"extra","value":{"int":"1"}},{"name":"wdays","value":{"array":{"data":{"value":[{"int":"1"},{"int":"1"},{"int":"1"},{"int":"1"},{"int":"1"},{"int":"1"},{"int":"1"}]}}}},{"name":"dto","value":{"string":"27\/04\/2030"}},{"name":"name","value":{"string":"DESYUNO BUFFET"}},{"name":"perday","value":{"int":"1"}},{"name":"dfrom","value":{"string":"29\/04\/2020"}},{"name":"price","value":{"double":"10.0"}},{"name":"oid","value":{"int":"25141"}},{"name":"how","value":{"int":"1"}},{"name":"rooms","value":{"array":{"data":{"0":"\n"}}}},{"name":"active","value":{"int":"1"}}]}}}}}');
+      if ($aResponse){
+       
+        try{
+          @$registers = $aResponse->array->data->value;
+          if (!$registers) return $return;
+          $registers = $registers->struct->member;
+          
+          foreach ($registers as $data){
+            //extra	1 if it’s an add-on, 0 if it’s a reduction
+            if ($data->name == 'extra'){
+              $return['extra'] = intval($data->value->int);
+            }
+            if ($data->name == 'active'){
+              $return['active'] = intval($data->value->int);
+            }
+            //perday	1 for daily price, 0 for global price
+            if ($data->name == 'perday'){
+              $return['perday'] = intval($data->value->int);
+            }
+            if ($data->name == 'price'){
+              $return['price'] = floatval($data->value->double);
+            }
+          }
+        } catch (Exception $ex) {
+
+        }
+      }
+      if ($return['active'] == 1) return $return;
+      return null;
+    }
+
+    
+  function addBook($rva)
+  {
+   
+  $oConfig = new WBConfig();
+
+ 
+    $channel_group = $oConfig->getChannelByRoom($rva['rooms']);
+    $customer_notes = implode(',',(array)($rva['customer_notes']));
+    $start  = convertDateToDB($rva['date_arrival']);
+    $finish = convertDateToDB($rva['date_departure']);
+    $comision = 0;
+    $pvpFinal = $rva['amount'];
+    if ($rva['amount']>0){
+      $comision = $comision + ($comision/100*21);
+      // comision = (PVP_final 15%) +  (PVP_final 15%) 21%
+      // x+[y/100*15 + (y/100*15/100*21)] = PVP final
+      // PVP final = $rva['amount'] / 0.8185
+
+      $pvpFinal = round(($rva['amount']/0.8185) , 2);
+      $comision = $pvpFinal - $rva['amount'];
+    }
+
+
+    $reserv = [
+        'channel' => null,
+        'bkg_number' => $rva['reservation_code'],
+        // 'rate_id' => $rva['plan_id'],
+        'external_roomId' => $rva['rooms'],
+        'reser_id' => $rva['channel_reservation_code'],
+        'comision' => $comision,
+        'channel_group' => $channel_group,
+        'status' => ($rva['status'] == 5) ? 2 : 1,
+        'agency' => 4,//just airbnb
+        'customer_name' => $rva['customer_name'].' '.$rva['customer_surname'],
+        'customer_email' => $rva['customer_mail'],
+        'customer_phone' => $rva['customer_phone'],
+        'customer_comment' => $customer_notes,
+        'totalPrice' => $pvpFinal,
+        'adults' => $rva['men'],
+        'children' => $rva['children'],
+        'extra_array' => [],
+        'start' => $start,
+        'end' => $finish,
+        'modified_from' => null,
+        'modified_to' => null,
+        'pax'=>$rva['men']+ $rva['children'],
+    ];
+
+    $OTA_service = new \App\Services\OtaGateway\OtaGateway();
+    $bookID = $OTA_service->addBook($channel_group, $reserv);
+    return $bookID;
+    
+  }
+    
 }

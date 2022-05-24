@@ -143,6 +143,10 @@ class Config {
     }
   }
  
+  public function priceAirbnb($p, $chnGr = null) {
+    return $this->priceByChannel($p,4,$chnGr);
+  }
+  
   function get_detailRate($rateID) {
 
     $text = '';
