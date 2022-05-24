@@ -75,11 +75,13 @@ class WubookRates extends Command
     $end = date('Y-m-d',strtotime("+12 months"));
     
     $oRoom = new Rooms();
-    $defaullts = $oRoom->defaultCostPrice($start,$end,1);
-    $defaullts = $defaullts['priceDay'];
+
 
     foreach ($channels as $ch) {
-        $items[$ch] = $this->getPrices($ch, $start, $end,$defaullts);
+      $oRoom = Rooms::where('channel_group',$ch)->first();
+      $defaullts = $oRoom->defaultCostPrice($start,$end,1);
+      $defaullts = $defaullts['priceDay'];
+      $items[$ch] = $this->getPrices($ch, $start, $end,$defaullts);
     }
 
     $WuBook = new WuBook();
