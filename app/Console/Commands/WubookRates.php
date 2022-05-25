@@ -119,6 +119,9 @@ class WubookRates extends Command
   {
     $oConfig = new oConfigOtas();
    
+    foreach ($priceDay as $k=>$v) {
+      $priceDay[$k] =  $oConfig->priceAirbnb($v,$ch); 
+    }
 
     $oPrice = DailyPrices::where('channel_group', $ch)
               ->where('date', '>=', $start)
@@ -132,7 +135,7 @@ class WubookRates extends Command
       }
 
     $aux = [];
-    foreach ($priceDay as $p) $aux[] = $p;
+    foreach ($priceDay as $p) $aux[] = ceil($p);
     return $aux;
   }
 }

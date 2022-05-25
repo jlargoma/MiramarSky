@@ -69,7 +69,7 @@ class WuBook{
       return FALSE; 
     }
     
-    public function pushURL($site,$url, $test=0){
+    public function pushURL($url, $test=0){
       // tdocs.wubook.net/wired/fetch.html#setting-up-the-push-notification
       if ($this->token){
         $aResponse = $this->call('push_activation', array($this->token,$this->iCode,$url, $test));
@@ -82,7 +82,7 @@ class WuBook{
       return FALSE; 
     }
     
-    public function get_pushURL($site){
+    public function get_pushURL(){
       // tdocs.wubook.net/wired/fetch.html#setting-up-the-push-notification
       if ($this->token){
         $aResponse = $this->call('push_url', array($this->token,$this->iCode));

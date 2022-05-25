@@ -34,8 +34,9 @@
       });
     
 
-    Route::post('zodomus-Webhook','ZodomusController@webHook');
-    Route::post('wubook-Webhook', 'WubookController@webHook');
+    // Route::post('zodomus-Webhook','ZodomusController@webHook');
+    // Route::post('wubook-Webhook', 'WubookController@webHook');
+    Route::post('wubook-Webhook', 'OtaGate@webHook_Wubook');
     Route::post('Ota-Gateway-Webhook', 'OtaGate@webHook');
     
     Route::get('/partee-checkHuespedes', function () {
