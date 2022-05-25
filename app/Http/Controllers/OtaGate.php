@@ -288,4 +288,60 @@ class OtaGate extends Controller {
     return response('',200);
   }
 
+  /* --------------------------------------------------------------------------------- */
+  //WUBOOK
+  
+  /**
+   * Display a listing of the resource.
+   *
+   * @return \Illuminate\Http\Response
+   */
+  public function wBookFunctions() {
+    
+    $WuBook = new \App\Services\Wubook\Wubook();
+    $WuBook->conect();
+    $url = 'https://admin.apartamentosierranevada.net/wubook-Webhook';
+    // $WuBook->pushURL($url);
+    $WuBook->get_pushURL();
+    
+  }
+  
+  /**
+   * 
+   * @param Request $request
+   * rcode (the reservation code) 
+   * lcode (the property identifier, 
+   */
+  public function webHook_Wubook(Request $request) {
+    
+    $rcode = $request->input('rcode');
+    $lcode = $request->input('lcode');
+    
+    
+    //save the params to response quikly the HTTP 200
+    $oData = \App\ProcessedData::findOrCreate('wubook_webhook');
+    $content = json_decode($oData->content,true);
+    if (!$content || !is_array($content)) $content = [];
+    
+    $content[] = [
+      'date' =>time(),
+      'rcode'=>$rcode,
+      'lcode'=>$lcode,
+    ];
+    
+    $oData->content = json_encode($content);
+    $oData->save();
+    
+    //save a copy
+    $json = json_encode($request->all());
+    $dir = storage_path().'/wubook';
+    if (!file_exists($dir)) {
+      mkdir($dir, 0775, true);
+    }
+    file_put_contents($dir."/".date('Hms').'-'.$rcode,$json);
+    
+    return response('',200);
+  }
+  /* END WUBOOK */
+  /* --------------------------------------------------------------------------------- */
 }

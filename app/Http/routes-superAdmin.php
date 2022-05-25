@@ -336,7 +336,7 @@ Route::group(['middleware' => ['auth','role:admin|subadmin'], 'prefix' => 'admin
   
   
   // WUBOOK
-  Route::get('/Wubook', 'WubookController@index');
+  Route::get('/WubookFunctions', 'OtaGate@wBookFunctions');
   Route::post('/Wubook/sendPrices', 'WubookController@sendPricesGroup')->name('Wubook.sendPrices');
   Route::get('/Wubook/createAvails', 'WubookController@createAvails')->name('Wubook.createAvails');
   Route::get('/Wubook/sendAvails', 'WubookController@sendAvails')->name('Wubook.sendAvails');
