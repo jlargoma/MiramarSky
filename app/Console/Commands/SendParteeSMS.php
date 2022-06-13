@@ -10,6 +10,7 @@ use App\Traits\BookEmailsStatus;
 use App\Services\SMSService;
 use Illuminate\Support\Facades\DB;
 use App\Settings;
+use App\Services\LogsService;
 
 class SendParteeSMS extends Command {
 
@@ -31,6 +32,7 @@ class SendParteeSMS extends Command {
   private $SMSService;
   private $phone;
   private $message;
+  private $sLog;
 
   /**
    * Create a new command instance.
@@ -38,6 +40,7 @@ class SendParteeSMS extends Command {
    * @return void
    */
   public function __construct() {
+    $this->sLog = new LogsService('schedule','Partee');
     parent::__construct();
   }
 
@@ -48,13 +51,13 @@ class SendParteeSMS extends Command {
    */
   public function handle() {
     $this->SMSService = new SMSService();
-    if ($this->SMSService->conect()){
+    // if ($this->SMSService->conect()){
       $this->checkInStatus();
-    } else {
-      $log = time() . '- Send SMS -' . $this->SMSService->response;
-      Log::error($log);
-      echo $log;
-    }
+    // } else {
+    //   $log = time() . '- Send SMS -' . $this->SMSService->response;
+    //   $this->sLog->warning($log);
+    //   echo $log;
+    // }
   }
 
   /**
@@ -115,18 +118,19 @@ class SendParteeSMS extends Command {
           } else {
             
             $log = time() . '- Send SMS -' . $apiPartee->response;
-            Log::error($log);
+            $this->sLog->warning($log);
+           // $this->sLog->warning($log);
           }
         } catch (\Exception $e) {
-          Log::error("Error CheckIn Partee " . $item->id . ". Error  message => " . $e->getMessage());
-          echo $e->getMessage();
+          $this->sLog->error("Error CheckIn Partee " . $item->id . ". Error  message => " . $e->getMessage());
+         // echo $e->getMessage();
           continue;
         }
       }
     } else {
       //Can't conect to partee
-//      Log::error("Error Conect Partee " . $apiPartee->response);
-      echo $apiPartee->response;
+      $this->sLog->warning("Error Conect Partee " . $apiPartee->response);
+//      echo $apiPartee->response;
     }
   }
   
@@ -152,11 +156,11 @@ class SendParteeSMS extends Command {
     if ($this->phone && $this->message){
       if ($this->SMSService->sendSMS($this->message,$this->phone)){
         $log = 'Sent SMS -' . $this->SMSService->response;
-        Log::error($log);
+        $this->sLog->info($log);
         return true;
       } else {
         $log = 'Error Sent SMS -' . $this->SMSService->response;
-        Log::error($log);
+        $this->sLog->warning($log);
         return true;
       }
       

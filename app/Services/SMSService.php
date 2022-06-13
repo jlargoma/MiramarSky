@@ -55,7 +55,7 @@ class SMSService
       curl_close($ch);
             
       // CHECK THE REQUEST
-      $this->response = 'No hay repuesta del servidor';
+      $this->response = 'No hay repuesta del servidor - HTTP'.$httpCode;
       if ($result){
         $aResult = explode('#',$result);
         if (is_array($aResult) && count($aResult)>1){

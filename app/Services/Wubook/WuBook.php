@@ -345,7 +345,7 @@ class WuBook{
      */
     public function fetch_booking($iCode,$rCode=null) {
       
-      if ($iCode != $$this->iCode) return false;
+      if ($iCode != $this->iCode) return false;
       
       if ($this->token && $rCode){
      
