@@ -36,8 +36,6 @@ class RoomsController extends AppController {
    */
   public function index() {
     $oYear      = $this->getActiveYear();
-    $zConfig = new \App\Services\Zodomus\Config();
-
     $lstContr = \App\RoomsContracts::where('year_id',$oYear->id)
             ->where('is_delegacion',0)->get();
     $aContrs = [];

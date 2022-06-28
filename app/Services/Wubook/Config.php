@@ -48,6 +48,7 @@ class Config
 
   public function restricPlan($site)
   {
+    return 0;  // solo vamos a usar una propiedad
     return 76427;  // solo vamos a usar una propiedad
   }
 }
