@@ -129,7 +129,7 @@ class CheckOtaService extends Command {
             ], function ($message) use ($subject) {
               $message->from(config('mail.from.address'));
               $message->to(config('mail.from.address'));
-              $message->cc('pingodevweb@gmail.com');
+             // $message->cc('pingodevweb@gmail.com');
               $message->subject($subject);
             });
   }

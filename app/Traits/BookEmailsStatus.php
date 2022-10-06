@@ -730,6 +730,44 @@ trait BookEmailsStatus
             $message->subject($subject);
             $message->replyTo(config('mail.from.address'));
         });
+
+
+      //enviar al cliente
+      $subject = 'RESERVA EN '.$site['name'];
+      $mailClientContent = $this->getMailData($book, 'web_payment');
+      setlocale(LC_TIME, "ES");
+      setlocale(LC_TIME, "es_ES");
+
+      $totalPayment = $amount;
+      $percent           = 100 - (round(($totalPayment / $book->total_price) * 100));
+      $pendiente         = ($book->total_price - $totalPayment);
+      $cachedRepository  = new CachedRepository();
+      $PaylandsController= new \App\Http\Controllers\PaylandsController($cachedRepository);
+      $urlPayment        = $PaylandsController->generateOrder($pendiente,'',$book->id);
+      $mailClientContent = str_replace('{pend_percent}', $percent, $mailClientContent);
+      $mailClientContent = str_replace('{payment_amount}', number_format($totalPayment, 2, ',', '.'), $mailClientContent);
+      $mailClientContent = str_replace('{total_payment}', number_format($totalPayment, 2, ',', '.'), $mailClientContent);
+      $mailClientContent = str_replace('{pend_payment}', number_format($pendiente, 2, ',', '.'), $mailClientContent);
+      $mailClientContent = str_replace('{urlPayment_rest}', $urlPayment, $mailClientContent);
+
+      $mailClientContent = $this->clearVars($mailClientContent);
+
+      $site = Sites::siteData($book->room->site_id);
+      
+      $sended = Mail::send('backend.emails.base', [
+          'siteName'    => $site['name'],
+          'siteUrl'     => $site['url'],
+          'mailContent' => $mailClientContent,
+          'title'       => $subject
+      ], function ($message) use ($book, $subject) {
+          $message->from(config('mail.from.address'));
+          $message->to($book->customer->email);
+          $message->subject($subject);
+          $message->replyTo(config('mail.from.address'));
+      });
+      
+      \App\BookLogs::saveLog($book->id,$book->room_id,$book->customer->email,'web_payment',$subject,$mailClientContent);
+
         
         return $sended;
     }

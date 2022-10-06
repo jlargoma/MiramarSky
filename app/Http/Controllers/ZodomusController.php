@@ -171,11 +171,10 @@ class ZodomusController extends Controller {
     $zConfig = new ZConfig();
     $aptos = configZodomusAptos();
 //    $channels = $zConfig->Channels();
-
     $rooms = [];
     foreach ($aptos as $k => $item) {
       if (!$room) $room = $k;
-      $rooms[$k] = $item->name;
+      $rooms[$k] = $item;
     }
 
     $dw = listDaysSpanish(true);

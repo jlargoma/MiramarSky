@@ -85,6 +85,7 @@ class Settings extends Model {
         'reserva-propietario' => 'RVA Propietario',
         'reserva-constestado-email' => 'Contestado e-mail',
         'second_payment_reminder' => 'Recordatorio 2º pago',
+        'web_payment'                       =>'Pago desde la web',
         'second_payment_confirm' => 'Confirmación del 2º pago',
         'Forfait_email_payment_request' => 'Solicitud de pago Forfaits',
         'forfait_email_request' => 'Mail Solicitud Forfaits',
