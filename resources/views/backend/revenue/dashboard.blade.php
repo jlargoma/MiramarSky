@@ -132,6 +132,9 @@ table.table.table_white {
         $('#blockPresup').load('getOverview/'+$(this).data('month'));
     });
     
+    window.reloadPresupMonth = function(month){
+      $('#blockPresup').load('getOverview/'+month);
+    }
    
     $('#blockPresup').on('keyup', '.editable', function (e) {
       $(this).val($(this).val().replace(/[^\d|^.]/g, ''));

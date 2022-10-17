@@ -11,6 +11,7 @@ $appName = env('APP_APPLICATION');
 @if($totalSales !== null)
 <div class="clearfix totalCalendar" >
   Ventas de {{getMonthsSpanish($currentM,false)}} : {{moneda($totalSales)}}
+  <a href="/admin/revenue/DASHBOARD" title="revenue" class="btn btn-primary">REVENUE</a>
 </div>
 @endif
 
