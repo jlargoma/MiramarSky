@@ -24,6 +24,9 @@ $meses = getMonthsSpanish(null, true, true);
 unset($meses[0]);
 if ($month == 0) $daysMonth = $mDays[0]; 
 else $daysMonth = $mDays[intVal(explode('.',$month)[1])];
+
+//site ID
+$k=0;
 ?>
 <div class="presupuesto" >
   <div class="row">
@@ -54,7 +57,7 @@ else $daysMonth = $mDays[intVal(explode('.',$month)[1])];
           <tr>
             <td>{{$concept}}</td>
             @if($month == 0)
-            <td class="text-right">{{$v1}}€</td>
+            <td class="text-right">{{numero($v1)}}€</td>
             @else
             <td class="text-right"><input class="fixcost" data-k="{{$key}}" data-site="{{$k}}" data-y="{{$year}}"  data-m="{{$month}}" value="{{$v1}}">€</td>
             @endif
@@ -65,7 +68,7 @@ else $daysMonth = $mDays[intVal(explode('.',$month)[1])];
 
         <tr class="tr_footer">
           <th>COSTE FIJO</th>
-          <th class="text-right"><span id="tFC{{$k.'_'.$year.$month}}">{{$cftM}}</span>€</th>
+          <th class="text-right"><span id="tFC{{$k.'_'.$year.$month}}">{{numero($cftM)}}</span>€</th>
         </tr>
       </table>
       <div class="text-center">
@@ -383,6 +386,9 @@ $('.fixcost').on('click', function(){
     var ktotal = '#tFC' + site + '_' + y + '' + m;
     $.post("/admin/revenue/upd-fixedcosts", data).done(function (resp) {
       if (resp.status == 'OK') {
+
+        window.reloadPresupMonth(m);
+       /* console.log(ktotal);
         window.show_notif('Registro modificado', 'success', '');
         $(ktotal).text(resp.totam_mensual);
         
@@ -401,7 +407,7 @@ $('.fixcost').on('click', function(){
         $('.fixColTtalMdl.'+site+'.'+key).text(tCol+' €');
         $('.fixColTtalMdl.'+site+'.'+key).data('v',tCol);
         //---------------------------------------------------------//
-        
+        */
       } else {
         window.show_notif(resp, 'danger', '');
       }
