@@ -82,7 +82,7 @@ class WubookAvailables extends Command
     $channels = getAptosChannel();
     $items = [];
     $start = date('Y-m-d');
-    $end = date('Y-m-d',strtotime("+12 months"));
+    $end = date('Y-m-d',strtotime("+6 months"));
 
     foreach ($channels as $ch) {
         $items[$ch] = $this->getAvaility($ch, $start, $end);

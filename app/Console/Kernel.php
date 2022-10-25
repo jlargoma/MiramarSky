@@ -108,7 +108,7 @@ class Kernel extends ConsoleKernel {
 
     $schedule->command('OTAs:sendPricesSeason')->everyMinute();
     $schedule->command('ical:import')->everyFiveMinutes();
-    $schedule->command('wubook:sendAvaliables')->everyFiveMinutes();
+    //$schedule->command('wubook:sendAvaliables')->everyFiveMinutes();
     $schedule->command('ProcessData:all')->everyFiveMinutes();
     $schedule->command('OTAs:sendMinStaySeason')->everyFiveMinutes();
   }
