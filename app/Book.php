@@ -680,6 +680,14 @@ class Book extends Model {
           }
         }
       }
+
+      //BEGIN wubook
+      $oAux = \App\ProcessedData::findOrCreate('wubookAvail');
+      $oAux->content=time();
+      $oAux->save();
+      //END wubook
+
+
       if($oOta->conect()){
         $return = $oOta->sendAvailabilityByCh($room->channel_group,$aLstDays);
         return ($return == 200);
